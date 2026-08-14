@@ -1,0 +1,864 @@
+/* ============================================================================
+   CMath Math Map V4 — Single-Page Product Stylesheet
+   ============================================================================ */
+
+:root {
+  --bg-app: #080C14;
+  --bg-workbench: #080C14;
+  --panel-bg: rgba(16, 24, 40, 0.82);
+  --panel-border: rgba(94, 126, 172, 0.22);
+  --panel-border-hover: rgba(127, 168, 217, 0.55);
+  
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  
+  --accent-cyan: #67CDB0;
+  --accent-blue: #7FA8D9;
+  --accent-purple: #A793F0;
+  
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "New York", "Source Serif Pro", "STSong", "Songti SC", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================================
+   View Switching Control
+   ============================================================================ */
+
+body[data-view="workbench"] #workbench-view {
+  display: flex !important;
+}
+body[data-view="workbench"] #math-map-view {
+  display: none !important;
+}
+
+body[data-view="map"] #workbench-view {
+  display: none !important;
+}
+body[data-view="map"] #math-map-view {
+  display: block !important;
+}
+
+/* ============================================================================
+   1. Workbench Container & Header
+   ============================================================================ */
+
+#workbench-view {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow-y: auto;
+  background: 
+    radial-gradient(circle at 50% 25%, rgba(24, 45, 75, 0.28) 0%, transparent 65%),
+    linear-gradient(180deg, #070B12 0%, #0B121F 100%);
+}
+
+.ambient-bg-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.16;
+  z-index: 0;
+}
+
+.workbench-topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(141, 160, 184, 0.12);
+  backdrop-filter: blur(12px);
+  background: rgba(8, 12, 20, 0.7);
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: #0D1626;
+  border: 1px solid rgba(127, 168, 217, 0.25);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.brand-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+
+.brand-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+
+.brand-tagline {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.workbench-badge {
+  font-size: 11px;
+  color: var(--accent-cyan);
+  background: rgba(103, 205, 176, 0.1);
+  border: 1px solid rgba(103, 205, 176, 0.25);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.workbench-badge::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+}
+
+.topbar-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(26, 38, 59, 0.5);
+  border: 1px solid rgba(141, 160, 184, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.topbar-action-btn:hover {
+  color: var(--text-primary);
+  background: rgba(38, 55, 84, 0.7);
+  border-color: rgba(127, 168, 217, 0.45);
+}
+
+/* ============================================================================
+   Workbench Main Body
+   ============================================================================ */
+
+.workbench-main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px 60px;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.workbench-hero {
+  text-align: center;
+  max-width: 720px;
+  margin-bottom: 42px;
+}
+
+.hero-title-row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+.hero-sub {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent-blue);
+  letter-spacing: -0.01em;
+}
+
+.hero-version {
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+  color: var(--accent-cyan);
+  background: rgba(103, 205, 176, 0.12);
+  border: 1px solid rgba(103, 205, 176, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.hero-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* Entrance 3-Card Grid */
+.entrance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  width: 100%;
+}
+
+.entrance-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(16px);
+  position: relative;
+}
+
+.entrance-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--panel-border-hover);
+  background: rgba(22, 33, 53, 0.92);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(30, 48, 77, 0.7);
+  border: 1px solid rgba(127, 168, 217, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-blue);
+  margin-bottom: 16px;
+}
+
+.entrance-card h2 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.entrance-card p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.card-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  padding-top: 14px;
+  border-top: 1px solid rgba(141, 160, 184, 0.12);
+}
+
+/* ============================================================================
+   Drawers (Paper Drawer & Settings Drawer)
+   ============================================================================ */
+
+.slide-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 440px;
+  max-width: 90vw;
+  background: #0B111C;
+  border-left: 1px solid rgba(141, 160, 184, 0.2);
+  z-index: 100;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+  transform: translateX(100%);
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+.slide-drawer.is-open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(141, 160, 184, 0.15);
+}
+
+.drawer-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.drawer-header small {
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  color: var(--text-muted);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+.pdf-drop-zone {
+  border: 1.5px dashed rgba(127, 168, 217, 0.35);
+  border-radius: 10px;
+  padding: 32px 18px;
+  text-align: center;
+  background: rgba(18, 28, 46, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.pdf-drop-zone:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(25, 39, 64, 0.7);
+}
+
+.drawer-notice {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: rgba(22, 33, 53, 0.7);
+  border: 1px solid rgba(141, 160, 184, 0.18);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 24px;
+}
+
+.btn-primary-action {
+  width: 100%;
+  padding: 12px;
+  background: #1C3554;
+  border: 1px solid rgba(127, 168, 217, 0.4);
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.btn-primary-action:hover {
+  background: #254770;
+  border-color: var(--accent-blue);
+}
+
+/* Settings Form (3 Core Fields: Endpoint, API Key, Model) */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(13, 21, 36, 0.95);
+  border: 1px solid rgba(141, 160, 184, 0.25);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 150ms ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+.form-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.provider-select-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.provider-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(22, 33, 53, 0.6);
+  border: 1px solid rgba(141, 160, 184, 0.2);
+  border-radius: 5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 150ms ease;
+  text-align: center;
+}
+.provider-btn.is-active {
+  background: rgba(35, 54, 85, 0.9);
+  border-color: var(--accent-blue);
+  color: #FFFFFF;
+}
+
+/* ============================================================================
+   Demo Selection Modal (Only 3 Curated Cases)
+   ============================================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 13, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay[hidden] {
+  display: none !important;
+}
+
+.demo-modal-dialog {
+  background: #0E1626;
+  border: 1px solid rgba(141, 160, 184, 0.25);
+  border-radius: 12px;
+  width: 620px;
+  max-width: 100%;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.demo-cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.demo-case-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(20, 31, 50, 0.6);
+  border: 1px solid rgba(141, 160, 184, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.demo-case-card:hover {
+  background: rgba(28, 44, 71, 0.85);
+  border-color: var(--accent-blue);
+  transform: translateX(3px);
+}
+
+.demo-case-info strong {
+  display: block;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-case-info span {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.demo-case-btn {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* ============================================================================
+   2. Real Math Map View (Full Screen Native View)
+   ============================================================================ */
+
+#math-map-view {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #080C14;
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* Integrated Native Topbar for Map View */
+.map-view-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 16px;
+  background: rgba(10, 16, 26, 0.92);
+  border-bottom: 1px solid rgba(141, 160, 184, 0.15);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 30;
+}
+
+.map-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-return-workbench {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #E2E8F0;
+  background: rgba(30, 48, 77, 0.7);
+  border: 1px solid rgba(127, 168, 217, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.btn-return-workbench:hover {
+  background: rgba(43, 68, 107, 0.9);
+  border-color: var(--accent-blue);
+  color: #FFFFFF;
+}
+
+.map-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-brand-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.map-brand-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.map-brand-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+
+.map-active-title {
+  font-size: 12px;
+  color: var(--text-primary);
+  padding-left: 8px;
+  border-left: 1px solid rgba(141, 160, 184, 0.25);
+}
+
+.map-boundary-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.map-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-quick-btn {
+  padding: 5px 11px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(22, 33, 53, 0.6);
+  border: 1px solid rgba(141, 160, 184, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.map-quick-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(127, 168, 217, 0.4);
+}
+
+/* Map Main Canvas Area (100% of remaining height) */
+#math-map-view .math-map-main {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 52px);
+  overflow: hidden;
+  background: #080C14;
+}
+
+#math-map-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Commandbar */
+#math-map-view .math-map-commandbar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+#math-map-view .map-history-actions {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  z-index: 20;
+}
+
+#math-map-view .math-map-context {
+  position: absolute;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 280px !important;
+  padding: 8px 12px !important;
+  z-index: 15;
+}
+
+/* ============================================================================
+   Redesigned Clear Visual Semantic Legend (数学地图底部图例)
+   ============================================================================ */
+
+.math-map-legend-panel {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 12px;
+  background: rgba(10, 16, 28, 0.94);
+  border: 1px solid rgba(141, 160, 184, 0.28);
+  border-radius: 9px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.legend-badge {
+  display: inline-block;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+/* 1. Fact */
+.badge-fact {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #8E9AAA;
+  border: 1.5px solid #D8DEE7;
+  box-shadow: 0 0 4px rgba(216, 222, 231, 0.25);
+}
+
+/* 2. Open Claim */
+.badge-claim-open {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #0C1220;
+  border: 2.2px solid #E58BA7;
+  box-shadow: 0 0 6px rgba(229, 139, 167, 0.35);
+}
+
+/* 3. Established Claim */
+.badge-claim-established {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #67CDB0;
+  border: 1.5px solid #E5F8F1;
+  box-shadow: 0 0 6px rgba(103, 205, 176, 0.35);
+}
+
+/* 4. Inference (Rotated Diamond) */
+.badge-inference {
+  width: 11px;
+  height: 11px;
+  background: #A793F0;
+  border: 1.5px solid #D6CCFF;
+  transform: rotate(45deg);
+  box-shadow: 0 0 6px rgba(167, 147, 240, 0.35);
+}
+
+/* 5. Foundation Claim (B0) */
+.badge-foundation {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #67CDB0;
+  border: 2.5px solid #070A10;
+  outline: 1.5px solid #67CDB0;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.legend-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: #E2E8F0;
+  letter-spacing: 0;
+}
+
+/* ============================================================================
+   Responsive Adjustments (Mobile 390px)
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .entrance-grid {
+    grid-template-columns: 1fr;
+  }
+  .workbench-topbar {
+    padding: 0 14px;
+    height: 54px;
+  }
+  .workbench-badge {
+    display: none;
+  }
+  .brand-tagline {
+    display: none;
+  }
+  .brand-name {
+    font-size: 15px;
+  }
+  .topbar-action-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .workbench-main {
+    padding: 24px 16px 40px;
+  }
+  .hero-title {
+    font-size: 30px;
+  }
+  .hero-desc {
+    font-size: 13px;
+  }
+  .slide-drawer {
+    width: 100vw;
+  }
+  .map-boundary-tag {
+    display: none;
+  }
+  .map-brand-group {
+    display: none;
+  }
+  .math-map-legend-panel {
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 12px;
+    padding: 8px 10px;
+  }
+  #math-map-view .map-history-actions {
+    bottom: 88px;
+  }
+  #math-map-view .math-map-context {
+    right: 10px;
+    bottom: 142px;
+    left: 10px;
+    max-width: none !important;
+    transform: none;
+  }
+}
