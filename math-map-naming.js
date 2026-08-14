@@ -11,17 +11,17 @@
   const LEGACY_CAPABILITY_ID = "cmath-gamma.math-map-naming/v1";
   const LEDGER_SCHEMA = "cmath-gamma.math-map-numbering-ledger/v1";
   const ALLOCATION_STATES = Object.freeze(["active", "retired", "merged"]);
-  const CANONICAL_PATTERN = /^(定义|算法|计算|引理|命题|定理|猜想|组织|证明)\s*·\s*(\d+)\s*·\s*(.+)$/u;
-  const PENDING_PATTERN = /^(定义|算法|计算|引理|命题|定理|猜想|组织|证明)\s*·\s*待编号\s*·\s*(.+)$/u;
-  const LEGACY_PATTERN = /^(定义|算法|计算|引理|命题|定理|猜想|组织|证明)\s*·\s*(.+?)\s*·\s*(\d+)$/u;
+  const CANONICAL_PATTERN = /^(定义|算法|计算|引理|命题|定理|组织|证明)\s*·\s*(\d+)\s*·\s*(.+)$/u;
+  const PENDING_PATTERN = /^(定义|算法|计算|引理|命题|定理|组织|证明)\s*·\s*待编号\s*·\s*(.+)$/u;
+  const LEGACY_PATTERN = /^(定义|算法|计算|引理|命题|定理|组织|证明)\s*·\s*(.+?)\s*·\s*(\d+)$/u;
   const SOURCE_PATTERN = /^(.+?)\s+(\d+)\s+·\s+(.+)$/u;
-  const aliases = Object.freeze({ 定义: "定义", 约定: "定义", 构造: "算法", 算法: "算法", 计算: "计算", 计算结果: "计算", 例子: "计算", 引理: "引理", 命题: "命题", 开放问题: "命题", 反例: "命题", 定理: "定理", 猜想: "猜想", 推测: "猜想", 组织: "组织", 推导: "证明", 证明: "证明" });
+  const aliases = Object.freeze({ 定义: "定义", 约定: "定义", 构造: "算法", 算法: "算法", 计算: "计算", 计算结果: "计算", 例子: "计算", 引理: "引理", 命题: "命题", 开放问题: "命题", 反例: "命题", 定理: "定理", 组织: "组织", 推导: "证明", 证明: "证明" });
   const semanticKinds = Object.freeze({
     definition: "定义", convention: "定义",
     algorithm: "算法", construction: "算法",
     calculation: "计算", computation: "计算",
     lemma: "引理", proposition: "命题", open_problem: "命题", counterexample: "命题",
-    theorem: "定理", conjecture: "猜想", organization: "组织", proof: "证明",
+    theorem: "定理", organization: "组织", proof: "证明",
   });
 
   const mathematicalShortTitle = (item) => item?.mathematicalShortTitle ?? item?.shortTitle
