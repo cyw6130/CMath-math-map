@@ -148,17 +148,21 @@
         <div class="provider-select-row">
           <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
           <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
-          <button type="button" class="provider-btn" data-provider="openai">OpenAI</button>
-          <button type="button" class="provider-btn" data-provider="gemini">Gemini</button>
+          <button type="button" class="provider-btn" data-provider="opencode">OpenCode Go</button>
           <button type="button" class="provider-btn" data-provider="custom">自定义</button>
         </div>
+        <span class="active-provider-label" id="active-provider-label"></span>
         <input class="form-input" type="text" id="api-endpoint-input" value="https://api.deepseek.com/v1" placeholder="https://...">
-        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。</span>
+        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。当前供应商的记忆配置会随切换自动恢复。</span>
       </div>
 
       <div class="form-group">
         <label for="api-key-input">2. API Key</label>
         <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key">
+        <label class="local-key-row" id="remember-key-row" hidden>
+          <input type="checkbox" id="remember-key-input" checked>
+          <span>记住 Key 到本地（仅本机桌面版有效）</span>
+        </label>
       </div>
 
       <div class="form-group">
@@ -172,6 +176,11 @@
           <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
         </div>
         <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
+      </div>
+
+      <div class="form-group">
+        <button type="button" class="btn-test-connection" id="btn-test-connection">测试连接</button>
+        <span class="test-connection-result" id="test-connection-result" hidden></span>
       </div>
     </aside>
 

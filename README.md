@@ -11,10 +11,15 @@ Fact / Claim / Inference 图（开放 Claim、已建立 Claim、推导关系、L
 
 ## 本地运行
 
+**桌面版（推荐）**：双击桌面上的 `Gamma Math Map.app`，会启动本机服务并打开地图页面。
+所有功能与在线版一致，额外支持把各服务商的 API Key 记住在本机。
+
+**手动运行**：
+
 ```bash
 cd gamma-math-map
-python3 -m http.server 8000
-# 打开 http://127.0.0.1:8000/ （会自动跳到 generic-math-map-lab.html?preview=1）
+node server.js            # 或 npm run dev -- --port 7100
+# 打开 http://127.0.0.1:7100/
 ```
 
 注意：`?preview=1` 参数控制「导入 Project View JSON」面板的显示，直接双击 html 文件
@@ -26,8 +31,17 @@ python3 -m http.server 8000
 「上传数学论文 PDF」。Kimi 预设使用 Moonshot 端点 `https://api.moonshot.cn/v1` 和可编辑的
 `kimi-k3` 模型名称。浏览器使用内置的 `pdfjs-dist@6.2.108` 提取逐页文本，直接请求配置的
 OpenAI-compatible 端点，校验模型输出并下载
-`paper-project-view.json`。API Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
-输入框会被清空。
+`paper-project-view.json`。
+
+API Key 的保存分两种环境：
+
+- **GitHub Pages 在线版**：Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
+  输入框会被清空（隐私默认）。
+- **桌面版（`node server.js` / `Gamma Math Map.app`）**：本地服务器提供
+  `GET/PUT /api/local-key` 环回端点，Key 只保存在
+  `~/.gamma-math-map/keys.json`（权限 0600，仅本机可读）。勾选「记住 Key 到本地」后，
+  下次打开自动填入当前服务商的 Key；取消勾选则恢复"用后即清"。在线版不会显示该选项，
+  也不存在任何本地端点。
 
 当前版本只支持带文本层且不超过 25 MB 的 PDF，提取文本上限为 180,000 字符，不支持扫描版 OCR。
 该流程生成带正式 `entries` / `inferences` 的 Gamma-native 本地预览。没有 proof 的 Claim 仍在地图中，

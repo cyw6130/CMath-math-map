@@ -24,12 +24,174 @@
   const providerBtns = document.querySelectorAll(".provider-btn");
   const apiEndpointInput = document.querySelector("#api-endpoint-input");
   const apiKeyInput = document.querySelector("#api-key-input");
+  const rememberKeyRow = document.querySelector("#remember-key-row");
+  const rememberKeyInput = document.querySelector("#remember-key-input");
   const modelSelect = document.querySelector("#model-select");
   const customModelGroup = document.querySelector("#custom-model-group");
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   let mapRuntimeMounted = false;
   let activeProviderKey = "deepseek";
+
+  // Local desktop mode: the loopback server can persist API Keys to disk.
+  // GitHub Pages (https://cyw6130.github.io) never sees this endpoint.
+  const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+  const isLocalDesktop = LOCAL_HOSTS.has(window.location.hostname);
+
+  // Per-provider preferences.
+  // - API Keys: persisted to ~/.gamma-math-map/keys.json on the desktop app;
+  //   online builds keep keys in sessionStorage only (cleared on tab close).
+  // - Endpoint + model choice: localStorage (non-secret), shared by both builds.
+  const PROVIDER_PREFS_KEY = "cmath.math-map.provider-prefs";
+  const LEGACY_MODEL_PREFS_KEY = "cmath.math-map.provider-model-prefs";
+  const SESSION_KEYS_KEY = "cmath.math-map.session-keys";
+
+  // Desktop builds route model traffic through the loopback server
+  // (/api/model-proxy) so endpoints that reject browser CORS preflights
+  // (e.g. a local Sub2API instance) still work. Online builds fetch directly.
+  async function modelFetch(targetUrl, init) {
+    if (!isLocalDesktop) return fetch(targetUrl, init);
+    let apiKey = "";
+    const auth = init?.headers?.Authorization;
+    if (typeof auth === "string") apiKey = auth.replace(/^Bearer\s+/i, "").trim();
+    let body = null;
+    if (typeof init?.body === "string") {
+      try { body = JSON.parse(init.body); } catch { /* forward raw below */ }
+    }
+    const response = await fetch("/api/model-proxy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ targetUrl: String(targetUrl), apiKey, body: body ?? init?.body ?? null }),
+    });
+    return new Response(await response.text(), {
+      status: response.status,
+      headers: { "Content-Type": response.headers.get("content-type") || "application/json; charset=utf-8" },
+    });
+  }
+
+  function readProviderPrefs() {
+    try { return JSON.parse(localStorage.getItem(PROVIDER_PREFS_KEY) || "{}"); }
+    catch { return {}; }
+  }
+  function migrateLegacyPrefs() {
+    try {
+      const legacy = JSON.parse(localStorage.getItem(LEGACY_MODEL_PREFS_KEY) || "{}");
+      const entries = Object.entries(legacy).filter(([, model]) => typeof model === "string" && model);
+      if (!entries.length) return;
+      const prefs = readProviderPrefs();
+      for (const [provider, model] of entries) {
+        if (!prefs[provider]) prefs[provider] = {};
+        if (typeof prefs[provider] === "object") prefs[provider].model = model;
+      }
+      localStorage.setItem(PROVIDER_PREFS_KEY, JSON.stringify(prefs));
+      localStorage.removeItem(LEGACY_MODEL_PREFS_KEY);
+    } catch { /* legacy migration must never block */ }
+  }
+  function rememberProviderConfig(provider, { endpoint, model }) {
+    try {
+      const prefs = readProviderPrefs();
+      const entry = prefs[provider] && typeof prefs[provider] === "object" ? prefs[provider] : {};
+      if (endpoint) entry.endpoint = endpoint;
+      else delete entry.endpoint;
+      if (model) entry.model = model;
+      else delete entry.model;
+      prefs[provider] = entry;
+      localStorage.setItem(PROVIDER_PREFS_KEY, JSON.stringify(prefs));
+    } catch { /* preference persistence never blocks import */ }
+  }
+  function providerPref(provider) {
+    const entry = readProviderPrefs()[provider];
+    return entry && typeof entry === "object" ? entry : {};
+  }
+  function rememberSessionKey(provider, apiKey) {
+    try {
+      const keys = JSON.parse(sessionStorage.getItem(SESSION_KEYS_KEY) || "{}");
+      if (apiKey) keys[provider] = apiKey;
+      else delete keys[provider];
+      sessionStorage.setItem(SESSION_KEYS_KEY, JSON.stringify(keys));
+    } catch { /* session key memory never blocks import */ }
+  }
+  function sessionKeyFor(provider) {
+    try { return JSON.parse(sessionStorage.getItem(SESSION_KEYS_KEY) || "{}")[provider] || ""; }
+    catch { return ""; }
+  }
+  function currentProviderModel() {
+    return modelSelect.value === "custom" ? customModelInput?.value.trim() : modelSelect.value;
+  }
+
+  async function loadLocalConfigFor(provider) {
+    if (!isLocalDesktop) return;
+    try {
+      const response = await fetch("/api/local-key", { headers: { Accept: "application/json" } });
+      if (!response.ok) return;
+      const store = await response.json();
+      const saved = store?.providers?.[provider];
+      if (typeof saved === "string") {
+        if (saved.trim() && !apiKeyInput.value.trim()) apiKeyInput.value = saved.trim();
+        return;
+      }
+      if (!saved || typeof saved !== "object") return;
+      if (typeof saved.endpoint === "string" && saved.endpoint.trim()) {
+        apiEndpointInput.value = saved.endpoint.trim();
+      }
+      if (typeof saved.model === "string" && saved.model.trim()) {
+        const option = [...(modelSelect?.options ?? [])].find((opt) => opt.value === saved.model);
+        if (option) {
+          modelSelect.value = saved.model;
+        } else if (saved.model === "custom" || customModelInput) {
+          modelSelect.value = "custom";
+          customModelInput.value = saved.model === "custom" ? (customModelInput.value || "") : saved.model;
+        }
+      }
+      if (typeof saved.apiKey === "string" && saved.apiKey.trim() && !apiKeyInput.value.trim()) {
+        apiKeyInput.value = saved.apiKey.trim();
+      }
+    } catch { /* loopback store unavailable: keep current inputs */ }
+  }
+
+  async function persistLocalConfig(provider, { apiKey, endpoint, model }) {
+    if (!isLocalDesktop) return;
+    try {
+      const response = await fetch("/api/local-key", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider, apiKey, endpoint, model }),
+      });
+      if (response.ok && !apiKey && !endpoint && !model) {
+        // fully cleared on the server side
+      }
+    } catch { /* key persistence must never break the import flow */ }
+  }
+
+  // Remember the config typed for the provider about to be left, then
+  // restore the saved config for the provider being entered.
+  function rememberCurrentProviderSettings() {
+    const apiKey = apiKeyInput?.value.trim() ?? "";
+    const endpoint = apiEndpointInput?.value.trim() ?? "";
+    const model = currentProviderModel();
+    if (apiKey) {
+      rememberSessionKey(activeProviderKey, apiKey);
+      persistLocalConfig(activeProviderKey, { apiKey, endpoint, model });
+    }
+    if (endpoint || model) rememberProviderConfig(activeProviderKey, { endpoint, model });
+  }
+
+  function restoreProviderConfig(provider) {
+    const pref = providerPref(provider);
+    if (pref.endpoint) apiEndpointInput.value = pref.endpoint;
+    const saved = pref.model;
+    if (!saved) return;
+    if (saved === "custom") {
+      modelSelect.value = "custom";
+      handleModelChange();
+      return;
+    }
+    const option = [...(modelSelect?.options ?? [])].find((opt) => opt.value === saved);
+    if (option) modelSelect.value = saved;
+    handleModelChange();
+  }
+
+  if (rememberKeyRow) rememberKeyRow.hidden = !isLocalDesktop;
 
   const PROVIDER_CONFIGS = {
     deepseek: {
@@ -46,25 +208,32 @@
       endpoint: "https://api.moonshot.cn/v1",
       models: [
         { value: "kimi-k3", label: "kimi-k3", default: true },
+        { value: "kimi-k2.7-code", label: "kimi-k2.7-code" },
+        { value: "kimi-k2.6", label: "kimi-k2.6" },
         { value: "custom", label: "自定义模型名称..." }
       ]
     },
-    openai: {
-      label: "OpenAI",
-      endpoint: "https://api.openai.com/v1",
+    opencode: {
+      label: "OpenCode Go",
+      endpoint: "https://opencode.ai/zen/go/v1",
       models: [
-        { value: "gpt-4o", label: "gpt-4o (旗舰通用)", default: true },
-        { value: "gpt-4o-mini", label: "gpt-4o-mini (轻量高效)" },
-        { value: "o1", label: "o1 (高阶推理)" },
-        { value: "custom", label: "自定义模型名称..." }
-      ]
-    },
-    gemini: {
-      label: "Gemini",
-      endpoint: "https://generativelanguage.googleapis.com/v1beta",
-      models: [
-        { value: "gemini-2.5-flash", label: "gemini-2.5-flash (快速响应)", default: true },
-        { value: "gemini-2.5-pro", label: "gemini-2.5-pro (深度多模态)" },
+        { value: "deepseek-v4-flash", label: "DeepSeek V4 Flash (推荐 · 快速)", default: true },
+        { value: "deepseek-v4-pro", label: "DeepSeek V4 Pro" },
+        { value: "kimi-k3", label: "Kimi K3" },
+        { value: "kimi-k2.7-code", label: "Kimi K2.7 Code" },
+        { value: "kimi-k2.6", label: "Kimi K2.6" },
+        { value: "glm-5.3", label: "GLM-5.3" },
+        { value: "glm-5.2", label: "GLM-5.2" },
+        { value: "glm-5.1", label: "GLM-5.1" },
+        { value: "minimax-m3", label: "MiniMax M3" },
+        { value: "minimax-m2.7", label: "MiniMax M2.7" },
+        { value: "qwen3.8-max", label: "Qwen3.8 Max" },
+        { value: "qwen3.7-max", label: "Qwen3.7 Max" },
+        { value: "qwen3.7-plus", label: "Qwen3.7 Plus" },
+        { value: "qwen3.6-plus", label: "Qwen3.6 Plus" },
+        { value: "mimo-v2.5", label: "MiMo-V2.5" },
+        { value: "mimo-v2.5-pro", label: "MiMo-V2.5-Pro" },
+        { value: "hy3", label: "Hy3" },
         { value: "custom", label: "自定义模型名称..." }
       ]
     },
@@ -77,12 +246,26 @@
     }
   };
 
+  const activeProviderLabel = document.querySelector("#active-provider-label");
+
+  function updateActiveProviderLabel() {
+    if (!activeProviderLabel) return;
+    const config = PROVIDER_CONFIGS[activeProviderKey];
+    const endpoint = apiEndpointInput?.value.trim() || config.endpoint || "未配置";
+    const model = currentProviderModel() || "未选择";
+    activeProviderLabel.textContent = `当前供应商：${config.label} ｜ 端点 ${endpoint} ｜ 模型 ${model}`;
+  }
+
   function updateProviderSettings(providerKey) {
+    rememberCurrentProviderSettings();
     activeProviderKey = PROVIDER_CONFIGS[providerKey] ? providerKey : "deepseek";
     providerBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.provider === providerKey));
     const config = PROVIDER_CONFIGS[activeProviderKey];
 
-    if (providerKey !== "custom" || !apiEndpointInput.value) {
+    const savedEndpoint = providerPref(activeProviderKey).endpoint;
+    if (savedEndpoint) {
+      apiEndpointInput.value = savedEndpoint;
+    } else if (providerKey !== "custom" || !apiEndpointInput.value) {
       apiEndpointInput.value = config.endpoint;
     }
 
@@ -95,7 +278,15 @@
       modelSelect.appendChild(opt);
     });
 
+    const sessionKey = sessionKeyFor(activeProviderKey);
+    if (sessionKey && apiKeyInput) apiKeyInput.value = sessionKey;
+    restoreProviderConfig(activeProviderKey);
     handleModelChange();
+    updateActiveProviderLabel();
+    loadLocalConfigFor(activeProviderKey).then(() => {
+      updateActiveProviderLabel();
+      if (customModelInput?.value.trim()) rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput.value.trim(), model: customModelInput.value.trim() });
+    });
   }
 
   function handleModelChange() {
@@ -109,9 +300,24 @@
     btn.addEventListener("click", () => updateProviderSettings(btn.dataset.provider));
   });
 
-  modelSelect?.addEventListener("change", handleModelChange);
+  modelSelect?.addEventListener("change", () => {
+    handleModelChange();
+    const model = currentProviderModel();
+    if (model) {
+      rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput?.value.trim() ?? "", model });
+    }
+    updateActiveProviderLabel();
+  });
+  customModelInput?.addEventListener("input", () => {
+    const model = currentProviderModel();
+    if (model) {
+      rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput?.value.trim() ?? "", model });
+    }
+    updateActiveProviderLabel();
+  });
 
-  // Initialize with DeepSeek
+  // Initialize with DeepSeek (migrating legacy model-only prefs first)
+  migrateLegacyPrefs();
   updateProviderSettings("deepseek");
 
   // Drawer / Modal triggers
@@ -215,14 +421,6 @@
       addStepAfter("validate", "repair-step", "修复结构错误（模型重新生成）");
       setStep("repair-step", "active");
       awaitingStepId = "repair-step";
-    } else if (stage === "closure-repair") {
-      setStep("validate", "done");
-      setStep("closure", "done", `发现 ${info.openClaims?.length ?? 0} 条未建立`);
-      addStepAfter("closure", "closure-step", "补全证明链（模型重新生成）");
-      setStep("closure-step", "active", (info.openClaims ?? []).slice(0, 3).join("、"));
-      awaitingStepId = "closure-step";
-    } else if (stage === "closure-repair-failed") {
-      setStep("closure-step", "done", "补全未通过，保留首版结果");
     }
   }
 
@@ -240,7 +438,7 @@
         const openCount = view.entries.filter(
           (e) => e.entryClass === "claim" && states[e.id] !== "established",
         ).length;
-        closureDetail = openCount === 0 ? "全部已建立" : `${openCount} 条猜想保持开放`;
+        closureDetail = openCount === 0 ? "全部已建立" : `${openCount} 条 Claim 保持开放`;
       }
     } catch { /* 展示信息失败不影响结果 */ }
     setStep("closure", "done", closureDetail);
@@ -345,6 +543,7 @@
         fileName: selectedPaperPdf.name,
         pageCount: paper.pageCount,
         text: paper.text,
+        fetchImpl: modelFetch,
         onStage: handleImportStage,
       });
       finishExtractSteps(projectView);
@@ -362,11 +561,121 @@
         : error.message;
       showExtractError(message);
     } finally {
-      if (apiKeyInput) apiKeyInput.value = "";
+      if (apiKeyInput) {
+        if (isLocalDesktop) {
+          if (rememberKeyInput?.checked && apiKey.trim()) {
+            persistLocalConfig(activeProviderKey, {
+              apiKey,
+              endpoint: apiEndpointInput?.value.trim() ?? "",
+              model: currentProviderModel() ?? "",
+            });
+          } else if (!rememberKeyInput?.checked) {
+            apiKeyInput.value = "";
+          }
+        } else {
+          if (apiKey.trim()) rememberSessionKey(activeProviderKey, apiKey);
+          apiKeyInput.value = "";
+        }
+      }
       startExtractButton.disabled = false;
       startExtractButton.textContent = originalLabel;
     }
   });
+
+  // --- Connection Tester ---
+  const btnTestConnection = document.querySelector("#btn-test-connection");
+  const testConnectionResult = document.querySelector("#test-connection-result");
+
+  function showTestResult(message, isError) {
+    if (!testConnectionResult) return;
+    testConnectionResult.hidden = false;
+    testConnectionResult.textContent = message;
+    testConnectionResult.classList.toggle("is-error", Boolean(isError));
+    testConnectionResult.classList.toggle("is-success", !isError);
+  }
+
+  async function testModelConnection() {
+    const endpoint = apiEndpointInput?.value.trim() ?? "";
+    const apiKey = apiKeyInput?.value.trim() ?? "";
+    const model = modelSelect?.value === "custom" ? (customModelInput?.value.trim() ?? "") : (modelSelect?.value ?? "");
+    if (!endpoint) { showTestResult("请先填写 API 服务地址。", true); return; }
+    if (!apiKey) { showTestResult(`请先填写 ${PROVIDER_CONFIGS[activeProviderKey].label} 的 API Key。`, true); return; }
+    if (!model) { showTestResult("请填写模型名称。", true); return; }
+
+    if (btnTestConnection) {
+      btnTestConnection.disabled = true;
+      btnTestConnection.textContent = "测试中…";
+    }
+    try {
+      const targetUrl = window.GammaPaperImportClient.endpointUrl(endpoint);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 60000);
+      let response;
+      try {
+        response = await modelFetch(targetUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: "user", content: "请只回复 OK 两个字。" }],
+            max_tokens: 512,
+            stream: false,
+          }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+      const responseText = await response.text();
+      if (!response.ok) {
+        let detail = "";
+        try { detail = JSON.parse(responseText).error?.message || ""; } catch { detail = responseText.slice(-200); }
+        const statusHints = {
+          401: "Key 无效或未授权（HTTP 401）。",
+          403: "Key 无权限访问（HTTP 403）。",
+          404: "端点路径不存在（HTTP 404）。检查地址是否以 /v1 或对应 base 结尾。",
+          429: "请求被限流（HTTP 429）。",
+        };
+        showTestResult(`${statusHints[response.status] ?? `端点返回 HTTP ${response.status}。`}${detail ? ` 服务端信息：${detail}` : ""}`, true);
+        return;
+      }
+      let envelope;
+      try { envelope = JSON.parse(responseText); }
+      catch { showTestResult("端点返回了非 JSON 响应，可能不是 OpenAI 兼容服务。", true); return; }
+      if (envelope?.error) {
+        showTestResult(`服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 200)}`, true);
+        return;
+      }
+      const rawContent = envelope?.choices?.[0]?.message?.content ?? "";
+      const content = typeof rawContent === "string"
+        ? rawContent
+        : (Array.isArray(rawContent) ? rawContent.map((part) => (typeof part === "string" ? part : part?.text ?? "")).join("") : "");
+      const finishReason = envelope?.choices?.[0]?.finish_reason;
+      if (!content && finishReason === "length") {
+        showTestResult("连接成功，但模型把全部输出额度用于推理仍未完成（推理模型 + 配额不足）。导入时会使用更大额度。", false);
+        return;
+      }
+      const reply = String(content).slice(0, 80).replace(/\s+/gu, " ").trim();
+      showTestResult(`连接成功（${model}）。${reply ? `模型回应：${reply}` : "模型已响应。"}`, false);
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        showTestResult("连接超时（60 秒未响应）。请检查地址与网络。", true);
+      } else if (error instanceof TypeError) {
+        showTestResult("无法连接端点。常见原因：地址不可达、证书问题，或端点未开放浏览器跨域（CORS）。", true);
+      } else if (error instanceof Error && /API 服务地址/u.test(error.message)) {
+        showTestResult(error.message, true);
+      } else {
+        showTestResult(error?.message ?? "未知错误。", true);
+      }
+    } finally {
+      if (btnTestConnection) {
+        btnTestConnection.disabled = false;
+        btnTestConnection.textContent = "测试连接";
+      }
+    }
+  }
+
+  btnTestConnection?.addEventListener("click", testModelConnection);
 
   // --- Workbench Entrance 2: Open Local JSON ---
   document.querySelector("#card-open-json")?.addEventListener("click", () => {
