@@ -31,7 +31,7 @@ const root = __dirname;
 http
   .createServer((req, res) => {
     const urlPath = decodeURIComponent(req.url.split("?")[0]);
-    let filePath = path.join(root, urlPath === "/" ? "index-v5.html" : urlPath);
+    let filePath = path.join(root, urlPath === "/" ? "index.html" : urlPath);
     if (!filePath.startsWith(root)) {
       res.writeHead(403).end("Forbidden");
       return;
