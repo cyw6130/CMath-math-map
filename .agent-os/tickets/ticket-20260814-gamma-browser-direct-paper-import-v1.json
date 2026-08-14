@@ -1,0 +1,73 @@
+{
+  "schema": "agent-os.construction-ticket/v0.2",
+  "ticket_id": "ticket-20260814-gamma-browser-direct-paper-import-v1",
+  "created_at": "2026-08-14T20:10:00+08:00",
+  "repository_base_head": "570432ef82912942e0137396b21c28581b20f129",
+  "authorization": {
+    "quote": "好，就先这样做吧。一般需要保护的只有 API Key，因为论文的话，我们还是会默认用户拿公开的论文来测试。",
+    "source": "current Codex task"
+  },
+  "proposal_ref": "direct",
+  "frozen_item": {
+    "growth_kind": "capability",
+    "serves_goals": ["goal-1", "goal-3"],
+    "why_now": "Replace the localhost paper-import bridge with a browser-direct DeepSeek workflow using a user-supplied ephemeral API key and local PDF text extraction.",
+    "evidence_refs": ["index.html", "app.js", "tools/paper-import-server.mjs"],
+    "depends_on": ["Gamma mathematical Entry module", "pdfjs-dist"],
+    "responsibility": {
+      "producer": "Codex main",
+      "evaluator": "focused Node tests and secret scan",
+      "acceptance_authority": "user"
+    }
+  },
+  "target": {"level": "L3", "board_nodes": ["browser-direct-paper-import"]},
+  "source_snapshot": [
+    {"path": "index.html", "sha256": "52d073340fc8cef631e0b4343dad321e06f979331f55c98be9bb9c82cdee34f1"},
+    {"path": "app.js", "sha256": "3a10647672333a04f8b5259c5223f6e0a7a170cfc9f1abffcc66dcbd0c4e1611"},
+    {"path": "README.md", "sha256": "1662f40d8592df13006b8a0f9e98900e0d92dfd89c724b4de0f512bb255d6d69"}
+  ],
+  "allowed_actions": [
+    {"action": "modify", "path": "index.html"},
+    {"action": "modify", "path": "app.js"},
+    {"action": "modify", "path": "README.md"},
+    {"action": "create", "path": "paper-import-client.js"},
+    {"action": "create", "path": "tests/paper-import-client.test.mjs"},
+    {"action": "create", "path": "vendor/pdfjs/pdf.min.mjs"},
+    {"action": "create", "path": "vendor/pdfjs/pdf.worker.min.mjs"},
+    {"action": "create", "path": "vendor/pdfjs/LICENSE"},
+    {"action": "delete", "path": "tools/paper-import-server.mjs"},
+    {"action": "delete", "path": "tests/paper-import-server.test.mjs"},
+    {"action": "create", "path": ".agent-os/tickets/ticket-20260814-gamma-browser-direct-paper-import-v1.json"}
+  ],
+  "acceptance": {
+    "oracle_kind": "machine-test",
+    "commands": [
+      {"kind": "test", "argv": ["node", "--test", "tests/paper-import-client.test.mjs"]},
+      {"kind": "secret-scan", "argv": ["/Users/chenyuwen/.claude/scripts/secret-scan.sh", "."]}
+    ],
+    "test_freeze": [
+      {"path": "math-map-content-loader.js", "sha256": "5b9e63f4ba7cf44e920dbf59958f96b0f9eb211aec7ec0a985c065e49d70b22b"},
+      {"path": "math-map-project-adapter.js", "sha256": "a3ff6b21eb8ffba6fc20cf8f575b62f1092058b385f67de2d14b1828b48184fc"}
+    ],
+    "red_evidence": {
+      "command": "rg -n 'PAPER_IMPORT_ENDPOINT' app.js",
+      "exit_code": 0,
+      "recorded_at": "2026-08-14T20:10:00+08:00",
+      "expected_failure": "PDF import still requires a separately running localhost service and ignores the API Key field."
+    }
+  },
+  "final_oracle": {
+    "oracle_kind": "inspection",
+    "description": "The existing PDF action extracts text in-browser, sends it directly to the configured DeepSeek endpoint with an ephemeral key, validates Gamma-native candidate objects, and downloads candidate-project-view.json."
+  },
+  "builder": {"executor": "Codex main", "runtime": "isolated Agent OS worktree"},
+  "execution_status": "authorized",
+  "transition_proposal": {
+    "from": "PDF import requires a localhost Node service.",
+    "to": "PDF import runs in the browser and calls DeepSeek directly with a user-supplied ephemeral key.",
+    "authority_rule": "Candidate map only; the key is never persisted and no mathematical admission occurs.",
+    "evidence_refs": ["focused tests", "secret scan"]
+  },
+  "acceptance_decision": {"status": "pending", "signoff_ref": null, "decided_by": "user"},
+  "push_authority": "none; never push"
+}

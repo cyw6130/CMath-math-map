@@ -4,7 +4,7 @@
 Fact / Claim / Inference 图（开放 Claim、已建立 Claim、推导关系、Loop 进展一目了然）。
 
 **在线使用**：打开 <https://cyw6130.github.io/gamma-math-map/>，可以载入本地 Project View JSON，
-也可以连接本机 CMath 服务，把带文本层的数学论文 PDF 整理成候选 Project View JSON。
+也可以在浏览器中把带文本层的数学论文 PDF 整理成候选 Project View JSON。
 
 页面左上角的项目下拉也内置了几份示例地图（群论、谱定理、介值定理、微积分基本定理、三维流形等），
 可以直接切换查看。
@@ -22,26 +22,13 @@ python3 -m http.server 8000
 
 ## 从论文导出 JSON
 
-PDF 提取依赖 CMath Harness、Python `pdfplumber`、Poppler 以及已配置的模型执行器，不能在
-GitHub Pages 的浏览器沙箱中独立运行。后端服务可运行在服务器或开发环境中：
+在「模型 API 配置」中临时输入 DeepSeek API Key，然后点击「上传数学论文 PDF」。浏览器使用
+内置的 `pdfjs-dist@6.2.108` 提取逐页文本，直接请求配置的 DeepSeek 兼容端点，校验模型输出并下载
+`candidate-project-view.json`。API Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
+输入框会被清空。
 
-```bash
-cd gamma-math-map
-export CMATH_HARNESS_ROOT=/absolute/path/to/CMath-harness
-export CMATH_MODEL_PROJECT_ROOT=/absolute/path/to/model-configured-project
-export HOST=0.0.0.0
-export PORT=4317
-node tools/paper-import-server.mjs
-```
-
-`CMATH_HARNESS_ROOT` 需要包含支持自动模型执行的 `cmath import-paper`（最低实现提交
-`abef5dd`）。`CMATH_MODEL_PROJECT_ROOT/research/model-routing.json` 至少配置 `reasoner` 和
-`reviewer`；模型凭证仅由本机 Harness 从环境读取。服务地址默认为
-`http://127.0.0.1:4317`；部署时通过 `window.CMATH_PAPER_IMPORT_ENDPOINT` 把原按钮指向后端的
-`/v1/import-paper`。公开部署应放在带身份验证和请求配额的反向代理之后，避免公开消耗模型额度。
-
-然后在主页点击「上传数学论文 PDF」。处理完成后浏览器会下载
-`candidate-project-view.json`；该流程只生成候选地图，不执行 Admission、正式证明提交或 OCR。
+当前版本只支持带文本层且不超过 25 MB 的 PDF，提取文本上限为 180,000 字符，不支持扫描版 OCR。
+该流程只生成 Gamma-native 候选 Entry / Inference，不执行 Admission 或正式证明提交。
 
 ## 文件来源
 
@@ -52,6 +39,5 @@ node tools/paper-import-server.mjs
 ## 隐私
 
 打开本地 JSON 时，文件只经浏览器 File API 在内存中校验、投影和渲染，不发生上传。
-只有用户明确执行 PDF 导出时，论文才会发送到配置的论文导入后端；服务拒绝其他网页来源，
-在临时目录中运行 Harness，并在响应后删除 PDF 和中间产物。模型密钥
-不会发送给 GitHub Pages，也不会写入本仓库。
+只有用户明确执行 PDF 导出时，提取出的论文内容才会发送到配置的 DeepSeek 兼容端点。
+API Key 不会写入本地存储、导出的 JSON 或本仓库。

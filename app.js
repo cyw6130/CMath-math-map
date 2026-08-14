@@ -19,19 +19,19 @@
   // Settings Elements
   const providerBtns = document.querySelectorAll(".provider-btn");
   const apiEndpointInput = document.querySelector("#api-endpoint-input");
+  const apiKeyInput = document.querySelector("#api-key-input");
   const modelSelect = document.querySelector("#model-select");
   const customModelGroup = document.querySelector("#custom-model-group");
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
-  const PAPER_IMPORT_ENDPOINT = window.CMATH_PAPER_IMPORT_ENDPOINT || "http://127.0.0.1:4317/v1/import-paper";
   let mapRuntimeMounted = false;
 
   const PROVIDER_CONFIGS = {
     deepseek: {
       endpoint: "https://api.deepseek.com/v1",
       models: [
-        { value: "deepseek-v4-flash", label: "deepseek-v4-flash (推荐 · 快速高效)", default: true },
-        { value: "deepseek-v4-pro", label: "deepseek-v4-pro (深度推理)" },
+        { value: "deepseek-chat", label: "deepseek-chat (推荐 · 快速高效)", default: true },
+        { value: "deepseek-reasoner", label: "deepseek-reasoner (深度推理)" },
         { value: "custom", label: "自定义模型名称..." }
       ]
     },
@@ -139,36 +139,45 @@
       paperPdfInput.click();
       return;
     }
+    const apiKey = apiKeyInput?.value.trim();
+    if (!apiKey) {
+      alert("请先在『模型 API 配置』中临时输入 DeepSeek API Key。");
+      return;
+    }
+    const model = modelSelect.value === "custom" ? customModelInput.value.trim() : modelSelect.value;
     const originalLabel = startExtractButton.textContent;
     startExtractButton.disabled = true;
-    startExtractButton.textContent = "正在解析论文…";
+    startExtractButton.textContent = "正在读取 PDF…";
     try {
-      const response = await fetch(PAPER_IMPORT_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/pdf",
-          "X-CMath-Filename": encodeURIComponent(selectedPaperPdf.name),
-        },
-        body: selectedPaperPdf,
+      if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
+      const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
+      const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, { pdfjsLib });
+      startExtractButton.textContent = "正在生成数学地图…";
+      const projectView = await window.GammaPaperImportClient.requestCandidateProjectView({
+        endpoint: apiEndpointInput.value,
+        apiKey,
+        model,
+        fileName: selectedPaperPdf.name,
+        pageCount: paper.pageCount,
+        text: paper.text,
       });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || `论文导入失败（HTTP ${response.status}）`);
-      if (!result.projectView) throw new Error("本机服务没有返回 Project View JSON");
-      const blob = new Blob([`${JSON.stringify(result.projectView, null, 2)}\n`], { type: "application/json" });
+      const blob = new Blob([`${JSON.stringify(projectView, null, 2)}\n`], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = result.fileName || "candidate-project-view.json";
+      link.download = "candidate-project-view.json";
       link.click();
       URL.revokeObjectURL(url);
       alert("论文解析完成，candidate-project-view.json 已下载。\n\n现在可以点击『打开本地 JSON』载入图谱。");
       closeAllPanels();
     } catch (error) {
       const message = error instanceof TypeError
-        ? "无法连接本机论文导入服务。请先运行 tools/paper-import-server.mjs。"
+        ? "浏览器无法直接连接 DeepSeek。请检查网络、API 服务地址以及服务端的跨域请求设置。"
         : error.message;
       alert(message);
     } finally {
+      if (apiKeyInput) apiKeyInput.value = "";
       startExtractButton.disabled = false;
       startExtractButton.textContent = originalLabel;
     }

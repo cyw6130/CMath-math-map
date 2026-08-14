@@ -146,6 +146,7 @@
 
       <div class="drawer-notice">
         <strong>提示：</strong><br>
+        论文内容将发送给 DeepSeek 进行结构化提取。<br>
         解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「打开本地 JSON」</strong>即可载入阅览。
       </div>
 
@@ -189,12 +190,12 @@
       <div class="form-group">
         <label for="model-select">3. 推理模型</label>
         <select class="form-input" id="model-select" style="cursor:pointer;">
-          <option value="deepseek-v4-flash" selected>deepseek-v4-flash (推荐 · 快速高效)</option>
-          <option value="deepseek-v4-pro">deepseek-v4-pro (深度推理)</option>
+          <option value="deepseek-chat" selected>deepseek-chat (推荐 · 快速高效)</option>
+          <option value="deepseek-reasoner">deepseek-reasoner (深度推理)</option>
           <option value="custom">自定义模型名称...</option>
         </select>
         <div id="custom-model-group" style="margin-top:8px;" hidden>
-          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-v4-flash">
+          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
         </div>
         <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
       </div>
@@ -372,6 +373,7 @@
   <script src="math-map-content-loader.js"></script>
   <script src="generic-math-map-preview-loader.js"></script>
   <script src="math-map-project-adapter.js"></script>
+  <script src="paper-import-client.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
