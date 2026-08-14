@@ -22,5 +22,13 @@ python3 -m http.server 8000
 
 ## 文件来源
 
-可视化代码原样拷贝自 CMath_gamma 项目 `frontend/` 目录（未做任何修改），
-仅新增本 `index.html` 跳转页与 README。force-graph 依赖见其 `vendor/force-graph/LICENSE`。
+可视化代码拷贝自 CMath_gamma 项目 `frontend/` 目录，仅三处部署版专有改动：
+新增 `index.html` 跳转页与本 README；`generic-math-map-bootstrap.js` 的载入失败提示
+会显示具体错误信息（ upstream 只显示固定文案）。force-graph 依赖见其 `vendor/force-graph/LICENSE`。
+
+## 隐私
+
+上传的 JSON 只经浏览器 File API（`file.text()`）在内存中校验、投影、渲染，
+代码中没有任何会把文件内容发出页面的网络调用（全仓库唯一的 `fetch` 只用于加载
+页面自带的内置示例数据，同源静态文件）。托管方 GitHub Pages 是纯静态托管，
+页面不含任何服务端逻辑。可用浏览器开发者工具的 Network 面板自行验证：载入文件时不会产生新的网络请求。
