@@ -22,6 +22,7 @@ const rawMap = {
 test("normalizes secure OpenAI-compatible endpoints", () => {
   assert.equal(paperImportClient.endpointUrl("https://api.deepseek.com/v1"), "https://api.deepseek.com/v1/chat/completions");
   assert.equal(paperImportClient.endpointUrl("https://api.deepseek.com/v1/chat/completions"), "https://api.deepseek.com/v1/chat/completions");
+  assert.equal(paperImportClient.endpointUrl("https://api.moonshot.cn/v1"), "https://api.moonshot.cn/v1/chat/completions");
   assert.throws(() => paperImportClient.endpointUrl("http://api.deepseek.com/v1"), /HTTPS/u);
 });
 
@@ -210,6 +211,35 @@ test("sends the key only in the authorization header and parses the model result
   assert.doesNotMatch(observed.options.body, /Bearer test/u);
   assert.doesNotMatch(JSON.stringify(view), /Bearer test/u);
   assert.equal(view.project.title, "A Paper");
+});
+
+test("sends Kimi K3 through the Moonshot preset without leaking the API key", async () => {
+  let observed;
+  const fetchImpl = async (url, options) => {
+    observed = { url, options };
+    return {
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(rawMap) } }] }),
+    };
+  };
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.moonshot.cn/v1",
+    apiKey: "test",
+    model: "kimi-k3",
+    providerLabel: "Kimi",
+    fileName: "paper.pdf",
+    pageCount: 2,
+    text: "[[PAGE 1]]\nDefinition",
+    fetchImpl,
+  });
+  const requestBody = JSON.parse(observed.options.body);
+  assert.equal(observed.url, "https://api.moonshot.cn/v1/chat/completions");
+  assert.equal(observed.options.headers.Authorization, "Bearer test");
+  assert.equal(requestBody.model, "kimi-k3");
+  assert.doesNotMatch(observed.url, /Bearer test/u);
+  assert.doesNotMatch(observed.options.body, /Bearer test/u);
+  assert.doesNotMatch(JSON.stringify(view), /Bearer test/u);
 });
 
 test("recovers from initial schema error via 1-shot retry with a single clean repair prompt", async () => {

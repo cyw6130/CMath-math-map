@@ -146,7 +146,7 @@
 
       <div class="drawer-notice">
         <strong>提示：</strong><br>
-        论文内容将发送给 DeepSeek 进行结构化提取。<br>
+        论文内容将发送给您当前选择的模型服务进行结构化提取。<br>
         解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「打开本地 JSON」</strong>即可载入阅览。
       </div>
 
@@ -172,6 +172,7 @@
         <label for="api-endpoint-input">1. API 服务地址</label>
         <div class="provider-select-row">
           <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
+          <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
           <button type="button" class="provider-btn" data-provider="openai">OpenAI</button>
           <button type="button" class="provider-btn" data-provider="gemini">Gemini</button>
           <button type="button" class="provider-btn" data-provider="custom">自定义</button>
