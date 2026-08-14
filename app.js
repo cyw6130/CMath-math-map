@@ -154,7 +154,7 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
       const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, { pdfjsLib });
       startExtractButton.textContent = "正在生成数学地图…";
-      const projectView = await window.GammaPaperImportClient.requestCandidateProjectView({
+      const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
         endpoint: apiEndpointInput.value,
         apiKey,
         model,
@@ -166,10 +166,10 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "candidate-project-view.json";
+      link.download = "paper-project-view.json";
       link.click();
       URL.revokeObjectURL(url);
-      alert("论文解析完成，candidate-project-view.json 已下载。\n\n现在可以点击『打开本地 JSON』载入图谱。");
+      alert("论文解析完成，paper-project-view.json 已下载。\n\n现在可以点击『打开本地 JSON』载入图谱。");
       closeAllPanels();
     } catch (error) {
       const message = error instanceof TypeError

@@ -4,7 +4,7 @@
 Fact / Claim / Inference 图（开放 Claim、已建立 Claim、推导关系、Loop 进展一目了然）。
 
 **在线使用**：打开 <https://cyw6130.github.io/gamma-math-map/>，可以载入本地 Project View JSON，
-也可以在浏览器中把带文本层的数学论文 PDF 整理成候选 Project View JSON。
+也可以在浏览器中把带文本层的数学论文 PDF 整理成 Project View JSON。
 
 页面左上角的项目下拉也内置了几份示例地图（群论、谱定理、介值定理、微积分基本定理、三维流形等），
 可以直接切换查看。
@@ -24,11 +24,13 @@ python3 -m http.server 8000
 
 在「模型 API 配置」中临时输入 DeepSeek API Key，然后点击「上传数学论文 PDF」。浏览器使用
 内置的 `pdfjs-dist@6.2.108` 提取逐页文本，直接请求配置的 DeepSeek 兼容端点，校验模型输出并下载
-`candidate-project-view.json`。API Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
+`paper-project-view.json`。API Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
 输入框会被清空。
 
 当前版本只支持带文本层且不超过 25 MB 的 PDF，提取文本上限为 180,000 字符，不支持扫描版 OCR。
-该流程只生成 Gamma-native 候选 Entry / Inference，不执行 Admission 或正式证明提交。
+该流程生成带正式 `entries` / `inferences` 的 Gamma-native 本地预览。没有 proof 的 Claim 仍在地图中，
+由既有闭包能力派生为开放 Claim（空心圆）；具备可用 proof 的 Claim 派生为已建立 Claim（实心圆）。
+浏览器预览不会把结果写入 Gamma registry，也不执行 Admission 或正式证明提交。
 
 ## 文件来源
 
