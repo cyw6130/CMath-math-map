@@ -124,10 +124,15 @@
   // --- Workbench Entrance 1: Upload Paper PDF ---
   document.querySelector("#card-upload-paper")?.addEventListener("click", () => {
     closeAllPanels();
+    if (typeof resetExtractStatus === "function") resetExtractStatus();
     paperDrawer.classList.add("is-open");
   });
   document.querySelector("#btn-close-paper-drawer")?.addEventListener("click", closeAllPanels);
   const pdfDropZone = paperDrawer?.querySelector(".pdf-drop-zone");
+  const dropMain = pdfDropZone?.querySelector(".drop-main");
+  const dropSub = pdfDropZone?.querySelector(".drop-sub");
+  const DROP_MAIN_DEFAULT = dropMain?.textContent ?? "";
+  const DROP_SUB_DEFAULT = dropSub?.textContent ?? "";
   const startExtractButton = document.querySelector("#btn-start-extract");
   const paperPdfInput = document.createElement("input");
   paperPdfInput.type = "file";
@@ -136,15 +141,85 @@
   paperDrawer?.appendChild(paperPdfInput);
   let selectedPaperPdf = null;
 
+  // --- Extraction status block (busy / success / error), built once ---
+  const extractStatus = document.createElement("div");
+  extractStatus.className = "extract-status";
+  extractStatus.hidden = true;
+  if (startExtractButton?.parentElement) {
+    startExtractButton.parentElement.before(extractStatus);
+  }
+
+  function resetExtractStatus() {
+    extractStatus.hidden = true;
+    extractStatus.innerHTML = "";
+    extractStatus.classList.remove("is-error", "is-success");
+  }
+
+  function showExtractStage(text) {
+    extractStatus.hidden = false;
+    extractStatus.classList.remove("is-error", "is-success");
+    extractStatus.innerHTML = `
+      <div class="extract-bar"><span></span></div>
+      <p class="extract-stage"></p>`;
+    extractStatus.querySelector(".extract-stage").textContent = text;
+  }
+
+  function updateExtractStage(text) {
+    const stage = extractStatus.querySelector(".extract-stage");
+    if (stage) stage.textContent = text;
+  }
+
+  function showExtractError(message) {
+    extractStatus.hidden = false;
+    extractStatus.classList.add("is-error");
+    extractStatus.classList.remove("is-success");
+    extractStatus.innerHTML = `<p class="extract-error-text"></p>`;
+    extractStatus.querySelector(".extract-error-text").textContent = message;
+  }
+
+  function showExtractSuccess(projectView, fileName) {
+    extractStatus.hidden = false;
+    extractStatus.classList.add("is-success");
+    extractStatus.classList.remove("is-error");
+    extractStatus.innerHTML = `
+      <p class="extract-success-title">✓ 解析完成</p>
+      <p class="extract-success-sub">paper-project-view.json 已下载到本地</p>
+      <div class="extract-success-actions">
+        <button type="button" class="extract-open-map">立即在地图中打开</button>
+        <button type="button" class="extract-dismiss">关闭</button>
+      </div>`;
+    extractStatus.querySelector(".extract-open-map").addEventListener("click", () => {
+      const boundary = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
+      const title = projectView?.project?.title || fileName.replace(/\.pdf$/i, "");
+      openMapWithData(projectView, boundary, title);
+    });
+    extractStatus.querySelector(".extract-dismiss").addEventListener("click", closeAllPanels);
+  }
+
+  function clearSelectedPaperPdf() {
+    selectedPaperPdf = null;
+    paperPdfInput.value = "";
+    pdfDropZone?.classList.remove("has-file");
+    if (dropMain) dropMain.textContent = DROP_MAIN_DEFAULT;
+    if (dropSub) dropSub.textContent = DROP_SUB_DEFAULT;
+  }
+
   function selectPaperPdf(file) {
     if (!file) return;
     if (!file.name.toLowerCase().endsWith(".pdf") || file.size <= 0 || file.size > 25 * 1024 * 1024) {
-      selectedPaperPdf = null;
-      alert("请选择一份不超过 25 MB 的 PDF 论文。");
+      clearSelectedPaperPdf();
+      showExtractError("请选择一份不超过 25 MB 的 PDF 论文。");
       return;
     }
     selectedPaperPdf = file;
+    resetExtractStatus();
+    pdfDropZone.classList.add("has-file");
     pdfDropZone.setAttribute("aria-label", `已选择 ${file.name}`);
+    if (dropMain) dropMain.textContent = file.name;
+    if (dropSub) {
+      const mb = file.size / 1048576;
+      dropSub.textContent = `${mb >= 0.1 ? mb.toFixed(1) : "<0.1"} MB · 点击或拖拽可重新选择`;
+    }
   }
 
   pdfDropZone?.addEventListener("click", () => paperPdfInput.click());
@@ -162,19 +237,21 @@
     }
     const apiKey = apiKeyInput?.value.trim();
     if (!apiKey) {
-      alert(`请先在『模型 API 配置』中临时输入 ${PROVIDER_CONFIGS[activeProviderKey].label} API Key。`);
+      showExtractError(`请先在『模型 API 配置』中临时输入 ${PROVIDER_CONFIGS[activeProviderKey].label} API Key。`);
+      settingsDrawer.classList.add("is-open");
       return;
     }
     const model = modelSelect.value === "custom" ? customModelInput.value.trim() : modelSelect.value;
     const originalLabel = startExtractButton.textContent;
     startExtractButton.disabled = true;
-    startExtractButton.textContent = "正在读取 PDF…";
+    startExtractButton.textContent = "解析中…";
+    showExtractStage("正在读取 PDF…");
     try {
       if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
       const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
       const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, { pdfjsLib });
-      startExtractButton.textContent = "正在生成数学地图…";
+      updateExtractStage(`已读取 ${paper.pageCount} 页，正在生成数学地图…`);
       const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
         endpoint: apiEndpointInput.value,
         apiKey,
@@ -191,13 +268,12 @@
       link.download = "paper-project-view.json";
       link.click();
       URL.revokeObjectURL(url);
-      alert("论文解析完成，paper-project-view.json 已下载。\n\n现在可以点击『打开本地 JSON』载入图谱。");
-      closeAllPanels();
+      showExtractSuccess(projectView, selectedPaperPdf.name);
     } catch (error) {
       const message = error instanceof TypeError
         ? `浏览器无法直接连接 ${PROVIDER_CONFIGS[activeProviderKey].label}。请检查网络、API 服务地址以及服务端的跨域请求设置。`
         : error.message;
-      alert(message);
+      showExtractError(message);
     } finally {
       if (apiKeyInput) apiKeyInput.value = "";
       startExtractButton.disabled = false;

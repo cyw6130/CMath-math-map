@@ -874,3 +874,42 @@ select.form-input { cursor: pointer; }
     max-width: none !important; transform: none;
   }
 }
+
+/* ============================================================================
+   Extraction feedback (file selected / busy / success / error)
+   ============================================================================ */
+.pdf-drop-zone.has-file {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+.pdf-drop-zone.has-file .drop-main { color: var(--red); font-weight: 700; }
+
+.extract-status { margin-top: 14px; font-family: var(--font-mono); font-size: 12px; }
+.extract-bar {
+  height: 5px; border: 1.5px solid var(--ink); background: var(--proof-sunken);
+  overflow: hidden;
+}
+.extract-bar span {
+  display: block; height: 100%; width: 38%; background: var(--red);
+  animation: extractSlide 1.1s var(--ease-snap) infinite;
+}
+@keyframes extractSlide {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(380%); }
+}
+.extract-stage { margin: 8px 0 0; color: var(--ink-soft); letter-spacing: 0.04em; }
+.extract-error-text { color: var(--red); font-weight: 700; line-height: 1.6; }
+.extract-success-title { margin: 0 0 4px; color: var(--red); font-weight: 700; font-size: 13px; }
+.extract-success-sub { margin: 0 0 10px; color: var(--ink-soft); }
+.extract-success-actions { display: flex; gap: 8px; }
+.extract-open-map {
+  flex: 1; padding: 10px 12px; border: 2px solid var(--ink); background: var(--red);
+  color: #FFF; font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+  cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 140ms var(--ease-snap);
+}
+.extract-open-map:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+.extract-dismiss {
+  padding: 10px 14px; border: 2px solid var(--ink); background: transparent;
+  color: var(--ink); font-size: 13px; cursor: pointer; transition: all 140ms var(--ease-snap);
+}
+.extract-dismiss:hover { background: var(--proof-sunken); }
