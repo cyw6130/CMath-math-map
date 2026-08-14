@@ -1,0 +1,1873 @@
+/* ============================================================================
+   CMath Gamma — frontend stylesheet
+   Design: "the graph IS the app". The derivation-graph canvas fills the
+   viewport under a slim topbar; inspector, source sheet and index drawer
+   float above the canvas as overlays. The canvas board is always the same
+   dark "ink board" (#0C1220) in both themes.
+   Zero dependencies · system fonts only · file://-openable.
+   ============================================================================ */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-2: #EEF2F6;
+  --ink: #0F172A;
+  --muted: #5B6B7C;
+  --line: #CBD5E1;
+  --accent: #1E3A5F;
+  --accent-soft: #DCE6F2;
+  --candidate: #A16207;
+  --candidate-soft: #F5E8C8;
+  --candidate-ink: #7C4A03;
+  --inference: #6D5BD0;
+  --open: #B3405E;
+  --counter: #C05621;
+  --teal: #1F7A63;
+  --shadow: 0 14px 40px rgba(15, 23, 42, 0.07);
+  color-scheme: light;
+
+  --font-display: Georgia, "Noto Serif SC", serif;
+  --font-ui: "Avenir Next", "Helvetica Neue", "PingFang SC", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* The ink board under everything: constant across themes. */
+  --board: #0C1220;
+  --board-grid: rgba(141, 165, 200, 0.055);
+  --board-node-fill: #16233A;
+  --board-node-line: #26334A;
+  --board-node-ink: #E6EDF5;
+  --board-inference-fill: #2A2145;
+  --board-inference-ink: #B9AEE8;
+  --board-edge: rgba(141, 160, 184, 0.5);
+  --board-conclusion: #7FA8D9;
+  --board-chip-bg: rgba(16, 26, 44, 0.72);
+  --board-chip-line: #26334A;
+  --board-chip-ink: #8DA0B8;
+  --board-entry: #D9A83F;
+  --board-inference: #A793F0;
+  --board-open: #E08AA5;
+  --board-counter: #E08A5F;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0B111C;
+  --surface: #16202F;
+  --surface-2: #1F2B3D;
+  --ink: #E6EDF5;
+  --muted: #8DA0B8;
+  --line: #26334A;
+  --accent: #7FA8D9;
+  --accent-soft: #1A2A42;
+  --candidate: #D9A83F;
+  --candidate-soft: #3A2E12;
+  --candidate-ink: #E3BC66;
+  --inference: #A793F0;
+  --open: #E08AA5;
+  --counter: #E08A5F;
+  --teal: #69CDB2;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
+
+  /* Elevated board: brighter than the page chrome so the map reads as a
+     surface, not a void. Hierarchy: chrome darkest < board mid < cards lightest. */
+  --board: #182437;
+  --board-grid: rgba(150, 175, 215, 0.09);
+  --board-node-fill: #28394F;
+  --board-node-line: #46587A;
+  --board-node-ink: #EDF3FA;
+  --board-inference-fill: #3A3163;
+  --board-inference-ink: #C6BBF0;
+  --board-edge: rgba(158, 178, 208, 0.62);
+  --board-conclusion: #8FB4E3;
+  --board-chip-bg: rgba(24, 36, 55, 0.78);
+  --board-chip-line: #46587A;
+  --board-chip-ink: #9FB2C9;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base & reset
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  /* Column flow: topbar and boundary strip size themselves, #map-root takes
+     the rest — no hard-coded offsets, so a wrapped mobile topbar can never
+     cover the strip. */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Locked while the full-screen source page is open (toggled by app.js). */
+body.page-open {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dt,
+dd,
+ol,
+ul {
+  margin: 0;
+}
+
+dd {
+  margin-inline-start: 0;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #FFFFFF;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   3. Topbar (sticky, above every overlay)
+   -------------------------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  padding: 0 clamp(16px, 3vw, 40px);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 21px;
+  line-height: 1;
+  transition: filter 160ms ease;
+}
+
+.brand:hover .brand-mark {
+  filter: brightness(1.12);
+}
+
+.brand-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.brand-text small {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stage-pill {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--candidate-soft);
+  color: var(--candidate-ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.projection-stamp {
+  max-width: 200px;
+  overflow: hidden;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.product-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--surface) 76%, transparent);
+}
+
+.product-nav .text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding-inline: 13px;
+  text-decoration: none;
+}
+
+.product-nav .text-button[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.topbar-actions a.text-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.text-button {
+  min-height: 44px;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.text-button:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.topbar-actions .text-button[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.page-switcher {
+  position: relative;
+}
+
+.page-switcher > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  list-style: none;
+}
+
+.page-switcher > summary::-webkit-details-marker {
+  display: none;
+}
+
+.page-switcher > summary::after {
+  content: "⌄";
+  margin-top: -3px;
+  color: var(--muted);
+  font-size: 13px;
+  transition: transform 160ms ease;
+}
+
+.page-switcher[open] > summary {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.page-switcher[open] > summary::after {
+  transform: rotate(180deg) translateY(-2px);
+}
+
+.page-switcher-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  width: 220px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  box-shadow: 0 16px 40px rgba(0,0,0,.24);
+}
+
+.page-switcher-menu a {
+  display: grid;
+  gap: 2px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.page-switcher-group {
+  padding: 8px 10px 3px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.page-switcher-menu a:hover,
+.page-switcher-menu a[aria-current="page"] {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.page-switcher-menu strong {
+  font-size: 12px;
+}
+
+.page-switcher-menu small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.icon-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   4. Boundary strip (single line under the topbar)
+   -------------------------------------------------------------------------- */
+
+.boundary-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  padding: 6px clamp(16px, 3vw, 40px);
+  background: color-mix(in srgb, var(--candidate-soft) 70%, var(--bg));
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+}
+
+.boundary-strip strong {
+  flex: none;
+  color: var(--candidate-ink);
+  font-weight: 700;
+}
+
+/* Always single-line: the span ellipsizes instead of wrapping (this also
+   covers the narrow-width requirement). */
+.boundary-strip span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   5. Map stage — full-bleed ink board
+   -------------------------------------------------------------------------- */
+
+#map-root {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--board); /* matches the canvas' own painted background */
+}
+
+#graph-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--board);
+  cursor: grab;
+}
+
+#graph-canvas:active {
+  cursor: grabbing;
+}
+
+#graph-canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* The <canvas> element is created and sized by graph-canvas.js. */
+#graph-canvas canvas {
+  display: block;
+}
+
+.alpha-force-graph-host {
+  position: absolute;
+  inset: 0;
+}
+
+.alpha-force-graph-host canvas {
+  display: block;
+}
+
+.graph-load-error {
+  display: grid;
+  min-height: 100%;
+  margin: 0;
+  place-items: center;
+  color: var(--board-chip-ink);
+}
+
+.project-scope {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 6px 8px 6px 12px;
+  border: 1px solid var(--board-chip-line);
+  border-radius: 12px;
+  color: var(--board-chip-ink);
+  background: var(--board-chip-bg);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.project-scope span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.project-scope select {
+  min-width: 160px;
+  min-height: 32px;
+  padding: 5px 28px 5px 9px;
+  border: 1px solid var(--board-chip-line);
+  border-radius: 8px;
+  color: var(--board-node-ink);
+  background: var(--board);
+  font: 600 11px/1.2 var(--font-ui);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   6. Map overlays — legend, fit button, hint (translucent dark chips)
+   -------------------------------------------------------------------------- */
+
+.map-legend,
+.map-fit,
+.map-hint {
+  background: var(--board-chip-bg);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--board-chip-line);
+  color: var(--board-chip-ink);
+}
+
+.map-legend {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  flex: none;
+}
+
+.entry-key {
+  border-radius: 50%;
+  background: var(--board-entry);
+}
+
+.inference-key {
+  border-radius: 2px;
+  background: var(--board-inference);
+  transform: rotate(45deg);
+}
+
+.open-key {
+  border-radius: 50%;
+  background: var(--board-open);
+}
+
+.counter-key {
+  border-radius: 50%;
+  background: var(--board-counter);
+}
+
+.map-fit {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.map-fit:hover {
+  border-color: var(--candidate);
+  color: #E6EDF5;
+}
+
+.map-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  z-index: 5;
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+/* --------------------------------------------------------------------------
+   7. Inspector — floating detail card over the right edge of the map
+   -------------------------------------------------------------------------- */
+
+.inspector {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 10;
+  width: 400px;
+  max-width: 92vw;
+  padding: 20px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  transition: bottom 200ms ease;
+}
+
+#map-root.sheet-open .inspector {
+  bottom: calc(40vh + 16px);
+}
+
+.inspector-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.inspector-close.icon-button {
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+}
+
+.inspector h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 8px 0 14px;
+}
+
+.inspector code {
+  color: var(--accent);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.inspector p {
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.inspector h3 {
+  margin: 20px 0 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.inspector dl {
+  display: grid;
+  gap: 10px;
+}
+
+.inspector dt {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.inspector dd {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+/* Full-width reference button (premises, conclusions, context refs). */
+.trace-link {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.trace-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Provenance locator button — opens the frozen source sheet. */
+.provenance.provenance-link,
+.provenance.provenance-record {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 9px 10px;
+  border: none;
+  border-left: 3px solid var(--candidate);
+  border-radius: 0 8px 8px 0;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.provenance.provenance-link:hover {
+  border-left-color: var(--accent);
+}
+
+.provenance.provenance-link strong,
+.provenance.provenance-link span,
+.provenance.provenance-link small,
+.provenance.provenance-record strong,
+.provenance.provenance-record span,
+.provenance.provenance-record small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.provenance.provenance-link strong,
+.provenance.provenance-record strong {
+  margin-bottom: 3px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+
+.provenance.provenance-link span,
+.provenance.provenance-record span {
+  color: var(--muted);
+}
+
+.provenance.provenance-link small,
+.provenance.provenance-record small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Badges
+   -------------------------------------------------------------------------- */
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.badge.candidate {
+  background: var(--candidate-soft);
+  color: var(--candidate-ink);
+}
+
+.badge.inference {
+  background: color-mix(in srgb, var(--inference) 18%, transparent);
+  color: var(--inference);
+}
+
+/* Kind badges come after .badge.candidate so the kind tint wins when an
+   element carries both classes (e.g. "badge candidate kind-theorem"). */
+.badge.kind-theorem {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.badge.kind-open_problem {
+  background: color-mix(in srgb, var(--open) 16%, transparent);
+  color: var(--open);
+}
+
+.badge.kind-counterexample {
+  background: color-mix(in srgb, var(--counter) 16%, transparent);
+  color: var(--counter);
+}
+
+.badge.kind-computation {
+  background: color-mix(in srgb, var(--teal) 16%, transparent);
+  color: var(--teal);
+}
+
+.badge.kind-convention {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.badge.kind-proposition {
+  background: var(--candidate-soft);
+  color: var(--candidate-ink);
+}
+
+.badge.kind-definition {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.badge.kind-assumption {
+  background: color-mix(in srgb, var(--candidate) 14%, transparent);
+  color: var(--candidate);
+}
+
+/* --------------------------------------------------------------------------
+   9. Source sheet — frozen source text docked to the bottom of the map
+   -------------------------------------------------------------------------- */
+
+.source-sheet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  min-height: 260px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -18px 50px rgba(15, 23, 42, 0.16);
+}
+
+:root[data-theme="dark"] .source-sheet {
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.5);
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet-header h2 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sheet-range {
+  color: var(--candidate-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.sheet-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+#source-lines {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+/* --------------------------------------------------------------------------
+   10. Index drawer — candidate object index sliding over the left edge
+   -------------------------------------------------------------------------- */
+
+.index-drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  width: 420px;
+  max-width: 94vw;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: none;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.drawer-header h2 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#index-search {
+  display: block;
+  width: auto;
+  margin: 12px 16px 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  transition: border-color 160ms ease;
+}
+
+#index-search::placeholder {
+  color: var(--muted);
+}
+
+#index-search:focus {
+  border-color: var(--accent);
+}
+
+.kind-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: none;
+  padding: 4px 16px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kind-chip {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.kind-chip:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.kind-chip.active {
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.index-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+
+.index-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 2px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.index-row:hover {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+
+.index-row-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.index-row-id {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
+
+/* Empty state rendered when a search/filter matches nothing. */
+.empty {
+  padding: 18px 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.drawer-note {
+  flex: none;
+  margin: 0;
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   11. Scrim — dims the board while the drawer is open
+   -------------------------------------------------------------------------- */
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  background: rgba(11, 17, 28, 0.38);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+}
+
+/* --------------------------------------------------------------------------
+   12. Source page — full-screen provenance & governance view
+   -------------------------------------------------------------------------- */
+
+.source-page {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.source-page-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 44px);
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.page-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.page-header .eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.page-header h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+/* Shared eyebrow label (inspector head, source card, gate card). */
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Inspector eyebrows: accent for entries, inference violet for inferences.
+   The markup is identical for both, so the violet variant keys off the
+   inference badge the JS renders alongside it. */
+.inspector .eyebrow {
+  margin: 0;
+  color: var(--accent);
+}
+
+.inspector:has(.badge.inference) .eyebrow {
+  color: var(--inference);
+}
+
+/* --------------------------------------------------------------------------
+   13. Panels & source page layout
+   -------------------------------------------------------------------------- */
+
+.panel {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-heading h2 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.panel-meta {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.source-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.source-card,
+.gate-card {
+  padding: 22px;
+}
+
+.source-card h2,
+.gate-card h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.source-card dl {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px 14px;
+}
+
+.source-card dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.source-card dd {
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.source-card dd code {
+  color: var(--accent);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.gate-card ol {
+  margin: 0 0 4px;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.gate-step-current {
+  color: var(--candidate-ink);
+  font-weight: 700;
+}
+
+.gate-flags {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin: 14px 0;
+}
+
+.gate-flags dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.gate-flags dd {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.gate-flags dd[data-value="false"] {
+  color: var(--candidate-ink);
+}
+
+.gate-flags dd[data-value="true"] {
+  color: var(--teal);
+}
+
+.boundary-note {
+  margin: 0;
+  padding: 11px 13px;
+  border-left: 4px solid var(--candidate);
+  border-radius: 0 8px 8px 0;
+  background: var(--candidate-soft);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   14. Registered project projection
+   -------------------------------------------------------------------------- */
+
+.project-grid {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 36px;
+}
+
+.project-card {
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.project-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.project-card-head h2,
+.project-empty h2 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.project-card-head code {
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.project-state {
+  flex: none;
+  background: color-mix(in srgb, var(--teal) 14%, transparent);
+  color: var(--teal);
+}
+
+.project-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 22px 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--line);
+}
+
+.project-metrics div {
+  min-width: 0;
+  padding: 14px 16px;
+  background: var(--surface-2);
+}
+
+.project-metrics strong,
+.project-metrics span {
+  display: block;
+}
+
+.project-metrics strong {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 24px;
+}
+
+.project-metrics span {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.project-columns h3 {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-collections,
+.project-fronts {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.project-collections {
+  list-style: none;
+}
+
+.project-collections li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-collections code {
+  flex: none;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.project-fronts {
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.project-fronts li {
+  padding: 4px 0 4px 5px;
+}
+
+.project-facts {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.project-facts div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-facts dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.project-facts dd {
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.project-facts code {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.project-boundary {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--candidate);
+  border-radius: 0 10px 10px 0;
+  background: var(--candidate-soft);
+}
+
+.project-boundary strong,
+.project-boundary p,
+.project-boundary small {
+  display: block;
+}
+
+.project-boundary strong {
+  color: var(--candidate-ink);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-boundary p {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.project-boundary small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.primary-button {
+  min-height: 44px;
+  padding: 10px 15px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.primary-button:hover {
+  filter: brightness(1.12);
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+.project-empty {
+  padding: 28px;
+}
+
+.project-empty p {
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   15. Citation cards
+   -------------------------------------------------------------------------- */
+
+.citation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.citation-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color 160ms ease;
+}
+
+.citation-card:hover {
+  border-color: var(--accent);
+}
+
+.citation-card strong {
+  color: var(--candidate-ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.citation-card span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.artifact-card {
+  scroll-margin-top: 90px;
+}
+
+.artifact-card:target,
+.artifact-card:focus-within {
+  border-color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   16. Source text panel (full frozen record on the source page)
+   -------------------------------------------------------------------------- */
+
+.source-text-panel {
+  margin-bottom: 30px;
+}
+
+.source-text-hint {
+  margin: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+#source-page-lines {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+/* --------------------------------------------------------------------------
+   17. Source line rows — shared by #source-lines and #source-page-lines
+   -------------------------------------------------------------------------- */
+
+.source-lines {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.source-line {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  padding: 0 12px 0 0;
+  transition: background-color 180ms ease;
+}
+
+.source-line:hover {
+  background: var(--surface-2);
+}
+
+.line-no {
+  position: relative;
+  padding-right: 12px;
+  color: var(--muted);
+  text-align: right;
+  user-select: none;
+}
+
+.line-text {
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Lines covered by at least one candidate object get a clickable number. */
+.line-covered .line-no {
+  color: var(--candidate-ink);
+  cursor: pointer;
+}
+
+.line-covered .line-no::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--candidate);
+  transform: translateY(-50%);
+}
+
+/* Flash used when the sheet reveals a provenance range. Wins over the row
+   hover background thanks to equal specificity and later source order. */
+.source-line.line-hit {
+  background: color-mix(in srgb, var(--candidate-soft) 75%, var(--surface));
+  box-shadow: inset 3px 0 0 var(--candidate);
+}
+
+/* Inline box listing the candidate objects covering a clicked line. */
+.line-refs {
+  margin: 4px 12px 8px 52px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.line-refs .trace-link {
+  margin: 6px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   18. KaTeX tuning
+   -------------------------------------------------------------------------- */
+
+.katex {
+  font-size: 1.06em;
+}
+
+/* Long display equations scroll inside their container instead of breaking
+   the overlay layout. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   19. Opening animations (all disabled under reduced motion, see §21)
+   -------------------------------------------------------------------------- */
+
+@keyframes overlay-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drawer-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.inspector:not([hidden]) {
+  animation: overlay-rise 180ms ease;
+}
+
+.index-drawer:not([hidden]) {
+  animation: drawer-slide 180ms ease;
+}
+
+.source-sheet:not([hidden]) {
+  animation: overlay-rise 200ms ease;
+}
+
+.source-page:not([hidden]) {
+  animation: page-fade 160ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   20. Responsive — narrow viewports
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    row-gap: 4px;
+  }
+
+  .brand-text small {
+    display: none;
+  }
+
+  .topbar-actions .text-button {
+    padding: 6px 8px;
+  }
+
+  .product-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .product-nav .text-button {
+    flex: 1;
+  }
+
+  /* The boundary span already ellipsizes at all widths (see §4). */
+
+  /* Inspector becomes a bottom card above the board. */
+  .inspector {
+    top: auto;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+    max-height: 46vh;
+  }
+
+  #map-root.sheet-open .inspector {
+    bottom: calc(55vh + 12px);
+  }
+
+  .source-sheet {
+    height: 55vh;
+  }
+
+  .index-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .map-hint {
+    display: none;
+  }
+
+  .map-fit {
+    top: 14px;
+    right: 14px;
+    bottom: auto;
+  }
+
+  .project-scope {
+    top: 14px;
+    right: 84px;
+    left: 14px;
+  }
+
+  .project-scope select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .map-legend {
+    max-width: calc(100% - 28px);
+    flex-wrap: wrap;
+    border-radius: 14px;
+    row-gap: 6px;
+  }
+
+  .source-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .citation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-head,
+  .project-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .project-state {
+    align-self: flex-start;
+  }
+
+  .project-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .project-facts div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .project-actions .text-button,
+  .project-actions .primary-button {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   21. Reduced motion — kill every animation and transition
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-experiment-family="generic-math-map-ingestion-pipeline" data-content-view="global-only">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Gamma 数学地图</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231e3a5f'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='22' fill='white'%3EΓ%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="math-map-lab.css">
+  <style>
+    body[data-content-view="global-only"] [data-focus-object],
+    body[data-content-view="global-progress"] [data-focus-object] {
+      display: none;
+    }
+    .generic-map-error {
+      margin: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--danger, #ef4444);
+      border-radius: 0.75rem;
+      color: var(--danger, #ef4444);
+      background: color-mix(in srgb, var(--danger, #ef4444) 8%, transparent);
+    }
+    .generic-map-preview {
+      position: absolute;
+      z-index: 4;
+      top: 5.75rem;
+      left: 50%;
+      width: min(34rem, calc(100vw - 2rem));
+      transform: translateX(-50%);
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line-strong, #405777);
+      border-radius: 0.9rem;
+      background: color-mix(in srgb, var(--panel, #17283c) 94%, transparent);
+      box-shadow: 0 1rem 3rem rgb(0 0 0 / 24%);
+    }
+    .generic-map-preview strong,
+    .generic-map-preview span {
+      display: block;
+    }
+    .generic-map-preview span {
+      margin-top: 0.35rem;
+      color: var(--text-muted, #a9b8ca);
+      line-height: 1.5;
+    }
+    .generic-map-preview input {
+      width: 100%;
+      margin-top: 0.85rem;
+    }
+    .generic-map-preview output {
+      display: block;
+      margin-top: 0.65rem;
+      color: var(--text-muted, #a9b8ca);
+    }
+    html[data-ai-map-embed="true"] .topbar { display: none; }
+    html[data-ai-map-embed="true"] .math-map-lab-body { height: 100vh; }
+    html[data-ai-map-embed="true"] .project-picker { display: none; }
+  </style>
+</head>
+<body class="math-map-lab-body" data-lens-state="global" data-content-view="global-only">
+  <a class="skip-link" href="#math-map-canvas">跳到数学图</a>
+  <header class="topbar math-map-topbar">
+    <a class="brand" href="laboratory.html"><span class="brand-mark">Γ</span><span class="brand-text">Gamma 数学地图<small id="generic-map-title">正在加载数学地图</small></span></a>
+    <span id="generic-map-boundary" class="math-map-boundary">Gamma-native 只读地图</span>
+    <nav class="topbar-actions" aria-label="实验页导航">
+      <div class="product-nav" role="navigation" aria-label="Gamma 主导航">
+        <a class="text-button" href="laboratory.html" aria-current="page">实验室</a>
+        <a class="text-button" href="capabilities.html">能力包</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="math-map-main">
+    <div id="generic-map-error" class="generic-map-error" role="alert" hidden></div>
+    <section id="generic-map-preview" class="generic-map-preview" aria-labelledby="generic-map-preview-title" hidden>
+      <strong id="generic-map-preview-title">导入 Project View JSON</strong>
+      <span>文件只在当前浏览器页面中读取；不会修改 manifest、生成资产或写入项目。</span>
+      <input id="generic-map-preview-file" type="file" accept=".json,application/json" aria-label="选择 Project View JSON">
+      <output id="generic-map-preview-status" aria-live="polite">请选择一份 Gamma-native Project View。</output>
+    </section>
+    <div id="math-map-canvas" role="application" tabindex="0" aria-label="数学地图画布"></div>
+
+    <section class="math-map-commandbar" aria-label="数学地图工具">
+      <label class="project-picker"><span>项目</span><select id="generic-map-picker" aria-label="选择数学项目"></select></label>
+      <div class="lens-switcher" role="tablist" aria-label="地图视图">
+        <button type="button" data-lens="global" role="tab" aria-selected="true">全图</button>
+      </div>
+      <label class="section-scope"><span>Section</span><select id="math-map-section"><option value="all">全部</option></select></label>
+      <label class="math-map-search"><span class="visually-hidden">搜索数学对象</span><input id="math-map-search" type="search" placeholder="搜索图中对象"></label>
+    </section>
+
+    <div id="route-switcher" hidden aria-hidden="true">
+      <span id="final-goal-title"></span>
+      <span id="milestone-title"></span>
+      <span id="route-summary"></span>
+      <span id="route-options"></span>
+    </div>
+
+    <nav class="map-history-actions" aria-label="地图历史">
+      <button id="math-map-back" type="button" disabled aria-label="返回上一个地图位置">← <span>返回</span></button>
+      <button id="math-map-overview" type="button"><span>全图</span></button>
+    </nav>
+
+    <div id="math-map-context" class="math-map-context" aria-live="polite"><strong>完整数学图</strong><span>当前主题的 Fact、Claim 与 Inference 以一张静态逻辑图呈现。</span></div>
+    <div class="math-map-foundation-key" aria-label="数学图视觉图例：Fact、开放 Claim、已建立 Claim、Inference 与 B0 可信 Claim">
+      <span><i class="key-fact" aria-hidden="true"></i>Fact</span>
+      <span><i class="key-claim-open" aria-hidden="true"></i>开放 Claim</span>
+      <span><i class="key-claim-established" aria-hidden="true"></i>已建立 Claim</span>
+      <span><i class="key-inference" aria-hidden="true"></i>Inference</span>
+      <span><i class="key-foundation" aria-hidden="true"></i>B₀ · 可信 Claim</span>
+    </div>
+
+    <aside id="math-map-inspector" class="math-map-inspector" aria-label="数学对象详情" hidden></aside>
+
+    <section id="progress-timeline" class="progress-timeline" aria-label="Loop 进展" hidden>
+      <button id="progress-previous" type="button" disabled aria-label="查看上一轮">←</button>
+      <div><span id="progress-position">基线</span><strong id="progress-title">尚未加入新的研究子图</strong><small id="progress-summary">向前推进会把下一轮增量加入同一张图。</small></div>
+      <button id="progress-next" type="button" aria-label="查看下一轮">→</button>
+    </section>
+
+    <section id="math-map-evidence" class="math-map-evidence" aria-label="对象证据" hidden>
+      <header><div><span>证据</span><strong id="evidence-title"></strong></div><button id="close-evidence" type="button" aria-label="关闭证据">×</button></header>
+      <p id="evidence-copy"></p>
+    </section>
+  </main>
+
+  <script src="vendor/force-graph/force-graph.min.js"></script>
+  <script src="graph-contract.js"></script>
+  <script src="graph-canvas.js"></script>
+  <script src="math-map-semantics.js"></script>
+  <script src="math-map-naming.js"></script>
+  <script src="research-loop-progress.js"></script>
+  <script src="math-map-visual-semantics.js"></script>
+  <script src="math-map-content-loader.js"></script>
+  <script src="generic-math-map-preview-loader.js"></script>
+  <script src="ai-math-map-session-bridge.js"></script>
+  <script src="generated-math-content/registry.js"></script>
+  <script src="generic-math-map-bootstrap.js"></script>
+</body>
+</html>
