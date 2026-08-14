@@ -48,16 +48,17 @@
     lemma: "引理",
     proposition: "命题",
     theorem: "定理",
+    conjecture: "猜想",
     organization: "组织",
     proof: "证明",
   });
-  const canonicalBoardDisplayNamePattern = /^(定义|算法|计算|引理|命题|定理|组织|证明)\s*·\s*(\d+)\s*·\s*(.+)$/u;
-  const legacyGammaBoardDisplayNamePattern = /^(定义|算法|计算|引理|命题|定理|组织|证明)\s*·\s*(.+?)\s*·\s*(\d+)$/u;
+  const canonicalBoardDisplayNamePattern = /^(定义|算法|计算|引理|命题|定理|猜想|组织|证明)\s*·\s*(\d+)\s*·\s*(.+)$/u;
+  const legacyGammaBoardDisplayNamePattern = /^(定义|算法|计算|引理|命题|定理|猜想|组织|证明)\s*·\s*(.+?)\s*·\s*(\d+)$/u;
   const sourceBoardDisplayNamePattern = /^(.+?)\s+(\d+)\s+·\s+(.+)$/u;
   const displayKindAliases = Object.freeze({
     "定义": "定义", "约定": "定义", "构造": "算法", "算法": "算法",
     "计算": "计算", "计算结果": "计算", "例子": "计算",
-    "引理": "引理", "命题": "命题", "开放问题": "命题", "反例": "命题", "定理": "定理",
+    "引理": "引理", "命题": "命题", "开放问题": "命题", "反例": "命题", "定理": "定理", "猜想": "猜想", "推测": "猜想",
     "组织": "组织", "推导": "证明", "证明": "证明",
   });
   const forbiddenBoardNameTerms = /候选|candidate|record|checker|gate|pipeline|task/i;

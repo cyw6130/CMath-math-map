@@ -461,3 +461,96 @@ test("recovers from proof-to-Fact error on 1-shot retry with actionable proof-to
   assert.deepEqual(observedAuth, ["Bearer secret-key-123", "Bearer secret-key-123"]);
   assert.doesNotMatch(JSON.stringify(view), /secret-key-123/u);
 });
+
+test("accepts conjecture as a Claim kind and labels it 猜想", () => {
+  const raw = {
+    projectTitle: "C Paper",
+    entries: [
+      { id: "paper:definition:x", entryClass: "fact", factKind: "definition", shortTitle: "X", title: "定义 X", statement: "$X$ 固定。", sourceLocator: "paper.pdf#page=1" },
+      { id: "paper:conjecture:c", entryClass: "claim", claimKind: "conjecture", shortTitle: "C", title: "猜想 C", statement: "$C$ 尚未证明。", sourceLocator: "paper.pdf#page=3" },
+    ],
+    inferences: [],
+  };
+  const view = paperImportClient.paperProjectView(raw, { fileName: "paper.pdf" });
+  const conj = view.entries.find((e) => e.id === "paper:conjecture:c");
+  assert.equal(conj.claimKind, "conjecture");
+  assert.equal(conj.displayLabel, "猜想 1");
+});
+
+test("requests a proof-completion pass when non-conjecture Claims stay open", async () => {
+  const openVersion = {
+    projectTitle: "P Paper",
+    entries: [
+      { id: "paper:definition:x", entryClass: "fact", factKind: "definition", shortTitle: "X", title: "定义 X", statement: "$X$。", sourceLocator: "paper.pdf#page=1" },
+      { id: "paper:lemma:l", entryClass: "claim", claimKind: "lemma", shortTitle: "L", title: "引理 L", statement: "$L$。", sourceLocator: "paper.pdf#page=2" },
+      { id: "paper:theorem:t", entryClass: "claim", claimKind: "theorem", shortTitle: "T", title: "定理 T", statement: "$T$。", sourceLocator: "paper.pdf#page=3" },
+    ],
+    inferences: [
+      { id: "paper:proof:t", operationKind: "proof", premises: ["paper:lemma:l"], conclusion: "paper:theorem:t", argument: "由引理 L 得证。", sourceLocator: "paper.pdf#page=3" },
+    ],
+  };
+  const completedVersion = {
+    ...openVersion,
+    inferences: [
+      { id: "paper:proof:l", operationKind: "proof", premises: ["paper:definition:x"], conclusion: "paper:lemma:l", argument: "由定义直接得证。", sourceLocator: "paper.pdf#page=2" },
+      { id: "paper:proof:t", operationKind: "proof", premises: ["paper:lemma:l"], conclusion: "paper:theorem:t", argument: "由引理 L 得证。", sourceLocator: "paper.pdf#page=3" },
+    ],
+  };
+  const calls = [];
+  const versions = [openVersion, completedVersion];
+  const fetchImpl = async (url, init) => {
+    calls.push(JSON.parse(init.body));
+    const raw = versions[Math.min(calls.length - 1, versions.length - 1)];
+    return {
+      ok: true,
+      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(raw) } }] }),
+    };
+  };
+  const stages = [];
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "test-key",
+    model: "deepseek-chat",
+    fileName: "paper.pdf",
+    pageCount: 3,
+    text: "paper text",
+    fetchImpl,
+    onStage: (stage) => stages.push(stage),
+  });
+  assert.equal(calls.length, 2);
+  assert.ok(stages.includes("closure-repair"));
+  assert.match(calls[1].messages[0].content, /证明完整性修复要求/u);
+  assert.equal(view.inferences.length, 2);
+  const closure = paperImportClient && view.entries
+    ? (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {})
+    : null;
+  assert.equal(closure.claimStates["paper:lemma:l"], "established");
+  assert.equal(closure.claimStates["paper:theorem:t"], "established");
+});
+
+test("does not run proof-completion when only conjectures remain open", async () => {
+  const raw = {
+    projectTitle: "Q Paper",
+    entries: [
+      { id: "paper:definition:x", entryClass: "fact", factKind: "definition", shortTitle: "X", title: "定义 X", statement: "$X$。", sourceLocator: "paper.pdf#page=1" },
+      { id: "paper:conjecture:c", entryClass: "claim", claimKind: "conjecture", shortTitle: "C", title: "猜想 C", statement: "$C$ 未证明。", sourceLocator: "paper.pdf#page=2" },
+    ],
+    inferences: [],
+  };
+  let callCount = 0;
+  const fetchImpl = async (url, init) => {
+    callCount += 1;
+    return { ok: true, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(raw) } }] }) };
+  };
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "test-key",
+    model: "deepseek-chat",
+    fileName: "paper.pdf",
+    pageCount: 2,
+    text: "paper text",
+    fetchImpl,
+  });
+  assert.equal(callCount, 1);
+  assert.equal(view.entries.find((e) => e.id === "paper:conjecture:c").claimKind, "conjecture");
+});

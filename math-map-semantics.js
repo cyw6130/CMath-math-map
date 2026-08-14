@@ -11,7 +11,7 @@
   const SEMANTIC_MODEL_ID = "cmath.fact-claim-operation/v0.1";
   const ENTRY_CLASSES = Object.freeze(["fact", "claim"]);
   const FACT_KINDS = Object.freeze(["definition", "algorithm", "calculation"]);
-  const CLAIM_KINDS = Object.freeze(["lemma", "proposition", "theorem"]);
+  const CLAIM_KINDS = Object.freeze(["lemma", "proposition", "theorem", "conjecture"]);
   const CLAIM_STATES = Object.freeze(["open", "established"]);
   const OPERATION_KINDS = Object.freeze(["organization", "proof"]);
   const entryClasses = new Set(ENTRY_CLASSES);

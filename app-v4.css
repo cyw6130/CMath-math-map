@@ -913,3 +913,22 @@ select.form-input { cursor: pointer; }
   color: var(--ink); font-size: 13px; cursor: pointer; transition: all 140ms var(--ease-snap);
 }
 .extract-dismiss:hover { background: var(--proof-sunken); }
+
+/* Step list: visible per-stage progress */
+.extract-steps { list-style: none; margin: 4px 0 12px; padding: 0; }
+.extract-steps li {
+  display: flex; align-items: baseline; gap: 8px; padding: 5px 0;
+  color: var(--muted); font-family: var(--font-mono); font-size: 12px;
+}
+.extract-steps .step-dot {
+  width: 8px; height: 8px; flex: none; align-self: center;
+  border: 1.5px solid var(--muted); border-radius: 50%; background: transparent;
+}
+.extract-steps li.is-active { color: var(--ink); font-weight: 700; }
+.extract-steps li.is-active .step-dot {
+  border-color: var(--red); animation: stepPulse 1s ease-in-out infinite;
+}
+.extract-steps li.is-done { color: var(--ink-soft); }
+.extract-steps li.is-done .step-dot { background: var(--red); border-color: var(--red); }
+.extract-steps .step-detail { margin-left: auto; font-size: 11px; color: var(--muted); text-align: right; }
+@keyframes stepPulse { 0%, 100% { box-shadow: 0 0 0 0 var(--red-soft); } 50% { box-shadow: 0 0 0 4px var(--red-soft); } }

@@ -141,7 +141,7 @@
   paperDrawer?.appendChild(paperPdfInput);
   let selectedPaperPdf = null;
 
-  // --- Extraction status block (busy / success / error), built once ---
+  // --- Extraction status block: step list (busy) / success / error ---
   const extractStatus = document.createElement("div");
   extractStatus.className = "extract-status";
   extractStatus.hidden = true;
@@ -149,31 +149,110 @@
     startExtractButton.parentElement.before(extractStatus);
   }
 
+  const EXTRACT_STEPS = [
+    { id: "read", label: "读取 PDF 文本" },
+    { id: "send", label: "发送至模型服务" },
+    { id: "wait", label: "模型生成数学结构" },
+    { id: "validate", label: "校验并组装 JSON" },
+    { id: "closure", label: "检查证明闭包" },
+  ];
+  let stepEls = new Map();
+  let awaitingStepId = "wait";
+
   function resetExtractStatus() {
     extractStatus.hidden = true;
     extractStatus.innerHTML = "";
     extractStatus.classList.remove("is-error", "is-success");
   }
 
-  function showExtractStage(text) {
+  function showExtractSteps() {
     extractStatus.hidden = false;
     extractStatus.classList.remove("is-error", "is-success");
-    extractStatus.innerHTML = `
-      <div class="extract-bar"><span></span></div>
-      <p class="extract-stage"></p>`;
-    extractStatus.querySelector(".extract-stage").textContent = text;
+    extractStatus.innerHTML = `<ol class="extract-steps">${
+      EXTRACT_STEPS.map((s) => `<li data-step="${s.id}"><span class="step-dot"></span><span class="step-label">${s.label}</span><span class="step-detail"></span></li>`).join("")
+    }</ol>`;
+    stepEls = new Map([...extractStatus.querySelectorAll("li")].map((li) => [li.dataset.step, li]));
+    awaitingStepId = "wait";
   }
 
-  function updateExtractStage(text) {
-    const stage = extractStatus.querySelector(".extract-stage");
-    if (stage) stage.textContent = text;
+  function setStep(id, state, detail) {
+    const li = stepEls.get(id);
+    if (!li) return;
+    li.classList.remove("is-active", "is-done");
+    if (state) li.classList.add(state === "active" ? "is-active" : "is-done");
+    if (detail !== undefined) li.querySelector(".step-detail").textContent = detail;
+  }
+
+  function isStepDone(id) {
+    return stepEls.get(id)?.classList.contains("is-done") ?? false;
+  }
+
+  function addStepAfter(afterId, id, label) {
+    const anchor = stepEls.get(afterId);
+    if (!anchor || stepEls.has(id)) return;
+    const li = document.createElement("li");
+    li.dataset.step = id;
+    li.innerHTML = `<span class="step-dot"></span><span class="step-label"></span><span class="step-detail"></span>`;
+    li.querySelector(".step-label").textContent = label;
+    anchor.after(li);
+    stepEls.set(id, li);
+  }
+
+  function handleImportStage(stage, info = {}) {
+    if (stage === "request") {
+      if (!isStepDone("send")) {
+        setStep("send", "done", `约 ${((info.chars ?? 0) / 1000).toFixed(1)}k 字符`);
+        setStep("wait", "active");
+        awaitingStepId = "wait";
+      } else {
+        setStep(awaitingStepId, "active");
+      }
+    } else if (stage === "response") {
+      setStep(awaitingStepId, "done");
+      setStep("validate", "active");
+    } else if (stage === "repair") {
+      setStep("validate", "done", "第 1 次校验未通过");
+      addStepAfter("validate", "repair-step", "修复结构错误（模型重新生成）");
+      setStep("repair-step", "active");
+      awaitingStepId = "repair-step";
+    } else if (stage === "closure-repair") {
+      setStep("validate", "done");
+      setStep("closure", "done", `发现 ${info.openClaims?.length ?? 0} 条未建立`);
+      addStepAfter("closure", "closure-step", "补全证明链（模型重新生成）");
+      setStep("closure-step", "active", (info.openClaims ?? []).slice(0, 3).join("、"));
+      awaitingStepId = "closure-step";
+    } else if (stage === "closure-repair-failed") {
+      setStep("closure-step", "done", "补全未通过，保留首版结果");
+    }
+  }
+
+  function finishExtractSteps(view) {
+    const entries = view?.entries?.length ?? 0;
+    const inferences = view?.inferences?.length ?? 0;
+    setStep("validate", "done", `${entries} 个对象 · ${inferences} 条推理`);
+    let closureDetail = "全部已建立";
+    try {
+      const sem = window.GammaMathMapSemantics;
+      if (sem?.computeClaimClosure) {
+        const states = sem.computeClaimClosure(view.entries, view.inferences, {
+          b0ClaimEntryIds: view.derivedResearchState?.mathematicalState?.b0ClaimEntryIds ?? [],
+        }).claimStates;
+        const openCount = view.entries.filter(
+          (e) => e.entryClass === "claim" && states[e.id] !== "established",
+        ).length;
+        closureDetail = openCount === 0 ? "全部已建立" : `${openCount} 条猜想保持开放`;
+      }
+    } catch { /* 展示信息失败不影响结果 */ }
+    setStep("closure", "done", closureDetail);
   }
 
   function showExtractError(message) {
     extractStatus.hidden = false;
     extractStatus.classList.add("is-error");
     extractStatus.classList.remove("is-success");
-    extractStatus.innerHTML = `<p class="extract-error-text"></p>`;
+    // 保留步骤列表，把错误附在下方，便于看到卡在哪一步
+    const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
+    extractStatus.innerHTML = `${stepsHtml}<p class="extract-error-text"></p>`;
     extractStatus.querySelector(".extract-error-text").textContent = message;
   }
 
@@ -181,7 +260,8 @@
     extractStatus.hidden = false;
     extractStatus.classList.add("is-success");
     extractStatus.classList.remove("is-error");
-    extractStatus.innerHTML = `
+    const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
+    extractStatus.innerHTML = `${stepsHtml}
       <p class="extract-success-title">✓ 解析完成</p>
       <p class="extract-success-sub">paper-project-view.json 已下载到本地</p>
       <div class="extract-success-actions">
@@ -245,13 +325,18 @@
     const originalLabel = startExtractButton.textContent;
     startExtractButton.disabled = true;
     startExtractButton.textContent = "解析中…";
-    showExtractStage("正在读取 PDF…");
+    showExtractSteps();
+    setStep("read", "active");
     try {
       if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
       const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
-      const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, { pdfjsLib });
-      updateExtractStage(`已读取 ${paper.pageCount} 页，正在生成数学地图…`);
+      const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, {
+        pdfjsLib,
+        onProgress: ({ page, pageCount }) => setStep("read", "active", `第 ${page} / ${pageCount} 页`),
+      });
+      setStep("read", "done", `共 ${paper.pageCount} 页 · ${paper.text.length.toLocaleString()} 字符`);
+      setStep("send", "active");
       const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
         endpoint: apiEndpointInput.value,
         apiKey,
@@ -260,7 +345,9 @@
         fileName: selectedPaperPdf.name,
         pageCount: paper.pageCount,
         text: paper.text,
+        onStage: handleImportStage,
       });
+      finishExtractSteps(projectView);
       const blob = new Blob([`${JSON.stringify(projectView, null, 2)}\n`], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
