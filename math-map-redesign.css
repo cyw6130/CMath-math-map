@@ -1,0 +1,1038 @@
+/* ============================================================================
+   Gamma Math Map — Next-Generation UI/UX Redesign Stylesheet
+   Designed with ui-ux-pro-max, claude-design & theme-factory principles:
+   - High-end dark astronomical aesthetic ("Cosmic Ink & Frosted Studio")
+   - Glassmorphism overlays with multi-layered depth and subtle ambient glow
+   - Refined typography (Cinzel / Plus Jakarta Sans / JetBrains Mono)
+   - Tactile interactive elements with WCAG AAA contrast & 44px+ touch targets
+   - 100% Zero functional changes — pure visual & ergonomic elevation
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Variables
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core palette */
+  --g-bg-base: #060a12;
+  --g-bg-elevated: #0d1424;
+  --g-bg-panel: rgba(13, 20, 36, 0.78);
+  --g-bg-panel-hover: rgba(22, 32, 54, 0.88);
+  --g-bg-card: rgba(19, 29, 49, 0.65);
+  --g-bg-card-hover: rgba(28, 42, 70, 0.78);
+  --g-bg-input: rgba(10, 16, 30, 0.75);
+  
+  /* Borders & Dividers */
+  --g-border-subtle: rgba(255, 255, 255, 0.08);
+  --g-border-medium: rgba(255, 255, 255, 0.14);
+  --g-border-bright: rgba(255, 255, 255, 0.22);
+  --g-border-highlight: rgba(130, 180, 255, 0.28);
+  
+  /* Text & Ink */
+  --g-text-primary: #f1f5f9;
+  --g-text-secondary: #cbd5e1;
+  --g-text-muted: #8496ad;
+  --g-text-faint: #52637a;
+  
+  /* Accent Colors */
+  --g-accent-blue: #3b82f6;
+  --g-accent-cyan: #38bdf8;
+  --g-accent-teal: #2dd4bf;
+  --g-accent-emerald: #34d399;
+  --g-accent-purple: #a855f7;
+  --g-accent-rose: #fb7185;
+  --g-accent-amber: #fbbf24;
+  
+  /* Mathematical Node Semantics */
+  --math-map-entry: #e2e8f0;
+  --math-map-entry-stroke: #ffffff;
+  --math-map-entry-title: #f8fafc;
+  --math-map-fact: #94a3b8;
+  --math-map-fact-stroke: #cbd5e1;
+  --math-map-claim-open: #f43f5e;
+  --math-map-claim-open-title: #fda4af;
+  --math-map-claim-established: #10b981;
+  --math-map-claim-established-stroke: #d1fae5;
+  --math-map-claim-established-title: #6ee7b7;
+  --math-map-inference: #8b5cf6;
+  --math-map-inference-stroke: #ddd6fe;
+  --math-map-inference-title: #c4b5fd;
+  --math-map-premise: rgba(148, 163, 184, 0.45);
+  --math-map-conclusion: #60a5fa;
+  --math-map-foundation: #030712;
+  --math-map-focus-halo: rgba(56, 189, 248, 0.55);
+  --math-map-focus-title: #93c5fd;
+
+  /* Shadows & Glows */
+  --g-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --g-shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--g-border-subtle);
+  --g-shadow-lg: 0 18px 48px -8px rgba(0, 0, 0, 0.72), 0 0 0 1px var(--g-border-medium);
+  --g-shadow-glow: 0 0 24px -2px rgba(59, 130, 246, 0.35);
+  --g-shadow-emerald-glow: 0 0 20px -2px rgba(16, 185, 129, 0.35);
+
+  /* Typography */
+  --font-display: 'Cinzel', Georgia, "Noto Serif SC", serif;
+  --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Easing */
+  --g-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --g-duration: 200ms;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base & Canvas Layout
+   -------------------------------------------------------------------------- */
+html, body.math-map-lab-body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--g-bg-base);
+  background-image: 
+    radial-gradient(circle at 50% 25%, rgba(29, 78, 216, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 15% 75%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+  color: var(--g-text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  padding: 10px 18px;
+  background: var(--g-accent-blue);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: var(--g-shadow-lg);
+  transform: translateY(-180%);
+  transition: transform var(--g-duration) var(--g-ease-spring);
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Header / Top Navigation Bar
+   -------------------------------------------------------------------------- */
+.math-map-topbar {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 24px;
+  background: rgba(8, 14, 26, 0.82);
+  border-bottom: 1px solid var(--g-border-subtle);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.math-map-topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--g-text-primary);
+  text-decoration: none;
+  transition: opacity var(--g-duration) ease;
+}
+.math-map-topbar .brand:hover {
+  opacity: 0.92;
+}
+
+.math-map-topbar .brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform var(--g-duration) var(--g-ease-spring), box-shadow var(--g-duration) ease;
+}
+.math-map-topbar .brand:hover .brand-mark {
+  transform: scale(1.05);
+  box-shadow: 0 0 22px rgba(37, 99, 235, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.math-map-topbar .brand-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.math-map-topbar .brand-text small {
+  display: inline-block;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--g-accent-cyan);
+  text-transform: none;
+}
+
+.math-map-boundary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.math-map-boundary::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--g-accent-emerald);
+  box-shadow: 0 0 8px var(--g-accent-emerald);
+}
+
+.math-map-topbar .topbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.math-map-topbar .text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-topbar .text-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--g-border-bright);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: var(--g-shadow-sm);
+}
+.math-map-topbar .text-button:active {
+  transform: translateY(0);
+}
+
+.math-map-topbar .future-tool {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--g-border-subtle);
+  color: var(--g-text-faint);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   4. Main Canvas & Interactive Stage
+   -------------------------------------------------------------------------- */
+.math-map-main {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 60px);
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+#math-map-canvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  outline: none;
+}
+#math-map-canvas:active {
+  cursor: grabbing;
+}
+#math-map-canvas:focus-visible {
+  outline: 2px solid var(--g-accent-cyan);
+  outline-offset: -2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Floating Glass Command Bar (Top Dock)
+   -------------------------------------------------------------------------- */
+.math-map-commandbar {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 36px);
+  padding: 6px 10px;
+  border-radius: 16px;
+  background: var(--g-bg-panel);
+  border: 1px solid var(--g-border-medium);
+  box-shadow: var(--g-shadow-lg);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  transform: translateX(-50%);
+  transition: border-color var(--g-duration) ease, box-shadow var(--g-duration) ease;
+}
+.math-map-commandbar:hover {
+  border-color: var(--g-border-bright);
+}
+
+/* Project / Map Picker Select */
+.project-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 0 8px;
+  color: var(--g-text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.project-picker select,
+.section-scope select {
+  height: 40px;
+  min-width: 170px;
+  max-width: 240px;
+  padding: 0 32px 0 14px;
+  border-radius: 10px;
+  background-color: var(--g-bg-input);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238496ad'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  border: 1px solid var(--g-border-subtle);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.project-picker select:hover,
+.section-scope select:hover {
+  background-color: rgba(18, 28, 48, 0.85);
+  border-color: var(--g-accent-cyan);
+}
+.project-picker select:focus-visible,
+.section-scope select:focus-visible {
+  border-color: var(--g-accent-cyan);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+/* Lens Switcher (Segmented Control) */
+.lens-switcher {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 12px;
+  background: rgba(8, 14, 26, 0.65);
+  border: 1px solid var(--g-border-subtle);
+}
+
+.lens-switcher button {
+  min-height: 34px;
+  min-width: 64px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--g-text-muted);
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.lens-switcher button:hover {
+  color: var(--g-text-secondary);
+}
+.lens-switcher button[aria-selected="true"] {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%);
+  border-color: rgba(96, 165, 250, 0.4);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+/* Search Input */
+.math-map-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.math-map-search::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  width: 14px;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238496ad'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.math-map-search input {
+  height: 40px;
+  width: 180px;
+  padding: 0 14px 0 34px;
+  border-radius: 10px;
+  background: var(--g-bg-input);
+  border: 1px solid var(--g-border-subtle);
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-search input::placeholder {
+  color: var(--g-text-muted);
+}
+.math-map-search input:focus {
+  width: 240px;
+  background: rgba(16, 25, 44, 0.9);
+  border-color: var(--g-accent-cyan);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25), var(--g-shadow-glow);
+}
+
+/* --------------------------------------------------------------------------
+   6. Inspector Panel (Side Drawer / Details)
+   -------------------------------------------------------------------------- */
+.math-map-inspector,
+.external-reference-panel,
+.loop-inspector {
+  position: absolute;
+  top: 86px;
+  right: 24px;
+  z-index: 35;
+  width: min(380px, calc(100vw - 48px));
+  max-height: calc(100vh - 180px);
+  padding: 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 20px;
+  background: var(--g-bg-panel);
+  border: 1px solid var(--g-border-medium);
+  box-shadow: var(--g-shadow-lg);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(28px) saturate(190%);
+  animation: inspectorSlideIn 240ms var(--g-ease-spring) forwards;
+}
+
+@keyframes inspectorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.math-map-inspector header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.math-map-inspector .object-type {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--g-accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.math-map-inspector h2 {
+  margin: 8px 0 4px;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.math-map-inspector .close-inspector {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-inspector .close-inspector:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.math-map-inspector p {
+  margin: 0 0 16px;
+  color: var(--g-text-secondary);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.math-map-inspector h3 {
+  margin: 20px 0 10px;
+  color: var(--g-text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* Object Info Key-Value Table */
+.math-map-inspector .object-information {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--g-bg-card);
+  border: 1px solid var(--g-border-subtle);
+}
+.math-map-inspector .object-information div {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  font-size: 12.5px;
+}
+.math-map-inspector .object-information dt {
+  color: var(--g-text-muted);
+  font-weight: 500;
+}
+.math-map-inspector .object-information dd {
+  margin: 0;
+  color: var(--g-text-primary);
+  font-weight: 600;
+}
+
+/* Relation Buttons */
+.math-map-inspector .relation-list {
+  display: grid;
+  gap: 8px;
+}
+.math-map-inspector .relation-list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--g-bg-card);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-inspector .relation-list button:hover {
+  background: var(--g-bg-card-hover);
+  border-color: var(--g-border-highlight);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* Inspector Bottom Actions */
+.math-map-inspector .inspector-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--g-border-subtle);
+}
+
+.math-map-inspector .inspector-actions button {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-inspector .inspector-actions button:first-child {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+.math-map-inspector .inspector-actions button:first-child:hover {
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+  transform: translateY(-1px);
+}
+.math-map-inspector .inspector-actions button:last-child {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+}
+.math-map-inspector .inspector-actions button:last-child:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--g-border-bright);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   7. Navigation, History & Zoom Actions (Bottom Left)
+   -------------------------------------------------------------------------- */
+.map-history-actions {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--g-bg-panel);
+  border: 1px solid var(--g-border-medium);
+  box-shadow: var(--g-shadow-md);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.map-history-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.map-history-actions button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--g-border-bright);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.map-history-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   8. Map Context & Notification Pill (Bottom Center)
+   -------------------------------------------------------------------------- */
+.math-map-context {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: min(520px, calc(100vw - 320px));
+  padding: 10px 20px;
+  border-radius: 14px;
+  background: rgba(13, 20, 36, 0.85);
+  border: 1px solid var(--g-border-subtle);
+  box-shadow: var(--g-shadow-md);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.math-map-context strong {
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.math-map-context span {
+  margin-top: 2px;
+  color: var(--g-text-muted);
+  font-size: 11px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Foundation Legend Key (Bottom Right)
+   -------------------------------------------------------------------------- */
+.math-map-foundation-key {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 16px;
+  max-width: 480px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: var(--g-bg-panel);
+  border: 1px solid var(--g-border-medium);
+  box-shadow: var(--g-shadow-md);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  color: var(--g-text-secondary);
+  font-size: 11.5px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.math-map-foundation-key > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.math-map-foundation-key i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  box-sizing: border-box;
+}
+
+.math-map-foundation-key .key-fact {
+  border-radius: 50%;
+  background: var(--math-map-fact);
+  border: 1.5px solid var(--math-map-fact-stroke);
+  box-shadow: 0 0 6px rgba(148, 163, 184, 0.4);
+}
+
+.math-map-foundation-key .key-claim-open {
+  border-radius: 50%;
+  background: var(--g-bg-base);
+  border: 2px solid var(--math-map-claim-open);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
+}
+
+.math-map-foundation-key .key-claim-established {
+  border-radius: 50%;
+  background: var(--math-map-claim-established);
+  border: 1.5px solid var(--math-map-claim-established-stroke);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.math-map-foundation-key .key-inference {
+  width: 9px;
+  height: 9px;
+  transform: rotate(45deg);
+  background: var(--math-map-inference);
+  border: 1.5px solid var(--math-map-inference-stroke);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+
+.math-map-foundation-key .key-foundation {
+  border-radius: 50%;
+  background: var(--math-map-claim-established);
+  border: 2.5px solid #000000;
+  outline: 1px solid var(--math-map-claim-established);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   10. Progress Timeline Bar (Proof Stepper)
+   -------------------------------------------------------------------------- */
+.progress-timeline {
+  position: absolute;
+  right: 50%;
+  bottom: 24px;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 42px minmax(240px, 440px) 42px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: var(--g-bg-panel);
+  border: 1px solid var(--g-border-medium);
+  box-shadow: var(--g-shadow-lg);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  transform: translateX(50%);
+}
+
+.progress-timeline button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.progress-timeline button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--g-border-bright);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+.progress-timeline button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.progress-timeline > div {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+}
+.progress-timeline span {
+  color: var(--g-accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.progress-timeline strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 13.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progress-timeline small {
+  overflow: hidden;
+  color: var(--g-text-muted);
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   11. Evidence Modal & Overlay
+   -------------------------------------------------------------------------- */
+.math-map-evidence {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  z-index: 45;
+  max-width: 780px;
+  margin: auto;
+  padding: 22px 26px;
+  border-radius: 18px;
+  background: rgba(13, 20, 36, 0.95);
+  border: 1px solid var(--g-border-bright);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
+}
+.math-map-evidence header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.math-map-evidence header span {
+  color: var(--g-accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.math-map-evidence header strong {
+  display: block;
+  margin-top: 4px;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+.math-map-evidence header button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--g-border-subtle);
+  color: var(--g-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all var(--g-duration) var(--g-ease-spring);
+}
+.math-map-evidence header button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+.math-map-evidence p {
+  margin: 14px 0 0;
+  color: var(--g-text-secondary);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   12. Import / Preview Dialog Modal
+   -------------------------------------------------------------------------- */
+.generic-map-preview {
+  position: absolute;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  width: min(440px, calc(100vw - 32px));
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  border-radius: 20px;
+  background: rgba(13, 20, 36, 0.95);
+  border: 1px solid var(--g-border-bright);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
+}
+.generic-map-preview strong {
+  display: block;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+.generic-map-preview span {
+  display: block;
+  margin-top: 8px;
+  color: var(--g-text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.generic-map-preview input[type="file"] {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--g-bg-card);
+  border: 1px dashed var(--g-border-medium);
+  color: var(--g-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+}
+.generic-map-preview output {
+  display: block;
+  margin-top: 12px;
+  color: var(--g-accent-cyan);
+  font-size: 12.5px;
+}
+
+/* Error banner */
+.generic-map-error {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  z-index: 100;
+  transform: translateX(-50%);
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  box-shadow: var(--g-shadow-lg);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 840px) {
+  .math-map-boundary {
+    display: none;
+  }
+  .math-map-commandbar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    transform: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .math-map-inspector {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: 50vh;
+  }
+  .math-map-foundation-key,
+  .math-map-context {
+    display: none;
+  }
+}

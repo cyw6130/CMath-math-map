@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMath · 数学地图工作台 — Paper Grotesque Edition</title>
+
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="math-map-lab.css">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="app-v5.css">
+</head>
+<body data-view="workbench">
+  <!-- Hidden local JSON file input for native validation & loading -->
+  <input type="file" id="local-json-file-input" accept=".json,application/json" hidden>
+
+  <!-- ========================================================================
+       1. Workbench View — Paper Grotesque Edition (V2 layout preserved)
+       ======================================================================== -->
+  <div id="workbench-view">
+    <!-- Ambient Logo Stage (monochrome ink treatment) -->
+    <div class="ambient-logo-bg" id="ambient-logo-stage" aria-hidden="true">
+      <img src="logo-manuscript.webp" alt="" class="ambient-logo-img" id="ambient-logo-img">
+      <canvas id="ambient-particle-canvas" class="ambient-particle-canvas"></canvas>
+    </div>
+
+    <!-- Topbar -->
+    <header class="workbench-topbar">
+      <a class="brand-block" href="#">
+        <div class="brand-title-group">
+          <div class="brand-name-row">
+            <span class="brand-name"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
+            <span class="brand-sub">MATH MAP</span>
+          </div>
+          <span class="brand-tagline">数学命题与推演关系地图</span>
+        </div>
+        <span class="workbench-badge">稿纸黑体 · PAPER GROTESQUE</span>
+      </a>
+
+      <div class="topbar-nav-actions">
+        <button class="topbar-action-btn" id="btn-topbar-demos" type="button">
+          精选 Demo
+        </button>
+        <button class="topbar-action-btn" id="btn-topbar-settings" type="button" aria-label="设置">
+          设置
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="workbench-main">
+      <div class="workbench-hero">
+        <div class="hero-title-row">
+          <h1 class="hero-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></h1>
+          <span class="hero-sub">Math Map</span>
+          <span class="hero-version">v5.0</span>
+        </div>
+        <p class="hero-desc">将数学论文转换为可浏览的数学地图。支持解析论文提取定理关系、直接打开本地 JSON 数据包以及浏览精选示例。</p>
+      </div>
+
+      <!-- 3 Core Entrance Cards (V2 grid layout) -->
+      <div class="entrance-grid">
+        <!-- 1. Upload Paper PDF -->
+        <div class="entrance-card" id="card-upload-paper" role="button" tabindex="0">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          </div>
+          <h2>上传数学论文 PDF</h2>
+          <p>从数学论文中整理已有内容，生成可下载的 Project View JSON。</p>
+          <div class="card-action-bar">
+            <span>打开解析抽屉</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 2. Open Local JSON -->
+        <div class="entrance-card" id="card-open-json" role="button" tabindex="0">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          </div>
+          <h2>打开本地 JSON</h2>
+          <p>载入本地已有的 Project View JSON 数据包，直接生成数学地图进行浏览。</p>
+          <div class="card-action-bar">
+            <span>选择本地文件</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 3. Curated Demos -->
+        <div class="entrance-card" id="card-curated-demos" role="button" tabindex="0">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+          </div>
+          <h2>精选 Demo</h2>
+          <p>浏览预置的精选数学地图案例：从特征值到谱定理、从闭区间套到介值定理、从积分累积函数到微积分基本定理。</p>
+          <div class="card-action-bar">
+            <span>浏览案例库</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Slide Drawer 1: Paper Extraction -->
+    <aside class="slide-drawer" id="paper-drawer">
+      <header class="drawer-header">
+        <div>
+          <h3>论文解析工作流</h3>
+          <small>PDF → EXTRACT → DOWNLOAD JSON</small>
+        </div>
+        <button class="close-btn" id="btn-close-paper-drawer" type="button" aria-label="关闭">×</button>
+      </header>
+
+      <div class="form-group">
+        <label>第一步 · 选取数学论文</label>
+        <div class="pdf-drop-zone">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span class="drop-main">点击选择或拖拽 PDF 论文至此</span>
+          <span class="drop-sub">支持任意数学论文（不限 Arxiv）</span>
+        </div>
+      </div>
+
+      <div class="drawer-notice">
+        <strong>提示：</strong><br>
+        解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「打开本地 JSON」</strong>即可载入阅览。
+      </div>
+
+      <div style="margin-top:auto;">
+        <button class="btn-primary-action" id="btn-start-extract" type="button">
+          生成并下载 JSON 数据包
+        </button>
+      </div>
+    </aside>
+
+    <!-- Slide Drawer 2: Settings -->
+    <aside class="slide-drawer" id="settings-drawer">
+      <header class="drawer-header">
+        <div>
+          <h3>模型 API 配置</h3>
+          <small>MODEL CREDENTIALS &amp; ENDPOINT</small>
+        </div>
+        <button class="close-btn" id="btn-close-settings" type="button" aria-label="关闭">×</button>
+      </header>
+
+      <div class="form-group">
+        <label for="api-endpoint-input">1. API 服务地址</label>
+        <div class="provider-select-row">
+          <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
+          <button type="button" class="provider-btn" data-provider="openai">OpenAI</button>
+          <button type="button" class="provider-btn" data-provider="gemini">Gemini</button>
+          <button type="button" class="provider-btn" data-provider="custom">自定义</button>
+        </div>
+        <input class="form-input" type="text" id="api-endpoint-input" value="https://api.deepseek.com/v1" placeholder="https://...">
+        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。</span>
+      </div>
+
+      <div class="form-group">
+        <label for="api-key-input">2. API Key</label>
+        <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key">
+      </div>
+
+      <div class="form-group">
+        <label for="model-select">3. 推理模型</label>
+        <select class="form-input" id="model-select" style="cursor:pointer;">
+          <option value="deepseek-v4-flash" selected>deepseek-v4-flash (推荐 · 快速高效)</option>
+          <option value="deepseek-v4-pro">deepseek-v4-pro (深度推理)</option>
+          <option value="custom">自定义模型名称...</option>
+        </select>
+        <div id="custom-model-group" style="margin-top:8px;" hidden>
+          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-v4-flash">
+        </div>
+        <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
+      </div>
+    </aside>
+
+    <!-- Modal: Curated 3 Demos -->
+    <div class="modal-overlay" id="demo-modal" hidden>
+      <div class="demo-modal-dialog">
+        <div class="demo-modal-head">
+          <div>
+            <h3>精选数学地图案例</h3>
+            <span>点击任一案例即刻在全屏画布中打开</span>
+          </div>
+          <button class="close-btn" id="btn-close-demo-modal" type="button">×</button>
+        </div>
+
+        <div class="demo-cases-list">
+          <div class="demo-case-card" data-map-key="spectral-theorem" role="button" tabindex="0">
+            <div class="demo-case-info">
+              <strong>从特征值到谱定理</strong>
+              <span>高等代数示例 · 数学地图与 Loop 进展</span>
+            </div>
+            <span class="demo-case-btn">打开地图 →</span>
+          </div>
+
+          <div class="demo-case-card" data-map-key="intermediate-value-theorem" role="button" tabindex="0">
+            <div class="demo-case-info">
+              <strong>从闭区间套到介值定理</strong>
+              <span>数学分析示例 · 数学地图与 Loop 进展</span>
+            </div>
+            <span class="demo-case-btn">打开地图 →</span>
+          </div>
+
+          <div class="demo-case-card" data-map-key="fundamental-theorem-calculus" role="button" tabindex="0">
+            <div class="demo-case-info">
+              <strong>从积分累积函数到微积分基本定理</strong>
+              <span>微积分示例 · 数学地图与 Loop 进展</span>
+            </div>
+            <span class="demo-case-btn">打开地图 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. Real Math Map View (Full Screen Native View)
+       ======================================================================== -->
+  <div id="math-map-view" hidden>
+    <header class="map-view-topbar">
+      <div class="map-topbar-left">
+        <button class="btn-return-workbench" id="btn-return-workbench" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          返回工作台
+        </button>
+
+        <div class="map-brand-group">
+          <img src="logo-manuscript.webp" alt="CMath Logo" class="map-brand-logo">
+          <span class="map-brand-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
+          <span class="map-brand-sub">MATH MAP</span>
+          <span id="map-active-title" class="map-active-title">从特征值到谱定理</span>
+        </div>
+      </div>
+
+      <span id="map-boundary-tag" class="map-boundary-tag">高等代数示例 · 数学地图与 Loop 进展</span>
+
+      <div class="map-topbar-right">
+        <button class="map-quick-btn" id="btn-map-open-json" type="button">打开 JSON</button>
+        <button class="map-quick-btn" id="btn-map-open-demos" type="button">Demo</button>
+      </div>
+    </header>
+
+    <main class="math-map-main">
+      <div id="math-map-canvas" role="application" tabindex="0" aria-label="数学地图画布"></div>
+
+      <section class="math-map-commandbar" aria-label="数学地图工具">
+        <div class="lens-switcher" role="tablist" aria-label="地图视图">
+          <button type="button" data-lens="global" role="tab" aria-selected="true">全图</button>
+          <button type="button" data-lens="progress" role="tab" aria-selected="false">进展</button>
+        </div>
+        <label class="section-scope">
+          <span>Section</span>
+          <select id="math-map-section"><option value="all">全部</option></select>
+        </label>
+        <label class="math-map-search">
+          <input id="math-map-search" type="search" placeholder="搜索图中对象">
+        </label>
+      </section>
+
+      <div id="route-switcher" hidden aria-hidden="true">
+        <span id="final-goal-title"></span>
+        <span id="milestone-title"></span>
+        <span id="route-summary"></span>
+        <span id="route-options"></span>
+      </div>
+
+      <nav class="map-history-actions" aria-label="地图历史">
+        <button id="math-map-back" type="button" disabled aria-label="返回上一个地图位置">← <span>返回</span></button>
+        <button id="math-map-overview" type="button"><span>全图</span></button>
+      </nav>
+
+      <div id="math-map-context" class="math-map-context" aria-live="polite">
+        <strong>当前状态</strong><span>完整项目数学图显示当前结果与证明关系。</span>
+      </div>
+
+      <div class="math-map-legend-panel" aria-label="图例">
+        <div class="legend-item">
+          <span class="legend-badge badge-fact"></span>
+          <span class="legend-text">Fact</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-claim-open"></span>
+          <span class="legend-text">开放 Claim</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-claim-established"></span>
+          <span class="legend-text">已建立 Claim</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-inference"></span>
+          <span class="legend-text">Inference</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-foundation"></span>
+          <span class="legend-text">B₀ 可信 Claim</span>
+        </div>
+      </div>
+
+      <aside id="math-map-inspector" class="math-map-inspector" aria-label="数学对象详情" hidden></aside>
+
+      <section id="progress-timeline" class="progress-timeline" aria-label="Loop 进展" hidden>
+        <button id="progress-previous" type="button" disabled aria-label="查看上一轮">←</button>
+        <div>
+          <span id="progress-position">基线</span>
+          <strong id="progress-title">尚未加入新的研究子图</strong>
+          <small id="progress-summary">向前推进会把下一轮增量加入同一张图。</small>
+        </div>
+        <button id="progress-next" type="button" aria-label="查看下一轮">→</button>
+      </section>
+
+      <section id="math-map-evidence" class="math-map-evidence" aria-label="对象证据" hidden>
+        <header>
+          <div><span>证据</span><strong id="evidence-title"></strong></div>
+          <button id="close-evidence" type="button" aria-label="关闭证据">×</button>
+        </header>
+        <p id="evidence-copy"></p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Runtime Scripts -->
+  <script src="portable-maps-data.js"></script>
+  <script src="vendor/force-graph/force-graph.min.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="math-text.js"></script>
+  <script src="graph-contract.js"></script>
+  <script src="graph-canvas.js"></script>
+  <script src="math-map-semantics.js"></script>
+  <script src="math-map-naming.js"></script>
+  <script src="research-loop-progress.js"></script>
+  <script src="math-map-visual-semantics.js"></script>
+  <script src="math-map-content-loader.js"></script>
+  <script src="generic-math-map-preview-loader.js"></script>
+  <script src="math-map-project-adapter.js"></script>
+  <script src="app-v2.js"></script>
+</body>
+</html>

@@ -21,6 +21,10 @@
 }
 .math-map-topbar { position:relative; z-index:20; }
 .math-map-boundary { color:var(--muted); font-size:11px; }
+.math-map-topbar .topbar-actions { margin-left:auto; display:flex; align-items:center; gap:6px; }
+.math-map-topbar .text-button { min-height:40px; padding:0 11px; border:1px solid transparent; border-radius:8px; color:var(--board-node-ink); text-decoration:none; }
+.math-map-topbar .text-button:hover { border-color:var(--board-chip-line); background:var(--board-chip-bg); }
+.math-map-topbar .future-tool { padding:0 5px; color:var(--muted); font-size:11px; white-space:nowrap; }
 .math-map-main { position:relative; flex:1; min-height:0; overflow:hidden; background:var(--board); }
 #math-map-canvas { position:absolute; inset:0; cursor:grab; }
 #math-map-canvas:active { cursor:grabbing; }
@@ -138,7 +142,10 @@ button:focus-visible,select:focus-visible,input:focus-visible { outline:2px soli
 [hidden] { display:none !important; }
 
 @media (max-width:760px) {
-  .math-map-boundary,.math-map-topbar .topbar-actions { display:none; }
+  .math-map-boundary { display:none; }
+  .math-map-topbar .topbar-actions { gap:2px; }
+  .math-map-topbar .text-button { padding:0 7px; font-size:12px; }
+  .math-map-topbar .future-tool { display:none; }
   .math-map-commandbar { top:10px; right:10px; left:10px; flex-wrap:wrap; justify-content:center; max-width:none; transform:none; }
   .section-scope { border-left:0; }
   .math-map-search { flex:1 1 130px; }

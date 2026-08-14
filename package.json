@@ -1,0 +1,9 @@
+{
+  "name": "gamma-math-map",
+  "version": "5.0.0",
+  "private": true,
+  "description": "CMath Math Map — v4 Proof / v5 Paper Grotesque editions (static preview)",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}

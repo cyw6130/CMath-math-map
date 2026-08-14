@@ -1,0 +1,80 @@
+{
+  "schema": "agent-os.construction-ticket/v0.2",
+  "ticket_id": "ticket-20260814-kimi-provider-v1",
+  "created_at": "2026-08-14T21:30:00+08:00",
+  "repository_base_head": "576b80555dc68a1ecf79dc2bba0fdf8b873150c9",
+  "authorization": {
+    "quote": "我也想增加接入 kimi 模型的功能。比如说 kimi K3。帮我做一下吧。",
+    "source": "current Codex task"
+  },
+  "proposal_ref": "direct",
+  "frozen_item": {
+    "growth_kind": "capability",
+    "serves_goals": ["goal-1", "goal-3"],
+    "why_now": "Extend the browser-direct paper importer from a DeepSeek-specific preset to a provider-neutral OpenAI-compatible flow with a Kimi K3 preset and ephemeral user-supplied credentials.",
+    "evidence_refs": ["index.html", "app.js", "paper-import-client.js"],
+    "depends_on": ["browser-direct paper import", "Gamma mathematical map semantics", "Moonshot OpenAI-compatible API"],
+    "responsibility": {
+      "producer": "Codex main",
+      "evaluator": "focused Node tests and secret scan",
+      "acceptance_authority": "user"
+    }
+  },
+  "target": {
+    "level": "L3",
+    "board_nodes": ["browser-paper-import-model-provider"]
+  },
+  "source_snapshot": [
+    {"path": "index.html", "sha256": "1834f846320cf18527645677f05c8f2d676e5ae7ff2831486c96aad5e21d9cf2"},
+    {"path": "app.js", "sha256": "55bbc43cd9c7a3efc0c8cb826df30be036cdae86618042e989cc6b460050d66d"},
+    {"path": "paper-import-client.js", "sha256": "06a0f505ebd799d14a918b39547818765e2f35a8d5f130228442b7f4b06f917c"},
+    {"path": "README.md", "sha256": "f18b3d4abe12918f796b6eb17194e427313f5622c60f7e2d0eeffefda7ac0338"},
+    {"path": "tests/paper-import-client.test.mjs", "sha256": "4efab47c585221168187ada80e678df7488f3484b6c3e1355b3c692f5264c0ef"}
+  ],
+  "allowed_actions": [
+    {"action": "modify", "path": "index.html"},
+    {"action": "modify", "path": "app.js"},
+    {"action": "modify", "path": "paper-import-client.js"},
+    {"action": "modify", "path": "README.md"},
+    {"action": "modify", "path": "tests/paper-import-client.test.mjs"},
+    {"action": "create", "path": ".agent-os/tickets/ticket-20260814-kimi-provider-v1.json"}
+  ],
+  "acceptance": {
+    "oracle_kind": "machine-test",
+    "commands": [
+      {"kind": "test", "argv": ["node", "--test", "tests/paper-import-client.test.mjs"]},
+      {"kind": "secret-scan", "argv": ["/Users/chenyuwen/.claude/scripts/secret-scan.sh", "."]}
+    ],
+    "test_freeze": [
+      {"path": "math-map-semantics.js", "sha256": "30ed4fcd156a3ad50aa398ab007cf1ecea8d7d0109874382a9c9a03ebae2ea02"},
+      {"path": "math-map-project-adapter.js", "sha256": "a3ff6b21eb8ffba6fc20cf8f575b62f1092058b385f67de2d14b1828b48184fc"}
+    ],
+    "red_evidence": {
+      "command": "rg -n 'data-provider=\"kimi\"' index.html",
+      "exit_code": 1,
+      "recorded_at": "2026-08-14T21:30:00+08:00",
+      "expected_failure": "The provider selector has no Kimi preset and request errors are labeled DeepSeek-specific."
+    }
+  },
+  "final_oracle": {
+    "oracle_kind": "inspection",
+    "description": "The settings drawer offers Kimi with a Moonshot endpoint and editable Kimi K3 model name; paper import uses the same validated provider-neutral request path while keeping the API key ephemeral and header-only."
+  },
+  "builder": {
+    "executor": "Codex main",
+    "runtime": "isolated Agent OS worktree"
+  },
+  "execution_status": "authorized",
+  "transition_proposal": {
+    "from": "Paper import exposes no Kimi provider preset and reports DeepSeek-specific request errors.",
+    "to": "Paper import supports DeepSeek and Kimi K3 through provider-aware OpenAI-compatible presets and neutral validation errors.",
+    "authority_rule": "The API key remains ephemeral, header-only, and absent from local storage and exported Project View JSON.",
+    "evidence_refs": ["focused provider tests", "secret scan"]
+  },
+  "acceptance_decision": {
+    "status": "pending",
+    "signoff_ref": null,
+    "decided_by": "user"
+  },
+  "push_authority": "none; never push"
+}

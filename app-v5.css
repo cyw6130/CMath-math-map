@@ -1,0 +1,895 @@
+/* ============================================================================
+   CMath Math Map V5 — Paper Grotesque Edition (softened components)
+   色调：暖稿纸 / 墨色 / 品牌青 / 藏青。排版：Nunito 刊头 +
+   等宽标签 + 拆分字标。组件：纸原生。布局与 V2 完全一致。
+   ============================================================================ */
+
+/* Self-hosted Nunito (latin subset) */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400 1000;
+  font-display: swap;
+  src: url("vendor/fonts/nunito-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: italic;
+  font-weight: 400 1000;
+  font-display: swap;
+  src: url("vendor/fonts/nunito-italic.woff2") format("woff2");
+}
+
+:root {
+  --paper: #F4F1E8;          /* 暖稿纸 */
+  --paper-raised: #FBFAF4;
+  --paper-sunken: #EDE9DC;
+  --ink: #1B1A15;
+  --ink-soft: #4B483E;
+  --muted: #8A8474;
+  --line: #DDD7C6;           /* 发丝线 */
+  --line-strong: #C2BBa6;    /* 强调发丝线 */
+  --navy: #2B3A67;
+
+  --teal: #0E7C66;           /* 品牌青：唯一强调色 */
+  --teal-deep: #0A5C4C;
+  --teal-soft: rgba(14, 124, 102, 0.07);
+
+  --font-display: "Nunito", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, "Courier New", monospace;
+
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-soft: 0 10px 28px rgba(27, 26, 21, 0.10);
+}
+
+/* ---- Map canvas & chrome tokens (paper board, manuscript semantics) ------ */
+body {
+  --board: #F4F1E8;
+  --board-grid: rgba(27, 26, 21, 0.06);
+  --board-node-fill: #FBFAF4;
+  --board-node-line: #C2BBA6;
+  --board-node-ink: #1B1A15;
+  --board-inference-fill: #E7E2F7;
+  --board-inference-ink: #4C3FA8;
+  --board-edge: rgba(27, 26, 21, 0.35);
+  --board-conclusion: var(--teal);
+  --board-chip-bg: rgba(251, 250, 244, 0.92);
+  --board-chip-line: #C2BBA6;
+  --board-chip-ink: #4B483E;
+  --board-entry: #B07C1F;
+  --board-inference: #6D5BD0;
+  --board-open: #C2486B;
+  --board-counter: #B0561F;
+  --bg: var(--paper);
+  --surface: var(--paper-raised);
+  --surface-2: var(--paper-sunken);
+
+  /* Canvas palette tokens */
+  --math-map-entry: #C89B3C;
+  --math-map-entry-stroke: #1B1A15;
+  --math-map-entry-title: #1B1A15;
+  --math-map-fact: #8A8474;
+  --math-map-fact-stroke: #4B483E;
+  --math-map-claim-open: #C2486B;
+  --math-map-claim-open-title: #C2486B;
+  --math-map-claim-established: #0E7C66;
+  --math-map-claim-established-stroke: #F4F1E8;
+  --math-map-claim-established-title: #0A5C4C;
+  --math-map-inference: #6D5BD0;
+  --math-map-inference-stroke: #4C3FA8;
+  --math-map-inference-title: #4C3FA8;
+  --math-map-premise: rgba(27, 26, 21, 0.38);
+  --math-map-conclusion: #0E7C66;
+  --math-map-foundation: #1B1A15;
+  --math-map-focus-halo: rgba(14, 124, 102, 0.35);
+  --math-map-focus-title: #0A5C4C;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--teal); color: var(--paper-raised); }
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Subtle paper grain over everything */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ============================================================================
+   View Switching Control (same as V2)
+   ============================================================================ */
+
+body[data-view="workbench"] #workbench-view { display: flex !important; }
+body[data-view="workbench"] #math-map-view { display: none !important; }
+body[data-view="map"] #workbench-view { display: none !important; }
+body[data-view="map"] #math-map-view { display: block !important; }
+
+/* ============================================================================
+   1. Workbench Container & Ambient Stage (V2 positions, full-color logo)
+   ============================================================================ */
+
+#workbench-view {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow-y: auto;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(14, 124, 102, 0.05) 0%, transparent 60%),
+    var(--paper);
+}
+
+.ambient-logo-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: min(840px, 90vw);
+  max-width: 880px;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+  transition: opacity 300ms ease, transform 120ms cubic-bezier(0.2, 0.8, 0.4, 1);
+  user-select: none;
+  perspective: 1000px;
+}
+
+.ambient-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: ambientFloat 12s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 2;
+}
+
+.ambient-particle-canvas {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.3;
+}
+
+@keyframes ambientFloat {
+  0% { transform: scale(0.98) translateY(0); }
+  100% { transform: scale(1.02) translateY(-10px); }
+}
+
+/* ============================================================================
+   Topbar — hairline rule on paper
+   ============================================================================ */
+
+.workbench-topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--paper);
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-title-group { display: flex; flex-direction: column; }
+
+.brand-name-row { display: flex; align-items: baseline; gap: 8px; }
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--teal);
+}
+
+.brand-tagline { font-size: 11px; color: var(--muted); }
+
+.workbench-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--teal-deep);
+  background: var(--teal-soft);
+  border: 1px solid rgba(14, 124, 102, 0.28);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.topbar-nav-actions { display: flex; align-items: center; gap: 10px; }
+
+.topbar-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.topbar-action-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--paper-raised);
+}
+
+/* ============================================================================
+   Workbench Main — V2 centered composition, V4 typographic voice
+   ============================================================================ */
+
+.workbench-main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px 60px;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.workbench-hero {
+  text-align: center;
+  max-width: 720px;
+  margin-bottom: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-title-row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 62px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+/* Wordmark: Josefin italic teal C + bold Math — geometric arches echo the logo */
+.wm-glyph {
+  font-style: italic;
+  font-weight: 700;
+  color: var(--teal);
+  margin-right: 0.01em;
+}
+.wm-rest {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.hero-sub {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.hero-version {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.hero-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ============================================================================
+   Entrance 3-Card Grid — paper-native cards: hairline, soft lift, teal edge
+   ============================================================================ */
+
+.entrance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  width: 100%;
+}
+
+.entrance-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px;
+  cursor: pointer;
+  transition: transform 200ms var(--ease-snap), box-shadow 200ms var(--ease-snap),
+              border-color 200ms ease;
+  position: relative;
+}
+
+.entrance-card:hover,
+.entrance-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(14, 124, 102, 0.45);
+  box-shadow: var(--shadow-soft);
+}
+
+.card-icon {
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+  transition: color 150ms ease;
+}
+.entrance-card:hover .card-icon { color: var(--teal); }
+
+.entrance-card h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.entrance-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.card-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  padding-top: 14px;
+  border-top: 1px dashed var(--line-strong);
+}
+
+/* ============================================================================
+   Drawers — soft paper sheets
+   ============================================================================ */
+
+.slide-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 440px;
+  max-width: 92vw;
+  background: var(--paper-raised);
+  border-left: 1px solid var(--line-strong);
+  z-index: 500;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 48px rgba(27, 26, 21, 0.10);
+  transform: translateX(102%);
+  transition: transform 300ms var(--ease-snap);
+  overflow-y: auto;
+}
+.slide-drawer.is-open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 26px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.drawer-header h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.drawer-header small {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.close-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 7px;
+  transition: all 140ms ease;
+}
+.close-btn:hover { color: var(--teal); border-color: rgba(14, 124, 102, 0.35); }
+
+.pdf-drop-zone {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 10px;
+  padding: 34px 18px;
+  text-align: center;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  transition: all 160ms ease;
+}
+.pdf-drop-zone:hover {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+  color: var(--teal);
+}
+.pdf-drop-zone .drop-main { font-size: 13px; color: var(--ink); }
+.pdf-drop-zone .drop-sub { font-size: 11px; color: var(--muted); }
+
+.drawer-notice {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 24px;
+}
+.drawer-notice code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--paper-sunken);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.btn-primary-action {
+  width: 100%;
+  padding: 13px;
+  background: var(--teal);
+  border: none;
+  color: var(--paper-raised);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 160ms var(--ease-snap);
+}
+.btn-primary-action:hover {
+  background: var(--teal-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(14, 124, 102, 0.28);
+}
+.btn-primary-action:active { transform: translateY(0); box-shadow: none; }
+
+/* Settings Form — bottom-border-only inputs */
+.form-group { margin-bottom: 22px; }
+.form-group label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.form-input {
+  width: 100%;
+  padding: 9px 2px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 150ms ease;
+}
+.form-input:focus {
+  outline: none;
+  border-bottom-color: var(--teal);
+  box-shadow: 0 1px 0 var(--teal);
+}
+.form-input::placeholder { color: var(--muted); }
+select.form-input { cursor: pointer; }
+.form-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.provider-select-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.provider-btn {
+  flex: 1;
+  padding: 7px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 140ms ease;
+  text-align: center;
+}
+.provider-btn.is-active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--paper-raised);
+}
+.provider-btn:not(.is-active):hover { border-color: var(--teal); color: var(--teal); }
+
+/* ============================================================================
+   Demo Modal — soft dialog
+   ============================================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 26, 21, 0.35);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay[hidden] { display: none !important; }
+
+.demo-modal-dialog {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  width: 620px;
+  max-width: 100%;
+  padding: 24px;
+  box-shadow: 0 24px 64px rgba(27, 26, 21, 0.18);
+}
+
+.demo-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px dashed var(--line-strong);
+  padding-bottom: 14px;
+}
+.demo-modal-head h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.demo-modal-head span { font-size: 12px; color: var(--muted); }
+
+.demo-cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.demo-case-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 160ms var(--ease-snap);
+}
+.demo-case-card:hover,
+.demo-case-card:focus-visible {
+  background: var(--teal-soft);
+  border-color: rgba(14, 124, 102, 0.4);
+  transform: translateX(3px);
+}
+
+.demo-case-info strong {
+  display: block;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.demo-case-info span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.demo-case-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* ============================================================================
+   2. Math Map View — paper board
+   ============================================================================ */
+
+#math-map-view {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--paper);
+  z-index: 50;
+  overflow: hidden;
+  animation: mapViewIn 240ms var(--ease-snap);
+}
+@keyframes mapViewIn { from { opacity: 0; } to { opacity: 1; } }
+
+.map-view-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 16px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-strong);
+  position: relative;
+  z-index: 30;
+}
+
+.map-topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.btn-return-workbench {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--paper-raised);
+  background: var(--ink);
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.btn-return-workbench:hover { background: var(--teal); }
+
+.map-brand-group { display: flex; align-items: center; gap: 8px; }
+
+.map-brand-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.map-brand-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.map-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--teal);
+}
+
+.map-active-title {
+  font-size: 12px;
+  color: var(--ink);
+  padding-left: 10px;
+  border-left: 1px solid var(--line-strong);
+}
+
+.map-boundary-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.map-topbar-right { display: flex; align-items: center; gap: 8px; }
+
+.map-quick-btn {
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.map-quick-btn:hover { color: var(--ink); border-color: var(--ink); }
+
+#math-map-view .math-map-main {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 52px);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(14, 124, 102, 0.03) 0%, transparent 60%),
+    var(--paper);
+}
+
+#math-map-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+#math-map-view .math-map-commandbar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+#math-map-view .map-history-actions {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  z-index: 20;
+}
+
+#math-map-view .math-map-context {
+  position: absolute;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 300px !important;
+  padding: 8px 12px !important;
+  z-index: 15;
+}
+
+/* ============================================================================
+   Legend — soft paper chip
+   ============================================================================ */
+
+.math-map-legend-panel {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+}
+
+.legend-item { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.legend-badge { display: inline-block; position: relative; flex: 0 0 auto; }
+
+.badge-fact {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #8A8474; border: 1.5px solid #4B483E;
+}
+.badge-claim-open {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--paper-raised); border: 2.2px solid #C2486B;
+}
+.badge-claim-established {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #0E7C66; border: 1.5px solid var(--paper-raised);
+  outline: 1px solid #0E7C66;
+}
+.badge-inference {
+  width: 10px; height: 10px;
+  background: #6D5BD0; border: 1.5px solid #4C3FA8;
+  transform: rotate(45deg);
+}
+.badge-foundation {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #0E7C66; border: 2.5px solid var(--paper-raised);
+  outline: 1.5px solid var(--ink);
+}
+
+.legend-text { font-size: 11px; font-weight: 500; color: var(--ink-soft); }
+
+/* ============================================================================
+   Motion discipline & responsive
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-logo-img { animation: none; }
+  #math-map-view { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+@media (max-width: 768px) {
+  .entrance-grid { grid-template-columns: 1fr; }
+  .workbench-topbar { padding: 0 14px; height: 54px; }
+  .workbench-badge, .brand-tagline { display: none; }
+  .workbench-main { padding: 24px 16px 40px; }
+  .hero-title { font-size: 42px; }
+  .slide-drawer { width: 100vw; }
+  .map-boundary-tag, .map-brand-group { display: none; }
+  .math-map-legend-panel {
+    right: 10px; left: 10px; bottom: 10px;
+    flex-wrap: wrap; justify-content: center;
+    gap: 8px 12px; padding: 8px 10px;
+  }
+  #math-map-view .map-history-actions { bottom: 88px; }
+  #math-map-view .math-map-context {
+    right: 10px; bottom: 142px; left: 10px;
+    max-width: none !important; transform: none;
+  }
+}

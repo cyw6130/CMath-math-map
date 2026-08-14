@@ -105,6 +105,7 @@
     if (!previewPanel || !previewInput || !previewStatus) fail("预览文件入口缺失");
 
     document.documentElement.dataset.contentMapId = "preview";
+    document.body.dataset.mapMode = "preview";
     document.title = "Gamma 数学地图 · 本地预览";
     document.querySelector("#generic-map-title").textContent = "本地预览";
     document.querySelector("#generic-map-boundary").textContent = "浏览器本地读取 · 不写入项目";
@@ -132,6 +133,7 @@
         });
         previewStatus.textContent = "校验通过，正在绘制全图…";
         await activatePreview(result);
+        document.body.dataset.mapMode = "preview-ready";
         previewPanel.hidden = true;
       } catch (error) {
         showError(error.message);
@@ -145,7 +147,11 @@
 
   if (!registry || registry.schema !== "cmath-gamma.generic-math-map-runtime-registry/v0.1"
       || !Array.isArray(registry.maps) || !registry.maps.length) {
-    fail("通用地图 registry 缺失或不兼容");
+    const importUrl = new URL(window.location.href);
+    importUrl.search = "";
+    importUrl.searchParams.set("preview", "1");
+    window.location.replace(importUrl.toString());
+    return;
   }
 
   const requestedMapId = pageUrl.searchParams.get("map");

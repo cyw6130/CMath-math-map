@@ -1,0 +1,383 @@
+/* ============================================================================
+   CMath Math Map V4 — Application Logic
+   ============================================================================ */
+
+(() => {
+  "use strict";
+
+  const body = document.body;
+  const paperDrawer = document.querySelector("#paper-drawer");
+  const settingsDrawer = document.querySelector("#settings-drawer");
+  const demoModal = document.querySelector("#demo-modal");
+  const localJsonInput = document.querySelector("#local-json-file-input");
+
+  // DOM Elements for Map Topbar
+  const mapActiveTitle = document.querySelector("#map-active-title");
+  const mapBoundaryTag = document.querySelector("#map-boundary-tag");
+  const btnReturnWorkbench = document.querySelector("#btn-return-workbench");
+
+  // Settings Elements
+  const providerBtns = document.querySelectorAll(".provider-btn");
+  const apiEndpointInput = document.querySelector("#api-endpoint-input");
+  const modelSelect = document.querySelector("#model-select");
+  const customModelGroup = document.querySelector("#custom-model-group");
+  const customModelInput = document.querySelector("#custom-model-input");
+  const SESSION_MAP_KEY = "cmath.math-map.session-map";
+  let mapRuntimeMounted = false;
+
+  const PROVIDER_CONFIGS = {
+    deepseek: {
+      endpoint: "https://api.deepseek.com/v1",
+      models: [
+        { value: "deepseek-v4-flash", label: "deepseek-v4-flash (推荐 · 快速高效)", default: true },
+        { value: "deepseek-v4-pro", label: "deepseek-v4-pro (深度推理)" },
+        { value: "custom", label: "自定义模型名称..." }
+      ]
+    },
+    openai: {
+      endpoint: "https://api.openai.com/v1",
+      models: [
+        { value: "gpt-4o", label: "gpt-4o (旗舰通用)", default: true },
+        { value: "gpt-4o-mini", label: "gpt-4o-mini (轻量高效)" },
+        { value: "o1", label: "o1 (高阶推理)" },
+        { value: "custom", label: "自定义模型名称..." }
+      ]
+    },
+    gemini: {
+      endpoint: "https://generativelanguage.googleapis.com/v1beta",
+      models: [
+        { value: "gemini-2.5-flash", label: "gemini-2.5-flash (快速响应)", default: true },
+        { value: "gemini-2.5-pro", label: "gemini-2.5-pro (深度多模态)" },
+        { value: "custom", label: "自定义模型名称..." }
+      ]
+    },
+    custom: {
+      endpoint: "",
+      models: [
+        { value: "custom", label: "自定义模型名称...", default: true }
+      ]
+    }
+  };
+
+  function updateProviderSettings(providerKey) {
+    providerBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.provider === providerKey));
+    const config = PROVIDER_CONFIGS[providerKey] || PROVIDER_CONFIGS.deepseek;
+    
+    if (providerKey !== "custom" || !apiEndpointInput.value) {
+      apiEndpointInput.value = config.endpoint;
+    }
+    
+    modelSelect.innerHTML = "";
+    config.models.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m.value;
+      opt.textContent = m.label;
+      if (m.default) opt.selected = true;
+      modelSelect.appendChild(opt);
+    });
+
+    handleModelChange();
+  }
+
+  function handleModelChange() {
+    const isCustom = modelSelect.value === "custom";
+    if (customModelGroup) {
+      customModelGroup.hidden = !isCustom;
+    }
+  }
+
+  providerBtns.forEach(btn => {
+    btn.addEventListener("click", () => updateProviderSettings(btn.dataset.provider));
+  });
+
+  modelSelect?.addEventListener("change", handleModelChange);
+
+  // Initialize with DeepSeek
+  updateProviderSettings("deepseek");
+
+  // Drawer / Modal triggers
+  function closeAllPanels() {
+    paperDrawer.classList.remove("is-open");
+    settingsDrawer.classList.remove("is-open");
+    demoModal.hidden = true;
+  }
+
+  // --- Workbench Entrance 1: Upload Paper PDF ---
+  document.querySelector("#card-upload-paper")?.addEventListener("click", () => {
+    closeAllPanels();
+    paperDrawer.classList.add("is-open");
+  });
+  document.querySelector("#btn-close-paper-drawer")?.addEventListener("click", closeAllPanels);
+  document.querySelector("#btn-start-extract")?.addEventListener("click", () => {
+    alert("模拟论文解析完成！Project View JSON 已生成并下载到您的本地下载文件夹。\n\n您现在可以在工作台点击『打开本地 JSON』载入图谱。");
+    closeAllPanels();
+  });
+
+  // --- Workbench Entrance 2: Open Local JSON ---
+  document.querySelector("#card-open-json")?.addEventListener("click", () => {
+    localJsonInput.click();
+  });
+  document.querySelector("#btn-map-open-json")?.addEventListener("click", () => {
+    localJsonInput.click();
+  });
+
+  localJsonInput?.addEventListener("change", async (event) => {
+    const [file] = event.target.files ?? [];
+    if (!file) return;
+    try {
+      if (!window.GammaGenericMathMapPreviewLoader || !window.GammaMathMapContentLoader || !window.GammaMathMapProjectAdapter) {
+        throw new Error("数学地图核心能力模块尚未完全就绪，请刷新重试");
+      }
+      const result = await window.GammaGenericMathMapPreviewLoader.loadFile(file, {
+        loader: window.GammaMathMapContentLoader,
+        adapter: window.GammaMathMapProjectAdapter,
+      });
+      openMapWithData(result.data, result.definition.boundaryLabel, result.definition.title);
+    } catch (err) {
+      alert(`无法载入本地 JSON 文件：\n${err.message}`);
+    } finally {
+      localJsonInput.value = "";
+    }
+  });
+
+  // --- Workbench Entrance 3: Curated Demos ---
+  function openDemoModal() {
+    closeAllPanels();
+    demoModal.hidden = false;
+  }
+
+  document.querySelector("#card-curated-demos")?.addEventListener("click", openDemoModal);
+  document.querySelector("#btn-topbar-demos")?.addEventListener("click", openDemoModal);
+  document.querySelector("#btn-map-open-demos")?.addEventListener("click", () => {
+    if (!mapRuntimeMounted) {
+      openDemoModal();
+      return;
+    }
+    const next = new URL(window.location.href);
+    next.search = "";
+    next.searchParams.set("demos", "1");
+    window.location.assign(next);
+  });
+  document.querySelector("#btn-close-demo-modal")?.addEventListener("click", closeAllPanels);
+
+  // Bind the 3 Curated Demos
+  document.querySelectorAll(".demo-case-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const mapKey = card.dataset.mapKey;
+      loadCuratedDemo(mapKey);
+    });
+  });
+
+  function loadCuratedDemo(mapKey) {
+    if (!window.CMATH_PORTABLE_MAPS || !window.CMATH_PORTABLE_MAPS[mapKey]) {
+      alert(`未找到指定的案例数据：${mapKey}`);
+      return;
+    }
+    const data = window.CMATH_PORTABLE_MAPS[mapKey];
+    const boundary = data.channelOptions?.boundaryLabel || "数学地图示例 · Loop 进展";
+    const title = data.project?.title || "数学地图";
+    openMapWithData(data, boundary, title, mapKey);
+  }
+
+  // --- Topbar Settings Trigger ---
+  document.querySelector("#btn-topbar-settings")?.addEventListener("click", () => {
+    closeAllPanels();
+    settingsDrawer.classList.add("is-open");
+  });
+  document.querySelector("#btn-close-settings")?.addEventListener("click", closeAllPanels);
+
+  // --- Map Core Activation & Rendering ---
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error(`无法加载 ${src}`));
+      document.body.appendChild(script);
+    });
+  }
+
+  function persistMapForReload(data, boundaryLabel, title) {
+    sessionStorage.setItem(SESSION_MAP_KEY, JSON.stringify({ data, boundaryLabel, title }));
+    const next = new URL(window.location.href);
+    next.search = "";
+    next.searchParams.set("session-map", "1");
+    window.location.assign(next);
+  }
+
+  async function openMapWithData(data, boundaryLabel, title, mapKey = null) {
+    closeAllPanels();
+
+    if (mapRuntimeMounted) {
+      persistMapForReload(data, boundaryLabel, title);
+      return;
+    }
+
+    // 1. Update titles
+    mapActiveTitle.textContent = title;
+    mapBoundaryTag.textContent = boundaryLabel;
+    document.title = `CMath · ${title}`;
+
+    // 2. Switch app state to 'map'
+    const mapView = document.querySelector("#math-map-view");
+    const workbenchView = document.querySelector("#workbench-view");
+    if (mapView) mapView.hidden = false;
+    if (workbenchView) workbenchView.hidden = true;
+    body.setAttribute("data-view", "map");
+
+    // 3. Create Model
+    const adapter = window.GammaMathMapProjectAdapter;
+    const adapterOptions = data.channelOptions?.adapterOptions ?? {};
+    const model = adapter.create(data, adapterOptions);
+    window.GammaMathMapLabModel = model;
+    window.CMATH_PROJECT_PRESENTATION = {
+      projectId: data.project?.id,
+      channelOptions: data.channelOptions ?? {},
+    };
+
+    const sectionSelect = document.querySelector("#math-map-section");
+    if (sectionSelect) {
+      sectionSelect.replaceChildren(
+        new Option("全部", "all"),
+        ...model.sections.map((section) => new Option(section.label, section.id)),
+      );
+    }
+
+    // 4. Activate the unchanged map controller only after the selected model exists.
+    try {
+      await loadScript("math-map-lab.js");
+      mapRuntimeMounted = true;
+    } catch (error) {
+      console.error(error);
+      alert(`数学地图加载失败：\n${error.message}`);
+    }
+  }
+
+  // --- Return to Workbench ---
+  btnReturnWorkbench?.addEventListener("click", () => {
+    const next = new URL(window.location.href);
+    next.search = "";
+    window.location.assign(next);
+  });
+
+  // --- Dynamic Ambient FX: Mouse Parallax & Stardust Particles ---
+  (() => {
+    const stage = document.querySelector("#ambient-logo-stage");
+    const canvas = document.querySelector("#ambient-particle-canvas");
+    const workbench = document.querySelector("#workbench-view");
+    if (!stage || !workbench) return;
+
+    // 1. Mouse Parallax Tracker
+    let mouseX = 0, mouseY = 0;
+    let currentX = 0, currentY = 0;
+    let isTracking = true;
+
+    window.addEventListener("mousemove", (e) => {
+      const { innerWidth, innerHeight } = window;
+      mouseX = ((e.clientX / innerWidth) - 0.5) * 36;
+      mouseY = ((e.clientY / innerHeight) - 0.5) * 28;
+    }, { passive: true });
+
+    function updateParallax() {
+      if (document.body.dataset.view === "workbench") {
+        currentX += (mouseX - currentX) * 0.06;
+        currentY += (mouseY - currentY) * 0.06;
+        const rotY = (currentX / 36) * 4.5;
+        const rotX = -(currentY / 28) * 4.5;
+        stage.style.transform = `translate3d(calc(-50% + ${currentX.toFixed(2)}px), calc(-50% + ${currentY.toFixed(2)}px), 0) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+      }
+      requestAnimationFrame(updateParallax);
+    }
+    requestAnimationFrame(updateParallax);
+
+    // 2. Mathematical Stardust Particle Field
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      let width = (canvas.width = canvas.offsetWidth || 800);
+      let height = (canvas.height = canvas.offsetHeight || 800);
+
+      window.addEventListener("resize", () => {
+        if (!canvas) return;
+        width = canvas.width = canvas.offsetWidth || 800;
+        height = canvas.height = canvas.offsetHeight || 800;
+      }, { passive: true });
+
+      const particles = Array.from({ length: 38 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: Math.random() * 1.8 + 0.8,
+        alpha: Math.random() * 0.6 + 0.2,
+        phase: Math.random() * Math.PI * 2,
+        color: Math.random() > 0.35 ? "45, 212, 191" : "255, 255, 255",
+      }));
+
+      function renderParticles() {
+        if (document.body.dataset.view === "workbench" && ctx) {
+          ctx.clearRect(0, 0, width, height);
+
+          // Update & draw particles
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.phase += 0.025;
+
+            if (p.x < 0) p.x = width;
+            if (p.x > width) p.x = 0;
+            if (p.y < 0) p.y = height;
+            if (p.y > height) p.y = 0;
+
+            const dynamicAlpha = Math.max(0.1, p.alpha + Math.sin(p.phase) * 0.25);
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${p.color}, ${dynamicAlpha.toFixed(2)})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = `rgba(${p.color}, 0.5)`;
+            ctx.fill();
+
+            // Connect nearby particles with subtle constellation lines
+            for (let j = i + 1; j < particles.length; j++) {
+              const p2 = particles[j];
+              const dx = p.x - p2.x;
+              const dy = p.y - p2.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 85) {
+                const lineAlpha = (1 - dist / 85) * 0.18;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = `rgba(45, 212, 191, ${lineAlpha.toFixed(2)})`;
+                ctx.lineWidth = 0.75;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+        requestAnimationFrame(renderParticles);
+      }
+      requestAnimationFrame(renderParticles);
+    }
+  })();
+
+  // Default initial demo trigger helper if requested via URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialMap = urlParams.get("map");
+  const sessionMap = urlParams.get("session-map") === "1";
+  if (sessionMap) {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(SESSION_MAP_KEY));
+      sessionStorage.removeItem(SESSION_MAP_KEY);
+      if (!saved?.data) throw new Error("临时地图数据不存在");
+      openMapWithData(saved.data, saved.boundaryLabel, saved.title);
+    } catch (error) {
+      alert(`无法恢复本地数学地图：\n${error.message}`);
+    }
+  } else if (initialMap && window.CMATH_PORTABLE_MAPS?.[initialMap]) {
+    loadCuratedDemo(initialMap);
+  } else if (urlParams.get("demos") === "1") {
+    openDemoModal();
+  }
+})();
