@@ -22,8 +22,10 @@ python3 -m http.server 8000
 
 ## 从论文导出 JSON
 
-在「模型 API 配置」中临时输入 DeepSeek API Key，然后点击「上传数学论文 PDF」。浏览器使用
-内置的 `pdfjs-dist@6.2.108` 提取逐页文本，直接请求配置的 DeepSeek 兼容端点，校验模型输出并下载
+在「模型 API 配置」中选择 DeepSeek、Kimi 或其他兼容服务，临时输入对应 API Key，然后点击
+「上传数学论文 PDF」。Kimi 预设使用 Moonshot 端点 `https://api.moonshot.cn/v1` 和可编辑的
+`kimi-k3` 模型名称。浏览器使用内置的 `pdfjs-dist@6.2.108` 提取逐页文本，直接请求配置的
+OpenAI-compatible 端点，校验模型输出并下载
 `paper-project-view.json`。API Key 只用于本次导入，不写入本地存储或导出的 JSON，请求结束后
 输入框会被清空。
 
@@ -41,5 +43,5 @@ python3 -m http.server 8000
 ## 隐私
 
 打开本地 JSON 时，文件只经浏览器 File API 在内存中校验、投影和渲染，不发生上传。
-只有用户明确执行 PDF 导出时，提取出的论文内容才会发送到配置的 DeepSeek 兼容端点。
+只有用户明确执行 PDF 导出时，提取出的论文内容才会发送到当前配置的模型服务端点。
 API Key 不会写入本地存储、导出的 JSON 或本仓库。

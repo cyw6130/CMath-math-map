@@ -105,10 +105,10 @@
   }
 
   function parseModelJson(content) {
-    if (typeof content !== "string" || !content.trim()) throw new Error("DeepSeek 没有返回 JSON 内容");
+    if (typeof content !== "string" || !content.trim()) throw new Error("模型服务没有返回 JSON 内容");
     const trimmed = content.trim().replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "");
     try { return JSON.parse(trimmed); }
-    catch (error) { throw new Error(`DeepSeek 返回的内容不是有效 JSON：${error.message}`); }
+    catch (error) { throw new Error(`模型服务返回的内容不是有效 JSON：${error.message}`); }
   }
 
   function objectArray(value, label) {
@@ -120,7 +120,7 @@
   }
 
   function paperProjectView(raw, { fileName = "paper.pdf" } = {}) {
-    if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("DeepSeek 输出必须是 JSON 对象");
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("模型服务输出必须是 JSON 对象");
     const entries = objectArray(raw.entries, "entries");
     const inferences = objectArray(raw.inferences ?? [], "inferences");
     const ids = new Set();
@@ -195,7 +195,7 @@
       semantics.validateInference(normalized, entryById);
       return normalized;
     });
-    if (!normalizedEntries.length) throw new Error("DeepSeek 没有提取出任何数学 Entry");
+    if (!normalizedEntries.length) throw new Error("模型服务没有提取出任何数学 Entry");
     const initialFocusId = normalizedEntries.find((entry) => entry.entryClass === "claim")?.id
       ?? normalizedEntries[0].id;
     const stem = String(fileName).replace(/\.pdf$/iu, "").replace(/[^a-z0-9]+/giu, "-").replace(/^-+|-+$/gu, "").toLowerCase() || "paper";
@@ -219,10 +219,11 @@
     };
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, fileName, pageCount, text, fetchImpl = globalThis.fetch, signal } = {}) {
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, fetchImpl = globalThis.fetch, signal } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
+    const serviceName = nonEmpty(providerLabel, "模型服务名称");
     const targetUrl = endpointUrl(endpoint);
 
     async function executeChatCall(messages) {
@@ -243,11 +244,11 @@
       if (!response.ok) {
         let message = responseText.slice(-500);
         try { message = JSON.parse(responseText).error?.message || message; } catch { /* use response text */ }
-        throw new Error(`DeepSeek 请求失败（HTTP ${response.status}）：${message || "没有错误详情"}`);
+        throw new Error(`${serviceName} 请求失败（HTTP ${response.status}）：${message || "没有错误详情"}`);
       }
       let envelope;
       try { envelope = JSON.parse(responseText); }
-      catch { throw new Error("DeepSeek 响应不是有效 JSON"); }
+      catch { throw new Error(`${serviceName} 响应不是有效 JSON`); }
       const content = envelope.choices?.[0]?.message?.content;
       return parseModelJson(content);
     }
@@ -278,7 +279,7 @@
         const repaired = await executeChatCall(repairMessages);
         return paperProjectView(repaired, { fileName });
       } catch (retryError) {
-        throw new Error(`DeepSeek 论文导入失败（已重试 1 次）：${retryError.message}`);
+        throw new Error(`${serviceName} 论文导入失败（已重试 1 次）：${retryError.message}`);
       }
     }
   }

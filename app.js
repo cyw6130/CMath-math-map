@@ -25,9 +25,11 @@
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   let mapRuntimeMounted = false;
+  let activeProviderKey = "deepseek";
 
   const PROVIDER_CONFIGS = {
     deepseek: {
+      label: "DeepSeek",
       endpoint: "https://api.deepseek.com/v1",
       models: [
         { value: "deepseek-chat", label: "deepseek-chat (推荐 · 快速高效)", default: true },
@@ -35,7 +37,16 @@
         { value: "custom", label: "自定义模型名称..." }
       ]
     },
+    kimi: {
+      label: "Kimi",
+      endpoint: "https://api.moonshot.cn/v1",
+      models: [
+        { value: "kimi-k3", label: "kimi-k3", default: true },
+        { value: "custom", label: "自定义模型名称..." }
+      ]
+    },
     openai: {
+      label: "OpenAI",
       endpoint: "https://api.openai.com/v1",
       models: [
         { value: "gpt-4o", label: "gpt-4o (旗舰通用)", default: true },
@@ -45,6 +56,7 @@
       ]
     },
     gemini: {
+      label: "Gemini",
       endpoint: "https://generativelanguage.googleapis.com/v1beta",
       models: [
         { value: "gemini-2.5-flash", label: "gemini-2.5-flash (快速响应)", default: true },
@@ -53,6 +65,7 @@
       ]
     },
     custom: {
+      label: "自定义模型服务",
       endpoint: "",
       models: [
         { value: "custom", label: "自定义模型名称...", default: true }
@@ -61,8 +74,9 @@
   };
 
   function updateProviderSettings(providerKey) {
+    activeProviderKey = PROVIDER_CONFIGS[providerKey] ? providerKey : "deepseek";
     providerBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.provider === providerKey));
-    const config = PROVIDER_CONFIGS[providerKey] || PROVIDER_CONFIGS.deepseek;
+    const config = PROVIDER_CONFIGS[activeProviderKey];
     
     if (providerKey !== "custom" || !apiEndpointInput.value) {
       apiEndpointInput.value = config.endpoint;
@@ -141,7 +155,7 @@
     }
     const apiKey = apiKeyInput?.value.trim();
     if (!apiKey) {
-      alert("请先在『模型 API 配置』中临时输入 DeepSeek API Key。");
+      alert(`请先在『模型 API 配置』中临时输入 ${PROVIDER_CONFIGS[activeProviderKey].label} API Key。`);
       return;
     }
     const model = modelSelect.value === "custom" ? customModelInput.value.trim() : modelSelect.value;
@@ -158,6 +172,7 @@
         endpoint: apiEndpointInput.value,
         apiKey,
         model,
+        providerLabel: PROVIDER_CONFIGS[activeProviderKey].label,
         fileName: selectedPaperPdf.name,
         pageCount: paper.pageCount,
         text: paper.text,
@@ -173,7 +188,7 @@
       closeAllPanels();
     } catch (error) {
       const message = error instanceof TypeError
-        ? "浏览器无法直接连接 DeepSeek。请检查网络、API 服务地址以及服务端的跨域请求设置。"
+        ? `浏览器无法直接连接 ${PROVIDER_CONFIGS[activeProviderKey].label}。请检查网络、API 服务地址以及服务端的跨域请求设置。`
         : error.message;
       alert(message);
     } finally {
