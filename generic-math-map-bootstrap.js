@@ -135,7 +135,7 @@
         previewPanel.hidden = true;
       } catch (error) {
         showError(error.message);
-        previewStatus.textContent = "未载入；请修正 JSON 后重新选择。";
+        previewStatus.textContent = `未载入：${error?.message ?? error}`;
         previewInput.disabled = false;
         previewInput.value = "";
       }
