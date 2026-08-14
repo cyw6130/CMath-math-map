@@ -23,6 +23,7 @@
   const customModelGroup = document.querySelector("#custom-model-group");
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
+  const PAPER_IMPORT_ENDPOINT = window.CMATH_PAPER_IMPORT_ENDPOINT || "http://127.0.0.1:4317/v1/import-paper";
   let mapRuntimeMounted = false;
 
   const PROVIDER_CONFIGS = {
@@ -108,9 +109,69 @@
     paperDrawer.classList.add("is-open");
   });
   document.querySelector("#btn-close-paper-drawer")?.addEventListener("click", closeAllPanels);
-  document.querySelector("#btn-start-extract")?.addEventListener("click", () => {
-    alert("模拟论文解析完成！Project View JSON 已生成并下载到您的本地下载文件夹。\n\n您现在可以在工作台点击『打开本地 JSON』载入图谱。");
-    closeAllPanels();
+  const pdfDropZone = paperDrawer?.querySelector(".pdf-drop-zone");
+  const startExtractButton = document.querySelector("#btn-start-extract");
+  const paperPdfInput = document.createElement("input");
+  paperPdfInput.type = "file";
+  paperPdfInput.accept = ".pdf,application/pdf";
+  paperPdfInput.hidden = true;
+  paperDrawer?.appendChild(paperPdfInput);
+  let selectedPaperPdf = null;
+
+  function selectPaperPdf(file) {
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith(".pdf") || file.size <= 0 || file.size > 25 * 1024 * 1024) {
+      selectedPaperPdf = null;
+      alert("请选择一份不超过 25 MB 的 PDF 论文。");
+      return;
+    }
+    selectedPaperPdf = file;
+    pdfDropZone.setAttribute("aria-label", `已选择 ${file.name}`);
+  }
+
+  pdfDropZone?.addEventListener("click", () => paperPdfInput.click());
+  paperPdfInput?.addEventListener("change", (event) => selectPaperPdf(event.target.files?.[0]));
+  pdfDropZone?.addEventListener("dragover", (event) => event.preventDefault());
+  pdfDropZone?.addEventListener("drop", (event) => selectPaperPdf(event.dataTransfer?.files?.[0]));
+
+  startExtractButton?.addEventListener("click", async () => {
+    if (!selectedPaperPdf) {
+      paperPdfInput.click();
+      return;
+    }
+    const originalLabel = startExtractButton.textContent;
+    startExtractButton.disabled = true;
+    startExtractButton.textContent = "正在解析论文…";
+    try {
+      const response = await fetch(PAPER_IMPORT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/pdf",
+          "X-CMath-Filename": encodeURIComponent(selectedPaperPdf.name),
+        },
+        body: selectedPaperPdf,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `论文导入失败（HTTP ${response.status}）`);
+      if (!result.projectView) throw new Error("本机服务没有返回 Project View JSON");
+      const blob = new Blob([`${JSON.stringify(result.projectView, null, 2)}\n`], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.fileName || "candidate-project-view.json";
+      link.click();
+      URL.revokeObjectURL(url);
+      alert("论文解析完成，candidate-project-view.json 已下载。\n\n现在可以点击『打开本地 JSON』载入图谱。");
+      closeAllPanels();
+    } catch (error) {
+      const message = error instanceof TypeError
+        ? "无法连接本机论文导入服务。请先运行 tools/paper-import-server.mjs。"
+        : error.message;
+      alert(message);
+    } finally {
+      startExtractButton.disabled = false;
+      startExtractButton.textContent = originalLabel;
+    }
   });
 
   // --- Workbench Entrance 2: Open Local JSON ---
