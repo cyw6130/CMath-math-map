@@ -74,7 +74,7 @@ export function evaluateHopfPaperBenchmark(candidateView, { isCuratedGold = fals
   // 2. The two transversality B0 results are present
   const transversalityExtEntry = findEntryByConcept(b0Claims, {
     id: "paper:b0:transversality-extension",
-    titleKeywords: ["横截延拓", "Transversality Extension"],
+    titleKeywords: ["横截延拓", "横截性扩张", "Transversality Extension"],
     entryClass: "claim",
   });
   assert.ok(transversalityExtEntry, "B0 must contain the Transversality Extension Theorem");
@@ -103,7 +103,7 @@ export function evaluateHopfPaperBenchmark(candidateView, { isCuratedGold = fals
   // (a) Extension Theorem proof uses Transversality Extension
   const extensionThm = findEntryByConcept(derivedClaims, {
     id: "paper:thm:extension",
-    titleKeywords: ["延拓定理", "Extension Theorem"],
+    titleKeywords: ["延拓定理", "扩张定理", "Extension Theorem"],
     entryClass: "claim",
   });
   assert.ok(extensionThm, "Must contain the Extension Theorem (延拓定理)");

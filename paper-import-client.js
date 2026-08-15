@@ -213,12 +213,13 @@
       + semanticRulesText()
       + `- 【证明依赖】论文中实际给出证明的 Claim 才输出 proof。premises 只列论文证明实际使用且已在 Entry 目录中的直接依赖 id；proof 的 conclusion 严禁同时出现在自己的 premises 中，严禁产生循环证明依赖，也不要为闭合地图而补造依赖。\n`
       + `- 【证明覆盖】论文中给出证明的每个 Claim 通常都应有对应 proof；不要因为证明简短或显然而省略（推论的一句话证明也算）。\n`
+      + `- 【闭包一致性】地图会按「Fact 与 b0 可用、proof 沿依赖传递建立」做闭包推导。逐项检查：任何被某条 proof 的 premises 引用的 Claim，必须要么自己有 proof、要么列入 b0。若某个被依赖的 Claim 两者都不是：论文证明了它就补 proof；论文未证明但直接引用，就通过 fixedEntries 给它补 "external":true 与非空 source 并把它列入 b0；论文明确未证明的 Claim（猜想/开放问题）不得作为 premise 使用。\n`
       + `- 没有被 proof 建立的 Claim 不要改动、不要提及；地图会把它派生为 open。\n`
       + `- 只有论文中实际存在的证明关系才输出 proof；只有实际的 Fact-to-Fact 组织关系才输出 organization。\n`
       + `- 【主目标】必须输出 mainTargetEntryId，指明本文证明或探讨的核心目标 Claim（必须是 Entry 目录中的 Claim id，例如主定理），不能指向 Fact 或未列出的 id。\n`
       + `- 【B0 清单】必须输出 b0 数组，逐项列出 Entry 目录中所有标记「外部结果」的 Claim id。论文自己证明的结果与 Fact 绝不能放进 b0；不要编造目录中不存在的 id。\n`
       + `- 【B0 复核】逐项复核 Entry 的 external 标记：分段提取时模型只看得到局部页段，可能把「本文后文实际给出了证明」的结果误标为外部结果。若你在全文中找到该结果的证明，绝不能把它放进 b0。\n`
-      + `- 【完整性核对】输出前先核对全文：论文中明确编号或命名的 definition/algorithm/calculation/lemma/proposition/theorem 是否都已在 Entry 目录中？论文论证实际调用的外部结果（如引言中作为基础引用的既有公式/定理）是否都已收录并标记？若有遗漏，必须在 JSON 顶层 "fixedEntries" 数组中补充完整条目（新 id、type/num/name/statement/page，外部结果另加 "external":true 与非空 source），补充的外部结果 id 同时列入 b0。\n`
+      + `- 【完整性核对】输出前先核对全文：论文中明确编号或命名的 definition/algorithm/calculation/lemma/proposition/theorem 是否都已在 Entry 目录中？论文论证实际调用的外部结果是否都已收录并标记？若有遗漏，必须在 JSON 顶层 "fixedEntries" 数组中补充完整条目（新 id、type/num/name/statement/page，外部结果另加 "external":true 与非空 source），补充的外部结果 id 同时列入 b0。特别注意：只在证明正文中被提及、调用的外部定理/引理（包括教材引用，如「由 Transversality Extension Theorem（GP 第 72 页）可得」）也属于论证实际调用的外部结果，必须收录。\n`
       + `- premises 与 conclusion 只能使用 Entry 目录中列出的 id。若你发现某个前提或结论确实不在目录中（提取阶段遗漏），不要编造 id：在 JSON 顶层加 "fixedEntries" 数组补充该条目（完整紧凑字段：id/type/name/statement/page），然后在 premises/conclusion 中引用它。\n`
       + `- argument 最多 400 个字符，概括证明或组织要点；page 填写该关系在正文出现的页码（整数，只引用文本中的 [[PAGE N]] 页码）。\n`
       + `- Inference 总数建议在 30 条以内，只保留论文中明确存在的证明/组织关系。\n\n`
@@ -424,7 +425,10 @@
 
   // 诊断：在规范化后的输出上收集全部问题（只报告，不修改），
   // 问题清单会返还模型做定点修复。
-  function collectRawProjectViewIssues(raw) {
+  // includeOpenPremiseIssues：是否报告「被依赖但未建立」的 Claim（无 proof、不在 b0、
+  // 却被其他 proof 引用）。该类问题依赖模型对论文的理解，首轮报告一次即可，
+  // 模型坚持保留（如猜想）时不应反复回炉。
+  function collectRawProjectViewIssues(raw, { includeOpenPremiseIssues = true } = {}) {
     const issues = [];
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return ["输出必须是 JSON 对象"];
     if (!Array.isArray(raw.entries)) return ["输出缺少 entries 数组"];
@@ -552,6 +556,26 @@
       issues.push("未输出 projectTitle");
     } else if (!hasBalancedMathDelimiters(raw.projectTitle)) {
       issues.push("projectTitle 的数学公式定界符 $ 未配对");
+    }
+
+    // 闭包一致性：被 proof 依赖的 Claim 必须要么自己有 proof、要么在 b0
+    if (includeOpenPremiseIssues) {
+      const b0Set = new Set(Array.isArray(b0List) ? b0List.map((id) => String(id).trim()) : []);
+      const provedIds = new Set(inferenceList
+        .filter((inf) => inf?.operationKind === "proof" && typeof inf?.conclusion === "string")
+        .map((inf) => inf.conclusion.trim()));
+      const reliedUpon = new Set();
+      inferenceList
+        .filter((inf) => inf?.operationKind === "proof" && Array.isArray(inf?.premises))
+        .forEach((inf) => inf.premises.forEach((id) => {
+          if (typeof id === "string") reliedUpon.add(id.trim());
+        }));
+      for (const id of reliedUpon) {
+        const entry = entryById.get(id);
+        if (entry?.entryClass === "claim" && !provedIds.has(id) && !b0Set.has(id)) {
+          issues.push(`Claim ${id}（${entry.title}）被证明引用但自身未建立（既无 proof 也不在 b0）：若论文证明了它请补对应 proof；若为外部引用结果请用 fixedEntries 补 "external":true 与 source 并列入 b0；若论文明确未证明则不应作为 premise`);
+        }
+      }
     }
     return issues;
   }
@@ -1296,7 +1320,8 @@
                 inferences: Array.isArray(assembly.inferences) ? assembly.inferences : [],
               };
               const { raw: normalized } = normalizeRawProjectView(merged, { fileName });
-              issues = collectRawProjectViewIssues(normalized);
+              // 「被依赖但未建立」只在首轮诊断报告：模型坚持保留（如猜想）时不反复回炉
+              issues = collectRawProjectViewIssues(normalized, { includeOpenPremiseIssues: round === 0 });
               lastMerged = normalized;
               if (!issues.length) {
                 notify("validate", {});

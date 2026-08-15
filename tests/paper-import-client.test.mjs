@@ -524,7 +524,7 @@ test("keeps an unproved formal Claim open without requesting a proof-completion 
     fetchImpl,
     onStage: (stage) => stages.push(stage),
   });
-  assert.equal(calls.length, 3); // 分段提取 + 整合 + 装配各一次
+  assert.equal(calls.length, 4); // 分段提取 + 整合 + 装配 + 闭包一致性修复各一次
   assert.ok(stages.includes("closure"));
   assert.equal(view.inferences.length, 1);
   const closure = paperImportClient && view.entries
@@ -830,10 +830,13 @@ test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
       { id: "f1", entryClass: "fact", factKind: "definition", title: "定义", statement: "$X$。", sourceLocator: "p#1" },
       { id: "c1", entryClass: "claim", claimKind: "lemma", title: "引理", statement: "$L$。", sourceLocator: "p#1" },
       { id: "c2", entryClass: "claim", claimKind: "theorem", title: "外部定理", statement: "$T$。", sourceLocator: "p#2" },
+      { id: "c4", entryClass: "claim", claimKind: "lemma", title: "未建立引理", statement: "$U$。", sourceLocator: "p#2" },
     ],
     inferences: [
       { id: "i1", operationKind: "proof", premises: ["ghost"], conclusion: "c1", argument: "悬空前提。", sourceLocator: "p#1" },
       { id: "i2", operationKind: "proof", premises: ["c1"], conclusion: "c1", argument: "自证。", sourceLocator: "p#1" },
+      { id: "i3", operationKind: "proof", premises: ["c2"], conclusion: "c3", argument: "依赖 B0。", sourceLocator: "p#3" },
+      { id: "i4", operationKind: "proof", premises: ["c4"], conclusion: "c3", argument: "依赖未建立者。", sourceLocator: "p#3" },
     ],
   }, { fileName: "d.pdf" });
   const issues = paperImportClient.collectRawProjectViewIssues(normalized);
@@ -842,6 +845,10 @@ test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
   assert.match(joined, /conclusion 同时出现在 premises 中/u);
   assert.match(joined, /B0 Claim c2 缺少 sourceReference/u);
   assert.match(joined, /mainTargetEntryId 指向了不存在或非 Claim 的条目：ghost/u);
+  // c4 无 proof 且不在 b0，却被 i4 引用 → 闭包一致性问题；c2 在 b0、c3 有 proof，不误报
+  assert.match(joined, /Claim c4（.*）被证明引用但自身未建立/u);
+  assert.doesNotMatch(joined, /Claim c2（.*）被证明引用/u);
+  assert.doesNotMatch(joined, /Claim c3（.*）被证明引用/u);
 });
 
 test("applies fixedEntries patches from the assembly repair round", async () => {
@@ -1080,14 +1087,14 @@ test("assembly repair can supplement a missing entry via fixedEntries", async ()
   const chunkEntries = {
     entries: [
       { id: "paper:def:x", type: "definition", name: "定义 X", statement: "$X$。", page: 1 },
-      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2 },
+      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2, external: true, source: "某文献" },
     ],
   };
   // 装配引用了目录里不存在的 paper:thm:z（提取遗漏）
   const badAssembly = {
     projectTitle: "P",
     mainTargetEntryId: "paper:thm:z",
-    b0: [],
+    b0: ["paper:thm:y"],
     inferences: [{ type: "proof", premises: ["paper:thm:y"], conclusion: "paper:thm:z", argument: "由 Y 推出 Z。", page: 3 }],
   };
   // 修复轮用 fixedEntries 补充该条目
