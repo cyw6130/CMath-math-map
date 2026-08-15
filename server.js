@@ -107,7 +107,38 @@ function isLocalHttpTarget(target) {
 }
 
 const PROXY_BODY_LIMIT = 16 * 1024 * 1024;
-const PROXY_TIMEOUT_MS = 600000;
+const PROXY_TIMEOUT_MS = 1800000;
+
+// Manual upstream forward: Node's global fetch (undici) enforces an
+// unconfigurable 300s headers timeout, which reasoning models routinely
+// exceed. node:http(s) lets us own the full timeout budget.
+function forwardToUpstream(targetUrl, apiKey, body) {
+  return new Promise((resolve, reject) => {
+    const transport = targetUrl.protocol === "https:" ? require("https") : require("http");
+    const payload = JSON.stringify(body);
+    const request = transport.request(targetUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Length": Buffer.byteLength(payload),
+      },
+      timeout: PROXY_TIMEOUT_MS,
+    }, (response) => {
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(chunk));
+      response.on("end", () => resolve({
+        status: response.statusCode ?? 502,
+        contentType: response.headers["content-type"] || "application/json; charset=utf-8",
+        body: Buffer.concat(chunks).toString("utf8"),
+      }));
+      response.on("error", reject);
+    });
+    request.on("timeout", () => request.destroy(new Error("upstream request timed out")));
+    request.on("error", reject);
+    request.end(payload);
+  });
+}
 
 const root = __dirname;
 http
@@ -214,22 +245,13 @@ http
           return;
         }
         try {
-          const upstream = await fetch(targetUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify(payload.body),
-            signal: AbortSignal.timeout(PROXY_TIMEOUT_MS),
-          });
-          const upstreamText = await upstream.text();
-          res.writeHead(upstream.status, {
-            "Content-Type": upstream.headers.get("content-type") || "application/json; charset=utf-8",
-          });
-          res.end(upstreamText);
+          const upstream = await forwardToUpstream(target, apiKey, payload.body);
+          res.writeHead(upstream.status, { "Content-Type": upstream.contentType });
+          res.end(upstream.body);
         } catch (error) {
-          const message = error?.name === "AbortError" ? "upstream request timed out" : `upstream request failed: ${error?.message ?? "unknown"}`;
+          const message = ["AbortError", "TimeoutError"].includes(error?.name)
+            ? "upstream request timed out"
+            : `upstream request failed: ${error?.message ?? "unknown"}`;
           sendJson(res, 502, { error: message }, req.headers.origin || "");
         }
       });

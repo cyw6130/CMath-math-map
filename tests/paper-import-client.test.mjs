@@ -253,7 +253,7 @@ test("sends Kimi K3 through the Moonshot preset without leaking the API key", as
   assert.doesNotMatch(JSON.stringify(view), /Bearer test/u);
 });
 
-test("recovers from initial schema error via 1-shot retry with a single clean repair prompt", async () => {
+test("returns structural failures to the model for a targeted repair round", async () => {
   let callCount = 0;
   const observedMessages = [];
   const fetchImpl = async (url, options) => {
@@ -261,35 +261,28 @@ test("recovers from initial schema error via 1-shot retry with a single clean re
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
     if (callCount === 1) {
-      const badMap = {
-        projectTitle: "Draft Paper",
-        mainTargetEntryId: "e1",
-        b0ClaimEntryIds: [],
-        entries: [{ id: "e1", entryClass: "fact", factKind: "definition", title: "Def 1", statement: "Def", sourceLocator: "p#1" }],
-        inferences: [{ operationKind: "proof", premises: ["e1"], conclusion: "missing_thm", argument: "Arg", sourceLocator: "p#1" }],
-      };
+      // 分段提取输出不含任何可用 Entry
       return {
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(badMap) } }] }),
-      };
-    } else {
-      const goodMap = {
-        projectTitle: "Draft Paper",
-        mainTargetEntryId: "e2",
-        b0ClaimEntryIds: [],
-        entries: [
-          { id: "e1", entryClass: "fact", factKind: "definition", title: "Def 1", statement: "Def", sourceLocator: "p#1" },
-          { id: "e2", entryClass: "claim", claimKind: "theorem", title: "Thm 1", statement: "Thm", sourceLocator: "p#2" },
-        ],
-        inferences: [{ operationKind: "proof", premises: ["e1"], conclusion: "e2", argument: "Arg", sourceLocator: "p#2" }],
-      };
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(goodMap) } }] }),
+        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify({ unexpected: true }) } }] }),
       };
     }
+    const goodMap = {
+      projectTitle: "Draft Paper",
+      mainTargetEntryId: "e2",
+      b0ClaimEntryIds: [],
+      entries: [
+        { id: "e1", entryClass: "fact", factKind: "definition", title: "Def 1", statement: "Def", sourceLocator: "p#1" },
+        { id: "e2", entryClass: "claim", claimKind: "theorem", title: "Thm 1", statement: "Thm", sourceLocator: "p#2" },
+      ],
+      inferences: [{ operationKind: "proof", premises: ["e1"], conclusion: "e2", argument: "Arg", sourceLocator: "p#2" }],
+    };
+    return {
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(goodMap) } }] }),
+    };
   };
 
   const view = await paperImportClient.requestPaperProjectView({
@@ -302,13 +295,15 @@ test("recovers from initial schema error via 1-shot retry with a single clean re
     fetchImpl,
   });
 
-  assert.equal(callCount, 2);
-  assert.equal(observedMessages.length, 2);
-  // Second call must be a single user message without assistant '{}'
-  assert.equal(observedMessages[1].length, 1);
+  // 分段提取 + 分段修复 + 整合 + 装配各一次
+  assert.equal(callCount, 4);
+  // 修复调用把模型上一次输出和问题清单一并返还（3 条消息：原 prompt、坏输出、问题清单）
+  assert.equal(observedMessages[1].length, 3);
   assert.equal(observedMessages[1][0].role, "user");
-  assert.match(observedMessages[1][0].content, /【重要修复要求】/u);
-  assert.match(observedMessages[1][0].content, /引用了不存在的 conclusion/u);
+  assert.equal(observedMessages[1][1].role, "assistant");
+  assert.equal(observedMessages[1][2].role, "user");
+  assert.match(observedMessages[1][2].content, /存在以下问题/u);
+  assert.match(observedMessages[1][2].content, /未提取到任何 Entry/u);
   assert.equal(view.entries.length, 2);
   assert.equal(view.inferences.length, 1);
   assert.equal(view.inferences[0].conclusion, "e2");
@@ -355,102 +350,98 @@ test("does not retry on HTTP errors and fails closed on repeated schema error", 
       text: "txt",
       fetchImpl: persistentBadFetch,
     }),
-    /已重试 1 次/u
+    /没有提取出任何数学 Entry/u
   );
-  assert.equal(persistentBadCount, 2); // Exactly 1 retry before failing closed
+  assert.equal(persistentBadCount, 2); // 分段初提 + 分段修复各一次后放弃
 });
 
-test("extraction prompt includes explicit proof-to-Claim and Fact/Claim boundaries", () => {
-  const prompt = paperImportClient.extractionPrompt({
+test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => {
+  const entriesPrompt = paperImportClient.entriesPrompt({
     fileName: "geometry.pdf",
     pageCount: 5,
     text: "Theorem 1.1: Let X be smooth...",
   });
+  const assemblyPrompt = paperImportClient.assemblyPrompt({
+    fileName: "geometry.pdf",
+    pageCount: 5,
+    text: "Theorem 1.1: Let X be smooth...",
+    catalog: "- paper:thm:1｜theorem｜示例定理",
+  });
 
   // (1) proof concludes only an entryClass=claim Entry
-  assert.match(prompt, /proof 的结论（conclusion）只能是 entryClass=claim 的 Entry/u);
+  assert.match(assemblyPrompt, /proof 的结论（conclusion）只能是 entryClass=claim 的 Entry/u);
   // (2) definition/algorithm/calculation are Facts and cannot be proof conclusions
-  assert.match(prompt, /definition\/algorithm\/calculation 属于 Fact，绝不能作为 proof 的结论/u);
+  assert.match(assemblyPrompt, /definition\/algorithm\/calculation 属于 Fact，绝不能作为 proof 的结论/u);
   // (3) if the paper proves a named lemma/proposition/theorem, extract that statement as a Claim and point the proof to it
-  assert.match(prompt, /若论文证明了某个明确编号或命名的 lemma、proposition、theorem，必须将该陈述提取为 Claim/u);
+  assert.match(assemblyPrompt, /若论文证明了某个明确编号或命名的 lemma、proposition、theorem，必须将该陈述提取为 Claim/u);
   // (4) if a supposed relation concludes a Fact, omit that relation unless it is an actual Fact-to-Fact organization relation
-  assert.match(prompt, /若某个推导或关系以 Fact 为结论，除非是实际的 Fact-to-Fact 组织关系（organization），否则必须省略该关系/u);
+  assert.match(assemblyPrompt, /若某个推导或关系以 Fact 为结论，除非是实际的 Fact-to-Fact 组织关系（organization），否则必须省略该关系/u);
   // (5) do not encode derivation, relatedness, reading order, or section flow as Inference
-  assert.match(prompt, /严禁将一般推导、相关性、阅读顺序或章节连接编码为 Inference/u);
-  // (6) does NOT artificially cap at 20 entries, prefers completeness of explicit/named mathematical objects and external invoked results
-  assert.doesNotMatch(prompt, /最多 20 个 Entry/u);
-  assert.match(prompt, /优先保证明确\/命名数学对象与外部调用结果的完整性/u);
+  assert.match(assemblyPrompt, /严禁将一般推导、相关性、阅读顺序或章节连接编码为 Inference/u);
+  // (6) entries prompt prefers completeness of explicit/named mathematical objects and external invoked results
+  assert.doesNotMatch(entriesPrompt, /最多 20 个 Entry/u);
+  assert.match(entriesPrompt, /完整提取本段中所有明确编号或命名的 definition、algorithm、calculation、lemma、proposition、theorem/u);
   // (7) requires mainTargetEntryId
-  assert.match(prompt, /mainTargetEntryId/u);
+  assert.match(assemblyPrompt, /mainTargetEntryId/u);
   // (8) strengthened B0 instruction: inventory external results without inventing book pages
-  assert.match(prompt, /清点论文在论证中实际调用的每一个外部定理\/引理\/命题/u);
-  assert.match(prompt, /严禁臆造外部书籍的具体页码/u);
-  // (9) display label format requirement
-  assert.match(prompt, /displayLabel 必须符合 '<类型> · <正整数> · <数学短名>'/u);
+  assert.match(entriesPrompt, /论证实际调用的外部结果/u);
+  assert.match(entriesPrompt, /严禁臆造外部书籍的具体页码/u);
+  // (9) compact schema: model outputs type/num/name, system generates the display label
+  assert.match(entriesPrompt, /"num"/u);
+  assert.match(entriesPrompt, /"name"/u);
 });
 
-test("recovers from proof-to-Fact error on 1-shot retry with actionable proof-to-Claim repair prompt", async () => {
+test("returns proof-to-Fact violations to the model and applies the targeted fix", async () => {
   let callCount = 0;
+  let assemblyCalls = 0;
+  const stageLog = [];
   const observedMessages = [];
   const observedAuth = [];
 
+  // 装配阶段输出了一条以 Fact 为结论的 proof（违规），修复轮改正为 organization
+  const badAssembly = {
+    projectTitle: "Topological Invariants",
+    mainTargetEntryId: "paper:claim:euler",
+    b0: [],
+    inferences: [
+      { type: "proof", premises: ["paper:def:manifold"], conclusion: "paper:fact:calc", argument: "由定义直接计算。", page: 2 },
+      { type: "proof", premises: ["paper:def:manifold", "paper:fact:calc"], conclusion: "paper:claim:euler", argument: "曲率积分。", page: 2 },
+    ],
+  };
+  const fixedAssembly = {
+    projectTitle: "Topological Invariants",
+    mainTargetEntryId: "paper:claim:euler",
+    b0: [],
+    inferences: [
+      { type: "organization", premises: ["paper:def:manifold"], conclusion: "paper:fact:calc", argument: "由定义直接计算。", page: 2 },
+      { type: "proof", premises: ["paper:def:manifold", "paper:fact:calc"], conclusion: "paper:claim:euler", argument: "曲率积分。", page: 2 },
+    ],
+  };
+  const chunkEntries = {
+    entries: [
+      { id: "paper:def:manifold", type: "definition", num: 1, name: "流形", statement: "设 $M$ 为光滑流形。", page: 1 },
+      { id: "paper:fact:calc", type: "calculation", num: 2, name: "Euler 示性数计算", statement: "$\\chi(M) = 0$。", page: 2 },
+      { id: "paper:claim:euler", type: "theorem", num: 3, name: "Euler 示性数定理", statement: "$M$ 的 Euler 示性数为零。", page: 2 },
+    ],
+  };
   const fetchImpl = async (url, options) => {
     callCount += 1;
     observedAuth.push(options.headers.Authorization);
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
-
-    if (callCount === 1) {
-      // Model incorrectly emits a proof whose conclusion is a definition (Fact)
-      const invalidProofToFact = {
-        projectTitle: "Topological Invariants",
-        mainTargetEntryId: "paper:def:manifold",
-        b0ClaimEntryIds: [],
-        entries: [
-          { id: "paper:def:manifold", entryClass: "fact", factKind: "definition", title: "Definition 1", statement: "Let $M$ be a manifold.", sourceLocator: "geometry.pdf#page=1" },
-          { id: "paper:fact:calc", entryClass: "fact", factKind: "calculation", title: "Calculation 2", statement: "Euler characteristic is zero.", sourceLocator: "geometry.pdf#page=2" },
-        ],
-        inferences: [
-          {
-            operationKind: "proof",
-            premises: ["paper:def:manifold"],
-            conclusion: "paper:fact:calc",
-            argument: "Direct computation follows from definition.",
-            sourceLocator: "geometry.pdf#page=2",
-          },
-        ],
-      };
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(invalidProofToFact) } }] }),
-      };
+    const prompt = body.messages[0].content;
+    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
+    const isIntegration = prompt.includes("整合模块");
+    let content;
+    if (isEntriesPhase) {
+      content = chunkEntries;
+    } else if (isIntegration) {
+      content = { aliases: {}, renames: [] };
     } else {
-      // Model corrects the error: extracts the proved statement as a Claim and points proof to it
-      const correctedProofToClaim = {
-        projectTitle: "Topological Invariants",
-        mainTargetEntryId: "paper:claim:euler",
-        b0ClaimEntryIds: [],
-        entries: [
-          { id: "paper:def:manifold", entryClass: "fact", factKind: "definition", title: "Definition 1", statement: "Let $M$ be a manifold.", sourceLocator: "geometry.pdf#page=1" },
-          { id: "paper:claim:euler", entryClass: "claim", claimKind: "theorem", title: "Theorem 2", statement: "Euler characteristic of $M$ is zero.", sourceLocator: "geometry.pdf#page=2" },
-        ],
-        inferences: [
-          {
-            operationKind: "proof",
-            premises: ["paper:def:manifold"],
-            conclusion: "paper:claim:euler",
-            argument: "By integration of curvature over $M$, Euler characteristic vanishes.",
-            sourceLocator: "geometry.pdf#page=2",
-          },
-        ],
-      };
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(correctedProofToClaim) } }] }),
-      };
+      assemblyCalls += 1;
+      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
     }
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
   };
 
   const view = await paperImportClient.requestPaperProjectView({
@@ -459,35 +450,31 @@ test("recovers from proof-to-Fact error on 1-shot retry with actionable proof-to
     model: "deepseek-chat",
     fileName: "geometry.pdf",
     pageCount: 3,
-    text: "[[PAGE 1]]\nDefinition 1\n[[PAGE 2]]\nTheorem 2",
+    text: "[[PAGE 1]]\nDefinition 1\n[[PAGE 2]]\nTheorem 3",
     fetchImpl,
+    onStage: (stage) => stageLog.push(stage),
   });
 
-  assert.equal(callCount, 2);
-  assert.equal(observedMessages.length, 2);
+  // 分段提取 + 整合 + 装配 + 装配修复各一次；问题返还模型，不走本地降级
+  assert.equal(callCount, 4);
+  assert.ok(stageLog.includes("repair"));
+  assert.ok(!stageLog.includes("autofix"));
 
-  // First prompt is the initial extraction prompt
-  assert.equal(observedMessages[0].length, 1);
-  assert.equal(observedMessages[0][0].role, "user");
+  // 修复调用会话式：原装配 prompt、模型的违规输出、问题清单
+  const repairMessages = observedMessages[3];
+  assert.equal(repairMessages.length, 3);
+  assert.equal(repairMessages[1].role, "assistant");
+  assert.match(repairMessages[2].content, /proof 必须以 Claim 为结论/u);
 
-  // Second prompt contains the repair diagnostic and actionable proof-to-Claim guidance
-  assert.equal(observedMessages[1].length, 1);
-  assert.equal(observedMessages[1][0].role, "user");
-  const secondPrompt = observedMessages[1][0].content;
-  assert.match(secondPrompt, /【重要修复要求】/u);
-  assert.match(secondPrompt, /proof 必须以 Claim 为结论/u);
-  assert.match(secondPrompt, /【修复指引】/u);
-  assert.match(secondPrompt, /proof 的结论（conclusion）只能是 entryClass=claim/u);
-  assert.match(secondPrompt, /definition\/algorithm\/calculation 属于 Fact/u);
-
-  // Resulting view is valid and proof concludes a Claim
-  assert.equal(view.entries.length, 2);
-  assert.equal(view.inferences.length, 1);
-  assert.equal(view.inferences[0].operationKind, "proof");
-  assert.equal(view.inferences[0].conclusion, "paper:claim:euler");
+  // 模型修正后的结果进入地图
+  assert.equal(view.entries.length, 3);
+  assert.equal(view.inferences.length, 2);
+  assert.equal(view.inferences[0].operationKind, "organization");
+  assert.equal(view.inferences[1].operationKind, "proof");
+  assert.equal(view.inferences[1].conclusion, "paper:claim:euler");
 
   // Auth header contains key, no leakage in payload or returned view
-  assert.deepEqual(observedAuth, ["Bearer secret-key-123", "Bearer secret-key-123"]);
+  assert.deepEqual(observedAuth, ["Bearer secret-key-123", "Bearer secret-key-123", "Bearer secret-key-123", "Bearer secret-key-123"]);
   assert.doesNotMatch(JSON.stringify(view), /secret-key-123/u);
 });
 
@@ -537,7 +524,7 @@ test("keeps an unproved formal Claim open without requesting a proof-completion 
     fetchImpl,
     onStage: (stage) => stages.push(stage),
   });
-  assert.equal(calls.length, 1);
+  assert.equal(calls.length, 3); // 分段提取 + 整合 + 装配各一次
   assert.ok(stages.includes("closure"));
   assert.equal(view.inferences.length, 1);
   const closure = paperImportClient && view.entries
@@ -575,7 +562,7 @@ test("places directly adopted sourced Claims in B0 and establishes downstream pr
     text: "paper text",
     fetchImpl,
   });
-  assert.equal(callCount, 1);
+  assert.equal(callCount, 3); // 分段提取 + 整合 + 装配各一次，无需修复轮
   assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:lemma:given"]);
   const closure = (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {
     b0ClaimEntryIds: view.derivedResearchState.mathematicalState.b0ClaimEntryIds,
@@ -592,6 +579,19 @@ test("rejects B0 without a source reference and proof self-dependency", () => {
   const selfDependent = structuredClone(rawMap);
   selfDependent.inferences[0].premises = ["paper:definition:x", "paper:theorem:y"];
   assert.throws(() => paperImportClient.paperProjectView(selfDependent), /conclusion 不能同时出现在 premises/u);
+});
+
+test("aggregates all B0 Claims missing sourceReference into one error", () => {
+  const raw = structuredClone(rawMap);
+  raw.entries.push(
+    { id: "paper:b0:extra-1", entryClass: "claim", claimKind: "theorem", title: "外部定理一", statement: "$T_1$。", sourceLocator: "paper.pdf#page=3" },
+    { id: "paper:b0:extra-2", entryClass: "claim", claimKind: "lemma", title: "外部引理二", statement: "$T_2$。", sourceLocator: "paper.pdf#page=4" },
+  );
+  raw.b0ClaimEntryIds = ["paper:b0:extra-1", "paper:b0:extra-2"];
+  assert.throws(
+    () => paperImportClient.paperProjectView(raw),
+    /B0 Claim paper:b0:extra-1、paper:b0:extra-2 必须包含 sourceReference/u,
+  );
 });
 
 test("validates and requires mainTargetEntryId to point to an existing Claim", () => {
@@ -768,54 +768,38 @@ test("detects and rejects unmatched inline and display dollar math delimiters in
   assert.equal(view.inferences.length, 1);
 });
 
-test("recovers from unmatched math delimiter error on 1-shot retry with actionable repair prompt", async () => {
+test("returns unmatched math delimiters to the model for a proper fix", async () => {
   let callCount = 0;
+  const stageLog = [];
   const observedMessages = [];
 
+  const badEntries = {
+    entries: [
+      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$。", page: 1 },
+      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "当流形维数满足  < k$ 时同伦群平凡。", page: 2 },
+    ],
+  };
+  const fixedEntries = {
+    entries: [
+      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$。", page: 1 },
+      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "当流形维数满足 $m < k$ 时同伦群平凡。", page: 2 },
+    ],
+  };
+  const assembly = {
+    projectTitle: "Hopf Paper",
+    mainTargetEntryId: "paper:thm:hopf",
+    b0: [],
+    inferences: [
+      { type: "proof", premises: ["paper:def:deg"], conclusion: "paper:thm:hopf", argument: "由度为零推出。", page: 2 },
+    ],
+  };
   const fetchImpl = async (url, options) => {
     callCount += 1;
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
-
-    if (callCount === 1) {
-      // First attempt outputs an unmatched dollar delimiter
-      const badMap = {
-        projectTitle: "Hopf Paper",
-        mainTargetEntryId: "paper:thm:hopf",
-        b0ClaimEntryIds: [],
-        entries: [
-          { id: "paper:def:deg", entryClass: "fact", factKind: "definition", title: "映射度", statement: "设 $f: M \\to S^k$。", sourceLocator: "p#1" },
-          { id: "paper:thm:hopf", entryClass: "claim", claimKind: "theorem", title: "Hopf 度定理", statement: "当流形维数满足  < k$ 时同伦群平凡。", sourceLocator: "p#2" },
-        ],
-        inferences: [
-          { operationKind: "proof", premises: ["paper:def:deg"], conclusion: "paper:thm:hopf", argument: "由度为零推出。", sourceLocator: "p#2" },
-        ],
-      };
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(badMap) } }] }),
-      };
-    } else {
-      // Second attempt repairs the unmatched delimiter
-      const goodMap = {
-        projectTitle: "Hopf Paper",
-        mainTargetEntryId: "paper:thm:hopf",
-        b0ClaimEntryIds: [],
-        entries: [
-          { id: "paper:def:deg", entryClass: "fact", factKind: "definition", title: "映射度", statement: "设 $f: M \\to S^k$。", sourceLocator: "p#1" },
-          { id: "paper:thm:hopf", entryClass: "claim", claimKind: "theorem", title: "Hopf 度定理", statement: "当流形维数满足 $m < k$ 时同伦群平凡。", sourceLocator: "p#2" },
-        ],
-        inferences: [
-          { operationKind: "proof", premises: ["paper:def:deg"], conclusion: "paper:thm:hopf", argument: "由度为零推出。", sourceLocator: "p#2" },
-        ],
-      };
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(goodMap) } }] }),
-      };
-    }
+    const isEntriesPhase = body.messages[0].content.includes("只提取本段中的数学对象");
+    const content = isEntriesPhase ? (callCount === 1 ? badEntries : fixedEntries) : assembly;
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
   };
 
   const view = await paperImportClient.requestPaperProjectView({
@@ -826,14 +810,358 @@ test("recovers from unmatched math delimiter error on 1-shot retry with actionab
     pageCount: 2,
     text: "[[PAGE 1]]\nDefinition\n[[PAGE 2]]\nTheorem",
     fetchImpl,
+    onStage: (stage) => stageLog.push(stage),
   });
 
-  assert.equal(callCount, 2);
-  assert.equal(observedMessages.length, 2);
-  const secondPrompt = observedMessages[1][0].content;
-  assert.match(secondPrompt, /【重要修复要求】/u);
-  assert.match(secondPrompt, /包含未配对的数学公式定界符/u);
-  assert.match(secondPrompt, /【修复指引】/u);
-  assert.match(secondPrompt, /必须成对闭合/u);
+  // 分段初提 + 分段修复 + 整合 + 装配；定界符问题由模型真正修好，不是本地转义
+  assert.equal(callCount, 4);
+  assert.ok(stageLog.includes("entries-repair"));
+  assert.ok(!stageLog.includes("autofix"));
+  assert.match(observedMessages[1][2].content, /定界符 \$ 未配对/u);
   assert.equal(view.entries[1].statement, "当流形维数满足 $m < k$ 时同伦群平凡。");
+});
+
+test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
+  const { raw: normalized } = paperImportClient.normalizeRawProjectView({
+    projectTitle: "Diag Paper",
+    mainTargetEntryId: "ghost",
+    b0: ["c2"],
+    entries: [
+      { id: "f1", entryClass: "fact", factKind: "definition", title: "定义", statement: "$X$。", sourceLocator: "p#1" },
+      { id: "c1", entryClass: "claim", claimKind: "lemma", title: "引理", statement: "$L$。", sourceLocator: "p#1" },
+      { id: "c2", entryClass: "claim", claimKind: "theorem", title: "外部定理", statement: "$T$。", sourceLocator: "p#2" },
+    ],
+    inferences: [
+      { id: "i1", operationKind: "proof", premises: ["ghost"], conclusion: "c1", argument: "悬空前提。", sourceLocator: "p#1" },
+      { id: "i2", operationKind: "proof", premises: ["c1"], conclusion: "c1", argument: "自证。", sourceLocator: "p#1" },
+    ],
+  }, { fileName: "d.pdf" });
+  const issues = paperImportClient.collectRawProjectViewIssues(normalized);
+  const joined = issues.join("\n");
+  assert.match(joined, /不存在的 premise：ghost/u);
+  assert.match(joined, /conclusion 同时出现在 premises 中/u);
+  assert.match(joined, /B0 Claim c2 缺少 sourceReference/u);
+  assert.match(joined, /mainTargetEntryId 指向了不存在或非 Claim 的条目：ghost/u);
+});
+
+test("applies fixedEntries patches from the assembly repair round", async () => {
+  let callCount = 0;
+  let assemblyCalls = 0;
+  const chunkEntries = {
+    entries: [
+      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "度定义。", page: 1 },
+      { id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true },
+      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "度相同当且仅当同伦。", page: 3 },
+    ],
+  };
+  const badAssembly = {
+    projectTitle: "Hopf Paper",
+    mainTargetEntryId: "paper:thm:hopf",
+    b0: ["paper:b0:sard"],
+    inferences: [{ type: "proof", premises: ["paper:def:deg", "paper:b0:sard"], conclusion: "paper:thm:hopf", argument: "取正则值。", page: 3 }],
+  };
+  const fixedAssembly = {
+    ...badAssembly,
+    fixedEntries: [{ id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" }],
+  };
+  const fetchImpl = async (url, options) => {
+    callCount += 1;
+    const body = JSON.parse(options.body);
+    const prompt = body.messages[0].content;
+    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
+    const isIntegration = prompt.includes("整合模块");
+    let content;
+    if (isEntriesPhase) {
+      content = chunkEntries;
+    } else if (isIntegration) {
+      content = { aliases: {}, renames: [] };
+    } else {
+      assemblyCalls += 1;
+      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
+    }
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+  };
+
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "k",
+    model: "deepseek-chat",
+    fileName: "hopf.pdf",
+    pageCount: 3,
+    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n引用\n[[PAGE 3]]\n定理",
+    fetchImpl,
+  });
+
+  // 分段提取 + 分段修复（mock 不修）+ 整合 + 装配 + 装配修复（fixedEntries 补丁生效）
+  assert.equal(callCount, 5);
+  const sard = view.entries.find((entry) => entry.id === "paper:b0:sard");
+  assert.equal(sard.sourceReference, "Sard, 1942");
+  assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:b0:sard"]);
+});
+
+test("extracts a valid view from compact two-phase model output", async () => {
+  const prompts = [];
+  const fetchImpl = async (url, options) => {
+    const body = JSON.parse(options.body);
+    prompts.push(body.messages[0].content);
+    const isEntriesPhase = body.messages[0].content.includes("只提取本段中的数学对象");
+    const content = isEntriesPhase
+      ? {
+        entries: [
+          { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$ 为光滑映射。", page: 1 },
+          { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "$\\deg(f) = \\deg(g)$ 当且仅当 $f \\simeq g$。", page: 2 },
+          { id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "$f$ 的临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" },
+        ],
+      }
+      : {
+        projectTitle: "Hopf 映射",
+        mainTargetEntryId: "paper:thm:hopf",
+        b0: ["paper:b0:sard"],
+        inferences: [
+          { type: "proof", premises: ["paper:def:deg", "paper:b0:sard"], conclusion: "paper:thm:hopf", argument: "由 Sard 定理取正则值计算环绕数。", page: 2 },
+        ],
+      };
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+  };
+
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://opencode.ai/zen/go/v1",
+    apiKey: "k",
+    model: "deepseek-v4-flash",
+    fileName: "hopf.pdf",
+    pageCount: 2,
+    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理",
+    fetchImpl,
+  });
+
+  assert.equal(prompts.length, 3); // 分段提取 + 整合 + 装配
+  // 紧凑输出由系统展开为完整 Entry：编号、显示标签、页码定位全部生成
+  const [def, thm, sard] = view.entries;
+  assert.equal(def.displayLabel, "定义 · 1 · 映射度");
+  assert.equal(def.sourcePath, "hopf.pdf#page=1");
+  assert.equal(thm.displayLabel, "定理 · 8 · Hopf 度定理");
+  assert.equal(sard.sourceReference, "Sard, 1942");
+  assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:b0:sard"]);
+  assert.equal(view.mainTargetEntryId, "paper:thm:hopf");
+  assert.equal(view.inferences[0].operationKind, "proof");
+  assert.equal(view.inferences[0].sourcePath, "hopf.pdf#page=2");
+  assert.deepEqual(view.inferences[0].premises, ["paper:def:deg", "paper:b0:sard"]);
+});
+
+test("splits long papers into parallel chunks and merges duplicate entries", async () => {
+  const entryPrompts = [];
+  let entryCall = 0;
+  const fetchImpl = async (url, options) => {
+    const body = JSON.parse(options.body);
+    const prompt = body.messages[0].content;
+    if (prompt.includes("只提取本段中的数学对象")) {
+      entryCall += 1;
+      entryPrompts.push(prompt);
+      // 两个分段各自返回一个不同条目 + 同一个重复条目（重复定义在两段都出现）
+      const entries = entryCall === 1
+        ? [{ id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义。", page: 1 }]
+        : [
+          { id: "paper:def:a-copy", type: "definition", name: "映射度", statement: "度定义（重申）。", page: 9 },
+          { id: "paper:thm:b", type: "theorem", name: "主定理", statement: "主定理陈述。", page: 9 },
+        ];
+      return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify({ entries }) } }] }) };
+    }
+    const assembly = {
+      projectTitle: "Long Paper",
+      mainTargetEntryId: "paper:thm:b",
+      b0: [],
+      inferences: [{ type: "proof", premises: ["paper:def:a-copy"], conclusion: "paper:thm:b", argument: "应用定义。", page: 9 }],
+    };
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(assembly) } }] }) };
+  };
+
+  // 构造超过 6 万字符、含 2 个页标记的长文本 → 2 段并行 + 1 次装配 = 3 次调用
+  const longText = `[[PAGE 1]]\n${"第一段内容。".repeat(5000)}\n\n[[PAGE 2]]\n${"第二段内容。".repeat(5000)}`;
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://opencode.ai/zen/go/v1",
+    apiKey: "k",
+    model: "deepseek-v4-flash",
+    fileName: "long.pdf",
+    pageCount: 2,
+    text: longText,
+    fetchImpl,
+  });
+
+  assert.equal(entryPrompts.length, 2);
+  // 每段 prompt 都标注了自己的页码范围；第二段含 1 页重叠（与第一段共享第 1 页）
+  assert.match(entryPrompts[0], /本段覆盖第 1–1 页/u);
+  assert.match(entryPrompts[1], /本段覆盖第 1–2 页/u);
+  // 重复条目被合并，装配阶段对重复 id 的引用被重映射到保留条目
+  assert.equal(view.entries.length, 2);
+  assert.equal(view.entries[0].id, "paper:def:a");
+  assert.equal(view.inferences[0].premises[0], "paper:def:a");
+});
+
+test("merges duplicate entries sharing both id and name without hanging", () => {
+  const { raw, notes } = paperImportClient.normalizeRawProjectView({
+    entries: [
+      { id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义。", page: 1 },
+      { id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义（重申）。", page: 9 },
+    ],
+    inferences: [],
+  });
+  assert.equal(raw.entries.length, 1);
+  assert.equal(raw.entries[0].statement, "度定义。");
+  assert.ok(notes.some((note) => note.includes("合并重复条目")));
+});
+
+test("applyIntegration merges aliases and renames conservatively", () => {
+  const entries = [
+    { id: "a", type: "definition", name: "Higman 理想", statement: "Higman 理想定义。", page: 7 },
+    { id: "b", type: "definition", name: "Higman 理想的定义", statement: "Higman 理想定义。", page: 8 },
+    { id: "c", type: "theorem", name: "Lemma 2.20", statement: "某引理。", page: 11 },
+    { id: "d", type: "theorem", name: "另一定理", statement: "另一陈述。", page: 12 },
+  ];
+  const { entries: merged, aliasCount, renameCount } = paperImportClient.applyIntegration(entries, {
+    aliases: {
+      b: "a",           // 合法：b 是 a 的重复
+      ghost: "a",       // 非法：源不存在
+      a: "ghost",       // 非法：目标不存在
+      a2: "b2", b2: "a2", // 双方均不存在
+    },
+    renames: [
+      { id: "c", name: "Radford 同构的等变性" },
+      { id: "d", name: "Theorem 3.5" },       // 非法：仍是引用编号
+      { id: "ghost", name: "幽灵" },          // 非法：id 不存在
+    ],
+  });
+  assert.equal(aliasCount, 1);
+  assert.equal(renameCount, 1);
+  assert.deepEqual(merged.map((e) => e.id), ["a", "c", "d"]);
+  assert.equal(merged[1].name, "Radford 同构的等变性");
+  assert.equal(merged[2].name, "另一定理");
+});
+
+test("skips the integration call when its output is unusable", async () => {
+  const stageLog = [];
+  const chunkEntries = {
+    entries: [
+      { id: "paper:def:x", type: "definition", name: "定义 X", statement: "$X$。", page: 1 },
+      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2 },
+    ],
+  };
+  const assembly = {
+    projectTitle: "P",
+    mainTargetEntryId: "paper:thm:y",
+    b0: [],
+    inferences: [{ type: "proof", premises: ["paper:def:x"], conclusion: "paper:thm:y", argument: "由定义。", page: 2 }],
+  };
+  const fetchImpl = async (url, options) => {
+    const prompt = JSON.parse(options.body).messages[0].content;
+    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
+    const isIntegration = prompt.includes("整合模块");
+    // 整合调用返回非法 JSON 文本，触发 integrate-skipped 分支
+    const content = isEntriesPhase ? JSON.stringify(chunkEntries) : isIntegration ? "{broken" : JSON.stringify(assembly);
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content } }] }) };
+  };
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "k",
+    model: "m",
+    fileName: "p.pdf",
+    pageCount: 2,
+    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理",
+    fetchImpl,
+    onStage: (stage) => stageLog.push(stage),
+  });
+  assert.ok(stageLog.includes("integrate-skipped"));
+  assert.equal(view.entries.length, 2);
+  assert.equal(view.inferences.length, 1);
+});
+
+test("assembly repair can supplement a missing entry via fixedEntries", async () => {
+  let callCount = 0;
+  let assemblyCalls = 0;
+  const chunkEntries = {
+    entries: [
+      { id: "paper:def:x", type: "definition", name: "定义 X", statement: "$X$。", page: 1 },
+      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2 },
+    ],
+  };
+  // 装配引用了目录里不存在的 paper:thm:z（提取遗漏）
+  const badAssembly = {
+    projectTitle: "P",
+    mainTargetEntryId: "paper:thm:z",
+    b0: [],
+    inferences: [{ type: "proof", premises: ["paper:thm:y"], conclusion: "paper:thm:z", argument: "由 Y 推出 Z。", page: 3 }],
+  };
+  // 修复轮用 fixedEntries 补充该条目
+  const fixedAssembly = {
+    ...badAssembly,
+    fixedEntries: [{ id: "paper:thm:z", type: "theorem", name: "定理 Z", statement: "$Z$ 成立。", page: 3 }],
+  };
+  const fetchImpl = async (url, options) => {
+    callCount += 1;
+    const prompt = JSON.parse(options.body).messages[0].content;
+    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
+    const isIntegration = prompt.includes("整合模块");
+    let content;
+    if (isEntriesPhase) content = chunkEntries;
+    else if (isIntegration) content = { aliases: {}, renames: [] };
+    else {
+      assemblyCalls += 1;
+      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
+    }
+    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+  };
+  const view = await paperImportClient.requestPaperProjectView({
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "k",
+    model: "m",
+    fileName: "p.pdf",
+    pageCount: 3,
+    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理\n[[PAGE 3]]\n推论",
+    fetchImpl,
+  });
+  assert.equal(callCount, 4);
+  assert.equal(view.entries.length, 3);
+  assert.equal(view.entries[2].id, "paper:thm:z");
+  assert.equal(view.mainTargetEntryId, "paper:thm:z");
+  assert.equal(view.inferences[0].conclusion, "paper:thm:z");
+});
+
+test("sanitizeRawProjectView repairs mechanical defects locally", () => {
+  const raw = {
+    projectTitle: "Sanitize Paper",
+    mainTargetEntryId: "missing",
+    b0ClaimEntryIds: ["c2"],
+    entries: [
+      { id: "f1", entryClass: "fact", factKind: "definition", title: "定义", statement: "$X$。", sourceLocator: "p#1" },
+      { id: "c1", entryClass: "claim", claimKind: "lemma", title: "引理", statement: "$L$。", sourceLocator: "p#1" },
+      { id: "c2", entryClass: "claim", claimKind: "theorem", title: "外部定理", statement: "$T$。", sourceLocator: "p#2" },
+      { id: "c3", entryClass: "claim", claimKind: "theorem", title: "主定理", statement: "$M$。", sourceLocator: "p#3" },
+    ],
+    inferences: [
+      // 缺 operationKind → 按结论类型推断为 proof
+      { id: "i1", premises: ["f1"], conclusion: "c1", argument: "由定义。", sourceLocator: "p#1" },
+      // 悬空 premise → 移除后仍合法
+      { id: "i2", operationKind: "proof", premises: ["ghost", "c1"], conclusion: "c3", argument: "由引理。", sourceLocator: "p#3" },
+      // 空 premises → 整条丢弃
+      { id: "i3", operationKind: "proof", premises: [], conclusion: "c3", argument: "空。", sourceLocator: "p#3" },
+      // 循环依赖 c1 → c4? 用 c1/c3 自环：c1 证明依赖 c3，c3 依赖 c1 → 后者成环被丢弃
+      { id: "i4", operationKind: "proof", premises: ["c3"], conclusion: "c1", argument: "回推。", sourceLocator: "p#3" },
+    ],
+  };
+
+  const { raw: fixed, actions } = paperImportClient.sanitizeRawProjectView(raw, { fileName: "s.pdf" });
+  assert.ok(actions.length >= 5);
+
+  // i1 推断为 proof；i2 移除悬空 premise；i3 丢弃；i4 与 i2 成环（c3→c1→? 取决于顺序）被破环
+  const view = paperImportClient.paperProjectView(fixed, { fileName: "s.pdf" });
+  const byId = new Map(view.inferences.map((inf) => [inf.id, inf]));
+  assert.equal(byId.get("i1").operationKind, "proof");
+  assert.deepEqual(byId.get("i2").premises, ["c1"]);
+  assert.ok(!byId.has("i3"));
+  // 循环被打破：i2(c1→c3) 与 i4(c3→c1) 只保留先出现的 i2
+  assert.ok(!byId.has("i4"));
+
+  // B0 缺 sourceReference → 按条目名补齐；mainTarget 缺失 → 回退到被证明的非 B0 主定理
+  assert.equal(view.entries.find((e) => e.id === "c2").sourceReference, "外部定理");
+  assert.equal(view.mainTargetEntryId, "c3");
+  assert.equal(view.derivedResearchState.researchOverlay.loopTargetEntryId, "c3");
 });

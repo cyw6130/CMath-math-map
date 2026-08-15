@@ -31,7 +31,7 @@
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   let mapRuntimeMounted = false;
-  let activeProviderKey = "deepseek";
+  let activeProviderKey = "opencode";
 
   // Local desktop mode: the loopback server can persist API Keys to disk.
   // GitHub Pages (https://cyw6130.github.io) never sees this endpoint.
@@ -117,6 +117,13 @@
   }
   function currentProviderModel() {
     return modelSelect.value === "custom" ? customModelInput?.value.trim() : modelSelect.value;
+  }
+
+  // 当前选中模型的思维链档位（如 OpenCode Go 的 deepseek-v4-flash 默认带思维链，
+  // 在论文提取这种大输出任务上会烧光 max_tokens 导致空输出，默认关掉）。
+  function currentModelReasoningEffort() {
+    const value = modelSelect?.value === "custom" ? customModelInput?.value.trim() : modelSelect?.value;
+    return PROVIDER_CONFIGS[activeProviderKey]?.models.find((m) => m.value === value)?.reasoningEffort;
   }
 
   async function loadLocalConfigFor(provider) {
@@ -217,7 +224,7 @@
       label: "OpenCode Go",
       endpoint: "https://opencode.ai/zen/go/v1",
       models: [
-        { value: "deepseek-v4-flash", label: "DeepSeek V4 Flash (推荐 · 快速)", default: true },
+        { value: "deepseek-v4-flash", label: "DeepSeek V4 Flash (推荐 · 快速)", default: true, reasoningEffort: "none" },
         { value: "deepseek-v4-pro", label: "DeepSeek V4 Pro" },
         { value: "kimi-k3", label: "Kimi K3" },
         { value: "kimi-k2.7-code", label: "Kimi K2.7 Code" },
@@ -316,9 +323,9 @@
     updateActiveProviderLabel();
   });
 
-  // Initialize with DeepSeek (migrating legacy model-only prefs first)
+  // Initialize with OpenCode Go (DeepSeek V4 Flash; migrating legacy model-only prefs first)
   migrateLegacyPrefs();
-  updateProviderSettings("deepseek");
+  updateProviderSettings("opencode");
 
   // Drawer / Modal triggers
   function closeAllPanels() {
@@ -407,18 +414,31 @@
   function handleImportStage(stage, info = {}) {
     if (stage === "request") {
       if (!isStepDone("send")) {
-        setStep("send", "done", `约 ${((info.chars ?? 0) / 1000).toFixed(1)}k 字符`);
+        const chunksNote = (info.chunks ?? 1) > 1 ? ` · 分 ${info.chunks} 段并行提取` : "";
+        setStep("send", "done", `约 ${((info.chars ?? 0) / 1000).toFixed(1)}k 字符${chunksNote}`);
         setStep("wait", "active");
         awaitingStepId = "wait";
       } else {
         setStep(awaitingStepId, "active");
       }
+    } else if (stage === "entries-progress") {
+      setStep("wait", "active", `分段提取对象 ${info.done ?? 0}/${info.total ?? 1}`);
+    } else if (stage === "entries-repair") {
+      setStep("wait", "active", `第 ${info.chunk ?? "?"}/${info.total ?? "?"} 段输出修复中（${info.count ?? 0} 处）`);
+    } else if (stage === "integrate") {
+      setStep("wait", "active", `整合 ${info.entries ?? "…"} 个对象（语义去重）`);
+    } else if (stage === "integrate-applied") {
+      setStep("wait", "active", `整合完成：合并 ${info.aliasCount ?? 0} 处重复 · 改名 ${info.renameCount ?? 0} 处`);
+    } else if (stage === "assemble") {
+      setStep("wait", "active", `装配 ${info.entries ?? "…"} 个对象的推理关系`);
     } else if (stage === "response") {
       setStep(awaitingStepId, "done");
       setStep("validate", "active");
+    } else if (stage === "autofix") {
+      setStep("validate", "active", `模型修复未通过，本地兜底修复 ${info.count ?? 0} 处`);
     } else if (stage === "repair") {
-      setStep("validate", "done", "第 1 次校验未通过");
-      addStepAfter("validate", "repair-step", "修复结构错误（模型重新生成）");
+      setStep("validate", "done", `校验未通过（${info.reason ?? "结构问题"}），模型定点修复中`);
+      addStepAfter("validate", "repair-step", "模型定点修复（输出 + 问题清单返还）");
       setStep("repair-step", "active");
       awaitingStepId = "repair-step";
     }
@@ -533,7 +553,7 @@
         pdfjsLib,
         onProgress: ({ page, pageCount }) => setStep("read", "active", `第 ${page} / ${pageCount} 页`),
       });
-      setStep("read", "done", `共 ${paper.pageCount} 页 · ${paper.text.length.toLocaleString()} 字符`);
+      setStep("read", "done", `共 ${paper.pageCount} 页 · ${paper.text.length.toLocaleString()} 字符${paper.truncated ? "（已截断，仅处理前部）" : ""}`);
       setStep("send", "active");
       const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
         endpoint: apiEndpointInput.value,
@@ -545,6 +565,7 @@
         text: paper.text,
         fetchImpl: modelFetch,
         onStage: handleImportStage,
+        reasoningEffort: currentModelReasoningEffort(),
       });
       finishExtractSteps(projectView);
       const blob = new Blob([`${JSON.stringify(projectView, null, 2)}\n`], { type: "application/json" });
