@@ -1,9 +1,9 @@
-# Gamma 数学地图（Math Map Lab）
+# CMath 数学地图（Math Map Lab）
 
 一个纯静态的数学知识地图可视化页面：把一份 **Gamma-native Project View JSON** 渲染成可交互的
 Fact / Claim / Inference 图（开放 Claim、已建立 Claim、推导关系、Loop 进展一目了然）。
 
-**在线使用**：打开 <https://cyw6130.github.io/gamma-math-map/>，可以载入本地 Project View JSON，
+**在线使用**：打开 <https://cyw6130.github.io/CMath-math-map/>，可以载入本地 Project View JSON，
 也可以在浏览器中把带文本层的数学论文 PDF 整理成 Project View JSON。
 
 页面左上角的项目下拉也内置了几份示例地图（群论、谱定理、介值定理、微积分基本定理、三维流形等），
@@ -17,7 +17,7 @@ Fact / Claim / Inference 图（开放 Claim、已建立 Claim、推导关系、L
 **手动运行**：
 
 ```bash
-cd gamma-math-map
+cd CMath-math-map
 node server.js            # 或 npm run dev -- --port 7100
 # 打开 http://127.0.0.1:7100/
 ```

@@ -1,7 +1,7 @@
 #!/bin/zsh
 # Gamma Math Map local launcher.
 # Starts the loopback server on demand and opens the map in the default browser.
-# If the port is already occupied by an older gamma-math-map server.js process
+# If the port is already occupied by an older CMath-math-map server.js process
 # (missing the /api/local-key endpoint), it is replaced so the latest frontend
 # and local key store are always served.
 set -e
@@ -19,7 +19,7 @@ if ! curl --fail --silent "${URL}" >/dev/null 2>&1; then
     exit 1
   fi
   nohup node "${ROOT}/server.js" --port "${PORT}" --host 127.0.0.1 \
-    >"/tmp/gamma-math-map-server.log" 2>&1 &
+    >"/tmp/CMath-math-map-server.log" 2>&1 &
 elif [ "${PROXY_PROBE_CODE}" = "404" ] || ! curl --fail --silent "${KEY_PROBE}" >/dev/null 2>&1; then
   # The port answers HTTP but not our loopback key endpoint: an older
   # server.js process is serving the directory. Replace it.
@@ -38,7 +38,7 @@ elif [ "${PROXY_PROBE_CODE}" = "404" ] || ! curl --fail --silent "${KEY_PROBE}" 
     esac
   fi
   nohup node "${ROOT}/server.js" --port "${PORT}" --host 127.0.0.1 \
-    >"/tmp/gamma-math-map-server.log" 2>&1 &
+    >"/tmp/CMath-math-map-server.log" 2>&1 &
 fi
 
 for _ in {1..20}; do
