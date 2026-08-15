@@ -425,10 +425,9 @@
 
   // 诊断：在规范化后的输出上收集全部问题（只报告，不修改），
   // 问题清单会返还模型做定点修复。
-  // includeOpenPremiseIssues：是否报告「被依赖但未建立」的 Claim（无 proof、不在 b0、
-  // 却被其他 proof 引用）。该类问题依赖模型对论文的理解，首轮报告一次即可，
-  // 模型坚持保留（如猜想）时不应反复回炉。
-  function collectRawProjectViewIssues(raw, { includeOpenPremiseIssues = true } = {}) {
+  // includeOpenClaimIssues：是否报告「未建立」的 Claim（无 proof 且不在 b0）。
+  // 该类问题依赖模型对论文的理解，首轮报告一次即可；模型坚持保留（如猜想）时不反复回炉。
+  function collectRawProjectViewIssues(raw, { includeOpenClaimIssues = true } = {}) {
     const issues = [];
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return ["输出必须是 JSON 对象"];
     if (!Array.isArray(raw.entries)) return ["输出缺少 entries 数组"];
@@ -558,22 +557,41 @@
       issues.push("projectTitle 的数学公式定界符 $ 未配对");
     }
 
-    // 闭包一致性：被 proof 依赖的 Claim 必须要么自己有 proof、要么在 b0
-    if (includeOpenPremiseIssues) {
+    // 闭包一致性：按真实闭包语义推导（Fact 与 b0 可用、proof 沿依赖传递建立），
+    // 凡闭包后仍未建立的 Claim 都要报告，并指出断链的具体前提。模型坚持保留
+    // （如猜想）时最多多问几轮即由兜底校验放行，不会死循环。
+    if (includeOpenClaimIssues) {
       const b0Set = new Set(Array.isArray(b0List) ? b0List.map((id) => String(id).trim()) : []);
-      const provedIds = new Set(inferenceList
-        .filter((inf) => inf?.operationKind === "proof" && typeof inf?.conclusion === "string")
-        .map((inf) => inf.conclusion.trim()));
-      const reliedUpon = new Set();
+      const factIds = new Set(raw.entries.filter((e) => e?.entryClass === "fact").map((e) => e.id));
+      const established = new Set([...factIds, ...b0Set].filter((id) => entryById.has(id)));
+      const proofsByConclusion = new Map();
       inferenceList
-        .filter((inf) => inf?.operationKind === "proof" && Array.isArray(inf?.premises))
-        .forEach((inf) => inf.premises.forEach((id) => {
-          if (typeof id === "string") reliedUpon.add(id.trim());
-        }));
-      for (const id of reliedUpon) {
-        const entry = entryById.get(id);
-        if (entry?.entryClass === "claim" && !provedIds.has(id) && !b0Set.has(id)) {
-          issues.push(`Claim ${id}（${entry.title}）被证明引用但自身未建立（既无 proof 也不在 b0）：若论文证明了它请补对应 proof；若为外部引用结果请用 fixedEntries 补 "external":true 与 source 并列入 b0；若论文明确未证明则不应作为 premise`);
+        .filter((inf) => inf?.operationKind === "proof" && typeof inf?.conclusion === "string" && Array.isArray(inf?.premises))
+        .forEach((inf) => {
+          const list = proofsByConclusion.get(inf.conclusion.trim()) ?? [];
+          list.push(inf);
+          proofsByConclusion.set(inf.conclusion.trim(), list);
+        });
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const [conclusion, proofs] of proofsByConclusion) {
+          if (established.has(conclusion)) continue;
+          if (proofs.some((proof) => proof.premises.every((id) => established.has(String(id).trim())))) {
+            established.add(conclusion);
+            changed = true;
+          }
+        }
+      }
+      for (const entry of raw.entries) {
+        if (entry?.entryClass !== "claim" || !entry.id || established.has(entry.id)) continue;
+        const id = entry.id;
+        const proofs = proofsByConclusion.get(id) ?? [];
+        if (!proofs.length) {
+          issues.push(`Claim ${id}（${entry.title}）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 "external":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样`);
+        } else {
+          const unestablished = [...new Set(proofs.flatMap((proof) => proof.premises.map((p) => String(p).trim())).filter((p) => !established.has(p) && entryById.has(p)))];
+          issues.push(`Claim ${id}（${entry.title}）闭包推导后仍未建立：其 proof 的前提 ${unestablished.join("、")} 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 "external":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise`);
         }
       }
     }
@@ -1289,7 +1307,7 @@
     }
 
     // 第二阶段：一次小调用装配 Inference / B0 / 主目标。校验问题连同输出返还
-    // 模型定点修复（最多两轮）；仍不通过才启用本地机械修复兜底。
+    // 模型定点修复（最多三轮）；仍不通过才启用本地机械修复兜底。
     async function assembleInferences(entries) {
       const catalog = entries.map(entryCatalogLine).join("\n");
       notify("assemble", { entries: entries.length });
@@ -1297,7 +1315,7 @@
       let lastMerged = null;
       let lastIssues = ["装配没有产出有效输出"];
       let truncated = false;
-      for (let round = 0; round < 3; round += 1) {
+      for (let round = 0; round < 4; round += 1) {
         const { content, finishReason } = await executeChatCall(messages, truncated ? 32000 : 16000);
         truncated = finishReason === "length";
         notify("response", {});
@@ -1320,8 +1338,9 @@
                 inferences: Array.isArray(assembly.inferences) ? assembly.inferences : [],
               };
               const { raw: normalized } = normalizeRawProjectView(merged, { fileName });
-              // 「被依赖但未建立」只在首轮诊断报告：模型坚持保留（如猜想）时不反复回炉
-              issues = collectRawProjectViewIssues(normalized, { includeOpenPremiseIssues: round === 0 });
+              // 未建立 Claim 每轮都查（修复轮本身也可能遗漏或引入）；轮次有上限，
+              // 模型坚持保留（如猜想）时最多多问两轮即由兜底校验放行，不会死循环
+              issues = collectRawProjectViewIssues(normalized);
               lastMerged = normalized;
               if (!issues.length) {
                 notify("validate", {});
@@ -1335,12 +1354,12 @@
           }
         }
         lastIssues = issues;
-        if (round < 2) {
+        if (round < 3) {
           notify("repair", { reason: `${issues.length} 处问题`, attempt: round + 1 });
           messages.push({ role: "assistant", content }, { role: "user", content: assemblyRepairPrompt(issues) });
         }
       }
-      // 模型修复两轮仍未通过：本地机械修复兜底，尽量保住这次导入
+      // 模型修复三轮仍未通过：本地机械修复兜底，尽量保住这次导入
       if (lastMerged) {
         const { raw: fixed, actions } = sanitizeRawProjectView(lastMerged, { fileName });
         if (actions.length) notify("autofix", { count: actions.length, actions });
@@ -1348,10 +1367,10 @@
         try {
           return paperProjectView(fixed, { fileName, requireB0Classification: true });
         } catch (error) {
-          throw new Error(`${serviceName} 论文导入失败（模型已修复 2 次）：${error.message}`);
+          throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`);
         }
       }
-      throw new Error(`${serviceName} 论文导入失败（模型已修复 2 次）：${lastIssues.join("；")}`);
+      throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
     }
 
     const entries = await extractEntriesInParallel();

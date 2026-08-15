@@ -524,7 +524,7 @@ test("keeps an unproved formal Claim open without requesting a proof-completion 
     fetchImpl,
     onStage: (stage) => stages.push(stage),
   });
-  assert.equal(calls.length, 4); // 分段提取 + 整合 + 装配 + 闭包一致性修复各一次
+  assert.equal(calls.length, 6); // 分段提取 + 整合 + 装配 + 三轮修复（模型坚持保留开放 Claim，三轮后放行）
   assert.ok(stages.includes("closure"));
   assert.equal(view.inferences.length, 1);
   const closure = paperImportClient && view.entries
@@ -831,12 +831,15 @@ test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
       { id: "c1", entryClass: "claim", claimKind: "lemma", title: "引理", statement: "$L$。", sourceLocator: "p#1" },
       { id: "c2", entryClass: "claim", claimKind: "theorem", title: "外部定理", statement: "$T$。", sourceLocator: "p#2" },
       { id: "c4", entryClass: "claim", claimKind: "lemma", title: "未建立引理", statement: "$U$。", sourceLocator: "p#2" },
+      { id: "c5", entryClass: "claim", claimKind: "lemma", title: "断链引理", statement: "$V$。", sourceLocator: "p#2" },
+      { id: "c6", entryClass: "claim", claimKind: "theorem", title: "主定理乙", statement: "$W$。", sourceLocator: "p#3" },
     ],
     inferences: [
       { id: "i1", operationKind: "proof", premises: ["ghost"], conclusion: "c1", argument: "悬空前提。", sourceLocator: "p#1" },
       { id: "i2", operationKind: "proof", premises: ["c1"], conclusion: "c1", argument: "自证。", sourceLocator: "p#1" },
       { id: "i3", operationKind: "proof", premises: ["c2"], conclusion: "c3", argument: "依赖 B0。", sourceLocator: "p#3" },
       { id: "i4", operationKind: "proof", premises: ["c4"], conclusion: "c3", argument: "依赖未建立者。", sourceLocator: "p#3" },
+      { id: "i5", operationKind: "proof", premises: ["c5"], conclusion: "c6", argument: "断链依赖。", sourceLocator: "p#3" },
     ],
   }, { fileName: "d.pdf" });
   const issues = paperImportClient.collectRawProjectViewIssues(normalized);
@@ -845,10 +848,12 @@ test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
   assert.match(joined, /conclusion 同时出现在 premises 中/u);
   assert.match(joined, /B0 Claim c2 缺少 sourceReference/u);
   assert.match(joined, /mainTargetEntryId 指向了不存在或非 Claim 的条目：ghost/u);
-  // c4 无 proof 且不在 b0，却被 i4 引用 → 闭包一致性问题；c2 在 b0、c3 有 proof，不误报
-  assert.match(joined, /Claim c4（.*）被证明引用但自身未建立/u);
-  assert.doesNotMatch(joined, /Claim c2（.*）被证明引用/u);
-  assert.doesNotMatch(joined, /Claim c3（.*）被证明引用/u);
+  // c4 无 proof 且不在 b0 → 报告；c6 有 proof 但前提 c5 未建立 → 闭包断链报告
+  assert.match(joined, /Claim c4（未建立引理）没有 proof 且不在 b0/u);
+  assert.match(joined, /Claim c6（主定理乙）闭包推导后仍未建立：其 proof 的前提 c5 未建立/u);
+  // c2 在 b0、c3 的证明由已建立前提支撑 → 不误报
+  assert.doesNotMatch(joined, /Claim c2（/u);
+  assert.doesNotMatch(joined, /Claim c3（/u);
 });
 
 test("applies fixedEntries patches from the assembly repair round", async () => {
