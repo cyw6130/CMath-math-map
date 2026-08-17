@@ -1,0 +1,15 @@
+# Luna off-compact paper-import overlay. The four stages use the same model
+# with reasoning omitted and the same 8k/16k/32k budget plan as DeepSeek's
+# off-compact condition.
+- id: cmath-paper-import-router
+  config:
+    extract: { provider: luna-gateway, model: gpt-5.4-mini, maxTokens: 32000 }
+    integrate: { provider: luna-gateway, model: gpt-5.4-mini, maxTokens: 32000 }
+    assemble: { provider: luna-gateway, model: gpt-5.4-mini, maxTokens: 32000 }
+    repair: { provider: luna-gateway, model: gpt-5.4-mini, maxTokens: 32000 }
+
+- id: cmath-paper-import
+  config:
+    experimentId: luna-paper-import-off-compact-v1
+    condition: off-compact
+    tokenBudget: { integrate: 8000, normal: 16000, retry: 32000 }

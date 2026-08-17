@@ -1,0 +1,47 @@
+- insert:
+    - id: cmath-math-map-core
+      name: '@cmath/dsh-math-map/core'
+    - id: cmath-paper-import-router
+      name: '@cmath/dsh-math-map/router'
+      inject: [llm]
+      config:
+        # Historical DeepSeek baseline: reasoning disabled. Luna and other
+        # experiment conditions are selected by explicit overlay patches.
+        extract: { provider: deepseek-official, model: deepseek-v4-flash, reasoningEffort: off, maxTokens: 32000 }
+        integrate: { provider: deepseek-official, model: deepseek-v4-flash, reasoningEffort: off, maxTokens: 32000 }
+        assemble: { provider: deepseek-official, model: deepseek-v4-flash, reasoningEffort: off, maxTokens: 32000 }
+        repair: { provider: deepseek-official, model: deepseek-v4-flash, reasoningEffort: off, maxTokens: 32000 }
+    - id: cmath-paper-import
+      name: '@cmath/dsh-math-map/paper-import'
+      inject: [mathMapCore, mathMapImportRouter, llm, tools]
+      config:
+        chunkCharacters: 16000
+        overlapCharacters: 1200
+        concurrency: 4
+        experimentId: reasoning-budget-ab-hopf-v1
+        condition: high-generous
+        tokenBudget: { integrate: 16000, normal: 32000, retry: 64000 }
+    - id: cmath-math-map-ui
+      name: '@cmath/dsh-math-map'
+      inject: [webServer]
+
+# Register the private OpenAI-compatible Luna route alongside the official
+# DeepSeek route.  Authentication is deliberately a credential reference;
+# the secret must be supplied through Harness credentials as LUNA_API_KEY.
+- id: llm-pi-ai
+  config:
+    providers:
+      luna-gateway:
+        displayName: Luna Gateway
+        apiKeyEnv: LUNA_API_KEY
+        api: openai-completions
+        baseURL: https://8.220.199.185.sslip.io/v1
+        models:
+          - id: gpt-5.6-luna
+            name: GPT-5.6 Luna
+            contextWindow: 262144
+            maxTokens: 65536
+            reasoningEfforts:
+              off:
+              high: high
+              max: max
