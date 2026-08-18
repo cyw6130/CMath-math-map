@@ -7,6 +7,8 @@ const http = require("http");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { createLocalMapStore } = require("./local-map-store");
+const { createLocalLibraryStateStore } = require("./local-library-state");
 
 const args = process.argv.slice(2);
 function argValue(name, fallback) {
@@ -20,6 +22,10 @@ const host = argValue("host", "127.0.0.1");
 
 const KEY_STORE_PATH = path.join(os.homedir(), ".gamma-math-map", "keys.json");
 const KEY_STORE_SCHEMA = "cmath-gamma.local-key-store/v0.1";
+const MAP_STORE_PATH = path.join(os.homedir(), ".cmath-math-map", "maps");
+const LIBRARY_STATE_PATH = path.join(os.homedir(), ".cmath-math-map", "library-state.json");
+const localMapStore = createLocalMapStore(MAP_STORE_PATH);
+const localLibraryStateStore = createLocalLibraryStateStore(LIBRARY_STATE_PATH);
 const LOCAL_ONLY_HOSTS = new Set(["127.0.0.1", "::1", "localhost"]);
 const LOCAL_ORIGIN_RE = /^https?:\/\/(127\.0\.0\.1|::1|localhost)(:\d+)?$/u;
 
@@ -107,6 +113,7 @@ function isLocalHttpTarget(target) {
 }
 
 const PROXY_BODY_LIMIT = 16 * 1024 * 1024;
+const MAP_BODY_LIMIT = 32 * 1024 * 1024;
 const PROXY_TIMEOUT_MS = 1800000;
 
 // Manual upstream forward: Node's global fetch (undici) enforces an
@@ -209,6 +216,64 @@ http
       return;
     }
 
+    if (urlPath === "/api/maps" || urlPath === "/api/maps/") {
+      if (!localOnly(req, res)) return;
+      if (req.method === "GET") {
+        try {
+          sendJson(res, 200, { schema: "cmath.local-map-library/v1", maps: localMapStore.list() }, req.headers.origin || "");
+        } catch (error) {
+          sendJson(res, 500, { error: "failed to read local maps: " + error.message }, req.headers.origin || "");
+        }
+        return;
+      }
+      if (req.method === "POST") {
+        collectBody(req, MAP_BODY_LIMIT, (bodyError, raw) => {
+          if (bodyError) {
+            sendJson(res, 400, { error: bodyError.message }, req.headers.origin || "");
+            return;
+          }
+          try {
+            const saved = localMapStore.put(JSON.parse(raw));
+            sendJson(res, 201, saved, req.headers.origin || "");
+          } catch (error) {
+            sendJson(res, 400, { error: error.message }, req.headers.origin || "");
+          }
+        });
+        return;
+      }
+      sendJson(res, 405, { error: "method not allowed" }, req.headers.origin || "");
+      return;
+    }
+
+    if (urlPath === "/api/library-state" || urlPath === "/api/library-state/") {
+      if (!localOnly(req, res)) return;
+      if (req.method === "GET") {
+        try {
+          sendJson(res, 200, localLibraryStateStore.read(), req.headers.origin || "");
+        } catch (error) {
+          sendJson(res, 500, { error: "failed to read local library state: " + error.message }, req.headers.origin || "");
+        }
+        return;
+      }
+      if (req.method === "PUT" || req.method === "POST") {
+        collectBody(req, 2 * 1024 * 1024, (bodyError, raw) => {
+          if (bodyError) {
+            sendJson(res, 400, { error: bodyError.message }, req.headers.origin || "");
+            return;
+          }
+          try {
+            const saved = localLibraryStateStore.write(JSON.parse(raw));
+            sendJson(res, 200, saved, req.headers.origin || "");
+          } catch (error) {
+            sendJson(res, 400, { error: error.message }, req.headers.origin || "");
+          }
+        });
+        return;
+      }
+      sendJson(res, 405, { error: "method not allowed" }, req.headers.origin || "");
+      return;
+    }
+
     // Same-origin model proxy: the browser posts {targetUrl, apiKey, body} to
     // the loopback server, which forwards the OpenAI-compatible request and
     // streams the upstream response back. This is the only path that lets the
@@ -275,4 +340,6 @@ http
   .listen(port, host, () => {
     console.log(`Gamma Math Map (local) → http://${host}:${port}/`);
     console.log(`API Key store: ${KEY_STORE_PATH}`);
+    console.log(`Local map store: ${MAP_STORE_PATH}`);
+    console.log(`Local library state store: ${LIBRARY_STATE_PATH}`);
   });
