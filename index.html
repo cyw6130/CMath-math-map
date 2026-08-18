@@ -13,7 +13,7 @@
 </head>
 <body data-view="workbench">
   <!-- Hidden local JSON file input for native validation & loading -->
-  <input type="file" id="local-json-file-input" accept=".json,application/json" hidden>
+  <input type="file" id="local-json-file-input" accept=".json,application/json" multiple hidden>
 
   <!-- ========================================================================
        1. Workbench View — Paper Grotesque Edition (V2 layout preserved)
@@ -40,7 +40,7 @@
 
       <div class="topbar-nav-actions">
         <button class="topbar-action-btn" id="btn-topbar-demos" type="button">
-          精选 Demo
+          数学地图库
         </button>
         <button class="topbar-action-btn" id="btn-topbar-settings" type="button" aria-label="设置">
           设置
@@ -75,153 +75,32 @@
         </div>
 
         <!-- 2. Open Local JSON -->
-        <div class="entrance-card" id="card-open-json" role="button" tabindex="0">
+        <div class="entrance-card" id="card-open-json" role="button" tabindex="0" aria-haspopup="dialog" aria-label="导入 JSON 地图，支持单张或批量导入">
           <div class="card-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           </div>
-          <h2>打开本地 JSON</h2>
-          <p>载入本地已有的 Project View JSON 数据包，直接生成数学地图进行浏览。</p>
+          <h2>导入 JSON 地图</h2>
+          <p>支持导入一个或多个本地 Project View JSON 数据包，并加入数学地图库以供浏览。</p>
           <div class="card-action-bar">
-            <span>选择本地文件</span>
+            <span>打开导入抽屉</span>
             <span>→</span>
           </div>
         </div>
 
-        <!-- 3. Curated Demos -->
-        <div class="entrance-card" id="card-curated-demos" role="button" tabindex="0">
+        <!-- 3. Math Map Library -->
+        <div class="entrance-card" id="card-curated-demos" role="button" tabindex="0" aria-haspopup="dialog" aria-label="数学地图库，浏览与切换地图">
           <div class="card-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
           </div>
-          <h2>精选 Demo</h2>
-          <p>浏览预置的精选数学地图案例：从特征值到谱定理、从闭区间套到介值定理、从积分累积函数到微积分基本定理。</p>
+          <h2>数学地图库</h2>
+          <p>浏览精选示例与内置数学地图，支持按需自定义排序并一键载入浏览。</p>
           <div class="card-action-bar">
-            <span>浏览案例库</span>
+            <span>打开地图库</span>
             <span>→</span>
           </div>
         </div>
       </div>
     </main>
-
-    <!-- Slide Drawer 1: Paper Extraction -->
-    <aside class="slide-drawer" id="paper-drawer">
-      <header class="drawer-header">
-        <div>
-          <h3>论文解析工作流</h3>
-          <small>PDF → EXTRACT → DOWNLOAD JSON</small>
-        </div>
-        <button class="close-btn" id="btn-close-paper-drawer" type="button" aria-label="关闭">×</button>
-      </header>
-
-      <div class="form-group">
-        <label>第一步 · 选取数学论文</label>
-        <div class="pdf-drop-zone">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-          <span class="drop-main">点击选择或拖拽 PDF 论文至此</span>
-          <span class="drop-sub">支持任意数学论文（不限 Arxiv）</span>
-        </div>
-      </div>
-
-      <div class="drawer-notice">
-        <strong>提示：</strong><br>
-        解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「打开本地 JSON」</strong>即可载入阅览。
-      </div>
-
-      <div style="margin-top:auto;">
-        <button class="btn-primary-action" id="btn-start-extract" type="button">
-          生成并下载 JSON 数据包
-        </button>
-      </div>
-    </aside>
-
-    <!-- Slide Drawer 2: Settings -->
-    <aside class="slide-drawer" id="settings-drawer">
-      <header class="drawer-header">
-        <div>
-          <h3>模型 API 配置</h3>
-          <small>MODEL CREDENTIALS &amp; ENDPOINT</small>
-        </div>
-        <button class="close-btn" id="btn-close-settings" type="button" aria-label="关闭">×</button>
-      </header>
-
-      <div class="form-group">
-        <label for="api-endpoint-input">1. API 服务地址</label>
-        <div class="provider-select-row">
-          <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
-          <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
-          <button type="button" class="provider-btn" data-provider="opencode">OpenCode Go</button>
-          <button type="button" class="provider-btn" data-provider="custom">自定义</button>
-        </div>
-        <span class="active-provider-label" id="active-provider-label"></span>
-        <input class="form-input" type="text" id="api-endpoint-input" value="https://api.deepseek.com/v1" placeholder="https://...">
-        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。当前供应商的记忆配置会随切换自动恢复。</span>
-      </div>
-
-      <div class="form-group">
-        <label for="api-key-input">2. API Key</label>
-        <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key">
-        <label class="local-key-row" id="remember-key-row" hidden>
-          <input type="checkbox" id="remember-key-input" checked>
-          <span>记住 Key 到本地（仅本机桌面版有效）</span>
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label for="model-select">3. 推理模型</label>
-        <select class="form-input" id="model-select" style="cursor:pointer;">
-          <option value="deepseek-chat" selected>deepseek-chat (推荐 · 快速高效)</option>
-          <option value="deepseek-reasoner">deepseek-reasoner (深度推理)</option>
-          <option value="custom">自定义模型名称...</option>
-        </select>
-        <div id="custom-model-group" style="margin-top:8px;" hidden>
-          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
-        </div>
-        <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
-      </div>
-
-      <div class="form-group">
-        <button type="button" class="btn-test-connection" id="btn-test-connection">测试连接</button>
-        <span class="test-connection-result" id="test-connection-result" hidden></span>
-      </div>
-    </aside>
-
-    <!-- Modal: Curated 3 Demos -->
-    <div class="modal-overlay" id="demo-modal" hidden>
-      <div class="demo-modal-dialog">
-        <div class="demo-modal-head">
-          <div>
-            <h3>精选数学地图案例</h3>
-            <span>点击任一案例即刻在全屏画布中打开</span>
-          </div>
-          <button class="close-btn" id="btn-close-demo-modal" type="button">×</button>
-        </div>
-
-        <div class="demo-cases-list">
-          <div class="demo-case-card" data-map-key="spectral-theorem" role="button" tabindex="0">
-            <div class="demo-case-info">
-              <strong>从特征值到谱定理</strong>
-              <span>高等代数示例 · 数学地图与 Loop 进展</span>
-            </div>
-            <span class="demo-case-btn">打开地图 →</span>
-          </div>
-
-          <div class="demo-case-card" data-map-key="intermediate-value-theorem" role="button" tabindex="0">
-            <div class="demo-case-info">
-              <strong>从闭区间套到介值定理</strong>
-              <span>数学分析示例 · 数学地图与 Loop 进展</span>
-            </div>
-            <span class="demo-case-btn">打开地图 →</span>
-          </div>
-
-          <div class="demo-case-card" data-map-key="fundamental-theorem-calculus" role="button" tabindex="0">
-            <div class="demo-case-info">
-              <strong>从积分累积函数到微积分基本定理</strong>
-              <span>微积分示例 · 数学地图与 Loop 进展</span>
-            </div>
-            <span class="demo-case-btn">打开地图 →</span>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ========================================================================
@@ -239,7 +118,7 @@
           <img src="logo-manuscript.webp" alt="CMath Logo" class="map-brand-logo">
           <span class="map-brand-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
           <span class="map-brand-sub">MATH MAP</span>
-          <span id="map-active-title" class="map-active-title">从特征值到谱定理</span>
+          <button id="map-active-title" class="map-active-title" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="打开数学地图库">从特征值到谱定理</button>
         </div>
       </div>
 
@@ -247,7 +126,8 @@
 
       <div class="map-topbar-right">
         <button class="map-quick-btn" id="btn-map-open-json" type="button">打开 JSON</button>
-        <button class="map-quick-btn" id="btn-map-open-demos" type="button">Demo</button>
+        <button class="map-quick-btn" id="btn-map-open-demos" type="button">地图库</button>
+        <button class="map-quick-btn map-quick-btn-chat" id="btn-map-chat" type="button">对话</button>
       </div>
     </header>
 
@@ -329,6 +209,280 @@
     </main>
   </div>
 
+  <!-- ========================================================================
+       3. Drawers & Overlays (Positioned at body level for multi-view access)
+       ======================================================================== -->
+
+  <!-- Drawer 1: Paper Extraction -->
+  <div class="drawer-backdrop" id="paper-drawer-backdrop" hidden>
+    <aside class="slide-drawer" id="paper-drawer" role="dialog" aria-modal="true" aria-labelledby="paper-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <h3 id="paper-drawer-title">论文解析工作流</h3>
+          <small>PDF → EXTRACT → DOWNLOAD JSON</small>
+        </div>
+        <button class="close-btn" id="btn-close-paper-drawer" type="button" aria-label="关闭">×</button>
+      </header>
+
+      <div class="form-group">
+        <label>第一步 · 选取数学论文</label>
+        <div class="pdf-drop-zone">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span class="drop-main">点击选择或拖拽 PDF 论文至此</span>
+          <span class="drop-sub">支持任意数学论文（不限 Arxiv）</span>
+        </div>
+      </div>
+
+      <div class="drawer-notice">
+        <strong>提示：</strong><br>
+        解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「导入 JSON 地图」</strong>即可载入阅览。
+      </div>
+
+      <div style="margin-top:auto;">
+        <button class="btn-primary-action" id="btn-start-extract" type="button">
+          生成并下载 JSON 数据包
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Drawer 2: Settings -->
+  <div class="drawer-backdrop" id="settings-drawer-backdrop" hidden>
+    <aside class="slide-drawer" id="settings-drawer" role="dialog" aria-modal="true" aria-labelledby="settings-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <h3 id="settings-drawer-title">模型 API 配置</h3>
+          <small>MODEL CREDENTIALS &amp; ENDPOINT</small>
+        </div>
+        <button class="close-btn" id="btn-close-settings" type="button" aria-label="关闭">×</button>
+      </header>
+
+      <div class="form-group">
+        <label for="api-endpoint-input">1. API 服务地址</label>
+        <div class="provider-select-row">
+          <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
+          <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
+          <button type="button" class="provider-btn" data-provider="opencode">OpenCode Go</button>
+          <button type="button" class="provider-btn" data-provider="custom">自定义</button>
+        </div>
+        <span class="active-provider-label" id="active-provider-label"></span>
+        <input class="form-input" type="text" id="api-endpoint-input" value="https://opencode.ai/zen/go/v1" placeholder="https://...">
+        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。当前供应商的记忆配置会随切换自动恢复。</span>
+      </div>
+
+      <div class="form-group">
+        <label for="api-key-input">2. API Key</label>
+        <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key">
+        <label class="local-key-row" id="remember-key-row" hidden>
+          <input type="checkbox" id="remember-key-input" checked>
+          <span>记住 Key 到本地（仅本机桌面版有效）</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="model-select">3. 推理模型</label>
+        <select class="form-input" id="model-select" style="cursor:pointer;">
+          <option value="deepseek-v4-flash" selected>DeepSeek V4 Flash (推荐 · 快速)</option>
+          <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+          <option value="kimi-k3">Kimi K3</option>
+          <option value="kimi-k2.7-code">Kimi K2.7 Code</option>
+          <option value="kimi-k2.6">Kimi K2.6</option>
+          <option value="glm-5.3">GLM-5.3</option>
+          <option value="glm-5.2">GLM-5.2</option>
+          <option value="glm-5.1">GLM-5.1</option>
+          <option value="minimax-m3">MiniMax M3</option>
+          <option value="minimax-m2.7">MiniMax M2.7</option>
+          <option value="qwen3.8-max">Qwen3.8 Max</option>
+          <option value="qwen3.7-max">Qwen3.7 Max</option>
+          <option value="qwen3.7-plus">Qwen3.7 Plus</option>
+          <option value="qwen3.6-plus">Qwen3.6 Plus</option>
+          <option value="mimo-v2.5">MiMo-V2.5</option>
+          <option value="mimo-v2.5-pro">MiMo-V2.5-Pro</option>
+          <option value="hy3">Hy3</option>
+          <option value="custom">自定义模型名称...</option>
+        </select>
+        <div id="custom-model-group" style="margin-top:8px;" hidden>
+          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
+        </div>
+        <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
+      </div>
+
+      <div class="form-group">
+        <button type="button" class="btn-test-connection" id="btn-test-connection">测试连接</button>
+        <span class="test-connection-result" id="test-connection-result" hidden></span>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Drawer 3: Batch & Single JSON Import -->
+  <div class="drawer-backdrop" id="import-drawer-backdrop" hidden>
+    <aside class="slide-drawer import-drawer" id="import-drawer" role="dialog" aria-modal="true" aria-labelledby="import-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <span class="drawer-kicker">BATCH &amp; SINGLE IMPORT</span>
+          <h3 id="import-drawer-title">导入 JSON 地图</h3>
+        </div>
+        <button class="close-btn" id="btn-close-import-drawer" type="button" aria-label="关闭导入抽屉">×</button>
+      </header>
+
+      <div class="drawer-scroll-body">
+        <div class="drawer-notice-box">
+          <div class="notice-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="notice-text">
+            <strong>支持单张或批量导入：</strong>系统将校验文件结构与数据规范，自动识别重名冲突与无效文件。
+          </div>
+        </div>
+
+        <!-- Dropzone Area -->
+        <div class="import-drop-zone" id="import-drop-zone" tabindex="0" role="button" aria-label="选择或拖拽 JSON 文件">
+          <div class="drop-icon-wrap" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <span class="drop-main">拖拽一个或多个 <code>.json</code> 文件至此</span>
+          <span class="drop-sub">支持标准的 Project View JSON 格式</span>
+          <div class="drop-actions-row">
+            <button class="btn-secondary" id="btn-choose-json-files" type="button">选择 JSON 文件（可多选）</button>
+          </div>
+        </div>
+
+        <!-- Batch Validation List Section -->
+        <div class="batch-validation-section" id="batch-validation-section" hidden>
+          <div class="batch-section-head">
+            <h4>待导入文件校验结果 (<span id="batch-total-count">0</span>)</h4>
+            <span class="batch-summary-pill" id="batch-status-summary"></span>
+          </div>
+
+          <div class="batch-files-list" id="batch-files-list" role="list">
+            <!-- Dynamically populated rows -->
+          </div>
+        </div>
+      </div>
+
+      <footer class="drawer-footer" id="import-drawer-footer">
+        <div class="footer-status-col">
+          <span class="footer-valid-hint" id="footer-valid-hint">请选择或拖入 JSON 文件</span>
+        </div>
+        <div class="footer-btn-col">
+          <button class="btn-secondary" id="btn-reset-import" type="button">清空</button>
+          <button class="btn-primary" id="btn-start-batch-import" type="button" disabled>导入 0 张有效地图</button>
+        </div>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- Drawer 4: Unified Math Map Library -->
+  <div class="drawer-backdrop" id="library-drawer-backdrop" hidden>
+    <aside class="slide-drawer library-drawer" id="library-drawer" role="dialog" aria-modal="true" aria-labelledby="library-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <span class="drawer-kicker">UNIFIED REPOSITORY</span>
+          <h3 id="library-drawer-title">数学地图库</h3>
+          <small class="drawer-subtitle">浏览精选示例、本地导入与内置数学地图，支持分类折叠与自定义排序</small>
+        </div>
+        <button class="close-btn" id="btn-close-library-drawer" type="button" aria-label="关闭地图库">×</button>
+      </header>
+
+      <div class="drawer-scroll-body library-scroll-body" id="library-scroll-body">
+        <!-- New Folder Toolbar -->
+        <div class="library-toolbar" id="library-toolbar">
+          <button type="button" class="btn-create-folder" id="btn-create-folder" aria-expanded="false" aria-controls="new-folder-form-panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>新建文件夹</span>
+          </button>
+          <div class="new-folder-form-panel" id="new-folder-form-panel" hidden>
+            <div class="new-folder-input-row">
+              <input type="text" class="new-folder-input" id="new-folder-input" placeholder="输入文件夹名称" maxlength="40" aria-label="新建文件夹名称">
+              <div class="new-folder-actions">
+                <button type="button" class="btn-primary-sm btn-confirm-folder" id="btn-confirm-folder">确认</button>
+                <button type="button" class="btn-secondary-sm btn-cancel-folder" id="btn-cancel-folder">取消</button>
+              </div>
+            </div>
+            <div class="new-folder-error-msg" id="new-folder-error-msg" role="alert" hidden></div>
+          </div>
+        </div>
+
+        <!-- Section 1: 精选 Demo -->
+        <section class="map-library-section" id="section-curated-demos" aria-labelledby="heading-curated-demos">
+          <div class="folder-accordion-header" id="header-curated-demos" data-folder="curated" role="button" tabindex="0" aria-expanded="true" aria-controls="list-curated-demos">
+            <div class="folder-header-left">
+              <svg class="folder-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <svg class="folder-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <h4 id="heading-curated-demos" class="section-heading">精选 Demo</h4>
+              <span class="section-count-badge" id="count-curated">3</span>
+            </div>
+            <span class="section-tag-fixed">官方推荐 · 固定顺序</span>
+          </div>
+          <div class="map-cards-list" id="list-curated-demos" role="list">
+            <!-- Dynamically populated from curated demos -->
+          </div>
+        </section>
+
+        <!-- Section 2: 我的 JSON 地图 (Local Imported) -->
+        <section class="map-library-section" id="section-my-maps" aria-labelledby="heading-my-maps">
+          <div class="folder-accordion-header" id="header-my-maps" data-folder="myMaps" role="button" tabindex="0" aria-expanded="true" aria-controls="list-my-maps">
+            <div class="folder-header-left">
+              <svg class="folder-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <svg class="folder-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <h4 id="heading-my-maps" class="section-heading">我的 JSON 地图</h4>
+              <span class="section-count-badge" id="count-my-maps">0</span>
+            </div>
+            <span class="section-order-hint">支持上下微调排序 · 自动记忆</span>
+          </div>
+          <div class="map-cards-list" id="list-my-maps" role="list">
+            <!-- Populated from session imported maps or empty state -->
+          </div>
+        </section>
+
+        <!-- Section 3: 内置地图库 (Built-in Maps) -->
+        <section class="map-library-section" id="section-builtin-maps" aria-labelledby="heading-builtin-maps">
+          <div class="folder-accordion-header" id="header-builtin-maps" data-folder="builtin" role="button" tabindex="0" aria-expanded="true" aria-controls="list-builtin-maps">
+            <div class="folder-header-left">
+              <svg class="folder-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <svg class="folder-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <h4 id="heading-builtin-maps" class="section-heading">内置地图库</h4>
+              <span class="section-count-badge" id="count-builtin">0</span>
+            </div>
+            <span class="section-order-hint">支持上下微调排序 · 自动记忆</span>
+          </div>
+          <div class="map-cards-list" id="list-builtin-maps" role="list">
+            <!-- Populated from registry maps -->
+          </div>
+        </section>
+
+        <!-- Custom Folders Container -->
+        <div id="custom-folders-container" class="custom-folders-container">
+          <!-- Dynamically populated custom folders -->
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
   <!-- Runtime Scripts -->
   <script src="portable-maps-data.js"></script>
   <script src="vendor/force-graph/force-graph.min.js"></script>
@@ -343,6 +497,11 @@
   <script src="math-map-content-loader.js"></script>
   <script src="generic-math-map-preview-loader.js"></script>
   <script src="math-map-project-adapter.js"></script>
+  <script src="generated-math-content/registry.js"></script>
+  <script src="paper-import-v3-capability.js"></script>
+  <script src="guide-lead-contract-v1.js"></script>
+  <script src="lead-guided-extraction-v1.js"></script>
+  <script src="dual-lane-extraction-aggregation-v1.js"></script>
   <script src="paper-import-client.js"></script>
   <script src="app-v5.js"></script>
 </body>
