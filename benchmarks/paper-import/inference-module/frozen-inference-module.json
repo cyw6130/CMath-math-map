@@ -1,12 +1,12 @@
 {
   "schema": "cmath.paper-inference-module-selection/v1",
   "status": "frozen",
-  "selectedInferenceVersion": "v3.45",
+  "selectedInferenceVersion": "v3.46",
   "inferenceModel": "muse-spark-1.2-contributor",
   "inferenceProvider": "opencode-go",
   "inferenceMode": "off-compact",
   "entryModuleVersion": "paper-entry-parallel-extraction-v1.14",
-  "frozenAt": "2026-08-20T15:30:00+00:00",
+  "frozenAt": "2026-08-20T20:30:00+00:00",
   "frozenCommit": "a4160a3",
   "scorer": "gpt-5.6-sol",
   "promptVersion": "sol-score-prompt-v3",
@@ -59,5 +59,6 @@
     "meanEntries": 37.2,
     "totalSolScore": 419
   },
-  "note": "Combined frozen: Entry v1.14 (30.17) + Inference v3.45. Entry updated from v1.7."
+  "note": "Combined frozen v3.46: Entry v1.14 (30.17) + Inference v3.45. Promoted from v3.45.",
+  "combinedVersion": "entry-v1.14+inference-v3.45"
 }
