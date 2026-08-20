@@ -381,11 +381,39 @@
         notes.push(`忽略无法识别的第 ${index + 1} 个 Entry`);
         return;
       }
-      const entry = isCompactEntry(entryRaw) ? expandCompactEntry(entryRaw, { fileName }) : { ...entryRaw };
+      let entry;
+      if (isCompactEntry(entryRaw)) {
+        entry = expandCompactEntry(entryRaw, { fileName });
+      } else {
+        entry = { ...entryRaw };
+        // Consolidation artifacts use {name, page} without title/sourceLocator — derive them
+        if ((typeof entry.title !== "string" || !entry.title.trim()) && typeof entry.name === "string" && entry.name.trim()) {
+          entry.title = entry.name.trim();
+        }
+        if ((typeof entry.shortTitle !== "string" || !entry.shortTitle.trim()) && entry.title) {
+          entry.shortTitle = String(entry.title).slice(0, 24);
+        }
+        if ((typeof entry.sourceLocator !== "string" || !entry.sourceLocator.trim()) && Number.isInteger(entry.page) && entry.page > 0) {
+          entry.sourceLocator = `${fileName}#page=${entry.page}`;
+        }
+        if ((typeof entry.sourceReference !== "string" || !entry.sourceReference.trim()) && typeof entry.source === "string" && entry.source.trim()) {
+          entry.sourceReference = entry.source.trim();
+        }
+      }
       entry.id = typeof entry.id === "string" ? entry.id.trim() : "";
-      const kind = entry.entryClass === "fact" ? entry.factKind : entry.claimKind;
-      const kinds = entry.entryClass === "fact" ? FACT_KINDS : CLAIM_KINDS;
-      if (!ENTRY_CLASSES.has(entry.entryClass) || !kinds.has(kind)) {
+      // Accept both legacy consolidation entries (entryClass == type like "definition") and canonical (entryClass == "fact"/"claim")
+      let kind = entry.entryClass === "fact" ? entry.factKind : entry.claimKind;
+      let kinds = entry.entryClass === "fact" ? FACT_KINDS : CLAIM_KINDS;
+      let entryClassForCheck = entry.entryClass;
+      if (!ENTRY_CLASSES.has(entryClassForCheck) || (kind === undefined && entry.type)) {
+        // Legacy shape: entryClass holds type value (e.g. "definition") and factKind/claimKind missing
+        const legacyType = String(entry.type ?? entry.entryClass ?? "").trim().toLowerCase();
+        const map = {"definition":"definition","algorithm":"algorithm","calculation":"calculation","lemma":"lemma","proposition":"proposition","theorem":"theorem","def":"definition","defn":"definition","algo":"algorithm","calc":"calculation","lem":"lemma","prop":"proposition","thm":"theorem","cor":"theorem","corollary":"theorem"};
+        const norm = map[legacyType] ?? legacyType;
+        if (FACT_KINDS.has(norm)) { entryClassForCheck = "fact"; kind = norm; kinds = FACT_KINDS; entry.entryClass = "fact"; entry.factKind = norm; }
+        else if (CLAIM_KINDS.has(norm)) { entryClassForCheck = "claim"; kind = norm; kinds = CLAIM_KINDS; entry.entryClass = "claim"; entry.claimKind = norm; }
+      }
+      if (!ENTRY_CLASSES.has(entryClassForCheck) || !kinds.has(kind)) {
         notes.push(`忽略类型无效的 Entry：${entry.id || `#${index + 1}`}`);
         return;
       }
@@ -1209,6 +1237,66 @@
   }
 
 
+
+  function entryReviewPrompt({ fileName = "paper.pdf", catalog = "" } = {}) {
+    return `你是数学论文 Entry 提取评审员。请依据 source-grounded entry review：\n论文：${fileName}\n目录：\n${catalog}\n返回 {"patches":[]} 形态。`;
+  }
+  function applyEntryReviewPatches(entries, aliases, proposal, { pageCount = 999 } = {}) {
+    const diagnostics = { appliedCount: 0, rejectedCount: 0, addCount: 0, replaceCount: 0, aliasCount: 0, removeCount: 0 };
+    if (!proposal || typeof proposal !== "object") return { entries: [...entries], aliases: { ...aliases }, diagnostics };
+    const patches = Array.isArray(proposal.patches) ? proposal.patches : [];
+    let out = [...entries];
+    const outAliases = { ...aliases };
+    const VALID_TYPES = new Set(["definition","theorem","lemma","proposition","calculation","algorithm"]);
+    function hasBalanced(s) { try { return hasBalancedMathDelimiters(s); } catch { return true; } }
+    for (const patch of patches) {
+      if (!patch || typeof patch !== "object") { diagnostics.rejectedCount += 1; continue; }
+      if (patch.action === "add") {
+        const e = patch.entry;
+        if (!e || typeof e !== "object") { diagnostics.rejectedCount += 1; continue; }
+        if (!e.id || !e.type || !e.statement) { diagnostics.rejectedCount += 1; continue; }
+        if (!VALID_TYPES.has(String(e.type))) { diagnostics.rejectedCount += 1; continue; }
+        const pg = Number(e.page);
+        if (!Number.isInteger(pg) || pg < 1 || pg > pageCount) { diagnostics.rejectedCount += 1; continue; }
+        if (typeof e.statement === "string" && !hasBalanced(e.statement)) { diagnostics.rejectedCount += 1; continue; }
+        // strip downstream fields
+        const cleaned = { id: String(e.id).trim(), type: String(e.type).trim(), name: e.name ? String(e.name) : String(e.id), statement: String(e.statement), page: pg };
+        // check duplicate id
+        if (out.some(x => x.id === cleaned.id)) { diagnostics.rejectedCount += 1; continue; }
+        out.push(cleaned);
+        diagnostics.appliedCount += 1; diagnostics.addCount += 1;
+      } else if (patch.action === "replace") {
+        const targetId = typeof patch.id === "string" ? patch.id.trim() : "";
+        const e = patch.entry;
+        if (!targetId || !e || typeof e !== "object" || !e.id || !e.type || !e.statement) { diagnostics.rejectedCount += 1; continue; }
+        if (!VALID_TYPES.has(String(e.type))) { diagnostics.rejectedCount += 1; continue; }
+        if (typeof e.statement === "string" && !hasBalanced(e.statement)) { diagnostics.rejectedCount += 1; continue; }
+        const idx = out.findIndex(x => x.id === targetId);
+        if (idx < 0) { diagnostics.rejectedCount += 1; continue; }
+        const cleaned = { id: String(e.id).trim(), type: String(e.type).trim(), name: e.name ? String(e.name) : String(e.id), statement: String(e.statement), page: Number(e.page) || out[idx].page };
+        out[idx] = cleaned;
+        // alias old -> new
+        if (targetId !== cleaned.id) outAliases[targetId] = cleaned.id;
+        diagnostics.appliedCount += 1; diagnostics.replaceCount += 1;
+      } else if (patch.action === "alias") {
+        const from = typeof patch.from === "string" ? patch.from.trim() : "";
+        const to = typeof patch.to === "string" ? patch.to.trim() : "";
+        if (!from || !to || from === to) { diagnostics.rejectedCount += 1; continue; }
+        if (!out.some(x=>x.id===from) || !out.some(x=>x.id===to)) { diagnostics.rejectedCount += 1; continue; }
+        out = out.filter(x=>x.id !== from);
+        outAliases[from] = to;
+        diagnostics.appliedCount += 1; diagnostics.aliasCount += 1;
+      } else if (patch.action === "remove") {
+        const rid = typeof patch.id === "string" ? patch.id.trim() : "";
+        const idx = out.findIndex(x=>x.id===rid);
+        if (idx < 0) { diagnostics.rejectedCount += 1; continue; }
+        out.splice(idx,1);
+        diagnostics.appliedCount += 1; diagnostics.removeCount += 1;
+      } else { diagnostics.rejectedCount += 1; }
+    }
+    return { entries: out, aliases: outAliases, diagnostics };
+  }
+
   async function requestPaperEntryArtifact({ fileName = "paper.pdf", pageCount = 1, text = "", chatImpl, fetchImpl = globalThis.fetch, endpoint, apiKey, model, providerLabel, reasoningEffort, maxChunks = 1, workflowCapabilities, onStage, signal } = {}) {
     if (typeof chatImpl !== "function" && typeof fetchImpl !== "function") throw new Error("chatImpl or fetchImpl required");
     const chatFn = typeof chatImpl === "function" ? chatImpl : null;
@@ -1386,7 +1474,7 @@
             lastMerged = normalized;
             if (!issues.length) {
               notify("validate", {});
-              try { return paperProjectView(normalized, { fileName, requireB0Classification: true }); } catch (error) { issues = [`系统校验未通过：${error.message}`]; }
+              try { const _v = paperProjectView(normalized, { fileName, requireB0Classification: true }); if(!('projectTitle' in _v) && _v?.project?.title) _v.projectTitle = _v.project.title; return _v; } catch (error) { issues = [`系统校验未通过：${error.message}`]; }
             }
           }
         }
@@ -1401,7 +1489,7 @@
       const { raw: fixed, actions } = sanitizeRawProjectView(lastMerged, { fileName });
       if (actions.length) notify("autofix", { count: actions.length, actions });
       notify("validate", {});
-      try { return paperProjectView(fixed, { fileName, requireB0Classification: true }); } catch (error) { throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`); }
+      try { const v = paperProjectView(fixed, { fileName, requireB0Classification: true }); if(!('projectTitle' in v) && v?.project?.title) v.projectTitle = v.project.title; return v; } catch (error) { throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`); }
     }
     throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
   }
@@ -1623,6 +1711,8 @@
     splitTextIntoChunks,
     paperProjectView,
     findOpenClaims,
+    entryReviewPrompt,
+    applyEntryReviewPatches,
     requestPaperEntryArtifact,
     requestPaperInferenceFromEntryArtifact,
     requestPaperProjectView,
