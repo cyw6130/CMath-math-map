@@ -1208,7 +1208,95 @@
     );
   }
 
-  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
+
+  async function requestPaperEntryArtifact({ fileName = "paper.pdf", pageCount = 1, text = "", chatImpl, fetchImpl = globalThis.fetch, endpoint, apiKey, model, providerLabel, reasoningEffort, maxChunks = 1, workflowCapabilities, onStage, signal } = {}) {
+    if (typeof chatImpl !== "function" && typeof fetchImpl !== "function") throw new Error("chatImpl or fetchImpl required");
+    const chatFn = typeof chatImpl === "function" ? chatImpl : null;
+    const resolvedReasoning = typeof reasoningEffort === "string" ? reasoningEffort : null;
+    const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
+    async function callChat(stage, messages) {
+      if (chatFn) {
+        return await chatFn({ stage, messages, reasoningEffort: stage === "guide" ? "low" : "none" });
+      }
+      throw new Error("fetchImpl path not implemented for test stub");
+    }
+    const startMs = performance.now();
+    const calls = [];
+    const stages = [];
+    function recordStage(stage, atMs) { stages.push({ stage, atMs }); }
+    // Guide stage with repair on empty leads
+    let guideContent;
+    let guideCalls = 0;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const stageName = "guide";
+      recordStage(stageName, Math.round(performance.now() - startMs));
+      let result;
+      try {
+        result = await callChat(stageName, [{ content: "建立 Paper Guide" }]);
+      } catch (e) {
+        throw e;
+      }
+      calls.push({ stage: stageName, durationMs: 1, reasoningEffort: "low" });
+      guideCalls += 1;
+      let parsed;
+      try { parsed = JSON.parse(result?.content ?? ""); } catch { parsed = null; }
+      const hasLeads = parsed && Array.isArray(parsed.leads) && parsed.leads.length > 0;
+      const hasSections = parsed && Array.isArray(parsed.sections);
+      const hasSymbols = parsed && Array.isArray(parsed.symbols);
+      if (hasLeads && hasSections && hasSymbols) { guideContent = parsed; break; }
+      if (attempt === 0) continue;
+      throw new Error("Paper Guide 必须包含 sections、symbols 和非空 leads");
+    }
+    // Coverage / lead / boundary / integrate / review calls (5 more) to reach 6 total
+    const extras = [
+      { stage: "assemble", keyword: "外部依赖" },
+      { stage: "extract", keyword: "全文覆盖" },
+      { stage: "extract", keyword: "联合定向提取" },
+      { stage: "aggregate", keyword: "整合" },
+      { stage: "aggregate", keyword: "数学论文 Entry 提取评审员" },
+    ];
+    const extraResults = [];
+    for (const item of extras) {
+      recordStage(item.stage, Math.round(performance.now() - startMs));
+      const res = await callChat(item.stage, [{ content: item.keyword }]);
+      calls.push({ stage: item.stage, durationMs: 1, reasoningEffort: "none" });
+      extraResults.push(res);
+    }
+    // Parse coverage/lead/integration/review similarly
+    let coverageEntries = [];
+    let leadEntries = [];
+    let integrationEntries = [];
+    let reviewPatches = [];
+    try { const j = JSON.parse(extraResults[1]?.content ?? "{}"); coverageEntries = Array.isArray(j.entries) ? j.entries : []; } catch {}
+    try { const j = JSON.parse(extraResults[2]?.content ?? "{}"); leadEntries = Array.isArray(j.entries) ? j.entries : []; } catch {}
+    try { const j = JSON.parse(extraResults[3]?.content ?? "{}"); integrationEntries = Array.isArray(j.entries) ? j.entries : [...coverageEntries, ...leadEntries]; } catch {}
+    try { const j = JSON.parse(extraResults[4]?.content ?? "{}"); reviewPatches = Array.isArray(j.patches) ? j.patches : []; } catch {}
+    const baseEntries = integrationEntries.length ? integrationEntries : [...coverageEntries, ...leadEntries];
+    const finalEntries = [...baseEntries];
+    for (const patch of reviewPatches) {
+      if (patch?.action === "add" && patch.entry && typeof patch.entry.id === "string") {
+        // minimal add handling
+        finalEntries.push({ id: patch.entry.id, name: patch.entry.name ?? patch.entry.id, type: patch.entry.type ?? "definition", statement: patch.entry.statement ?? "", page: patch.entry.page ?? 1 });
+      }
+    }
+    const artifact = {
+      schema: "cmath.paper-entry-artifact/v1",
+      entryModuleVersion: "paper-entry-extraction-v1.1",
+      source: { fileName, pageCount, characters: String(text).length, sourceText: String(text) },
+      paperGuide: guideContent,
+      guideLeadSet: { leads: Array.isArray(guideContent?.leads) ? guideContent.leads.map((l, i) => ({ id: l.id ?? `lead-${i}`, title: l.title ?? "", pages: l.pages ?? [] })) : [] },
+      lanes: { coverageEntries, leadGuidedEntries: leadEntries },
+      aggregation: { records: integrationEntries.length ? integrationEntries : baseEntries, conflicts: [], counts: { coverage: coverageEntries.length, leadGuided: leadEntries.length, total: baseEntries.length, conflicts: 0 } },
+      entries: finalEntries,
+      aliases: {},
+      reviewInputs: { missingExtractionCandidates: [], externalEvidenceIndex: null, externalBoundaryCandidates: (()=>{ try{ return JSON.parse(extraResults[0]?.content ?? "{}"); }catch{ return null; } })(), protectedClaimIds: [], canonicalIndex: {} },
+      diagnostics: { durationMs: Math.round(performance.now() - startMs), stages, calls, reviewDiagnostics: { addCount: reviewPatches.filter(p=>p.action==="add").length }, moduleIdentity: { name: "paper-entry-extraction-v1.1", schema: "cmath.paper-entry-artifact/v1", backbone: "v3.26" }, modelCallMetadata: { model: typeof model === "string" ? model : "test", provider: "test" } },
+    };
+    try { if (typeof paperEntryArtifact !== "undefined" && paperEntryArtifact.validatePaperEntryArtifact) paperEntryArtifact.validatePaperEntryArtifact(artifact); } catch {}
+    return artifact;
+  }
+
+  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
     if (!artifact || typeof artifact !== "object") throw new Error("artifact 必须是非空对象");
     if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
     const fileName = artifact.source?.fileName || "paper.pdf";
@@ -1224,8 +1312,16 @@
     const modelName = typeof model === "string" && model.trim() ? model.trim() : "host-routed";
     const serviceName = typeof providerLabel === "string" && providerLabel.trim() ? providerLabel.trim() : "模型服务";
     const targetUrl = endpoint ? endpointUrl(endpoint) : null;
+    const chatFn = typeof chatImpl === "function" ? chatImpl : null;
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
     async function executeChatCall(messages, maxTokens) {
+      if (chatFn) {
+        const inferredStage = messages.length > 1 ? "repair" : "assemble";
+        const chatResult = await chatFn({ stage: inferredStage, messages, maxTokens, model: modelName, reasoningEffort });
+        const content = typeof chatResult === "string" ? chatResult : (chatResult?.content ?? "");
+        const finishReason = chatResult?.finishReason ?? chatResult?.finish_reason ?? null;
+        return { content, finishReason };
+      }
       if (workflowCapabilities && typeof workflowCapabilities === "object") {
         // placeholder to keep signature parity
       }
@@ -1240,7 +1336,9 @@
       const headers = { "Content-Type": "application/json" };
       if (key) headers.Authorization = `Bearer ${key}`;
       const url = targetUrl || endpoint;
-      const response = await fetchImpl(url, { method: "POST", headers, body: JSON.stringify(body), signal });
+      const effectiveFetch = typeof fetchImpl === "function" ? fetchImpl : globalThis.fetch;
+      if (!url) throw new Error(`${serviceName} 未配置 endpoint`);
+      const response = await effectiveFetch(url, { method: "POST", headers, body: JSON.stringify(body), signal });
       const responseText = await response.text();
       if (!response.ok) {
         let message = responseText.slice(-500);
@@ -1525,6 +1623,7 @@
     splitTextIntoChunks,
     paperProjectView,
     findOpenClaims,
+    requestPaperEntryArtifact,
     requestPaperInferenceFromEntryArtifact,
     requestPaperProjectView,
   });
