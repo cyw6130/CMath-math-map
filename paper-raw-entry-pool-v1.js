@@ -360,7 +360,7 @@
       + `inferenceHints 不是证明摘要：严禁逐步复述证明、严禁记录一般性概念共现、严禁把每一句“因此”都变成 hint、严禁为外部未提取对象造占位符。没有两端都能对应本次 Entry 的明确直接关系，就输出空数组。不要为了产生 hint 而降低 Entry 提取完整性。\n\n`
       + `【共同规则】type 只能是 definition|algorithm|calculation|lemma|proposition|theorem；name 和 statement 使用简体中文；id 使用英文小写 slug；statement 最多 300 字符并保留假设、量词和公式；page 只能取 [[PAGE N]] 的整数页码；数学公式用成对的 $...$ 或 $$...$$。正式编号含小数或不存在时省略 num。一般背景、历史介绍、参考文献表、无数学角色的例子不是 Entry。严禁输出 B0、mainTarget、Paper Guide、Review 或正式 Inference。\n\n`
       + `JSON 形状（只输出 JSON）：\n`
-      + `{"foundationEntries":[{"id":"paper:def:x","type":"definition","name":"……","statement":"……","page":2}],"resultEntries":[{"id":"paper:thm:y","type":"theorem","name":"……","statement":"……","page":4}],"inferenceHints":[{"premiseRefs":["定义 X"],"conclusionRef":"定理 Y","relationText":"利用定义 X 得到定理 Y 的关键约化。","page":4}]}\n\n`
+      + `{"foundationEntries":[{"id":"paper:def:object","type":"definition","name":"数学对象","statement":"……","page":2}],"resultEntries":[{"id":"paper:thm:result","type":"theorem","name":"形式化结论","statement":"……","page":4}],"inferenceHints":[]}\n\n`
       + `论文文件：${fileName}\n${rangeNote}\n\n论文文本（指定段落）：\n${text}`;
   }
 
@@ -434,15 +434,19 @@
     return base.replace("【共同规则】", coverageRules + "【共同规则】");
   }
 
-  // v1.14 is a single-variable experiment over v1.13:
-  // recover correctness by merging duplicate calculation fragments and forbidding off-scope scope drift
+  // v1.14 is the generic baseline: it deliberately branches from v1.12 so
+  // paper-specific coverage and Gold-aware pruning rules cannot enter the
+  // frozen prompt through the v1.13 inheritance chain.
   function v114DualOutputPrompt(options) {
-    const base = v113DualOutputPrompt(options);
-    const pruneRules = `【去重与范围收束（本版本唯一实验变量）】\n`
-      + `- 同一引理/定义拆出的 calculation 碎片（unit-braiding / yang-baxter / hexagon / braiding-naturality 等）合并回主 Entry，不单独成条；重复 duality/quantum-trace/repfd 条目仅保留一条。\n`
-      + `- 禁止引入 Gold 外的 §8 Jones/WRT/Weyl alcove、s-cobordism/geometrization 等综述型条目；页码范围外推断不建 Entry。\n`
-      + `- 输出前检查总条数：若 candidate entries > Gold×2 则回删最低证据强度的冗余条直至 ≤Gold×1.5。\n\n`;
-    return base.replace("【共同规则】", pruneRules + "【共同规则】");
+    const base = v112DualOutputPrompt(options);
+    const coverageRules = `【通用覆盖与范围收束（本版本唯一实验变量）】\n`
+      + `- 覆盖本段中所有明确编号或命名的 formal object；对正文实际使用且具有独立数学意义的未编号对象，也在原文证据充分时提取。\n`
+      + `- 正文论证直接调用但本文未证明的外部数学结果，按原文可见归属提取并标记 external:true；不要根据主题、常识或候选答案猜测外部结果。\n`
+      + `- 同一数学对象因窗口重叠、同义名称、语言变体或计算碎片重复出现时合并为一个 Entry；只有原文证据表明对象具有独立数学角色时才拆分。\n`
+      + `- 计算、公式或局部性质若只是同一正式对象的组成部分，合并进该对象的 statement；若原文将其作为独立可引用对象陈述，则单独提取。\n`
+      + `- 严格限制在指定页码和原文证据内；不得从背景知识、参考文献表、后续页码或未出现的对象推断 Entry。\n`
+      + `- 输出前逐项核对独立数学角色、原文证据、类型、假设、量词、公式、external/source 与页码；不要为了增加或压低数量而改变提取边界。\n\n`;
+    return base.replace("【共同规则】", coverageRules + "【共同规则】");
   }
 
   // v1.15 is a single-variable experiment over v1.14:
