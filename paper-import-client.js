@@ -207,7 +207,28 @@
   }
 
   // 装配：基于全量 Entry 目录与全文，只生成 Inference、B0 与主目标（输出很小）。
-  function assemblyPrompt({ fileName, pageCount, text, catalog }) {
+  function assemblyPrompt({ fileName, pageCount, text, catalog, workflowVersion = "v1", paperGuide = null, externalBoundaryInventory = null }) {
+    const isV43Prompt = workflowVersion === "v3.43";
+    const isV44Prompt = workflowVersion === "v3.44";
+    const isV45Prompt = workflowVersion === "v3.45";
+    const guideSection = paperGuide && ["v3.43","v3.44","v3.45"].includes(workflowVersion)
+      ? `\n【Paper Guide 主线约束】下面的 Paper Guide 是本篇论文的叙事导航，不是额外的数学来源。main_target 是论文最终要解释/证明的核心结果；key_result 是为它服务的关键中间结果。\nPaper Guide：\n${JSON.stringify(paperGuide)}\n`
+      : "";
+    const boundarySection = externalBoundaryInventory && ["v3.43","v3.44","v3.45"].includes(workflowVersion)
+      ? `\n【外部边界候选清单】这是前置专门通道从全文识别的 B0 候选，必须逐项复核而非机械照抄。active_premise 默认进入 b0；definitional_foundation 只有被本文采用的定义直接依赖时进入 b0；context_only 绝不能进入 b0。\n${JSON.stringify(externalBoundaryInventory)}\n`
+      : "";
+    const v43Section = isV43Prompt
+      ? `- 【V3.43 统一覆盖：细粒度+链式+主线】在 V3 基线之上：① 细粒度：每个 Claim 的证明必须展开为独立 proof，严禁合并为 mega-proof；每个 proof 的 premises 必须是直接依赖的已有 Entry ID，空 premises、未知 ID、循环依赖、把 Fact 当 proof conclusion 均禁止；② 链式：按闭包倒推递归补齐被依赖但缺 proof 的中间 Claim，每步仅列直接 premises；必须保留从 b0 经各 key_result 到 mainTarget 的完整主线 proof 链；③ 主线覆盖：必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理，允许合法多连通分支与独立背景，不以固定推理数量为目标，但隔离率>0.2 视为缺陷，闭包未闭合视为缺陷。\n`
+      : "";
+    const v44Section = isV44Prompt
+      ? `- 【V3.44 精修（陈述精度+桥接+去噪）】在 V3.43 基础上：① 陈述精度：Hopf 方向严格写一般维数 winding/环绕数、χ(T^n)=0、Poincaré–Hopf 需“有限孤立零点”、S^1 基例需完整等度分类↔homotopy、穿孔空间双向判据、毛球一般维数；Yasui 的 Taubes/batch 条件需 b2^±≠1 mod4 原文、Bauer-Furuta 定义与 symplectic 结构定义不得遗漏；② 桥接：knot 的 quantum trace 需显式建立 Rep_f^d(A) categorical trace = quantum trace 的桥接、graphical calculus→colored link invariant 需独立 proof、framed-link/surgery 需 Entry；cornered 的 self-gluing HH0→capping 的 premise 必须保留、trisection 需 Gay–Kirby 背景；③ 去噪：禁止把 Rohlin 额外定理/错误纯化/neg-mod 等价等未在 Gold 的内容加入 B0 或捏造等价。\n`
+      : "";
+    const v45Section = isV45Prompt
+      ? `- 【V3.45 校正（陈述精度回补+去重）】在 V3.44 基础上针对 Sol 回退做最小校正：① Hopf：winding 定义必须写一般维数 S^{n-1}→S^{n-1} 不固定为 S^1；χ(S^n)=1+(-1)^n，χ(T^n)=0 严禁写 χ(T^k)=-2(k-2)；横截外部定理必须是一般版本（边界固定延拓+一般横截同伦）而非仅零截面特例；引理 base-s1 必须完整陈述任意整数度分类 deg:[S^1,S^1]≅Z 由 z↦z^n 实现且零伦当且仅当度为零；穿孔空间需显式维数归纳假设，present R^n\\{0}≃S^{n-1} 双向判据，禁止由 S^1 直接跳到任意 k 且禁止以欧氏鼓包直接充当 S^k 延拓；Poincaré–Hopf 需“有限孤立零点”条件；毛球需一般维数结论。② Yasui：Taubes b2^+>1 需补典范 spin^c 与 SW=±1（mod2=1）；2-把手邻域类是“可由邻域内2-循环代表”而非单个生成元之像；定理2.4/1.9必须为 b2^+ not≡1(mod4) 且 b2^- not≡1(mod4) 禁止替换为 b2^+≤1、b2≡1；必须补 Bauer–Furuta 不变量定义、辛结构定义、辛 Betti 奇偶性 B0；禁止重复建立 Lemma2.6/3.1/Cor2.5 等价条目。③ 去重与桥接保持 V3.44 要求，knot 的 negligible 仅“所有自同态量子迹为零”不捏造单迹等价，Rohlin/附加 Jones 等 Gold 外内容禁入 B0。\n`
+      : "";
+    const mainlineSection = (isV43Prompt || isV44Prompt || isV45Prompt)
+      ? `- 【主线推导与分支覆盖规划】装配前须在内部结合 Paper Guide 的 main_target 与 key_result 线索以及 Canonical Entry 索引，在内部建立叙事证明链的覆盖规划；输出论文真实支持的所有核心 proof 与 organization 推理，完整表达从基础/外部 B0 经各关键中间结果到主目标的数学路线。必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理或局部推导；严禁输出内部规划为额外字段、严禁臆造不存在的证明。\n`
+      : "";
     return `你是数学论文结构化编辑器。下面给出一篇论文的 Entry 目录（已提取的数学对象）与全文文本。请通读全文，只输出推理关系与地图元信息，紧凑输出一个 JSON 对象，不要 Markdown，不要输出 Entry 本体。\n\n`
       + `【语言要求】projectTitle 与 argument 一律使用简体中文撰写；数学符号与公式保留 $...$ / $$...$$，必须成对闭合。\n\n`
       + semanticRulesText()
@@ -222,7 +243,9 @@
       + `- 【完整性核对】输出前先核对全文：论文中明确编号或命名的 definition/algorithm/calculation/lemma/proposition/theorem 是否都已在 Entry 目录中？论文论证实际调用的外部结果是否都已收录并标记？若有遗漏，必须在 JSON 顶层 "fixedEntries" 数组中补充完整条目（新 id、type/num/name/statement/page，外部结果另加 "external":true 与非空 source），补充的外部结果 id 同时列入 b0。特别注意：只在证明正文中被提及、调用的外部定理/引理（包括教材引用，如「由 Transversality Extension Theorem（GP 第 72 页）可得」）也属于论证实际调用的外部结果，必须收录。\n`
       + `- premises 与 conclusion 只能使用 Entry 目录中列出的 id。若你发现某个前提或结论确实不在目录中（提取阶段遗漏），不要编造 id：在 JSON 顶层加 "fixedEntries" 数组补充该条目（完整紧凑字段：id/type/name/statement/page），然后在 premises/conclusion 中引用它。\n`
       + `- argument 最多 400 个字符，概括证明或组织要点；page 填写该关系在正文出现的页码（整数，只引用文本中的 [[PAGE N]] 页码）。\n`
-      + `- Inference 总数建议在 30 条以内，只保留论文中明确存在的证明/组织关系。\n\n`
+      + `- Inference 总数建议在 30 条以内，只保留论文中明确存在的证明/组织关系。\n`
+      + v43Section + v44Section + v45Section + mainlineSection
+      + guideSection + boundarySection
       + `JSON 形状：\n`
       + `{"projectTitle":"……","mainTargetEntryId":"……","b0":["……"],"inferences":[{"type":"proof","premises":["……"],"conclusion":"……","argument":"……","page":5}]}\n\n`
       + `Entry 目录：\n${catalog}\n\n论文文件：${fileName}\n页数：${pageCount}\n\n论文文本：\n${text}`;
@@ -1185,6 +1208,106 @@
     );
   }
 
+  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
+    if (!artifact || typeof artifact !== "object") throw new Error("artifact 必须是非空对象");
+    if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
+    const fileName = artifact.source?.fileName || "paper.pdf";
+    const text = artifact.source?.sourceText || "";
+    const pageCount = artifact.source?.pageCount ?? 1;
+    // Use frozen entries from artifact; guard immutability
+    const entries = Array.isArray(artifact.entries) ? artifact.entries.map((e) => ({ ...e })) : [];
+    if (!entries.length) throw new Error("artifact.entries 为空，无法执行 Inference");
+    const paperGuide = artifact.paperGuide ?? null;
+    const externalBoundaryInventory = artifact.reviewInputs?.externalBoundaryCandidates ?? artifact.reviewInputs?.externalBoundaryInventory ?? null;
+    // Minimal path: reuse assembly with versioned prompt
+    const key = typeof apiKey === "string" ? apiKey.trim() : "";
+    const modelName = typeof model === "string" && model.trim() ? model.trim() : "host-routed";
+    const serviceName = typeof providerLabel === "string" && providerLabel.trim() ? providerLabel.trim() : "模型服务";
+    const targetUrl = endpoint ? endpointUrl(endpoint) : null;
+    const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
+    async function executeChatCall(messages, maxTokens) {
+      if (workflowCapabilities && typeof workflowCapabilities === "object") {
+        // placeholder to keep signature parity
+      }
+      const body = {
+        model: modelName,
+        messages,
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+        stream: false,
+      };
+      const headers = { "Content-Type": "application/json" };
+      if (key) headers.Authorization = `Bearer ${key}`;
+      const url = targetUrl || endpoint;
+      const response = await fetchImpl(url, { method: "POST", headers, body: JSON.stringify(body), signal });
+      const responseText = await response.text();
+      if (!response.ok) {
+        let message = responseText.slice(-500);
+        try { message = JSON.parse(responseText).error?.message || message; } catch {}
+        throw new Error(`${serviceName} 请求失败（HTTP ${response.status}）：${message || "没有错误详情"}`);
+      }
+      let envelope;
+      try { envelope = JSON.parse(responseText); } catch { throw new Error(`${serviceName} 响应不是有效 JSON`); }
+      if (envelope.error) throw new Error(`${serviceName} 服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 300)}`);
+      return { content: extractMessageText(envelope.choices?.[0]?.message), finishReason: envelope.choices?.[0]?.finish_reason };
+    }
+    // Assembly with repair loop (simplified 4 rounds)
+    notify("assemble", { entries: entries.length, workflowVersion });
+    const catalog = entries.map(entryCatalogLine).join("\n");
+    let messages = [{ role: "user", content: assemblyPrompt({ fileName, pageCount, text, catalog, workflowVersion, paperGuide, externalBoundaryInventory }) }];
+    let lastMerged = null;
+    let lastIssues = ["装配没有产出有效输出"];
+    let truncated = false;
+    const maxRounds = 4;
+    for (let round = 0; round < maxRounds; round += 1) {
+      const maxTokens = truncated ? (tokenBudget?.retry ?? 32000) : (tokenBudget?.normal ?? 16000);
+      const { content, finishReason } = await executeChatCall(messages, maxTokens);
+      truncated = finishReason === "length";
+      notify("response", { round: round + 1 });
+      let issues = [];
+      if (!content.trim()) {
+        issues = [truncated ? "输出被截断：请精简 argument" : "输出为空：请输出装配 JSON"];
+      } else {
+        let assembly = null;
+        try { assembly = parseModelJson(content); } catch (error) { issues = [`装配输出不是有效 JSON：${error.message}`]; }
+        if (assembly) {
+          if (typeof assembly !== "object" || Array.isArray(assembly)) {
+            issues = ["装配输出必须是 JSON 对象"];
+          } else {
+            if (Array.isArray(assembly.fixedEntries)) applyEntryPatches(entries, assembly.fixedEntries);
+            const merged = {
+              projectTitle: assembly.projectTitle,
+              mainTargetEntryId: assembly.mainTargetEntryId,
+              b0ClaimEntryIds: assembly.b0 ?? assembly.b0ClaimEntryIds,
+              entries,
+              inferences: Array.isArray(assembly.inferences) ? assembly.inferences : [],
+            };
+            const { raw: normalized } = normalizeRawProjectView(merged, { fileName });
+            issues = collectRawProjectViewIssues(normalized);
+            lastMerged = normalized;
+            if (!issues.length) {
+              notify("validate", {});
+              try { return paperProjectView(normalized, { fileName, requireB0Classification: true }); } catch (error) { issues = [`系统校验未通过：${error.message}`]; }
+            }
+          }
+        }
+      }
+      lastIssues = issues;
+      if (round < maxRounds - 1) {
+        notify("repair", { reason: `${issues.length} 处问题`, attempt: round + 1 });
+        messages.push({ role: "assistant", content }, { role: "user", content: assemblyRepairPrompt(issues) });
+      }
+    }
+    if (lastMerged) {
+      const { raw: fixed, actions } = sanitizeRawProjectView(lastMerged, { fileName });
+      if (actions.length) notify("autofix", { count: actions.length, actions });
+      notify("validate", {});
+      try { return paperProjectView(fixed, { fileName, requireB0Classification: true }); } catch (error) { throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`); }
+    }
+    throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
+  }
+
   async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, fetchImpl = globalThis.fetch, signal, onStage, maxChunks = 5, reasoningEffort } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
@@ -1308,10 +1431,13 @@
 
     // 第二阶段：一次小调用装配 Inference / B0 / 主目标。校验问题连同输出返还
     // 模型定点修复（最多三轮）；仍不通过才启用本地机械修复兜底。
-    async function assembleInferences(entries) {
+    async function assembleInferences(entries, { paperGuide: assemblePaperGuide = null, externalBoundaryInventory: assembleBoundary = null, workflowVersion: assembleVersion = "v1" } = {}) {
       const catalog = entries.map(entryCatalogLine).join("\n");
       notify("assemble", { entries: entries.length });
-      const messages = [{ role: "user", content: assemblyPrompt({ fileName, pageCount, text, catalog }) }];
+      const promptWorkflowVersion = assembleVersion ?? "v1";
+      const promptPaperGuide = assemblePaperGuide;
+      const promptBoundary = assembleBoundary;
+      const messages = [{ role: "user", content: assemblyPrompt({ fileName, pageCount, text, catalog, workflowVersion: promptWorkflowVersion, paperGuide: promptPaperGuide, externalBoundaryInventory: promptBoundary }) }];
       let lastMerged = null;
       let lastIssues = ["装配没有产出有效输出"];
       let truncated = false;
@@ -1376,7 +1502,7 @@
     const entries = await extractEntriesInParallel();
     if (!entries.length) throw new Error(`${serviceName} 论文导入失败：模型服务没有提取出任何数学 Entry`);
     const integratedEntries = await integrateEntries(entries);
-    const view = await assembleInferences(integratedEntries);
+    const view = await assembleInferences(integratedEntries, { paperGuide: null, externalBoundaryInventory: null, workflowVersion: "v1" });
 
     notify("closure", { openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
     return view;
@@ -1399,6 +1525,7 @@
     splitTextIntoChunks,
     paperProjectView,
     findOpenClaims,
+    requestPaperInferenceFromEntryArtifact,
     requestPaperProjectView,
   });
 });
