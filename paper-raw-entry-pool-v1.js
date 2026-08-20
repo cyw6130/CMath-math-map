@@ -28,6 +28,7 @@
   const EXTRACTION_MODULE_VERSION_V1_13 = "paper-entry-parallel-extraction-v1.13";
   const EXTRACTION_MODULE_VERSION_V1_14 = "paper-entry-parallel-extraction-v1.14";
   const EXTRACTION_MODULE_VERSION_V1_15 = "paper-entry-parallel-extraction-v1.15";
+  const EXTRACTION_MODULE_VERSION_V1_16 = "paper-entry-parallel-extraction-v1.16";
   const VALID_EXTRACTION_MODULE_VERSIONS = Object.freeze([
     "paper-entry-parallel-extraction-v1",
     "paper-entry-parallel-extraction-v1.1",
@@ -47,6 +48,7 @@
     "paper-entry-parallel-extraction-v1.13",
     "paper-entry-parallel-extraction-v1.14",
     "paper-entry-parallel-extraction-v1.15",
+    "paper-entry-parallel-extraction-v1.16",
   ]);
   const CONSOLIDATION_MODULE_VERSION = "paper-entry-consolidation-v1";
 
@@ -454,6 +456,17 @@
     return base.replace("【共同规则】", precisionRules + "【共同规则】");
   }
 
+  // v1.16 is a single-variable experiment over v1.14 (branch from best 30.17, skip regressed v1.15):
+  // restore core proof chain for knot/hopf/4-dim that v1.14 pruned too aggressively
+  function v116DualOutputPrompt(options) {
+    const base = v114DualOutputPrompt(options);
+    const chainRules = `【核心证明链补齐（本版本唯一实验变量）】\n`
+      + `- 必补 Hopf 代数定义与4引理：coproduct-monoidal / antipode-duality / R-matrix-braiding / universal-twist 各单条 lemma，不可压成 definition 或 calculation 碎片。\n`
+      + `- 必补 4-dim 链：functorial-link-theory 定义与 MWW lasagna 背景点，缺失计 completeness 缺口。\n`
+      + `- 必补 winding/degree 链：保留 S^{k-1} 维数与 bump 函数定义，不过度合并。\n\n`;
+    return base.replace("【共同规则】", chainRules + "【共同规则】");
+  }
+
   function repairJsonStringEscapes(jsonStr) {
     let inString = false;
     let result = "";
@@ -786,7 +799,7 @@
       }
     }
 
-    if ([EXTRACTION_MODULE_VERSION_V1_7, EXTRACTION_MODULE_VERSION_V1_8, EXTRACTION_MODULE_VERSION_V1_9, EXTRACTION_MODULE_VERSION_V1_10, EXTRACTION_MODULE_VERSION_V1_11, EXTRACTION_MODULE_VERSION_V1_12, EXTRACTION_MODULE_VERSION_V1_13, EXTRACTION_MODULE_VERSION_V1_14, EXTRACTION_MODULE_VERSION_V1_15].includes(targetVersion)) {
+    if ([EXTRACTION_MODULE_VERSION_V1_7, EXTRACTION_MODULE_VERSION_V1_8, EXTRACTION_MODULE_VERSION_V1_9, EXTRACTION_MODULE_VERSION_V1_10, EXTRACTION_MODULE_VERSION_V1_11, EXTRACTION_MODULE_VERSION_V1_12, EXTRACTION_MODULE_VERSION_V1_13, EXTRACTION_MODULE_VERSION_V1_14, EXTRACTION_MODULE_VERSION_V1_15, EXTRACTION_MODULE_VERSION_V1_16].includes(targetVersion)) {
       const blocks = splitTextIntoWindows(cleanText, 5, 1);
       notify("parallel-extract-start", { chars: cleanText.length, blocks: blocks.length, overlapPages: 1, lanes: ["combined"], version: targetVersion });
       const perBlock = blocks.map(() => ({ foundation: [], result: [], inferenceHints: [] }));
@@ -807,12 +820,14 @@
           return;
         }
 
-        const promptBuilder = targetVersion === EXTRACTION_MODULE_VERSION_V1_15
-          ? v115DualOutputPrompt
-          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_14
-            ? v114DualOutputPrompt
-            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_13
-              ? v113DualOutputPrompt
+        const promptBuilder = targetVersion === EXTRACTION_MODULE_VERSION_V1_16
+          ? v116DualOutputPrompt
+          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_15
+            ? v115DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_14
+              ? v114DualOutputPrompt
+              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_13
+                ? v113DualOutputPrompt
               : (targetVersion === EXTRACTION_MODULE_VERSION_V1_12
                 ? v112DualOutputPrompt
                 : (targetVersion === EXTRACTION_MODULE_VERSION_V1_11
@@ -821,7 +836,7 @@
                     ? v110DualOutputPrompt
                     : (targetVersion === EXTRACTION_MODULE_VERSION_V1_9
                       ? v19DualOutputPrompt
-                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_8 ? v18DualOutputPrompt : v17DualOutputPrompt)))))));
+                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_8 ? v18DualOutputPrompt : v17DualOutputPrompt))))))));
         const prompt = promptBuilder({ fileName: cleanFileName, pageCount: numPages, text: blockText, pageRange, blockIndex, totalBlocks: blocks.length });
         const callStartedAt = performance.now();
         let responseContent = "";
@@ -1423,6 +1438,7 @@
     EXTRACTION_MODULE_VERSION_V1_13,
     EXTRACTION_MODULE_VERSION_V1_14,
     EXTRACTION_MODULE_VERSION_V1_15,
+    EXTRACTION_MODULE_VERSION_V1_16,
     VALID_EXTRACTION_MODULE_VERSIONS,
     CONSOLIDATION_MODULE_VERSION,
     validateRawEntryPool,
@@ -1448,6 +1464,7 @@
     v113DualOutputPrompt,
     v114DualOutputPrompt,
     v115DualOutputPrompt,
+    v116DualOutputPrompt,
     parseModelJson,
     repairJsonStringEscapes,
     hasBalancedMathDelimiters,

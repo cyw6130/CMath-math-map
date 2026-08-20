@@ -5,8 +5,8 @@
   "inferenceModel": "muse-spark-1.2-contributor",
   "inferenceProvider": "opencode-go",
   "inferenceMode": "off-compact",
-  "entryModuleVersion": "paper-entry-parallel-extraction-v1.7",
-  "frozenAt": "2026-08-20T12:07:35.929029+00:00",
+  "entryModuleVersion": "paper-entry-parallel-extraction-v1.14",
+  "frozenAt": "2026-08-20T15:30:00+00:00",
   "frozenCommit": "a4160a3",
   "scorer": "gpt-5.6-sol",
   "promptVersion": "sol-score-prompt-v3",
@@ -59,5 +59,5 @@
     "meanEntries": 37.2,
     "totalSolScore": 419
   },
-  "note": "Inference-only frozen; Entry remains paper-entry-parallel-extraction-v1.7. v3.43/v3.44 retained as history."
+  "note": "Combined frozen: Entry v1.14 (30.17) + Inference v3.45. Entry updated from v1.7."
 }

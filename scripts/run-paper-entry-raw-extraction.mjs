@@ -247,6 +247,8 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
       versionOpt = "paper-entry-parallel-extraction-v1.8";
     } else if (arg === "--v1.9" || arg === "-v1.9") {
       versionOpt = "paper-entry-parallel-extraction-v1.9";
+    } else if (arg === "--v1.16" || arg === "-v1.16") {
+      versionOpt = "paper-entry-parallel-extraction-v1.16";
     } else if (arg === "--v1.15" || arg === "-v1.15") {
       versionOpt = "paper-entry-parallel-extraction-v1.15";
     } else if (arg === "--v1.14" || arg === "-v1.14") {
@@ -299,6 +301,8 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
     versionOpt = "paper-entry-parallel-extraction-v1.8";
   } else if (versionOpt === "v1.9" || versionOpt === "1.9") {
     versionOpt = "paper-entry-parallel-extraction-v1.9";
+  } else if (versionOpt === "v1.16" || versionOpt === "1.16") {
+    versionOpt = "paper-entry-parallel-extraction-v1.16";
   } else if (versionOpt === "v1.15" || versionOpt === "1.15") {
     versionOpt = "paper-entry-parallel-extraction-v1.15";
   } else if (versionOpt === "v1.14" || versionOpt === "1.14") {
@@ -412,7 +416,7 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
 
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, `${JSON.stringify(rawPool, null, 2)}\n`);
-  if (["paper-entry-parallel-extraction-v1.15", "paper-entry-parallel-extraction-v1.14", "paper-entry-parallel-extraction-v1.13", "paper-entry-parallel-extraction-v1.12", "paper-entry-parallel-extraction-v1.11", "paper-entry-parallel-extraction-v1.10", "paper-entry-parallel-extraction-v1.9", "paper-entry-parallel-extraction-v1.8", "paper-entry-parallel-extraction-v1.7", "paper-entry-parallel-extraction-v1.6"].includes(versionOpt) && fs.existsSync(checkpointPath)) {
+  if (["paper-entry-parallel-extraction-v1.16", "paper-entry-parallel-extraction-v1.15", "paper-entry-parallel-extraction-v1.14", "paper-entry-parallel-extraction-v1.13", "paper-entry-parallel-extraction-v1.12", "paper-entry-parallel-extraction-v1.11", "paper-entry-parallel-extraction-v1.10", "paper-entry-parallel-extraction-v1.9", "paper-entry-parallel-extraction-v1.8", "paper-entry-parallel-extraction-v1.7", "paper-entry-parallel-extraction-v1.6"].includes(versionOpt) && fs.existsSync(checkpointPath)) {
       fs.unlinkSync(checkpointPath);
     }
     process.stdout.write(JSON.stringify({
