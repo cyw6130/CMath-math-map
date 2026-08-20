@@ -16,6 +16,23 @@
   if (!semantics || typeof semantics.validateEntry !== "function" || typeof semantics.validateInference !== "function") {
     throw new Error("Gamma 数学地图语义能力没有加载");
   }
+  // Inference 策略按版本号分档：V3.43/V3.44/V3.45 的装配片段现落在
+  // src/paper-import/inference/strategies/ 各自文件中，根部保留同文案回退以兼容旧加载路径。
+  const inferenceStrategyIndex = (() => {
+    if (root?.CMathPaperImportStrategyIndex) return root.CMathPaperImportStrategyIndex;
+    if (typeof require === "function") {
+      try { return require("./src/paper-import/inference/strategies/index.js"); } catch {}
+    }
+    return null;
+  })();
+  function inferenceStrategySection(version) {
+    const fromIndex = inferenceStrategyIndex?.sectionFor?.(version);
+    if (typeof fromIndex === "string" && fromIndex) return fromIndex;
+    if (version === "v3.43") return "- 【V3.43 统一覆盖：细粒度+链式+主线】在 V3 基线之上：① 细粒度：每个 Claim 的证明必须展开为独立 proof，严禁合并为 mega-proof；每个 proof 的 premises 必须是直接依赖的已有 Entry ID，空 premises、未知 ID、循环依赖、把 Fact 当 proof conclusion 均禁止；② 链式：按闭包倒推递归补齐被依赖但缺 proof 的中间 Claim，每步仅列直接 premises；必须保留从 b0 经各 key_result 到 mainTarget 的完整主线 proof 链；③ 主线覆盖：必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理，允许合法多连通分支与独立背景，不以固定推理数量为目标，但隔离率>0.2 视为缺陷，闭包未闭合视为缺陷。\n";
+    if (version === "v3.44") return "- 【V3.44 精修（陈述精度+桥接+去噪）】在 V3.43 基础上：① 陈述精度：Hopf 方向严格写一般维数 winding/环绕数、χ(T^n)=0、Poincaré–Hopf 需“有限孤立零点”、S^1 基例需完整等度分类↔homotopy、穿孔空间双向判据、毛球一般维数；Yasui 的 Taubes/batch 条件需 b2^±≠1 mod4 原文、Bauer-Furuta 定义与 symplectic 结构定义不得遗漏；② 桥接：knot 的 quantum trace 需显式建立 Rep_f^d(A) categorical trace = quantum trace 的桥接、graphical calculus→colored link invariant 需独立 proof、framed-link/surgery 需 Entry；cornered 的 self-gluing HH0→capping 的 premise 必须保留、trisection 需 Gay–Kirby 背景；③ 去噪：禁止把 Rohlin 额外定理/错误纯化/neg-mod 等价等未在 Gold 的内容加入 B0 或捏造等价。\n";
+    if (version === "v3.45") return "- 【V3.45 校正（陈述精度回补+去重）】在 V3.44 基础上针对 Sol 回退做最小校正：① Hopf：winding 定义必须写一般维数 S^{n-1}→S^{n-1} 不固定为 S^1；χ(S^n)=1+(-1)^n，χ(T^n)=0 严禁写 χ(T^k)=-2(k-2)；横截外部定理必须是一般版本（边界固定延拓+一般横截同伦）而非仅零截面特例；引理 base-s1 必须完整陈述任意整数度分类 deg:[S^1,S^1]≅Z 由 z↦z^n 实现且零伦当且仅当度为零；穿孔空间需显式维数归纳假设，present R^n\\{0}≃S^{n-1} 双向判据，禁止由 S^1 直接跳到任意 k 且禁止以欧氏鼓包直接充当 S^k 延拓；Poincaré–Hopf 需“有限孤立零点”条件；毛球需一般维数结论。② Yasui：Taubes b2^+>1 需补典范 spin^c 与 SW=±1（mod2=1）；2-把手邻域类是“可由邻域内2-循环代表”而非单个生成元之像；定理2.4/1.9必须为 b2^+ not≡1(mod4) 且 b2^- not≡1(mod4) 禁止替换为 b2^+≤1、b2≡1；必须补 Bauer–Furuta 不变量定义、辛结构定义、辛 Betti 奇偶性 B0；禁止重复建立 Lemma2.6/3.1/Cor2.5 等价条目。③ 去重与桥接保持 V3.44 要求，knot 的 negligible 仅“所有自同态量子迹为零”不捏造单迹等价，Rohlin/附加 Jones 等 Gold 外内容禁入 B0。\n";
+    return "";
+  }
   const ENTRY_CLASSES = new Set(semantics.ENTRY_CLASSES);
   const FACT_KINDS = new Set(semantics.FACT_KINDS);
   const CLAIM_KINDS = new Set(semantics.CLAIM_KINDS);
@@ -217,15 +234,9 @@
     const boundarySection = externalBoundaryInventory && ["v3.43","v3.44","v3.45"].includes(workflowVersion)
       ? `\n【外部边界候选清单】这是前置专门通道从全文识别的 B0 候选，必须逐项复核而非机械照抄。active_premise 默认进入 b0；definitional_foundation 只有被本文采用的定义直接依赖时进入 b0；context_only 绝不能进入 b0。\n${JSON.stringify(externalBoundaryInventory)}\n`
       : "";
-    const v43Section = isV43Prompt
-      ? `- 【V3.43 统一覆盖：细粒度+链式+主线】在 V3 基线之上：① 细粒度：每个 Claim 的证明必须展开为独立 proof，严禁合并为 mega-proof；每个 proof 的 premises 必须是直接依赖的已有 Entry ID，空 premises、未知 ID、循环依赖、把 Fact 当 proof conclusion 均禁止；② 链式：按闭包倒推递归补齐被依赖但缺 proof 的中间 Claim，每步仅列直接 premises；必须保留从 b0 经各 key_result 到 mainTarget 的完整主线 proof 链；③ 主线覆盖：必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理，允许合法多连通分支与独立背景，不以固定推理数量为目标，但隔离率>0.2 视为缺陷，闭包未闭合视为缺陷。\n`
-      : "";
-    const v44Section = isV44Prompt
-      ? `- 【V3.44 精修（陈述精度+桥接+去噪）】在 V3.43 基础上：① 陈述精度：Hopf 方向严格写一般维数 winding/环绕数、χ(T^n)=0、Poincaré–Hopf 需“有限孤立零点”、S^1 基例需完整等度分类↔homotopy、穿孔空间双向判据、毛球一般维数；Yasui 的 Taubes/batch 条件需 b2^±≠1 mod4 原文、Bauer-Furuta 定义与 symplectic 结构定义不得遗漏；② 桥接：knot 的 quantum trace 需显式建立 Rep_f^d(A) categorical trace = quantum trace 的桥接、graphical calculus→colored link invariant 需独立 proof、framed-link/surgery 需 Entry；cornered 的 self-gluing HH0→capping 的 premise 必须保留、trisection 需 Gay–Kirby 背景；③ 去噪：禁止把 Rohlin 额外定理/错误纯化/neg-mod 等价等未在 Gold 的内容加入 B0 或捏造等价。\n`
-      : "";
-    const v45Section = isV45Prompt
-      ? `- 【V3.45 校正（陈述精度回补+去重）】在 V3.44 基础上针对 Sol 回退做最小校正：① Hopf：winding 定义必须写一般维数 S^{n-1}→S^{n-1} 不固定为 S^1；χ(S^n)=1+(-1)^n，χ(T^n)=0 严禁写 χ(T^k)=-2(k-2)；横截外部定理必须是一般版本（边界固定延拓+一般横截同伦）而非仅零截面特例；引理 base-s1 必须完整陈述任意整数度分类 deg:[S^1,S^1]≅Z 由 z↦z^n 实现且零伦当且仅当度为零；穿孔空间需显式维数归纳假设，present R^n\\{0}≃S^{n-1} 双向判据，禁止由 S^1 直接跳到任意 k 且禁止以欧氏鼓包直接充当 S^k 延拓；Poincaré–Hopf 需“有限孤立零点”条件；毛球需一般维数结论。② Yasui：Taubes b2^+>1 需补典范 spin^c 与 SW=±1（mod2=1）；2-把手邻域类是“可由邻域内2-循环代表”而非单个生成元之像；定理2.4/1.9必须为 b2^+ not≡1(mod4) 且 b2^- not≡1(mod4) 禁止替换为 b2^+≤1、b2≡1；必须补 Bauer–Furuta 不变量定义、辛结构定义、辛 Betti 奇偶性 B0；禁止重复建立 Lemma2.6/3.1/Cor2.5 等价条目。③ 去重与桥接保持 V3.44 要求，knot 的 negligible 仅“所有自同态量子迹为零”不捏造单迹等价，Rohlin/附加 Jones 等 Gold 外内容禁入 B0。\n`
-      : "";
+    const v43Section = isV43Prompt ? inferenceStrategySection("v3.43") : "";
+    const v44Section = isV44Prompt ? inferenceStrategySection("v3.44") : "";
+    const v45Section = isV45Prompt ? inferenceStrategySection("v3.45") : "";
     const mainlineSection = (isV43Prompt || isV44Prompt || isV45Prompt)
       ? `- 【主线推导与分支覆盖规划】装配前须在内部结合 Paper Guide 的 main_target 与 key_result 线索以及 Canonical Entry 索引，在内部建立叙事证明链的覆盖规划；输出论文真实支持的所有核心 proof 与 organization 推理，完整表达从基础/外部 B0 经各关键中间结果到主目标的数学路线。必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理或局部推导；严禁输出内部规划为额外字段、严禁臆造不存在的证明。\n`
       : "";
