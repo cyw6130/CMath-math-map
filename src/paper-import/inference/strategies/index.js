@@ -15,10 +15,8 @@
   };
   return Object.freeze({
     sectionFor(version) {
-      if (version === "v3.43") return load("v3.43");
-      if (version === "v3.44") return load("v3.44");
-      if (version === "v3.45") return load("v3.45");
-      return "";
+      if (typeof version !== "string" || !version) return "";
+      return load(version);
     },
   });
 });
