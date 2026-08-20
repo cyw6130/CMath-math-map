@@ -2424,13 +2424,9 @@
           <div class="map-card-info">
             <div class="map-card-title-row">
               <strong class="map-title-text">${escapeHtml(demo.title)}</strong>
-              <span class="map-source-badge source-demo">精选 DEMO</span>
               ${isActive ? `<span class="map-active-pill">当前浏览中</span>` : ""}
             </div>
             <span class="map-boundary-text">${escapeHtml(demo.boundary)}</span>
-          </div>
-          <div class="map-card-actions">
-            <span class="demo-case-btn">打开地图 →</span>
           </div>
         `;
 
@@ -2590,14 +2586,22 @@
     if (cardEl) cardEl.classList.add("is-loading");
 
     try {
-      if (!mapDef?.dataScript) {
-        throw new Error(`地图「${mapDef?.title || mapDef?.id}」未指定数据脚本 (dataScript)`);
-      }
-      window.CMATH_DATA = undefined;
-      await loadScript(mapDef.dataScript);
-      const data = window.CMATH_DATA;
-      if (!data || typeof data !== "object") {
-        throw new Error(`数据脚本 ${mapDef.dataScript} 未能成功赋值 window.CMATH_DATA`);
+      let data;
+      if (mapDef?.dataFile) {
+        const response = await fetch(mapDef.dataFile, { cache: "no-cache" });
+        if (!response.ok) {
+          throw new Error(`无法读取地图 JSON ${mapDef.dataFile}（HTTP ${response.status}）`);
+        }
+        data = await response.json();
+      } else if (mapDef?.dataScript) {
+        window.CMATH_DATA = undefined;
+        await loadScript(mapDef.dataScript);
+        data = window.CMATH_DATA;
+        if (!data || typeof data !== "object") {
+          throw new Error(`数据脚本 ${mapDef.dataScript} 未能成功赋值 window.CMATH_DATA`);
+        }
+      } else {
+        throw new Error(`地图「${mapDef?.title || mapDef?.id}」未指定数据文件 (dataFile) 或数据脚本 (dataScript)`);
       }
 
       const loader = window.GammaMathMapContentLoader;
