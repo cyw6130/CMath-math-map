@@ -1,12 +1,21 @@
 {
   "schema": "cmath.paper-entry-module-selection/v1",
   "status": "frozen",
-  "selectedModuleVersion": "paper-entry-parallel-extraction-v1.14",
+  "selectedModuleVersion": "paper-entry-parallel-extraction-v1.31",
   "consolidationModuleVersion": "paper-entry-consolidation-v1",
   "selectionCaseId": "knot-hopf-rt",
   "selectionGoldRevision": "gold-v2-objective-conventions",
   "selectionRule": "Sol Entry score first; stable completion and extraction cost break close ties",
-  "historicalBaselines": [{"baselineId":"luna-v3.26-entry-baseline-v1","path":"benchmarks/paper-import/entry-module/luna-v3.26-entry-baseline.json","model":"gpt-5.6-luna","provider":"luna-gateway","scope":"six-case V3.26 full-workflow Entry projection","status":"registered-comparison-baseline"}],
+  "historicalBaselines": [
+    {
+      "baselineId": "luna-v3.26-entry-baseline-v1",
+      "path": "benchmarks/paper-import/entry-module/luna-v3.26-entry-baseline.json",
+      "model": "gpt-5.6-luna",
+      "provider": "luna-gateway",
+      "scope": "six-case V3.26 full-workflow Entry projection",
+      "status": "registered-comparison-baseline"
+    }
+  ],
   "executionContract": {
     "windowPages": 5,
     "overlapPages": 1,
@@ -53,7 +62,14 @@
       "entries": 29,
       "rawEntries": 32,
       "meanSolEntryScore": 30.17,
-      "sixCaseSolEntryScores": {"knot-hopf-rt": 28, "hopf-degree-theorem": 29, "4-dim-skein-modules-handles-tangles": 32, "cornered-skein-lasagna-theory": 34, "kirby-2018-trisections": 31, "yasui-2019-geometrically-simply-connected-4-manifolds": 27},
+      "sixCaseSolEntryScores": {
+        "knot-hopf-rt": 28,
+        "hopf-degree-theorem": 29,
+        "4-dim-skein-modules-handles-tangles": 32,
+        "cornered-skein-lasagna-theory": 34,
+        "kirby-2018-trisections": 31,
+        "yasui-2019-geometrically-simply-connected-4-manifolds": 27
+      },
       "meanDurationMs": 44451,
       "scorer": "muse-spark-1.2-contributor",
       "scorerReasoning": "xhigh",
@@ -62,5 +78,6 @@
     }
   ],
   "runnerReliabilityPatch": "Retry any transient HTTP 5xx response once; preserve completed-window checkpoints.",
-  "frozenSemantics": "The v1.7 extraction prompt and deterministic consolidation are the production Entry module. The v1.8 prompt remains an experimental historical result and is not the default. The Luna V3.26 multi-case baseline is historical comparison data only; it does not replace the production selection."
+  "frozenSemantics": "The v1.7 extraction prompt and deterministic consolidation are the production Entry module. The v1.8 prompt remains an experimental historical result and is not the default. The Luna V3.26 multi-case baseline is historical comparison data only; it does not replace the production selection.",
+  "frozenAt": "2026-08-22T00:00:00+00:00"
 }
