@@ -12,7 +12,7 @@ test("buildVerificationPrompt contains zero paper-specific leakage", async () =>
     sourceText: "[[PAGE 1]] We always work with theories that satisfy these minimal conditions: ...",
     caseId: "test-case",
   });
-  assert.match(prompt, /实质性数学性质/u);
+  assert.match(prompt, /实质性数学性质.*对应关系/u);
   for (const term of ["Hopf", "Kirby", "Yasui", "Gold", "MWW", "Sard", "Bauer", "Taubes", "Skein"]) {
     assert.equal(prompt.includes(term), false, `prompt leaked ${term}`);
   }
