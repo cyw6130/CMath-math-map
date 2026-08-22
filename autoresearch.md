@@ -53,3 +53,10 @@ Scoring protocol change (user directive): **single-run scoring only; no more ave
 
 ### Next (W8)
 Verify-layer B0-targeted backfill: extend scripts/verify-and-patch-with-spark.mjs with a B0-focused pass that scans source text for cited external results ([n]/author-year/due-to) missing from the consolidated artifact and adds them as standalone external entries. Probe on Skein1+RT.
+
+### W8 (B0 backfill in verify layer)
+Single-run Spark probes on v1.31+consolidation artifacts:
+- Skein1: 33 → **35** (+2, added 3 cited external entries incl. MWW/Khovanov functor)
+- RT: 33 → **32** (−1, added 1; within noise band ±2)
+
+Verdict: Skein1 positive signal confirms verify-layer B0 backfill works where extraction-prompt rules failed. RT flat. Next: keep B0 channel as part of W7.1 pipeline (verify stage = substantive-property pass + B0 pass), single-run protocol.
