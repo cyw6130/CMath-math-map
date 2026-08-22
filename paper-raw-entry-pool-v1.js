@@ -29,6 +29,23 @@
   const EXTRACTION_MODULE_VERSION_V1_14 = "paper-entry-parallel-extraction-v1.14";
   const EXTRACTION_MODULE_VERSION_V1_15 = "paper-entry-parallel-extraction-v1.15";
   const EXTRACTION_MODULE_VERSION_V1_16 = "paper-entry-parallel-extraction-v1.16";
+  const EXTRACTION_MODULE_VERSION_V1_20 = "paper-entry-parallel-extraction-v1.20";
+  const EXTRACTION_MODULE_VERSION_V1_21 = "paper-entry-parallel-extraction-v1.21";
+  const EXTRACTION_MODULE_VERSION_V1_22 = "paper-entry-parallel-extraction-v1.22";
+  const EXTRACTION_MODULE_VERSION_V1_23 = "paper-entry-parallel-extraction-v1.23";
+  const EXTRACTION_MODULE_VERSION_V1_24 = "paper-entry-parallel-extraction-v1.24";
+  const EXTRACTION_MODULE_VERSION_V1_25 = "paper-entry-parallel-extraction-v1.25";
+  const EXTRACTION_MODULE_VERSION_V1_26 = "paper-entry-parallel-extraction-v1.26";
+  const EXTRACTION_MODULE_VERSION_V1_27 = "paper-entry-parallel-extraction-v1.27";
+  const EXTRACTION_MODULE_VERSION_V1_28 = "paper-entry-parallel-extraction-v1.28";
+  const EXTRACTION_MODULE_VERSION_V1_29 = "paper-entry-parallel-extraction-v1.29";
+  const EXTRACTION_MODULE_VERSION_V1_30 = "paper-entry-parallel-extraction-v1.30";
+  const EXTRACTION_MODULE_VERSION_V1_31 = "paper-entry-parallel-extraction-v1.31";
+  const EXTRACTION_MODULE_VERSION_V1_32 = "paper-entry-parallel-extraction-v1.32";
+  const EXTRACTION_MODULE_VERSION_V1_33 = "paper-entry-parallel-extraction-v1.33";
+  const EXTRACTION_MODULE_VERSION_V1_34 = "paper-entry-parallel-extraction-v1.34";
+  const EXTRACTION_MODULE_VERSION_V1_35 = "paper-entry-parallel-extraction-v1.35";
+  const EXTRACTION_MODULE_VERSION_V1_31_1 = "paper-entry-parallel-extraction-v1.31.1";
   const VALID_EXTRACTION_MODULE_VERSIONS = Object.freeze([
     "paper-entry-parallel-extraction-v1",
     "paper-entry-parallel-extraction-v1.1",
@@ -49,6 +66,23 @@
     "paper-entry-parallel-extraction-v1.14",
     "paper-entry-parallel-extraction-v1.15",
     "paper-entry-parallel-extraction-v1.16",
+    "paper-entry-parallel-extraction-v1.20",
+    "paper-entry-parallel-extraction-v1.21",
+    "paper-entry-parallel-extraction-v1.22",
+    "paper-entry-parallel-extraction-v1.23",
+    "paper-entry-parallel-extraction-v1.24",
+    "paper-entry-parallel-extraction-v1.25",
+    "paper-entry-parallel-extraction-v1.26",
+    "paper-entry-parallel-extraction-v1.27",
+    "paper-entry-parallel-extraction-v1.28",
+    "paper-entry-parallel-extraction-v1.29",
+    "paper-entry-parallel-extraction-v1.30",
+    "paper-entry-parallel-extraction-v1.31",
+    "paper-entry-parallel-extraction-v1.32",
+    "paper-entry-parallel-extraction-v1.33",
+    "paper-entry-parallel-extraction-v1.34",
+    "paper-entry-parallel-extraction-v1.35",
+    "paper-entry-parallel-extraction-v1.31.1",
   ]);
   const CONSOLIDATION_MODULE_VERSION = "paper-entry-consolidation-v1";
 
@@ -471,6 +505,197 @@
     return base.replace("【共同规则】", chainRules + "【共同规则】");
   }
 
+  // v1.20 Autoresearch candidate over generic v1.14:
+  // Addresses Sol's two major persistent issues:
+  // 1. Corollary distinction: Keep corollary as corollary or claim, do not promote to theorem.
+  // 2. Strict external attribution: Explicitly extract externally proven foundational theorems with external: true and source attribution.
+  function v120DualOutputPrompt(options) {
+    const base = v114DualOutputPrompt(options);
+    const refinementRules = `【类型精确与外部归属强化（本版本唯一实验变量）】\n`
+      + `- 严格推论区分：原文标注为 Corollary/推论 的命题，必须在 name/statement 中明确标为推论，不得将其分类或升格为独立的 主定理(theorem)，保留其作为派生结论的角色。\n`
+      + `- 外部基础命题完整提取：对于正文依赖的经典外部定理/引理（如带有明确作者姓名、文献引用 [n] 或经典名称的背景结果），必须单独提取为一个 Entry，并严格标记 external: true，且在 sourceReference 中记录可见的作者或引用。\n`
+      + `- 核心代数与范畴结构独立性：对于论文所构建或使用的核心代数、范畴、函子、上同调或同调代数结构，单独提取为 definition 或 lemma，不要将其拆碎为琐碎的 calculation 或与主定理混为一谈。\n\n`;
+    return base.replace("【共同规则】", refinementRules + "【共同规则】");
+  }
+
+  // v1.21 Autoresearch candidate over v1.20:
+  // Adds generic algebraic coefficient/base fidelity & forbids self-derivation/mental calculation.
+  function v121DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const algebraFidelityRules = `【代数基底保真与严禁自主演算（本版本唯一实验变量）】\n`
+      + `- 代数基底与系数环保真：对于带有基代数、系数环、局部系统或群作用的运算（如相对张量积、模同构、同调/同伦系数群等），必须严格保留其下标所指定的代数/环结构（如 \\otimes_A），严禁省略为无下标的默认运算。\n`
+      + `- 严禁模型心算与公式推导：对于计算型 Entry 或涉及具体特征数的命题，只忠实摘录原文明确写出的数值与恒等式，严禁自行推导、化简或心算正文中未直接给出的闭形式。\n\n`;
+    return base.replace("【共同规则】", algebraFidelityRules + "【共同规则】");
+  }
+
+  // v1.22 Autoresearch candidate over v1.20:
+  // Enforces cross-chunk stable ID naming & cohesive entry boundary to eliminate duplicate penalties.
+  function v122DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const deduplicationRules = `【跨块稳定 ID 与冗余内聚约束（本版本唯一实验变量）】\n`
+      + `- 基于编号的确定性 ID 规范：凡原文带有正式编号的对象（如 Theorem 1.4, Lemma 2.6），必须使用统一的英文小写 ID 模式（如 paper:thm:1-4, paper:lemma:2-6），严禁使用随意的自然语言描述作为 ID，以确保重叠窗口提取能够精准对齐与合并。\n`
+      + `- 避免碎片化拆分：同一定理/引理下的附属等价表述、特殊情形或局部推导，直接合并在该 Entry 的 statement 中，不得拆分为多个同名或相似的冗余 Entry。\n`
+      + `- 严格跨块唯一性：若某对象在当前段落只是被简要引用或复述，且此前已作为主定理/定义陈述过，不要重复为其创建新的内部 Entry。\n\n`;
+    return base.replace("【共同规则】", deduplicationRules + "【共同规则】");
+  }
+
+  // v1.23 Autoresearch candidate over v1.20:
+  // Enforces explicit expansion of multi-part compound hypotheses and strictly forbids referential compression.
+  function v123DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const compoundFidelityRules = `【复合长条件显式展开与零概括规范（本版本唯一实验变量）】\n`
+      + `- 禁止概括省略长复合条件：当定理或引理包含多分支或多项长条件（如满足条件(1)-(3)、特征标数同余要求、自相交非负性等）时，必须在 statement 中逐项完整写出所有分支的数学条件，严禁写成“见原文条件”、“满足若干要求”等模糊概括短语。\n`
+      + `- 同余作用域无歧义：涉及多个变量的同余限定条件（如同时要求两个量满足模数关系），必须为每个变量明确写出其完整的同余式（如 \\not\\equiv 1 \\pmod 4），不得省略其中任一变量的模数说明。\n`
+      + `- 核心定义完整性：对于正文反复调用的几何/代数对象（如特定的微分形式、空间结构或不变量定义），完整提取其定义域与核心性质，不得将其仅仅作为结论片段而丢失独立定义。\n\n`;
+    return base.replace("【共同规则】", compoundFidelityRules + "【共同规则】");
+  }
+
+  // v1.24 Autoresearch candidate over v1.20:
+  // Enforces strict corollary identification and avoids promoting derived consequences to primary theorems.
+  function v124DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const corollaryRules = `【严格推论身份保真（本版本唯一实验变量）】\n`
+      + `- 推论分类与名称一致：原文标明为 Corollary/推论 的命题，属于派生结论，其 name 必须保留“推论”或“Corollary”字样（如“推论 1.5”），严禁在表述上抹除其推论特征，不得将推论直接升格为主定理；\n`
+      + `- 推论归属精确关联：若推论直接跟在某一定理之后且为其直接推导，在 statement 中明确指出其是由前述定理派生出的结论，保持主次层次分明。\n\n`;
+    return base.replace("【共同规则】", corollaryRules + "【共同规则】");
+  }
+
+  // v1.25 Autoresearch candidate over v1.20:
+  // Unifies corollary as a first-class entry type, explicitly allowing type: "corollary" without type coercion.
+  function v125DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const corollaryTypeRules = `【推论独立类型支持与规范（本版本唯一实验变量）】\n`
+      + `- 原文写为 Corollary/推论 时使用 type: "corollary"，精准表达派生结果角色，不要降级或升格为 lemma 或 theorem；\n`
+      + `- 推论编号与命题对应：推论 ID 使用 paper:cor:x-y 或基于原文编号的英文 slug，并在 statement 中完整保留其所有推论断言与同余/代数条件。\n\n`;
+    
+    // Update the common rule to include corollary
+    let updated = base.replace(
+      "type 只能是 definition|algorithm|calculation|lemma|proposition|theorem",
+      "type 只能是 definition|algorithm|calculation|lemma|proposition|theorem|corollary"
+    );
+    return updated.replace("【共同规则】", corollaryTypeRules + "【共同规则】");
+  }
+
+  // v1.26 Autoresearch candidate over v1.20:
+  // Refines modular scope precision (explicit mod for each term) and requires foundational geometric/algebraic structure extraction.
+  function v126DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const scopePrecisionRules = `【同余作用域显式闭合与基础结构独立提取（本版本唯一实验变量）】\n`
+      + `- 同余模数作用域显式闭合：当命题包含多个变量的不等式/同余条件时，必须为每个变量独立写出完整的同余条件（如 “$a \\not\\equiv 1 \\pmod 4$ 且 $b \\not\\equiv 1 \\pmod 4$”），严禁省略前一项的模数声明，消除语法歧义；\n`
+      + `- 基础几何/代数结构独立抽取：论文研究的主体结构（如特定的闭非退化形式、定向诱导的自旋结构、双模代数等），凡在正文中作为核心概念被定义或使用，必须提取为独立的 definition 条目，不得仅在定理结论中作为附带条件提及。\n\n`;
+    return base.replace("【共同规则】", scopePrecisionRules + "【共同规则】");
+  }
+
+  // v1.27 Autoresearch candidate over v1.20:
+  // Enforces non-torsion/algebraic property preservation, foundational structure extraction, and product/intersection fidelity.
+  function v127DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const torsionFidelityRules = `【代数拓扑条件与核心实体定义完整性（本版本唯一实验变量）】\n`
+      + `- 挠性与代数性质逐字保真：涉及同调/同伦类、群元或模元素的代数限制词（如非挠 nontorsion、挠元 torsion、素元、自由元、正定性等），必须完整写入 statement，严禁作为修饰词省略；\n`
+      + `- 核心研究实体独立建定义：论文正文定义并依赖的基础几何/代数结构（如特定的闭非退化形式、流形结构、诱导丛或代数系统），必须单独提取为独立 definition，不得仅在后续定理结论中顺带提及；\n`
+      + `- 双同调/张量运算符号保真：涉及流形相交、乘积、对偶或张量作用的运算符号（如 \\times, \\otimes, \\cap 等），严格按原文公式录入，严禁误写为加减运算符。\n\n`;
+    return base.replace("【共同规则】", torsionFidelityRules + "【共同规则】");
+  }
+
+  // v1.28 Autoresearch candidate over v1.20:
+  // Enforces strict unique deterministic ID naming and forbids redundant duplicate ID generation across overlapping chunks.
+  function v128DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const idDedupRules = `【条目 ID 严格唯一性与无冲突规范（本版本唯一实验变量）】\n`
+      + `- 严格唯一性与确定性 ID 模式：严禁输出相同 ID 的多条条目；凡原文带有编号的对象（如 Theorem 1.4, Lemma 2.6），必须使用基于编号的确定性小写结构化命名模式（如 paper:thm:1-4, paper:lemma:2-6），同一编号在单次调用或跨窗口中只能有唯一一条完整条目；\n`
+      + `- 未编号实体语义 ID：未编号的核心定义或外部事实，使用精准反映其数学实体的简短英文 slug（如 paper:def:geometric-simplicity, paper:ext:froyshov-vanishing），并在 statement 中保持自足，严禁为同一概念生成同名冲突或碎片化副本；\n`
+      + `- 跨块复现直接内聚：若当前块见到的对象此前已被提过，直接把本块的补充条件内聚在该条目中，禁止产生第二条重复条目。\n\n`;
+    return base.replace("【共同规则】", idDedupRules + "【共同规则】");
+  }
+
+  // v1.29 Autoresearch candidate over v1.20:
+  // Strictly enforces external citation tagging (external: true, sourceReference) & explicit modulo scope for every congruence condition.
+  function v129DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const extScopeRules = `【外部归属强制标注与双向同余闭合规范（本版本唯一实验变量）】\n`
+      + `- 外部归属强制标注：凡带有作者姓名引用（如 “due to ...”, “by ...”）、文献编号标记（如 [12], [B98]）或经典名称的预备引理/定理，必须严格标记 external: true，并在 sourceReference 中记录其可见文献标签，严禁将其作为本文新证的主定理提取；\n`
+      + `- 多同余条件双向闭合：涉及多个同调或特征指标的同余限制（如 $a \\not\\equiv 1$ 且 $b \\not\\equiv 1$），必须在公式中为每一个条件均显式写出模数（如 $a \\not\\equiv 1 \\pmod 4$ 且 $b \\not\\equiv 1 \\pmod 4$），严禁单侧省略模数声明导致作用域歧义。\n\n`;
+    return base.replace("【共同规则】", extScopeRules + "【共同规则】");
+  }
+
+  // v1.30 Autoresearch candidate over v1.20:
+  // Enforces explicit modulo scope on both terms, product/intersection symbol fidelity, and zero referential compression.
+  function v130DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const scopePrecisionRules = `【数学符号作用域显式闭合与代数拓扑运算保真（本版本唯一实验变量）】\n`
+      + `- 同余模数双向显式闭合：涉及多个变量的同余限定条件，必须为每个变量独立写出完整的模数子句（如必须写为 “$a \\not\\equiv 1 \\pmod 4$ 且 $b \\not\\equiv 1 \\pmod 4$”），严禁省略前半部分的模数声明，消除语法歧义；\n`
+      + `- 空间乘积与同调类运算符号保真：涉及流形连通和、直积、相交对偶或配对的同调类表达式，必须精准保留原文的乘积与对偶符号（如 \\times, \\cap, \\otimes），严禁将乘积/对偶运算误抄为减号（如不得将 a \\times \\bar{a} 错抄为 a - \\bar{a}）；\n`
+      + `- 复合长条件零引用概括：定理包含多项代数/拓扑前提时，逐条完整陈述其实质内容，严禁写成“见条件(1)-(3)”等概括代词。\n\n`;
+    return base.replace("【共同规则】", scopePrecisionRules + "【共同规则】");
+  }
+
+  // v1.31 Autoresearch candidate over v1.20:
+  // Focuses purely on deep mathematical substance, necessary-and-sufficient conditions, complete external statements, and proof-chain infrastructure.
+  function v131DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const mathSubstanceRules = `【数学内涵保真与核心论证链完整性（本版本唯一实验变量）】\n`
+      + `- 充要条件与代数拓扑约束零丢失：对象的全部代数与几何前提（如类的非挠性 nontorsion、流形的紧致光滑性、定向依赖性、系数环上的模作用、正标量曲率条件等），是数学断言成立的本质基础，必须在 statement 中完整保留，严禁省略任何数学限定；\n`
+      + `- 经典外部定理的实质断言完整性：正文依赖的关键外部数学结论（如不变量的精确取值、非零性判据、代数分裂定理等），必须完整写出其具体的数学方程、精确取值与代数同构，严禁仅写出模糊的背景描述；\n`
+      + `- 支撑主定理的底层关键构造独立提取：主定理所依赖的核心代数结构（如相对张量积代数、余代数余积、范畴辫子/扭结构）和关键几何构造（如特定同调类的零自交代表元、把手滑动不变性），必须作为独立条目完整提取，保证论证链从定义到引理再到主定理的数学闭环。\n\n`;
+    return base.replace("【共同规则】", mathSubstanceRules + "【共同规则】");
+  }
+
+  // v1.32 Autoresearch candidate over v1.31:
+  // Single variable: proof-infrastructure completeness — proof-invoked named lemmas and attributed background constructions must be standalone entries.
+  function v132DualOutputPrompt(options) {
+    const base = v131DualOutputPrompt(options);
+    const infraRules = `【证明基础设施独立提取（本版本唯一实验变量）】\n`
+      + `- 证明过程中被显式调用或显式验证的命名引理/命题/断言（如各类不变性验证步骤、约化等价步骤、独立性或规范性引理），必须作为独立 Entry 完整提取，不得当作证明细节跳过；\n`
+      + `- 正文依赖的带归属背景构造/定理（含以名称、文献标记或作者引入的前置理论框架），必须单独提取并标记 external 与 sourceReference；\n`
+      + `- 主定理所引用的中间步骤若本身具有独立数学内容（可被单独引用验证），必须独立成条，不得只保留最终结论而丢失证明链的中间节点。\n\n`;
+    return base.replace("【共同规则】", infraRules + "【共同规则】");
+  }
+
+  // v1.33 Autoresearch candidate over v1.32:
+  // Single variable: lane discipline — self-proven assertions (incl. invariance/reduction lemmas) must go to resultEntries; only cited-unproven external results go to foundationEntries.
+  function v133DualOutputPrompt(options) {
+    const base = v132DualOutputPrompt(options);
+    const laneRules = `【双通道归属纪律（本版本唯一实验变量）】\n`
+      + `- 本文自己给出证明的断言（含不变性验证、约化步骤、规范性引理）一律放入 resultEntries，type 取 lemma/proposition/theorem，external 为 false；不得因为其属于“证明步骤/基础设施”而放入 foundationEntries；\n`
+      + `- 只有本文引用而未证明的外部结果才放入 foundationEntries，并标记 external: true 与 sourceReference；\n`
+      + `- 构造性定义（新对象、新结构、新映射的引入）放 foundationEntries 的 definition；对已有对象所证明的性质断言放 resultEntries，两者不得互换通道。\n\n`;
+    return base.replace("【共同规则】", laneRules + "【共同规则】");
+  }
+
+  // v1.34 Autoresearch candidate over v1.31:
+  // Single variable: extract prose-stated condition lists and named key properties as standalone entries.
+  function v134DualOutputPrompt(options) {
+    const base = v131DualOutputPrompt(options);
+    const proseRules = `【前提条件清单与命名关键性质独立提取（本版本唯一实验变量）】\n`
+      + `- 正文以清单或条件形式列出、并作为后续论证长期前提的技术条件（如对输入理论/结构的公理或最小条件约束），必须提取为独立 definition 条目，逐条保留全部条件；\n`
+      + `- 正文中以命名性质形式陈述的关键数学属性（如某构造的核心不变性、特征性质，常以“核心性质是…”“…性质”引出），必须提取为独立 lemma/proposition 条目，完整保留其断言与适用范围；\n`
+      + `- 不得因这些内容没有编号标签而当作背景叙述跳过。\n\n`;
+    return base.replace("【共同规则】", proseRules + "【共同规则】");
+  }
+
+
+  // v1.35 Autoresearch candidate over v1.34:
+  // Single variable: balanced-tensor / algebra-action notation fidelity + zero hallucination of extra boundary/algebraic conditions.
+  function v135DualOutputPrompt(options) {
+    const base = v134DualOutputPrompt(options);
+    const tensorRules = `【平衡张量积与作用代数记号逐字保真（本版本唯一实验变量）】\n`
+      + `- 平衡张量积与作用代数记号逐字保真：涉及双模张量积、Hochschild 同调作用、代数关联缠结等公式时，平衡代数与作用代数的名称与下标必须按原文逐字转录（如 $\\otimes_{S}$ 的下标），严禁简化为普通张量积或替换代数记号；\n`
+      + `- 严禁添加源文献未陈述的额外边界或代数条件：不得为定义或定理增补“平凡代数交”“额外边界匹配”等原文没有的条件；仅转录源文献明确给出的边界、框架与代数作用条件。\n\n`;
+    return base.replace("【共同规则】", tensorRules + "【共同规则】");
+  }
+
+
+  // v1.31.1 Autoresearch candidate over v1.31:
+  // Single variable: domain-generic math-substance rule (remove 4-manifold topology examples that anchor attention).
+  function v1311DualOutputPrompt(options) {
+    const base = v120DualOutputPrompt(options);
+    const genericMathRules = `【数学内涵保真与核心论证链完整性（本版本唯一实验变量）】\n`
+      + `- 充要条件与数学约束零丢失：对象的全部数学前提（无论是代数、几何、拓扑、范畴还是逻辑约束），只要是源文献作为定理/定义/命题的必要组成部分，必须完整写入 statement，严禁省略任何数学限定；不以学科领域为转移；\n`
+      + `- 经典外部定理的实质断言完整性：正文依赖的关键外部数学结论（如不变量的精确取值、非零性判据、代数分裂/同构定理等），必须完整写出其具体的数学方程、精确取值与代数同构，严禁仅写出模糊的背景描述；\n`
+      + `- 支撑主定理的底层关键构造独立提取：主定理所依赖的核心代数/几何/范畴结构（如运算体系、模作用、框架或函子构造）和关键中间对象，必须作为独立条目完整提取，保证论证链从定义到引理再到主定理的数学闭环。\n\n`;
+    return base.replace("【共同规则】", genericMathRules + "【共同规则】");
+  }
+
   function repairJsonStringEscapes(jsonStr) {
     let inString = false;
     let result = "";
@@ -503,6 +728,58 @@
           const next = jsonStr[i + 1];
 
           // Valid JSON escape sequences: \", \\, \/, \b, \f, \n, \r, \t
+          // IMPORTANT: Do NOT treat \b as backspace escape when it is part of LaTeX commands like \bigoplus, \bar, \beta, \binom, \bullet, etc.
+          if (next === 'b') {
+            const lookahead = jsonStr.slice(i + 1, i + 12);
+            if (/^b(ig|ar|eta|inom|ullet|ox|rack|old|ack|m)/iu.test(lookahead)) {
+              // TeX macro starting with \b (e.g. \bigoplus, \bar, \beta), escape the slash
+              result += "\\\\";
+              repairs += 1;
+              i += 1;
+              continue;
+            }
+          }
+          if (next === 'f') {
+            const lookahead = jsonStr.slice(i + 1, i + 10);
+            if (/^f(rac|lat|orall|ont|loor)/iu.test(lookahead)) {
+              // TeX macro starting with \f (e.g. \frac, \flat), escape the slash
+              result += "\\\\";
+              repairs += 1;
+              i += 1;
+              continue;
+            }
+          }
+          if (next === 't') {
+            const lookahead = jsonStr.slice(i + 1, i + 10);
+            if (/^t(o|imes|heta|ext|ilde|riangle|au)/iu.test(lookahead)) {
+              // TeX macro starting with \t (e.g. \to, \times, \theta), escape the slash
+              result += "\\\\";
+              repairs += 1;
+              i += 1;
+              continue;
+            }
+          }
+          if (next === 'n') {
+            const lookahead = jsonStr.slice(i + 1, i + 10);
+            if (/^n(ot|abla|atural|eq|otin|orm)/iu.test(lookahead)) {
+              // TeX macro starting with \n (e.g. \not, \neq), escape the slash
+              result += "\\\\";
+              repairs += 1;
+              i += 1;
+              continue;
+            }
+          }
+          if (next === 'r') {
+            const lookahead = jsonStr.slice(i + 1, i + 10);
+            if (/^r(ho|angle|ight|ound)/iu.test(lookahead)) {
+              // TeX macro starting with \r (e.g. \rho, \rangle), escape the slash
+              result += "\\\\";
+              repairs += 1;
+              i += 1;
+              continue;
+            }
+          }
+
           if (next === '"' || next === '\\' || next === '/' || next === 'b' || next === 'f' || next === 'n' || next === 'r' || next === 't') {
             result += "\\" + next;
             i += 2;
@@ -750,6 +1027,7 @@
     extractionModuleVersion,
     laneCache,
     onLaneComplete,
+    maxParallelCalls = 1,
   } = {}) {
     const executionStartedAt = performance.now();
     const stages = [];
@@ -803,7 +1081,7 @@
       }
     }
 
-    if ([EXTRACTION_MODULE_VERSION_V1_7, EXTRACTION_MODULE_VERSION_V1_8, EXTRACTION_MODULE_VERSION_V1_9, EXTRACTION_MODULE_VERSION_V1_10, EXTRACTION_MODULE_VERSION_V1_11, EXTRACTION_MODULE_VERSION_V1_12, EXTRACTION_MODULE_VERSION_V1_13, EXTRACTION_MODULE_VERSION_V1_14, EXTRACTION_MODULE_VERSION_V1_15, EXTRACTION_MODULE_VERSION_V1_16].includes(targetVersion)) {
+    if ([EXTRACTION_MODULE_VERSION_V1_7, EXTRACTION_MODULE_VERSION_V1_8, EXTRACTION_MODULE_VERSION_V1_9, EXTRACTION_MODULE_VERSION_V1_10, EXTRACTION_MODULE_VERSION_V1_11, EXTRACTION_MODULE_VERSION_V1_12, EXTRACTION_MODULE_VERSION_V1_13, EXTRACTION_MODULE_VERSION_V1_14, EXTRACTION_MODULE_VERSION_V1_15, EXTRACTION_MODULE_VERSION_V1_16, EXTRACTION_MODULE_VERSION_V1_20, EXTRACTION_MODULE_VERSION_V1_21, EXTRACTION_MODULE_VERSION_V1_22, EXTRACTION_MODULE_VERSION_V1_23, EXTRACTION_MODULE_VERSION_V1_24, EXTRACTION_MODULE_VERSION_V1_25, EXTRACTION_MODULE_VERSION_V1_26, EXTRACTION_MODULE_VERSION_V1_27, EXTRACTION_MODULE_VERSION_V1_28, EXTRACTION_MODULE_VERSION_V1_29, EXTRACTION_MODULE_VERSION_V1_30, EXTRACTION_MODULE_VERSION_V1_31, EXTRACTION_MODULE_VERSION_V1_32, EXTRACTION_MODULE_VERSION_V1_33, EXTRACTION_MODULE_VERSION_V1_34, EXTRACTION_MODULE_VERSION_V1_35, EXTRACTION_MODULE_VERSION_V1_31_1].includes(targetVersion)) {
       const blocks = splitTextIntoWindows(cleanText, 5, 1);
       notify("parallel-extract-start", { chars: cleanText.length, blocks: blocks.length, overlapPages: 1, lanes: ["combined"], version: targetVersion });
       const perBlock = blocks.map(() => ({ foundation: [], result: [], inferenceHints: [] }));
@@ -824,23 +1102,57 @@
           return;
         }
 
-        const promptBuilder = targetVersion === EXTRACTION_MODULE_VERSION_V1_16
-          ? v116DualOutputPrompt
-          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_15
-            ? v115DualOutputPrompt
-            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_14
-              ? v114DualOutputPrompt
-              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_13
-                ? v113DualOutputPrompt
-              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_12
-                ? v112DualOutputPrompt
-                : (targetVersion === EXTRACTION_MODULE_VERSION_V1_11
-                  ? v111DualOutputPrompt
-                  : (targetVersion === EXTRACTION_MODULE_VERSION_V1_10
-                    ? v110DualOutputPrompt
-                    : (targetVersion === EXTRACTION_MODULE_VERSION_V1_9
-                      ? v19DualOutputPrompt
-                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_8 ? v18DualOutputPrompt : v17DualOutputPrompt))))))));
+        const promptBuilder = targetVersion === EXTRACTION_MODULE_VERSION_V1_31_1
+          ? v1311DualOutputPrompt
+          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_35
+            ? v135DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_34
+            ? v134DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_33
+            ? v133DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_32
+            ? v132DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_31
+            ? v131DualOutputPrompt
+          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_30
+            ? v130DualOutputPrompt
+            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_29
+              ? v129DualOutputPrompt
+              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_28
+                ? v128DualOutputPrompt
+                : (targetVersion === EXTRACTION_MODULE_VERSION_V1_27
+                  ? v127DualOutputPrompt
+                  : (targetVersion === EXTRACTION_MODULE_VERSION_V1_26
+                    ? v126DualOutputPrompt
+                    : (targetVersion === EXTRACTION_MODULE_VERSION_V1_25
+                      ? v125DualOutputPrompt
+                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_24
+                        ? v124DualOutputPrompt
+                        : (targetVersion === EXTRACTION_MODULE_VERSION_V1_23
+                          ? v123DualOutputPrompt
+                          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_22
+                            ? v122DualOutputPrompt
+                            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_21
+                              ? v121DualOutputPrompt
+                              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_20
+                                ? v120DualOutputPrompt
+                                : (targetVersion === EXTRACTION_MODULE_VERSION_V1_16
+                                  ? v116DualOutputPrompt
+                                  : (targetVersion === EXTRACTION_MODULE_VERSION_V1_15
+                                    ? v115DualOutputPrompt
+                                    : (targetVersion === EXTRACTION_MODULE_VERSION_V1_14
+                                      ? v114DualOutputPrompt
+                                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_13
+                                        ? v113DualOutputPrompt
+                                      : (targetVersion === EXTRACTION_MODULE_VERSION_V1_12
+                                        ? v112DualOutputPrompt
+                                        : (targetVersion === EXTRACTION_MODULE_VERSION_V1_11
+                                          ? v111DualOutputPrompt
+                                          : (targetVersion === EXTRACTION_MODULE_VERSION_V1_10
+                                            ? v110DualOutputPrompt
+                                            : (targetVersion === EXTRACTION_MODULE_VERSION_V1_9
+                                              ? v19DualOutputPrompt
+                                              : (targetVersion === EXTRACTION_MODULE_VERSION_V1_8 ? v18DualOutputPrompt : v17DualOutputPrompt)))))))))))))))))))))))));
         const prompt = promptBuilder({ fileName: cleanFileName, pageCount: numPages, text: blockText, pageRange, blockIndex, totalBlocks: blocks.length });
         const callStartedAt = performance.now();
         let responseContent = "";
@@ -899,7 +1211,8 @@
 
       let nextTask = 0;
       const taskErrors = [];
-      const workers = Array.from({ length: Math.min(3, tasks.length) }, async () => {
+      const concurrency = Math.max(1, Math.min(maxParallelCalls, tasks.length));
+      const workers = Array.from({ length: concurrency }, async () => {
         while (nextTask < tasks.length) {
           const taskIndex = nextTask++;
           try { await tasks[taskIndex](); } catch (error) { taskErrors.push(error); }
@@ -1443,6 +1756,23 @@
     EXTRACTION_MODULE_VERSION_V1_14,
     EXTRACTION_MODULE_VERSION_V1_15,
     EXTRACTION_MODULE_VERSION_V1_16,
+    EXTRACTION_MODULE_VERSION_V1_20,
+    EXTRACTION_MODULE_VERSION_V1_21,
+    EXTRACTION_MODULE_VERSION_V1_22,
+    EXTRACTION_MODULE_VERSION_V1_23,
+    EXTRACTION_MODULE_VERSION_V1_24,
+    EXTRACTION_MODULE_VERSION_V1_25,
+    EXTRACTION_MODULE_VERSION_V1_26,
+    EXTRACTION_MODULE_VERSION_V1_27,
+    EXTRACTION_MODULE_VERSION_V1_28,
+    EXTRACTION_MODULE_VERSION_V1_29,
+    EXTRACTION_MODULE_VERSION_V1_30,
+    EXTRACTION_MODULE_VERSION_V1_31,
+    EXTRACTION_MODULE_VERSION_V1_32,
+    EXTRACTION_MODULE_VERSION_V1_33,
+    EXTRACTION_MODULE_VERSION_V1_34,
+    EXTRACTION_MODULE_VERSION_V1_35,
+    EXTRACTION_MODULE_VERSION_V1_31_1,
     VALID_EXTRACTION_MODULE_VERSIONS,
     CONSOLIDATION_MODULE_VERSION,
     validateRawEntryPool,
@@ -1467,6 +1797,23 @@
     v112DualOutputPrompt,
     v113DualOutputPrompt,
     v114DualOutputPrompt,
+    v120DualOutputPrompt,
+    v121DualOutputPrompt,
+    v122DualOutputPrompt,
+    v123DualOutputPrompt,
+    v124DualOutputPrompt,
+    v125DualOutputPrompt,
+    v126DualOutputPrompt,
+    v127DualOutputPrompt,
+    v128DualOutputPrompt,
+    v129DualOutputPrompt,
+    v130DualOutputPrompt,
+    v131DualOutputPrompt,
+    v132DualOutputPrompt,
+    v133DualOutputPrompt,
+    v134DualOutputPrompt,
+    v135DualOutputPrompt,
+    v1311DualOutputPrompt,
     v115DualOutputPrompt,
     v116DualOutputPrompt,
     parseModelJson,

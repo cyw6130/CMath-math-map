@@ -233,6 +233,7 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
 
   let versionOpt = "paper-entry-parallel-extraction-v1.3";
   let providerOpt = "luna";
+  let maxParallelOpt = 1;
   const positional = [];
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
@@ -247,6 +248,34 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
       versionOpt = "paper-entry-parallel-extraction-v1.8";
     } else if (arg === "--v1.9" || arg === "-v1.9") {
       versionOpt = "paper-entry-parallel-extraction-v1.9";
+    } else if (arg === "--v1.33" || arg === "-v1.33") {
+      versionOpt = "paper-entry-parallel-extraction-v1.33";
+    } else if (arg === "--v1.32" || arg === "-v1.32") {
+      versionOpt = "paper-entry-parallel-extraction-v1.32";
+    } else if (arg === "--v1.31" || arg === "-v1.31") {
+      versionOpt = "paper-entry-parallel-extraction-v1.31";
+    } else if (arg === "--v1.30" || arg === "-v1.30") {
+      versionOpt = "paper-entry-parallel-extraction-v1.30";
+    } else if (arg === "--v1.29" || arg === "-v1.29") {
+      versionOpt = "paper-entry-parallel-extraction-v1.29";
+    } else if (arg === "--v1.28" || arg === "-v1.28") {
+      versionOpt = "paper-entry-parallel-extraction-v1.28";
+    } else if (arg === "--v1.27" || arg === "-v1.27") {
+      versionOpt = "paper-entry-parallel-extraction-v1.27";
+    } else if (arg === "--v1.26" || arg === "-v1.26") {
+      versionOpt = "paper-entry-parallel-extraction-v1.26";
+    } else if (arg === "--v1.25" || arg === "-v1.25") {
+      versionOpt = "paper-entry-parallel-extraction-v1.25";
+    } else if (arg === "--v1.24" || arg === "-v1.24") {
+      versionOpt = "paper-entry-parallel-extraction-v1.24";
+    } else if (arg === "--v1.23" || arg === "-v1.23") {
+      versionOpt = "paper-entry-parallel-extraction-v1.23";
+    } else if (arg === "--v1.22" || arg === "-v1.22") {
+      versionOpt = "paper-entry-parallel-extraction-v1.22";
+    } else if (arg === "--v1.21" || arg === "-v1.21") {
+      versionOpt = "paper-entry-parallel-extraction-v1.21";
+    } else if (arg === "--v1.20" || arg === "-v1.20") {
+      versionOpt = "paper-entry-parallel-extraction-v1.20";
     } else if (arg === "--v1.16" || arg === "-v1.16") {
       versionOpt = "paper-entry-parallel-extraction-v1.16";
     } else if (arg === "--v1.15" || arg === "-v1.15") {
@@ -275,6 +304,8 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
       versionOpt = "paper-entry-parallel-extraction-v1.4";
     } else if (arg === "--v1.3" || arg === "-v1.3") {
       versionOpt = "paper-entry-parallel-extraction-v1.3";
+    } else if (arg.startsWith("--max-parallel=")) {
+      maxParallelOpt = Number(arg.slice("--max-parallel=".length).trim()) || 1;
     } else if (arg.startsWith("--provider=")) {
       providerOpt = arg.slice("--provider=".length).trim();
     } else if (arg === "--provider" || arg === "-p") {
@@ -299,6 +330,34 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
 
   if (versionOpt === "v1.8" || versionOpt === "1.8") {
     versionOpt = "paper-entry-parallel-extraction-v1.8";
+  } else if (versionOpt === "v1.33" || versionOpt === "1.33") {
+    versionOpt = "paper-entry-parallel-extraction-v1.33";
+  } else if (versionOpt === "v1.32" || versionOpt === "1.32") {
+    versionOpt = "paper-entry-parallel-extraction-v1.32";
+  } else if (versionOpt === "v1.31" || versionOpt === "1.31") {
+    versionOpt = "paper-entry-parallel-extraction-v1.31";
+  } else if (versionOpt === "v1.30" || versionOpt === "1.30") {
+    versionOpt = "paper-entry-parallel-extraction-v1.30";
+  } else if (versionOpt === "v1.29" || versionOpt === "1.29") {
+    versionOpt = "paper-entry-parallel-extraction-v1.29";
+  } else if (versionOpt === "v1.28" || versionOpt === "1.28") {
+    versionOpt = "paper-entry-parallel-extraction-v1.28";
+  } else if (versionOpt === "v1.27" || versionOpt === "1.27") {
+    versionOpt = "paper-entry-parallel-extraction-v1.27";
+  } else if (versionOpt === "v1.26" || versionOpt === "1.26") {
+    versionOpt = "paper-entry-parallel-extraction-v1.26";
+  } else if (versionOpt === "v1.25" || versionOpt === "1.25") {
+    versionOpt = "paper-entry-parallel-extraction-v1.25";
+  } else if (versionOpt === "v1.24" || versionOpt === "1.24") {
+    versionOpt = "paper-entry-parallel-extraction-v1.24";
+  } else if (versionOpt === "v1.23" || versionOpt === "1.23") {
+    versionOpt = "paper-entry-parallel-extraction-v1.23";
+  } else if (versionOpt === "v1.22" || versionOpt === "1.22") {
+    versionOpt = "paper-entry-parallel-extraction-v1.22";
+  } else if (versionOpt === "v1.21" || versionOpt === "1.21") {
+    versionOpt = "paper-entry-parallel-extraction-v1.21";
+  } else if (versionOpt === "v1.20" || versionOpt === "1.20") {
+    versionOpt = "paper-entry-parallel-extraction-v1.20";
   } else if (versionOpt === "v1.9" || versionOpt === "1.9") {
     versionOpt = "paper-entry-parallel-extraction-v1.9";
   } else if (versionOpt === "v1.16" || versionOpt === "1.16") {
@@ -340,14 +399,21 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
   let text = options.text;
   let pageCount = options.pageCount;
   if (text === undefined || pageCount === undefined) {
-    const rawText = execFileSync("pdftotext", [pdfPath, "-"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
-    text = rawText.split("\f")
-      .map((page) => page.replace(/[ \t]+\n/gu, "\n").replace(/\n{3,}/gu, "\n\n").trim())
-      .map((page, index) => (page ? `[[PAGE ${index + 1}]]\n${page}` : ""))
-      .filter(Boolean)
-      .join("\n\n")
-      .trim();
-    pageCount = Number(execFileSync("pdfinfo", [pdfPath], { encoding: "utf8" }).match(/Pages:\s+(\d+)/u)?.[1] ?? 0);
+    if (pdfPath.endsWith(".md") || pdfPath.endsWith(".markdown")) {
+      const rawMd = fs.readFileSync(pdfPath, "utf8");
+      text = rawMd.trim();
+      const pageMatches = [...text.matchAll(/\[\[PAGE\s+(\d+)\]\]/gu)];
+      pageCount = pageMatches.length > 0 ? Math.max(...pageMatches.map((m) => Number(m[1]))) : 1;
+    } else {
+      const rawText = execFileSync("pdftotext", [pdfPath, "-"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+      text = rawText.split("\f")
+        .map((page) => page.replace(/[ \t]+\n/gu, "\n").replace(/\n{3,}/gu, "\n\n").trim())
+        .map((page, index) => (page ? `[[PAGE ${index + 1}]]\n${page}` : ""))
+        .filter(Boolean)
+        .join("\n\n")
+        .trim();
+      pageCount = Number(execFileSync("pdfinfo", [pdfPath], { encoding: "utf8" }).match(/Pages:\s+(\d+)/u)?.[1] ?? 0);
+    }
   }
 
   const calls = [];
@@ -394,6 +460,7 @@ export async function runCli(argv = process.argv.slice(2), options = {}) {
       providerLabel,
       reasoningEffort,
       maxChunks: 4,
+      maxParallelCalls: maxParallelOpt,
       tokenBudget,
       version: versionOpt,
       signal: abortController.signal,
