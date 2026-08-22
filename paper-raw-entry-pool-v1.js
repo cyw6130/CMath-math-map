@@ -820,6 +820,13 @@
       return JSON.parse(raw);
     } catch (rawParseErr) {
       let candidate = raw;
+      // 0. Escape bare control characters inside string literals (Ox-style output)
+      if (/[\x00-\x1F]/u.test(raw)) {
+        const escaped = raw.replace(/"(?:[^"\\\x00-\x1F]|\\.)*"/gu, (m) => m.replace(/[\x00-\x1F]/gu, (c) => {
+          switch (c) { case "\n": return "\\n"; case "\t": return "\\t"; case "\r": return "\\r"; default: return "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"); }
+        }));
+        try { return JSON.parse(escaped); } catch (_) { candidate = escaped; }
+      }
       let matchedSlice = false;
 
       if (!(raw.startsWith("{") && raw.endsWith("}")) && !(raw.startsWith("[") && raw.endsWith("]"))) {
