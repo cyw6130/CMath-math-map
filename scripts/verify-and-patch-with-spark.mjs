@@ -55,6 +55,32 @@ export function applyPatch(consolidated, patch) {
   return result;
 }
 
+export function buildB0BackfillPrompt({ consolidatedText, sourceText, caseId }) {
+  return `你是数学论文产物校验专家。当前任务：B0 外部定理定向补漏。
+
+【任务】
+1. 扫描源文本中带引用标记的外部数学结果（引用标记如 [12]、作者年份、due to / by 等表述，且非本文证明）；
+2. 与初版产物比对：凡源文本中作为独立陈述出现、但初版产物中没有对应条目的外部结果，必须补一条独立 Entry；
+3. 补录条目规范：type 取 lemma|proposition|theorem；external: true；sourceReference 填写可见的引用标记或作者名；statement 完整转录其数学断言与全部前提；
+4. 已存在于初版产物中的外部结果不要重复添加。
+
+输出 JSON（只输出 JSON）：
+{"addEntries":[{"id":"paper:ext:...","type":"theorem","name":"...","statement":"...","page":3,"external":true,"sourceReference":"[12]"}],"corrections":[],"removeIds":[]}
+
+规则：id 使用英文小写 slug（建议 paper:ext: 前缀）；statement 最多 300 字符并保留假设、量词和公式；page 取 [[PAGE N]] 整数页码。严禁增补源文本没有的结果。
+
+初版产物（待比对）：
+\`\`\`json
+${consolidatedText.slice(0, 80000)}
+\`\`\`
+
+源文本（以此为准）：
+${sourceText.slice(0, 120000)}
+
+案例：${caseId}
+`;
+}
+
 function resolveSparkProviderConfig() {
   const keysPath = process.env.OPENCODE_KEYS_FILE?.trim() || path.join(process.env.HOME || "/Users/chenyuwen", ".gamma-math-map/keys.json");
   let apiKey = process.env.OPENCODE_GO_API_KEY?.trim() || "";
