@@ -1,0 +1,260 @@
+{
+  "schema": "cmath-gamma.benchmark-spec/v0.1",
+  "benchmarkId": "benchmark:4-dim-skein-modules-handles-tangles:pdf-import-gold:v1",
+  "targetPaper": {
+    "title": "4-Dimensional Skein Modules, Handle Attachments, and Tangles",
+    "authors": [
+      "Gage Martin",
+      "Mary Stelow",
+      "Mira Wattal"
+    ],
+    "year": 2026,
+    "sourcePdf": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+    "mainTargetEntryId": "paper:thm:gluing-isomorphism",
+    "totalPdfPages": 10
+  },
+  "evaluationStrategy": {
+    "semanticEquality": "structural-and-invariant-based",
+    "exactByteMatchRequired": false
+  },
+  "requiredObjects": {
+    "facts": [
+      {
+        "id": "paper:def:functorial-link-theory",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "函子性链环同调理论",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:triple-skein-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "参数化三元组的 Skein 模",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:3-manifold-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "3-流形伴随代数",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:bimodule-gluing-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "双模粘合映射",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      }
+    ],
+    "b0Claims": [
+      {
+        "id": "paper:b0:mww-skein-lasagna",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "MWW Skein Lasagna 模定义",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:evaluation-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "评估同构定理",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:khovanov-tangle-functor",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Khovanov 缠结双模函子",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=4",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:ren-willis-gluing-surjection",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Ren–Willis 满同态粘合映射",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5",
+        "mustHaveSourceReference": true
+      }
+    ],
+    "derivedClaims": [
+      {
+        "id": "paper:lemma:algebra-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "3-流形代数同构引理",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:lemma:khovanov-tangle-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "缠结 Skein 模同构引理",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:thm:gluing-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "一般双模张量积粘合定理",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:thm:1-handle-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "1-Handle 附加公式",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:2-handle-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "2-Handle 附加公式",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:3-handle-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "3-Handle 附加公式",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      }
+    ],
+    "proofInferences": [
+      {
+        "id": "paper:proof:algebra-isomorphism",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:algebra-isomorphism",
+        "requiredPremises": [
+          "paper:def:3-manifold-algebra",
+          "paper:b0:evaluation-isomorphism"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:proof:khovanov-tangle-isomorphism",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:khovanov-tangle-isomorphism",
+        "requiredPremises": [
+          "paper:def:triple-skein-module",
+          "paper:b0:khovanov-tangle-functor",
+          "paper:lemma:algebra-isomorphism"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:proof:gluing-isomorphism",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:gluing-isomorphism",
+        "requiredPremises": [
+          "paper:b0:mww-skein-lasagna",
+          "paper:def:bimodule-gluing-map",
+          "paper:def:triple-skein-module",
+          "paper:def:3-manifold-algebra",
+          "paper:b0:ren-willis-gluing-surjection"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:proof:1-handle-formula",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:1-handle-formula",
+        "requiredPremises": [
+          "paper:thm:gluing-isomorphism",
+          "paper:lemma:algebra-isomorphism"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8"
+      },
+      {
+        "id": "paper:proof:2-handle-formula",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:2-handle-formula",
+        "requiredPremises": [
+          "paper:thm:gluing-isomorphism",
+          "paper:def:functorial-link-theory"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:proof:3-handle-formula",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:3-handle-formula",
+        "requiredPremises": [
+          "paper:thm:gluing-isomorphism",
+          "paper:def:triple-skein-module"
+        ],
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      }
+    ]
+  },
+  "boundaryB0Invariants": {
+    "exactB0ClaimIds": [
+      "paper:b0:mww-skein-lasagna",
+      "paper:b0:evaluation-isomorphism",
+      "paper:b0:khovanov-tangle-functor",
+      "paper:b0:ren-willis-gluing-surjection"
+    ],
+    "rules": [
+      "B0 contains only Claims directly adopted from external literature and unproved in the paper.",
+      "Every Claim in B0 must have a non-empty, audited sourceReference and an accurate sourcePath.",
+      "Claims proved within the paper must NOT enter B0.",
+      "Facts (definitions, calculations, algorithms) do not require proof and must NOT enter B0."
+    ]
+  },
+  "forbiddenRelations": [
+    {
+      "rule": "no-proof-self-dependency-or-cycles",
+      "description": "Proof inferences must form a strict Directed Acyclic Graph (DAG); no inference may depend on its conclusion directly or indirectly."
+    },
+    {
+      "rule": "no-unfaithful-organizations",
+      "description": "Inferences of kind 'organization' must strictly connect Facts to a Fact and must be grounded in textual fact groupings."
+    },
+    {
+      "rule": "no-invalid-loop-target",
+      "description": "loopTargetEntryId must point to the paper's principal mathematical target (paper:thm:gluing-isomorphism), never to boundary lemmas."
+    },
+    {
+      "rule": "no-alpha-legacy-fields",
+      "description": "Must not contain Alpha legacy fields (entryKind, candidate_entry, claim_status, review_state) in Gamma native entries."
+    }
+  ],
+  "closureInvariants": {
+    "closureAlgorithm": "cmath-gamma.math-map-semantics/v2::computeClaimClosure",
+    "seedDefinition": "C0 = Fact ∪ B0",
+    "expectedCounts": {
+      "facts": 4,
+      "b0Claims": 4,
+      "c0Total": 8,
+      "derivedClaims": 6,
+      "totalEntries": 14,
+      "totalInferences": 6,
+      "establishedClaims": 10,
+      "openClaims": 0
+    },
+    "expectedEstablishedClaimIds": [
+      "paper:b0:mww-skein-lasagna",
+      "paper:b0:evaluation-isomorphism",
+      "paper:b0:khovanov-tangle-functor",
+      "paper:b0:ren-willis-gluing-surjection",
+      "paper:lemma:algebra-isomorphism",
+      "paper:lemma:khovanov-tangle-isomorphism",
+      "paper:thm:gluing-isomorphism",
+      "paper:thm:1-handle-formula",
+      "paper:thm:2-handle-formula",
+      "paper:thm:3-handle-formula"
+    ]
+  },
+  "sourceInvariants": {
+    "displayLabelFormat": "<类型> · <正整数> · <数学短名>",
+    "sourcePathFormat": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page={pageNumber}",
+    "latexSyntax": "Valid LaTeX with properly balanced braces and standard mathematical notation",
+    "sourceFidelity": "Reflects the paper's original proof structure faithfully without external speculative modifications."
+  }
+}

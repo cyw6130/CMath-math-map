@@ -1,0 +1,269 @@
+{
+  "schema": "cmath-gamma.benchmark-spec/v0.1",
+  "benchmarkId": "benchmark:yasui-2019-geometrically-simply-connected-4-manifolds:pdf-import-gold:v1",
+  "targetPaper": {
+    "title": "Geometrically simply connected 4–manifolds and stable cohomotopy Seiberg–Witten invariants",
+    "authors": [
+      "Kouichi Yasui"
+    ],
+    "year": 2019,
+    "sourcePdf": "文章1.pdf",
+    "mainTargetEntryId": "paper:thm:geom-simply-connected-pos-definite",
+    "totalPdfPages": 14
+  },
+  "evaluationStrategy": {
+    "semanticEquality": "structural-and-invariant-based",
+    "exactByteMatchRequired": false
+  },
+  "requiredObjects": {
+    "facts": [
+      {
+        "id": "paper:def:geometrically-simply-connected",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "几何单连通 4-流形",
+        "sourcePath": "文章1.pdf#page=1"
+      },
+      {
+        "id": "paper:def:2-handle-neighborhood-class",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "2-把手邻域表示类",
+        "sourcePath": "文章1.pdf#page=4"
+      },
+      {
+        "id": "paper:def:bauer-furuta-invariant",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "稳定同伦 SW 不变量",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:def:symplectic-structure-4mfld",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "4-流形辛结构",
+        "sourcePath": "文章1.pdf#page=2"
+      }
+    ],
+    "b0Claims": [
+      {
+        "id": "paper:b0:bauer-connected-sum-nonvanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Bauer 连通和非零定理",
+        "sourcePath": "文章1.pdf#page=6",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:froyshov-vanishing-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Frøyshov 正标量曲率消失定理",
+        "sourcePath": "文章1.pdf#page=7",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:taubes-symplectic-sw",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Taubes 辛流形 SW 定理",
+        "sourcePath": "文章1.pdf#page=8",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:symplectic-betti-parity",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "辛流形 Betti 数奇偶性定理",
+        "sourcePath": "文章1.pdf#page=8",
+        "mustHaveSourceReference": true
+      }
+    ],
+    "derivedClaims": [
+      {
+        "id": "paper:lemma:embedded-sphere-double",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "双倍流形嵌入 2-球面引理",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:thm:sphere-obstruction-nonvanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "非负自交光滑球面阻碍定理",
+        "sourcePath": "文章1.pdf#page=7"
+      },
+      {
+        "id": "paper:thm:positive-definite-vanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "具 2-把手类的正定流形 SW 消失定理",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:thm:orientation-symplectic-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "具 2-把手类的流形定向辛阻碍定理",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:lemma:geom-simply-connected-homology",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "几何单连通同调由 2-把手表示引理",
+        "sourcePath": "文章1.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:geom-simply-connected-pos-definite",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "几何单连通正定流形 SW 消失定理",
+        "sourcePath": "文章1.pdf#page=2"
+      },
+      {
+        "id": "paper:thm:geom-simply-connected-symplectic-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "几何单连通流形定向辛阻碍定理",
+        "sourcePath": "文章1.pdf#page=4"
+      }
+    ],
+    "proofInferences": [
+      {
+        "id": "paper:proof:embedded-sphere-double",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:embedded-sphere-double",
+        "requiredPremises": [
+          "paper:def:2-handle-neighborhood-class"
+        ],
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:proof:sphere-obstruction-nonvanishing",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:sphere-obstruction-nonvanishing",
+        "requiredPremises": [
+          "paper:def:bauer-furuta-invariant",
+          "paper:b0:bauer-connected-sum-nonvanishing",
+          "paper:b0:froyshov-vanishing-theorem"
+        ],
+        "sourcePath": "文章1.pdf#page=7"
+      },
+      {
+        "id": "paper:proof:positive-definite-vanishing",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:positive-definite-vanishing",
+        "requiredPremises": [
+          "paper:b0:bauer-connected-sum-nonvanishing",
+          "paper:lemma:embedded-sphere-double",
+          "paper:thm:sphere-obstruction-nonvanishing"
+        ],
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:proof:orientation-symplectic-obstruction",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:orientation-symplectic-obstruction",
+        "requiredPremises": [
+          "paper:b0:taubes-symplectic-sw",
+          "paper:b0:symplectic-betti-parity",
+          "paper:b0:bauer-connected-sum-nonvanishing",
+          "paper:lemma:embedded-sphere-double",
+          "paper:thm:sphere-obstruction-nonvanishing"
+        ],
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:proof:geom-simply-connected-pos-definite",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:geom-simply-connected-pos-definite",
+        "requiredPremises": [
+          "paper:def:geometrically-simply-connected",
+          "paper:lemma:geom-simply-connected-homology",
+          "paper:thm:positive-definite-vanishing"
+        ],
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:proof:geom-simply-connected-symplectic-obstruction",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:geom-simply-connected-symplectic-obstruction",
+        "requiredPremises": [
+          "paper:def:geometrically-simply-connected",
+          "paper:def:symplectic-structure-4mfld",
+          "paper:lemma:geom-simply-connected-homology",
+          "paper:thm:orientation-symplectic-obstruction"
+        ],
+        "sourcePath": "文章1.pdf#page=8"
+      }
+    ]
+  },
+  "boundaryB0Invariants": {
+    "exactB0ClaimIds": [
+      "paper:b0:bauer-connected-sum-nonvanishing",
+      "paper:b0:froyshov-vanishing-theorem",
+      "paper:b0:taubes-symplectic-sw",
+      "paper:b0:symplectic-betti-parity"
+    ],
+    "rules": [
+      "B0 contains only Claims directly adopted from external literature and unproved in the paper.",
+      "Every Claim in B0 must have a non-empty, audited sourceReference and an accurate sourcePath.",
+      "Claims proved within the paper must NOT enter B0.",
+      "Facts (definitions, calculations, algorithms) do not require proof and must NOT enter B0."
+    ]
+  },
+  "forbiddenRelations": [
+    {
+      "rule": "no-proof-self-dependency-or-cycles",
+      "description": "Proof inferences must form a strict Directed Acyclic Graph (DAG); no inference may depend on its conclusion directly or indirectly."
+    },
+    {
+      "rule": "no-unfaithful-organizations",
+      "description": "Inferences of kind 'organization' must strictly connect Facts to a Fact and must be grounded in textual fact groupings."
+    },
+    {
+      "rule": "no-invalid-loop-target",
+      "description": "loopTargetEntryId must point to the paper's principal mathematical target (paper:thm:geom-simply-connected-pos-definite), never to boundary lemmas."
+    },
+    {
+      "rule": "no-alpha-legacy-fields",
+      "description": "Must not contain Alpha legacy fields (entryKind, candidate_entry, claim_status, review_state) in Gamma native entries."
+    }
+  ],
+  "closureInvariants": {
+    "closureAlgorithm": "cmath-gamma.math-map-semantics/v2::computeClaimClosure",
+    "seedDefinition": "C0 = Fact ∪ B0",
+    "expectedCounts": {
+      "facts": 4,
+      "b0Claims": 4,
+      "c0Total": 8,
+      "derivedClaims": 7,
+      "totalEntries": 15,
+      "totalInferences": 7,
+      "establishedClaims": 11,
+      "openClaims": 0
+    },
+    "expectedEstablishedClaimIds": [
+      "paper:b0:bauer-connected-sum-nonvanishing",
+      "paper:b0:froyshov-vanishing-theorem",
+      "paper:b0:taubes-symplectic-sw",
+      "paper:b0:symplectic-betti-parity",
+      "paper:lemma:embedded-sphere-double",
+      "paper:thm:sphere-obstruction-nonvanishing",
+      "paper:thm:positive-definite-vanishing",
+      "paper:thm:orientation-symplectic-obstruction",
+      "paper:lemma:geom-simply-connected-homology",
+      "paper:thm:geom-simply-connected-pos-definite",
+      "paper:thm:geom-simply-connected-symplectic-obstruction"
+    ]
+  },
+  "sourceInvariants": {
+    "displayLabelFormat": "<类型> · <正整数> · <数学短名>",
+    "sourcePathFormat": "文章1.pdf#page={pageNumber}",
+    "latexSyntax": "Valid LaTeX with properly balanced braces and standard mathematical notation",
+    "sourceFidelity": "Reflects the paper's original proof structure faithfully without external speculative modifications."
+  }
+}

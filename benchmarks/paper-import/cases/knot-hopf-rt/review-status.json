@@ -1,0 +1,21 @@
+{
+  "schema": "cmath.paper-benchmark-review/v1",
+  "status": "accepted-gold",
+  "reviewer": {"name": "gpt-5.6-sol", "role": "standard-answer-author-and-two-pass-auditor", "date": "2026-08-16"},
+  "reviewDate": "2026-08-16",
+  "reviewModel": "gpt-5.6-sol",
+  "ownerApproval": {"role": "project-owner", "approved": true, "date": "2026-08-16"},
+  "statusReason": "Project owner accepted this canonical answer; structural tests and two audit passes confirm it as fixed standard answer. Gold-v2 adds explicit objective hypotheses, convention boundaries, and semantic invariants.",
+  "standardAnswerRevision": "gold-v2-objective-conventions",
+  "evidence": {
+    "theoremStatement": true,
+    "sourcePages": true,
+    "dependencyCorrectness": true,
+    "proofDirection": true,
+    "extractedSourceText": "paper.pdf"
+  },
+  "checklist": {
+    "allPassed": true
+  },
+  "evidenceNote": "Owner-accepted canonical reference. The four classical boundary theorems remain B0 with sourceReferences; fixed semantic scoring authority."
+}

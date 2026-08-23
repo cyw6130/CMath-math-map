@@ -1,0 +1,26 @@
+{
+  "schema": "cmath.paper-benchmark-audit/v2",
+  "benchmarkId": "benchmark:4-dim-skein-modules-handles-tangles:pdf-import-gold:v1",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "status": "structural-draft",
+  "reviewStatus": "accepted-gold",
+  "scoringEligible": false,
+  "auditedFiles": [
+    "benchmark-spec.json",
+    "gold-project-view.json",
+    "source-evidence.md",
+    "review-status.json",
+    "review-checklist.md"
+  ],
+  "counts": {
+    "requiredEntries": 14,
+    "entries": 14,
+    "inferences": 6
+  },
+  "errors": [
+    "source PDF is unreadable"
+  ],
+  "warnings": [
+    "review evidence extractedSourceText is missing or unreadable (acceptable for provisional-reference/needs-revision)"
+  ]
+}

@@ -1,1 +1,9 @@
 scripts/output-*.json
+.DS_Store
+.agents/
+.claude/
+.playwright-cli/
+.tmp-backup/
+.entry-*.ticket.json
+,i.conclusion||i.conclusionEntryId||);}
+.score-cache/

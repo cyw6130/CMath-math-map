@@ -1,0 +1,347 @@
+{
+  "schema": "cmath.project-view-model/v0.1",
+  "semanticModel": "cmath.fact-claim-operation/v0.1",
+  "project": {
+    "id": "cmath:project:paper:cornered-skein-lasagna-theory",
+    "title": "带角 Skein Lasagna 理论"
+  },
+  "projectTitle": "带角 Skein Lasagna 理论",
+  "mainTargetEntryId": "paper:thm:gluing-bimodules",
+  "channelOptions": {
+    "schema": "cmath-gamma.project-channel/v0.1",
+    "projectId": "cmath:project:paper:cornered-skein-lasagna-theory",
+    "boundaryLabel": "参考文献地图 · 带角 Skein Lasagna 理论（基准校订版）",
+    "adapterOptions": {}
+  },
+  "derivedResearchState": {
+    "mathematicalState": {
+      "b0ClaimEntryIds": [
+        "paper:b0:mww-skein-lasagna",
+        "paper:b0:rw-gluing-map",
+        "paper:b0:banyaga-fragmentation",
+        "paper:b0:gay-kirby-trisection-existence"
+      ]
+    },
+    "researchOverlay": {
+      "loopTargetEntryId": "paper:thm:gluing-bimodules"
+    }
+  },
+  "b0ClaimEntryIds": [
+    "paper:b0:mww-skein-lasagna",
+    "paper:b0:rw-gluing-map",
+    "paper:b0:banyaga-fragmentation",
+    "paper:b0:gay-kirby-trisection-existence"
+  ],
+  "entries": [
+    {
+      "id": "paper:def:cornered-3mfld-category",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 1 · 带边 3-流形范畴",
+      "shortTitle": "带边 3-流形范畴",
+      "title": "带边 3-流形范畴 S(Y, P)",
+      "statement": "设 $Y$ 为紧致定向 3-流形且 $\\partial Y = \\Sigma$，$P \\subset \\Sigma$ 为带符号点集。范畴 $\\mathcal{S}(Y, P)$ 的对象为 $Y$ 中以 $P$ 为边界的带框定向缠结 $T$；两缠结 $T_0, T_1$ 间的态射为 $Y \\times I$ 中以 $-T_0 \\cup (P \\times I) \\cup T_1$ 为边界的 Skein Lasagna 填充模 $\\mathcal{S}(Y \\times I, -T_0 \\cup T_1)$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=4"
+    },
+    {
+      "id": "paper:def:cornered-4mfld-bimodule",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 2 · 带角 4-流形双模",
+      "shortTitle": "带角 4-流形双模",
+      "title": "带角 4-流形双模 F_{X, P}",
+      "statement": "设 $X$ 为紧致定向带角 4-流形且 $\\partial X = (-Y_1) \\cup_\\Sigma Y_2$。对对象 $(T', T'') \\in \\mathcal{S}(Y_1, P) \\times \\mathcal{S}(Y_2, P)^{\\mathrm{op}}$，双模函子分配 $\\mathcal{F}_{X, P}(T', T'') := \\mathcal{S}(X, \\phi(-T' \\cup T''))$。态射作用通过与柱面填充沿公共边界粘合诱导。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=5"
+    },
+    {
+      "id": "paper:def:bimodule-tensor-product",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 3 · 双模张量积",
+      "shortTitle": "双模张量积",
+      "title": "双模张量积 F_{X1, P} ⊗ F_{X2, P}",
+      "statement": "设 $\\mathcal{F}_{X_1, P}$ 为 $(\\mathcal{S}(Y_1, P), \\mathcal{S}(Y_2, P))$-双模，$\\mathcal{F}_{X_2, P}$ 为 $(\\mathcal{S}(Y_2, P), \\mathcal{S}(Y_3, P))$-双模。其张量积在对象对 $(T', T''')$ 处定义为直和 $\\bigoplus_{T''} \\mathcal{F}_{X_1, P}(T', T'') \\otimes \\mathcal{F}_{X_2, P}(T'', T''')$ 模去作用等价关系 $\\sim_1$（对态射 $f$，有 $f^*(a) \\otimes c \\sim a \\otimes f_*(c)$）。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=6"
+    },
+    {
+      "id": "paper:def:hochschild-homology",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 4 · 自粘合零阶 Hochschild 同调",
+      "shortTitle": "自粘合零阶 Hochschild 同调",
+      "title": "双模的 0 阶 Hochschild 同调 HH_0",
+      "statement": "对 $(\\mathcal{S}(Y, P), \\mathcal{S}(Y, P))$-双模 $\\mathcal{F}_{X, P}$，其 0 阶 Hochschild 同调定义为对角项直和模去循环等价关系：$HH_0(\\mathcal{F}_{X, P}) := \\left( \\bigoplus_{T \\in \\mathrm{Obj}(\\mathcal{S}(Y, P))} \\mathcal{F}_{X, P}(T, T) \\right) / \\sim_2$，其中对任意态射 $f: T \\to T'$ 有 $f_*(a) \\sim_2 f^*(a)$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+    },
+    {
+      "id": "paper:def:trisection-diagram",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 5 · 4-流形三截面与三截面图",
+      "shortTitle": "4-流形三截面与三截面图",
+      "title": "4-流形三截面与三截面图 (Σ_g; α, β, γ)",
+      "statement": "闭 4-流形 $X^4 = X_1 \\cup X_2 \\cup X_3$ 的 $(g; k_1, k_2, k_3)$-三截面将流形分解为三个 4 维 1-把手体 $X_i \\cong \\natural^{k_i}(S^1 \\times B^3)$，其两两相交 $Y_{i, i+1}$ 为 3 维把手体 $H_g$，三重交为中心曲面 $\\Sigma_g$。三截面图由中心曲面上的三组割线系 $(\\Sigma_g; \\alpha, \\beta, \\gamma)$ 给出。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13"
+    },
+    {
+      "id": "paper:def:surface-bicategory",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 · 6 · 闭曲面 2-范畴",
+      "shortTitle": "闭曲面 2-范畴",
+      "title": "闭曲面 2-范畴 S(Σ)",
+      "statement": "对定向闭曲面 $\\Sigma$，定义 2-范畴 $\\mathcal{S}(\\Sigma)$：对象为 $\\Sigma$ 中的带符号点集 $P$；1-胞腔为 $\\Sigma \\times I$ 中的带框缠结；2-胞腔为 $\\Sigma \\times I \\times I$ 中的 Skein Lasagna 填充。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+    },
+    {
+      "id": "paper:b0:mww-skein-lasagna",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 1 · MWW 4-流形 Skein 模基础",
+      "shortTitle": "MWW 4-流形 Skein 模基础",
+      "title": "Morrison–Walker–Wedrich Skein Lasagna 模基础理论",
+      "statement": "为光滑带边 4-流形定义普遍的 Skein Lasagna 模 $\\mathcal{S}(X, L)$，并在 $S^3 \\times I$ 柱面上与链环同调的配边映射相融。论文直接以此为基础。",
+      "sourceReference": "Morrison, Walker & Wedrich (2022) / 论文第 2 节 Definition 2.1-2.2",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=3"
+    },
+    {
+      "id": "paper:b0:rw-gluing-map",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 2 · Ren–Willis 填充粘合映射",
+      "shortTitle": "Ren–Willis 填充粘合映射",
+      "title": "Ren–Willis 满同态填充粘合映射",
+      "statement": "在商去等价关系前，填充粘合映射 $\\hat{\\tau}(a \\otimes c) = a \\cup c$ 给出从张量积到粘合流形 Skein 模的良定满同态。论文将其作为出发点。",
+      "sourceReference": "Ren & Willis (2024, Proposition 2.3) / 论文 3.1 节引用",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+    },
+    {
+      "id": "paper:b0:banyaga-fragmentation",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 3 · Banyaga 局部化分割引理",
+      "shortTitle": "Banyaga 局部化分割引理",
+      "title": "Banyaga 微分同胚群局部化分割引理 (Fragmentation Lemma)",
+      "statement": "Banyaga 的 fragmentation lemma 是本文证明 Lemma 3.7 时引用的外部背景：适当的微分同胚可分解为由小球邻域支撑的微分同胚复合。本文不把这一背景结果视为自身证明的定理。",
+      "sourceReference": "Banyaga, The Structure of Classical Diffeomorphism Groups (1997) / 论文第 8 页引用",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=8"
+    },
+    {
+      "id": "paper:b0:gay-kirby-trisection-existence",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 4 · Gay–Kirby 三截面定理",
+      "shortTitle": "Gay–Kirby 三截面定理",
+      "title": "Gay–Kirby 4-流形三截面存在与稳定唯一性定理",
+      "statement": "Gay–Kirby 的三截面存在与稳定唯一性结果是本文的外部背景：光滑闭定向 4-流形具有三截面，并在稳定化意义下唯一。本文在 Definition 3.17–3.18 中采用这一框架。",
+      "sourceReference": "Gay & Kirby (2016) / 论文 3.3 节 Definition 3.17-3.18 引用",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13"
+    },
+    {
+      "id": "paper:lemma:gluing-isomorphism-eval",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 · 1 · 填充粘合同构引理",
+      "shortTitle": "填充粘合同构引理",
+      "title": "填充粘合同构引理 (Lemma 3.7)",
+      "statement": "映射 $\\tau: \\left( \\bigoplus_{T''} \\mathcal{S}(X_1, -T' \\cup T'') \\otimes \\mathcal{S}(X_2, -T'' \\cup T''') \\right) / \\sim_1 \\to \\mathcal{S}(X_1 \\cup_{Y_2} X_2, -T' \\cup T''')$ 给出 $Z_2$-分次模的同构。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+    },
+    {
+      "id": "paper:thm:gluing-bimodules",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 5 · 带角 4-流形双模张量积粘合定理",
+      "shortTitle": "带角 4-流形双模张量积粘合定理",
+      "title": "带角 4-流形双模张量积粘合定理 (Theorem 3.8)",
+      "statement": "对于沿公共边界 $Y_2$ 粘合的带角 4-流形，存在双模同构：$\\mathcal{F}_{X_1, P} \\otimes_{\\mathcal{S}(Y_2, P)} \\mathcal{F}_{X_2, P} \\cong \\mathcal{F}_{X_1 \\cup_{Y_2} X_2, P}$ 作为 $(\\mathcal{S}(Y_1, P), \\mathcal{S}(Y_3, P))$-双模。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+    },
+    {
+      "id": "paper:lemma:self-gluing-eval",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 · 4 · 自粘合评估同构",
+      "shortTitle": "自粘合评估同构",
+      "title": "去掉中心曲面邻域后的自粘合评估同构 (Lemma 3.13)",
+      "statement": "在 Theorem 3.14 的记号下，将双模各对象分量的填充映射到去掉中心曲面邻域后的 skein lasagna 模，得到同构 ρ。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+    },
+    {
+      "id": "paper:lemma:isotopy-cutting",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 · 10 · 横截切分的同构不变性",
+      "shortTitle": "横截切分同构",
+      "title": "等痕链环的横截切分在张量积范畴中同构 (Lemma 4.5)",
+      "statement": "若闭链环 L,L' 在 Y 中横截于 Σ 且彼此同痕，则切分得到的对象对在 S_{Y1} ⊗_{S(Σ)} S_{Y2} 中同构。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+    },
+    {
+      "id": "paper:thm:self-gluing-hh0",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 6 · 4-流形自粘合定理",
+      "shortTitle": "4-流形自粘合定理",
+      "title": "4-流形自粘合与 0 阶 Hochschild 同调 (Theorem 3.14)",
+      "statement": "设 $X$ 为带角 4-流形且 $\\partial X = (-Y) \\cup_\\Sigma Y$，则自粘合流形挖去中心曲面邻域后的 Skein 模同构于双模的 0 阶 Hochschild 同调：$HH_0(\\mathcal{F}_{X, P}) \\cong \\mathcal{S}(\\bar{X}_0, P \\times S^1)$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+    },
+    {
+      "id": "paper:thm:capping-off-neighborhood",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 7 · 填补中心曲面邻域同构定理",
+      "shortTitle": "填补中心曲面邻域同构定理",
+      "title": "填补中心曲面邻域与闭流形恢复 (Theorem 3.15)",
+      "statement": "通过在直和 $\\bigoplus_P \\mathcal{S}(\\bar{X}_0, P \\times S^1)$ 上引入由辫子作用与附加坡边环面生成的等价关系 $\\sim_3$，商模自然同构于闭 4-流形的完整 Skein Lasagna 模 $\\mathcal{S}(\\bar{X})$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+    },
+    {
+      "id": "paper:cor:trisection-presentation",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 8 · 三截面闭 4-流形表示推论",
+      "shortTitle": "三截面闭 4-流形表示推论",
+      "title": "三截面闭 4-流形的 Skein Lasagna 模表示 (Corollary 3.19)",
+      "statement": "对闭 4-流形 $X$ 的三截面 $X = X_1 \\cup X_2 \\cup X_3$ 及中心曲面上点集 $P$，挖去中心曲面邻域后的 Skein 模同构于三个扇区双模张量积的 0 阶 Hochschild 同调：$\\mathcal{S}(X \\setminus \\nu(\\Sigma_g), P \\times S^1) \\cong HH_0(\\mathcal{F}_{X_1, P} \\otimes_{\\mathcal{S}(Y_{1,2}, P)} \\mathcal{F}_{X_2, P} \\otimes_{\\mathcal{S}(Y_{2,3}, P)} \\mathcal{F}_{X_3, P})$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+    },
+    {
+      "id": "paper:thm:2d-gluing-3mfld",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 · 9 · 2 维扩张 3-流形范畴粘合定理",
+      "shortTitle": "2 维扩张 3-流形范畴粘合定理",
+      "title": "2 维扩张 3-流形范畴粘合定理 (Theorem 4.7)",
+      "statement": "设 $Y_1, Y_2$ 为紧致 3-流形且 $\\partial Y_1 = \\Sigma, \\partial Y_2 = -\\Sigma$，则闭 3-流形 $Y = Y_1 \\cup_\\Sigma Y_2$ 的模函子同构于张量积：$\\mathcal{S}_Y \\cong \\mathcal{S}_{Y_1} \\otimes_{\\mathcal{S}(\\Sigma)} \\mathcal{S}_{Y_2}$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+    }
+  ],
+  "inferences": [
+    {
+      "id": "paper:proof:self-gluing-eval",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 7 · 自粘合评估同构",
+      "shortTitle": "证明 · 自粘合评估同构",
+      "title": "证明自粘合评估同构 (Lemma 3.13)",
+      "statement": "按论文所述直接类比 Lemma 3.7 构造逆映射，得到去掉中心曲面邻域后的评估同构。",
+      "premises": [
+        "paper:lemma:gluing-isomorphism-eval"
+      ],
+      "conclusion": "paper:lemma:self-gluing-eval",
+      "argument": "逆映射的构造与 Lemma 3.7 直接类似。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+    },
+    {
+      "id": "paper:proof:isotopy-cutting",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 8 · 横截切分同构",
+      "shortTitle": "证明 · 横截切分同构",
+      "title": "证明横截切分的同构不变性 (Lemma 4.5)",
+      "statement": "取等痕链环之间的配边 annuli，使其横截于固定的曲面柱，切分后的对象对在张量积范畴中同构。",
+      "premises": [
+        "paper:def:cornered-3mfld-category",
+        "paper:def:surface-bicategory"
+      ],
+      "conclusion": "paper:lemma:isotopy-cutting",
+      "argument": "利用等痕的 annulus track 及其横截性构造对象和态射的同构。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+    },
+    {
+      "id": "paper:proof:gluing-isomorphism-eval",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 1 · 填充粘合同构引理",
+      "shortTitle": "证明 · 填充粘合同构引理",
+      "title": "证明 填充粘合同构引理 (Lemma 3.7)",
+      "statement": "通过在流形粘合面上分析填充曲面横截相交的奇异事件，结合 Banyaga 分割引理分解等痕，证明切开逆映射在等价关系 $\\sim_1$ 下良定且互逆。",
+      "premises": [
+        "paper:def:cornered-4mfld-bimodule",
+        "paper:b0:rw-gluing-map",
+        "paper:b0:banyaga-fragmentation"
+      ],
+      "conclusion": "paper:lemma:gluing-isomorphism-eval",
+      "argument": "通过在流形粘合面上分析填充曲面横截相交的奇异事件，结合 Banyaga 分割引理分解等痕，证明切开逆映射在等价关系 $\\sim_1$ 下良定且互逆。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+    },
+    {
+      "id": "paper:proof:gluing-bimodules",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 2 · 带角 4-流形双模张量积粘合定理",
+      "shortTitle": "证明 · 带角 4-流形双模张量积粘合定理",
+      "title": "证明 带角 4-流形双模张量积粘合定理 (Theorem 3.8)",
+      "statement": "由 Lemma 3.7，在各个对象分量 $(T', T''')$ 处均成立同构，将其自然延拓至双模函子及态射作用，得到双模层面的同构。",
+      "premises": [
+        "paper:lemma:gluing-isomorphism-eval",
+        "paper:def:bimodule-tensor-product"
+      ],
+      "conclusion": "paper:thm:gluing-bimodules",
+      "argument": "由 Lemma 3.7，在各个对象分量 $(T', T''')$ 处均成立同构，将其自然延拓至双模函子及态射作用，得到双模层面的同构。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+    },
+    {
+      "id": "paper:proof:self-gluing-hh0",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 3 · 4-流形自粘合定理",
+      "shortTitle": "证明 · 4-流形自粘合定理",
+      "title": "证明 4-流形自粘合定理 (Theorem 3.14)",
+      "statement": "在挖去中心曲面邻域后，自粘合流形 $\\bar{X}_0$ 的两端边界缠结通过 $Y$ 上的恒同映射等同，循环等价关系 $\\sim_2$ 恰好诱导同构 $\\rho: HH_0(\\mathcal{F}_{X, P}) \\to \\mathcal{S}(\\bar{X}_0, P \\times S^1)$。",
+      "premises": [
+        "paper:def:hochschild-homology",
+        "paper:lemma:gluing-isomorphism-eval",
+        "paper:lemma:self-gluing-eval"
+      ],
+      "conclusion": "paper:thm:self-gluing-hh0",
+      "argument": "在挖去中心曲面邻域后，自粘合流形 $\\bar{X}_0$ 的两端边界缠结通过 $Y$ 上的恒同映射等同，循环等价关系 $\\sim_2$ 恰好诱导同构 $\\rho: HH_0(\\mathcal{F}_{X, P}) \\to \\mathcal{S}(\\bar{X}_0, P \\times S^1)$。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+    },
+    {
+      "id": "paper:proof:capping-off-neighborhood",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 4 · 填补中心曲面邻域同构定理",
+      "shortTitle": "证明 · 填补中心曲面邻域同构定理",
+      "title": "证明 填补中心曲面邻域同构定理 (Theorem 3.15)",
+      "statement": "将填充曲面横截于中心曲面 $\\Sigma$，利用经线圆盘封堵切口，并验证由此产生的辫子滑动与附加环面关系生成的商模与闭流形模同构。",
+      "premises": [
+        "paper:thm:self-gluing-hh0"
+      ],
+      "conclusion": "paper:thm:capping-off-neighborhood",
+      "argument": "将填充曲面横截于中心曲面 $\\Sigma$，利用经线圆盘封堵切口，并验证由此产生的辫子滑动与附加环面关系生成的商模与闭流形模同构。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+    },
+    {
+      "id": "paper:proof:trisection-presentation",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 5 · 三截面闭 4-流形表示推论",
+      "shortTitle": "证明 · 三截面闭 4-流形表示推论",
+      "title": "证明 三截面闭 4-流形表示推论 (Corollary 3.19)",
+      "statement": "先利用 Theorem 3.8 将前两个扇区 $X_1, X_2$ 沿 $Y_{1,2}$ 粘合，再将结果与 $X_3$ 沿 $Y_{2,3}$ 粘合，最后利用 Theorem 3.14 沿 $Y_{3,1}$ 自粘合，直接得到 $HH_0$ 表现。",
+      "premises": [
+        "paper:thm:gluing-bimodules",
+        "paper:thm:self-gluing-hh0",
+        "paper:def:trisection-diagram",
+        "paper:b0:gay-kirby-trisection-existence"
+      ],
+      "conclusion": "paper:cor:trisection-presentation",
+      "argument": "先利用 Theorem 3.8 将前两个扇区 $X_1, X_2$ 沿 $Y_{1,2}$ 粘合，再将结果与 $X_3$ 沿 $Y_{2,3}$ 粘合，最后利用 Theorem 3.14 沿 $Y_{3,1}$ 自粘合，直接得到 $HH_0$ 表现。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+    },
+    {
+      "id": "paper:proof:2d-gluing-3mfld",
+      "operationKind": "proof",
+      "displayLabel": "证明 · 6 · 2 维扩张 3-流形范畴粘合定理",
+      "shortTitle": "证明 · 2 维扩张 3-流形范畴粘合定理",
+      "title": "证明 2 维扩张 3-流形范畴粘合定理 (Theorem 4.7)",
+      "statement": "构造粘合函子 $\\alpha$ 与截断函子 $\\beta$，利用与 $\\Sigma$ 横截的固定代表元及其等痕配边 $H_L$，证明 $\\beta \\circ \\alpha$ 与 $\\alpha \\circ \\beta$ 分别自然同构于恒同函子。",
+      "premises": [
+        "paper:def:surface-bicategory",
+        "paper:def:cornered-3mfld-category",
+        "paper:lemma:isotopy-cutting",
+        "paper:b0:mww-skein-lasagna"
+      ],
+      "conclusion": "paper:thm:2d-gluing-3mfld",
+      "argument": "构造粘合函子 $\\alpha$ 与截断函子 $\\beta$，利用与 $\\Sigma$ 横截的固定代表元及其等痕配边 $H_L$，证明 $\\beta \\circ \\alpha$ 与 $\\alpha \\circ \\beta$ 分别自然同构于恒同函子。",
+      "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+    }
+  ]
+}

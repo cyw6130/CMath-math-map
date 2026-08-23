@@ -1,0 +1,24 @@
+{
+  "schema": "cmath.paper-benchmark-audit/v2",
+  "benchmarkId": "benchmark:hopf-degree-theorem:pdf-import-gold:v1",
+  "caseId": "hopf-degree-theorem",
+  "status": "accepted-gold",
+  "reviewStatus": "accepted-gold",
+  "scoringEligible": true,
+  "auditedFiles": [
+    "benchmark-spec.json",
+    "gold-project-view.json",
+    "source-evidence.md",
+    "review-status.json",
+    "review-checklist.md"
+  ],
+  "counts": {
+    "requiredEntries": 29,
+    "entries": 29,
+    "inferences": 16
+  },
+  "errors": [],
+  "warnings": [
+    "review evidence extractedSourceText is missing or unreadable (acceptable for provisional-reference/needs-revision)"
+  ]
+}

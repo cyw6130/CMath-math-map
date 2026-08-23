@@ -1,0 +1,305 @@
+{
+  "schema": "cmath-gamma.benchmark-spec/v0.1",
+  "benchmarkId": "benchmark:cornered-skein-lasagna-theory:pdf-import-gold:v1",
+  "targetPaper": {
+    "title": "CORNERED SKEIN LASAGNA THEORY",
+    "authors": [
+      "Sarah Blackwell",
+      "Vyacheslav Krushkal",
+      "Yangxiao Luo"
+    ],
+    "year": 2024,
+    "sourcePdf": "CORNERED SKEIN LASAGNA THEORY.pdf",
+    "mainTargetEntryId": "paper:thm:gluing-bimodules",
+    "totalPdfPages": 20
+  },
+  "evaluationStrategy": {
+    "semanticEquality": "structural-and-invariant-based",
+    "exactByteMatchRequired": false
+  },
+  "requiredObjects": {
+    "facts": [
+      {
+        "id": "paper:def:cornered-3mfld-category",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "带边 3-流形范畴",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=4"
+      },
+      {
+        "id": "paper:def:cornered-4mfld-bimodule",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "带角 4-流形双模",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=5"
+      },
+      {
+        "id": "paper:def:bimodule-tensor-product",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "双模张量积",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=6"
+      },
+      {
+        "id": "paper:def:hochschild-homology",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "自粘合零阶 Hochschild 同调",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+      },
+      {
+        "id": "paper:def:trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "4-流形三截面与三截面图",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13"
+      },
+      {
+        "id": "paper:def:surface-bicategory",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "expectedShortTitle": "闭曲面 2-范畴",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+      }
+    ],
+    "b0Claims": [
+      {
+        "id": "paper:b0:mww-skein-lasagna",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "MWW 4-流形 Skein 模基础",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=3",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:rw-gluing-map",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Ren–Willis 填充粘合映射",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:banyaga-fragmentation",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Banyaga 局部化分割引理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=8",
+        "mustHaveSourceReference": true
+      },
+      {
+        "id": "paper:b0:gay-kirby-trisection-existence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "Gay–Kirby 三截面定理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13",
+        "mustHaveSourceReference": true
+      }
+    ],
+    "derivedClaims": [
+      {
+        "id": "paper:lemma:self-gluing-eval",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "自粘合评估同构",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:isotopy-cutting",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "横截切分同构",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+      },
+      {
+        "id": "paper:lemma:gluing-isomorphism-eval",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "expectedShortTitle": "填充粘合同构引理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+      },
+      {
+        "id": "paper:thm:gluing-bimodules",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "带角 4-流形双模张量积粘合定理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:self-gluing-hh0",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "4-流形自粘合定理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:thm:capping-off-neighborhood",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "填补中心曲面邻域同构定理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:cor:trisection-presentation",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "三截面闭 4-流形表示推论",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+      },
+      {
+        "id": "paper:thm:2d-gluing-3mfld",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "expectedShortTitle": "2 维扩张 3-流形范畴粘合定理",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+      }
+    ],
+    "proofInferences": [
+      {
+        "id": "paper:proof:self-gluing-eval",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:self-gluing-eval",
+        "requiredPremises": ["paper:lemma:gluing-isomorphism-eval"],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:proof:isotopy-cutting",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:isotopy-cutting",
+        "requiredPremises": ["paper:def:cornered-3mfld-category", "paper:def:surface-bicategory"],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+      },
+      {
+        "id": "paper:proof:gluing-isomorphism-eval",
+        "operationKind": "proof",
+        "conclusion": "paper:lemma:gluing-isomorphism-eval",
+        "requiredPremises": [
+          "paper:def:cornered-4mfld-bimodule",
+          "paper:b0:rw-gluing-map",
+          "paper:b0:banyaga-fragmentation"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+      },
+      {
+        "id": "paper:proof:gluing-bimodules",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:gluing-bimodules",
+        "requiredPremises": [
+          "paper:lemma:gluing-isomorphism-eval",
+          "paper:def:bimodule-tensor-product"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:proof:self-gluing-hh0",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:self-gluing-hh0",
+        "requiredPremises": [
+          "paper:def:hochschild-homology",
+          "paper:lemma:gluing-isomorphism-eval",
+          "paper:lemma:self-gluing-eval"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+      },
+      {
+        "id": "paper:proof:capping-off-neighborhood",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:capping-off-neighborhood",
+        "requiredPremises": [
+          "paper:thm:self-gluing-hh0"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:proof:trisection-presentation",
+        "operationKind": "proof",
+        "conclusion": "paper:cor:trisection-presentation",
+        "requiredPremises": [
+          "paper:thm:gluing-bimodules",
+          "paper:thm:self-gluing-hh0",
+          "paper:def:trisection-diagram",
+          "paper:b0:gay-kirby-trisection-existence"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+      },
+      {
+        "id": "paper:proof:2d-gluing-3mfld",
+        "operationKind": "proof",
+        "conclusion": "paper:thm:2d-gluing-3mfld",
+        "requiredPremises": [
+          "paper:def:surface-bicategory",
+          "paper:def:cornered-3mfld-category",
+          "paper:lemma:isotopy-cutting",
+          "paper:b0:mww-skein-lasagna"
+        ],
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+      }
+    ]
+  },
+  "boundaryB0Invariants": {
+    "exactB0ClaimIds": [
+      "paper:b0:mww-skein-lasagna",
+      "paper:b0:rw-gluing-map",
+      "paper:b0:banyaga-fragmentation",
+      "paper:b0:gay-kirby-trisection-existence"
+    ],
+    "rules": [
+      "B0 contains only Claims directly adopted from external literature and unproved in the paper.",
+      "Every Claim in B0 must have a non-empty, audited sourceReference and an accurate sourcePath.",
+      "Claims proved within the paper must NOT enter B0.",
+      "Facts (definitions, calculations, algorithms) do not require proof and must NOT enter B0."
+    ]
+  },
+  "forbiddenRelations": [
+    {
+      "rule": "no-proof-self-dependency-or-cycles",
+      "description": "Proof inferences must form a strict Directed Acyclic Graph (DAG); no inference may depend on its conclusion directly or indirectly."
+    },
+    {
+      "rule": "no-unfaithful-organizations",
+      "description": "Inferences of kind 'organization' must strictly connect Facts to a Fact and must be grounded in textual fact groupings."
+    },
+    {
+      "rule": "no-invalid-loop-target",
+      "description": "loopTargetEntryId must point to the paper's principal mathematical target (paper:thm:gluing-bimodules), never to boundary lemmas."
+    },
+    {
+      "rule": "no-alpha-legacy-fields",
+      "description": "Must not contain Alpha legacy fields (entryKind, candidate_entry, claim_status, review_state) in Gamma native entries."
+    }
+  ],
+  "closureInvariants": {
+    "closureAlgorithm": "cmath-gamma.math-map-semantics/v2::computeClaimClosure",
+    "seedDefinition": "C0 = Fact ∪ B0",
+    "expectedCounts": {
+      "facts": 6,
+      "b0Claims": 4,
+      "c0Total": 10,
+      "derivedClaims": 8,
+      "totalEntries": 18,
+      "totalInferences": 8,
+      "establishedClaims": 12,
+      "openClaims": 0
+    },
+    "expectedEstablishedClaimIds": [
+      "paper:b0:mww-skein-lasagna",
+      "paper:b0:rw-gluing-map",
+      "paper:b0:banyaga-fragmentation",
+    "paper:b0:gay-kirby-trisection-existence",
+    "paper:lemma:self-gluing-eval",
+    "paper:lemma:isotopy-cutting",
+      "paper:lemma:gluing-isomorphism-eval",
+      "paper:thm:gluing-bimodules",
+      "paper:thm:self-gluing-hh0",
+      "paper:thm:capping-off-neighborhood",
+      "paper:cor:trisection-presentation",
+      "paper:thm:2d-gluing-3mfld"
+    ]
+  },
+  "sourceInvariants": {
+    "displayLabelFormat": "<类型> · <正整数> · <数学短名>",
+    "sourcePathFormat": "CORNERED SKEIN LASAGNA THEORY.pdf#page={pageNumber}",
+    "latexSyntax": "Valid LaTeX with properly balanced braces and standard mathematical notation",
+    "sourceFidelity": "Reflects the paper's original proof structure faithfully without external speculative modifications."
+  }
+}

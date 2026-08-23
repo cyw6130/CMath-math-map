@@ -1,0 +1,120 @@
+{
+  "schema": "cmath-gamma.benchmark-spec/v0.1",
+  "benchmarkId": "benchmark:kirby-2018-trisections:pdf-import-gold:v2",
+  "targetPaper": {
+    "title": "Trisections of 4-manifolds",
+    "authors": ["Robion Kirby"],
+    "year": 2018,
+    "sourcePdf": "kirby-2018-trisections-of-4-manifolds.pdf",
+    "mainTargetEntryId": "paper:thm:existence-stable-uniqueness",
+    "totalPdfPages": 4
+  },
+  "evaluationStrategy": {
+    "semanticEquality": "structural-and-invariant-based",
+    "exactByteMatchRequired": false
+  },
+  "requiredObjects": {
+    "facts": [
+      {"id":"paper:def:heegaard-splitting","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:heegaard-diagram","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:trisection","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:trisection-diagram","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:morse-2-function","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:open-book","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:group-trisection","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:doubly-pointed-diagram","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:dehn-surgery","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:r-link","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:gprc","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:lefschetz-fibration","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:broken-lefschetz-fibration","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:triangulation","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:algorithm:triangulation-to-trisection","entryClass":"fact","factKind":"algorithm"},
+      {"id":"paper:def:generalized-trisection","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:monodromy","entryClass":"fact","factKind":"definition"},
+      {"id":"paper:def:colored-triangulation-map","entryClass":"fact","factKind":"definition"}
+    ],
+    "b0Claims": [
+      {"id":"paper:thm:existence-stable-uniqueness","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:thm:relative-trisection","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:prop:open-book-gluing","entryClass":"claim","claimKind":"proposition","mustHaveSourceReference":true},
+      {"id":"paper:thm:classical-invariants","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:thm:group-trisection-existence","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:thm:group-trisection-functoriality","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:thm:bridge-position","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:thm:lefschetz-trisection-conversion","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true},
+      {"id":"paper:prop:rational-homology-spheres","entryClass":"claim","claimKind":"proposition","mustHaveSourceReference":true},
+      {"id":"paper:prop:minimal-standard-simply-connected-trisections","entryClass":"claim","claimKind":"proposition","mustHaveSourceReference":true},
+      {"id":"paper:thm:classical-recovery","entryClass":"claim","claimKind":"theorem","mustHaveSourceReference":true}
+    ],
+    "derivedClaims": [],
+    "proofInferences": [],
+    "organizationInferences": [
+      {"id":"paper:organization:heegaard-diagram","operationKind":"organization","requiredPremises":["paper:def:heegaard-splitting"],"conclusion":"paper:def:heegaard-diagram"},
+      {"id":"paper:organization:trisection-diagram","operationKind":"organization","requiredPremises":["paper:def:trisection","paper:def:morse-2-function"],"conclusion":"paper:def:trisection-diagram"},
+      {"id":"paper:organization:doubly-pointed-diagram","operationKind":"organization","requiredPremises":["paper:def:trisection-diagram"],"conclusion":"paper:def:doubly-pointed-diagram"},
+      {"id":"paper:organization:group-trisection","operationKind":"organization","requiredPremises":["paper:def:trisection"],"conclusion":"paper:def:group-trisection"},
+      {"id":"paper:organization:r-link","operationKind":"organization","requiredPremises":["paper:def:dehn-surgery"],"conclusion":"paper:def:r-link"},
+      {"id":"paper:organization:generalized-trisection","operationKind":"organization","requiredPremises":["paper:def:triangulation","paper:def:colored-triangulation-map","paper:algorithm:triangulation-to-trisection"],"conclusion":"paper:def:generalized-trisection"}
+    ]
+  },
+  "boundaryB0Invariants": {
+    "exactB0ClaimIds": [
+      "paper:thm:existence-stable-uniqueness",
+      "paper:thm:relative-trisection",
+      "paper:prop:open-book-gluing",
+      "paper:thm:classical-invariants",
+      "paper:thm:group-trisection-existence",
+      "paper:thm:group-trisection-functoriality",
+      "paper:thm:bridge-position",
+      "paper:thm:lefschetz-trisection-conversion",
+      "paper:prop:rational-homology-spheres",
+      "paper:prop:minimal-standard-simply-connected-trisections",
+      "paper:thm:classical-recovery"
+    ],
+    "rules": [
+      "All Claims are results attributed to cited literature and unproved in this expository article; therefore all Claims are B0.",
+      "Organization inferences connect Facts to Facts only.",
+      "No proof inference may be manufactured for a cited external result."
+    ]
+  },
+  "forbiddenRelations": [
+    {"rule":"no-synthetic-summary-claims","description":"Topics, research programs, and prose syntheses must not be represented as mathematical Claims."},
+    {"rule":"no-b0-proof","description":"No proof inference may conclude a B0 Claim."},
+    {"rule":"fact-only-organization","description":"Organization inferences must connect Facts to a Fact."}
+  ],
+  "closureInvariants": {
+    "closureAlgorithm": "cmath-gamma.math-map-semantics/v2::computeClaimClosure",
+    "seedDefinition": "C0 = Fact ∪ B0",
+    "expectedCounts": {
+      "facts": 18,
+      "b0Claims": 11,
+      "c0Total": 29,
+      "derivedClaims": 0,
+      "totalEntries": 29,
+      "totalInferences": 6,
+      "proofInferences": 0,
+      "organizationInferences": 6,
+      "establishedClaims": 11,
+      "openClaims": 0
+    },
+    "expectedEstablishedClaimIds": [
+      "paper:thm:existence-stable-uniqueness",
+      "paper:thm:relative-trisection",
+      "paper:prop:open-book-gluing",
+      "paper:thm:classical-invariants",
+      "paper:thm:group-trisection-existence",
+      "paper:thm:group-trisection-functoriality",
+      "paper:thm:bridge-position",
+      "paper:thm:lefschetz-trisection-conversion",
+      "paper:prop:rational-homology-spheres",
+      "paper:prop:minimal-standard-simply-connected-trisections",
+      "paper:thm:classical-recovery"
+    ]
+  },
+  "sourceInvariants": {
+    "displayLabelFormat": "<类型> · <正整数> · <数学短名>",
+    "sourcePathFormat": "kirby-2018-trisections-of-4-manifolds.pdf#page={pageNumber}",
+    "sourceFidelity": "Only mathematical objects and source-grounded Fact organization are admitted."
+  }
+}

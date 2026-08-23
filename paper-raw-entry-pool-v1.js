@@ -560,7 +560,9 @@
     return base.replace("【共同规则】", corollaryRules + "【共同规则】");
   }
 
-  // v1.25 Autoresearch candidate over v1.20:
+  // v1.25 Autoresearch candidate over v1.20: DEPRECATED
+  // DEPRECATED: violates CONTEXT.md 6-type contract (Claim only lemma|proposition|theorem).
+  // Do not select for autoresearch/benchmarks; retained for history only. Use v126+ (6-type) instead.
   // Unifies corollary as a first-class entry type, explicitly allowing type: "corollary" without type coercion.
   function v125DualOutputPrompt(options) {
     const base = v120DualOutputPrompt(options);
