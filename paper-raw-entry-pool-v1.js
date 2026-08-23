@@ -820,11 +820,28 @@
       return JSON.parse(raw);
     } catch (rawParseErr) {
       let candidate = raw;
-      // 0. Escape bare control characters inside string literals (Ox-style output)
+      // 0. Escape bare control characters inside string literals (Ox-style output: state-machine, handles unescaped quotes)
       if (/[\x00-\x1F]/u.test(raw)) {
-        const escaped = raw.replace(/"(?:[^"\\\x00-\x1F]|\\.)*"/gu, (m) => m.replace(/[\x00-\x1F]/gu, (c) => {
-          switch (c) { case "\n": return "\\n"; case "\t": return "\\t"; case "\r": return "\\r"; default: return "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"); }
-        }));
+        let escaped = "";
+        let inStr = false;
+        let esc = false;
+        for (let i = 0; i < raw.length; i++) {
+          const ch = raw[i];
+          if (!inStr) {
+            if (ch === '"') { inStr = true; }
+            escaped += ch;
+          } else {
+            if (esc) { esc = false; escaped += ch; }
+            else if (ch === '\\') { esc = true; escaped += ch; }
+            else if (ch === '"') { inStr = false; escaped += ch; }
+            else if (ch.charCodeAt(0) <= 0x1F) {
+              if (ch === "\n") escaped += "\\n";
+              else if (ch === "\t") escaped += "\\t";
+              else if (ch === "\r") escaped += "\\r";
+              else escaped += "\\u" + ch.charCodeAt(0).toString(16).padStart(4, "0");
+            } else { escaped += ch; }
+          }
+        }
         try { return JSON.parse(escaped); } catch (_) { candidate = escaped; }
       }
       let matchedSlice = false;
