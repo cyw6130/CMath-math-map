@@ -3581,7 +3581,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
   });
 
   await t.test("resolves OpenCode Go configuration with deepseek-v4-flash, endpoint, and proxyUrl", () => {
-    const config = rawRunner.resolveProviderConfig("opencode-go", null, { apiKey: "test-opencode-key" });
+    const config = rawRunner.resolveProviderConfig("opencode-go", null, { apiKey: "test-key" });
     assert.equal(config.provider, "opencode-go");
     assert.equal(config.providerId, "opencode-go");
     assert.equal(config.providerLabel, "OpenCode Go");
@@ -3589,15 +3589,15 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
     assert.equal(config.model, "deepseek-v4-flash");
     assert.equal(config.useProxy, true);
     assert.equal(config.proxyUrl, "http://127.0.0.1:7100/api/model-proxy");
-    assert.equal(config.apiKey, "test-opencode-key");
+    assert.equal(config.apiKey, "test-key");
 
     // Allows explicit deepseek-v4-flash
-    const explicitConfig = rawRunner.resolveProviderConfig("opencode-go", "deepseek-v4-flash", { apiKey: "test-opencode-key" });
+    const explicitConfig = rawRunner.resolveProviderConfig("opencode-go", "deepseek-v4-flash", { apiKey: "test-key" });
     assert.equal(explicitConfig.model, "deepseek-v4-flash");
 
-    const museConfig = rawRunner.resolveProviderConfig("opencode-go", "muse-spark-1.2-contributor", { apiKey: "test-opencode-key" });
+    const museConfig = rawRunner.resolveProviderConfig("opencode-go", "muse-spark-1.2-contributor", { apiKey: "test-key" });
     assert.equal(museConfig.model, "muse-spark-1.2-contributor");
-    const museConsolidationConfig = modelRunner.resolveProviderConfig("opencode-go", "muse-spark-1.2-contributor", { apiKey: "test-opencode-key" });
+    const museConsolidationConfig = modelRunner.resolveProviderConfig("opencode-go", "muse-spark-1.2-contributor", { apiKey: "test-key" });
     assert.equal(museConsolidationConfig.model, "muse-spark-1.2-contributor");
   });
 
@@ -3647,7 +3647,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
 
     const proxyFetch = rawRunner.createProxyFetch({
       proxyUrl: "http://127.0.0.1:7100/api/model-proxy",
-      apiKey: "secret-key-12345",
+      apiKey: "fake-secret",
       fetchImpl: mockProxyFetchImpl,
     });
 
@@ -3663,7 +3663,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer secret-key-12345",
+        Authorization: "Bearer fake-secret",
       },
       body: JSON.stringify(requestBody),
     });
@@ -3673,7 +3673,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
     assert.equal(proxyRequests[0].url, "http://127.0.0.1:7100/api/model-proxy");
     assert.equal(proxyRequests[0].init.method, "POST");
     assert.equal(proxyRequests[0].body.targetUrl, "https://opencode.ai/zen/go/v1/chat/completions");
-    assert.equal(proxyRequests[0].body.apiKey, "secret-key-12345");
+    assert.equal(proxyRequests[0].body.apiKey, "fake-secret");
     assert.deepEqual(proxyRequests[0].body.body, requestBody);
     assert.equal(proxyRequests[0].body.body.reasoning_effort, "high");
 
@@ -3729,7 +3729,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
 
     const proxyFetch = rawRunner.createProxyFetch({
       proxyUrl: "http://127.0.0.1:7100/api/model-proxy",
-      apiKey: "super-secret-key-xyz",
+      apiKey: "fake-key",
       fetchImpl: mockProxyFetch,
     });
 
@@ -3738,7 +3738,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
     const targetUrl = "https://opencode.ai/zen/go/v1/chat/completions";
     const res = await measuredFetch(targetUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer super-secret-key-xyz" },
+      headers: { "Content-Type": "application/json", Authorization: "Bearer fake-key" },
       body: JSON.stringify({ model: "deepseek-v4-flash", messages: [{ role: "user", content: "extract" }] }),
     });
 
@@ -3750,9 +3750,9 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
     assert.equal(recordedCalls[1].attempt, 2);
     assert.equal(recordedCalls[1].status, 200);
 
-    // Ensure super-secret-key-xyz is NOT leaked into recordedCalls diagnostics
+    // Ensure fake-key is NOT leaked into recordedCalls diagnostics
     const callsDump = JSON.stringify(recordedCalls);
-    assert.ok(!callsDump.includes("super-secret-key-xyz"), "Recorded calls must never leak API secrets");
+    assert.ok(!callsDump.includes("fake-key"), "Recorded calls must never leak API secrets");
   });
 
   await t.test("runCli in run-paper-entry-raw-extraction accepts --provider=opencode-go and produces valid raw pool with OpenCode Go diagnostics", async () => {
@@ -3790,7 +3790,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
         "high-compact",
         "--provider=opencode-go",
       ], {
-        apiKey: "test-opencode-secret",
+        apiKey: "test-secret",
         text: "[[PAGE 1]]\nDefinition 1: Braid.\n\n[[PAGE 2]]\nTheorem 1: Braid group.",
         pageCount: 2,
         fetchImpl: mockFetchImpl,
@@ -3808,14 +3808,14 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
       assert.ok(mockProxyCalls.length >= 1);
       for (const call of mockProxyCalls) {
         assert.equal(call.targetUrl, "https://opencode.ai/zen/go/v1/chat/completions");
-        assert.equal(call.apiKey, "test-opencode-secret");
+        assert.equal(call.apiKey, "test-secret");
         assert.equal(call.body.model, "deepseek-v4-flash");
         assert.equal(call.body.reasoning_effort, "high");
       }
 
       // Verify no secrets written to disk
       const poolContent = fs.readFileSync(outputPath, "utf8");
-      assert.ok(!poolContent.includes("test-opencode-secret"), "Artifact file must never leak API secrets");
+      assert.ok(!poolContent.includes("test-secret"), "Artifact file must never leak API secrets");
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
@@ -3867,7 +3867,7 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
         "--provider",
         "opencode-go",
       ], {
-        apiKey: "test-consolidation-key-456",
+        apiKey: "cons-key-7",
         fetchImpl: mockFetchImpl,
       });
 
@@ -3882,12 +3882,12 @@ test("Paper Entry Modular Pipeline - Production Provider Adapter (Luna & OpenCod
       // Verify proxy target and body
       assert.equal(mockProxyCalls.length, 1);
       assert.equal(mockProxyCalls[0].targetUrl, "https://opencode.ai/zen/go/v1/chat/completions");
-      assert.equal(mockProxyCalls[0].apiKey, "test-consolidation-key-456");
+      assert.equal(mockProxyCalls[0].apiKey, "cons-key-7");
       assert.equal(mockProxyCalls[0].body.model, "deepseek-v4-flash");
 
       // Verify no secrets written to disk
       const artifactContent = fs.readFileSync(outputPath, "utf8");
-      assert.ok(!artifactContent.includes("test-consolidation-key-456"), "Artifact file must never leak API secrets");
+      assert.ok(!artifactContent.includes("cons-key-7"), "Artifact file must never leak API secrets");
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
