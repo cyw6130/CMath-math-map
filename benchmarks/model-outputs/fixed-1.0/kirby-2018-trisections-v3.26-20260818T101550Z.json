@@ -1,0 +1,753 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-kirby-2018-trisections-of-4-manifolds-off-compact-v3.26",
+  "condition": "off-compact",
+  "workflowVersion": "v3.26",
+  "promptSetVersion": "v3.26",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+    "pageCount": 4,
+    "characters": 20959
+  },
+  "diagnostics": {
+    "durationMs": 202154,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+        "pageCount": 4,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 20959,
+        "atMs": 2
+      },
+      {
+        "stage": "target",
+        "leads": 13,
+        "atMs": 62715
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 62716
+      },
+      {
+        "stage": "request",
+        "chars": 20959,
+        "chunks": 1,
+        "atMs": 62718
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 8,
+        "atMs": 62723
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 1,
+        "atMs": 128522
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:trisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 128523
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:trisection-diagram",
+        "retained": "coverage-or-first-seen",
+        "atMs": 128523
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:open-book",
+        "retained": "coverage-or-first-seen",
+        "atMs": 128523
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:group-trisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 128523
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:generalized-multisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 128524
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 29,
+        "leadGuided": 17,
+        "total": 41,
+        "conflicts": 5,
+        "atMs": 128524
+      },
+      {
+        "stage": "integrate",
+        "entries": 41,
+        "atMs": 128524
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 10,
+        "renameCount": 1,
+        "atMs": 135607
+      },
+      {
+        "stage": "cited-external-candidates",
+        "count": 12,
+        "candidates": [
+          "paper:theorem:monodromy-classification",
+          "paper:theorem:relative-trisection-gluing",
+          "paper:theorem:classical-invariants",
+          "paper:theorem:group-trisection-existence-correspondence",
+          "paper:theorem:group-trisection-functoriality",
+          "paper:theorem:bridge-position",
+          "paper:proposition:knotted-sphere-diagram",
+          "paper:conjecture:generalized-property-r",
+          "paper:theorem:simplified-trisection-existence-uniqueness",
+          "paper:proposition:minimal-trisections-standard-manifolds",
+          "paper:theorem:generalized-trisection-special-cases",
+          "paper:thm:closed-existence-uniqueness"
+        ],
+        "mutated": false,
+        "atMs": 135621
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 12,
+        "items": [
+          {
+            "canonicalId": "paper:theorem:monodromy-classification",
+            "page": 2,
+            "source": "Kirby–Thompson, A new invariant of 4-manifolds, PNAS 115 (2018), 10857–10860，本文引文[6]"
+          },
+          {
+            "canonicalId": "paper:theorem:relative-trisection-gluing",
+            "page": 2,
+            "source": "Castro, Gay, Pinzón-Caicedo, Trisections of 4-manifolds with boundary, PNAS 115 (2018), 10861–10868，本文引文[7]；拼接结果引文[8]"
+          },
+          {
+            "canonicalId": "paper:theorem:classical-invariants",
+            "page": 2,
+            "source": "Feller, Klug, Schirmer, Zemke, Calculating the homology and intersection form of a 4-manifold from a trisection diagram, PNAS 115 (2018), 10869–10874，本文引文[9]"
+          },
+          {
+            "canonicalId": "paper:theorem:group-trisection-existence-correspondence",
+            "page": 3,
+            "source": "Abrams, Gay, Kirby, Group trisections and smooth 4-manifolds, Geom. Topol. 22 (2018), 1537–1545，本文引文[10]"
+          },
+          {
+            "canonicalId": "paper:theorem:group-trisection-functoriality",
+            "page": 3,
+            "source": "Klug, Functoriality of group trisections, PNAS 115 (2018), 10875–10879，本文引文[11]"
+          },
+          {
+            "canonicalId": "paper:theorem:bridge-position",
+            "page": 3,
+            "source": "Meier, Zupan, Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886，本文引文[12]"
+          },
+          {
+            "canonicalId": "paper:proposition:knotted-sphere-diagram",
+            "page": 3,
+            "source": "Meier, Zupan, Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886，本文引文[12]"
+          },
+          {
+            "canonicalId": "paper:conjecture:generalized-property-r",
+            "page": 3,
+            "source": "Meier, Zupan, Characterizing Dehn surgeries on links via trisections, PNAS 115 (2018), 10887–10893，本文引文[14]"
+          },
+          {
+            "canonicalId": "paper:theorem:simplified-trisection-existence-uniqueness",
+            "page": 3,
+            "source": "Baykur, Saeki, Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900，本文引文[17]；文中归因于Gay–Kirby"
+          },
+          {
+            "canonicalId": "paper:proposition:minimal-trisections-standard-manifolds",
+            "page": 4,
+            "source": "Spreer, Tillmann, The trisection genus of the standard simply connected PL 4-manifolds, SoCG 2018，本文引文[19]"
+          },
+          {
+            "canonicalId": "paper:theorem:generalized-trisection-special-cases",
+            "page": 4,
+            "source": "Rubinstein, Tillmann, Generalized trisections in all dimensions, PNAS 115 (2018), 10908–10913，本文引文[20]"
+          },
+          {
+            "canonicalId": "paper:thm:closed-existence-uniqueness",
+            "page": 2,
+            "source": "Gay–Kirby, Trisecting 4-manifolds, Geom. Topol. 20 (2016), 3097–3132；文献[5]"
+          }
+        ],
+        "atMs": 135621
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 3,
+        "candidates": [
+          "m\nThe s-cobordism theorem",
+          "invariants that distinguish different smooth structures\non 4-manifolds but nothing like the s-cobordism\ntheorem",
+          "existence and uniqueness theorem"
+        ],
+        "atMs": 135625
+      },
+      {
+        "stage": "assemble",
+        "entries": 31,
+        "atMs": 135626
+      },
+      {
+        "stage": "response",
+        "atMs": 194301
+      },
+      {
+        "stage": "guide-core-boundary",
+        "removedFromB0": [
+          "paper:thm:closed-existence-uniqueness"
+        ],
+        "atMs": 194306
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:proposition:r-link-four-manifold"
+        ],
+        "atMs": 194306
+      },
+      {
+        "stage": "validate",
+        "atMs": 194308
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 1,
+        "atMs": 194309
+      },
+      {
+        "stage": "response",
+        "atMs": 202149
+      },
+      {
+        "stage": "guide-core-boundary",
+        "removedFromB0": [
+          "paper:thm:closed-existence-uniqueness"
+        ],
+        "atMs": 202152
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:proposition:r-link-four-manifold"
+        ],
+        "repairRound": 1,
+        "atMs": 202152
+      },
+      {
+        "stage": "validate",
+        "atMs": 202153
+      },
+      {
+        "stage": "closure",
+        "openClaims": [
+          "定理 · 5 · 群三分对应的函子性",
+          "命题 · 1 · 打结球面的双重点三分图表示",
+          "定理 · 7 · 广义 Property R 猜想",
+          "定理 · 8 · 简化三分的存在性与稳定唯一性",
+          "命题 · 2 · 标准单连通4-流形的最小三分应用",
+          "定理 · 9 · 广义三分的低维特例",
+          "定理 · 10 · 闭4-流形三分的存在性与稳定唯一性",
+          "定理 · 11 · s-协边定理"
+        ],
+        "atMs": 202154
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 202154
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 62706,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 6171,
+          "completion_tokens": 3290,
+          "total_tokens": 9461,
+          "completion_tokens_details": {
+            "reasoning_tokens": 44
+          }
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 24056,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9534,
+          "completion_tokens": 1215,
+          "total_tokens": 10749
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 47855,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10931,
+          "completion_tokens": 2521,
+          "total_tokens": 13452
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 65801,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9292,
+          "completion_tokens": 3518,
+          "total_tokens": 12810
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 7081,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3499,
+          "completion_tokens": 237,
+          "total_tokens": 3736
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "medium",
+        "durationMs": 58671,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16925,
+          "completion_tokens": 3178,
+          "total_tokens": 20103,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2208
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 7837,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 24177,
+          "completion_tokens": 365,
+          "total_tokens": 24542,
+          "completion_tokens_details": {
+            "reasoning_tokens": 321
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "title": "四维流形的三分"
+    },
+    "mainTargetEntryId": "paper:thm:closed-existence-uniqueness",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:theorem:monodromy-classification",
+          "paper:theorem:relative-trisection-existence-uniqueness",
+          "paper:theorem:relative-trisection-gluing",
+          "paper:theorem:classical-invariants",
+          "paper:theorem:group-trisection-existence-correspondence",
+          "paper:theorem:bridge-position"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:thm:closed-existence-uniqueness"
+      }
+    },
+    "projectTitle": "四维流形的三分",
+    "entries": [
+      {
+        "id": "paper:def:heegaard-splitting",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · Heegaard分解",
+        "shortTitle": "Heegaard分解",
+        "title": "Heegaard分解",
+        "statement": "闭、定向、连通的3-流形$Y$可表示为两个手柄体沿公共边界的并，公共边界是亏格为$g$的曲面$\\Sigma_g$；手柄体是一个0-手柄和$g$个1-手柄。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:heegaard-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · Heegaard图",
+        "shortTitle": "Heegaard图",
+        "title": "Heegaard图",
+        "statement": "Heegaard图是曲面$\\Sigma_g$以及两组$\\alpha,\\beta$彼此不交的嵌入圆圈；每组圆圈将$\\Sigma_g$切成一个具有$2g$个边界分量的球面，并且每个圆圈在相应手柄体中界定一个嵌入的2-球，从而将手柄体切成3-球。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 4-流形的三分",
+        "shortTitle": "4-流形的三分",
+        "title": "4-流形的三分",
+        "statement": "光滑、连通、闭、定向的4-流形$X^4$的三分$\\tau$是分解$X=X_1\\cup X_2\\cup X_3$，其中每个$X_i$是4维手柄体，即若干个$S^1\\times B^3$的连通和；每个两两交集$X_i\\cap X_j$是3维手柄体，且$X_1\\cap X_2\\cap X_3=\\Sigma_g$。此外，$(X_i\\cap X_j)\\cup(X_j\\cap X_k)=\\partial X_j$是若干个$S^1\\times S^2$的连通和，并且$\\Sigma_g$是$\\partial X_j$的亏格为$g$的Heegaard分解曲面，其中$i\\ne j\\ne k$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 三分图",
+        "shortTitle": "三分图",
+        "title": "三分图",
+        "statement": "三分图由中心曲面$\\Sigma_g$及三组附着圆圈$\\alpha=\\alpha_1,\\ldots,\\alpha_g$、$\\beta$和$\\gamma$组成；其中$\\alpha$是$X_1\\cap X_2$中2-手柄的附着圆圈，另外两组分别对应其余两个两两交集。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:morse-2-function",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · Morse 2-函数",
+        "shortTitle": "Morse 2-函数",
+        "title": "Morse 2-函数",
+        "statement": "三分图由从$X$到圆盘的Morse 2-函数$f:X\\to B^2$产生；沿$B^2$的任意一般半径，其逆像是一个3-流形，即若干个$S^1\\times B^2$的连通和，该流形由在$\\Sigma_g$上添加$g$个2-手柄和一个3-手柄得到。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:fold-local-model",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 折线的局部模型",
+        "shortTitle": "折线的局部模型",
+        "title": "折线的局部模型",
+        "statement": "Morse 2-函数的折线在局部坐标中具有模型$f(t,x,y,z)=(t,-x^2-y^2\\pm z^2)$；$t$参数化折线，外部定折线中$z^2$的系数为负，表示极小值弧，其他$g$条非定折线中该系数为正。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:cusp",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 尖点",
+        "shortTitle": "尖点",
+        "title": "尖点",
+        "statement": "尖点在适当坐标中表示一对相消的指标为1和指标为2的临界点的出生；指标为1临界点的上升圆与指标为2临界点的下降圆恰好交于一点。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:monodromy-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 单值性为零或一时的分类",
+        "shortTitle": "单值性为零或一时的分类",
+        "title": "单值性为零或一时的分类",
+        "statement": "由三分图构造的单值性定义为：沿$B^2$逆时针移动某个手柄体时，使其回到自身所需的手柄滑动次数的最小总数。若单值性为$0$或$1$，则$X$必为四个基本4-流形之一。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Kirby–Thompson, A new invariant of 4-manifolds, PNAS 115 (2018), 10857–10860，本文引文[6]"
+      },
+      {
+        "id": "paper:def:open-book",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · 开书分解",
+        "shortTitle": "开书分解",
+        "title": "开书分解",
+        "statement": "三维边界$Y=\\partial X$的开书分解是分解为链路$L\\subset Y$（称为binding）以及纤维化$Y-L\\to S^1$；纤维称为pages，且每个page的边界都是binding$L$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:relative-trisection-gluing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 相对三分的拼接",
+        "shortTitle": "相对三分的拼接",
+        "title": "相对三分的拼接",
+        "statement": "若两个具有相同边界的三分4-流形所诱导的开书分解一致，则这两个三分可沿共同边界拼接，从而得到拼接后闭4-流形的三分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Castro, Gay, Pinzón-Caicedo, Trisections of 4-manifolds with boundary, PNAS 115 (2018), 10861–10868，本文引文[7]；拼接结果引文[8]"
+      },
+      {
+        "id": "paper:theorem:classical-invariants",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 由三分图计算经典不变量",
+        "shortTitle": "由三分图计算经典不变量",
+        "title": "由三分图计算经典不变量",
+        "statement": "若$X^4$由三分$\\tau$描述，则可由$\\tau$的数据确定$X$的同调群、交叉形式和签名。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Feller, Klug, Schirmer, Zemke, Calculating the homology and intersection form of a 4-manifold from a trisection diagram, PNAS 115 (2018), 10869–10874，本文引文[9]"
+      },
+      {
+        "id": "paper:def:group-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · 群的三分",
+        "shortTitle": "群的三分",
+        "title": "群的三分",
+        "statement": "群的三分是由中心曲面基本群、三个3维手柄体基本群、三个4维手柄体基本群以及最终商群组成的满射立方体；它由三分中$\\Sigma_g$到各$X_i\\cap X_j$、各$X_i\\cup X_j$到$X_i$以及最终到$\\pi_1(X^4)$的基本群映射得到。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:group-trisection-existence-correspondence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 群三分的存在性与对应",
+        "shortTitle": "群三分的存在性与对应",
+        "title": "群三分的存在性与对应",
+        "statement": "任意有限呈群$G$都有群的三分，并且群的三分与光滑、闭、可定向4-流形之间存在一一对应。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Abrams, Gay, Kirby, Group trisections and smooth 4-manifolds, Geom. Topol. 22 (2018), 1537–1545，本文引文[10]"
+      },
+      {
+        "id": "paper:theorem:group-trisection-functoriality",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 群三分对应的函子性",
+        "shortTitle": "群三分对应的函子性",
+        "title": "群三分对应的函子性",
+        "statement": "群三分与三分4-流形之间的一一对应实际上是函子的。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Klug, Functoriality of group trisections, PNAS 115 (2018), 10875–10879，本文引文[11]"
+      },
+      {
+        "id": "paper:theorem:bridge-position",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 嵌入曲面的桥式三分位置",
+        "shortTitle": "嵌入曲面的桥式三分位置",
+        "title": "嵌入曲面的桥式三分位置",
+        "statement": "给定一个已三分的4-流形及其中的嵌入曲面，该曲面可以经过同伦变形置于桥式三分位置：它与三分的3维手柄体相交于平凡弧系，与4维手柄体相交于平凡圆盘系，其中平凡意味着边界平行。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier, Zupan, Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886，本文引文[12]"
+      },
+      {
+        "id": "paper:proposition:knotted-sphere-diagram",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 打结球面的双重点三分图表示",
+        "shortTitle": "打结球面的双重点三分图表示",
+        "title": "打结球面的双重点三分图表示",
+        "statement": "任意嵌入在4-流形中的打结球面都可以由一个双重点三分图表示。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier, Zupan, Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886，本文引文[12]"
+      },
+      {
+        "id": "paper:def:dehn-surgery",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · Dehn手术",
+        "shortTitle": "Dehn手术",
+        "title": "Dehn手术",
+        "statement": "将带框结$K$所在边界$Y$中的结的实心环面邻域$V$移除，再沿$K$的框架曲线重新粘回实心环面；等价地，将$V$的子午线曲线粘到$K$的框架曲线上。该过程称为Dehn手术。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:r-link",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · R-link",
+        "shortTitle": "R-link",
+        "title": "R-link",
+        "statement": "若$S^3$中的$n$分量链路经过Dehn手术得到$\\#_n(S^1\\times S^2)$，则称该链路为R-link。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:conjecture:generalized-property-r",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · 广义 Property R 猜想",
+        "shortTitle": "广义 Property R 猜想",
+        "title": "广义 Property R 猜想",
+        "statement": "每个R-link都可以通过一系列手柄滑动变为无链结。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier, Zupan, Characterizing Dehn surgeries on links via trisections, PNAS 115 (2018), 10887–10893，本文引文[14]"
+      },
+      {
+        "id": "paper:def:lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · Lefschetz纤维化",
+        "shortTitle": "Lefschetz纤维化",
+        "title": "Lefschetz纤维化",
+        "statement": "Lefschetz纤维化是复解析映射$X\\to\\mathbb{CP}^1$，除Lefschetz奇异点外是丛映射；Lefschetz奇异点在局部坐标中具有模型$(z,w)\\mapsto zw$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:broken-lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 13 · 破裂Lefschetz纤维化",
+        "shortTitle": "破裂Lefschetz纤维化",
+        "title": "破裂Lefschetz纤维化",
+        "statement": "破裂Lefschetz纤维化允许实曲面纤维在穿过$\\mathbb{CP}^1$中的折线时改变亏格。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:simplified-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 14 · 简化三分",
+        "shortTitle": "简化三分",
+        "title": "简化三分",
+        "statement": "简化三分是由到圆盘的Morse 2-函数产生的三分，并且该函数的奇异像是嵌入的。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:simplified-trisection-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · 简化三分的存在性与稳定唯一性",
+        "shortTitle": "简化三分的存在性与稳定唯一性",
+        "title": "简化三分的存在性与稳定唯一性",
+        "statement": "任意4-流形上的三分存在性和稳定唯一性结果同样适用于由具有嵌入奇异像的Morse 2-函数产生的简化三分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Baykur, Saeki, Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900，本文引文[17]；文中归因于Gay–Kirby"
+      },
+      {
+        "id": "paper:algorithm:triangulation-to-trisection",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 1 · 由三角剖分构造三分的算法",
+        "shortTitle": "由三角剖分构造三分的算法",
+        "title": "由三角剖分构造三分的算法",
+        "statement": "从4-流形的PL结构及其三角剖分出发，构造一个从三角剖分的4-流形到2-单纯形的PL映射，使2-单纯形的对偶立方结构的逆像给出三分，并由此确定三分图。该算法已被实现。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Bell, Hass, Rubinstein, Tillmann, Computing trisections of 4-manifolds, PNAS 115 (2018), 10901–10907，本文引文[18]"
+      },
+      {
+        "id": "paper:proposition:minimal-trisections-standard-manifolds",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 标准单连通4-流形的最小三分应用",
+        "shortTitle": "标准单连通4-流形的最小三分应用",
+        "title": "标准单连通4-流形的最小三分应用",
+        "statement": "上述由三角剖分构造三分的算法已用于确定标准单连通4-流形的最小三分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Spreer, Tillmann, The trisection genus of the standard simply connected PL 4-manifolds, SoCG 2018，本文引文[19]"
+      },
+      {
+        "id": "paper:def:generalized-multisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 15 · 广义三分与多分",
+        "shortTitle": "广义三分与多分",
+        "title": "广义三分与多分",
+        "statement": "设$N$是适当三角剖分的$n$维流形，其中$n=2k$或$n=2k+1$。取到$k$-单纯形$B^k$的映射，并将$B^k$视为具有自然对偶胞腔分解的$k$-单纯形，该分解包含$k+1$个$k$-立方体；要求每个立方体的逆像是$n$维手柄体，并对这些手柄体的交集施加附加条件。由此得到$N$的多分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:def:colored-triangulation",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 16 · 广义三分的着色条件",
+        "shortTitle": "广义三分的着色条件",
+        "title": "广义三分的着色条件",
+        "statement": "当$n=2k$或$n=2k+1$时，对三角剖分顶点进行$(k+1)$-着色，使每个$n$-单纯形具有$2k+1$或$2k+2$个顶点，并且同色顶点分别为一个或两个；将同色顶点映到$k$-单纯形中的同一点，得到自然单纯形映射。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:theorem:generalized-trisection-special-cases",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · 广义三分的低维特例",
+        "shortTitle": "广义三分的低维特例",
+        "title": "广义三分的低维特例",
+        "statement": "上述广义构造在$n=3$时得到Heegaard分解，在$n=4$时得到经典三分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Rubinstein, Tillmann, Generalized trisections in all dimensions, PNAS 115 (2018), 10908–10913，本文引文[20]"
+      },
+      {
+        "id": "paper:thm:closed-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · 闭4-流形三分的存在性与稳定唯一性",
+        "shortTitle": "闭4-流形三分的存在性与稳定唯一性",
+        "title": "闭4-流形三分的存在性与稳定唯一性",
+        "statement": "对光滑、闭、可定向的4-流形，三分的存在性与稳定唯一性成立：每个此类4-流形具有三分，且任意两个三分经过稳定化后等价。本文将该结果作为已建立的外部结果调用。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Gay–Kirby, Trisecting 4-manifolds, Geom. Topol. 20 (2016), 3097–3132；文献[5]"
+      },
+      {
+        "id": "paper:def:colored-triangulation-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 17 · 着色三角剖分到单纯形的映射",
+        "shortTitle": "着色三角剖分到单纯形的映射",
+        "title": "着色三角剖分到单纯形的映射",
+        "statement": "在$n$维三角剖分中，要求每个$n$-单纯形有$2k+1$或$2k+2$个顶点，并具有$(k+1)$-着色，使得同色顶点映到$k$-单纯形的同一顶点。由此得到自然的单纯形映射；拉回该$k$-单纯形的对偶立方结构即得到流形的多分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:theorem:s-cobordism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 11 · s-协边定理",
+        "shortTitle": "s-协边定理",
+        "title": "s-协边定理",
+        "statement": "若$W$是$(m+1)$维流形，边界分量为$M_0,M_1$，且$W$与$M_0\\times[0,1]$具有相同的简单同伦型，则在适用维数和基本群条件下，$W$同胚于$M_0\\times[0,1]$，从而$M_0$与$M_1$同胚；光滑情形下相应结论为微分同胚。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1",
+        "sourceReference": "Smale, On the structure of manifolds, Amer. J. Math. 84 (1962), 387–399；文中第1页背景引用"
+      },
+      {
+        "id": "paper:theorem:relative-trisection-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 12 · 相对三分的存在性与稳定唯一性",
+        "shortTitle": "相对三分的存在性与稳定唯一性",
+        "title": "相对三分的存在性与稳定唯一性",
+        "statement": "具有边界的4-流形存在相对三分，并且相对三分满足相应的稳定唯一性；闭情形的存在性与唯一性可推广到带边界情形。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Gay–Kirby, Trisecting 4-manifolds, Geom. Topol. 20 (2016), 3097–3132；Castro–Gay–Pinzón-Caicedo, Trisections of 4-manifolds with boundary, PNAS 115 (2018), 10861–10868"
+      }
+    ],
+    "inferences": []
+  }
+}

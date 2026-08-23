@@ -1,0 +1,49 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "workflowVersion": "v3.18",
+  "runArtifact": "4-dim-skein-modules-handles-tangles-v3.18-20260818T062340Z.json",
+  "auditMethod": "Primary Codex comparison of candidate JSON against the fixed Gold JSON under benchmarks/paper-import/SCORING-PROTOCOL.md; no source-PDF reread and no model judge",
+  "auditScore": {
+    "format": 39,
+    "semantic": 51,
+    "overall": 90,
+    "formatComponents": {
+      "normalizationAndProjectIdentity": 10,
+      "entryAndSourceValidity": 8,
+      "inferenceValidity": 8,
+      "b0Structure": 6,
+      "dagAndClosure": 7
+    },
+    "semanticComponents": {
+      "objectsAndHypotheses": 18,
+      "b0Boundary": 10,
+      "mainTarget": 8,
+      "proofDependencies": 10,
+      "claimStates": 3,
+      "sourceAttribution": 2
+    }
+  },
+  "matchedCore": [
+    "functorial link theory, parameterized triples, triple modules, three-manifold algebra, and gluing-map data are represented",
+    "evaluation, Khovanov-tangle, and Ren-Willis external foundations are sourced in B0",
+    "the general skein-lasagna gluing theorem is the mainTarget, remains outside B0, and is established",
+    "all 1-, 2-, and 3-handle formulas are present and established",
+    "the candidate graph is acyclic and structurally executable"
+  ],
+  "deductions": [
+    "the Gold separates four external foundations while the candidate compresses the MWW theory/evaluation boundary into three B0 entries",
+    "the handle-formula proofs are established but some dependencies are more direct than Gold and do not consistently expose the gluing theorem as a premise",
+    "one sourced non-core evaluation-extension proposition remains open",
+    "several additional internal objects improve coverage but make the map less minimal than Gold"
+  ],
+  "closureStatus": "acyclic; main target and all handle formulas established; one non-core sourced context Claim remains open",
+  "mainTargetStatus": "correct semantic target, correctly outside B0, and established",
+  "durationMs": 199887,
+  "promotionChecks": {
+    "completedOnce": true,
+    "auditScoreAtLeast85": true,
+    "durationAtMost300000": true
+  }
+}

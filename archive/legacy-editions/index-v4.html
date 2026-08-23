@@ -152,7 +152,7 @@
           <button type="button" class="provider-btn" data-provider="gemini">Gemini</button>
           <button type="button" class="provider-btn" data-provider="custom">自定义</button>
         </div>
-        <input class="form-input" type="text" id="api-endpoint-input" value="https://api.deepseek.com/v1" placeholder="https://...">
+        <input class="form-input" type="text" id="api-endpoint-input" value="https://opencode.ai/zen/go/v1" placeholder="https://...">
         <span class="form-hint">选择预设或直接输入兼容的服务端点地址。</span>
       </div>
 
@@ -164,8 +164,23 @@
       <div class="form-group">
         <label for="model-select">3. 推理模型</label>
         <select class="form-input" id="model-select" style="cursor:pointer;">
-          <option value="deepseek-chat" selected>deepseek-chat (推荐 · 快速高效)</option>
-          <option value="deepseek-reasoner">deepseek-reasoner (深度推理)</option>
+          <option value="deepseek-v4-flash" selected>DeepSeek V4 Flash (推荐 · 快速)</option>
+          <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+          <option value="kimi-k3">Kimi K3</option>
+          <option value="kimi-k2.7-code">Kimi K2.7 Code</option>
+          <option value="kimi-k2.6">Kimi K2.6</option>
+          <option value="glm-5.3">GLM-5.3</option>
+          <option value="glm-5.2">GLM-5.2</option>
+          <option value="glm-5.1">GLM-5.1</option>
+          <option value="minimax-m3">MiniMax M3</option>
+          <option value="minimax-m2.7">MiniMax M2.7</option>
+          <option value="qwen3.8-max">Qwen3.8 Max</option>
+          <option value="qwen3.7-max">Qwen3.7 Max</option>
+          <option value="qwen3.7-plus">Qwen3.7 Plus</option>
+          <option value="qwen3.6-plus">Qwen3.6 Plus</option>
+          <option value="mimo-v2.5">MiMo-V2.5</option>
+          <option value="mimo-v2.5-pro">MiMo-V2.5-Pro</option>
+          <option value="hy3">Hy3</option>
           <option value="custom">自定义模型名称...</option>
         </select>
         <div id="custom-model-group" style="margin-top:8px;" hidden>

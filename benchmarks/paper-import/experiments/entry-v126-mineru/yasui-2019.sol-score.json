@@ -1,0 +1,142 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v126-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 21,
+  "completeness": 17,
+  "solEntryScore": 38,
+  "verdict": "usable",
+  "summary": "The candidate accurately captures every principal paper-specific theorem and lemma in the Gold reference, including Theorems 1.4, 1.9, 2.3, 2.4, and 2.8 and Lemmas 2.6 and 3.1. Their hypotheses, conclusions, pages, and mathematical notation are generally faithful. It also extracts several legitimate corollaries and external results beyond the Gold set. Quality is reduced by extensive duplicate extraction, incorrect typing of corollaries as theorems, omission of several foundational or external Gold entries, and an underspecified rendition of Bauer's multi-summand theorem.",
+  "strengths": [
+    "All central paper-specific results in the Gold reference are represented with the essential hypotheses and conclusions intact.",
+    "The two-handle-neighborhood definition and Lemma 2.6 are rendered with useful mathematical precision, including the class alpha minus bar-alpha and its zero self-intersection sphere representative.",
+    "External attribution is explicitly recorded for Taubes, Bauer, Frøyshov, Hom-Lidman, and other cited results.",
+    "Page locators for the substantive definitions, theorems, and lemmas generally agree with the Gold reference.",
+    "LaTeX is balanced and readable throughout the extracted statements."
+  ],
+  "issues": [
+    "The candidate omits Gold's Bauer-Furuta invariant definition, symplectic-structure definition, and external symplectic Betti-parity theorem.",
+    "Bauer's external theorem is duplicated, and one rendition merely refers to conditions (i)-(iii) without actually extracting them; this loses the precise congruence, spin-c, mod-2 Seiberg-Witten, and n=4 mod-8 conditions.",
+    "Corollaries 1.5, 1.6, 1.7, and 2.5 are all typed as theorem rather than corollary or a suitable generic claim class.",
+    "Theorems 2.3 and 2.4, Corollary 2.5, Lemma 2.6, Lemma 3.1, the reverse-orientation definition, and the geometrically simply connected definition are extracted more than once under different IDs.",
+    "The first geometrically simply connected definition drops compactness and smoothness and omits the closed-manifold equivalence with a decomposition without 3-handles, although a later duplicate restores most of the conditions.",
+    "The standalone two-handle-neighborhood definition on page 9 is vague and arbitrarily fragmented relative to the precise page-4 definition.",
+    "Several inference-hint page values are set to page 1 even though their cited conclusions occur on pages 3 or 5, and the hint for Corollary 1.7 inaccurately says Corollary 1.6 itself yields b2 equal to 1.",
+    "The candidate uses the term stable cohomotopy Seiberg-Witten invariant consistently, but one external entry's ID and name contain the confusing abbreviation 'stable-swon'."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:geometrically-simply-connected",
+      "candidateEntries": [
+        "paper:def:geometrically-simply-connected",
+        "paper:def:geometrically-simply-connected-4-manifold"
+      ],
+      "assessment": "covered_with_duplication",
+      "notes": "The page-1 version drops compactness and smoothness; the page-9 duplicate is closer to the Gold statement."
+    },
+    {
+      "goldEntry": "paper:def:2-handle-neighborhood-class",
+      "candidateEntries": [
+        "paper:def:2-handle-neighborhood-represented-class",
+        "paper:def:2-handle-neighborhood"
+      ],
+      "assessment": "covered_with_duplication",
+      "notes": "The page-4 entry is precise; the page-9 entry is an unnecessary weaker fragment."
+    },
+    {
+      "goldEntry": "paper:def:bauer-furuta-invariant",
+      "candidateEntries": [],
+      "assessment": "missing"
+    },
+    {
+      "goldEntry": "paper:def:symplectic-structure-4mfld",
+      "candidateEntries": [],
+      "assessment": "missing"
+    },
+    {
+      "goldEntry": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:bauer-stable-cohomotopy",
+        "yasui:thm:2-7"
+      ],
+      "assessment": "partially_covered",
+      "notes": "The first alternative is stated, but the multi-summand conditions are referenced rather than fully extracted."
+    },
+    {
+      "goldEntry": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntries": [
+        "yasui:thm:froyshov-adjunction-vanishing"
+      ],
+      "assessment": "accurately_covered"
+    },
+    {
+      "goldEntry": "paper:b0:taubes-symplectic-sw",
+      "candidateEntries": [
+        "paper:external:taubes-symplectic-sw"
+      ],
+      "assessment": "covered",
+      "notes": "The extracted contextual nonvanishing formulation is sufficient for the paper's applications but less precise than the Gold canonical-spin-c formulation."
+    },
+    {
+      "goldEntry": "paper:b0:symplectic-betti-parity",
+      "candidateEntries": [],
+      "assessment": "missing"
+    },
+    {
+      "goldEntry": "paper:lemma:embedded-sphere-double",
+      "candidateEntries": [
+        "paper:lemma:2-6-zero-self-intersection-sphere",
+        "yasui:lemma:2-6"
+      ],
+      "assessment": "accurately_covered_with_duplication"
+    },
+    {
+      "goldEntry": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:2-8"
+      ],
+      "assessment": "accurately_covered"
+    },
+    {
+      "goldEntry": "paper:thm:positive-definite-vanishing",
+      "candidateEntries": [
+        "paper:thm:2-3-vanishing-under-2-handle-class",
+        "yasui:thm:2-3"
+      ],
+      "assessment": "accurately_covered_with_duplication"
+    },
+    {
+      "goldEntry": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntries": [
+        "paper:thm:2-4-no-symplectic-one-orientation-under-2-handle-class",
+        "yasui:thm:2-4"
+      ],
+      "assessment": "accurately_covered_with_duplication"
+    },
+    {
+      "goldEntry": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntries": [
+        "yasui:lemma:3-1",
+        "paper:lemma:3-1"
+      ],
+      "assessment": "accurately_covered_with_duplication"
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntries": [
+        "paper:thm:1-4-vanishing-stable-cohomotopy-sw"
+      ],
+      "assessment": "accurately_covered"
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntries": [
+        "paper:thm:1-9-no-symplectic-one-orientation"
+      ],
+      "assessment": "accurately_covered"
+    }
+  ]
+}

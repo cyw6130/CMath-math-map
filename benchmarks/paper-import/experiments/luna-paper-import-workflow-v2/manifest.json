@@ -1,0 +1,21 @@
+{
+  "schema": "cmath.paper-benchmark-experiment/v1",
+  "experimentId": "luna-paper-import-workflow-v2",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "off",
+  "workflowVersion": "v2",
+  "promptSetVersion": "v2",
+  "benchmarkProtocol": "../../SCORING-PROTOCOL.md",
+  "auditArtifact": "json-gold-audit-v1.json",
+  "changesFromV1": [
+    "two-page overlap between adjacent extraction chunks",
+    "assembly prompt adds separate object, B0, internal/external, and main-target self-check"
+  ],
+  "status": "completed",
+  "promotionDecision": "not-promoted",
+  "notes": [
+    "The workflow version remains runnable through the Harness v2 overlay even though it is not the default baseline.",
+    "All four PDF cases completed; the initial Cornered provider failure was superseded by cornered-skein-run-2.json."
+  ]
+}

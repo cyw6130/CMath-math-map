@@ -1,0 +1,157 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.10",
+  "status": "failed",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507
+  },
+  "diagnostics": {
+    "durationMs": 47169,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 21507,
+        "blocks": 5,
+        "overlapPages": 1,
+        "lanes": [
+          "combined"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.10",
+        "atMs": 1
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 4,
+        "foundationCount": 4,
+        "resultCount": 0,
+        "inferenceHintCount": 3,
+        "doneCalls": 1,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 14112
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 12,
+        "foundationCount": 9,
+        "resultCount": 3,
+        "inferenceHintCount": 3,
+        "doneCalls": 2,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 29497
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 14,
+        "foundationCount": 13,
+        "resultCount": 1,
+        "inferenceHintCount": 2,
+        "doneCalls": 3,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 35910
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 14,
+        "foundationCount": 11,
+        "resultCount": 3,
+        "inferenceHintCount": 3,
+        "doneCalls": 4,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 47167
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 14084,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 2554,
+          "completion_tokens": 671,
+          "total_tokens": 3225
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 29494,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4008,
+          "completion_tokens": 1512,
+          "total_tokens": 5520
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 879,
+        "status": 429,
+        "finishReason": null,
+        "usage": null
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 35882,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3561,
+          "completion_tokens": 1875,
+          "total_tokens": 5436
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 33053,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3750,
+          "completion_tokens": 1750,
+          "total_tokens": 5500
+        }
+      }
+    ],
+    "error": "HTTP 429 block 5 combined extraction failed: {\"error\":{\"message\":\"Upstream rate limit exceeded, please retry later\",\"type\":\"rate_limit_error\"}}"
+  }
+}

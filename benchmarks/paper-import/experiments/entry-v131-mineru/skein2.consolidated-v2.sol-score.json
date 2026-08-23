@@ -1,0 +1,143 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/skein2.consolidated-v2.json",
+  "goldRevision": "v1",
+  "caseId": "cornered-skein-lasagna-theory",
+  "correctness": 21,
+  "completeness": 16,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate captures essentially all paper-internal definitions and principal results in the Gold reference, including the gluing theorem, self-gluing/Hochschild results, trisection presentation, and three-manifold gluing theorem. Most formulas and classifications are faithful. It is not flawless because it omits all four externally attributed background results, duplicates several entries, weakens isotopy to homotopy in Lemma 4.5, incompletely states the Hochschild quotient relation, and has several locator or naming inconsistencies.",
+  "strengths": [
+    "Captures all major paper-internal claims represented in Gold: Lemmas 3.7 and 3.13, Theorems 3.8, 3.14, 3.15, Corollary 3.19, Lemma 4.5, and Theorem 4.7.",
+    "Accurately extracts the central bimodule gluing formula and identifies it as an isomorphism of the appropriate bimodules.",
+    "Includes the foundational definitions of the three-manifold category, cornered four-manifold bimodule, relative tensor product, zero-th Hochschild homology, trisection, trisection diagram, and surface bicategory.",
+    "Most mathematical notation is well formed, with balanced LaTeX delimiters and recognizable source formulas.",
+    "Adds useful foundational entries for lasagna fillings and the skein lasagna module that are relevant even though they are not separate Gold entries.",
+    "The theorem, lemma, definition, fact, and claim classifications are generally correct."
+  ],
+  "issues": [
+    "All four Gold external-background entries are missing: Morrison–Walker–Wedrich skein lasagna theory, Ren–Willis surjective gluing map, Banyaga's fragmentation lemma, and the Gay–Kirby trisection existence and stable uniqueness theorem. Consequently, external attribution coverage is absent.",
+    "Lemma 4.5 says the links are homotopic (同伦), whereas Gold requires isotopic (同痕). Homotopy is substantially weaker and makes the extracted claim mathematically inaccurate.",
+    "The zero-th Hochschild homology definition gives the quotient by \\sim_2 but omits the defining cyclic relation f_*(a) \\sim_2 f^*(a), leaving a foundational definition incomplete.",
+    "The cornered skein lasagna bimodule is duplicated under two IDs, with one version omitting the action on morphisms.",
+    "The main gluing theorem is duplicated by an early page-2 abstract-style entry and the labeled Theorem 3.8 entry.",
+    "The tensor product of surface modules is duplicated under paper:def:tensor-product-modules and skein2:def:tensor-product.",
+    "Several locators differ from Gold, notably Theorem 3.15, the trisection diagram, and Corollary 3.19, whose candidate page numbers are one page later.",
+    "The three-manifold category statement appears to reverse or ambiguously label source and target tangles in its boundary formula compared with the Gold convention.",
+    "Corollary 3.19 is stored with type and claimKind theorem rather than being explicitly classified as a corollary, although its displayed name preserves the source label.",
+    "The candidate supplies no inference hints, so the dependency structure recorded in Gold is entirely absent, even though this does not directly invalidate the extracted entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:cornered-3mfld-category",
+      "candidateEntry": "skein2-def:three-manifold-category",
+      "status": "partial",
+      "note": "Core objects, morphisms, and composition are present, but the source-target boundary convention is ambiguous or reversed."
+    },
+    {
+      "goldEntry": "paper:def:cornered-4mfld-bimodule",
+      "candidateEntry": "skein2-def:cornered-skein-lasagna-bimodule",
+      "status": "matched",
+      "note": "Faithful formula and morphism action; duplicated by paper:def:cornered-skein-lasagna-bimodule."
+    },
+    {
+      "goldEntry": "paper:def:bimodule-tensor-product",
+      "candidateEntry": "paper:def:tensor-product-of-bimodules",
+      "status": "matched",
+      "note": "Direct sum and balancing relation are correctly represented."
+    },
+    {
+      "goldEntry": "paper:def:hochschild-homology",
+      "candidateEntry": "paper:def:zero-th-hochschild-homology",
+      "status": "partial",
+      "note": "The quotient is present, but the relation f_*(a) \\sim_2 f^*(a) is not stated."
+    },
+    {
+      "goldEntry": "paper:def:trisection-diagram",
+      "candidateEntry": "paper:def:trisection and paper:def:trisection-diagram",
+      "status": "matched",
+      "note": "The candidate splits the trisection and diagram material into two meaningful definitions."
+    },
+    {
+      "goldEntry": "paper:def:surface-bicategory",
+      "candidateEntry": "paper:def:surface-bicategory",
+      "status": "matched",
+      "note": "Objects, 1-cells, 2-cells, and composition are represented."
+    },
+    {
+      "goldEntry": "paper:lemma:gluing-isomorphism-eval",
+      "candidateEntry": "paper:lemma:3-7",
+      "status": "matched",
+      "note": "The gluing map and isomorphism conclusion are accurately captured."
+    },
+    {
+      "goldEntry": "paper:thm:gluing-bimodules",
+      "candidateEntry": "paper:thm:3-8",
+      "status": "matched",
+      "note": "The principal bimodule gluing theorem is faithfully extracted."
+    },
+    {
+      "goldEntry": "paper:lemma:self-gluing-eval",
+      "candidateEntry": "paper:lemma:3-13",
+      "status": "matched",
+      "note": "The evaluation map rho and its isomorphism conclusion are present."
+    },
+    {
+      "goldEntry": "paper:thm:self-gluing-hh0",
+      "candidateEntry": "paper:thm:3-14",
+      "status": "matched",
+      "note": "The Hochschild homology and punctured self-gluing isomorphism is accurately stated."
+    },
+    {
+      "goldEntry": "paper:thm:capping-off-neighborhood",
+      "candidateEntry": "paper:thm:3-15",
+      "status": "matched",
+      "note": "The quotient by the third relation and recovery of the closed-manifold module are represented."
+    },
+    {
+      "goldEntry": "paper:cor:trisection-presentation",
+      "candidateEntry": "paper:cor:3-19",
+      "status": "partial",
+      "note": "The formula is faithful, but the entry is classified as a theorem rather than a corollary and its page locator differs from Gold."
+    },
+    {
+      "goldEntry": "paper:lemma:isotopy-cutting",
+      "candidateEntry": "skein2:lemma:4-5-isotopy",
+      "status": "inaccurate",
+      "note": "The candidate replaces isotopy with homotopy, materially weakening the hypothesis."
+    },
+    {
+      "goldEntry": "paper:thm:2d-gluing-3mfld",
+      "candidateEntry": "skein2:thm:4-7-gluing",
+      "status": "matched",
+      "note": "The categorical gluing formula is correctly extracted."
+    },
+    {
+      "goldEntry": "paper:b0:mww-skein-lasagna",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "No explicit external attribution entry."
+    },
+    {
+      "goldEntry": "paper:b0:rw-gluing-map",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "The gluing map is defined, but its Ren–Willis provenance and surjectivity result are not extracted."
+    },
+    {
+      "goldEntry": "paper:b0:banyaga-fragmentation",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "The external fragmentation lemma used in the proof is absent."
+    },
+    {
+      "goldEntry": "paper:b0:gay-kirby-trisection-existence",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "The external trisection existence and stable uniqueness theorem is absent."
+    }
+  ]
+}

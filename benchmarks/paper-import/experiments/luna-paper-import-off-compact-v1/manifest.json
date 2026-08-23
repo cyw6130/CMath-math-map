@@ -1,0 +1,131 @@
+{
+  "schema": "cmath.paper-benchmark-experiment/v1",
+  "experimentId": "luna-paper-import-off-compact-v1",
+  "caseId": "hopf-degree-theorem",
+  "provider": "luna-gateway",
+  "model": "gpt-5.4-mini",
+  "promptSetVersion": "v1",
+  "goldRevision": "gold-v2",
+  "sourcePdfSha256": "f1e48afdbdd029d965e38aaa6b15211d049a33a148c21d34f621c48f8620911b",
+  "status": "completed",
+  "condition": "off-compact",
+  "tokenBudget": {
+    "integrate": 8000,
+    "normal": 16000,
+    "retry": 32000
+  },
+  "runs": [
+    {
+      "runId": "gpt-5.4-mini-off-compact-run-1",
+      "condition": "off-compact",
+      "artifact": "off-compact-run-1.json",
+      "status": "completed",
+      "durationMs": 145478,
+      "calls": 7,
+      "entries": 28,
+      "inferences": 14,
+      "formatScore": 95,
+      "semanticScore": 40,
+      "overallScore": 62,
+      "openClaims": 12
+    },
+    {
+      "runId": "gpt-5.6-luna-off-compact-run-2",
+      "condition": "off-compact",
+      "artifact": "luna-5.6-off-compact-run-2.json",
+      "status": "completed",
+      "durationMs": 145547,
+      "calls": 4,
+      "entries": 28,
+      "inferences": 18,
+      "formatScore": 95,
+      "semanticScore": 50,
+      "overallScore": 68,
+      "openClaims": 0
+    },
+    {
+      "runId": "4-dim-skein-modules-handles-tangles-run-1",
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "status": "completed",
+      "artifact": "4-dim-skein-modules-handles-tangles-run-1.json",
+      "durationMs": 98794,
+      "calls": 4,
+      "entries": 10,
+      "inferences": 6,
+      "formatScore": 95,
+      "semanticScore": 23,
+      "overallScore": 51.8,
+      "openClaims": 0,
+      "auditScore": {
+        "format": 38,
+        "semantic": 29,
+        "overall": 67,
+        "artifact": "json-gold-audit-v1.json"
+      }
+    },
+    {
+      "runId": "cornered-skein-lasagna-theory-run-1",
+      "caseId": "cornered-skein-lasagna-theory",
+      "status": "completed",
+      "artifact": "cornered-skein-lasagna-theory-run-1.json",
+      "durationMs": 168510,
+      "calls": 5,
+      "entries": 24,
+      "inferences": 8,
+      "formatScore": 95,
+      "semanticScore": 28,
+      "overallScore": 54.8,
+      "openClaims": 0,
+      "auditScore": {
+        "format": 38,
+        "semantic": 39,
+        "overall": 77,
+        "artifact": "json-gold-audit-v1.json"
+      }
+    },
+    {
+      "runId": "kirby-2018-trisections-run-1",
+      "caseId": "kirby-2018-trisections",
+      "status": "completed",
+      "artifact": "kirby-2018-trisections-run-1.json",
+      "durationMs": 142140,
+      "calls": 4,
+      "entries": 20,
+      "inferences": 8,
+      "formatScore": 95,
+      "semanticScore": 39,
+      "overallScore": 61.4,
+      "openClaims": 0,
+      "auditScore": {
+        "format": 38,
+        "semantic": 18,
+        "overall": 56,
+        "artifact": "json-gold-audit-v1.json"
+      }
+    },
+    {
+      "runId": "yasui-2019-geometrically-simply-connected-4-manifolds-run-1",
+      "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+      "status": "completed",
+      "artifact": "yasui-2019-geometrically-simply-connected-4-manifolds-run-1.json",
+      "durationMs": 178000,
+      "calls": 5,
+      "entries": 20,
+      "inferences": 13,
+      "formatScore": 95,
+      "semanticScore": 54,
+      "overallScore": 70.4,
+      "openClaims": 0,
+      "auditScore": {
+        "format": 38,
+        "semantic": 41,
+        "overall": 79,
+        "artifact": "json-gold-audit-v1.json"
+      }
+    }
+  ],
+  "officialBenchmark": false,
+  "notes": [
+    "Parallel Luna compact experiment; only provider/model and reasoning/budget condition differ from the high-generous Luna run."
+  ]
+}

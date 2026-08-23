@@ -1,0 +1,154 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v124-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 20,
+  "completeness": 18,
+  "solEntryScore": 38,
+  "verdict": "usable",
+  "summary": "The candidate captures nearly all central definitions, internal theorems, lemmas, and cited results in mathematically recognizable form, including Theorems 1.4, 1.9, 2.3, 2.4, and 2.8 and Lemmas 2.6 and 3.1. Most statements and page locators agree with the Gold reference. Its main weaknesses are substantial duplicate extraction across overlapping blocks, repeated IDs, systematic typing of corollaries as theorems, omission of explicit Bauer–Furuta and symplectic-structure definitions, and several imprecise or ambiguously delimited congruence statements.",
+  "strengths": [
+    "All principal paper results represented in the Gold reference are present, with the essential hypotheses and conclusions largely preserved.",
+    "The two-handle-neighborhood definition and the geometrically simply connected definition are captured, as is the key bridge Lemma 3.1.",
+    "Bauer's connected-sum theorem, Frøyshov's vanishing theorem, Taubes's result, and the symplectic Betti-parity fact are explicitly marked as external and supplied with references.",
+    "The candidate additionally captures genuine paper corollaries and cited auxiliary results that are not separately represented in the Gold entry list.",
+    "Most theorem numbers and source pages are accurate, and the displayed LaTeX is generally balanced."
+  ],
+  "issues": [
+    "Corollaries 1.5, 1.6, 1.7, and 2.5 are all typed as theorem rather than corollary.",
+    "Theorem 1.9 and one copy of Theorem 2.4 write the first condition as $b_2^+\\not\\equiv1$ without an explicit $\\pmod4$, making the modular scope formally ambiguous.",
+    "Lemma 2.6 is duplicated and uses $\\alpha-\\overline\\alpha$, while the Gold reference denotes the relevant doubled class as $\\alpha\\times\\overline\\alpha$; this is at least a notation mismatch requiring normalization or source verification.",
+    "The candidate omits explicit entries corresponding to the Gold definitions of the Bauer–Furuta invariant and a symplectic form with its canonical spin-c structure.",
+    "Theorem 2.3, Theorem 2.4, Corollary 2.5, Lemma 2.6, Lemma 3.1, and the geometrically simply connected definition are extracted more than once; the definition even reuses the same ID with conflicting page values 1 and 10.",
+    "The page-10 duplicate of the geometrically simply connected definition is inconsistent with the Gold page-1 locator.",
+    "Some entries are weakly delimited paraphrases rather than self-contained mathematical statements, notably the blow-up formula, adjunction inequality, and the page-9 two-handle-neighborhood definition.",
+    "The external Taubes entry on page 3 only states nonvanishing under $b_2^+>1$, while the Gold entry records the sharper canonical spin-c statement $SW_X(s_X)=\\pm1$; a second Taubes entry partially addresses this but remains context-dependent."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:geometrically-simply-connected",
+      "candidateEntries": [
+        "yasui:def:geometrically-simply-connected"
+      ],
+      "status": "matched_with_duplicate",
+      "notes": "The page-1 version is accurate; a second entry reuses the ID and assigns page 10."
+    },
+    {
+      "goldEntry": "paper:def:2-handle-neighborhood-class",
+      "candidateEntries": [
+        "yasui:def:two-handle-neighborhood-represented-class",
+        "yasui:def:2-handle-neighborhood"
+      ],
+      "status": "matched",
+      "notes": "The page-4 entry is precise; the page-9 version is redundant and underspecified."
+    },
+    {
+      "goldEntry": "paper:def:bauer-furuta-invariant",
+      "candidateEntries": [],
+      "status": "missing",
+      "notes": "The invariant is used throughout but not independently defined."
+    },
+    {
+      "goldEntry": "paper:def:symplectic-structure-4mfld",
+      "candidateEntries": [],
+      "status": "missing",
+      "notes": "No explicit definition of a symplectic form or its canonical spin-c structure is extracted."
+    },
+    {
+      "goldEntry": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:bauer-stable-cohomotopy"
+      ],
+      "status": "matched",
+      "notes": "External attribution, main alternatives, and numerical conditions are present."
+    },
+    {
+      "goldEntry": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntries": [
+        "yasui:thm:froyshov-vanishing"
+      ],
+      "status": "matched",
+      "notes": "Hypotheses and conclusion closely match the Gold statement."
+    },
+    {
+      "goldEntry": "paper:b0:taubes-symplectic-sw",
+      "candidateEntries": [
+        "yasui:ext:taubes-symplectic-sw",
+        "yasui:thm:taubes-spin-c-condition"
+      ],
+      "status": "partial",
+      "notes": "The required nonvanishing content is present, but the canonical spin-c and exact $\\pm1$ formulation is not cleanly stated."
+    },
+    {
+      "goldEntry": "paper:b0:symplectic-betti-parity",
+      "candidateEntries": [
+        "yasui:thm:even-symplectic-parity"
+      ],
+      "status": "matched",
+      "notes": "The equivalent parity statement $b_2^+-b_1$ odd is correctly extracted."
+    },
+    {
+      "goldEntry": "paper:lemma:embedded-sphere-double",
+      "candidateEntries": [
+        "yasui:lemma:2-6",
+        "yasui:lemma:two-handle-sphere"
+      ],
+      "status": "matched_with_notation_difference",
+      "notes": "The smooth embedded sphere and square-zero conclusion are present, but the doubled class notation differs from Gold and the entry is duplicated."
+    },
+    {
+      "goldEntry": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:stable-cohomotopy-adjunction"
+      ],
+      "status": "matched",
+      "notes": "The non-torsion, nonnegative-square, and nonvanishing hypotheses are retained."
+    },
+    {
+      "goldEntry": "paper:thm:positive-definite-vanishing",
+      "candidateEntries": [
+        "yasui:thm:2-3",
+        "yasui:thm:vanishing-positive-definite"
+      ],
+      "status": "matched_with_duplicate",
+      "notes": "Both copies faithfully state the theorem."
+    },
+    {
+      "goldEntry": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntries": [
+        "yasui:thm:2-4",
+        "yasui:thm:not-both-symplectic"
+      ],
+      "status": "matched_with_duplicate",
+      "notes": "The second copy gives both congruences explicitly modulo 4; the first is formally ambiguous."
+    },
+    {
+      "goldEntry": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntries": [
+        "yasui:lemma:geometrically-simply-connected-classes",
+        "yasui:lemma:3-1"
+      ],
+      "status": "matched_with_duplicate",
+      "notes": "Both copies correctly capture Lemma 3.1."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntries": [
+        "yasui:thm:1-4"
+      ],
+      "status": "matched",
+      "notes": "The main theorem is accurately stated without incorrectly merging its symplectic corollary."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntries": [
+        "yasui:thm:1-9"
+      ],
+      "status": "matched_with_minor_formula_issue",
+      "notes": "The conclusion is correct, but the first congruence lacks an explicit modulo-4 qualifier."
+    }
+  ]
+}

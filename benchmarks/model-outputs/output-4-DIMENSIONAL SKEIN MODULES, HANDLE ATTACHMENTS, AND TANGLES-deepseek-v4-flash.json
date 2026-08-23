@@ -1,0 +1,271 @@
+{
+  "seconds": 23.8,
+  "stages": [
+    {
+      "stage": "request",
+      "chars": 32140,
+      "chunks": 2
+    },
+    {
+      "stage": "entries-progress",
+      "done": 1,
+      "total": 2
+    },
+    {
+      "stage": "entries-progress",
+      "done": 2,
+      "total": 2
+    },
+    {
+      "stage": "integrate",
+      "entries": 11
+    },
+    {
+      "stage": "assemble",
+      "entries": 11
+    },
+    {
+      "stage": "response"
+    },
+    {
+      "stage": "repair",
+      "reason": "2 处问题",
+      "attempt": 1
+    },
+    {
+      "stage": "response"
+    },
+    {
+      "stage": "validate"
+    },
+    {
+      "stage": "closure",
+      "openClaims": [
+        "定理 · 5 · 粘合同构"
+      ]
+    }
+  ],
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:4-dimensional-skein-modules-handle-attachments-and-tangles",
+      "title": "4维 skein 模、柄附件与环圈"
+    },
+    "mainTargetEntryId": "paper:thm:handle-1",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:4-dimensional-skein-modules-handle-attachments-and-tangles",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:theorem:external:pullback-sard"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:thm:handle-1"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:thm:handle-1",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 1-柄加法公式",
+        "shortTitle": "1-柄加法公式",
+        "title": "1-柄加法公式",
+        "statement": "若 $X_1$ 通过沿 $S^0 \\times B^3$ 添加 1-柄得到，$T$ 为沿 1-柄余核切割 $L$ 所得的 tangle，则 $S_\\star(X_1; L)$ 是关联三元组 $(X; S^0 \\times B^3; T)$ 的双模的 0 阶 Hochschild 同调。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:handle-2",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 2-柄加法公式",
+        "shortTitle": "2-柄加法公式",
+        "title": "2-柄加法公式",
+        "statement": "若 $X_1$ 通过沿 $S^1 \\times D^2$ 添加 2-柄得到，则 $S_\\star(X_1; L)$ 可通过“缆绳操作”从关联三元组 $(X; S^1 \\times D^2; \\emptyset)$ 的模得到。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:handle-3",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 3-柄加法公式",
+        "shortTitle": "3-柄加法公式",
+        "title": "3-柄加法公式",
+        "statement": "若 $X_1$ 通过沿 $S^2 \\times D^1$ 添加 3-柄得到，则 $S_\\star(X_1; L)$ 是关联三元组 $(X; S^2 \\times D^1; \\emptyset)$ 的模的商。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:gluing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 粘合公式",
+        "shortTitle": "粘合公式",
+        "title": "粘合公式",
+        "statement": "若 $(X; T_1 \\cup T_2)$ 是将三元组 $(X_1; Y; T_1)$ 与 $(X_2; Y; T_2)$ 沿 3-流形 $Y$ 粘合的结果，则 $S_\\star(X; T_1 \\cup T_2)$ 可视为与 $(X_1; Y; T_1)$ 关联的左模与与 $(X_2; Y; T_2)$ 关联的右模的双模张量积。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:def:triple-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 三元组的 skein lasagna 模",
+        "shortTitle": "三元组的 skein lasagna 模",
+        "title": "三元组的 skein lasagna 模",
+        "statement": "设 $T_Y \\subset Y$ 为任意嵌入的 framed tangle，其边界为相容的 $-\\phi^{-1}(P)$，则定义 $S_\\star(X; Y; T) := \\bigoplus_{T_Y} S_\\star(X; T \\cup_P \\phi(T_Y))$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:algebra-3manifold",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · 3-流形关联的代数",
+        "shortTitle": "3-流形关联的代数",
+        "title": "3-流形关联的代数",
+        "statement": "对嵌入 $Y$ 中的一对 framed tangles $T_Y^0, T_Y^1$，定义 $S_\\star(Y; P) := \\bigoplus_{T_Y^0, T_Y^1} S_\\star(Y \\times I; -T_Y^0 \\cup_{\\phi^{-1}(P)} T_Y^1)$，其乘法按给定规则定义，并具有局部单位。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:lemma:test-case-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 1 · 测试情形的同构",
+        "shortTitle": "测试情形的同构",
+        "title": "测试情形的同构",
+        "statement": "评价同构给出 k-代数同构 $S_2(B^3; P) \\cong \\bigoplus_{T_Y^0, T_Y^1} \\mathrm{KhR}_2(-T_Y^0 \\cup_P T_Y^1)$，以及 $S_2(B^3; P)$-模同构 $S_2(B^4; B^3; T) \\cong \\bigoplus_{T_Y} \\mathrm{KhR}_2(T \\cup_P T_Y)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:lemma:isomorphism-lasagna",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · lasagna 填充的同构",
+        "shortTitle": "lasagna 填充的同构",
+        "title": "lasagna 填充的同构",
+        "statement": "在 Khovanov-Rozansky 同调中，存在同构 $S_2(B^3 \\times I; -TY_0 \\cup_P TY_1) \\otimes S_2(B^3 \\times I; -TY_1 \\cup_P TY_2) \\cong S_2(B^3 \\times I; -TY_0 \\cup_P TY_2)$，通过垂直复合给出。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=4"
+      },
+      {
+        "id": "paper:theorem:gluing-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 粘合同构",
+        "shortTitle": "粘合同构",
+        "title": "粘合同构",
+        "statement": "若 $X = X_1 \\cup_Y X_2$ 沿边界子流形 $Y$ 粘合，则 $S_\\star(X; T_1 \\cup_P T_2) \\cong S_\\star(X_1; Y; T_1) \\otimes_{S_\\star(Y;P)} S_\\star(X_2; Y; T_2)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:theorem:external:pullback-sard",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · Sard 定理",
+        "shortTitle": "Sard 定理",
+        "title": "Sard 定理",
+        "statement": "设 $f: M \\to N$ 为光滑映射，则 $f$ 的临界值集合在 $N$ 中测度为零。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1",
+        "sourceReference": "标准微分拓扑教材"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:proof:1",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 1 · 测试情形的同构",
+        "shortTitle": "证明 · 测试情形的同构",
+        "title": "证明 测试情形的同构",
+        "statement": "通过评价同构与垂直复合的交换图证明代数同构，进而推出模同构。",
+        "premises": [
+          "paper:def:triple-module",
+          "paper:def:algebra-3manifold"
+        ],
+        "conclusion": "paper:lemma:test-case-isomorphism",
+        "argument": "通过评价同构与垂直复合的交换图证明代数同构，进而推出模同构。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · lasagna 填充的同构",
+        "shortTitle": "证明 · lasagna 填充的同构",
+        "title": "证明 lasagna 填充的同构",
+        "statement": "将评价同构与 Khovanov 同调连接，得到代数与模的同构，注意符号歧义。",
+        "premises": [
+          "paper:def:triple-module",
+          "paper:lemma:test-case-isomorphism"
+        ],
+        "conclusion": "paper:lemma:isomorphism-lasagna",
+        "argument": "将评价同构与 Khovanov 同调连接，得到代数与模的同构，注意符号歧义。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:3",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 3 · 粘合公式",
+        "shortTitle": "证明 · 粘合公式",
+        "title": "证明 粘合公式",
+        "statement": "通过构造粘合与切割映射并证明逆映射良定义，证明粘合公式。",
+        "premises": [
+          "paper:def:triple-module",
+          "paper:def:algebra-3manifold"
+        ],
+        "conclusion": "paper:thm:gluing",
+        "argument": "通过构造粘合与切割映射并证明逆映射良定义，证明粘合公式。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · 1-柄加法公式",
+        "shortTitle": "证明 · 1-柄加法公式",
+        "title": "证明 1-柄加法公式",
+        "statement": "将 1-柄附件视为沿 S^0×B^3 的粘合，应用粘合公式并通过 Hochschild 同调简化。",
+        "premises": [
+          "paper:thm:gluing",
+          "paper:def:triple-module",
+          "paper:def:algebra-3manifold"
+        ],
+        "conclusion": "paper:thm:handle-1",
+        "argument": "将 1-柄附件视为沿 S^0×B^3 的粘合，应用粘合公式并通过 Hochschild 同调简化。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 2-柄加法公式",
+        "shortTitle": "证明 · 2-柄加法公式",
+        "title": "证明 2-柄加法公式",
+        "statement": "将 2-柄附件视为沿 S^1×B^2 的粘合，应用粘合公式并通过辫子关系与球面求值得到。",
+        "premises": [
+          "paper:thm:gluing",
+          "paper:def:triple-module",
+          "paper:def:algebra-3manifold"
+        ],
+        "conclusion": "paper:thm:handle-2",
+        "argument": "将 2-柄附件视为沿 S^1×B^2 的粘合，应用粘合公式并通过辫子关系与球面求值得到。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 3-柄加法公式",
+        "shortTitle": "证明 · 3-柄加法公式",
+        "title": "证明 3-柄加法公式",
+        "statement": "将 3-柄附件视为沿 S^2×B^1 的粘合，应用粘合公式并利用 X2≅k 得到商。",
+        "premises": [
+          "paper:thm:gluing",
+          "paper:def:triple-module",
+          "paper:def:algebra-3manifold"
+        ],
+        "conclusion": "paper:thm:handle-3",
+        "argument": "将 3-柄附件视为沿 S^2×B^1 的粘合，应用粘合公式并利用 X2≅k 得到商。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      }
+    ]
+  }
+}

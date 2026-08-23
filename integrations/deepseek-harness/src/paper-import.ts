@@ -1,15 +1,25 @@
 import type { Context } from '@deepseek-ai/cordis'
-import { BlockAssembler, createUserMessage, type GenerateOptions, type TokenUsage } from '@deepseek-ai/dsh-llm'
+import { BlockAssembler, createUserMessage, type GenerateOptions, type TokenUsage, type ReasoningEffortId } from '@deepseek-ai/dsh-llm'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import type { JsonValue } from '@deepseek-ai/dsh-session/types'
 import { TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
 // The existing browser workflow is intentionally JavaScript; this seam is covered by its Node tests.
 // @ts-expect-error no declaration is shipped by the static Math Map application
 import paperImportClient from '../../../paper-import-client.js'
+// Synchronized canonical capability asset; DSH only injects it into the
+// workflow and does not own its prompts or schemas.
+// @ts-expect-error no declaration is shipped by the synchronized browser asset
+import paperImportV3Capability from '../../../paper-import-v3-capability.js'
+// @ts-expect-error synchronized browser assets do not ship declarations
+import guideLeadContract from '../../../guide-lead-contract-v1.js'
+// @ts-expect-error synchronized browser assets do not ship declarations
+import leadGuidedExtraction from '../../../lead-guided-extraction-v1.js'
+// @ts-expect-error synchronized browser assets do not ship declarations
+import dualLaneAggregation from '../../../dual-lane-extraction-aggregation-v1.js'
 import type { ImportStage } from './router.js'
 
-export interface PaperImportConfig { chunkCharacters: number; overlapCharacters: number; concurrency: number; experimentId?: string; condition?: string; workflowVersion?: 'v1' | 'v2'; tokenBudget?: { integrate: number; normal: number; retry: number } }
-interface ChatRequest { messages: Array<{ role: string; content: string }>; maxTokens: number; stage: string; signal?: AbortSignal }
+export interface PaperImportConfig { chunkCharacters: number; overlapCharacters: number; concurrency: number; experimentId?: string; condition?: string; workflowVersion?: 'v1' | 'v2' | 'v3' | 'v3.1' | 'v3.2' | 'v3.3' | 'v3.4' | 'v3.5' | 'v3.6' | 'v3.7' | 'v3.8' | 'v3.9' | 'v3.9.1' | 'v3.9.2' | 'v3.9.3' | 'v3.9.4' | 'v3.9.5' | 'v3.9.6' | 'v3.9.7' | 'v3.9.8' | 'v3.9.9' | 'v3.10' | 'v3.10.1' | 'v3.11' | 'v3.12' | 'v3.13' | 'v3.14' | 'v3.15' | 'v3.16' | 'v3.17' | 'v3.18' | 'v3.19' | 'v3.20' | 'v3.21' | 'v3.22' | 'v3.23' | 'v3.24' | 'v3.25' | 'v3.26' | 'v3.26-inference-v2' | 'v3.26-inference-v3' | 'v3.26-inference-v4-assembly' | 'v3.26-inference-v5-repair-coverage' | 'v3.26-inference-v6-repair-chain' | 'v3.26-inference-v7-repair-queue' | 'v3.27' | 'v3.28' | 'v3.29' | 'v3.30' | 'v3.31' | 'v3.32' | 'v3.33' | 'v3.34' | 'v3.35' | 'v3.36' | 'v3.37' | 'v3.38' | 'v3.39' | 'v3.40' | 'v3.41'; tokenBudget?: { integrate?: number; aggregate?: number; normal: number; retry: number } }
+interface ChatRequest { messages: Array<{ role: string; content: string }>; maxTokens: number; stage: string; signal?: AbortSignal; reasoningEffort?: ReasoningEffortId }
 export interface PaperImportRequest { fileName: string; pageCount: number; text: string }
 export type PaperImportResult = { view: JsonValue; diagnostics: Record<string, JsonValue> }
 
@@ -22,8 +32,10 @@ export const inject = ['mathMapCore', 'mathMapImportRouter', 'llm', 'tools']
 
 function stageOf(value: string): ImportStage {
   if (value.includes('repair') || value.includes('validate')) return 'repair'
-  if (value.includes('assembl') || value === 'response') return 'assemble'
-  if (value.includes('integrat')) return 'integrate'
+  if (value.includes('assembl') || value.includes('compile-candidate') || value === 'response') return 'assemble'
+  if (value.includes('aggregat') || value.includes('integrat')) return 'aggregate'
+  if (value.includes('guide') && !value.includes('coverage') && !value.includes('lead-guided')) return 'guide'
+  if (value.includes('coverage') || value.includes('lead-guided')) return 'extract'
   return 'extract'
 }
 
@@ -40,6 +52,7 @@ function jsonUsage(usage: TokenUsage | undefined): JsonUsage | null {
 async function generate(ctx: Context, request: ChatRequest, metrics: CallMetric[]): Promise<{ content: string; finishReason: string }> {
   const stage = stageOf(request.stage)
   const route = ctx.mathMapImportRouter.select(stage)
+  const effectiveReasoningEffort = request.reasoningEffort !== undefined ? request.reasoningEffort : route.reasoningEffort
   const startedAt = performance.now()
   const system = request.messages.filter(message => message.role === 'system').map(message => message.content).join('\n')
   const messages = request.messages.filter(message => message.role !== 'system').map(message => createUserMessage({
@@ -51,6 +64,7 @@ async function generate(ctx: Context, request: ChatRequest, metrics: CallMetric[
   // established workflow behavior.
   const options: GenerateOptions = {
     ...route,
+    ...(effectiveReasoningEffort !== undefined ? { reasoningEffort: effectiveReasoningEffort } : {}),
     maxTokens: Math.min(request.maxTokens, route.maxTokens),
     messages,
     system,
@@ -65,7 +79,7 @@ async function generate(ctx: Context, request: ChatRequest, metrics: CallMetric[
   // normalizes that same condition to `max-tokens`, so translate it at this
   // provider boundary while preserving the partial text for repair context.
   if (finish.kind === 'max-tokens') {
-    metrics.push({ stage, reasoningEffort: route.reasoningEffort ?? null, requestedMaxTokens: request.maxTokens, effectiveMaxTokens: options.maxTokens!, durationMs: Math.round(performance.now() - startedAt), finishReason: 'length', usage: jsonUsage(assembler.usage) })
+    metrics.push({ stage, reasoningEffort: options.reasoningEffort ?? route.reasoningEffort ?? null, requestedMaxTokens: request.maxTokens, effectiveMaxTokens: options.maxTokens!, durationMs: Math.round(performance.now() - startedAt), finishReason: 'length', usage: jsonUsage(assembler.usage) })
     return { content, finishReason: 'length' }
   }
   if (finish.kind !== 'stop') {
@@ -75,7 +89,7 @@ async function generate(ctx: Context, request: ChatRequest, metrics: CallMetric[
       : ''
     throw new Error(`Math Map ${stage} call ended with ${finish.kind}${detail}`)
   }
-  metrics.push({ stage, reasoningEffort: route.reasoningEffort ?? null, requestedMaxTokens: request.maxTokens, effectiveMaxTokens: options.maxTokens!, durationMs: Math.round(performance.now() - startedAt), finishReason: finish.kind, usage: jsonUsage(assembler.usage) })
+  metrics.push({ stage, reasoningEffort: options.reasoningEffort ?? route.reasoningEffort ?? null, requestedMaxTokens: request.maxTokens, effectiveMaxTokens: options.maxTokens!, durationMs: Math.round(performance.now() - startedAt), finishReason: finish.kind, usage: jsonUsage(assembler.usage) })
   return { content, finishReason: finish.kind }
 }
 
@@ -87,6 +101,7 @@ export async function runPaperImport(ctx: Context, config: PaperImportConfig, ar
     fileName: args.fileName, pageCount: args.pageCount, text: args.text,
     maxChunks: config.concurrency, tokenBudget: config.tokenBudget, signal,
     workflowVersion: config.workflowVersion ?? 'v1',
+    workflowCapabilities: { paper: paperImportV3Capability, guideLead: guideLeadContract, leadGuided: leadGuidedExtraction, aggregate: dualLaneAggregation },
     onStage: (stage: string) => {
       if (stages.at(-1) !== stage) stages.push(stage)
       onStage?.(stage)

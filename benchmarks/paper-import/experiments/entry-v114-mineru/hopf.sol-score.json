@@ -1,0 +1,129 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v114-mineru/hopf.raw-pool.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 18,
+  "completeness": 15,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main degree-theoretic chain, including degree zero implying null-homotopy, the extension theorem, the Hopf degree theorem, and the Euler-characteristic criterion for nonvanishing vector fields. Most extracted formulas have balanced LaTeX and plausible page locators. However, several statements omit essential hypotheses, the torus Euler-characteristic calculation is false, the punctured-space identification is imprecisely presented as a homeomorphic identification, and overlap between extraction chunks creates numerous duplicated entries with inconsistent classifications. Coverage of the Gold supporting infrastructure is incomplete, especially the local degree lemmas, transversality results, vector-field index definition, and the homotopy-group corollary.",
+  "strengths": [
+    "The degree and winding-number definitions are substantially represented, with the central degree formula preserved.",
+    "The candidate captures the core Hopf theorem on page 8 in a form that specializes to the Gold self-map classification.",
+    "The degree-zero, boundary-extension, range-adjustment, and general extension results preserve most of the proof architecture behind the main theorem.",
+    "The vector-field application includes finite-zero, localization or zero-removal, Poincare-Hopf, nonvanishing-field, sphere Euler-characteristic, and hairy-ball entries.",
+    "Several imported background results are explicitly marked external, including isotopy, linear isotopy, Sard, the epsilon-neighborhood theorem, and Poincare-Hopf.",
+    "Entry IDs and page numbers are generally coherent, and no pervasive LaTeX-delimiter corruption is present."
+  ],
+  "issues": [
+    "The entry paper:calculation:torus-euler-characteristic asserts $\\chi(T^k)=-2(k-2)$, whereas the Gold reference correctly gives $\\chi(T^k)=0$; this is a substantive mathematical error.",
+    "The winding-number definition fixes the direction map's codomain as $S^1$, making it dimension-specific where the relevant general construction should land in the appropriate sphere.",
+    "The Poincare-Hopf statement omits the requirement that the zeros be isolated or finite, so its displayed sum is not defined for an arbitrary smooth vector field; its page locator also differs from the Gold locator.",
+    "The nonvanishing-vector-field theorem omits the boundaryless condition and adds unnecessary connectedness and orientability restrictions, so it does not faithfully preserve the Gold theorem's scope.",
+    "The entry named as a homeomorphic identification of punctured spaces uses $\\mathbb R^{k+1}\\setminus\\{p\\}\\simeq S^k$ without distinguishing homotopy equivalence from homeomorphism, and a separate page-5 stereographic-projection entry has a vague and inaccurate description.",
+    "The hairy-ball entry covers only $S^2$, while the Gold result covers every positive even-dimensional sphere and also records existence in odd dimensions.",
+    "The candidate omits distinct Gold entries for the vector-field index, the regular-point local winding number, the signed-preimage summation formula, the transversality extension theorem, the transversality homotopy theorem, and $\\pi_k(S^k)\\cong\\mathbb Z$.",
+    "The circle base case is weakened to the degree-zero case and omits both equal-degree classification and the standard representatives $z\\mapsto z^n$.",
+    "Chunk overlap produces repeated entries for boundary extension, degree-zero sphere maps, the circle base case, finite-zero vector fields, zero-index removal, and the Euler/nonvanishing-field theorem; duplicates are sometimes classified inconsistently as theorem versus lemma.",
+    "Some background entries are only skeletal: the Sard entry does not state density or the measure-zero critical-value conclusion, and the bump-function entry does not retain the Gold support and plateau conditions."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:degree",
+      "candidateEntryIds": [
+        "hopf:def:degree"
+      ],
+      "status": "covered",
+      "notes": "The intersection-number definition and signed-preimage interpretation are preserved."
+    },
+    {
+      "goldEntryId": "paper:def:winding",
+      "candidateEntryIds": [
+        "hopf:def:winding-number"
+      ],
+      "status": "partial",
+      "notes": "The normalization formula is present, but the codomain is incorrectly fixed as $S^1$."
+    },
+    {
+      "goldEntryId": "paper:thm:degree-zero-null",
+      "candidateEntryIds": [
+        "hopf:theorem:degree-zero-sphere-map",
+        "paper:claim:degree-zero-sphere"
+      ],
+      "status": "covered-with-duplication",
+      "notes": "The mathematical implication is correct, but it is extracted twice with different entry types."
+    },
+    {
+      "goldEntryId": "paper:thm:extension",
+      "candidateEntryIds": [
+        "paper:theorem:extension-theorem",
+        "paper:claim:euclidean-extension"
+      ],
+      "status": "covered-by-generalized-form",
+      "notes": "The candidate gives the standard degree-zero extension criterion for a boundary map into $S^k$ on a general oriented manifold."
+    },
+    {
+      "goldEntryId": "paper:thm:hopf",
+      "candidateEntryIds": [
+        "paper:theorem:hopf-degree-theorem"
+      ],
+      "status": "covered",
+      "notes": "The candidate states the broader source form for maps from a compact connected oriented $k$-manifold to $S^k$, which includes the Gold sphere self-map case, though the no-boundary convention is not explicit."
+    },
+    {
+      "goldEntryId": "paper:cor:homotopy-group",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No entry records the based corollary $\\pi_k(S^k)\\cong\\mathbb Z$ for $k\\geq1$."
+    },
+    {
+      "goldEntryId": "paper:b0:poincare-hopf",
+      "candidateEntryIds": [
+        "paper:thm:poincare-hopf-index"
+      ],
+      "status": "partial",
+      "notes": "External attribution and the index-sum formula are present, but isolated or finite zeros and the boundaryless hypothesis are omitted."
+    },
+    {
+      "goldEntryId": "paper:thm:vf-euler",
+      "candidateEntryIds": [
+        "paper:theorem:nonvanishing-vector-field-euler",
+        "paper:thm:nonvanishing-vector-field-euler"
+      ],
+      "status": "partial-with-duplication",
+      "notes": "The equivalence is captured twice, but both versions omit the no-boundary condition and impose stronger orientability or connectedness assumptions."
+    },
+    {
+      "goldEntryId": "paper:calc:euler-sphere",
+      "candidateEntryIds": [
+        "paper:calculation:sphere-euler-characteristic",
+        "paper:calculation:torus-euler-characteristic"
+      ],
+      "status": "partially-incorrect",
+      "notes": "The sphere calculation is correct, but the torus calculation is false."
+    },
+    {
+      "goldEntryId": "paper:cor:hairy-ball",
+      "candidateEntryIds": [
+        "paper:thm:hairy-ball"
+      ],
+      "status": "partial",
+      "notes": "Only the two-sphere case is extracted; the full even-sphere assertion and odd-sphere contrast are absent."
+    },
+    {
+      "goldEntryId": "paper:lemma:winding-sum",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The signed-preimage formula for winding number or degree is not isolated as an entry."
+    },
+    {
+      "goldEntryId": "paper:b0:transversality-homotopy",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The transversality result needed to justify perturbing vector fields to finite isolated zeros is not extracted."
+    }
+  ]
+}

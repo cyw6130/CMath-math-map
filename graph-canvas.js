@@ -1,7 +1,19 @@
-/* Persistent ForceGraph stage for Gamma.
+/**
+ * @cmath-provenance
+ * @package graph-core-v1
+ * @version v1
+ * @canonicalSource packages/math-map/presentation/graph-core-v1/src/index.js
+ * @contentHash sha256:29973f25267a0e8ec46f7ccfac5fbe633e25cd78a0a7cbf961e2b63d841b1854
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
+/* Persistent ForceGraph stage for Gamma (v3).
    One renderer instance owns the whole lifetime of the canvas. Layout changes
    reuse node objects and coordinates; graph actions change emphasis, camera,
-   or topology without replacing the canvas. */
+   or topology without replacing the canvas.
+   v3 replaces v2's permanent remote pins with tethered global relaxation:
+   after each insertion the whole graph may untangle, but established nodes
+   are pulled back toward their prior coordinates so drift stays bounded. */
 (() => {
   "use strict";
 
@@ -29,7 +41,6 @@
     foundationStroke: "#070A10",
     focusHalo: "rgba(117,174,235,.5)",
     focusTitle: "#A9CDF5",
-    hubStroke: "#E6EDF5",
     premiseStroke: "rgba(141,160,184,.55)",
     conclusionStroke: "#7FA8D9",
   };
@@ -90,6 +101,84 @@
     };
   }
 
+  // A small deterministic collide force keeps glyphs and their immediate label
+  // area apart without requiring a page-level d3 dependency.
+  function createCollideForce(options = {}) {
+    const radius = Number.isFinite(options.radius) ? options.radius : 13;
+    const padding = Number.isFinite(options.padding) ? options.padding : 8;
+    const strength = Number.isFinite(options.strength) ? options.strength : 0.88;
+    const iterations = Number.isFinite(options.iterations) ? Math.max(1, Math.round(options.iterations)) : 2;
+    let nodes = [];
+
+    const nodeRadius = (node) => radius + (node.isClaim ? 2 : node.nodeKind === "inference" ? -1 : 0);
+    const force = (alpha = 1) => {
+      for (let pass = 0; pass < iterations; pass += 1) {
+        for (let leftIndex = 0; leftIndex < nodes.length; leftIndex += 1) {
+          const left = nodes[leftIndex];
+          for (let rightIndex = leftIndex + 1; rightIndex < nodes.length; rightIndex += 1) {
+            const right = nodes[rightIndex];
+            const leftPinned = Number.isFinite(left.fx) && Number.isFinite(left.fy);
+            const rightPinned = Number.isFinite(right.fx) && Number.isFinite(right.fy);
+            if (leftPinned && rightPinned) continue;
+
+            let dx = (right.x ?? 0) + (right.vx ?? 0) - (left.x ?? 0) - (left.vx ?? 0);
+            let dy = (right.y ?? 0) + (right.vy ?? 0) - (left.y ?? 0) - (left.vy ?? 0);
+            let distanceSquared = dx * dx + dy * dy;
+            if (distanceSquared < 1e-9) {
+              const angle = mixedHashUnit(`${left.id}>${right.id}`, 313) * Math.PI * 2;
+              dx = Math.cos(angle) * 1e-4;
+              dy = Math.sin(angle) * 1e-4;
+              distanceSquared = dx * dx + dy * dy;
+            }
+
+            const minimumDistance = nodeRadius(left) + nodeRadius(right) + padding;
+            if (distanceSquared >= minimumDistance * minimumDistance) continue;
+            const distance = Math.sqrt(distanceSquared);
+            const displacement = (minimumDistance - distance) * strength * Math.max(0.15, alpha);
+            const offsetX = dx / distance * displacement;
+            const offsetY = dy / distance * displacement;
+            const leftShare = leftPinned ? 0 : rightPinned ? 1 : 0.5;
+            const rightShare = rightPinned ? 0 : leftPinned ? 1 : 0.5;
+            left.vx = (left.vx ?? 0) - offsetX * leftShare;
+            left.vy = (left.vy ?? 0) - offsetY * leftShare;
+            right.vx = (right.vx ?? 0) + offsetX * rightShare;
+            right.vy = (right.vy ?? 0) + offsetY * rightShare;
+          }
+        }
+      }
+    };
+    force.initialize = (nextNodes) => {
+      nodes = nextNodes ?? [];
+    };
+    return force;
+  }
+
+  // Tethers pull established nodes back toward their pre-relaxation coordinates
+  // while the whole graph untangles, so insertions stay locally bounded without
+  // freezing early layout mistakes forever. Targets are set per relaxation round
+  // and cleared afterwards; with no targets the force is inert.
+  function createTetherForce() {
+    let nodes = [];
+    let targets = new Map();
+    const force = (alpha = 1) => {
+      if (!targets.size) return;
+      nodes.forEach((node) => {
+        const target = targets.get(node.id);
+        if (!target) return;
+        node.vx = (node.vx ?? 0) + (target.x - (node.x ?? 0)) * target.strength * alpha;
+        node.vy = (node.vy ?? 0) + (target.y - (node.y ?? 0)) * target.strength * alpha;
+      });
+    };
+    force.initialize = (nextNodes) => {
+      nodes = nextNodes ?? [];
+    };
+    force.setTargets = (nextTargets) => {
+      targets = nextTargets ?? new Map();
+    };
+    force.targetCount = () => targets.size;
+    return force;
+  }
+
   function colorWithAlpha(color, alpha) {
     const value = String(color ?? "");
     const hex = value.match(/^#([0-9a-f]{6})$/i)?.[1];
@@ -103,7 +192,7 @@
     const onBackgroundClick = typeof options.onBackgroundClick === "function" ? options.onBackgroundClick : () => {};
     const nodeLabel = typeof options.nodeLabel === "function"
       ? options.nodeLabel
-      : (node) => `<strong>${node.nodeKind === "entry" ? "Entry" : "Inference"}</strong><br>${window.GammaMath?.render(node.title) ?? node.title}`;
+      : (node) => `<strong>${node.nodeKind === "entry" ? "Candidate Entry" : "Candidate Inference"}</strong><br>${window.GammaMath?.render(node.title) ?? node.title}`;
     const visualSemantics = options.visualSemantics;
     const classifyNode = (node) => visualSemantics?.classifyNode?.(node) ?? {
       isInference: node.nodeKind === "inference",
@@ -117,12 +206,26 @@
     const labelMinScale = Number.isFinite(options.labelMinScale) ? options.labelMinScale : 2.4;
     const spreadScale = Number.isFinite(options.spread) ? options.spread : 1;
     const forceOptions = {
-      chargeStrength: -190,
-      chargeDistanceMax: 520,
-      linkDistance: 70,
-      linkStrength: 0.85,
+      chargeStrength: -125,
+      chargeDistanceMax: 440,
+      linkDistance: 64,
+      linkStrength: null,
+      linkStrengthScale: 0.72,
+      collisionRadius: 13,
+      collisionPadding: 8,
+      collisionStrength: 0.88,
+      collisionIterations: 2,
+      tetherRemoteStrength: 0.85,
+      tetherLocalStrength: 0.22,
       ...(options.forces ?? {}),
     };
+    const tetherForce = createTetherForce();
+    const collisionForce = createCollideForce({
+      radius: forceOptions.collisionRadius,
+      padding: forceOptions.collisionPadding,
+      strength: forceOptions.collisionStrength,
+      iterations: forceOptions.collisionIterations,
+    });
     let graph = null;
     let layout = { nodes: [], edges: [] };
     let selectedId = null;
@@ -136,6 +239,7 @@
     let transitionFrame = null;
     let rendererGeneration = 0;
     let engineStopWaiters = [];
+    let degreeById = new Map();
 
     container.innerHTML = "";
     const host = document.createElement("div");
@@ -181,8 +285,7 @@
       const selected = node.id === selectedId;
       const progress = node.enterProgress ?? 1;
       const sizeProgress = 0.32 + 0.68 * progress;
-      const hubScale = node.isUnderstandingHub ? 1.6 : 1;
-      const radiusPx = (visual.isInference ? 5.5 : visual.isFact ? 6.25 : visual.isClaim ? 8.25 : 7.5) * sizeProgress * hubScale;
+      const radiusPx = (visual.isInference ? 5.5 : visual.isFact ? 6.25 : visual.isClaim ? 8.25 : 7.5) * sizeProgress;
       const radius = radiusPx / safeScale;
       context.save();
       context.globalAlpha = alpha;
@@ -203,17 +306,6 @@
         context.arc(node.x, node.y, (radiusPx + 4) / safeScale, 0, Math.PI * 2);
         context.strokeStyle = palette.foundationStroke;
         context.lineWidth = 3 / safeScale;
-        context.stroke();
-      }
-
-      if (node.isUnderstandingHub) {
-        const endpointStroke = node.hubEndpointRole === "end" ? palette.conclusionStroke
-          : node.hubEndpointRole === "start" ? palette.entryStroke
-            : palette.hubStroke;
-        context.beginPath();
-        context.arc(node.x, node.y, (radiusPx + 5) / safeScale, 0, Math.PI * 2);
-        context.strokeStyle = endpointStroke;
-        context.lineWidth = (node.hubEndpointRole ? 2.4 : 1.6) / safeScale;
         context.stroke();
       }
 
@@ -273,17 +365,7 @@
         context.fillText("当前聚焦", node.x, node.y - (radiusPx + 9) / safeScale);
       }
 
-      if (node.hubEndpointRole && progress > 0.72) {
-        const endpointLabel = node.hubEndpointRole === "start" ? "起点" : node.hubEndpointRole === "end" ? "终点" : "根节点";
-        const endpointFontSize = clamp(9 / Math.sqrt(scale), 7, 10);
-        context.font = `800 ${endpointFontSize}px "Avenir Next","PingFang SC",system-ui,sans-serif`;
-        context.textAlign = "center";
-        context.textBaseline = "bottom";
-        context.fillStyle = node.hubEndpointRole === "end" ? palette.conclusionStroke : palette.hubStroke;
-        context.fillText(endpointLabel, node.x, node.y - (radiusPx + 8) / safeScale);
-      }
-
-      if ((scale >= labelMinScale || selected || node.isUnderstandingHub) && progress > 0.72) {
+      if ((scale >= labelMinScale || selected) && progress > 0.72) {
         const visibleName = node.displayName ?? node.title;
         const text = shortLabel(window.GammaMath?.toPlainText(visibleName) ?? visibleName);
         const fontSize = clamp(11 / Math.sqrt(scale), 8, 13);
@@ -342,6 +424,77 @@
       graph.d3ReheatSimulation();
     };
 
+    const adaptiveLinkStrength = (link) => {
+      if (typeof forceOptions.linkStrength === "function") return forceOptions.linkStrength(link);
+      if (Number.isFinite(forceOptions.linkStrength)) return forceOptions.linkStrength;
+      const sourceDegree = degreeById.get(endpointId(link.source)) ?? 1;
+      const targetDegree = degreeById.get(endpointId(link.target)) ?? 1;
+      return forceOptions.linkStrengthScale / Math.max(1, Math.min(sourceDegree, targetDegree));
+    };
+
+    const configureForces = (nodes, links) => {
+      degreeById = new Map(nodes.map((node) => [node.id, 0]));
+      links.forEach((link) => {
+        const source = endpointId(link.source);
+        const target = endpointId(link.target);
+        degreeById.set(source, (degreeById.get(source) ?? 0) + 1);
+        degreeById.set(target, (degreeById.get(target) ?? 0) + 1);
+      });
+      graph.d3Force("charge")?.strength(forceOptions.chargeStrength).distanceMax(forceOptions.chargeDistanceMax);
+      graph.d3Force("link")?.distance(forceOptions.linkDistance).strength(adaptiveLinkStrength);
+    };
+
+    const topologyDelta = (previousData, nodes, links) => {
+      const previousNodeIds = new Set(previousData.nodes.map((node) => node.id));
+      const nextNodeIds = new Set(nodes.map((node) => node.id));
+      const previousEdgeKeys = new Set(previousData.links.map(edgeKey));
+      const nextEdgeKeys = new Set(links.map(edgeKey));
+      return {
+        addedNodes: [...nextNodeIds].filter((id) => !previousNodeIds.has(id)).length,
+        removedNodes: [...previousNodeIds].filter((id) => !nextNodeIds.has(id)).length,
+        addedEdges: [...nextEdgeKeys].filter((key) => !previousEdgeKeys.has(key)).length,
+        removedEdges: [...previousEdgeKeys].filter((key) => !nextEdgeKeys.has(key)).length,
+      };
+    };
+
+    const warmupTicksFor = (delta, nodeCount, phase = "full") => {
+      const nodeChange = delta.addedNodes + delta.removedNodes;
+      const edgeChange = delta.addedEdges + delta.removedEdges;
+      const motionAllowance = reduceMotion() ? 24 : 0;
+      if (phase === "placement") {
+        return Math.round(clamp(28 + nodeChange * 10 + edgeChange * 4 + motionAllowance, 40, 150));
+      }
+      if (phase === "relax") {
+        return Math.round(clamp(60 + nodeChange * 6 + edgeChange * 3 + Math.sqrt(nodeCount) * 5 + motionAllowance, 80, 360));
+      }
+      return Math.round(clamp(70 + nodeChange * 5 + edgeChange * 3 + Math.sqrt(nodeCount) * 6 + motionAllowance, 90, 480));
+    };
+
+    const neighborhoodOf = (seedIds, links, hops = 2) => {
+      const adjacency = new Map();
+      links.forEach((link) => {
+        const source = endpointId(link.source);
+        const target = endpointId(link.target);
+        if (!adjacency.has(source)) adjacency.set(source, new Set());
+        if (!adjacency.has(target)) adjacency.set(target, new Set());
+        adjacency.get(source).add(target);
+        adjacency.get(target).add(source);
+      });
+      const visited = new Set(seedIds);
+      let frontier = new Set(seedIds);
+      for (let depth = 0; depth < hops; depth += 1) {
+        const next = new Set();
+        frontier.forEach((id) => (adjacency.get(id) ?? []).forEach((neighbor) => {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            next.add(neighbor);
+          }
+        }));
+        frontier = next;
+      }
+      return visited;
+    };
+
     const ensureGraph = () => {
       if (graph || destroyed) return graph;
       if (typeof window.ForceGraph !== "function") {
@@ -352,7 +505,7 @@
         .graphData({ nodes: [], links: [] })
         .backgroundColor(palette.background)
         .nodeId("id")
-        .nodeVal((node) => node.isUnderstandingHub ? 18 : node.isClaim ? 10 : node.isFact ? 6 : node.nodeKind === "entry" ? 8 : 5)
+        .nodeVal((node) => node.isClaim ? 10 : node.isFact ? 6 : node.nodeKind === "entry" ? 8 : 5)
         .nodeLabel(nodeLabel)
         .nodeCanvasObjectMode(() => "replace")
         .nodeCanvasObject(paintNode)
@@ -361,7 +514,7 @@
         .linkDirectionalArrowLength((link) => (link.relation === "conclusion" ? 5 : 3) * (link.enterProgress ?? 1))
         .linkDirectionalArrowRelPos(0.74)
         .linkDirectionalArrowColor((link) => colorWithAlpha(link.relation === "conclusion" ? palette.conclusionStroke : palette.premiseStroke, Math.max(0.04, link.enterProgress ?? 1)))
-        .warmupTicks(reduceMotion() ? 220 : 150)
+        .warmupTicks(0)
         // Every topology update is arranged off-screen during warmup. There is
         // no visible force-simulation phase after the settled frame appears.
         .cooldownTicks(0)
@@ -384,8 +537,9 @@
           engineStopWaiters = [];
           waiters.forEach((resolve) => resolve());
         });
-      graph.d3Force("charge")?.strength(forceOptions.chargeStrength).distanceMax(forceOptions.chargeDistanceMax);
-      graph.d3Force("link")?.distance(forceOptions.linkDistance).strength(forceOptions.linkStrength);
+      graph.d3Force("collide", collisionForce);
+      graph.d3Force("tether", tetherForce);
+      configureForces([], []);
       rendererGeneration += 1;
       resize();
       return graph;
@@ -454,7 +608,6 @@
       const previousLinks = new Map(previousData.links.map((link) => [edgeKey(link), link]));
       const claimTransitions = [];
       const updateNodePresentation = (existing, rawNode) => {
-        ["isCandidate", "candidateVisual", "candidateStatus"].forEach((key) => delete existing[key]);
         const previousVisual = claimEstablishedProgress(existing);
         Object.assign(existing, {
           nodeKind: rawNode.nodeKind,
@@ -471,8 +624,6 @@
           status: rawNode.status,
           goalLevel: rawNode.goalLevel,
           isActiveTarget: Boolean(rawNode.isActiveTarget),
-          isUnderstandingHub: Boolean(rawNode.isUnderstandingHub),
-          hubEndpointRole: rawNode.hubEndpointRole ?? null,
           displayName: rawNode.displayName,
           title: rawNode.title,
           layer: rawNode.layer,
@@ -515,25 +666,19 @@
             existing.x = rawNode.x ?? 0;
             existing.y = rawNode.y ?? 0;
           }
-          // Reuse the same object and its current coordinates as the next
-          // simulation seed, but release it so the full graph can make room.
-          delete existing.fx;
-          delete existing.fy;
           return existing;
         }
         const seed = organicPlacement(rawNode, index, layout.nodes.length, spreadScale);
         const isEntering = !initialLoad && (!requestedEntering || requestedEntering.has(rawNode.id));
         const target = isEntering ? enterSeeds.get(rawNode.id) ?? batchAnchor : seed;
         const node = {
-          ...Object.fromEntries(Object.entries(rawNode).filter(([key]) => !["isCandidate", "candidateVisual", "candidateStatus"].includes(key))),
+          ...rawNode,
           x: target.x,
           y: target.y,
           enterProgress: isEntering ? 0 : 1,
           claimVisualEstablished: rawNode.isClaim && (rawNode.claimState ?? rawNode.status) === "established" ? 1 : 0,
         };
-        if (isEntering) {
-          enteringIds.add(node.id);
-        }
+        if (isEntering) enteringIds.add(node.id);
         return node;
       });
 
@@ -548,35 +693,90 @@
         return { ...normalized, enterProgress: enteringIds.has(normalized.source) || enteringIds.has(normalized.target) ? 0 : 1 };
       });
 
-      const settledLayout = enteringIds.size ? waitForSettledLayout() : null;
-      graph.graphData({ nodes, links });
-      resize();
-      if (!enteringIds.size) {
-        repaint();
+      const delta = topologyDelta(previousData, nodes, links);
+      const topologyChanged = Object.values(delta).some(Boolean);
+      if (!topologyChanged) {
         if (action.focusIds) focusSubgraph(action.focusIds, action);
         if (claimTransitions.length) {
           await runTransition(action.duration ?? 180, (progress) => claimTransitions.forEach((transition) => {
             transition.node.claimVisualEstablished = transition.start + (transition.target - transition.start) * progress;
           }));
-        }
+        } else repaint();
         return;
       }
 
-      await settledLayout;
+      configureForces(nodes, links);
+
+      if (enteringIds.size) {
+        // Phase 1: freeze the established map while newcomers resolve their
+        // local collisions and link geometry around deterministic anchor seeds.
+        nodes.forEach((node) => {
+          if (!existingById.has(node.id)) return;
+          node.fx = node.x ?? 0;
+          node.fy = node.y ?? 0;
+        });
+        let settledLayout = waitForSettledLayout();
+        graph.warmupTicks(warmupTicksFor(delta, nodes.length, "placement"));
+        graph.graphData({ nodes, links });
+        resize();
+        await settledLayout;
+
+        // Phase 2: tethered global relaxation. Every node is released so the
+        // whole graph can keep untangling across rounds, but established nodes
+        // are tethered back toward their phase-1 coordinates — strongly outside
+        // the inserted subgraph's two-hop neighborhood, gently inside it — so
+        // displacement stays bounded instead of freezing early mistakes forever.
+        const localIds = neighborhoodOf(enteringIds, links, 2);
+        const tetherTargets = new Map();
+        nodes.forEach((node) => {
+          delete node.fx;
+          delete node.fy;
+          if (!existingById.has(node.id)) return;
+          tetherTargets.set(node.id, {
+            x: node.x ?? 0,
+            y: node.y ?? 0,
+            strength: localIds.has(node.id) ? forceOptions.tetherLocalStrength : forceOptions.tetherRemoteStrength,
+          });
+        });
+        tetherForce.setTargets(tetherTargets);
+        try {
+          settledLayout = waitForSettledLayout();
+          graph.warmupTicks(warmupTicksFor(delta, nodes.length, "relax"));
+          graph.graphData({ nodes, links });
+          resize();
+          await settledLayout;
+        } finally {
+          tetherForce.setTargets(new Map());
+        }
+      } else {
+        // Initial loads and non-insertion topology edits receive a global,
+        // topology-scaled settle. This also releases pins left by prior local
+        // insertion rounds when a genuinely global change is requested.
+        nodes.forEach((node) => {
+          delete node.fx;
+          delete node.fy;
+        });
+        const settledLayout = waitForSettledLayout();
+        graph.warmupTicks(warmupTicksFor(delta, nodes.length));
+        graph.graphData({ nodes, links });
+        resize();
+        await settledLayout;
+      }
 
       if (action.focusIds) focusSubgraph(action.focusIds, action);
-      await runTransition(action.duration ?? 180, (progress) => {
-        nodes.forEach((node) => {
-          if (!enteringIds.has(node.id)) return;
-          node.enterProgress = progress;
+      if (enteringIds.size || claimTransitions.length) {
+        await runTransition(action.duration ?? 180, (progress) => {
+          nodes.forEach((node) => {
+            if (enteringIds.has(node.id)) node.enterProgress = progress;
+          });
+          links.forEach((link) => {
+            if (enteringIds.has(endpointId(link.source)) || enteringIds.has(endpointId(link.target))) link.enterProgress = progress;
+          });
+          claimTransitions.forEach((transition) => {
+            transition.node.claimVisualEstablished = transition.start + (transition.target - transition.start) * progress;
+          });
         });
-        links.forEach((link) => {
-          if (enteringIds.has(endpointId(link.source)) || enteringIds.has(endpointId(link.target))) link.enterProgress = progress;
-        });
-        claimTransitions.forEach((transition) => {
-          transition.node.claimVisualEstablished = transition.start + (transition.target - transition.start) * progress;
-        });
-      });
+      } else repaint();
     };
 
     const setSelected = (id) => {

@@ -1,0 +1,90 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-1-off-compact-v3.9.9",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.9",
+  "promptSetVersion": "v3.9.9",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "文章1.pdf",
+    "pageCount": 14,
+    "characters": 29596
+  },
+  "diagnostics": {
+    "durationMs": 98869,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "文章1.pdf",
+        "pageCount": 14,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 29596,
+        "atMs": 0
+      },
+      {
+        "stage": "target",
+        "leads": 11,
+        "atMs": 67653
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 67653
+      },
+      {
+        "stage": "request",
+        "chars": 29596,
+        "chunks": 2,
+        "atMs": 67656
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 6,
+        "atMs": 67660
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 67645,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9294,
+          "completion_tokens": 3527,
+          "total_tokens": 12821
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 30147,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12898,
+          "completion_tokens": 995,
+          "total_tokens": 13893
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 31212,
+        "status": 429,
+        "finishReason": null,
+        "usage": null
+      }
+    ],
+    "error": "Luna Gateway 请求失败（HTTP 429）：Concurrency limit exceeded for account, please retry later"
+  }
+}

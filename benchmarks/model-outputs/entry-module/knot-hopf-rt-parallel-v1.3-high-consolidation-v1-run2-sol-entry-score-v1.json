@@ -1,0 +1,29 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.3-high-consolidation-v1-run2.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 20,
+  "completeness": 17,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "候选较完整地覆盖了从 framed-link surgery、ribbon category 与 ribbon Hopf algebra 到 modular category、Kirby color 和 RT 不变量的主干对象，并显著补充了图示演算、范畴迹、handle-slide 与 purification 等基础设施；但若干 Gold 中应独立存在的基础定义和不变性结论仍被遗漏或折叠，新增条目也存在类型误分、约定含混和冗余扩张，因此尚未达到 flawless 标准。",
+  "strengths": [
+    "准确覆盖 Lickorish–Wallace、Kirby calculus、Turaev ribbon-graph functor 与最终 RT invariant 等核心结果。",
+    "较好覆盖 strict monoidal category、braiding、duality、ribbon category、quasitriangular/ribbon Hopf algebra、modular category 与 modular Hopf algebra 等主干定义。",
+    "补出了 graphical calculus、categorical trace/dimension、Kirby color、handle-slide property、purification 与 Turaev purification 等重要支撑对象。",
+    "页码均有效，Entry ID 稳定，主要公式和 Turaev-style quantum-trace/normalization 约定基本保持一致。"
+  ],
+  "issues": [
+    "Gold 中独立的 Hopf algebra 基础定义仍缺失；候选直接从 quasitriangular Hopf algebra 开始，基础结构被隐含。",
+    "Gold 中独立的 twist、finite simple system/domination condition、negligible morphism 与 purification 定义仍被折叠在更宽的 ribbon/modular/purification 条目中。",
+    "Kirby reduction、blow-up invariance 与 Kirby-presentation independence 没有全部作为独立 Claim 提取；最终 RT theorem 不能完全替代这些可独立引用的中间结论。",
+    "若干结果型对象被标为 calculation 或 algorithm，例如 coproduct-induced tensor action、colored framed-link invariant、Hopf-link matrix/rank data；这降低了 Fact/Claim 分类精度。",
+    "dual-module 条目把使用 S 与 S^{-1} 的作用写成可互换选择，却没有固定相应的左右对偶约定，和 Gold 的固定 convention 相比含混。",
+    "negligible module 条目把所有 endomorphism 的量子迹为零与仅 identity 的量子迹为零写成等价，陈述过强。",
+    "57 个候选 Entry 明显多于 37 个 Gold Entry；部分额外的 Rohlin、Yang–Baxter、pivotal、generic quantum-group/Jones 条目有数学意义，但对当前 Gold 主干形成了一定冗余扩张。"
+  ],
+  "entryLevelComparison": []
+}

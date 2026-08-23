@@ -1,0 +1,727 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-kirby-2018-trisections-of-4-manifolds-off-compact-v3.9.9",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.9",
+  "promptSetVersion": "v3.9.9",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+    "pageCount": 4,
+    "characters": 20959
+  },
+  "diagnostics": {
+    "durationMs": 192167,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+        "pageCount": 4,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 20959,
+        "atMs": 1
+      },
+      {
+        "stage": "target",
+        "leads": 11,
+        "atMs": 57927
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 57927
+      },
+      {
+        "stage": "request",
+        "chars": 20959,
+        "chunks": 1,
+        "atMs": 57929
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 5,
+        "atMs": 57932
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 1,
+        "atMs": 134965
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:heegaard-splitting",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:trisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:trisection-diagram",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:fold-and-cusp",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:open-book",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:group-trisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 134966
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 33,
+        "leadGuided": 17,
+        "total": 44,
+        "conflicts": 6,
+        "atMs": 134966
+      },
+      {
+        "stage": "integrate",
+        "entries": 44,
+        "atMs": 134967
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 9,
+        "renameCount": 0,
+        "atMs": 140242
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "entry:gay-kirby-trisections-existence-uniqueness",
+          "entry:kirby-thompson-monodromy-invariant",
+          "entry:castro-gay-pinzon-relative-trisections",
+          "entry:feller-klug-schirmer-zemke-invariants",
+          "entry:abrams-gay-kirby-group-trisections",
+          "entry:klug-functoriality",
+          "entry:meier-zupan-bridge-trisections",
+          "entry:meier-zupan-r-link-trisections",
+          "entry:meier-schirmer-zupan-gprc",
+          "entry:baykur-saeki-simplified-trisections",
+          "entry:bell-hass-rubinstein-tillmann-computation",
+          "entry:rubinstein-tillmann-generalized-trisections",
+          "paper:theorem:monodromy-classification",
+          "paper:theorem:group-trisection-existence-correspondence",
+          "paper:claim:existence-stable-uniqueness"
+        ],
+        "fixedCount": 3,
+        "atMs": 140256
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 3,
+        "items": [
+          {
+            "canonicalId": "paper:theorem:monodromy-classification",
+            "page": 2,
+            "source": "Kirby–Thompson, A new invariant of 4-manifolds, PNAS 115 (2018), 10857–10860；本文参考文献 6"
+          },
+          {
+            "canonicalId": "paper:theorem:group-trisection-existence-correspondence",
+            "page": 3,
+            "source": "Abrams–Gay–Kirby, Group trisections and smooth 4-manifolds, Geometry & Topology 22 (2018), 1537–1545；本文参考文献 10"
+          },
+          {
+            "canonicalId": "paper:claim:existence-stable-uniqueness",
+            "page": 2,
+            "source": "Gay–Kirby, Trisecting 4-manifolds, Geom. Topol. 20 (2016), 3097–3132（文献 5）"
+          }
+        ],
+        "atMs": 140259
+      },
+      {
+        "stage": "assemble",
+        "entries": 35,
+        "atMs": 140261
+      },
+      {
+        "stage": "response",
+        "atMs": 172674
+      },
+      {
+        "stage": "repair",
+        "reason": "3 处问题",
+        "attempt": 1,
+        "atMs": 172704
+      },
+      {
+        "stage": "response",
+        "atMs": 192160
+      },
+      {
+        "stage": "validate",
+        "atMs": 192164
+      },
+      {
+        "stage": "closure",
+        "openClaims": [],
+        "atMs": 192167
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 192167
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 57919,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 6171,
+          "completion_tokens": 3112,
+          "total_tokens": 9283
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 23698,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9360,
+          "completion_tokens": 1243,
+          "total_tokens": 10603
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 47960,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10357,
+          "completion_tokens": 2528,
+          "total_tokens": 12885
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 77031,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9164,
+          "completion_tokens": 4176,
+          "total_tokens": 13340
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 5271,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3798,
+          "completion_tokens": 203,
+          "total_tokens": 4001
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 32412,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16386,
+          "completion_tokens": 1724,
+          "total_tokens": 18110,
+          "completion_tokens_details": {
+            "reasoning_tokens": 586
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 19455,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 21848,
+          "completion_tokens": 806,
+          "total_tokens": 22654,
+          "prompt_tokens_details": {
+            "cached_tokens": 16128
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 405
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "title": "三分解与光滑四维流形研究框架"
+    },
+    "projectTitle": "三分解与光滑四维流形研究框架",
+    "mainTargetEntryId": "paper:claim:existence-stable-uniqueness",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:theorem:monodromy-classification",
+          "paper:theorem:boundary-gluing",
+          "paper:theorem:group-trisection-existence-correspondence",
+          "paper:theorem:group-trisection-functoriality",
+          "paper:theorem:bridge-position-existence",
+          "paper:proposition:gprc-trisection-program",
+          "paper:theorem:lefschetz-trisection-correspondence",
+          "paper:proposition:genus-three-rational-homology-spheres",
+          "paper:theorem:generalized-recovery",
+          "paper:claim:existence-stable-uniqueness",
+          "paper:proposition:r-link-four-manifold"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:claim:existence-stable-uniqueness"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:def:heegaard-splitting",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · Heegaard 分裂",
+        "shortTitle": "Heegaard 分裂",
+        "title": "Heegaard 分裂",
+        "statement": "闭、定向、连通的 $3$-流形 $Y$ 可表示为两个 $3$ 维 handlebody 沿其公共边界粘合而成，公共边界是属为 $g$ 的曲面 $\\Sigma_g$；每个 handlebody 是一个 $0$-handle 与 $g$ 个 $1$-handle 的并。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · 4-流形的三分解",
+        "shortTitle": "4-流形的三分解",
+        "title": "4-流形的三分解",
+        "statement": "光滑、连通、闭、定向的 $4$-流形 $X$ 的三分解是分解 $X=X_1\\cup X_2\\cup X_3$，其中每个 $X_i$ 是 $4$ 维 handlebody，即 $k_i$ 个 $S^1\\times B^3$ 的连通和；任意两两交集 $X_i\\cap X_j$ 是 $3$ 维 handlebody，三重交集 $X_1\\cap X_2\\cap X_3=\\Sigma_g$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:proposition:boundary-of-sector",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 三分解部分的边界结构",
+        "shortTitle": "三分解部分的边界结构",
+        "title": "三分解部分的边界结构",
+        "statement": "若 $i\\ne j\\ne k$，则 $(X_i\\cap X_j)\\cup(X_j\\cap X_k)=\\partial X_j$ 是 $k$ 个 $S^1\\times S^2$ 的连通和，而 $\\Sigma_g$ 是 $\\partial X_j$ 的属为 $g$ 的 Heegaard 分裂曲面。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 三分解图",
+        "shortTitle": "三分解图",
+        "title": "三分解图",
+        "statement": "三分解图是在中心曲面 $\\Sigma_g$ 上给出三组附着圆曲线 $\\alpha=\\alpha_1,\\ldots,\\alpha_g$、$\\beta$ 和 $\\gamma$；其中 $\\alpha$ 是 $X_1\\cap X_2$ 中 $2$-handles 的附着圆，$\\beta$、$\\gamma$ 分别由另外两个两两交集同样确定。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:morse-2-function",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 产生三分解图的 Morse $2$-函数",
+        "shortTitle": "产生三分解图的 Morse $2$-函数",
+        "title": "产生三分解图的 Morse $2$-函数",
+        "statement": "三分解图由 Morse $2$-函数 $f:X\\to B^2$产生；在 $B^2$ 的任意泛半径上，其逆像是一个 $3$-流形，即 $g$ 个 $S^1\\times B^2$ 的连通和，并由在 $\\Sigma_g$ 上附加 $g$ 个 $2$-handles 和一个 $3$-handle 得到。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:fold-and-cusp",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · 折叠曲线与尖点的局部模型",
+        "shortTitle": "折叠曲线与尖点的局部模型",
+        "title": "折叠曲线与尖点的局部模型",
+        "statement": "Morse $2$-函数的折叠曲线在局部坐标中具有模型 $f(t,x,y,z)=(t,-x^2-y^2\\pm z^2)$；$t$ 参数化折叠曲线，外侧定折叠曲线的 $z^2$ 系数为负，表示极小值弧，其他 $g$ 条不定折叠曲线的系数为正。尖点在适当坐标中是成对产生一对相消的指标 $1$ 与指标 $2$ 临界点的出生点。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:calculation:monodromy",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · 三分解单值化",
+        "shortTitle": "三分解单值化",
+        "title": "三分解单值化",
+        "statement": "沿 $B^2$ 逆时针绕行并跟随某个句柄体（例如 $\\alpha$-句柄体）时，单值化定义为使其回到自身所需的句柄滑动总次数的最小值；$\\alpha$ 与 $\\beta$、以及 $\\beta$ 与 $\\gamma$ 可分别置于标准位置，而实现其他配对标准位置时允许发生句柄滑动。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:monodromy-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 低单值化分类",
+        "shortTitle": "低单值化分类",
+        "title": "低单值化分类",
+        "statement": "若三分解的单值化为 $0$ 或 $1$，则 $X$ 必为四个基本 $4$-流形之一。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Kirby–Thompson, A new invariant of 4-manifolds, PNAS 115 (2018), 10857–10860；本文参考文献 6"
+      },
+      {
+        "id": "paper:def:open-book",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 开书分解",
+        "shortTitle": "开书分解",
+        "title": "开书分解",
+        "statement": "$3$-流形 $Y$ 上的开书分解是分解为一个 binding 链环 $L\\subset Y$ 与纤维化 $Y-L\\to S^1$；纤维称为 pages，且每个 page 的边界是 binding $L$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:boundary-gluing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 相容边界三分解的粘合",
+        "shortTitle": "相容边界三分解的粘合",
+        "title": "相容边界三分解的粘合",
+        "statement": "若两个具有相同边界的三分解在边界上诱导的开书分解一致，则它们可以粘合为所得闭四流形的三分解；该结论也适用于多个边界分量。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Castro, Gay–Pinzón-Caicedo, Trisections of 4-manifolds with boundary, PNAS 115 (2018), 10861–10868；本文参考文献7、8"
+      },
+      {
+        "id": "paper:algorithm:handle-diagram-to-trisection",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 1 · 由带边界 handle 图与开书数据构造三分解图",
+        "shortTitle": "由带边界 handle 图与开书数据构造三分解图",
+        "title": "由带边界 handle 图与开书数据构造三分解图",
+        "statement": "给定带边界 $4$-流形的显式 handle 图以及边界上的显式开书分解描述，可以构造诱导给定开书分解的三分解图；该构造可处理多个边界分量。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Castro–Gay–Pinzón-Caicedo, Trisections of 4-manifolds with boundary, PNAS 115 (2018), 10861–10868；本文参考文献 7"
+      },
+      {
+        "id": "paper:calculation:classical-invariants",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · 由三分解图计算经典不变量",
+        "shortTitle": "由三分解图计算经典不变量",
+        "title": "由三分解图计算经典不变量",
+        "statement": "给定描述 $X$ 的三分解图，可以确定 $X$ 的同调群、交叉形式和 signature；相关计算方法可对若干简单三分解图进行显式计算。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Feller–Klug–Schirmer–Zemke, Calculating the homology and intersection form of a 4-manifold from a trisection diagram, PNAS 115 (2018), 10869–10874；本文参考文献 9"
+      },
+      {
+        "id": "paper:def:group-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 群的三分解",
+        "shortTitle": "群的三分解",
+        "title": "群的三分解",
+        "statement": "对三分解应用基本群函子得到一个满射立方体：中心顶点来自 $\\pi_1(\\Sigma_g)$，相邻顶点来自三个 $3$ 维 handlebody 的基本群，进一步顶点来自三个 $4$ 维 handlebody 的基本群，最终顶点为 $\\pi_1(X)$；立方体中的所有映射均为满射。该立方体称为群 $G$ 的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:group-trisection-existence-correspondence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 群三分解的存在性与对应",
+        "shortTitle": "群三分解的存在性与对应",
+        "title": "群三分解的存在性与对应",
+        "statement": "每个有限表示群 $G$ 都有群三分解，并且群三分解与光滑、闭、可定向的 $4$-流形之间存在一一对应。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Abrams–Gay–Kirby, Group trisections and smooth 4-manifolds, Geometry & Topology 22 (2018), 1537–1545；本文参考文献 10"
+      },
+      {
+        "id": "paper:theorem:group-trisection-functoriality",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 群三分解对应的函子性",
+        "shortTitle": "群三分解对应的函子性",
+        "title": "群三分解对应的函子性",
+        "statement": "群三分解与光滑、闭、可定向四流形之间的一一对应实际上具有函子性。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Klug, Functoriality of group trisections, PNAS 115 (2018), 10875–10879；本文参考文献11"
+      },
+      {
+        "id": "paper:def:bridge-trisected-position",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · 桥三分解位置",
+        "shortTitle": "桥三分解位置",
+        "title": "桥三分解位置",
+        "statement": "给定已三分解的 $4$-流形和其中的嵌入曲面，若曲面与三分解的每个 $3$ 维 handlebody 的交是平凡弧系、与每个 $4$ 维 handlebody 的交是平凡圆盘系，则称曲面处于桥三分解位置；这里平凡意为边界平行。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:bridge-position-existence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 嵌入曲面的桥位置存在性",
+        "shortTitle": "嵌入曲面的桥位置存在性",
+        "title": "嵌入曲面的桥位置存在性",
+        "statement": "任意已三分解四流形中的嵌入曲面都可以通过同位素置于桥三分解位置。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier–Zupan, Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886；本文参考文献12"
+      },
+      {
+        "id": "paper:proposition:surface-diagram-encoding",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 桥三分解曲面的图示编码",
+        "shortTitle": "桥三分解曲面的图示编码",
+        "title": "桥三分解曲面的图示编码",
+        "statement": "处于桥三分解位置的曲面可以在三分解的中心曲面上以图示方式编码；特别地，任意嵌入于 $4$-流形中的打结球面都可以由双重点三分解图表示。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:dehn-surgery",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · Dehn 手术",
+        "shortTitle": "Dehn 手术",
+        "title": "Dehn 手术",
+        "statement": "在 $3$-流形边界 $Y$ 中沿带框结 $K$ 附加 $2$-handle 后，所得 $3$ 维边界通过去除 $K$ 的实心环面邻域 $V$，再将其重新粘回而得到；粘合由将 $V$ 的子午线曲线粘到 $K$ 的框架曲线确定。该过程称为 Dehn 手术。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:r-link",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · $R$-link",
+        "shortTitle": "$R$-link",
+        "title": "$R$-link",
+        "statement": "若 $S^3$ 中的 $n$ 分量链环经过 Dehn 手术所得 $3$-流形为 $\\#^n(S^1\\times S^2)$，则称该链环为 $R$-link。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:proposition:r-link-four-manifold",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · $R$-link 产生同伦 $4$-球面",
+        "shortTitle": "$R$-link 产生同伦 $4$-球面",
+        "title": "$R$-link 产生同伦 $4$-球面",
+        "statement": "$R$-link $L$ 可解释为构造闭 $4$-流形 $X_L$ 的粘合说明，并且 $X_L$ 与 $S^4$ 同伦等价。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier–Zupan, Characterizing Dehn surgeries on links via trisections, PNAS 115 (2018), 10887–10893；本文参考文献14"
+      },
+      {
+        "id": "paper:def:generalized-property-r",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · 广义 Property R 猜想",
+        "shortTitle": "广义 Property R 猜想",
+        "title": "广义 Property R 猜想",
+        "statement": "广义 Property R 猜想断言：每个 $R$-link 都可以通过一系列 handle slides 化为 unlink。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier–Schirmer–Zupan, Classification of trisections and the generalized property R conjecture, Proceedings of the AMS 2016；本文参考文献 15"
+      },
+      {
+        "id": "paper:proposition:gprc-trisection-program",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · 广义 Property R 猜想的三分解研究方案",
+        "shortTitle": "广义 Property R 猜想的三分解研究方案",
+        "title": "广义 Property R 猜想的三分解研究方案",
+        "statement": "广义 Property R 猜想可转化为光滑四流形的三分解问题，并可通过潜在反例的三分解图及 rectangle condition 研究其不可 destabilization 性。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier–Schirmer–Zupan, Classification of trisections and the generalized property R conjecture, Proc. AMS；本文参考文献15"
+      },
+      {
+        "id": "paper:def:lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · Lefschetz 纤维化",
+        "shortTitle": "Lefschetz 纤维化",
+        "title": "Lefschetz 纤维化",
+        "statement": "Lefschetz 纤维化是复解析映射 $X\\to\\mathbb{CP}^1$，除 Lefschetz 奇异点外是丛映射；Lefschetz 奇异点的局部坐标模型为 $(z,w)\\mapsto zw$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:broken-lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 13 · Broken Lefschetz 纤维化",
+        "shortTitle": "Broken Lefschetz 纤维化",
+        "title": "Broken Lefschetz 纤维化",
+        "statement": "Broken Lefschetz 纤维化是允许纤维在穿过 $\\mathbb{CP}^1$ 中的折叠曲线时改变属的更一般纤维化。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:simplified-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 14 · 简化三分解",
+        "shortTitle": "简化三分解",
+        "title": "简化三分解",
+        "statement": "简化三分解是由具有嵌入奇异像的、取值于圆盘的 Morse $2$-函数产生的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:lefschetz-trisection-correspondence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · Lefschetz 纤维化与简化三分解的互相构造",
+        "shortTitle": "Lefschetz 纤维化与简化三分解的互相构造",
+        "title": "Lefschetz 纤维化与简化三分解的互相构造",
+        "statement": "通过拓扑修改可以在（broken）Lefschetz 纤维化与简化三分解之间互相构造。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Baykur–Saeki, Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900；本文参考文献17"
+      },
+      {
+        "id": "paper:proposition:genus-three-rational-homology-spheres",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 有理同调四球面的属3三分解族",
+        "shortTitle": "有理同调四球面的属3三分解族",
+        "title": "有理同调四球面的属3三分解族",
+        "statement": "可由上述互相构造得到有理同调四球面上的无限属3三分解族。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Baykur–Saeki, Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900；本文参考文献17"
+      },
+      {
+        "id": "paper:def:pl-structure",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 15 · PL 结构与组合三角剖分",
+        "shortTitle": "PL 结构与组合三角剖分",
+        "title": "PL 结构与组合三角剖分",
+        "statement": "光滑 $4$-流形可以表示为 $4$ 维单纯形沿其 $3$ 维面粘合而成；这种表示在细分和单纯形同构意义下唯一，并称为 $X$ 上的 piecewise linear（PL）结构。反映流形结构的三角剖分称为组合三角剖分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:algorithm:triangulation-to-trisection",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 2 · 由三角剖分计算三分解",
+        "shortTitle": "由三角剖分计算三分解",
+        "title": "由三角剖分计算三分解",
+        "statement": "给定 $4$-流形的 PL 结构和三角剖分，构造一个从三角剖分的 $4$-流形到 $2$-单纯形的 PL 映射，使 $2$-单纯形的对偶立方结构的逆像成为三分解；由此算法化地产生三分解及其三分解图。该算法已被实现，并用于确定标准单连通 $4$-流形的最小三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Bell–Hass–Rubinstein–Tillmann, Computing trisections of 4-manifolds, PNAS 115 (2018), 10901–10907；本文参考文献 18"
+      },
+      {
+        "id": "paper:def:generalized-multisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 16 · 高维广义多分解",
+        "shortTitle": "高维广义多分解",
+        "title": "高维广义多分解",
+        "statement": "设适当三角剖分的 $n$-流形 $N$ 满足 $n=2k$ 或 $n=2k+1$，将其映射到视为 $k$-单纯形的 $B^k$；$B^k$ 具有自然的对偶胞腔分解为 $k+1$ 个 $k$-立方体，并要求每个立方体的逆像是一个 $n$ 维 handlebody，同时满足各交集的附加条件。该逆像分解称为 $N$ 的 multisection。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:def:colored-simplicial-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 17 · 顶点着色诱导的单纯形映射",
+        "shortTitle": "顶点着色诱导的单纯形映射",
+        "title": "顶点着色诱导的单纯形映射",
+        "statement": "对 $n$-流形的三角剖分使用顶点着色，使每个 $n$-单纯形具有 $2k+1$ 或 $2k+2$ 个顶点，并采用 $(k+1)$-着色，从而每个单纯形中有一个或两个颜色重复；将同色顶点映射到同一像点，得到到 $k$-单纯形的自然单纯形映射。该映射的对偶立方结构逆像给出多分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:theorem:generalized-recovery",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · 广义多分解恢复经典分解",
+        "shortTitle": "广义多分解恢复经典分解",
+        "title": "广义多分解恢复经典分解",
+        "statement": "广义构造在三维恢复 Heegaard 分裂，在四维恢复三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Rubinstein–Tillmann, Generalized trisections in all dimensions, PNAS 115 (2018), 10908–10913；本文参考文献20"
+      },
+      {
+        "id": "paper:def:4d-handlebody",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 18 · 4 维 handlebody",
+        "shortTitle": "4 维 handlebody",
+        "title": "4 维 handlebody",
+        "statement": "4 维 handlebody 是 $S^1\\times B^3$ 的若干副与一个 0-句柄的连通和，即 $\\natural^k(S^1\\times B^3)$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:claim:existence-stable-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · 三分解的存在性与稳定唯一性",
+        "shortTitle": "三分解的存在性与稳定唯一性",
+        "title": "三分解的存在性与稳定唯一性",
+        "statement": "对任意光滑、闭、定向的 4-流形，三分解的存在性与稳定唯一性成立；带边界情形也有相应的存在性与唯一性定理。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Gay–Kirby, Trisecting 4-manifolds, Geom. Topol. 20 (2016), 3097–3132（文献 5）"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:proof:1",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 1 · 三分解部分的边界结构",
+        "shortTitle": "证明 · 三分解部分的边界结构",
+        "title": "证明 三分解部分的边界结构",
+        "statement": "由三分解中各部分及两两交集的 handlebody 结构，固定 $X_j$ 后其边界正是两个相邻三维 handlebody 的并；该边界为 $\\#^k(S^1\\times S^2)$，中心曲面 $\\Sigma_g$ 给出其 Heegaard 分裂。",
+        "premises": [
+          "paper:def:trisection",
+          "paper:def:4d-handlebody"
+        ],
+        "conclusion": "paper:proposition:boundary-of-sector",
+        "argument": "由三分解中各部分及两两交集的 handlebody 结构，固定 $X_j$ 后其边界正是两个相邻三维 handlebody 的并；该边界为 $\\#^k(S^1\\times S^2)$，中心曲面 $\\Sigma_g$ 给出其 Heegaard 分裂。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · 桥三分解曲面的图示编码",
+        "shortTitle": "证明 · 桥三分解曲面的图示编码",
+        "title": "证明 桥三分解曲面的图示编码",
+        "statement": "曲面经同位素置于桥三分解位置后，其与各三维 handlebody 的平凡弧系及与各四维 handlebody 的平凡圆盘系均由中心曲面上的边界数据记录，因此可编码为三分解图；打结球面对应双重点图。",
+        "premises": [
+          "paper:theorem:bridge-position-existence"
+        ],
+        "conclusion": "paper:proposition:surface-diagram-encoding",
+        "argument": "曲面经同位素置于桥三分解位置后，其与各三维 handlebody 的平凡弧系及与各四维 handlebody 的平凡圆盘系均由中心曲面上的边界数据记录，因此可编码为三分解图；打结球面对应双重点图。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      }
+    ]
+  }
+}

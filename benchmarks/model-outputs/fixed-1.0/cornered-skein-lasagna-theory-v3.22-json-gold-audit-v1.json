@@ -1,0 +1,30 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Gold-JSON comparison; no model scoring and no source-PDF reread",
+  "caseId": "cornered-skein-lasagna-theory",
+  "artifact": "cornered-skein-lasagna-theory-v3.22-20260818T073518Z.json",
+  "workflowVersion": "v3.22",
+  "model": "gpt-5.6-luna",
+  "reasoningProfile": "assembly=medium; repair1=low; later=none",
+  "durationMs": 250151,
+  "modelCalls": 8,
+  "formatScore": 40,
+  "semanticScore": 53,
+  "auditScore": 93,
+  "matchedCore": [
+    "Correct bimodule gluing theorem as main target and correct RW24-plus-fragmentation dependency for the gluing isomorphism.",
+    "All principal Gold branches are present: gluing, self-gluing/HH_0, filling the central surface, trisection, isotopy cutting, and 3-manifold gluing.",
+    "B0 contains semantic matches for MWW, RW24, Banyaga, and Gay-Kirby.",
+    "Internal theorem branches are closed and directionally consistent."
+  ],
+  "deductions": [
+    "Wall's manifolds-with-corners result and MWW24 are extra B0 items not required by Gold.",
+    "The gluing-isomorphism proof is duplicated.",
+    "Some self-gluing and 2-dimensional gluing dependencies are less exact than the Gold proof decomposition."
+  ],
+  "closureStatus": "Acyclic and closed for the scored internal claims.",
+  "mainTargetStatus": "Correct semantic match to the bimodule gluing theorem.",
+  "status": "target-met"
+}

@@ -1,0 +1,141 @@
+{
+  "schema": "cmath.paper-entry-extraction-checkpoint/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.6",
+  "provider": "opencode-go",
+  "model": "deepseek-v4-flash",
+  "source": {
+    "fileName": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+    "pageCount": 10,
+    "sourceHash": "897fcdc64905331e42d11986bc6eb2a45c2bd89720733fa2410d85b347149044"
+  },
+  "lanes": {
+    "0:result": [
+      {
+        "id": "paper:thm:handle-1",
+        "type": "theorem",
+        "num": 1.1,
+        "name": "1-柄附着公式",
+        "statement": "若 $X_1$ 由 $X$ 沿 $S^0 \\times B^3$ 添加 1-柄得到，$T$ 为 $L$ 沿 1-柄的余核切割所得的 tangle，则 $S^\\star(X_1; L)$ 是与三元组 $(X; S^0 \\times B^3; T)$ 相关的双模的 0 次 Hochschild 同调。双模结构由与 $S^0 \\times B^3$ 相关的代数作用导出。",
+        "page": 1,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:thm:handle-2",
+        "type": "theorem",
+        "num": 1.2,
+        "name": "2-柄附着公式",
+        "statement": "若 $X_1$ 由 $X$ 沿 $S^1 \\times D^2$ 添加 2-柄得到，则 $S^\\star(X_1; L)$ 可由与三元组 $(X; S^1 \\times D^2; \\emptyset)$ 相关的模的“缆化”得到。缆化关系由与 $S^1 \\times D^2$ 相关的代数作用导出。",
+        "page": 1,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:thm:handle-3",
+        "type": "theorem",
+        "num": 1.3,
+        "name": "3-柄附着公式",
+        "statement": "若 $X_1$ 由 $X$ 沿 $S^2 \\times D^1$ 添加 3-柄得到，则 $S^\\star(X_1; L)$ 是与三元组 $(X; S^2 \\times D^1; \\emptyset)$ 相关的模的商。关系由与 $S^2 \\times D^1$ 相关的代数作用导出。",
+        "page": 1,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:thm:gluing",
+        "type": "theorem",
+        "num": 1.4,
+        "name": "胶合公式",
+        "statement": "设 4-流形与链环对 $(X; T_1 \\cup T_2)$ 是 4-流形、3-流形与 tangle 三元组 $(X_1; Y; T_1)$ 和 $(X_2; Y; T_2)$ 沿 3-流形 $Y$ 胶合的结果。则 $(X; T_1 \\cup T_2)$ 的 skein lasagna 模可表示为与 $(X_1; Y; T_1)$ 相关的左模和与 $(X_2; Y; T_2)$ 相关的右模的双模张量积。",
+        "page": 1,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:lem:eval-iso",
+        "type": "lemma",
+        "num": 3.6,
+        "name": "评估同构",
+        "statement": "评估同构指定了一个 $k$-代数同构：$S^2(B^3; P) \\cong \\bigoplus_{T_Y^0, T_Y^1} \\mathrm{KhR}_2(-T_Y^0 \\cup_P T_Y^1)$，并由此给出 $S^2(B^3; P)$-模的同构：$S^2(B^4; B^3; T) \\cong \\bigoplus_{T_Y} \\mathrm{KhR}_2(T \\cup_P T_Y)$。",
+        "page": 3,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:lem:khovanov-iso",
+        "type": "lemma",
+        "num": 3.9,
+        "name": "Khovanov 不变量同构",
+        "statement": "在符号歧义范围内，存在 $k$-(子)代数同构：$\\bigoplus_{(a,b) \\in B^n \\times B^n} S^2(B^3 \\times I; -T_a \\cup_P T_b) \\cong H^n$，并由此给出右 $H^n$-模的同构：$\\bigoplus_{b \\in H^n} S^2(B^4; T \\cup_P T_b) \\cong H^\\bullet(F(D))$。",
+        "page": 5,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      },
+      {
+        "id": "paper:thm:gluing-homomorphism",
+        "type": "theorem",
+        "num": 4.1,
+        "name": "胶合同态定理",
+        "statement": "$S^\\star(X; T_1 \\cup_P T_2) \\cong S^\\star(X_1; Y; T_1) \\otimes_{S^\\star(Y;P)} S^\\star(X_2; Y; T_2)$。",
+        "page": 5,
+        "_provenance": {
+          "chunkIndex": 0,
+          "blockIndex": 0,
+          "pageRange": {
+            "first": 1,
+            "last": 5
+          },
+          "lane": "result",
+          "version": "paper-entry-parallel-extraction-v1.6"
+        }
+      }
+    ]
+  }
+}

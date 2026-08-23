@@ -1,0 +1,48 @@
+{
+  "schema": "cmath.paper-entry-artifact/v1",
+  "entryModuleVersion": "paper-entry-extraction-v1",
+  "status": "failed",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507
+  },
+  "diagnostics": {
+    "durationMs": 23610,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "RT.pdf",
+        "pageCount": 19,
+        "atMs": 1
+      },
+      {
+        "stage": "guide",
+        "chars": 21507,
+        "atMs": 2
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 23606,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9882,
+          "completion_tokens": 1134,
+          "total_tokens": 11016,
+          "completion_tokens_details": {
+            "reasoning_tokens": 31
+          }
+        }
+      }
+    ],
+    "error": "Paper Guide 必须包含 sections、symbols 和非空 leads"
+  }
+}

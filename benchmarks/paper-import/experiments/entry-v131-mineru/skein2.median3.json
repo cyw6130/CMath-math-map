@@ -1,0 +1,144 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "GPT-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/skein2.consolidated-v2.json",
+  "goldRevision": "v1",
+  "caseId": "cornered-skein-lasagna-theory",
+  "correctness": 21,
+  "completeness": 17,
+  "solEntryScore": 38,
+  "verdict": "usable",
+  "summary": "候选产物完整覆盖了 Gold 中由本文陈述的核心定义、引理和主要定理，公式总体准确，类型划分也基本正确。主要缺陷是四项外部背景结果均未作为带归属的独立条目提取，若干条目存在重复、页码偏移或条件表述不精确；其中 Lemma 4.5 将“同痕”误写为“同伦”是最明显的数学语义错误。",
+  "strengths": [
+    "准确提取了主结果 Theorem 3.8，并保留相对张量积、公共边界以及双模同构结构。",
+    "覆盖 Lemma 3.7、Lemma 3.13、Theorems 3.14 和 3.15、Corollary 3.19 以及 Theorem 4.7 等全部 Gold 内部核心结果。",
+    "带角 3-流形范畴、带角 4-流形双模、双模张量积、零阶 Hochschild 同调、三截面和曲面双范畴等基础设施均有对应条目。",
+    "绝大多数公式的 LaTeX 定界和主要对象关系保持完整，definition/fact 与 theorem或lemma/claim 的分类总体正确。",
+    "候选还合理提取了 lasagna filling、skein lasagna module、粘合映射和双范畴模等有用的补充定义。"
+  ],
+  "issues": [
+    "未独立提取或归属 Gold 中四项外部背景结果：Morrison-Walker-Wedrich 基础理论、Ren-Willis 粘合满同态、Banyaga fragmentation lemma、Gay-Kirby 三截面存在与稳定唯一性定理。",
+    "Lemma 4.5 把 Gold 的“彼此同痕”写成“彼此同伦”；同伦不足以保证链环的横截切割对象同构，属于实质性的条件弱化。",
+    "零阶 Hochschild 同调定义只写出商号 \\sim_2，未说明关键循环关系 f_*(a)\\sim_2 f^*(a)，因此定义不够自足。",
+    "三流形范畴条目中的态射端点记号与 Gold 的 T_0 到 T_1 约定存在疑似反置，至少未清楚说明源、目标与边界符号的对应。",
+    "带角 skein lasagna 双模被两个几乎相同的条目重复提取；曲面模张量积也有两个高度重复的定义，降低了去重质量。",
+    "主粘合定理在第 2 页和正式 Theorem 3.8 条目中重复出现，前者缺少正式来源标签且造成冗余。",
+    "若干定位与 Gold PDF 页码不一致，例如 Theorem 3.15、三截面图、Corollary 3.19 和曲面双范畴出现约一页偏移；候选页码可能采用了不同的页码基准，但未加说明。",
+    "Corollary 3.19 被编码为 type 和 claimKind 均为 theorem；虽然 Gold 也将 claimKind 规范化为 theorem，但候选名称明确是推论，保留 corollary 类型会更准确。",
+    "Theorem 3.15 的公式括号使商作用范围略显含混，更清楚的形式应为 (\\bigoplus_P \\mathcal S(\\bar X^0,P\\times S^1))/\\sim_3。",
+    "候选未提供 inferenceHints，因而没有恢复 Gold 中核心结果对定义、粘合引理及外部背景的依赖关系。"
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:cornered-3mfld-category",
+      "candidateEntry": "skein2-def:three-manifold-category",
+      "status": "partial",
+      "note": "核心对象、态射模和复合均已提取，但源目标及边界符号约定不够清晰。"
+    },
+    {
+      "goldEntry": "paper:def:cornered-4mfld-bimodule",
+      "candidateEntry": "paper:def:cornered-skein-lasagna-bimodule",
+      "status": "matched",
+      "note": "对象分量和态射粘合作用均被覆盖，但存在重复条目。"
+    },
+    {
+      "goldEntry": "paper:def:bimodule-tensor-product",
+      "candidateEntry": "paper:def:tensor-product-of-bimodules",
+      "status": "matched",
+      "note": "直和、张量积和作用等价关系均准确保留。"
+    },
+    {
+      "goldEntry": "paper:def:hochschild-homology",
+      "candidateEntry": "paper:def:zero-th-hochschild-homology",
+      "status": "partial",
+      "note": "商模公式存在，但未展开定义关系 f_*(a)\\sim_2 f^*(a)。"
+    },
+    {
+      "goldEntry": "paper:lemma:gluing-isomorphism-eval",
+      "candidateEntry": "paper:lemma:3-7",
+      "status": "matched",
+      "note": "映射及同构结论准确。"
+    },
+    {
+      "goldEntry": "paper:thm:gluing-bimodules",
+      "candidateEntry": "paper:thm:3-8",
+      "status": "matched",
+      "note": "主定理及双模类型准确。"
+    },
+    {
+      "goldEntry": "paper:lemma:self-gluing-eval",
+      "candidateEntry": "paper:lemma:3-13",
+      "status": "matched",
+      "note": "自粘合评估映射及同构结论已提取。"
+    },
+    {
+      "goldEntry": "paper:thm:self-gluing-hh0",
+      "candidateEntry": "paper:thm:3-14",
+      "status": "matched",
+      "note": "Hochschild 同调与去中心曲面邻域 skein 模的同构准确。"
+    },
+    {
+      "goldEntry": "paper:thm:capping-off-neighborhood",
+      "candidateEntry": "paper:thm:3-15",
+      "status": "matched",
+      "note": "商模与闭流形 skein lasagna 模的同构已覆盖，公式括号略含混。"
+    },
+    {
+      "goldEntry": "paper:cor:trisection-presentation",
+      "candidateEntry": "paper:cor:3-19",
+      "status": "matched",
+      "note": "三扇区双模张量积的 HH_0 表示准确。"
+    },
+    {
+      "goldEntry": "paper:lemma:isotopy-cutting",
+      "candidateEntry": "skein2:lemma:4-5-isotopy",
+      "status": "incorrect",
+      "note": "将 isotopic 误译为 homotopic，改变了假设强度。"
+    },
+    {
+      "goldEntry": "paper:thm:2d-gluing-3mfld",
+      "candidateEntry": "skein2:thm:4-7-gluing",
+      "status": "matched",
+      "note": "三流形粘合范畴与相对张量积的同构准确。"
+    },
+    {
+      "goldEntry": "paper:b0:mww-skein-lasagna",
+      "status": "missing",
+      "note": "候选提取了相关定义，但没有识别其外部来源和背景定理身份。"
+    },
+    {
+      "goldEntry": "paper:b0:rw-gluing-map",
+      "status": "missing",
+      "note": "没有提取 Ren-Willis 的满同态结论及归属。"
+    },
+    {
+      "goldEntry": "paper:b0:banyaga-fragmentation",
+      "status": "missing",
+      "note": "没有提取 Lemma 3.7 证明所依赖的外部 fragmentation lemma。"
+    },
+    {
+      "goldEntry": "paper:b0:gay-kirby-trisection-existence",
+      "status": "missing",
+      "note": "提取了三截面定义，但遗漏其存在与稳定唯一性的外部归属。"
+    }
+  ],
+  "scoreRuns": [
+    {
+      "correctness": 21,
+      "completeness": 16,
+      "solEntryScore": 37
+    },
+    {
+      "correctness": 21,
+      "completeness": 17,
+      "solEntryScore": 38
+    },
+    {
+      "correctness": 21,
+      "completeness": 17,
+      "solEntryScore": 38
+    }
+  ],
+  "aggregation": "median-of-3"
+}

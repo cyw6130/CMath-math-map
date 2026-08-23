@@ -1,0 +1,49 @@
+{
+  "schema": "cmath.paper-json-gold-audit/v1",
+  "experimentId": "luna-paper-import-workflow-v3.2",
+  "workflowVersion": "v3.2",
+  "auditMethod": "candidate JSON versus fixed Gold JSON under benchmarks/paper-import/SCORING-PROTOCOL.md; semantic equivalence reviewed by Codex",
+  "cases": [
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "runArtifact": "output-4-dim-skein-modules-handles-tangles-gpt-5.6-luna-none-v3.2.json",
+      "status": "completed",
+      "auditScore": {
+        "format": 35,
+        "semantic": 33,
+        "overall": 68,
+        "formatComponents": {
+          "normalizationAndProjectIdentity": 8,
+          "entryAndSourceValidity": 8,
+          "inferenceValidity": 7,
+          "b0Structure": 4,
+          "dagAndClosure": 8
+        },
+        "semanticComponents": {
+          "objectsAndHypotheses": 16,
+          "b0Boundary": 0,
+          "mainTarget": 8,
+          "proofDependencies": 6,
+          "claimStates": 1,
+          "sourceAttribution": 2
+        }
+      },
+      "reasons": [
+        "The candidate identifies the general gluing theorem as the main target and contains equivalent entries for the triple module, boundary algebra, evaluation comparison, Khovanov tangle comparison, and the 1-, 2-, and 3-handle formulas.",
+        "The B0 boundary is empty after an invalid Fact-valued B0 reference is removed. It therefore omits all four fixed Gold external boundaries: the MWW skein-lasagna foundation, evaluation isomorphism, Khovanov tangle functor, and Ren-Willis gluing surjection.",
+        "The gluing theorem has a correctly directed local proof through the well-defined gluing/cut construction, but the 1-, 2-, and 3-handle formulas have no proof inferences and remain open.",
+        "Seven invalid Fact/Claim organization edges were removed deterministically; no model repair call was made and no proof, B0 source, or dependency was invented locally."
+      ]
+    }
+  ],
+  "summary": {
+    "completedCases": 1,
+    "failedCases": 0,
+    "auditOverallMacroAverageCompleted": 68,
+    "minimumAuditScore": 68,
+    "hardGateCount": 0,
+    "durationMs": 254683,
+    "modelCalls": 6,
+    "reasoningEffortSentOnEveryCall": "none"
+  }
+}

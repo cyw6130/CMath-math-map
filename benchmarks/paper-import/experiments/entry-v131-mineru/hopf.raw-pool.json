@@ -1,0 +1,2488 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.31",
+  "source": {
+    "fileName": "hopf-marked.md",
+    "pageCount": 13,
+    "characters": 39617,
+    "sourceText": "[[PAGE 1]]\n# The Hopf Degree Theorem: Homotopy Groups and Vector Fields\n\nCameron Krulewski in collaboration with Jenny Walsh\n\nMath 132 Project II submitted May 5, 2017\n\n## 1 Introduction\n\nIn algebraic topology, a popular and complicated problem is the calculation of homotopy groups of spheres. These are groups denoted $\\pi _ { k } ( S ^ { n } )$ that describe how smooth functions from k spheres to n spheres are related to each other, and while many cases $( k , n )$ have been solved, many yet remain. You may be familiar with the case $k = 1$ , in which the group $\\pi _ { 1 } ( S ^ { n } )$ corresponds to the fundamental group of loops in $S ^ { n }$\n\nIn this talk, we’ll prove a theorem—the Hopf Degree Theorem—that gives us the homotopy group for all cases of equidimensional spheres. Connecting homotopy to a notion of degree, we will demonstrate that $\\pi _ { k } ( S ^ { k } ) \\cong \\mathbb { Z }$ for all k. In the process, we’ll explore the connections between $\\mathbb { R } ^ { k }$ and $S ^ { k }$ ， between degree and winding number and how vector fields curl around a space, and between homotopy and extensions in larger spaces. We will conclude with some applications to vector fields on certain manifolds.\n\n## 2 Background Knowledge and Examples\n\nBefore delving into the theorem, we present a few definitions and ideas that we’ll need going forward.\n\n## 2.1 Degree, Intersection Number, and Winding Numbers\n\nPerhaps the most important definition is that of degree, and related to this are the notions of intersection number and winding number.\n\nFormally, the degree of a smooth map $f$ is the intersection number of the map f with some point y in its range. In turn, the oriented intersection number of a map $f : X \\to Y$ is defined when $f$ is transversal to a submanifold Z such that Z and X have complementary dimension. The intersection number is the sum of the orientation numbers of the preimages of $Z$ under $f .$ We write deg $f = I ( f , \\{ y \\} )$ .\n\nFigure 1: Degree 2 Mapping $S ^ { 2 }  S ^ { 2 }$ from Wikipedia\n\n\n[[PAGE 2]]\nEssentially, degree measures how many net times the image of a map f enters and exits the submanifold $Z ,$ or wraps around it— hence it is always an integer. For example, we can imagine a degree two mapping of a 2-sphere to itself as a wrapping of the surface twice around the shape of a sphere, as shown at right. In higher dimensions, it becomes tricky to visualize, but for $S ^ { 1 }$ it is particularly easy. In the diagram below, we present the several smallest degree mappings $S ^ { 1 } \\to S ^ { 1 }$ , showing how the image wraps around the circle as well as the “covering space,” which corresponds to properties of the mapping but that we’ll just use as another way to visualize. The degree zero mapping is actually homotopic to a constant map, since we can shrink any portion of the map that doesn’t reach all the way around the circle to a point—remember this, for we’ll elaborate on it in the theorem below. Note that this diagram and argument presents a surjection from the degree map to $\\pi _ { k } ( S ^ { k } )$ . With the results of the theorem we’ll conclude injectivity as well.\n\n<!-- image-->\n\n<!-- image-->  \nThis notion of wrapping around is captured in the definition of winding number, which corresponds to that of degree1 for $S ^ { 1 }$ . In general, however, winding number about a certain point z is defined as the degree of the directional map u : $X  S ^ { 1 }$ such that $\\begin{array} { r } { u ( x ) = \\frac { f ( x ) - z } { | f ( x ) - z | } } \\end{array}$ . We write $W ( f , z ) = \\deg ( u )$ Winding numbers are useful because they allow us to examine local behavior of a function, and we will begin the proof by analyzing them.\n\n## 2.2 Isotopy Lemma\n\nAnother ingredient we’ll need in the steps ahead is the Isotopy Lemma, which allows us to shift useful points to different locations on the manifold.\n\nIsotopy Lemma and Corollary: Given any two sets of points $\\{ x _ { 1 } , . . . , x _ { n } \\}$ and $\\left\\{ y _ { 1 } , . . . , y _ { n } \\right\\}$ in a connected manifold $Y$ , there exists a diffeomorphism $\\phi : Y  Y$ such that $\\phi ( x _ { i } ) = y _ { i }$ and $\\phi$ is isotopic to the identity.\n\nNote that isotopic means homotopic such that each homotopic map is also a diffeomorphism. We can think of the diffeomorphism $\\phi$ as a sort of rotation, or the specification of a direction of flow of the manifold. For example, a map taking the north pole of a sphere to the south pole through a great circle is an isotopy, as is any rotation map on $S ^ { 1 }$\n\n## 2.3 Bump Functions\n\nSince we require a few uses of bump functions, it is appropriate to mention them quickly here. In any dimension, we can find a map $\\rho : \\mathbb { R } ^ { N } $ R that smoothly transitions from zero to one and back. In\n\n$\\mathbb { R } ^ { 1 }$ , an example function is\n\n$$\n\\rho ( x ) = \\left\\{ { \\begin{array} { l l } { e ^ { - \\frac { 1 } { 1 - x ^ { 2 } } } } & { | x | < 1 } \\\\ { 0 } & { \\mathrm { e l s e } } \\end{array} } \\right. .\n$$\n\n\n[[PAGE 3]]\n## 2.4 Euler Characteristic\n\nOne more concept we’ll need for an application at the end is that of the Euler characteristic. Strictly speaking, the Euler characteristic $\\chi ( X )$ of a space X is defined to be the self-intersection of its diagonal $\\Delta = \\{ ( x , x ) \\mid x \\in X \\}$ . That is, $\\chi ( X ) = I ( \\Delta , \\Delta )$ . It’s a useful property for classifying manifolds because it is a topological invariant, preserved under diffeomorphism. Calculation of the Euler characteristic can involve triangulations of spaces, but without going into details, we can think of it as a generalization2 of the polyhedral formula $V - E + F = 2$ in R3—polyhedra in less familiar spaces X satisfy $V - E + F =$ $\\chi ( X )$ . We’ll return to this concept in the fourth section after proving the Hopf Degree Theorem.\n\n## 3 Proving the Hopf Degree Theorem\n\nWe proceed to prove the theorem in nine steps, presenting claims and proofs in each.\n\n## 3.1 Beginning with Winding Numbers\n\nThe first step of the theorem is to establish a way to calculate degree, for which we use regular points. Starting from the notion of winding number, we’ll expand this local condition—which allows us to make helpful approximations—across the domain to determine $\\deg ( f )$\n\nClaim: Let $f : U \\to \\mathbb { R } ^ { k }$ be smooth, $U \\subset \\mathbb { R } ^ { k }$ , and $x \\mathrm { ~ a ~ }$ regular point with $f ( x ) = z$ . If B is a sufficiently small closed ball around x, the the boundary map $\\partial f : \\partial B \\to \\mathbb { R } ^ { k }$ satisfies\n\n$$\nW ( \\partial f , z ) = { \\left\\{ \\begin{array} { l l } { + 1 } & { { \\mathrm { i f ~ } } f { \\mathrm { ~ p r e s e r v e s ~ o r i e n t a t i o n ~ a t ~ } } x } \\\\ { - 1 } & { { \\mathrm { i f ~ } } f { \\mathrm { ~ r e v e r s e s ~ o r i e n t a t i o n ~ a t ~ } } x . } \\end{array} \\right. }\n$$\n\nProof. We start by making some simplifications. First, it suffices to show this part for $x = z = 0$ because we can simply shift our coordinate system to treat the general case. Then, since it’s much easier to deal with linear maps than with general $f ,$ and because we’re concerned with local behavior, we apply Taylor’s Thm. to expand $f$ around 0. If we call the derivative $A = d f _ { 0 }$ , Taylor’s gives\n\n$$\nf ( x ) = A x + \\varepsilon ( x )\n$$\n\nwhere ${ \\frac { | \\varepsilon ( x ) | } { | x | } } \\to 0 { \\mathrm { ~ a s ~ } } x \\to 0$ . We can assume B has been chosen small enough so that this holds, including for $\\partial f$ around the boundary.\n\nWe wish to compute the winding number of $f ,$ which is\n\n$$\n\\deg ( u ( x ) ) = \\deg \\left( { \\frac { \\partial f ( x ) - z } { | \\partial f - z | } } \\right) = \\deg \\left( { \\frac { \\partial f ( x ) } { | \\partial f ( x ) | } } \\right) = \\deg \\left( { \\frac { A x + \\varepsilon ( x ) } { | A x + \\varepsilon ( x ) | } } \\right) ,\n$$\n\nsince we set $z = 0$ and used our Taylor expansion. However, we still don’t know how to calculate this. We’d like to reduce just to the linear case and apply the following lemma:\n\n\n[[PAGE 4]]\nLinear Isotopy Lemma: If E is a linear isomorphism of $\\mathbb { R } ^ { k }$ that preserves (resp. reverses) orientation, then there exists a homotopy to the identity (resp. a reflection map R through the first coordinate).\n\nThis lemma is appealing because we know A is an isomorphism—since 0 is a regular value, A is surjective, and matching dimensions imply bijectivity. We also know that $\\deg ( \\mathrm { i d } ) = + 1$ , and $\\deg ( R ) =$ −1, since each map is bijective and the sign follows from the preimage orientation. So it remains to show that we can reduce our map u to one involving A. However, we know we can do this because we have a homotopy H from $u ( x )$ to $\\frac { A x } { | A x | }$ , defined by $\\begin{array} { r } { \\Breve { H } ( x , t ) = \\frac { A x + t \\varepsilon ( x ) } { | A x + t \\varepsilon ( x ) | } } \\end{array}$ | . Since Ax is an isomorphism, the origin is its only zero, and since we’re using it to approximate ∂f away from the origin, we know we won’t be dividing by zero and hence that the definition is valid.\n\nSo, we’ve simplified to calculating deg $\\left( \\frac { A x } { \\left| A x \\right| } \\right)$ , but we may as well take a homotopy from that to Ax itself, by $\\textstyle G ( x , t ) = { \\frac { A x } { | A x | ^ { 1 - t } } }$ , which satisfies $\\begin{array} { r } { g _ { 0 } = \\frac { A x } { | A x | } } \\end{array}$ and $g _ { 1 } = A x$\n\nWe may finally apply the Linear Isotopy Lemma above to conclude that deg $A = \\deg f = \\pm 1$ depending on whether A (and, correspondingly, f) preserves or reverses orientation.\n\n## 3.2 Connection to Orientation Numbers\n\nThat first fact took a few steps, as we first simplified to a linear case and then used a homotopy. But with that solidly proven, we can confidently use it to compute degree.\n\nClaim: Let $f : B \\to \\mathbb { R } ^ { k }$ be a smooth map defined on a closed ball in $\\mathbb { R } ^ { k }$ . If z is a regular value of f that has no preimages on ∂B, then the winding number of $\\partial f : \\partial B \\to \\mathbb { R } ^ { k }$ equals the sum of the orientation numbers at each preimage of z.\n\nProof. To show this, we expand the definition of winding number. We know\n\n$$\n\\begin{array} { l } { { \\displaystyle { W ( \\partial f , \\{ z \\} ) = \\deg \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } \\right) } } } \\\\ { { \\displaystyle \\qquad = I \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } , \\{ z \\} \\right) ~ a ~ v a l i d ~ s t e p ~ b e c a u s e ~ z \\not \\in \\mathrm { i m } \\partial f } } \\\\ { { \\displaystyle \\qquad = \\sum _ { y \\in f ^ { - 1 } ( z ) } e _ { y } \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } , \\{ z \\} \\right) } } \\end{array}\n$$\n\nwhere $e _ { y }$ denotes the local orientation number of $y .$\n\nLet’s localize these points in $f ^ { - 1 } ( z )$ inside a closed ball B. We can then consider the winding numbers at each of these points by placing each of them within smaller balls $B _ { i }$ . Since each of the points $y _ { i }$ is regular, we have that the derivative at $y _ { i }$ is an isomorphism, and we can apply part 3.1 of the proof to see that each of them has degree ±1.\n\nWe’ve shown how the winding number contributes to the degree. But are there other contributions to worry about? Consider the behavior of $f$ outside each of these balls. We know we can extend the direction map $u ( x )$ to all of $B \\setminus \\bigcup B _ { i }$ because its denominator is nonzero except at the points $y _ { i }$ . And since $u ( x )$ can be extended, we know that $\\deg ( u ) = 0$ on this part of the domain.\n\nHence the winding number of f is the sum of the local orientation numbers of preimages of a regular value z. □\n\n\n[[PAGE 5]]\n## 3.3 Boundary Maps and Extensions\n\nNext we give an extension argument that starts to make the connection between homotopy and degree.\n\nClaim: For a closed ball B and a smooth function $f : \\mathbb { R } ^ { k } \\setminus \\operatorname { I n t } ( B ) \\to Y$ , if the restriction $\\partial f$ $\\partial B \\to Y$ is homotopic to a constant map, then $f$ can be extended to all of $\\mathbb { R } ^ { k }$\n\nProof. To extend the map, we use the structure we’ve been given in the statement: the homotopy from $\\partial f$ to $c _ { p }$ . Say $G ( x , t )$ is a homotopy such that $g _ { 0 } = c _ { p }$ and $g _ { 1 } = \\partial f$ . Then we assume that B is centered at zero, and define the value of f on its interior to be such that $f ( t x ) = g _ { t } ( x )$ . This way, we take the values of $f$ at the boundary of the sphere and pull them in toward the center.\n\nTo see that this is well-defined, consider the center of the ball. We might worry that even though G is smooth, the point $f ( 0 ) = g _ { 0 } ( x )$ could take on multiple values dependent on x. However, we chose G precisely so that $g _ { 0 }$ was constant, and so this is not a concern. While smoothness of G guarantees the definition radially, constant behavior near the center guarantees it in the angular direction.\n\nAnd to make sure that the extension is smooth on the boundary, we may smooth out our homotopy so that it is constant for some period of time near $t = 0$ and for some time near $t = 1$ . We won’t write this out, but claim that it can be done by substituting a bump function for t within the homotopy.\n\nNow turning to maps between spheres, which is at the heart of the problem, we start to set up an induction. We want to show that maps $S ^ { k } \\to S ^ { k }$ with degree zero are homotopic to constant maps.\n\nClaim (General): If $f : S ^ { k } \\to S ^ { k }$ has degree zero, then $f \\sim c _ { p } .$\n\nFor our base case, we start at the simplest setup: a map $f : S ^ { 1 } \\to S ^ { 1 }$ with $\\deg ( f ) = 0$ . We wish to show that this map is homotopic to a constant.\n\nClaim (Base Case): If $f : S ^ { 1 } \\to S ^ { 1 }$ has degree zero, then $f \\sim c _ { p } .$\n\nWe’ve demonstrated this claim in the examples of maps $S ^ { 1 } \\to S ^ { 1 }$ above. Any degree zero mapping wraps around the circle zero times—that is, not at all—and thus can be shrunk by a homotopy to a single point. Higher degree maps cannot because they wrap around the non-contractible circle.\n\nThis fact can be proven more rigorously by parameterizing the circle, but we rely on an intuitive understanding so that we can focus on the induction. Now, we move toward the general case to establish the theorem for degree zero.\n\n## 3.4 Moving from Spheres to Euclidean Space\n\nWe’ll end up frequently using identifications between Euclidean space and spheres in the next few steps, so see the appendix for a summary and some pictorial examples. We use the following fact about maps from $S ^ { k } \\operatorname { t o } \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ to help build the inductive step.\n\nClaim: If $f : S ^ { k } \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ has winding number zero with respect to the origin, then $f \\sim c _ { p }$\n\nProof. To go between a sphere $S ^ { k }$ and punctured Euclidean space $\\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ , we can always use the stereographic projection $\\pi _ { s }$ and its inverse. So $\\pi _ { s } ^ { - 1 } : \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\} \\to S ^ { k }$ allows us to find a map $f ^ { \\prime } = \\pi _ { s } ^ { - 1 } \\circ f : S ^ { k } \\to S ^ { k }$\n\nThen the winding number of f is the degree of the directional map about zero, or\n\n$$\nW ( f ^ { \\prime } , \\{ 0 \\} ) = \\deg \\left( { \\frac { f ( x ) - 0 } { | f ( x ) - 0 | } } \\right) = \\deg \\left( { \\frac { f } { | f | } } \\right) = \\deg ( f ) .\n$$\n\nFor the last step recall we have a homotopy $\\frac { f } { | f | ^ { t } }$ from $f$ to its normalized form.\n\nWe now have a map $S ^ { k } \\to S ^ { k }$ with degree zero, so we may conclude that it’s homotopic to $c _ { p }$ . Since homotopy is transitive, we can apply the previous part to see that $f \\sim c _ { p }$ , as desired. □\n\n\n[[PAGE 6]]\n## 3.5 Adjusting the Range\n\nNext, we want to show that if we have maps $\\mathbb { R } ^ { k } \\to \\mathbb { R } ^ { k }$ that we can treat the range as a sphere. That is, we can punch out the origin from the range given certain conditions on $f .$\n\nClaim: Let $f : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k }$ be smooth, with 0 a regular value. If $f ^ { - 1 } ( 0 )$ is finite and the orientations of the preimage points adds to zero, then—assuming the statement above—there exists a map $g : \\mathbb { R } ^ { k } $ $\\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$ such that $f = g$ outside a compact set.\n\nProof. Since the orientations of the preimage points add to zero, we know by step 3.2 that f has winding number zero about the origin. Then place an open ball B around the origin such that $f ^ { - 1 } ( 0 ) \\subset B$ and consider the restricted map $\\partial f : \\partial B \\to \\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$\n\nAs the boundary of a ball, $\\partial B \\simeq S ^ { k - 1 }$ , so if we define $\\partial f ^ { \\prime } : S ^ { k - 1 } \\to \\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$ we can apply step 3.4 and the inductive hypothesis to see that $\\partial f ^ { \\prime }$ : is homotopic to a constant map. Then, we can apply 3.3 to extend $f$ to a smooth map g on all of $\\mathbb { R } ^ { k }$\n\nNote that g is nonzero within B because it is defined away from any of the preimages of zero, so $f$ and g don’t agree on B¯. But this gets us precisely what we want for the next part, since g maps to $\\mathbb { R } ^ { k } \\setminus \\{ 0 \\} \\simeq S ^ { k }$ □\n\n## 3.6 The Inductive Step\n\nNow it’s time to complete the induction, and prove the claim in general. Recall the statement:\n\nClaim: If $f : S ^ { k } \\to S ^ { k }$ has degree zero, then $f \\sim c _ { p }$\n\nProof. Let $f : S ^ { k } \\to S ^ { k }$ have degree zero. We want to pick a few points for the purposes of eventually reducing $S ^ { k }$ to $\\mathbb { R } ^ { k }$ , so we use Sard’s Thm. to pick two regular values a and b. By well-definedness of $f ,$ we know $f ^ { - 1 } ( a ) \\cap f ^ { - 1 } ( b ) = \\emptyset$\n\nWe want to take a subset U of $S ^ { k }$ such that $f ^ { - 1 } ( a ) \\subset U \\subset S ^ { k } \\setminus \\{ f ^ { - 1 } ( b ) \\}$ , and to do this, we may take U such that $f ^ { - 1 } ( a ) \\subset U$ and apply the Isotopy Lemma to find a diffeomorphism $\\phi$ that maps any points in $f ^ { - 1 } ( b )$ that lie inside U to somewhere outside of U. Then we can compose $\\phi ^ { - 1 } \\circ f$ to ensure that we have U as desired. For the purposes of this proof we’ll assume that $U$ has been constructed properly, and we’ll just write f for the function.\n\nNow, we want to use our statements about maps in $\\mathbb { R } ^ { k }$ , so we compose on either side of f to arrange this. We take $\\alpha : \\mathbb { R } ^ { k }  U \\subset S ^ { k }$ to be just a local parameterization of $U .$ , and $\\beta : S ^ { k } \\setminus \\{ b \\}  \\mathbb { R } ^ { k }$ the stereographic projection, which we may pick such that $\\beta ( a ) = 0$ . Then our map looks like this:\n\n$$\n\\mathbb { R } ^ { k } \\xrightarrow { \\alpha } U \\xrightarrow { f | _ { U } } S ^ { k } \\backslash \\{ b \\} \\xrightarrow { \\beta } \\mathbb { R } ^ { k } \\ ,\n$$\n\nand we call the composition map $\\tilde { f } : = \\beta \\circ f \\circ \\alpha$ . Since we chose $\\beta ( a ) = 0$ , we know that 0 is a regular value of $\\tilde { f }$ because a is a regular value of $f .$\n\n<!-- image-->\n\n\n[[PAGE 7]]\nSo we have constructed a map $\\mathbb { R } ^ { k } \\to \\mathbb { R } ^ { k }$ with 0 as a regular value. Furthermore, $\\tilde { f } ^ { - 1 } ( 0 )$ has the same properties as $f ^ { - 1 } ( a )$ (if we require our maps to be orientation-preserving) in the sense that the orientation numbers of the preimages $\\tilde { f } ^ { - 1 } ( 0 )$ add to zero. This is exactly what we need to apply step 3.5 and extend the map. Doing so, we get a map $\\tilde { g } : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k } \\backslash$ {0} that agrees with $\\tilde { f }$ except on some compact set $K$\n\nWe’ve used step 3.5 to remove a point in our range, but now we want to return to the spheres to complete the induction. We can compose $\\tilde { g }$ with the inverses of our earlier maps to force it to map between the spheres—set $g : = \\beta ^ { - 1 } \\circ \\tilde { g } \\circ \\alpha ^ { - 1 }$ . Now, originally $\\tilde { g }$ failed to hit b by construction, but that may no longer be the case when we extend it from $U$ to all of $S ^ { k }$ . However, we do know that $g$ fails to hit a—since $\\tilde { g }$ does not hit zero, the image of a, we know that $g$ cannot possible hit a. We can write $g : S ^ { k }  S ^ { k } \\setminus \\{ a \\}$\n\nAll of our work was for that point removal, because now we can stereographically project $S ^ { k } \\backslash$ $\\{ a \\} \\to \\mathbb { R } ^ { k }$ Since Euclidean space is contractible, we know that $\\tilde { g }$ is homotopic to a constant $c _ { p } .$ . It remains to show that $f$ itself is homotopic to $\\tilde { g }$ and thus to $c _ { p } .$ , but this follows from the construction $H ( x , t ) = ( 1 - t ) ( \\beta \\circ f ) ( x ) + t ( \\beta \\circ g ) ( x )$ , which basically shifts $f$ to $g$ by scaling, then maps it back to the sphere by $\\beta .$\n\nHence we have shown that $f \\sim c _ { p }$ , using step 3.5 to complete the induction.\n\n## 3.7 Extending into Euclidean Space\n\nNow that we have the desired statement about maps between spheres, we want to take the next step toward generalizing the domain. To that end, we turn to something called the Extension Theorem.\n\nExtension Theorem: Let W be a compact, connected, oriented k + 1-dimensional manifold with boundary, and $f : \\partial W \\to S ^ { k }$ a smooth map. Then $f$ extends smoothly to a map ${ \\bar { f } } : W \\to S ^ { k }$ such that $\\partial \\bar { f } = f$ , if and only if $\\deg ( f ) = 0$\n\nTo get to this theorem, we need a few other results first. We next prove the following claim.\n\nClaim: If W is a compact manifold with boundary and $f : \\partial W \\to \\mathbb { R } ^ { k + 1 }$ is smooth, then $f$ may be extended to all of $W$ .\n\nProof. To prove this we want to invoke the Epsilon Neighborhood Theorem, which allows us to thicken our manifold boundary into something useful.\n\nEpsilon Neighborhood Theorem: For a compact boundaryless manifold Y and $\\varepsilon > 0$ , if $Y ^ { \\varepsilon }$ is the set of points in $\\mathbb { R } ^ { N }$ within ε of $Y .$ , then $Y ^ { \\varepsilon }$ is a manifold. Furthermore, if π takes points in $Y ^ { \\varepsilon }$ to the closest point to them in $Y .$ , then $\\pi : Y ^ { \\varepsilon } \\to Y$ is a submersion and $\\pi | _ { Y } = i d _ { Y }$\n\nSince W is compact, so is its boundary. And ∂W is oriented with the boundary orientation, so we can indeed apply the Epsilon Neighborhood Theorem to thicken $\\partial W$ to $U$ . Then we define $F = f \\circ \\pi : U \\to \\mathbb { R } ^ { k + 1 }$\n\nTo make this definition smooth, we need to scale F appropriately. We can use a bump function $\\rho : \\mathbb { R } ^ { N }  \\mathbb { R }$ such that $\\rho | _ { \\partial W } = 1$ and $\\rho | _ { \\mathbb { R } ^ { n + 1 } \\backslash K } = 0$ for some $K \\subset U$ . Then, we define $\\bar { F }$ as follows:\n\n$$\n\\bar { F } ( x ) = \\left\\{ \\begin{array} { l l } { \\rho F ( x ) } & { x \\in U } \\\\ { 0 } & { \\mathrm { e l s e } } \\end{array} \\right. .\n$$\n\nThis way, $\\bar { F }$ extends to all of $\\mathbb { R } ^ { N }$ . Since we really only wanted to define the map on $W$ , we can restrict $\\bar { f } = \\bar { F } | _ { W }$ to get the desired ${ \\bar { f } } .$ . □\n\n\n[[PAGE 8]]\n## 3.8 The Extension Theorem\n\nWith that done, we prove the Extension Theorem in full by shifting from $\\mathbb { R } ^ { k + 1 }$ to $S ^ { k }$ . Starting from a map $f : \\partial W \\to S ^ { k }$ , we can apply step 3.7—if and only if $\\deg ( f ) = 0 \\ z \\mathrm { - } \\mathrm { t o }$ extend $f$ to $\\bar { f } : W \\to \\mathbb { R } ^ { k + 1 }$ ， where $\\mathbb { R } ^ { k + 1 }$ is the ambient space containing $S ^ { k }$ . By Sard’s Thm., this map has regular values. Say that zero is a regular value of $\\bar { f }$ (and if it isn’t, use the Transversality Extension Theorem to find a homotopic map that does have zero as a regular value). Consider the preimages of zero; we can require ${ \\bar { f } } ^ { - 1 } ( 0 ) \\subset U$ for some open subset $U .$ We can also require, by the Isotopy Lemma, $U \\subset$ Int $W$ , by modifying $\\bar { f }$ to some homotopic map $\\tilde { f }$ if necessary.\n\nThen as an open subset, $U \\simeq \\mathbb { R } ^ { k + 1 }$ . If we take a ball B such that $\\tilde { f } ^ { - 1 } ( 0 ) \\subset B \\subset U$ , then we can define a function $\\partial \\tilde { f } : \\partial B \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ . We know that this map has winding number zero by assumption that it has degree zero, so we know by step 3.4—the corollary—that $\\tilde { f }$ is homotopic to a constant. From there, we know by step 3.3 that $f$ may be extended to the inside of the ball such that the range is unchanged. Call this extension ${ \\tilde { F } } ,$ , and note that it runs $W \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ . By composing with the reverse of the stereographic projection, we finally arrive at a map $F : W \\to S ^ { k }$ that extends $f .$\n\n## 3.9 At Last, the Hopf Degree Theorem\n\nWe finally have all of the ingredients we need to claim the Hopf Degree Theorem. Recall the statement: Hopf Degree Theorem: Let X be a compact, connected, oriented k-manifold. Two maps from X to $S ^ { k }$ are homotopic if and only if they have the same degree.\n\nProof. The exciting, critical step in the proof is constructing a larger manifold that allows us to connect what we’ve proven about extensions with the notion of homotopy.\n\nLet $f , g : X \\to S ^ { k }$ be the two maps we’re considering. Define the product manifold $W = X \\times I$ where I is the unit interval. If we had a homotopy between $f$ and $g ,$ , this would be our domain. Correspondingly, $\\partial W = X \\times \\{ 0 , 1 \\}$ . Define a map $F : \\partial W \\to S ^ { k }$ such that $F | _ { X \\times \\{ 0 \\} } = f$ and $F | _ { X \\times \\{ 1 \\} } = g$\n\n<!-- image-->\n\nand if we flattened them out:\n\n<!-- image-->\n\n\n[[PAGE 9]]\nNow, if F can extend to all of W smoothly, we’ve found a homotopy between f and g. And this is precisely what occurs if $\\deg ( F ) = 0$ , invoking the Extension Theorem of step 3.8. The diagram above shows that we can think of the image of W as a sort of stack of the images of each homotopic map $f _ { t }$ In two dimensions, they combine to form a smooth 3-dimensional shape. We’re arguing that if maps on either end of that 3-d shape extend to maps to $S ^ { 2 }$ , then if we consider the boundary maps separately, the volume in between smoothly connects them via homotopies.\n\nThe only thing that remains is to connect the degree of F with the degrees of $f$ and $g .$ . To do this, we appeal to the definition of degree in terms of intersection number. Essentially, we focus on the boundary for the calculation, and recall that the orientation numbers at either end of an interval must be opposite. Written out, we have\n\n$$\n\\begin{array} { r l } & { \\deg F = 0 \\iff I ( F , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( \\partial F , \\{ p \\} ) \\mathrm { ~ s i n c e ~ w e ~ m a y ~ c o n s i d e r ~ i n t e r s e c t i o n s ~ a t ~ t h e ~ b o u n d a r y } } \\\\ & { \\iff I ( \\partial F | _ { X \\times \\{ 0 \\} } ) - I ( \\partial F | _ { X \\times \\{ 1 \\} } ) \\mathrm { ~ s i n c e ~ t h e ~ e n d s ~ o f ~ } I \\mathrm { ~ a r e ~ o p p o s i t e l y ~ o r i e n t e d } } \\\\ & { \\iff I ( f , \\{ p \\} ) - I ( g , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( f , \\{ p \\} ) = I ( g , \\{ p \\} ) } \\\\ & { \\iff \\deg f = \\deg g . } \\end{array}\n$$\n\nHence F can be extended, and thus $f \\sim g ,$ , precisely when the degrees of $f$ and g match.\n\n## 4 Results and Applications of the Theorem\n\n## 4.1 Shifting to Vector Fields\n\nNow that we’ve finally proven the theorem, after all that buildup with extensions, we can actually use it to examine properties of vector fields on different types of spaces. We’ll work toward another theorem that states the following:\n\nTheorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.\n\nTo get there, let’s start with a fact that follows closely from our previous work.\n\nClaim: If \\~v is a vector field on $\\mathbb { R } ^ { k }$ with finitely many zeros, such that the sum of indices of its zeros is also zero, then there exists some vector field \\~w that has no zeros but equals \\~v outside of a compact set.\n\nProof. This follows just from expanding definitions. We can write the vector field as $\\vec { v } ( x ) = ( x , v ( x ) )$ for a smooth map $v : \\mathbb { R } ^ { k }  T ( \\mathbb { R } ^ { k } ) = \\mathbb { R } ^ { k }$ . Index at a particular point, written $\\operatorname { i n d } _ { 0 } ( x )$ , corresponds exactly to the degree of the directional map $\\frac { \\vec { v } } { | \\vec { v } | }$ , or equivalently, $\\frac { v } { | v | }$ at that point. So we can equate this with the winding number of v around zero, and use the hypothesis that $W ( v , \\{ 0 \\} ) = 0$ . From there, we may apply step 3.5 to find a function $w : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k } \\backslash \\{ 0 \\}$ that agrees with v except on a compact set. Form the vector field \\~w as $\\vec { w } ( x ) = ( x , w ( x ) )$ to conclude the claim. □\n\n## 4.2 From $\\mathbb { R } ^ { k }$ to X\n\nTo make this a bit more general, consider a compact manifold X.\n\nClaim: On any compact manifold X, there exists a vector field with finitely many zeros.\n\n\n[[PAGE 10]]\nProof. For this proof, as in 3.9, we use the trick of taking a convenient larger manifold, in this case T X, the tangent bundle. Recall that $T X = \\{ ( x , v ) \\mid x \\in X$ and $v \\in T _ { x } { ( X ) } \\}$ , and that if dim $X = k ,$ then dim $T X = 2 k$ We’re going to pick two transverse submanifolds of complementary dimension, then apply the codimension equation,\n\n$$\n\\operatorname { c o d i m } \\left( X \\cap Z \\right) = \\operatorname { c o d i m } X + \\operatorname { c o d i m } Z ,\n$$\n\nand compactness to show finite intersection. We pick our manifolds carefully so that their intersection corresponds exactly to the zeros of v.\n\nLet $W = W \\times \\{ \\vec { 0 } \\} \\subset T X$ be one of our manifolds, and im (\\~v) be the other. Note that im $( \\vec { v } ) =$ $\\{ ( x , v ( x ) ) \\mid x \\in X \\} = \\mathrm { g r a p h } ( v )$ , and the graph of v is also a subset of T X with dimension k. And by the Transversality Homotopy Theorem graph(v) can be shifted if necessary, by applying a homotopy taking v to $v ^ { \\prime }$ , to a manifold transversal to W . Then, since W t graph(v’) and the manifolds have complementary dimension, we know their intersection $W \\cap \\mathrm { g r a p h } ( v ^ { \\prime } )$ has dimension $2 k - k - k = 0$ and is hence discrete. By compactness, we conclude that the intersection is finite.\n\nNow, the intersection essentially tests whether $v ^ { \\prime } ( x ) = 0$ in the second coordinate of each point, so it collects all of the zeros of the vector field. Hence we have shown that ${ \\vec { v } } ^ { \\prime }$ is a vector field on X with finitely many zeros. □\n\n## 4.3 Localizing\n\nNext, we’d like to localize the zeros of the manifold, which we can do with the help of the Isotopy Lemma.\n\nClaim: If U is any open set on a compact, connected manifold X, there exists a vector field with finitely many zeros, all of which are inside U .\n\nProof. Let v be some vector field with finitely many zeros, which we know to exist by step 3.3. We can again apply the Isotopy Lemma to find a diffeomorphism φ that takes any $x \\notin U$ such that $v ( x ) = 0$ to a point $\\phi ( x ) \\in U$ , moving any zeros outside of U to inside. Then we can define a new vector field ${ \\vec { v } } ^ { \\prime }$ such that $\\vec { v } ^ { \\prime } ( x ) = ( x , \\phi ^ { - 1 } \\circ v ( x ) )$ . Then any zeros of the vector field are necessarily inside U. □\n\n## 4.4 Theorem and Results\n\nFinally, we prove the theorem, which leads to some fun results.\n\nTheorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.\n\nProof. To complete the proof, we need to invoke another powerful result involving Hopf, the Poincar´e-Hopf Index Theorem. It states the following:\n\n\n[[PAGE 11]]\nPoincar´e-Hopf Index Theorem: If \\~v is a smooth vector field on a compact, oriented manifold X, then the sum of the indices of \\~v equals the Euler characteristic of X.\n\nWe will take this theorem as given, but offer the intuition that the vector field prescribes a flow of the points in X, and where the zeros of \\~v are fixed under an infinitesimal transformation of X along its vector field. If the manifold didn’t move at all, we’d be completing the identity transformation, which is where you should see the connection to the diagonal in the Euler characteristic definition. How the vector field flows thus forms another way to distinguish manifolds.\n\nBack to the proof of this theorem. First, we use steps 4.2 and 4.3 to find a vector field on X with finitely many zeros, all localized to a subset $U \\subset X$ . If and only if X has a nonvanishing vector field, the sum of the indices of the zeros is zero, by step 4.1. Note that since Poincar´e-Hopf relies on indices calculated after we pull back to parameterisations in $\\mathbb { R } ^ { k }$ , we can assume that our indices all refer to the zeros of v. Then applying Poincar´e-Hopf, we get that the indices summing to zero holds if and only if the Euler characteristic is zero, and the theorem is shown. □\n\nIn summary, we just showed\n\n$$\n( X { \\mathrm { ~ h a s ~ a ~ n o n v a n i s h i n g ~ v e c t o r ~ f i e l d } } ) \\longleftrightarrow \\sum { \\mathrm { i n d i c e s } } = 0 \\longleftrightarrow \\overbrace { \\sum { \\mathrm {  ~ \\Omega ~ } } } ^ { \\mathrm { P - H } } \\chi ( X ) = 0 .\n$$\n\nWhat can we say about some of our familiar manifolds? Given the Euler characteristics, we can say whether or not they have nonvanishing vector fields. For spheres and tori, we have\n\n$$\n\\chi ( S ^ { k } ) = \\left\\{ \\begin{array} { c c } { { 0 } } & { { k \\mathrm { ~ o d d } } } \\\\ { { 2 } } & { { k \\mathrm { ~ e v e n } } } \\end{array} \\right. \\quad \\quad \\mathrm { a n d } \\quad \\quad \\chi ( T ^ { k } ) = - 2 ( k - 2 )\n$$\n\nIn the case of spheres, we see that only odd-dimensional spheres have smooth nonvanishing vector fields. This proves in particular the Hairy Ball Theorem, a popular result.\n\nHairy Ball Theorem: There is no nonvanishing smooth vector field on a 2-sphere. That is, you can’t comb the hair on a coconut.\n\nInterestingly, two more manifolds with characteristic $\\mathrm { z e r o ^ { 3 } }$ are the M¨obius strip and the Klein bottle. It’s surprising that these paradoxical shapes that defy obvious embeddings could have smooth nonvanishing vector fields defined on them! In fact, the M¨obius strip has no nonvanishing smooth normal vector field, even though it has a nonvanishing tangent vector field. A popular example is that of an ant walking continuously along the side of the strip, which inspired M.C. Escher.\n\nFigure 2: Mobius Strip II by Escher\n\n<!-- image-->\n\nThese results also have ramifications for vector fields on the earth, such as wind and water currents, and, for example, for virtual reality video, in which smooth vector fields avoid problems of stretched pixels and stereo4. And just to demonstrate a couple smooth vector fields on the 2-torus and the Klein bottle, we present the following drawings5.\n\n<!-- image-->  \n2-torus\n\n<!-- image-->  \nKlein bottle\n\n## 5 Conclusion\n\n\n[[PAGE 12]]\nIn this talk, we’ve demonstrated used the concepts of homotopy, degree, and winding number to achieve notable results about homotopy groups and vector fields. By demonstrating that elements of $\\pi _ { k } ( S ^ { k } )$ are determined precisely by their (integral) degree, we’ve shown the isomorphism $\\pi _ { k } ( S ^ { k } ) \\cong \\mathbb { Z }$ Combine that with the fact that lower dimensional spheres can only map trivially into lower ones—that is, $\\pi _ { k } ( S ^ { n } ) = 0$ higher $n < k { \\mathrm { - w e } } ^ { 3 } \\mathrm { v } \\epsilon$ solved more than half of the problems of calculating homotopy groups.\n\nNow, this sounds fairly impressive until one considers that homotopy groups $\\pi _ { k } ( S ^ { n } )$ with $k \\ < \\ n$ do not follow such a regular pattern. Why we have $\\pi _ { 1 1 } ( S ^ { 5 } ) \\cong \\mathbb { Z } _ { 2 }$ but $\\pi _ { 1 4 } ( S ^ { 4 } ) \\cong \\mathbb { Z } _ { 1 2 0 } \\times \\mathbb { Z } _ { 1 2 } \\times \\mathbb { Z } _ { 2 }$ is not immediately apparent6. But if it were, then homotopy groups would not be such an interesting problem!\n\nFigure 3: Hopf Fibration from Wikipedia\n\nTo end with a less mysterious example, we can invoke Hopf once more to offer a visualizable element in a set $\\pi _ { k } ( S ^ { n } )$ with $k < n$ Namely, there is a nontrivial element in $\\pi _ { 3 } ( S ^ { 2 } )$ known as the Hopf fibration or Hopf bundle. Shown at right, it maps the 3-sphere into the 2-sphere nontrivially.\n\n## 6 Works Cited\n\n<!-- image-->\n\n1. “Degree of a Continuous Mapping.” Wikipedia. Wikimedia Foundation, 12 Apr. 2017. Web. 01 May 2017.\n\n2. Escher, M. C. M¨obius Strip II. Digital image. M.C. Escher. The M.C. Escher Company B.V., n.d. Web. 05 May 2017.\n\n3. “Euler Characteristic.” Wikipedia. Wikimedia Foundation, 26 Mar. 2017. Web. 05 May 2017.\n\n4. Guillemin, Victor, and Alan Pollack. Differential Topology. Providence, RI: AMS Chelsea Pub., 2014. Print.\n\n5. Hart, Vi. “EleVRant: The Hairy Ball Theorem in VR Video.” EleVR. Human Advancement Research Community, 13 June 2014. Web. 05 May 2017.\n\n6. “Homotopy Groups of Spheres.” Wikipedia. Wikimedia Foundation, 10 Apr. 2017. Web. 04 May 2017.\n\n7. “Hopf Fibration.” Wikipedia. Wikimedia Foundation, 25 Mar. 2017. Web. 05 May 2017.\n\n8. Weisstein, Eric W. “Euler Characteristic.” Wolfram Math-World. Wolfram Research, Inc., n.d. Web. 05 May 2017.\n\n## 7 Appendix\n\n\n[[PAGE 13]]\nIn step 3.4 and onward, we used identifications between punctured spheres and Euclidean space and vice versa. Summarized, they are as follows.\n\n• Locally, subsets of $\\mathbb { R } ^ { k }$ and $S ^ { k }$ are homeomorphic, by the manifold structure of the k-sphere.\n\n• Euclidean space minus a point is homeomorphic to a sphere, so $\\mathbb { R } ^ { k + 1 } \\setminus \\{ p \\} \\simeq S ^ { k }$\n\n• Conversely, one could also view the sphere as the one-point compactification of Euclidean space. The sphere minus a point reduces to Euclidean space, so $S ^ { k } \\setminus \\{ p \\} \\simeq \\mathbb { R } ^ { k }$\n\nIt’s important to believe that these identifications work, so consider the following process. Start from the sphere. Remove one point to arrive at a space homeomorphic to the plane. Then remove another—we get the circle. If we remove a third point, we break connectivity and are left with the real line. That is, $S ^ { 2 } \\setminus \\left\\{ p _ { 1 } \\right\\} \\simeq \\mathbb { R } ^ { 2 } , \\mathbb { R } ^ { 2 } \\setminus \\left\\{ p _ { 2 } \\right\\} \\simeq S ^ { 1 }$ , and $S ^ { 1 } \\backslash \\{ p _ { 3 } \\} \\simeq \\mathbb { R }$ . A diagram for the process is included below.\n\n<!-- image-->\n\n## 8 Acknowledgements\n\nProfessor George Melvin was instrumental in helping me and Jenny figure out the parts of this proof, and gave excellent advice on how to present the material."
+  },
+  "chunks": [
+    {
+      "chunkIndex": 0,
+      "pageRange": {
+        "first": 1,
+        "last": 5
+      },
+      "characterCount": 16019,
+      "text": "[[PAGE 1]]\n# The Hopf Degree Theorem: Homotopy Groups and Vector Fields\n\nCameron Krulewski in collaboration with Jenny Walsh\n\nMath 132 Project II submitted May 5, 2017\n\n## 1 Introduction\n\nIn algebraic topology, a popular and complicated problem is the calculation of homotopy groups of spheres. These are groups denoted $\\pi _ { k } ( S ^ { n } )$ that describe how smooth functions from k spheres to n spheres are related to each other, and while many cases $( k , n )$ have been solved, many yet remain. You may be familiar with the case $k = 1$ , in which the group $\\pi _ { 1 } ( S ^ { n } )$ corresponds to the fundamental group of loops in $S ^ { n }$\n\nIn this talk, we’ll prove a theorem—the Hopf Degree Theorem—that gives us the homotopy group for all cases of equidimensional spheres. Connecting homotopy to a notion of degree, we will demonstrate that $\\pi _ { k } ( S ^ { k } ) \\cong \\mathbb { Z }$ for all k. In the process, we’ll explore the connections between $\\mathbb { R } ^ { k }$ and $S ^ { k }$ ， between degree and winding number and how vector fields curl around a space, and between homotopy and extensions in larger spaces. We will conclude with some applications to vector fields on certain manifolds.\n\n## 2 Background Knowledge and Examples\n\nBefore delving into the theorem, we present a few definitions and ideas that we’ll need going forward.\n\n## 2.1 Degree, Intersection Number, and Winding Numbers\n\nPerhaps the most important definition is that of degree, and related to this are the notions of intersection number and winding number.\n\nFormally, the degree of a smooth map $f$ is the intersection number of the map f with some point y in its range. In turn, the oriented intersection number of a map $f : X \\to Y$ is defined when $f$ is transversal to a submanifold Z such that Z and X have complementary dimension. The intersection number is the sum of the orientation numbers of the preimages of $Z$ under $f .$ We write deg $f = I ( f , \\{ y \\} )$ .\n\nFigure 1: Degree 2 Mapping $S ^ { 2 }  S ^ { 2 }$ from Wikipedia\n\n[[PAGE 2]]\nEssentially, degree measures how many net times the image of a map f enters and exits the submanifold $Z ,$ or wraps around it— hence it is always an integer. For example, we can imagine a degree two mapping of a 2-sphere to itself as a wrapping of the surface twice around the shape of a sphere, as shown at right. In higher dimensions, it becomes tricky to visualize, but for $S ^ { 1 }$ it is particularly easy. In the diagram below, we present the several smallest degree mappings $S ^ { 1 } \\to S ^ { 1 }$ , showing how the image wraps around the circle as well as the “covering space,” which corresponds to properties of the mapping but that we’ll just use as another way to visualize. The degree zero mapping is actually homotopic to a constant map, since we can shrink any portion of the map that doesn’t reach all the way around the circle to a point—remember this, for we’ll elaborate on it in the theorem below. Note that this diagram and argument presents a surjection from the degree map to $\\pi _ { k } ( S ^ { k } )$ . With the results of the theorem we’ll conclude injectivity as well.\n\n<!-- image-->\n\n<!-- image-->  \nThis notion of wrapping around is captured in the definition of winding number, which corresponds to that of degree1 for $S ^ { 1 }$ . In general, however, winding number about a certain point z is defined as the degree of the directional map u : $X  S ^ { 1 }$ such that $\\begin{array} { r } { u ( x ) = \\frac { f ( x ) - z } { | f ( x ) - z | } } \\end{array}$ . We write $W ( f , z ) = \\deg ( u )$ Winding numbers are useful because they allow us to examine local behavior of a function, and we will begin the proof by analyzing them.\n\n## 2.2 Isotopy Lemma\n\nAnother ingredient we’ll need in the steps ahead is the Isotopy Lemma, which allows us to shift useful points to different locations on the manifold.\n\nIsotopy Lemma and Corollary: Given any two sets of points $\\{ x _ { 1 } , . . . , x _ { n } \\}$ and $\\left\\{ y _ { 1 } , . . . , y _ { n } \\right\\}$ in a connected manifold $Y$ , there exists a diffeomorphism $\\phi : Y  Y$ such that $\\phi ( x _ { i } ) = y _ { i }$ and $\\phi$ is isotopic to the identity.\n\nNote that isotopic means homotopic such that each homotopic map is also a diffeomorphism. We can think of the diffeomorphism $\\phi$ as a sort of rotation, or the specification of a direction of flow of the manifold. For example, a map taking the north pole of a sphere to the south pole through a great circle is an isotopy, as is any rotation map on $S ^ { 1 }$\n\n## 2.3 Bump Functions\n\nSince we require a few uses of bump functions, it is appropriate to mention them quickly here. In any dimension, we can find a map $\\rho : \\mathbb { R } ^ { N } $ R that smoothly transitions from zero to one and back. In\n\n$\\mathbb { R } ^ { 1 }$ , an example function is\n\n$$\n\\rho ( x ) = \\left\\{ { \\begin{array} { l l } { e ^ { - \\frac { 1 } { 1 - x ^ { 2 } } } } & { | x | < 1 } \\\\ { 0 } & { \\mathrm { e l s e } } \\end{array} } \\right. .\n$$\n\n[[PAGE 3]]\n## 2.4 Euler Characteristic\n\nOne more concept we’ll need for an application at the end is that of the Euler characteristic. Strictly speaking, the Euler characteristic $\\chi ( X )$ of a space X is defined to be the self-intersection of its diagonal $\\Delta = \\{ ( x , x ) \\mid x \\in X \\}$ . That is, $\\chi ( X ) = I ( \\Delta , \\Delta )$ . It’s a useful property for classifying manifolds because it is a topological invariant, preserved under diffeomorphism. Calculation of the Euler characteristic can involve triangulations of spaces, but without going into details, we can think of it as a generalization2 of the polyhedral formula $V - E + F = 2$ in R3—polyhedra in less familiar spaces X satisfy $V - E + F =$ $\\chi ( X )$ . We’ll return to this concept in the fourth section after proving the Hopf Degree Theorem.\n\n## 3 Proving the Hopf Degree Theorem\n\nWe proceed to prove the theorem in nine steps, presenting claims and proofs in each.\n\n## 3.1 Beginning with Winding Numbers\n\nThe first step of the theorem is to establish a way to calculate degree, for which we use regular points. Starting from the notion of winding number, we’ll expand this local condition—which allows us to make helpful approximations—across the domain to determine $\\deg ( f )$\n\nClaim: Let $f : U \\to \\mathbb { R } ^ { k }$ be smooth, $U \\subset \\mathbb { R } ^ { k }$ , and $x \\mathrm { ~ a ~ }$ regular point with $f ( x ) = z$ . If B is a sufficiently small closed ball around x, the the boundary map $\\partial f : \\partial B \\to \\mathbb { R } ^ { k }$ satisfies\n\n$$\nW ( \\partial f , z ) = { \\left\\{ \\begin{array} { l l } { + 1 } & { { \\mathrm { i f ~ } } f { \\mathrm { ~ p r e s e r v e s ~ o r i e n t a t i o n ~ a t ~ } } x } \\\\ { - 1 } & { { \\mathrm { i f ~ } } f { \\mathrm { ~ r e v e r s e s ~ o r i e n t a t i o n ~ a t ~ } } x . } \\end{array} \\right. }\n$$\n\nProof. We start by making some simplifications. First, it suffices to show this part for $x = z = 0$ because we can simply shift our coordinate system to treat the general case. Then, since it’s much easier to deal with linear maps than with general $f ,$ and because we’re concerned with local behavior, we apply Taylor’s Thm. to expand $f$ around 0. If we call the derivative $A = d f _ { 0 }$ , Taylor’s gives\n\n$$\nf ( x ) = A x + \\varepsilon ( x )\n$$\n\nwhere ${ \\frac { | \\varepsilon ( x ) | } { | x | } } \\to 0 { \\mathrm { ~ a s ~ } } x \\to 0$ . We can assume B has been chosen small enough so that this holds, including for $\\partial f$ around the boundary.\n\nWe wish to compute the winding number of $f ,$ which is\n\n$$\n\\deg ( u ( x ) ) = \\deg \\left( { \\frac { \\partial f ( x ) - z } { | \\partial f - z | } } \\right) = \\deg \\left( { \\frac { \\partial f ( x ) } { | \\partial f ( x ) | } } \\right) = \\deg \\left( { \\frac { A x + \\varepsilon ( x ) } { | A x + \\varepsilon ( x ) | } } \\right) ,\n$$\n\nsince we set $z = 0$ and used our Taylor expansion. However, we still don’t know how to calculate this. We’d like to reduce just to the linear case and apply the following lemma:\n\n[[PAGE 4]]\nLinear Isotopy Lemma: If E is a linear isomorphism of $\\mathbb { R } ^ { k }$ that preserves (resp. reverses) orientation, then there exists a homotopy to the identity (resp. a reflection map R through the first coordinate).\n\nThis lemma is appealing because we know A is an isomorphism—since 0 is a regular value, A is surjective, and matching dimensions imply bijectivity. We also know that $\\deg ( \\mathrm { i d } ) = + 1$ , and $\\deg ( R ) =$ −1, since each map is bijective and the sign follows from the preimage orientation. So it remains to show that we can reduce our map u to one involving A. However, we know we can do this because we have a homotopy H from $u ( x )$ to $\\frac { A x } { | A x | }$ , defined by $\\begin{array} { r } { \\Breve { H } ( x , t ) = \\frac { A x + t \\varepsilon ( x ) } { | A x + t \\varepsilon ( x ) | } } \\end{array}$ | . Since Ax is an isomorphism, the origin is its only zero, and since we’re using it to approximate ∂f away from the origin, we know we won’t be dividing by zero and hence that the definition is valid.\n\nSo, we’ve simplified to calculating deg $\\left( \\frac { A x } { \\left| A x \\right| } \\right)$ , but we may as well take a homotopy from that to Ax itself, by $\\textstyle G ( x , t ) = { \\frac { A x } { | A x | ^ { 1 - t } } }$ , which satisfies $\\begin{array} { r } { g _ { 0 } = \\frac { A x } { | A x | } } \\end{array}$ and $g _ { 1 } = A x$\n\nWe may finally apply the Linear Isotopy Lemma above to conclude that deg $A = \\deg f = \\pm 1$ depending on whether A (and, correspondingly, f) preserves or reverses orientation.\n\n## 3.2 Connection to Orientation Numbers\n\nThat first fact took a few steps, as we first simplified to a linear case and then used a homotopy. But with that solidly proven, we can confidently use it to compute degree.\n\nClaim: Let $f : B \\to \\mathbb { R } ^ { k }$ be a smooth map defined on a closed ball in $\\mathbb { R } ^ { k }$ . If z is a regular value of f that has no preimages on ∂B, then the winding number of $\\partial f : \\partial B \\to \\mathbb { R } ^ { k }$ equals the sum of the orientation numbers at each preimage of z.\n\nProof. To show this, we expand the definition of winding number. We know\n\n$$\n\\begin{array} { l } { { \\displaystyle { W ( \\partial f , \\{ z \\} ) = \\deg \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } \\right) } } } \\\\ { { \\displaystyle \\qquad = I \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } , \\{ z \\} \\right) ~ a ~ v a l i d ~ s t e p ~ b e c a u s e ~ z \\not \\in \\mathrm { i m } \\partial f } } \\\\ { { \\displaystyle \\qquad = \\sum _ { y \\in f ^ { - 1 } ( z ) } e _ { y } \\left( \\frac { \\partial f ( x ) - z } { | \\partial f ( x ) - z | } , \\{ z \\} \\right) } } \\end{array}\n$$\n\nwhere $e _ { y }$ denotes the local orientation number of $y .$\n\nLet’s localize these points in $f ^ { - 1 } ( z )$ inside a closed ball B. We can then consider the winding numbers at each of these points by placing each of them within smaller balls $B _ { i }$ . Since each of the points $y _ { i }$ is regular, we have that the derivative at $y _ { i }$ is an isomorphism, and we can apply part 3.1 of the proof to see that each of them has degree ±1.\n\nWe’ve shown how the winding number contributes to the degree. But are there other contributions to worry about? Consider the behavior of $f$ outside each of these balls. We know we can extend the direction map $u ( x )$ to all of $B \\setminus \\bigcup B _ { i }$ because its denominator is nonzero except at the points $y _ { i }$ . And since $u ( x )$ can be extended, we know that $\\deg ( u ) = 0$ on this part of the domain.\n\nHence the winding number of f is the sum of the local orientation numbers of preimages of a regular value z. □\n\n[[PAGE 5]]\n## 3.3 Boundary Maps and Extensions\n\nNext we give an extension argument that starts to make the connection between homotopy and degree.\n\nClaim: For a closed ball B and a smooth function $f : \\mathbb { R } ^ { k } \\setminus \\operatorname { I n t } ( B ) \\to Y$ , if the restriction $\\partial f$ $\\partial B \\to Y$ is homotopic to a constant map, then $f$ can be extended to all of $\\mathbb { R } ^ { k }$\n\nProof. To extend the map, we use the structure we’ve been given in the statement: the homotopy from $\\partial f$ to $c _ { p }$ . Say $G ( x , t )$ is a homotopy such that $g _ { 0 } = c _ { p }$ and $g _ { 1 } = \\partial f$ . Then we assume that B is centered at zero, and define the value of f on its interior to be such that $f ( t x ) = g _ { t } ( x )$ . This way, we take the values of $f$ at the boundary of the sphere and pull them in toward the center.\n\nTo see that this is well-defined, consider the center of the ball. We might worry that even though G is smooth, the point $f ( 0 ) = g _ { 0 } ( x )$ could take on multiple values dependent on x. However, we chose G precisely so that $g _ { 0 }$ was constant, and so this is not a concern. While smoothness of G guarantees the definition radially, constant behavior near the center guarantees it in the angular direction.\n\nAnd to make sure that the extension is smooth on the boundary, we may smooth out our homotopy so that it is constant for some period of time near $t = 0$ and for some time near $t = 1$ . We won’t write this out, but claim that it can be done by substituting a bump function for t within the homotopy.\n\nNow turning to maps between spheres, which is at the heart of the problem, we start to set up an induction. We want to show that maps $S ^ { k } \\to S ^ { k }$ with degree zero are homotopic to constant maps.\n\nClaim (General): If $f : S ^ { k } \\to S ^ { k }$ has degree zero, then $f \\sim c _ { p } .$\n\nFor our base case, we start at the simplest setup: a map $f : S ^ { 1 } \\to S ^ { 1 }$ with $\\deg ( f ) = 0$ . We wish to show that this map is homotopic to a constant.\n\nClaim (Base Case): If $f : S ^ { 1 } \\to S ^ { 1 }$ has degree zero, then $f \\sim c _ { p } .$\n\nWe’ve demonstrated this claim in the examples of maps $S ^ { 1 } \\to S ^ { 1 }$ above. Any degree zero mapping wraps around the circle zero times—that is, not at all—and thus can be shrunk by a homotopy to a single point. Higher degree maps cannot because they wrap around the non-contractible circle.\n\nThis fact can be proven more rigorously by parameterizing the circle, but we rely on an intuitive understanding so that we can focus on the induction. Now, we move toward the general case to establish the theorem for degree zero.\n\n## 3.4 Moving from Spheres to Euclidean Space\n\nWe’ll end up frequently using identifications between Euclidean space and spheres in the next few steps, so see the appendix for a summary and some pictorial examples. We use the following fact about maps from $S ^ { k } \\operatorname { t o } \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ to help build the inductive step.\n\nClaim: If $f : S ^ { k } \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ has winding number zero with respect to the origin, then $f \\sim c _ { p }$\n\nProof. To go between a sphere $S ^ { k }$ and punctured Euclidean space $\\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ , we can always use the stereographic projection $\\pi _ { s }$ and its inverse. So $\\pi _ { s } ^ { - 1 } : \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\} \\to S ^ { k }$ allows us to find a map $f ^ { \\prime } = \\pi _ { s } ^ { - 1 } \\circ f : S ^ { k } \\to S ^ { k }$\n\nThen the winding number of f is the degree of the directional map about zero, or\n\n$$\nW ( f ^ { \\prime } , \\{ 0 \\} ) = \\deg \\left( { \\frac { f ( x ) - 0 } { | f ( x ) - 0 | } } \\right) = \\deg \\left( { \\frac { f } { | f | } } \\right) = \\deg ( f ) .\n$$\n\nFor the last step recall we have a homotopy $\\frac { f } { | f | ^ { t } }$ from $f$ to its normalized form.\n\nWe now have a map $S ^ { k } \\to S ^ { k }$ with degree zero, so we may conclude that it’s homotopic to $c _ { p }$ . Since homotopy is transitive, we can apply the previous part to see that $f \\sim c _ { p }$ , as desired. □",
+      "rawEntries": [
+        {
+          "id": "paper:def:degree",
+          "type": "definition",
+          "name": "映射的度数",
+          "statement": "若光滑映射 $f:X\\to Y$ 横截于与 $X$ 维数互补的子流形 $Z$，则有向交数是 $f^{-1}(Z)$ 中各点定向数之和；对点 $y$ 写作 $\\deg f=I(f,\\{y\\})$。",
+          "page": 1,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:def:winding-number",
+          "type": "definition",
+          "name": "绕数",
+          "statement": "关于点 $z$ 的绕数定义为方向映射 $u(x)=\\frac{f(x)-z}{|f(x)-z|}:X\\to S^1$ 的度数，即 $W(f,z)=\\deg(u)$。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:isotopy",
+          "type": "lemma",
+          "name": "同胚变形引理及推论",
+          "statement": "若连通流形 $Y$ 中两组点 $\\{x_1,\\ldots,x_n\\}$ 与 $\\{y_1,\\ldots,y_n\\}$ 给定，则存在微分同胚 $\\phi:Y\\to Y$，满足 $\\phi(x_i)=y_i$，且 $\\phi$ 与恒等映射同痕。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:def:bump-function",
+          "type": "definition",
+          "name": "光滑 bump 函数",
+          "statement": "任意维数中存在映射 $\\rho:\\mathbb R^N\\to\\mathbb R$，能从零光滑过渡到一再回到零；例如 $\\rho(x)=e^{-1/(1-x^2)}$（$|x|<1$），否则为 $0$。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:def:euler-characteristic",
+          "type": "definition",
+          "name": "欧拉示性数",
+          "statement": "空间 $X$ 的欧拉示性数定义为对角线 $\\Delta=\\{(x,x)\\mid x\\in X\\}$ 的自交数：$\\chi(X)=I(\\Delta,\\Delta)$；它在微分同胚下保持不变。",
+          "page": 3,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:linear-isotopy",
+          "type": "lemma",
+          "name": "线性同胚变形引理",
+          "statement": "若 $E$ 是保持（分别反转）$\\mathbb R^k$ 定向的线性同构，则存在从 $E$ 到恒等映射（分别到关于第一坐标的反射映射 $R$）的同伦。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:regular-point-winding",
+          "type": "lemma",
+          "name": "正则点处绕数",
+          "statement": "设 $f:U\\to\\mathbb R^k$ 光滑，$U\\subset\\mathbb R^k$，且 $x$ 是满足 $f(x)=z$ 的正则点。若 $B$ 是以 $x$ 为中心的充分小闭球，则 $W(\\partial f,z)=+1$（$f$ 在 $x$ 保持定向）或 $-1$（反转定向）。",
+          "page": 3,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:winding-orientation-sum",
+          "type": "lemma",
+          "name": "绕数与定向数之和",
+          "statement": "设 $f:B\\to\\mathbb R^k$ 光滑，$B$ 为闭球，$z$ 是 $f$ 的正则值且在 $\\partial B$ 上无原像，则 $\\partial f$ 关于 $z$ 的绕数等于 $f^{-1}(z)$ 中各原像点定向数之和。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:proposition:boundary-extension",
+          "type": "proposition",
+          "name": "边界同伦与延拓",
+          "statement": "若闭球 $B$ 上有光滑函数 $f:\\mathbb R^k\\setminus\\operatorname{Int}(B)\\to Y$，且限制映射 $\\partial f:\\partial B\\to Y$ 同伦于常值映射，则 $f$ 可延拓到整个 $\\mathbb R^k$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:degree-zero-sphere",
+          "type": "theorem",
+          "name": "度数为零的球面映射",
+          "statement": "若 $f:S^k\\to S^k$ 的度数为零，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:degree-zero-circle",
+          "type": "theorem",
+          "name": "度数为零的圆映射（基例）",
+          "statement": "若 $f:S^1\\to S^1$ 的度数为零，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:zero-winding-punctured-space",
+          "type": "theorem",
+          "name": "穿孔欧氏空间中的零绕数映射",
+          "statement": "若 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$ 关于原点的绕数为零，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ],
+      "inferenceHints": [
+        {
+          "premiseRefs": [
+            "paper:lemma:linear-isotopy"
+          ],
+          "conclusionRef": "paper:lemma:regular-point-winding",
+          "relationText": "应用线性同胚变形引理可得局部度数按定向为 $\\pm1$。",
+          "page": 1,
+          "_provenance": {
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:lemma:regular-point-winding"
+          ],
+          "conclusionRef": "paper:lemma:winding-orientation-sum",
+          "relationText": "对各正则原像应用前一结论，得到绕数等于定向数之和。",
+          "page": 1,
+          "_provenance": {
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:proposition:boundary-extension"
+          ],
+          "conclusionRef": "paper:theorem:degree-zero-sphere",
+          "relationText": "边界映射同伦于常值映射时可延拓，用于证明度数为零的球面映射同伦于常值映射。",
+          "page": 1,
+          "_provenance": {
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:theorem:degree-zero-circle"
+          ],
+          "conclusionRef": "paper:theorem:degree-zero-sphere",
+          "relationText": "以 $S^1\\to S^1$ 的度数零情形作为归纳基例。",
+          "page": 1,
+          "_provenance": {
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:theorem:degree-zero-sphere"
+          ],
+          "conclusionRef": "paper:theorem:zero-winding-punctured-space",
+          "relationText": "将穿孔欧氏空间映射归一化为球面映射后，绕数等于其度数，故可应用前一结论。",
+          "page": 1,
+          "_provenance": {
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 1,
+      "pageRange": {
+        "first": 5,
+        "last": 9
+      },
+      "characterCount": 17908,
+      "text": "[[PAGE 5]]\n## 3.3 Boundary Maps and Extensions\n\nNext we give an extension argument that starts to make the connection between homotopy and degree.\n\nClaim: For a closed ball B and a smooth function $f : \\mathbb { R } ^ { k } \\setminus \\operatorname { I n t } ( B ) \\to Y$ , if the restriction $\\partial f$ $\\partial B \\to Y$ is homotopic to a constant map, then $f$ can be extended to all of $\\mathbb { R } ^ { k }$\n\nProof. To extend the map, we use the structure we’ve been given in the statement: the homotopy from $\\partial f$ to $c _ { p }$ . Say $G ( x , t )$ is a homotopy such that $g _ { 0 } = c _ { p }$ and $g _ { 1 } = \\partial f$ . Then we assume that B is centered at zero, and define the value of f on its interior to be such that $f ( t x ) = g _ { t } ( x )$ . This way, we take the values of $f$ at the boundary of the sphere and pull them in toward the center.\n\nTo see that this is well-defined, consider the center of the ball. We might worry that even though G is smooth, the point $f ( 0 ) = g _ { 0 } ( x )$ could take on multiple values dependent on x. However, we chose G precisely so that $g _ { 0 }$ was constant, and so this is not a concern. While smoothness of G guarantees the definition radially, constant behavior near the center guarantees it in the angular direction.\n\nAnd to make sure that the extension is smooth on the boundary, we may smooth out our homotopy so that it is constant for some period of time near $t = 0$ and for some time near $t = 1$ . We won’t write this out, but claim that it can be done by substituting a bump function for t within the homotopy.\n\nNow turning to maps between spheres, which is at the heart of the problem, we start to set up an induction. We want to show that maps $S ^ { k } \\to S ^ { k }$ with degree zero are homotopic to constant maps.\n\nClaim (General): If $f : S ^ { k } \\to S ^ { k }$ has degree zero, then $f \\sim c _ { p } .$\n\nFor our base case, we start at the simplest setup: a map $f : S ^ { 1 } \\to S ^ { 1 }$ with $\\deg ( f ) = 0$ . We wish to show that this map is homotopic to a constant.\n\nClaim (Base Case): If $f : S ^ { 1 } \\to S ^ { 1 }$ has degree zero, then $f \\sim c _ { p } .$\n\nWe’ve demonstrated this claim in the examples of maps $S ^ { 1 } \\to S ^ { 1 }$ above. Any degree zero mapping wraps around the circle zero times—that is, not at all—and thus can be shrunk by a homotopy to a single point. Higher degree maps cannot because they wrap around the non-contractible circle.\n\nThis fact can be proven more rigorously by parameterizing the circle, but we rely on an intuitive understanding so that we can focus on the induction. Now, we move toward the general case to establish the theorem for degree zero.\n\n## 3.4 Moving from Spheres to Euclidean Space\n\nWe’ll end up frequently using identifications between Euclidean space and spheres in the next few steps, so see the appendix for a summary and some pictorial examples. We use the following fact about maps from $S ^ { k } \\operatorname { t o } \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ to help build the inductive step.\n\nClaim: If $f : S ^ { k } \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ has winding number zero with respect to the origin, then $f \\sim c _ { p }$\n\nProof. To go between a sphere $S ^ { k }$ and punctured Euclidean space $\\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ , we can always use the stereographic projection $\\pi _ { s }$ and its inverse. So $\\pi _ { s } ^ { - 1 } : \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\} \\to S ^ { k }$ allows us to find a map $f ^ { \\prime } = \\pi _ { s } ^ { - 1 } \\circ f : S ^ { k } \\to S ^ { k }$\n\nThen the winding number of f is the degree of the directional map about zero, or\n\n$$\nW ( f ^ { \\prime } , \\{ 0 \\} ) = \\deg \\left( { \\frac { f ( x ) - 0 } { | f ( x ) - 0 | } } \\right) = \\deg \\left( { \\frac { f } { | f | } } \\right) = \\deg ( f ) .\n$$\n\nFor the last step recall we have a homotopy $\\frac { f } { | f | ^ { t } }$ from $f$ to its normalized form.\n\nWe now have a map $S ^ { k } \\to S ^ { k }$ with degree zero, so we may conclude that it’s homotopic to $c _ { p }$ . Since homotopy is transitive, we can apply the previous part to see that $f \\sim c _ { p }$ , as desired. □\n\n[[PAGE 6]]\n## 3.5 Adjusting the Range\n\nNext, we want to show that if we have maps $\\mathbb { R } ^ { k } \\to \\mathbb { R } ^ { k }$ that we can treat the range as a sphere. That is, we can punch out the origin from the range given certain conditions on $f .$\n\nClaim: Let $f : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k }$ be smooth, with 0 a regular value. If $f ^ { - 1 } ( 0 )$ is finite and the orientations of the preimage points adds to zero, then—assuming the statement above—there exists a map $g : \\mathbb { R } ^ { k } $ $\\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$ such that $f = g$ outside a compact set.\n\nProof. Since the orientations of the preimage points add to zero, we know by step 3.2 that f has winding number zero about the origin. Then place an open ball B around the origin such that $f ^ { - 1 } ( 0 ) \\subset B$ and consider the restricted map $\\partial f : \\partial B \\to \\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$\n\nAs the boundary of a ball, $\\partial B \\simeq S ^ { k - 1 }$ , so if we define $\\partial f ^ { \\prime } : S ^ { k - 1 } \\to \\mathbb { R } ^ { k } \\setminus \\{ 0 \\}$ we can apply step 3.4 and the inductive hypothesis to see that $\\partial f ^ { \\prime }$ : is homotopic to a constant map. Then, we can apply 3.3 to extend $f$ to a smooth map g on all of $\\mathbb { R } ^ { k }$\n\nNote that g is nonzero within B because it is defined away from any of the preimages of zero, so $f$ and g don’t agree on B¯. But this gets us precisely what we want for the next part, since g maps to $\\mathbb { R } ^ { k } \\setminus \\{ 0 \\} \\simeq S ^ { k }$ □\n\n## 3.6 The Inductive Step\n\nNow it’s time to complete the induction, and prove the claim in general. Recall the statement:\n\nClaim: If $f : S ^ { k } \\to S ^ { k }$ has degree zero, then $f \\sim c _ { p }$\n\nProof. Let $f : S ^ { k } \\to S ^ { k }$ have degree zero. We want to pick a few points for the purposes of eventually reducing $S ^ { k }$ to $\\mathbb { R } ^ { k }$ , so we use Sard’s Thm. to pick two regular values a and b. By well-definedness of $f ,$ we know $f ^ { - 1 } ( a ) \\cap f ^ { - 1 } ( b ) = \\emptyset$\n\nWe want to take a subset U of $S ^ { k }$ such that $f ^ { - 1 } ( a ) \\subset U \\subset S ^ { k } \\setminus \\{ f ^ { - 1 } ( b ) \\}$ , and to do this, we may take U such that $f ^ { - 1 } ( a ) \\subset U$ and apply the Isotopy Lemma to find a diffeomorphism $\\phi$ that maps any points in $f ^ { - 1 } ( b )$ that lie inside U to somewhere outside of U. Then we can compose $\\phi ^ { - 1 } \\circ f$ to ensure that we have U as desired. For the purposes of this proof we’ll assume that $U$ has been constructed properly, and we’ll just write f for the function.\n\nNow, we want to use our statements about maps in $\\mathbb { R } ^ { k }$ , so we compose on either side of f to arrange this. We take $\\alpha : \\mathbb { R } ^ { k }  U \\subset S ^ { k }$ to be just a local parameterization of $U .$ , and $\\beta : S ^ { k } \\setminus \\{ b \\}  \\mathbb { R } ^ { k }$ the stereographic projection, which we may pick such that $\\beta ( a ) = 0$ . Then our map looks like this:\n\n$$\n\\mathbb { R } ^ { k } \\xrightarrow { \\alpha } U \\xrightarrow { f | _ { U } } S ^ { k } \\backslash \\{ b \\} \\xrightarrow { \\beta } \\mathbb { R } ^ { k } \\ ,\n$$\n\nand we call the composition map $\\tilde { f } : = \\beta \\circ f \\circ \\alpha$ . Since we chose $\\beta ( a ) = 0$ , we know that 0 is a regular value of $\\tilde { f }$ because a is a regular value of $f .$\n\n<!-- image-->\n\n[[PAGE 7]]\nSo we have constructed a map $\\mathbb { R } ^ { k } \\to \\mathbb { R } ^ { k }$ with 0 as a regular value. Furthermore, $\\tilde { f } ^ { - 1 } ( 0 )$ has the same properties as $f ^ { - 1 } ( a )$ (if we require our maps to be orientation-preserving) in the sense that the orientation numbers of the preimages $\\tilde { f } ^ { - 1 } ( 0 )$ add to zero. This is exactly what we need to apply step 3.5 and extend the map. Doing so, we get a map $\\tilde { g } : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k } \\backslash$ {0} that agrees with $\\tilde { f }$ except on some compact set $K$\n\nWe’ve used step 3.5 to remove a point in our range, but now we want to return to the spheres to complete the induction. We can compose $\\tilde { g }$ with the inverses of our earlier maps to force it to map between the spheres—set $g : = \\beta ^ { - 1 } \\circ \\tilde { g } \\circ \\alpha ^ { - 1 }$ . Now, originally $\\tilde { g }$ failed to hit b by construction, but that may no longer be the case when we extend it from $U$ to all of $S ^ { k }$ . However, we do know that $g$ fails to hit a—since $\\tilde { g }$ does not hit zero, the image of a, we know that $g$ cannot possible hit a. We can write $g : S ^ { k }  S ^ { k } \\setminus \\{ a \\}$\n\nAll of our work was for that point removal, because now we can stereographically project $S ^ { k } \\backslash$ $\\{ a \\} \\to \\mathbb { R } ^ { k }$ Since Euclidean space is contractible, we know that $\\tilde { g }$ is homotopic to a constant $c _ { p } .$ . It remains to show that $f$ itself is homotopic to $\\tilde { g }$ and thus to $c _ { p } .$ , but this follows from the construction $H ( x , t ) = ( 1 - t ) ( \\beta \\circ f ) ( x ) + t ( \\beta \\circ g ) ( x )$ , which basically shifts $f$ to $g$ by scaling, then maps it back to the sphere by $\\beta .$\n\nHence we have shown that $f \\sim c _ { p }$ , using step 3.5 to complete the induction.\n\n## 3.7 Extending into Euclidean Space\n\nNow that we have the desired statement about maps between spheres, we want to take the next step toward generalizing the domain. To that end, we turn to something called the Extension Theorem.\n\nExtension Theorem: Let W be a compact, connected, oriented k + 1-dimensional manifold with boundary, and $f : \\partial W \\to S ^ { k }$ a smooth map. Then $f$ extends smoothly to a map ${ \\bar { f } } : W \\to S ^ { k }$ such that $\\partial \\bar { f } = f$ , if and only if $\\deg ( f ) = 0$\n\nTo get to this theorem, we need a few other results first. We next prove the following claim.\n\nClaim: If W is a compact manifold with boundary and $f : \\partial W \\to \\mathbb { R } ^ { k + 1 }$ is smooth, then $f$ may be extended to all of $W$ .\n\nProof. To prove this we want to invoke the Epsilon Neighborhood Theorem, which allows us to thicken our manifold boundary into something useful.\n\nEpsilon Neighborhood Theorem: For a compact boundaryless manifold Y and $\\varepsilon > 0$ , if $Y ^ { \\varepsilon }$ is the set of points in $\\mathbb { R } ^ { N }$ within ε of $Y .$ , then $Y ^ { \\varepsilon }$ is a manifold. Furthermore, if π takes points in $Y ^ { \\varepsilon }$ to the closest point to them in $Y .$ , then $\\pi : Y ^ { \\varepsilon } \\to Y$ is a submersion and $\\pi | _ { Y } = i d _ { Y }$\n\nSince W is compact, so is its boundary. And ∂W is oriented with the boundary orientation, so we can indeed apply the Epsilon Neighborhood Theorem to thicken $\\partial W$ to $U$ . Then we define $F = f \\circ \\pi : U \\to \\mathbb { R } ^ { k + 1 }$\n\nTo make this definition smooth, we need to scale F appropriately. We can use a bump function $\\rho : \\mathbb { R } ^ { N }  \\mathbb { R }$ such that $\\rho | _ { \\partial W } = 1$ and $\\rho | _ { \\mathbb { R } ^ { n + 1 } \\backslash K } = 0$ for some $K \\subset U$ . Then, we define $\\bar { F }$ as follows:\n\n$$\n\\bar { F } ( x ) = \\left\\{ \\begin{array} { l l } { \\rho F ( x ) } & { x \\in U } \\\\ { 0 } & { \\mathrm { e l s e } } \\end{array} \\right. .\n$$\n\nThis way, $\\bar { F }$ extends to all of $\\mathbb { R } ^ { N }$ . Since we really only wanted to define the map on $W$ , we can restrict $\\bar { f } = \\bar { F } | _ { W }$ to get the desired ${ \\bar { f } } .$ . □\n\n[[PAGE 8]]\n## 3.8 The Extension Theorem\n\nWith that done, we prove the Extension Theorem in full by shifting from $\\mathbb { R } ^ { k + 1 }$ to $S ^ { k }$ . Starting from a map $f : \\partial W \\to S ^ { k }$ , we can apply step 3.7—if and only if $\\deg ( f ) = 0 \\ z \\mathrm { - } \\mathrm { t o }$ extend $f$ to $\\bar { f } : W \\to \\mathbb { R } ^ { k + 1 }$ ， where $\\mathbb { R } ^ { k + 1 }$ is the ambient space containing $S ^ { k }$ . By Sard’s Thm., this map has regular values. Say that zero is a regular value of $\\bar { f }$ (and if it isn’t, use the Transversality Extension Theorem to find a homotopic map that does have zero as a regular value). Consider the preimages of zero; we can require ${ \\bar { f } } ^ { - 1 } ( 0 ) \\subset U$ for some open subset $U .$ We can also require, by the Isotopy Lemma, $U \\subset$ Int $W$ , by modifying $\\bar { f }$ to some homotopic map $\\tilde { f }$ if necessary.\n\nThen as an open subset, $U \\simeq \\mathbb { R } ^ { k + 1 }$ . If we take a ball B such that $\\tilde { f } ^ { - 1 } ( 0 ) \\subset B \\subset U$ , then we can define a function $\\partial \\tilde { f } : \\partial B \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ . We know that this map has winding number zero by assumption that it has degree zero, so we know by step 3.4—the corollary—that $\\tilde { f }$ is homotopic to a constant. From there, we know by step 3.3 that $f$ may be extended to the inside of the ball such that the range is unchanged. Call this extension ${ \\tilde { F } } ,$ , and note that it runs $W \\to \\mathbb { R } ^ { k + 1 } \\setminus \\{ 0 \\}$ . By composing with the reverse of the stereographic projection, we finally arrive at a map $F : W \\to S ^ { k }$ that extends $f .$\n\n## 3.9 At Last, the Hopf Degree Theorem\n\nWe finally have all of the ingredients we need to claim the Hopf Degree Theorem. Recall the statement: Hopf Degree Theorem: Let X be a compact, connected, oriented k-manifold. Two maps from X to $S ^ { k }$ are homotopic if and only if they have the same degree.\n\nProof. The exciting, critical step in the proof is constructing a larger manifold that allows us to connect what we’ve proven about extensions with the notion of homotopy.\n\nLet $f , g : X \\to S ^ { k }$ be the two maps we’re considering. Define the product manifold $W = X \\times I$ where I is the unit interval. If we had a homotopy between $f$ and $g ,$ , this would be our domain. Correspondingly, $\\partial W = X \\times \\{ 0 , 1 \\}$ . Define a map $F : \\partial W \\to S ^ { k }$ such that $F | _ { X \\times \\{ 0 \\} } = f$ and $F | _ { X \\times \\{ 1 \\} } = g$\n\n<!-- image-->\n\nand if we flattened them out:\n\n<!-- image-->\n\n[[PAGE 9]]\nNow, if F can extend to all of W smoothly, we’ve found a homotopy between f and g. And this is precisely what occurs if $\\deg ( F ) = 0$ , invoking the Extension Theorem of step 3.8. The diagram above shows that we can think of the image of W as a sort of stack of the images of each homotopic map $f _ { t }$ In two dimensions, they combine to form a smooth 3-dimensional shape. We’re arguing that if maps on either end of that 3-d shape extend to maps to $S ^ { 2 }$ , then if we consider the boundary maps separately, the volume in between smoothly connects them via homotopies.\n\nThe only thing that remains is to connect the degree of F with the degrees of $f$ and $g .$ . To do this, we appeal to the definition of degree in terms of intersection number. Essentially, we focus on the boundary for the calculation, and recall that the orientation numbers at either end of an interval must be opposite. Written out, we have\n\n$$\n\\begin{array} { r l } & { \\deg F = 0 \\iff I ( F , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( \\partial F , \\{ p \\} ) \\mathrm { ~ s i n c e ~ w e ~ m a y ~ c o n s i d e r ~ i n t e r s e c t i o n s ~ a t ~ t h e ~ b o u n d a r y } } \\\\ & { \\iff I ( \\partial F | _ { X \\times \\{ 0 \\} } ) - I ( \\partial F | _ { X \\times \\{ 1 \\} } ) \\mathrm { ~ s i n c e ~ t h e ~ e n d s ~ o f ~ } I \\mathrm { ~ a r e ~ o p p o s i t e l y ~ o r i e n t e d } } \\\\ & { \\iff I ( f , \\{ p \\} ) - I ( g , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( f , \\{ p \\} ) = I ( g , \\{ p \\} ) } \\\\ & { \\iff \\deg f = \\deg g . } \\end{array}\n$$\n\nHence F can be extended, and thus $f \\sim g ,$ , precisely when the degrees of $f$ and g match.\n\n## 4 Results and Applications of the Theorem\n\n## 4.1 Shifting to Vector Fields\n\nNow that we’ve finally proven the theorem, after all that buildup with extensions, we can actually use it to examine properties of vector fields on different types of spaces. We’ll work toward another theorem that states the following:\n\nTheorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.\n\nTo get there, let’s start with a fact that follows closely from our previous work.\n\nClaim: If \\~v is a vector field on $\\mathbb { R } ^ { k }$ with finitely many zeros, such that the sum of indices of its zeros is also zero, then there exists some vector field \\~w that has no zeros but equals \\~v outside of a compact set.\n\nProof. This follows just from expanding definitions. We can write the vector field as $\\vec { v } ( x ) = ( x , v ( x ) )$ for a smooth map $v : \\mathbb { R } ^ { k }  T ( \\mathbb { R } ^ { k } ) = \\mathbb { R } ^ { k }$ . Index at a particular point, written $\\operatorname { i n d } _ { 0 } ( x )$ , corresponds exactly to the degree of the directional map $\\frac { \\vec { v } } { | \\vec { v } | }$ , or equivalently, $\\frac { v } { | v | }$ at that point. So we can equate this with the winding number of v around zero, and use the hypothesis that $W ( v , \\{ 0 \\} ) = 0$ . From there, we may apply step 3.5 to find a function $w : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k } \\backslash \\{ 0 \\}$ that agrees with v except on a compact set. Form the vector field \\~w as $\\vec { w } ( x ) = ( x , w ( x ) )$ to conclude the claim. □\n\n## 4.2 From $\\mathbb { R } ^ { k }$ to X\n\nTo make this a bit more general, consider a compact manifold X.\n\nClaim: On any compact manifold X, there exists a vector field with finitely many zeros.",
+      "rawEntries": [
+        {
+          "id": "hopf-marked:def:homotopy-extension",
+          "type": "definition",
+          "name": "边界同伦延拓构造",
+          "statement": "若边界映射的同伦 $G(x,t)$ 满足 $g_0=c_p$、$g_1=\\partial f$，则在球内按 $f(tx)=g_t(x)$ 定义延拓；将同伦在 $t=0,1$ 附近平滑为常值可保证边界光滑。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:def:stereographic-identification",
+          "type": "definition",
+          "name": "立体投影识别",
+          "statement": "使用立体投影及其逆将 $S^k$ 与穿孔欧氏空间识别，特别是 $\\pi_s^{-1}:\\mathbb R^{k+1}\\setminus\\{0\\}\\to S^k$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:calc:winding-degree-identity",
+          "type": "calculation",
+          "name": "绕数与度的恒等式",
+          "statement": "对 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$，有 $W(f',\\{0\\})=\\deg\\!\\left(\\frac f{|f|}\\right)=\\deg(f)$，其中 $f'=\\pi_s^{-1}\\circ f$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:lemma:isotopy-lemma",
+          "type": "lemma",
+          "name": "等胚引理",
+          "statement": "在归置证明中使用等胚引理，寻找微分同胚将集合 $f^{-1}(b)$ 中位于 $U$ 内的点移到 $U$ 外，并可将相关开集置于 $\\operatorname{Int}W$ 内。",
+          "page": 6,
+          "external": true,
+          "sourceReference": "原文称 Isotopy Lemma，未给出作者或文献编号",
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:sard-theorem",
+          "type": "theorem",
+          "name": "Sard 定理",
+          "statement": "原文调用 Sard 定理选取正则值，并说明从紧流形到欧氏空间的光滑映射具有正则值。",
+          "page": 6,
+          "external": true,
+          "sourceReference": "原文称 Sard’s Thm.，未给出作者或文献编号",
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:epsilon-neighborhood-theorem",
+          "type": "theorem",
+          "name": "ε 邻域定理",
+          "statement": "若无边界紧流形 $Y\\subset\\mathbb R^N$ 且 $\\varepsilon>0$，则 $Y^\\varepsilon$ 是流形；最近点映射 $\\pi:Y^\\varepsilon\\to Y$ 为满射下沉，且 $\\pi|_Y=\\operatorname{id}_Y$。",
+          "page": 7,
+          "external": true,
+          "sourceReference": "原文称 Epsilon Neighborhood Theorem，未给出作者或文献编号",
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:algorithm:bump-function-extension",
+          "type": "algorithm",
+          "name": "用 bump 函数延拓到欧氏空间",
+          "statement": "取满足 $\\rho|_{\\partial W}=1$ 且在紧集外为零的 bump 函数，令 $F=f\\circ\\pi$，再定义 $\\bar F(x)=\\rho F(x)$（$x\\in U$），否则为 $0$，最后限制到 $W$。",
+          "page": 7,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:transversality-extension-theorem",
+          "type": "theorem",
+          "name": "横截性延拓定理",
+          "statement": "若延拓映射没有以 $0$ 为正则值，则可用横截性延拓定理找到与其同伦的映射，使 $0$ 成为正则值。",
+          "page": 8,
+          "external": true,
+          "sourceReference": "原文称 Transversality Extension Theorem，未给出作者或文献编号",
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:calc:boundary-degree-calculation",
+          "type": "calculation",
+          "name": "边界度计算",
+          "statement": "对 $F:\\partial(X\\times I)\\to S^k$，有 $\\deg F=0\\iff I(f,\\{p\\})-I(g,\\{p\\})=0\\iff\\deg f=\\deg g$，因区间两端取相反定向。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:boundary-extension",
+          "type": "proposition",
+          "name": "边界映射延拓命题",
+          "statement": "若闭球 $B$ 上的 $f:\\mathbb R^k\\setminus\\operatorname{Int}(B)\\to Y$ 的边界限制 $\\partial f:\\partial B\\to Y$ 同伦于常值映射，则 $f$ 可延拓到全部 $\\mathbb R^k$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:degree-zero-sphere-map",
+          "type": "proposition",
+          "name": "度为零的球面映射命题",
+          "statement": "若 $f:S^k\\to S^k$ 的度为零，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:degree-zero-circle-map",
+          "type": "proposition",
+          "name": "基例：度为零的圆映射命题",
+          "statement": "若 $f:S^1\\to S^1$ 且 $\\deg(f)=0$，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:zero-winding-punctured-space-map",
+          "type": "proposition",
+          "name": "穿孔欧氏空间中的零绕数命题",
+          "statement": "若 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$ 关于原点的绕数为零，则 $f\\sim c_p$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:range-adjustment",
+          "type": "proposition",
+          "name": "范围调整命题",
+          "statement": "若光滑 $f:\\mathbb R^k\\to\\mathbb R^k$ 的 $0$ 是正则值，$f^{-1}(0)$ 有限且其原像点定向数之和为零，则存在 $g:\\mathbb R^k\\to\\mathbb R^k\\setminus\\{0\\}$，使 $f=g$ 在某紧集外成立。",
+          "page": 6,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:extension-theorem",
+          "type": "theorem",
+          "name": "延拓定理",
+          "statement": "设 $W$ 为紧、连通、定向的 $(k+1)$ 维带边界流形，且 $f:\\partial W\\to S^k$ 光滑，则 $f$ 可光滑延拓为 $\\bar f:W\\to S^k$ 当且仅当 $\\deg(f)=0$。",
+          "page": 7,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:euclidean-extension",
+          "type": "proposition",
+          "name": "欧氏值边界延拓命题",
+          "statement": "若 $W$ 是紧带边界流形，且 $f:\\partial W\\to\\mathbb R^{k+1}$ 光滑，则 $f$ 可延拓到全部 $W$。",
+          "page": 7,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:hopf-degree-theorem",
+          "type": "theorem",
+          "name": "Hopf 度定理",
+          "statement": "设 $X$ 为紧、连通、定向的 $k$ 维流形。两个映射 $X\\to S^k$ 同伦，当且仅当它们具有相同的度。",
+          "page": 8,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:vector-field-removal",
+          "type": "proposition",
+          "name": "有限零点向量场去零命题",
+          "statement": "若 $\\mathbb R^k$ 上向量场 $\\tilde v$ 有限多个零点且零点指标之和为零，则存在无零点向量场 $\\tilde w$，使其在某紧集外等于 $\\tilde v$。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:theorem:nonvanishing-vector-field-euler",
+          "type": "theorem",
+          "name": "非消失向量场与 Euler 示性数定理",
+          "statement": "设 $X$ 为紧、连通、定向流形，则 $X$ 存在非消失向量场，当且仅当其 Euler 示性数为零。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "hopf-marked:claim:finitely-many-zeroes-vector-field",
+          "type": "proposition",
+          "name": "有限零点向量场存在命题",
+          "statement": "在任意紧流形 $X$ 上，存在一个只有有限多个零点的向量场。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ],
+      "inferenceHints": [
+        {
+          "premiseRefs": [
+            "hopf-marked:claim:boundary-extension",
+            "hopf-marked:claim:degree-zero-sphere-map"
+          ],
+          "conclusionRef": "hopf-marked:claim:degree-zero-sphere-map",
+          "relationText": "将边界同伦延拓用于球面度为零的归纳步骤。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "hopf-marked:calc:winding-degree-identity",
+            "hopf-marked:claim:degree-zero-sphere-map"
+          ],
+          "conclusionRef": "hopf-marked:claim:zero-winding-punctured-space-map",
+          "relationText": "绕数等于方向映射的度，并应用度为零的球面映射结论。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "hopf-marked:lemma:isotopy-lemma",
+            "hopf-marked:theorem:sard-theorem",
+            "hopf-marked:claim:range-adjustment"
+          ],
+          "conclusionRef": "hopf-marked:claim:range-adjustment",
+          "relationText": "选取正则值并用等胚引理安排其原像后应用范围调整。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "hopf-marked:claim:euclidean-extension",
+            "hopf-marked:theorem:epsilon-neighborhood-theorem",
+            "hopf-marked:claim:boundary-extension"
+          ],
+          "conclusionRef": "hopf-marked:theorem:extension-theorem",
+          "relationText": "先延拓到欧氏空间，再用穿孔范围中的同伦与边界延拓得到球面延拓。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "hopf-marked:theorem:extension-theorem",
+            "hopf-marked:calc:boundary-degree-calculation"
+          ],
+          "conclusionRef": "hopf-marked:theorem:hopf-degree-theorem",
+          "relationText": "$X\\times I$ 的边界映射可延拓当且仅当两端映射具有相同的度。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "hopf-marked:claim:range-adjustment"
+          ],
+          "conclusionRef": "hopf-marked:claim:vector-field-removal",
+          "relationText": "将向量场视为欧氏值映射后应用范围调整命题。",
+          "page": 5,
+          "_provenance": {
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 2,
+      "pageRange": {
+        "first": 9,
+        "last": 13
+      },
+      "characterCount": 13334,
+      "text": "[[PAGE 9]]\nNow, if F can extend to all of W smoothly, we’ve found a homotopy between f and g. And this is precisely what occurs if $\\deg ( F ) = 0$ , invoking the Extension Theorem of step 3.8. The diagram above shows that we can think of the image of W as a sort of stack of the images of each homotopic map $f _ { t }$ In two dimensions, they combine to form a smooth 3-dimensional shape. We’re arguing that if maps on either end of that 3-d shape extend to maps to $S ^ { 2 }$ , then if we consider the boundary maps separately, the volume in between smoothly connects them via homotopies.\n\nThe only thing that remains is to connect the degree of F with the degrees of $f$ and $g .$ . To do this, we appeal to the definition of degree in terms of intersection number. Essentially, we focus on the boundary for the calculation, and recall that the orientation numbers at either end of an interval must be opposite. Written out, we have\n\n$$\n\\begin{array} { r l } & { \\deg F = 0 \\iff I ( F , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( \\partial F , \\{ p \\} ) \\mathrm { ~ s i n c e ~ w e ~ m a y ~ c o n s i d e r ~ i n t e r s e c t i o n s ~ a t ~ t h e ~ b o u n d a r y } } \\\\ & { \\iff I ( \\partial F | _ { X \\times \\{ 0 \\} } ) - I ( \\partial F | _ { X \\times \\{ 1 \\} } ) \\mathrm { ~ s i n c e ~ t h e ~ e n d s ~ o f ~ } I \\mathrm { ~ a r e ~ o p p o s i t e l y ~ o r i e n t e d } } \\\\ & { \\iff I ( f , \\{ p \\} ) - I ( g , \\{ p \\} ) = 0 } \\\\ & { \\iff I ( f , \\{ p \\} ) = I ( g , \\{ p \\} ) } \\\\ & { \\iff \\deg f = \\deg g . } \\end{array}\n$$\n\nHence F can be extended, and thus $f \\sim g ,$ , precisely when the degrees of $f$ and g match.\n\n## 4 Results and Applications of the Theorem\n\n## 4.1 Shifting to Vector Fields\n\nNow that we’ve finally proven the theorem, after all that buildup with extensions, we can actually use it to examine properties of vector fields on different types of spaces. We’ll work toward another theorem that states the following:\n\nTheorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.\n\nTo get there, let’s start with a fact that follows closely from our previous work.\n\nClaim: If \\~v is a vector field on $\\mathbb { R } ^ { k }$ with finitely many zeros, such that the sum of indices of its zeros is also zero, then there exists some vector field \\~w that has no zeros but equals \\~v outside of a compact set.\n\nProof. This follows just from expanding definitions. We can write the vector field as $\\vec { v } ( x ) = ( x , v ( x ) )$ for a smooth map $v : \\mathbb { R } ^ { k }  T ( \\mathbb { R } ^ { k } ) = \\mathbb { R } ^ { k }$ . Index at a particular point, written $\\operatorname { i n d } _ { 0 } ( x )$ , corresponds exactly to the degree of the directional map $\\frac { \\vec { v } } { | \\vec { v } | }$ , or equivalently, $\\frac { v } { | v | }$ at that point. So we can equate this with the winding number of v around zero, and use the hypothesis that $W ( v , \\{ 0 \\} ) = 0$ . From there, we may apply step 3.5 to find a function $w : \\mathbb { R } ^ { k }  \\mathbb { R } ^ { k } \\backslash \\{ 0 \\}$ that agrees with v except on a compact set. Form the vector field \\~w as $\\vec { w } ( x ) = ( x , w ( x ) )$ to conclude the claim. □\n\n## 4.2 From $\\mathbb { R } ^ { k }$ to X\n\nTo make this a bit more general, consider a compact manifold X.\n\nClaim: On any compact manifold X, there exists a vector field with finitely many zeros.\n\n[[PAGE 10]]\nProof. For this proof, as in 3.9, we use the trick of taking a convenient larger manifold, in this case T X, the tangent bundle. Recall that $T X = \\{ ( x , v ) \\mid x \\in X$ and $v \\in T _ { x } { ( X ) } \\}$ , and that if dim $X = k ,$ then dim $T X = 2 k$ We’re going to pick two transverse submanifolds of complementary dimension, then apply the codimension equation,\n\n$$\n\\operatorname { c o d i m } \\left( X \\cap Z \\right) = \\operatorname { c o d i m } X + \\operatorname { c o d i m } Z ,\n$$\n\nand compactness to show finite intersection. We pick our manifolds carefully so that their intersection corresponds exactly to the zeros of v.\n\nLet $W = W \\times \\{ \\vec { 0 } \\} \\subset T X$ be one of our manifolds, and im (\\~v) be the other. Note that im $( \\vec { v } ) =$ $\\{ ( x , v ( x ) ) \\mid x \\in X \\} = \\mathrm { g r a p h } ( v )$ , and the graph of v is also a subset of T X with dimension k. And by the Transversality Homotopy Theorem graph(v) can be shifted if necessary, by applying a homotopy taking v to $v ^ { \\prime }$ , to a manifold transversal to W . Then, since W t graph(v’) and the manifolds have complementary dimension, we know their intersection $W \\cap \\mathrm { g r a p h } ( v ^ { \\prime } )$ has dimension $2 k - k - k = 0$ and is hence discrete. By compactness, we conclude that the intersection is finite.\n\nNow, the intersection essentially tests whether $v ^ { \\prime } ( x ) = 0$ in the second coordinate of each point, so it collects all of the zeros of the vector field. Hence we have shown that ${ \\vec { v } } ^ { \\prime }$ is a vector field on X with finitely many zeros. □\n\n## 4.3 Localizing\n\nNext, we’d like to localize the zeros of the manifold, which we can do with the help of the Isotopy Lemma.\n\nClaim: If U is any open set on a compact, connected manifold X, there exists a vector field with finitely many zeros, all of which are inside U .\n\nProof. Let v be some vector field with finitely many zeros, which we know to exist by step 3.3. We can again apply the Isotopy Lemma to find a diffeomorphism φ that takes any $x \\notin U$ such that $v ( x ) = 0$ to a point $\\phi ( x ) \\in U$ , moving any zeros outside of U to inside. Then we can define a new vector field ${ \\vec { v } } ^ { \\prime }$ such that $\\vec { v } ^ { \\prime } ( x ) = ( x , \\phi ^ { - 1 } \\circ v ( x ) )$ . Then any zeros of the vector field are necessarily inside U. □\n\n## 4.4 Theorem and Results\n\nFinally, we prove the theorem, which leads to some fun results.\n\nTheorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.\n\nProof. To complete the proof, we need to invoke another powerful result involving Hopf, the Poincar´e-Hopf Index Theorem. It states the following:\n\n[[PAGE 11]]\nPoincar´e-Hopf Index Theorem: If \\~v is a smooth vector field on a compact, oriented manifold X, then the sum of the indices of \\~v equals the Euler characteristic of X.\n\nWe will take this theorem as given, but offer the intuition that the vector field prescribes a flow of the points in X, and where the zeros of \\~v are fixed under an infinitesimal transformation of X along its vector field. If the manifold didn’t move at all, we’d be completing the identity transformation, which is where you should see the connection to the diagonal in the Euler characteristic definition. How the vector field flows thus forms another way to distinguish manifolds.\n\nBack to the proof of this theorem. First, we use steps 4.2 and 4.3 to find a vector field on X with finitely many zeros, all localized to a subset $U \\subset X$ . If and only if X has a nonvanishing vector field, the sum of the indices of the zeros is zero, by step 4.1. Note that since Poincar´e-Hopf relies on indices calculated after we pull back to parameterisations in $\\mathbb { R } ^ { k }$ , we can assume that our indices all refer to the zeros of v. Then applying Poincar´e-Hopf, we get that the indices summing to zero holds if and only if the Euler characteristic is zero, and the theorem is shown. □\n\nIn summary, we just showed\n\n$$\n( X { \\mathrm { ~ h a s ~ a ~ n o n v a n i s h i n g ~ v e c t o r ~ f i e l d } } ) \\longleftrightarrow \\sum { \\mathrm { i n d i c e s } } = 0 \\longleftrightarrow \\overbrace { \\sum { \\mathrm {  ~ \\Omega ~ } } } ^ { \\mathrm { P - H } } \\chi ( X ) = 0 .\n$$\n\nWhat can we say about some of our familiar manifolds? Given the Euler characteristics, we can say whether or not they have nonvanishing vector fields. For spheres and tori, we have\n\n$$\n\\chi ( S ^ { k } ) = \\left\\{ \\begin{array} { c c } { { 0 } } & { { k \\mathrm { ~ o d d } } } \\\\ { { 2 } } & { { k \\mathrm { ~ e v e n } } } \\end{array} \\right. \\quad \\quad \\mathrm { a n d } \\quad \\quad \\chi ( T ^ { k } ) = - 2 ( k - 2 )\n$$\n\nIn the case of spheres, we see that only odd-dimensional spheres have smooth nonvanishing vector fields. This proves in particular the Hairy Ball Theorem, a popular result.\n\nHairy Ball Theorem: There is no nonvanishing smooth vector field on a 2-sphere. That is, you can’t comb the hair on a coconut.\n\nInterestingly, two more manifolds with characteristic $\\mathrm { z e r o ^ { 3 } }$ are the M¨obius strip and the Klein bottle. It’s surprising that these paradoxical shapes that defy obvious embeddings could have smooth nonvanishing vector fields defined on them! In fact, the M¨obius strip has no nonvanishing smooth normal vector field, even though it has a nonvanishing tangent vector field. A popular example is that of an ant walking continuously along the side of the strip, which inspired M.C. Escher.\n\nFigure 2: Mobius Strip II by Escher\n\n<!-- image-->\n\nThese results also have ramifications for vector fields on the earth, such as wind and water currents, and, for example, for virtual reality video, in which smooth vector fields avoid problems of stretched pixels and stereo4. And just to demonstrate a couple smooth vector fields on the 2-torus and the Klein bottle, we present the following drawings5.\n\n<!-- image-->  \n2-torus\n\n<!-- image-->  \nKlein bottle\n\n## 5 Conclusion\n\n[[PAGE 12]]\nIn this talk, we’ve demonstrated used the concepts of homotopy, degree, and winding number to achieve notable results about homotopy groups and vector fields. By demonstrating that elements of $\\pi _ { k } ( S ^ { k } )$ are determined precisely by their (integral) degree, we’ve shown the isomorphism $\\pi _ { k } ( S ^ { k } ) \\cong \\mathbb { Z }$ Combine that with the fact that lower dimensional spheres can only map trivially into lower ones—that is, $\\pi _ { k } ( S ^ { n } ) = 0$ higher $n < k { \\mathrm { - w e } } ^ { 3 } \\mathrm { v } \\epsilon$ solved more than half of the problems of calculating homotopy groups.\n\nNow, this sounds fairly impressive until one considers that homotopy groups $\\pi _ { k } ( S ^ { n } )$ with $k \\ < \\ n$ do not follow such a regular pattern. Why we have $\\pi _ { 1 1 } ( S ^ { 5 } ) \\cong \\mathbb { Z } _ { 2 }$ but $\\pi _ { 1 4 } ( S ^ { 4 } ) \\cong \\mathbb { Z } _ { 1 2 0 } \\times \\mathbb { Z } _ { 1 2 } \\times \\mathbb { Z } _ { 2 }$ is not immediately apparent6. But if it were, then homotopy groups would not be such an interesting problem!\n\nFigure 3: Hopf Fibration from Wikipedia\n\nTo end with a less mysterious example, we can invoke Hopf once more to offer a visualizable element in a set $\\pi _ { k } ( S ^ { n } )$ with $k < n$ Namely, there is a nontrivial element in $\\pi _ { 3 } ( S ^ { 2 } )$ known as the Hopf fibration or Hopf bundle. Shown at right, it maps the 3-sphere into the 2-sphere nontrivially.\n\n## 6 Works Cited\n\n<!-- image-->\n\n1. “Degree of a Continuous Mapping.” Wikipedia. Wikimedia Foundation, 12 Apr. 2017. Web. 01 May 2017.\n\n2. Escher, M. C. M¨obius Strip II. Digital image. M.C. Escher. The M.C. Escher Company B.V., n.d. Web. 05 May 2017.\n\n3. “Euler Characteristic.” Wikipedia. Wikimedia Foundation, 26 Mar. 2017. Web. 05 May 2017.\n\n4. Guillemin, Victor, and Alan Pollack. Differential Topology. Providence, RI: AMS Chelsea Pub., 2014. Print.\n\n5. Hart, Vi. “EleVRant: The Hairy Ball Theorem in VR Video.” EleVR. Human Advancement Research Community, 13 June 2014. Web. 05 May 2017.\n\n6. “Homotopy Groups of Spheres.” Wikipedia. Wikimedia Foundation, 10 Apr. 2017. Web. 04 May 2017.\n\n7. “Hopf Fibration.” Wikipedia. Wikimedia Foundation, 25 Mar. 2017. Web. 05 May 2017.\n\n8. Weisstein, Eric W. “Euler Characteristic.” Wolfram Math-World. Wolfram Research, Inc., n.d. Web. 05 May 2017.\n\n## 7 Appendix\n\n[[PAGE 13]]\nIn step 3.4 and onward, we used identifications between punctured spheres and Euclidean space and vice versa. Summarized, they are as follows.\n\n• Locally, subsets of $\\mathbb { R } ^ { k }$ and $S ^ { k }$ are homeomorphic, by the manifold structure of the k-sphere.\n\n• Euclidean space minus a point is homeomorphic to a sphere, so $\\mathbb { R } ^ { k + 1 } \\setminus \\{ p \\} \\simeq S ^ { k }$\n\n• Conversely, one could also view the sphere as the one-point compactification of Euclidean space. The sphere minus a point reduces to Euclidean space, so $S ^ { k } \\setminus \\{ p \\} \\simeq \\mathbb { R } ^ { k }$\n\nIt’s important to believe that these identifications work, so consider the following process. Start from the sphere. Remove one point to arrive at a space homeomorphic to the plane. Then remove another—we get the circle. If we remove a third point, we break connectivity and are left with the real line. That is, $S ^ { 2 } \\setminus \\left\\{ p _ { 1 } \\right\\} \\simeq \\mathbb { R } ^ { 2 } , \\mathbb { R } ^ { 2 } \\setminus \\left\\{ p _ { 2 } \\right\\} \\simeq S ^ { 1 }$ , and $S ^ { 1 } \\backslash \\{ p _ { 3 } \\} \\simeq \\mathbb { R }$ . A diagram for the process is included below.\n\n<!-- image-->\n\n## 8 Acknowledgements\n\nProfessor George Melvin was instrumental in helping me and Jenny figure out the parts of this proof, and gave excellent advice on how to present the material.",
+      "rawEntries": [
+        {
+          "id": "paper:theorem:extension-theorem-step-3-8",
+          "type": "theorem",
+          "name": "扩张定理",
+          "statement": "若 $F$ 的度数满足 $\\deg(F)=0$，则 $F$ 可光滑延拓到整个 $W$，从而给出 $f$ 与 $g$ 之间的同伦。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:definition:degree-intersection-number",
+          "type": "definition",
+          "name": "交数定义的度数",
+          "statement": "映射的度数可由其与一点的交数表示：$\\deg F=I(F,\\{p\\})$，并且边界端点的定向相反，使 $I(\\partial F,\\{p\\})=I(f,\\{p\\})-I(g,\\{p\\})$。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:claim:vector-field-zero-removal",
+          "type": "lemma",
+          "name": "有限零点且指标和为零的向量场可去零",
+          "statement": "若 $\\widetilde v$ 是 $\\mathbb R^k$ 上仅有有限个零点且零点指标之和为零的向量场，则存在无零点向量场 $\\widetilde w$，使其在某个紧集外等于 $\\widetilde v$。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:definition:tangent-bundle",
+          "type": "definition",
+          "name": "切丛",
+          "statement": "紧流形 $X$ 的切丛为 $TX=\\{(x,v)\\mid x\\in X,\\ v\\in T_xX\\}$；若 $\\dim X=k$，则 $\\dim TX=2k$。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:definition:zero-section-and-vector-field-graph",
+          "type": "definition",
+          "name": "零截面与向量场图像",
+          "statement": "在 $TX$ 中，零截面为 $W=X\\times\\{\\vec0\\}$；向量场 $v$ 的图像为 $\\operatorname{graph}(v)=\\{(x,v(x))\\mid x\\in X\\}$，其维数为 $k$。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:transversality-homotopy-theorem",
+          "type": "theorem",
+          "name": "横截同伦定理",
+          "statement": "通过将向量场 $v$ 同伦为 $v'$，可在需要时将其图像移动为与零截面 $W$ 横截。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:definition:codimension-intersection-equation",
+          "type": "definition",
+          "name": "横截交的余维公式",
+          "statement": "对横截子流形，交集满足 $\\operatorname{codim}(X\\cap Z)=\\operatorname{codim}X+\\operatorname{codim}Z$；互补维数的横截子流形交集为零维。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:isotopy-lemma",
+          "type": "theorem",
+          "name": "同痕引理",
+          "statement": "在紧致连通流形 $X$ 上，可用微分同胚将有限个指定点从 $X\\setminus U$ 移入任意给定开集 $U$。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:external-theorem:poincare-hopf-index-theorem",
+          "type": "theorem",
+          "name": "庞加莱-霍普夫指标定理",
+          "statement": "若 $\\widetilde v$ 是紧致定向流形 $X$ 上的光滑向量场，则 $\\widetilde v$ 的零点指标之和等于 $X$ 的欧拉示性数：$\\sum\\operatorname{ind}(\\widetilde v)=\\chi(X)$。",
+          "page": 11,
+          "external": true,
+          "sourceReference": "Poincaré-Hopf",
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:calculation:sphere-and-torus-euler-characteristics",
+          "type": "calculation",
+          "name": "球面与环面欧拉示性数",
+          "statement": "$\\chi(S^k)=0$（$k$ 奇）且 $\\chi(S^k)=2$（$k$ 偶）；文中给出 $\\chi(T^k)=-2(k-2)$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:definition:punctured-sphere-euclidean-identifications",
+          "type": "definition",
+          "name": "去点球面与欧氏空间的同胚识别",
+          "statement": "局部上 $\\mathbb R^k$ 与 $S^k$ 同胚；并有 $\\mathbb R^{k+1}\\setminus\\{p\\}\\simeq S^k$ 及 $S^k\\setminus\\{p\\}\\simeq\\mathbb R^k$。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:degree-classifies-homotopy",
+          "type": "lemma",
+          "name": "度数相等当且仅当同伦",
+          "statement": "在文中设定下，映射 $f,g$ 可同伦，当且仅当它们的度数相等：$f\\sim g\\iff\\deg f=\\deg g$。",
+          "page": 9,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:vector-field-finitely-many-zeros",
+          "type": "lemma",
+          "name": "紧流形上存在有限零点向量场",
+          "statement": "任意紧流形 $X$ 上存在一个仅有有限个零点的向量场。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:lemma:vector-field-zeros-localized",
+          "type": "lemma",
+          "name": "向量场零点可局部化",
+          "statement": "若 $U$ 是紧致连通流形 $X$ 的任意开集，则存在一个仅有有限个零点且所有零点都位于 $U$ 内的向量场。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:nonvanishing-vector-field-euler-characteristic",
+          "type": "theorem",
+          "name": "非消失向量场与欧拉示性数判据",
+          "statement": "若 $X$ 是紧致、连通、定向流形，则 $X$ 存在非消失向量场，当且仅当其欧拉示性数为零：$X$\\text{有非消失向量场}\\iff\\chi(X)=0$。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:hairy-ball-theorem",
+          "type": "theorem",
+          "name": "毛球定理",
+          "statement": "二维球面上不存在非消失光滑向量场，即不能在球面上连续梳理毛发。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:homotopy-group-of-sphere",
+          "type": "theorem",
+          "name": "同维球面的同伦群",
+          "statement": "元素由整数度数完全决定，并给出同构 $\\pi_k(S^k)\\cong\\mathbb Z$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:lower-dimensional-sphere-mapping",
+          "type": "theorem",
+          "name": "低维球面映射的平凡性",
+          "statement": "文中陈述较低维球面映入较高维球面只能平凡，即在其记号下 $\\pi_k(S^n)=0$（$n>k$）。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "id": "paper:theorem:hopf-fibration-class",
+          "type": "theorem",
+          "name": "霍普夫纤维化的非平凡同伦类",
+          "statement": "$\\pi_3(S^2)$ 中存在一个非平凡元素，称为霍普夫纤维化或霍普夫丛，它非平凡地将 $S^3$ 映入 $S^2$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ],
+      "inferenceHints": [
+        {
+          "premiseRefs": [
+            "paper:definition:degree-intersection-number",
+            "paper:theorem:extension-theorem-step-3-8"
+          ],
+          "conclusionRef": "paper:lemma:degree-classifies-homotopy",
+          "relationText": "由交数定义的度数计算与扩张定理得到 $f\\sim g\\iff\\deg f=\\deg g$。",
+          "page": 9,
+          "_provenance": {
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:definition:tangent-bundle",
+            "paper:definition:zero-section-and-vector-field-graph",
+            "paper:theorem:transversality-homotopy-theorem",
+            "paper:definition:codimension-intersection-equation"
+          ],
+          "conclusionRef": "paper:lemma:vector-field-finitely-many-zeros",
+          "relationText": "横截图像与零截面的零维紧交集对应向量场的有限零点。",
+          "page": 9,
+          "_provenance": {
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:lemma:vector-field-finitely-many-zeros",
+            "paper:theorem:isotopy-lemma"
+          ],
+          "conclusionRef": "paper:lemma:vector-field-zeros-localized",
+          "relationText": "同痕引理将有限个零点移入给定开集。",
+          "page": 9,
+          "_provenance": {
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:lemma:vector-field-zero-removal",
+            "paper:lemma:vector-field-zeros-localized",
+            "paper:external-theorem:poincare-hopf-index-theorem"
+          ],
+          "conclusionRef": "paper:theorem:nonvanishing-vector-field-euler-characteristic",
+          "relationText": "有限零点的局部化、去零判据与庞加莱-霍普夫指标定理共同给出判据。",
+          "page": 9,
+          "_provenance": {
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        },
+        {
+          "premiseRefs": [
+            "paper:calculation:sphere-and-torus-euler-characteristics",
+            "paper:theorem:nonvanishing-vector-field-euler-characteristic"
+          ],
+          "conclusionRef": "paper:theorem:hairy-ball-theorem",
+          "relationText": "偶维球面的欧拉示性数为 $2$，故不存在非消失光滑向量场。",
+          "page": 9,
+          "_provenance": {
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "version": "paper-entry-parallel-extraction-v1.31"
+          }
+        }
+      ]
+    }
+  ],
+  "rawEntries": [
+    {
+      "id": "paper:def:degree",
+      "type": "definition",
+      "name": "映射的度数",
+      "statement": "若光滑映射 $f:X\\to Y$ 横截于与 $X$ 维数互补的子流形 $Z$，则有向交数是 $f^{-1}(Z)$ 中各点定向数之和；对点 $y$ 写作 $\\deg f=I(f,\\{y\\})$。",
+      "page": 1,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:def:winding-number",
+      "type": "definition",
+      "name": "绕数",
+      "statement": "关于点 $z$ 的绕数定义为方向映射 $u(x)=\\frac{f(x)-z}{|f(x)-z|}:X\\to S^1$ 的度数，即 $W(f,z)=\\deg(u)$。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:isotopy",
+      "type": "lemma",
+      "name": "同胚变形引理及推论",
+      "statement": "若连通流形 $Y$ 中两组点 $\\{x_1,\\ldots,x_n\\}$ 与 $\\{y_1,\\ldots,y_n\\}$ 给定，则存在微分同胚 $\\phi:Y\\to Y$，满足 $\\phi(x_i)=y_i$，且 $\\phi$ 与恒等映射同痕。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:def:bump-function",
+      "type": "definition",
+      "name": "光滑 bump 函数",
+      "statement": "任意维数中存在映射 $\\rho:\\mathbb R^N\\to\\mathbb R$，能从零光滑过渡到一再回到零；例如 $\\rho(x)=e^{-1/(1-x^2)}$（$|x|<1$），否则为 $0$。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:def:euler-characteristic",
+      "type": "definition",
+      "name": "欧拉示性数",
+      "statement": "空间 $X$ 的欧拉示性数定义为对角线 $\\Delta=\\{(x,x)\\mid x\\in X\\}$ 的自交数：$\\chi(X)=I(\\Delta,\\Delta)$；它在微分同胚下保持不变。",
+      "page": 3,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:linear-isotopy",
+      "type": "lemma",
+      "name": "线性同胚变形引理",
+      "statement": "若 $E$ 是保持（分别反转）$\\mathbb R^k$ 定向的线性同构，则存在从 $E$ 到恒等映射（分别到关于第一坐标的反射映射 $R$）的同伦。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:regular-point-winding",
+      "type": "lemma",
+      "name": "正则点处绕数",
+      "statement": "设 $f:U\\to\\mathbb R^k$ 光滑，$U\\subset\\mathbb R^k$，且 $x$ 是满足 $f(x)=z$ 的正则点。若 $B$ 是以 $x$ 为中心的充分小闭球，则 $W(\\partial f,z)=+1$（$f$ 在 $x$ 保持定向）或 $-1$（反转定向）。",
+      "page": 3,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:winding-orientation-sum",
+      "type": "lemma",
+      "name": "绕数与定向数之和",
+      "statement": "设 $f:B\\to\\mathbb R^k$ 光滑，$B$ 为闭球，$z$ 是 $f$ 的正则值且在 $\\partial B$ 上无原像，则 $\\partial f$ 关于 $z$ 的绕数等于 $f^{-1}(z)$ 中各原像点定向数之和。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:proposition:boundary-extension",
+      "type": "proposition",
+      "name": "边界同伦与延拓",
+      "statement": "若闭球 $B$ 上有光滑函数 $f:\\mathbb R^k\\setminus\\operatorname{Int}(B)\\to Y$，且限制映射 $\\partial f:\\partial B\\to Y$ 同伦于常值映射，则 $f$ 可延拓到整个 $\\mathbb R^k$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:degree-zero-sphere",
+      "type": "theorem",
+      "name": "度数为零的球面映射",
+      "statement": "若 $f:S^k\\to S^k$ 的度数为零，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:degree-zero-circle",
+      "type": "theorem",
+      "name": "度数为零的圆映射（基例）",
+      "statement": "若 $f:S^1\\to S^1$ 的度数为零，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:zero-winding-punctured-space",
+      "type": "theorem",
+      "name": "穿孔欧氏空间中的零绕数映射",
+      "statement": "若 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$ 关于原点的绕数为零，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:def:homotopy-extension",
+      "type": "definition",
+      "name": "边界同伦延拓构造",
+      "statement": "若边界映射的同伦 $G(x,t)$ 满足 $g_0=c_p$、$g_1=\\partial f$，则在球内按 $f(tx)=g_t(x)$ 定义延拓；将同伦在 $t=0,1$ 附近平滑为常值可保证边界光滑。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:def:stereographic-identification",
+      "type": "definition",
+      "name": "立体投影识别",
+      "statement": "使用立体投影及其逆将 $S^k$ 与穿孔欧氏空间识别，特别是 $\\pi_s^{-1}:\\mathbb R^{k+1}\\setminus\\{0\\}\\to S^k$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:calc:winding-degree-identity",
+      "type": "calculation",
+      "name": "绕数与度的恒等式",
+      "statement": "对 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$，有 $W(f',\\{0\\})=\\deg\\!\\left(\\frac f{|f|}\\right)=\\deg(f)$，其中 $f'=\\pi_s^{-1}\\circ f$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:lemma:isotopy-lemma",
+      "type": "lemma",
+      "name": "等胚引理",
+      "statement": "在归置证明中使用等胚引理，寻找微分同胚将集合 $f^{-1}(b)$ 中位于 $U$ 内的点移到 $U$ 外，并可将相关开集置于 $\\operatorname{Int}W$ 内。",
+      "page": 6,
+      "external": true,
+      "sourceReference": "原文称 Isotopy Lemma，未给出作者或文献编号",
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:sard-theorem",
+      "type": "theorem",
+      "name": "Sard 定理",
+      "statement": "原文调用 Sard 定理选取正则值，并说明从紧流形到欧氏空间的光滑映射具有正则值。",
+      "page": 6,
+      "external": true,
+      "sourceReference": "原文称 Sard’s Thm.，未给出作者或文献编号",
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:epsilon-neighborhood-theorem",
+      "type": "theorem",
+      "name": "ε 邻域定理",
+      "statement": "若无边界紧流形 $Y\\subset\\mathbb R^N$ 且 $\\varepsilon>0$，则 $Y^\\varepsilon$ 是流形；最近点映射 $\\pi:Y^\\varepsilon\\to Y$ 为满射下沉，且 $\\pi|_Y=\\operatorname{id}_Y$。",
+      "page": 7,
+      "external": true,
+      "sourceReference": "原文称 Epsilon Neighborhood Theorem，未给出作者或文献编号",
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:algorithm:bump-function-extension",
+      "type": "algorithm",
+      "name": "用 bump 函数延拓到欧氏空间",
+      "statement": "取满足 $\\rho|_{\\partial W}=1$ 且在紧集外为零的 bump 函数，令 $F=f\\circ\\pi$，再定义 $\\bar F(x)=\\rho F(x)$（$x\\in U$），否则为 $0$，最后限制到 $W$。",
+      "page": 7,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:transversality-extension-theorem",
+      "type": "theorem",
+      "name": "横截性延拓定理",
+      "statement": "若延拓映射没有以 $0$ 为正则值，则可用横截性延拓定理找到与其同伦的映射，使 $0$ 成为正则值。",
+      "page": 8,
+      "external": true,
+      "sourceReference": "原文称 Transversality Extension Theorem，未给出作者或文献编号",
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:calc:boundary-degree-calculation",
+      "type": "calculation",
+      "name": "边界度计算",
+      "statement": "对 $F:\\partial(X\\times I)\\to S^k$，有 $\\deg F=0\\iff I(f,\\{p\\})-I(g,\\{p\\})=0\\iff\\deg f=\\deg g$，因区间两端取相反定向。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:boundary-extension",
+      "type": "proposition",
+      "name": "边界映射延拓命题",
+      "statement": "若闭球 $B$ 上的 $f:\\mathbb R^k\\setminus\\operatorname{Int}(B)\\to Y$ 的边界限制 $\\partial f:\\partial B\\to Y$ 同伦于常值映射，则 $f$ 可延拓到全部 $\\mathbb R^k$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:degree-zero-sphere-map",
+      "type": "proposition",
+      "name": "度为零的球面映射命题",
+      "statement": "若 $f:S^k\\to S^k$ 的度为零，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:degree-zero-circle-map",
+      "type": "proposition",
+      "name": "基例：度为零的圆映射命题",
+      "statement": "若 $f:S^1\\to S^1$ 且 $\\deg(f)=0$，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:zero-winding-punctured-space-map",
+      "type": "proposition",
+      "name": "穿孔欧氏空间中的零绕数命题",
+      "statement": "若 $f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$ 关于原点的绕数为零，则 $f\\sim c_p$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:range-adjustment",
+      "type": "proposition",
+      "name": "范围调整命题",
+      "statement": "若光滑 $f:\\mathbb R^k\\to\\mathbb R^k$ 的 $0$ 是正则值，$f^{-1}(0)$ 有限且其原像点定向数之和为零，则存在 $g:\\mathbb R^k\\to\\mathbb R^k\\setminus\\{0\\}$，使 $f=g$ 在某紧集外成立。",
+      "page": 6,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:extension-theorem",
+      "type": "theorem",
+      "name": "延拓定理",
+      "statement": "设 $W$ 为紧、连通、定向的 $(k+1)$ 维带边界流形，且 $f:\\partial W\\to S^k$ 光滑，则 $f$ 可光滑延拓为 $\\bar f:W\\to S^k$ 当且仅当 $\\deg(f)=0$。",
+      "page": 7,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:euclidean-extension",
+      "type": "proposition",
+      "name": "欧氏值边界延拓命题",
+      "statement": "若 $W$ 是紧带边界流形，且 $f:\\partial W\\to\\mathbb R^{k+1}$ 光滑，则 $f$ 可延拓到全部 $W$。",
+      "page": 7,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:hopf-degree-theorem",
+      "type": "theorem",
+      "name": "Hopf 度定理",
+      "statement": "设 $X$ 为紧、连通、定向的 $k$ 维流形。两个映射 $X\\to S^k$ 同伦，当且仅当它们具有相同的度。",
+      "page": 8,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:vector-field-removal",
+      "type": "proposition",
+      "name": "有限零点向量场去零命题",
+      "statement": "若 $\\mathbb R^k$ 上向量场 $\\tilde v$ 有限多个零点且零点指标之和为零，则存在无零点向量场 $\\tilde w$，使其在某紧集外等于 $\\tilde v$。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:theorem:nonvanishing-vector-field-euler",
+      "type": "theorem",
+      "name": "非消失向量场与 Euler 示性数定理",
+      "statement": "设 $X$ 为紧、连通、定向流形，则 $X$ 存在非消失向量场，当且仅当其 Euler 示性数为零。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "hopf-marked:claim:finitely-many-zeroes-vector-field",
+      "type": "proposition",
+      "name": "有限零点向量场存在命题",
+      "statement": "在任意紧流形 $X$ 上，存在一个只有有限多个零点的向量场。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:extension-theorem-step-3-8",
+      "type": "theorem",
+      "name": "扩张定理",
+      "statement": "若 $F$ 的度数满足 $\\deg(F)=0$，则 $F$ 可光滑延拓到整个 $W$，从而给出 $f$ 与 $g$ 之间的同伦。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:definition:degree-intersection-number",
+      "type": "definition",
+      "name": "交数定义的度数",
+      "statement": "映射的度数可由其与一点的交数表示：$\\deg F=I(F,\\{p\\})$，并且边界端点的定向相反，使 $I(\\partial F,\\{p\\})=I(f,\\{p\\})-I(g,\\{p\\})$。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:claim:vector-field-zero-removal",
+      "type": "lemma",
+      "name": "有限零点且指标和为零的向量场可去零",
+      "statement": "若 $\\widetilde v$ 是 $\\mathbb R^k$ 上仅有有限个零点且零点指标之和为零的向量场，则存在无零点向量场 $\\widetilde w$，使其在某个紧集外等于 $\\widetilde v$。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:definition:tangent-bundle",
+      "type": "definition",
+      "name": "切丛",
+      "statement": "紧流形 $X$ 的切丛为 $TX=\\{(x,v)\\mid x\\in X,\\ v\\in T_xX\\}$；若 $\\dim X=k$，则 $\\dim TX=2k$。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:definition:zero-section-and-vector-field-graph",
+      "type": "definition",
+      "name": "零截面与向量场图像",
+      "statement": "在 $TX$ 中，零截面为 $W=X\\times\\{\\vec0\\}$；向量场 $v$ 的图像为 $\\operatorname{graph}(v)=\\{(x,v(x))\\mid x\\in X\\}$，其维数为 $k$。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:transversality-homotopy-theorem",
+      "type": "theorem",
+      "name": "横截同伦定理",
+      "statement": "通过将向量场 $v$ 同伦为 $v'$，可在需要时将其图像移动为与零截面 $W$ 横截。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:definition:codimension-intersection-equation",
+      "type": "definition",
+      "name": "横截交的余维公式",
+      "statement": "对横截子流形，交集满足 $\\operatorname{codim}(X\\cap Z)=\\operatorname{codim}X+\\operatorname{codim}Z$；互补维数的横截子流形交集为零维。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:isotopy-lemma",
+      "type": "theorem",
+      "name": "同痕引理",
+      "statement": "在紧致连通流形 $X$ 上，可用微分同胚将有限个指定点从 $X\\setminus U$ 移入任意给定开集 $U$。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:external-theorem:poincare-hopf-index-theorem",
+      "type": "theorem",
+      "name": "庞加莱-霍普夫指标定理",
+      "statement": "若 $\\widetilde v$ 是紧致定向流形 $X$ 上的光滑向量场，则 $\\widetilde v$ 的零点指标之和等于 $X$ 的欧拉示性数：$\\sum\\operatorname{ind}(\\widetilde v)=\\chi(X)$。",
+      "page": 11,
+      "external": true,
+      "sourceReference": "Poincaré-Hopf",
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:calculation:sphere-and-torus-euler-characteristics",
+      "type": "calculation",
+      "name": "球面与环面欧拉示性数",
+      "statement": "$\\chi(S^k)=0$（$k$ 奇）且 $\\chi(S^k)=2$（$k$ 偶）；文中给出 $\\chi(T^k)=-2(k-2)$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:definition:punctured-sphere-euclidean-identifications",
+      "type": "definition",
+      "name": "去点球面与欧氏空间的同胚识别",
+      "statement": "局部上 $\\mathbb R^k$ 与 $S^k$ 同胚；并有 $\\mathbb R^{k+1}\\setminus\\{p\\}\\simeq S^k$ 及 $S^k\\setminus\\{p\\}\\simeq\\mathbb R^k$。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:degree-classifies-homotopy",
+      "type": "lemma",
+      "name": "度数相等当且仅当同伦",
+      "statement": "在文中设定下，映射 $f,g$ 可同伦，当且仅当它们的度数相等：$f\\sim g\\iff\\deg f=\\deg g$。",
+      "page": 9,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:vector-field-finitely-many-zeros",
+      "type": "lemma",
+      "name": "紧流形上存在有限零点向量场",
+      "statement": "任意紧流形 $X$ 上存在一个仅有有限个零点的向量场。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:lemma:vector-field-zeros-localized",
+      "type": "lemma",
+      "name": "向量场零点可局部化",
+      "statement": "若 $U$ 是紧致连通流形 $X$ 的任意开集，则存在一个仅有有限个零点且所有零点都位于 $U$ 内的向量场。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:nonvanishing-vector-field-euler-characteristic",
+      "type": "theorem",
+      "name": "非消失向量场与欧拉示性数判据",
+      "statement": "若 $X$ 是紧致、连通、定向流形，则 $X$ 存在非消失向量场，当且仅当其欧拉示性数为零：$X$\\text{有非消失向量场}\\iff\\chi(X)=0$。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:hairy-ball-theorem",
+      "type": "theorem",
+      "name": "毛球定理",
+      "statement": "二维球面上不存在非消失光滑向量场，即不能在球面上连续梳理毛发。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:homotopy-group-of-sphere",
+      "type": "theorem",
+      "name": "同维球面的同伦群",
+      "statement": "元素由整数度数完全决定，并给出同构 $\\pi_k(S^k)\\cong\\mathbb Z$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:lower-dimensional-sphere-mapping",
+      "type": "theorem",
+      "name": "低维球面映射的平凡性",
+      "statement": "文中陈述较低维球面映入较高维球面只能平凡，即在其记号下 $\\pi_k(S^n)=0$（$n>k$）。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "id": "paper:theorem:hopf-fibration-class",
+      "type": "theorem",
+      "name": "霍普夫纤维化的非平凡同伦类",
+      "statement": "$\\pi_3(S^2)$ 中存在一个非平凡元素，称为霍普夫纤维化或霍普夫丛，它非平凡地将 $S^3$ 映入 $S^2$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    }
+  ],
+  "inferenceHints": [
+    {
+      "premiseRefs": [
+        "paper:lemma:linear-isotopy"
+      ],
+      "conclusionRef": "paper:lemma:regular-point-winding",
+      "relationText": "应用线性同胚变形引理可得局部度数按定向为 $\\pm1$。",
+      "page": 1,
+      "_provenance": {
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:lemma:regular-point-winding"
+      ],
+      "conclusionRef": "paper:lemma:winding-orientation-sum",
+      "relationText": "对各正则原像应用前一结论，得到绕数等于定向数之和。",
+      "page": 1,
+      "_provenance": {
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:proposition:boundary-extension"
+      ],
+      "conclusionRef": "paper:theorem:degree-zero-sphere",
+      "relationText": "边界映射同伦于常值映射时可延拓，用于证明度数为零的球面映射同伦于常值映射。",
+      "page": 1,
+      "_provenance": {
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:theorem:degree-zero-circle"
+      ],
+      "conclusionRef": "paper:theorem:degree-zero-sphere",
+      "relationText": "以 $S^1\\to S^1$ 的度数零情形作为归纳基例。",
+      "page": 1,
+      "_provenance": {
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:theorem:degree-zero-sphere"
+      ],
+      "conclusionRef": "paper:theorem:zero-winding-punctured-space",
+      "relationText": "将穿孔欧氏空间映射归一化为球面映射后，绕数等于其度数，故可应用前一结论。",
+      "page": 1,
+      "_provenance": {
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:claim:boundary-extension",
+        "hopf-marked:claim:degree-zero-sphere-map"
+      ],
+      "conclusionRef": "hopf-marked:claim:degree-zero-sphere-map",
+      "relationText": "将边界同伦延拓用于球面度为零的归纳步骤。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:calc:winding-degree-identity",
+        "hopf-marked:claim:degree-zero-sphere-map"
+      ],
+      "conclusionRef": "hopf-marked:claim:zero-winding-punctured-space-map",
+      "relationText": "绕数等于方向映射的度，并应用度为零的球面映射结论。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:lemma:isotopy-lemma",
+        "hopf-marked:theorem:sard-theorem",
+        "hopf-marked:claim:range-adjustment"
+      ],
+      "conclusionRef": "hopf-marked:claim:range-adjustment",
+      "relationText": "选取正则值并用等胚引理安排其原像后应用范围调整。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:claim:euclidean-extension",
+        "hopf-marked:theorem:epsilon-neighborhood-theorem",
+        "hopf-marked:claim:boundary-extension"
+      ],
+      "conclusionRef": "hopf-marked:theorem:extension-theorem",
+      "relationText": "先延拓到欧氏空间，再用穿孔范围中的同伦与边界延拓得到球面延拓。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:theorem:extension-theorem",
+        "hopf-marked:calc:boundary-degree-calculation"
+      ],
+      "conclusionRef": "hopf-marked:theorem:hopf-degree-theorem",
+      "relationText": "$X\\times I$ 的边界映射可延拓当且仅当两端映射具有相同的度。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "hopf-marked:claim:range-adjustment"
+      ],
+      "conclusionRef": "hopf-marked:claim:vector-field-removal",
+      "relationText": "将向量场视为欧氏值映射后应用范围调整命题。",
+      "page": 5,
+      "_provenance": {
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:definition:degree-intersection-number",
+        "paper:theorem:extension-theorem-step-3-8"
+      ],
+      "conclusionRef": "paper:lemma:degree-classifies-homotopy",
+      "relationText": "由交数定义的度数计算与扩张定理得到 $f\\sim g\\iff\\deg f=\\deg g$。",
+      "page": 9,
+      "_provenance": {
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:definition:tangent-bundle",
+        "paper:definition:zero-section-and-vector-field-graph",
+        "paper:theorem:transversality-homotopy-theorem",
+        "paper:definition:codimension-intersection-equation"
+      ],
+      "conclusionRef": "paper:lemma:vector-field-finitely-many-zeros",
+      "relationText": "横截图像与零截面的零维紧交集对应向量场的有限零点。",
+      "page": 9,
+      "_provenance": {
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:lemma:vector-field-finitely-many-zeros",
+        "paper:theorem:isotopy-lemma"
+      ],
+      "conclusionRef": "paper:lemma:vector-field-zeros-localized",
+      "relationText": "同痕引理将有限个零点移入给定开集。",
+      "page": 9,
+      "_provenance": {
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:lemma:vector-field-zero-removal",
+        "paper:lemma:vector-field-zeros-localized",
+        "paper:external-theorem:poincare-hopf-index-theorem"
+      ],
+      "conclusionRef": "paper:theorem:nonvanishing-vector-field-euler-characteristic",
+      "relationText": "有限零点的局部化、去零判据与庞加莱-霍普夫指标定理共同给出判据。",
+      "page": 9,
+      "_provenance": {
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    },
+    {
+      "premiseRefs": [
+        "paper:calculation:sphere-and-torus-euler-characteristics",
+        "paper:theorem:nonvanishing-vector-field-euler-characteristic"
+      ],
+      "conclusionRef": "paper:theorem:hairy-ball-theorem",
+      "relationText": "偶维球面的欧拉示性数为 $2$，故不存在非消失光滑向量场。",
+      "page": 9,
+      "_provenance": {
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "version": "paper-entry-parallel-extraction-v1.31"
+      }
+    }
+  ],
+  "diagnostics": {
+    "durationMs": 118730,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 39617,
+        "blocks": 3,
+        "overlapPages": 1,
+        "lanes": [
+          "combined"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.31",
+        "atMs": 1
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 12,
+        "foundationCount": 12,
+        "resultCount": 0,
+        "inferenceHintCount": 5,
+        "doneCalls": 1,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 30838
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 20,
+        "foundationCount": 9,
+        "resultCount": 11,
+        "inferenceHintCount": 6,
+        "doneCalls": 2,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 78481
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 19,
+        "foundationCount": 11,
+        "resultCount": 8,
+        "inferenceHintCount": 5,
+        "doneCalls": 3,
+        "totalCalls": 3,
+        "repaired": true,
+        "repairCount": 3,
+        "atMs": 118730
+      },
+      {
+        "stage": "parallel-extract-done",
+        "totalRawEntries": 51,
+        "totalInferenceHints": 16,
+        "blocks": 3,
+        "version": "paper-entry-parallel-extraction-v1.31",
+        "atMs": 118730
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "lane": "combined",
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "durationMs": 30831,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 11192,
+          "completion_tokens": 1456,
+          "total_tokens": 12648
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "combined",
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "durationMs": 47642,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12117,
+          "completion_tokens": 2509,
+          "total_tokens": 14626,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "combined",
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "durationMs": 40244,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10425,
+          "completion_tokens": 2114,
+          "total_tokens": 12539,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          }
+        },
+        "repaired": true,
+        "repairCount": 3
+      }
+    ],
+    "chunkCount": 3,
+    "rawEntryCount": 51,
+    "jsonRepairCount": 3,
+    "modelCallMetadata": {
+      "model": "gpt-5.6-luna",
+      "provider": "Luna Gateway",
+      "reasoningEffort": "none"
+    },
+    "moduleIdentity": {
+      "name": "paper-entry-parallel-extraction-v1.31",
+      "schema": "cmath.paper-raw-entry-pool/v1"
+    }
+  }
+}

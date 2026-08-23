@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMath · 数学地图库与多图切换交互原型 (Interaction Demo)</title>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-view="workbench">
+  <!-- Hidden native file input for simulated/safe file selection -->
+  <input type="file" id="prototype-file-input" accept=".json,application/json" multiple hidden>
+
+  <!-- Prototype Watermark / Notice Badge -->
+  <aside class="proto-env-banner" aria-label="原型环境提示">
+    <div class="proto-env-pill" id="btn-proto-info" role="button" tabindex="0" title="点击查看原型交互说明">
+      <span class="proto-dot"></span>
+      <span class="proto-text">INTERACTION DEMO · 不写入正式数据</span>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       1. WORKBENCH VIEW (Paper Grotesque Edition)
+       ======================================================================== -->
+  <div id="workbench-view" class="view-container">
+    <!-- Ambient Logo Watermark Stage -->
+    <div class="ambient-logo-bg" aria-hidden="true">
+      <svg class="ambient-logo-svg" viewBox="0 0 320 320" fill="none">
+        <circle cx="160" cy="160" r="140" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.18" />
+        <path d="M70 160 C 100 80, 220 80, 250 160 C 220 240, 100 240, 70 160 Z" stroke="currentColor" stroke-width="2" opacity="0.25" />
+        <circle cx="160" cy="160" r="44" stroke="currentColor" stroke-width="2" opacity="0.3" />
+        <line x1="70" y1="160" x2="250" y2="160" stroke="currentColor" stroke-width="1.5" opacity="0.2" />
+        <line x1="160" y1="70" x2="160" y2="250" stroke="currentColor" stroke-width="1.5" opacity="0.2" />
+      </svg>
+    </div>
+
+    <!-- Topbar -->
+    <header class="workbench-topbar" role="banner">
+      <a class="brand-block" href="#" id="workbench-brand-link" aria-label="CMath 数学地图工作台">
+        <div class="brand-title-group">
+          <div class="brand-name-row">
+            <span class="brand-name"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
+            <span class="brand-sub">MATH MAP</span>
+          </div>
+          <span class="brand-tagline">数学命题与推演关系地图</span>
+        </div>
+        <span class="workbench-badge">稿纸黑体 · PAPER GROTESQUE</span>
+      </a>
+
+      <nav class="topbar-nav-actions" aria-label="工作台快捷操作">
+        <button class="topbar-action-btn" id="btn-topbar-import" type="button" aria-haspopup="dialog">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>导入 JSON</span>
+        </button>
+
+        <button class="topbar-action-btn is-primary" id="btn-topbar-library" type="button" aria-haspopup="dialog">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>数学地图库</span>
+          <span class="topbar-count-badge" id="topbar-map-count">7</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="workbench-main" role="main">
+      <div class="workbench-hero">
+        <div class="hero-title-row">
+          <h1 class="hero-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></h1>
+          <span class="hero-sub">Math Map</span>
+          <span class="hero-version">v5.0 · Interactive Prototype</span>
+        </div>
+        <p class="hero-desc">将数学论文转换为可交互的命题推演地图。支持批量导入并校验 JSON 数据包、在统一地图库中自定义排序，以及在阅读地图时无缝平滑切换。</p>
+      </div>
+
+      <!-- 3 Core Entrance Cards -->
+      <div class="entrance-grid" role="region" aria-label="核心操作入口">
+        <!-- 1. Upload Paper PDF -->
+        <div class="entrance-card" id="card-upload-paper" role="button" tabindex="0" aria-haspopup="dialog" aria-label="上传数学论文 PDF">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </div>
+          <div class="card-content">
+            <span class="card-kicker">PDF → JSON</span>
+            <h2>上传数学论文 PDF</h2>
+            <p>从数学论文中提取定理、定义与证明脉络，生成标准 Project View JSON 数据包。</p>
+          </div>
+          <div class="card-action-bar">
+            <span>查看解析说明</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
+        </div>
+
+        <!-- 2. Open / Import JSON Maps -->
+        <div class="entrance-card is-highlight" id="card-import-json" role="button" tabindex="0" aria-haspopup="dialog" aria-label="导入 JSON 地图，支持单张或批量导入">
+          <div class="card-badge">支持单张 / 批量导入</div>
+          <div class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <div class="card-content">
+            <span class="card-kicker">BATCH &amp; SINGLE IMPORT</span>
+            <h2>导入 JSON 地图</h2>
+            <p>载入一个或多个 Project View JSON 数据包，自动执行结构校验、冲突排查并加入地图库。</p>
+          </div>
+          <div class="card-action-bar">
+            <span>打开导入抽屉</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
+        </div>
+
+        <!-- 3. Math Map Library -->
+        <div class="entrance-card" id="card-open-library" role="button" tabindex="0" aria-haspopup="dialog" aria-label="数学地图库，浏览、排序与切换地图">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <div class="card-content">
+            <span class="card-kicker">UNIFIED LIBRARY</span>
+            <h2>数学地图库</h2>
+            <p>集中浏览精选示例、本地导入与内置地图，支持搜索、上下自定义排序与即时打开。</p>
+          </div>
+          <div class="card-action-bar">
+            <span>打开地图库</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Tips Box -->
+      <footer class="workbench-footer-note">
+        <div class="footer-tip-item">
+          <span class="tip-num">01</span>
+          <span class="tip-text"><strong>批量导入校验</strong>：在导入抽屉中可一键载入包含正常、冲突与无效文件的示例批次。</span>
+        </div>
+        <div class="footer-tip-item">
+          <span class="tip-num">02</span>
+          <span class="tip-text"><strong>统一分类与排序</strong>：地图库清晰划分精选 Demo、我的地图与内置地图，本地支持微调次序。</span>
+        </div>
+        <div class="footer-tip-item">
+          <span class="tip-num">03</span>
+          <span class="tip-text"><strong>图内无缝切换</strong>：在地图界面直接点击标题或「地图库」即可唤出切图抽屉，无需退回主页。</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       2. SIMULATED MATH MAP VIEW (In-Map Reading & Fast Switcher)
+       ======================================================================== -->
+  <div id="math-map-view" class="view-container" hidden>
+    <!-- Map Topbar -->
+    <header class="map-view-topbar" role="banner">
+      <div class="map-topbar-left">
+        <button class="btn-return-workbench" id="btn-return-workbench" type="button" aria-label="返回工作台">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>返回工作台</span>
+        </button>
+
+        <div class="map-brand-divider" aria-hidden="true"></div>
+
+        <div class="map-brand-group">
+          <span class="map-brand-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
+          <span class="map-brand-sub">MATH MAP</span>
+        </div>
+
+        <!-- Prominent Map Title Switcher Trigger -->
+        <button class="map-title-switcher-btn" id="btn-map-title-switcher" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="切换数学地图：从特征值到谱定理">
+          <span class="title-badge" id="map-active-source-badge">DEMO</span>
+          <span class="title-text" id="map-active-title">从特征值到谱定理</span>
+          <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="map-topbar-center">
+        <span id="map-boundary-tag" class="map-boundary-tag">高等代数示例 · 数学地图与 Loop 进展</span>
+      </div>
+
+      <div class="map-topbar-right">
+        <button class="map-quick-btn" id="btn-map-quick-import" type="button" aria-label="导入 JSON 数据包">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>导入 JSON</span>
+        </button>
+
+        <button class="map-quick-btn is-accent" id="btn-map-quick-library" type="button" aria-label="打开数学地图库抽屉">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>地图库</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Simulated Map Canvas & Command Chrome -->
+    <main class="math-map-main" role="main">
+      <!-- Interactive SVG Canvas Area -->
+      <div id="simulated-map-canvas" class="simulated-map-canvas" role="region" aria-label="数学地图画布" tabindex="0">
+        <!-- SVG Math Graph Renderer is dynamically injected via demo.js -->
+      </div>
+
+      <!-- In-Map Floating Command Bar -->
+      <section class="math-map-commandbar" aria-label="地图视图控制工具">
+        <div class="lens-switcher" role="tablist" aria-label="透镜模式">
+          <button type="button" class="lens-tab is-active" data-lens="global" role="tab" aria-selected="true">全图</button>
+          <button type="button" class="lens-tab" data-lens="progress" role="tab" aria-selected="false">推演链</button>
+        </div>
+
+        <div class="commandbar-divider" aria-hidden="true"></div>
+
+        <label class="section-scope" for="map-section-filter">
+          <span class="scope-label">Section</span>
+          <select id="map-section-filter" class="scope-select">
+            <option value="all">全部结构</option>
+            <option value="core">核心主线定理</option>
+            <option value="prelim">预备定义与引理</option>
+          </select>
+        </label>
+
+        <div class="commandbar-divider" aria-hidden="true"></div>
+
+        <label class="math-map-search-wrap" for="inmap-node-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input id="inmap-node-search" type="search" placeholder="在当前地图中高亮节点..." autocomplete="off">
+        </label>
+
+        <div class="canvas-zoom-controls">
+          <button type="button" id="btn-zoom-in" title="放大画布" aria-label="放大">+</button>
+          <button type="button" id="btn-zoom-out" title="缩小画布" aria-label="缩小">−</button>
+          <button type="button" id="btn-zoom-reset" title="重置视角" aria-label="重置视角">复位</button>
+        </div>
+      </section>
+
+      <!-- Bottom Map Context Bar -->
+      <div id="math-map-context" class="math-map-context" aria-live="polite">
+        <span class="context-dot"></span>
+        <strong id="context-status-heading">当前状态</strong>
+        <span id="context-status-text">已载入完整推演网络，支持点击节点查看推演依据与定义阐述。</span>
+      </div>
+
+      <!-- Map Legend Panel -->
+      <div class="math-map-legend-panel" aria-label="图例说明">
+        <div class="legend-header">图例说明</div>
+        <div class="legend-grid">
+          <div class="legend-item"><span class="legend-badge badge-def"></span><span class="legend-text">定义 (Def)</span></div>
+          <div class="legend-item"><span class="legend-badge badge-thm"></span><span class="legend-text">定理 (Thm)</span></div>
+          <div class="legend-item"><span class="legend-badge badge-lem"></span><span class="legend-text">引理 (Lemma)</span></div>
+          <div class="legend-item"><span class="legend-badge badge-proof"></span><span class="legend-text">证明推演</span></div>
+          <div class="legend-item"><span class="legend-badge badge-claim"></span><span class="legend-text">开放 Claim</span></div>
+        </div>
+      </div>
+
+      <!-- Node Inspector Card (Collapsible) -->
+      <aside id="node-inspector-panel" class="node-inspector-panel" aria-label="数学节点详情" hidden>
+        <header class="inspector-header">
+          <div>
+            <span class="inspector-badge" id="insp-badge">定理 2</span>
+            <h4 class="inspector-title" id="insp-title">有限维自伴算子谱定理</h4>
+          </div>
+          <button type="button" class="close-btn-sm" id="btn-close-inspector" aria-label="关闭详情面板">×</button>
+        </header>
+        <div class="inspector-body">
+          <div class="inspector-row">
+            <span class="insp-label">数学陈述：</span>
+            <p class="insp-statement" id="insp-statement">设 V 为有限维实内积空间，T 为 V 上的自伴线性算子，则存在 V 的一组由 T 的特征向量组成的正交规范基。</p>
+          </div>
+          <div class="inspector-row">
+            <span class="insp-label">前置依赖：</span>
+            <div class="insp-tags" id="insp-deps">
+              <span class="insp-tag">引理 1 · 特征值存在性</span>
+              <span class="insp-tag">引理 3 · 正交补不变性</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Switching Loading Shimmer Overlay -->
+      <div id="map-loading-overlay" class="map-loading-overlay" aria-hidden="true" hidden>
+        <div class="loading-box">
+          <div class="loading-spinner"></div>
+          <span id="loading-map-text">正在切换数学地图...</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       3. MODAL / DRAWER: BATCH JSON IMPORT (DRAWER)
+       ======================================================================== -->
+  <div class="drawer-backdrop" id="import-drawer-backdrop" hidden>
+    <aside class="slide-drawer import-drawer" id="import-drawer" role="dialog" aria-modal="true" aria-labelledby="import-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <span class="drawer-kicker">BATCH &amp; SINGLE IMPORT</span>
+          <h3 id="import-drawer-title">导入 JSON 地图</h3>
+        </div>
+        <button class="close-btn" id="btn-close-import-drawer" type="button" aria-label="关闭导入抽屉">×</button>
+      </header>
+
+      <div class="drawer-scroll-body">
+        <div class="drawer-notice-box">
+          <div class="notice-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="notice-text">
+            <strong>支持单张或批量导入：</strong>系统将校验文件结构与 <code>numberingLedger</code> 编码，自动筛除无效或损坏文件。交互原型阶段不上传真实数据至服务器。
+          </div>
+        </div>
+
+        <!-- Dropzone Area -->
+        <div class="import-drop-zone" id="import-drop-zone" tabindex="0" role="button" aria-label="选择或拖拽 JSON 文件">
+          <div class="drop-icon-wrap" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <span class="drop-main">拖拽一个或多个 <code>.json</code> 文件至此</span>
+          <span class="drop-sub">支持标准的 Project View JSON 格式</span>
+          <div class="drop-actions-row">
+            <button class="btn-secondary" id="btn-choose-json-files" type="button">选择 JSON 文件（可多选）</button>
+            <button class="btn-preset-batch" id="btn-load-preset-batch" type="button" title="载入预置的 4 个测试用例（2有效 + 1冲突 + 1无效）">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>载入示例批次（4个文件）</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Batch Validation List Section -->
+        <div class="batch-validation-section" id="batch-validation-section" hidden>
+          <div class="batch-section-head">
+            <h4>待导入批次校验结果 (<span id="batch-total-count">0</span>)</h4>
+            <span class="batch-summary-pill" id="batch-status-summary">2 个有效 · 1 个冲突 · 1 个错误</span>
+          </div>
+
+          <div class="batch-files-list" id="batch-files-list" role="list">
+            <!-- Dynamically populated rows -->
+          </div>
+        </div>
+
+        <!-- Import Progress Bar -->
+        <div class="import-progress-wrap" id="import-progress-wrap" hidden aria-live="polite">
+          <div class="progress-bar-head">
+            <span id="progress-state-text">正在写入本地库索引...</span>
+            <span id="progress-percent-text">65%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="import-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Success Result Banner -->
+        <div class="import-success-box" id="import-success-box" hidden aria-live="polite">
+          <div class="success-icon-wrap" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="success-content">
+            <h4>已成功导入 <span id="imported-count-display">2</span> 张数学地图！</h4>
+            <p>已自动收录至「我的地图」分类，支持在地图库中排序或随时在阅览时切换。</p>
+          </div>
+          <div class="success-actions">
+            <button class="btn-primary" id="btn-success-open-first" type="button">打开第一张地图 →</button>
+            <button class="btn-secondary" id="btn-success-view-library" type="button">前往地图库</button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="drawer-footer" id="import-drawer-footer">
+        <div class="footer-status-col">
+          <span class="footer-valid-hint" id="footer-valid-hint">请选择或载入示例文件</span>
+        </div>
+        <div class="footer-btn-col">
+          <button class="btn-secondary" id="btn-reset-import" type="button">重置</button>
+          <button class="btn-primary" id="btn-start-batch-import" type="button" disabled>导入 2 张有效地图</button>
+        </div>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- ========================================================================
+       4. MODAL / DRAWER: UNIFIED MATH MAP LIBRARY & SWITCHER
+       ======================================================================== -->
+  <div class="drawer-backdrop" id="library-drawer-backdrop" hidden>
+    <aside class="slide-drawer library-drawer" id="library-drawer" role="dialog" aria-modal="true" aria-labelledby="library-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <span class="drawer-kicker">UNIFIED REPOSITORY</span>
+          <h3 id="library-drawer-title">数学地图库</h3>
+          <small class="drawer-subtitle">浏览精选示例、本地导入与内置数学地图，支持自定义排序与即时打开</small>
+        </div>
+        <button class="close-btn" id="btn-close-library-drawer" type="button" aria-label="关闭地图库">×</button>
+      </header>
+
+      <!-- Search & Fast Actions Bar -->
+      <div class="library-search-bar">
+        <div class="library-search-input-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" id="library-search-input" placeholder="搜索地图标题、领域或数学对象..." autocomplete="off">
+          <button type="button" id="btn-clear-library-search" class="clear-search-btn" aria-label="清空搜索" hidden>×</button>
+        </div>
+
+        <button class="btn-secondary-sm" id="btn-library-go-import" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>导入 JSON</span>
+        </button>
+      </div>
+
+      <!-- In-Map Switcher Specific: Recent Maps Shelf -->
+      <div class="library-recent-shelf" id="library-recent-shelf" hidden>
+        <div class="shelf-title">最近浏览</div>
+        <div class="recent-chips-list" id="recent-chips-list">
+          <!-- Dynamically populated chips -->
+        </div>
+      </div>
+
+      <!-- Library Body Sections -->
+      <div class="drawer-scroll-body library-scroll-body" id="library-scroll-body">
+        <!-- Section 1: 精选 Demo -->
+        <section class="map-library-section" id="section-curated-demos" aria-labelledby="heading-curated-demos">
+          <div class="section-header-row">
+            <div class="section-title-group">
+              <h4 id="heading-curated-demos" class="section-heading">精选 Demo</h4>
+              <span class="section-count-badge" id="count-curated">3</span>
+            </div>
+            <span class="section-tag-fixed">官方推荐 · 固定顺序</span>
+          </div>
+          <div class="map-cards-list" id="list-curated-demos" role="list">
+            <!-- Dynamically populated from state -->
+          </div>
+        </section>
+
+        <!-- Section 2: 我的地图 (Local Imported) -->
+        <section class="map-library-section" id="section-my-maps" aria-labelledby="heading-my-maps">
+          <div class="section-header-row">
+            <div class="section-title-group">
+              <h4 id="heading-my-maps" class="section-heading">我的地图</h4>
+              <span class="section-count-badge" id="count-my-maps">0</span>
+            </div>
+            <span class="section-order-hint">支持上下微调排序 · 自动记忆</span>
+          </div>
+          
+          <div class="map-cards-list" id="list-my-maps" role="list">
+            <!-- Populated from state or shows useful empty state -->
+          </div>
+        </section>
+
+        <!-- Section 3: 内置地图 (Built-in Maps) -->
+        <section class="map-library-section" id="section-builtin-maps" aria-labelledby="heading-builtin-maps">
+          <div class="section-header-row">
+            <div class="section-title-group">
+              <h4 id="heading-builtin-maps" class="section-heading">内置地图</h4>
+              <span class="section-count-badge" id="count-builtin">4</span>
+            </div>
+            <span class="section-order-hint">支持上下微调排序 · 自动记忆</span>
+          </div>
+          
+          <div class="map-cards-list" id="list-builtin-maps" role="list">
+            <!-- Populated from state -->
+          </div>
+        </section>
+
+        <!-- Search Empty State -->
+        <div class="search-empty-state" id="search-empty-state" hidden>
+          <div class="empty-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h5>未找到匹配的数学地图</h5>
+          <p>请尝试不同的关键词，或点击下方按钮重置搜索条件。</p>
+          <button class="btn-secondary-sm" id="btn-reset-search-state" type="button">清除搜索条件</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========================================================================
+       5. MODAL / DRAWER: PDF EXTRACTION EXPLANATION DRAWER
+       ======================================================================== -->
+  <div class="drawer-backdrop" id="pdf-drawer-backdrop" hidden>
+    <aside class="slide-drawer pdf-drawer" id="pdf-drawer" role="dialog" aria-modal="true" aria-labelledby="pdf-drawer-title">
+      <header class="drawer-header">
+        <div>
+          <span class="drawer-kicker">PDF → JSON WORKFLOW</span>
+          <h3 id="pdf-drawer-title">论文解析工作流说明</h3>
+        </div>
+        <button class="close-btn" id="btn-close-pdf-drawer" type="button" aria-label="关闭论文解析说明">×</button>
+      </header>
+
+      <div class="drawer-scroll-body">
+        <div class="form-group">
+          <label>选取数学论文 PDF</label>
+          <div class="pdf-drop-zone" id="pdf-simulated-dropzone">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            <span class="drop-main">点击选择或拖拽 PDF 论文至此</span>
+            <span class="drop-sub">支持数学前沿论文、教材章节或讲义</span>
+          </div>
+        </div>
+
+        <div class="drawer-notice-box">
+          <div class="notice-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div class="notice-text">
+            <strong>工作流说明：</strong><br>
+            解析过程会提取命题推演依赖，并生成标准的 <code>Project View JSON</code> 下载到本地。生成后只需在工作台点击<strong>「导入 JSON 地图」</strong>即可载入阅览。
+          </div>
+        </div>
+
+        <div class="workflow-steps-list">
+          <div class="workflow-step-item">
+            <div class="step-num-badge">1</div>
+            <div class="step-desc">
+              <strong>双轨提取与校验</strong>
+              <p>解析 PDF 文本提取定义、定理与证明依赖链条。</p>
+            </div>
+          </div>
+          <div class="workflow-step-item">
+            <div class="step-num-badge">2</div>
+            <div class="step-desc">
+              <strong>导出标准 JSON</strong>
+              <p>生成符合 CMath 统一数据规范的地图数据包。</p>
+            </div>
+          </div>
+          <div class="workflow-step-item">
+            <div class="step-num-badge">3</div>
+            <div class="step-desc">
+              <strong>批量导入与图内切换</strong>
+              <p>在地图库中集中收录，无需刷新即可随意切换。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="drawer-footer">
+        <button class="btn-primary" id="btn-sim-extract-to-import" type="button">前往导入 JSON 体验完整流程 →</button>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- ========================================================================
+       6. OVERLAY DIALOG: RENAME / DETAILS DIALOG
+       ======================================================================== -->
+  <div class="modal-backdrop" id="rename-modal-backdrop" hidden>
+    <div class="modal-dialog rename-dialog" role="dialog" aria-modal="true" aria-labelledby="rename-modal-title">
+      <div class="modal-head">
+        <h4 id="rename-modal-title">重命名地图</h4>
+        <button class="close-btn-sm" id="btn-close-rename-modal" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <label for="rename-input-field" class="modal-field-label">地图显示名称：</label>
+        <input type="text" id="rename-input-field" class="modal-text-input" placeholder="输入新的地图名称">
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn-secondary-sm" id="btn-cancel-rename">取消</button>
+        <button type="button" class="btn-primary-sm" id="btn-confirm-rename">保存名称</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Runtime Script -->
+  <script src="demo.js"></script>
+</body>
+</html>

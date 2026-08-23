@@ -1,0 +1,94 @@
+{
+  "schema": "cmath.paper-entry-artifact/v1",
+  "entryModuleVersion": "paper-entry-extraction-v1",
+  "status": "failed",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507
+  },
+  "diagnostics": {
+    "durationMs": 354794,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "RT.pdf",
+        "pageCount": 19,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 21507,
+        "atMs": 2
+      },
+      {
+        "stage": "target",
+        "leads": 9,
+        "atMs": 53302
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 53302
+      },
+      {
+        "stage": "request",
+        "chars": 21507,
+        "chunks": 1,
+        "atMs": 53305
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 53310
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 53293,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9882,
+          "completion_tokens": 2786,
+          "total_tokens": 12668,
+          "completion_tokens_details": {
+            "reasoning_tokens": 47
+          }
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 30440,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12736,
+          "completion_tokens": 1588,
+          "total_tokens": 14324
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 84746,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13934,
+          "completion_tokens": 4433,
+          "total_tokens": 18367
+        }
+      }
+    ],
+    "error": "fetch failed"
+  }
+}

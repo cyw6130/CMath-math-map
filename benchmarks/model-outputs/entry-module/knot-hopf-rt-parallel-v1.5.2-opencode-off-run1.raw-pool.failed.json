@@ -1,0 +1,284 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.5.2",
+  "status": "failed",
+  "provider": "opencode-go",
+  "model": "deepseek-v4-flash",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507
+  },
+  "diagnostics": {
+    "durationMs": 175340,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 21507,
+        "blocks": 5,
+        "overlapPages": 1,
+        "lanes": [
+          "foundation",
+          "result"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.5.2",
+        "atMs": 1
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 3,
+        "doneCalls": 1,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 61404
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 0,
+        "doneCalls": 2,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 73731
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 15,
+        "doneCalls": 3,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 110836
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 2,
+        "doneCalls": 4,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 117697
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 9,
+        "doneCalls": 5,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 126852
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 3,
+        "doneCalls": 6,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 151055
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 17,
+        "doneCalls": 7,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 167974
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 61367,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3455,
+          "completion_tokens": 1341,
+          "total_tokens": 4796,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 12326,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 2100,
+          "completion_tokens": 545,
+          "total_tokens": 2645,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 86429,
+        "status": 503,
+        "finishReason": null,
+        "usage": null
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 37104,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3192,
+          "completion_tokens": 5046,
+          "total_tokens": 8238,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 6860,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3062,
+          "completion_tokens": 1022,
+          "total_tokens": 4084,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 126815,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 2230,
+          "completion_tokens": 3038,
+          "total_tokens": 5268,
+          "prompt_tokens_details": {
+            "cached_tokens": 2048
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 24202,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3317,
+          "completion_tokens": 2448,
+          "total_tokens": 5765,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 50277,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3447,
+          "completion_tokens": 5607,
+          "total_tokens": 9054,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 2,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 88899,
+        "status": 200,
+        "finishReason": "length",
+        "usage": {
+          "prompt_tokens": 3585,
+          "completion_tokens": 10000,
+          "total_tokens": 13585,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 24284,
+        "status": null,
+        "finishReason": null,
+        "usage": null,
+        "error": "Block 1 foundation lane (pages 1–5) parse failure: Unterminated string in JSON at position 5422 (line 104 column 75)"
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 7365,
+        "status": null,
+        "finishReason": null,
+        "usage": null,
+        "error": "Block 1 foundation lane (pages 1–5) parse failure: Unterminated string in JSON at position 5422 (line 104 column 75)"
+      }
+    ],
+    "error": "Block 1 foundation lane (pages 1–5) parse failure: Unterminated string in JSON at position 5422 (line 104 column 75)"
+  }
+}

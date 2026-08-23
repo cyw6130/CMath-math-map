@@ -1,0 +1,150 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v120-mineru/yasui-2019.semantic-consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 20,
+  "completeness": 17,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate captures all five principal theorems and both supporting lemmas from the Gold reference, with generally accurate page locators and appropriate theorem/lemma typing. It also recognizes most cited background results as external. However, it omits two foundational definitions, weakens or distorts the Taubes and Bauer statements, drops the non-torsion condition from Lemma 2.6, leaves two modulo-4 hypotheses ambiguously formatted, and duplicates two lemmas. Several additional entries are useful, but some are vague proof references rather than properly delimited mathematical statements.",
+  "strengths": [
+    "All five Gold principal theorems, including Theorems 1.4, 1.9, 2.3, 2.4, and 2.8, are represented on the correct pages.",
+    "The definition of representation by a 2-handle neighborhood is precise and more explicit than the Gold paraphrase.",
+    "The Frøyshov vanishing theorem and symplectic Betti-number parity fact are accurately captured and explicitly marked as external.",
+    "Lemma 3.1 and the stable-cohomotopy sphere obstruction are mathematically faithful.",
+    "The extraction includes relevant paper corollaries and additional cited infrastructure beyond the minimum Gold set."
+  ],
+  "issues": [
+    "The definitions of geometrically simply connected 4-manifolds and of a symplectic structure with its canonical spin-c structure are missing.",
+    "The Taubes entry does not state the cited theorem SW_X(s_X) = ±1; it instead records a contextual consequence about Bauer's hypotheses, so the external result is not faithfully extracted.",
+    "The Bauer connected-sum theorem abbreviates condition (2) as conditions 'listed in the text' and omits its substantive spin-c, mod-2, and n=4 mod-8 details.",
+    "Both versions of Lemma 2.6 omit the Gold statement's non-torsion hypothesis on the homology class.",
+    "Theorem 1.9 and Theorem 2.4 attach '\\pmod 4' only to the b_2^- expression, leaving the b_2^+ congruence formally incomplete or ambiguous.",
+    "Lemma 2.6 and Lemma 3.1 are each extracted twice under different IDs, creating avoidable redundancy.",
+    "The external adjunction-inequality entry describes how a result is used rather than stating the inequality, and therefore is not a well-delimited mathematical entry.",
+    "Corollaries 1.6 and 1.7 are classified generically as theorems rather than as corollaries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:geometrically-simply-connected",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No candidate entry defines geometric simple connectivity via a handle decomposition without 1-handles."
+    },
+    {
+      "goldEntryId": "paper:def:2-handle-neighborhood-class",
+      "candidateEntryIds": [
+        "paper:def:represented-by-2-handle-neighborhood"
+      ],
+      "status": "matched",
+      "notes": "Accurate and explicitly describes the generator of H_2(W; Z)."
+    },
+    {
+      "goldEntryId": "paper:def:bauer-furuta-invariant",
+      "candidateEntryIds": [
+        "yasui:def:stable-cohomotopy-sw-invariant"
+      ],
+      "status": "partial",
+      "notes": "Correctly identifies the invariant as a strict refinement, but omits the stable equivariant homotopy construction."
+    },
+    {
+      "goldEntryId": "paper:def:symplectic-structure-4mfld",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "Neither the symplectic-form definition nor the induced canonical spin-c structure is extracted."
+    },
+    {
+      "goldEntryId": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:thm:bauer-connected-sum"
+      ],
+      "status": "partial",
+      "notes": "Condition (1) is accurate, but condition (2) is deferred to the source text and loses important hypotheses."
+    },
+    {
+      "goldEntryId": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntryIds": [
+        "yasui:thm:froyshov-vanishing"
+      ],
+      "status": "matched",
+      "notes": "Statement, external attribution, hypotheses, conclusion, and page agree with Gold."
+    },
+    {
+      "goldEntryId": "paper:b0:taubes-symplectic-sw",
+      "candidateEntryIds": [
+        "yasui:external:taubes-spin-c"
+      ],
+      "status": "mismatched",
+      "notes": "The candidate gives a derived contextual assertion rather than Taubes's nonzero canonical Seiberg-Witten invariant theorem."
+    },
+    {
+      "goldEntryId": "paper:b0:symplectic-betti-parity",
+      "candidateEntryIds": [
+        "yasui:external:symplectic-parity"
+      ],
+      "status": "matched",
+      "notes": "The stated oddness of b_2^+ - b_1 is equivalent to the Gold congruence."
+    },
+    {
+      "goldEntryId": "paper:lemma:embedded-sphere-double",
+      "candidateEntryIds": [
+        "paper:lemma:2.6-zero-self-intersection-sphere",
+        "yasui:lemma:2-handle-double-sphere"
+      ],
+      "status": "partial",
+      "notes": "The geometric conclusion is captured twice, but the non-torsion condition is omitted."
+    },
+    {
+      "goldEntryId": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:thm:stable-cohomotopy-adjunction"
+      ],
+      "status": "matched",
+      "notes": "Faithfully states the obstruction for non-torsion classes with nonnegative self-intersection."
+    },
+    {
+      "goldEntryId": "paper:thm:positive-definite-vanishing",
+      "candidateEntryIds": [
+        "yasui:thm:stable-cohomotopy-vanishing-positive-definite"
+      ],
+      "status": "matched",
+      "notes": "Theorem 2.3 is accurately stated and located."
+    },
+    {
+      "goldEntryId": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntryIds": [
+        "paper:theorem:2.4-no-symplectic-one-orientation-class"
+      ],
+      "status": "partial",
+      "notes": "The mathematical content is present, but the modulo-4 qualifier is not explicitly attached to both congruences."
+    },
+    {
+      "goldEntryId": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntryIds": [
+        "paper:lemma:3-1",
+        "yasui:lemma:geometrically-simply-connected-classes"
+      ],
+      "status": "matched_with_duplication",
+      "notes": "Lemma 3.1 is accurate but unnecessarily duplicated."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntryIds": [
+        "paper:theorem:1.4-vanishing-stable-cohomotopy-sw"
+      ],
+      "status": "matched",
+      "notes": "The main theorem is faithfully stated with the correct b_2^+ hypothesis and page."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntryIds": [
+        "paper:theorem:1.9-no-symplectic-one-orientation"
+      ],
+      "status": "partial",
+      "notes": "The conclusion and intended hypotheses are present, but the first modulo-4 congruence is formally under-specified."
+    }
+  ]
+}

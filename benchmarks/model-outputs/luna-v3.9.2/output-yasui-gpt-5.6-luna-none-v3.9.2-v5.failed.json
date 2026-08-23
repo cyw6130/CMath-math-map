@@ -1,0 +1,343 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-1-off-compact-v3.9.2",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.2",
+  "promptSetVersion": "v3.9.2",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "文章1.pdf",
+    "pageCount": 14,
+    "characters": 29596
+  },
+  "diagnostics": {
+    "durationMs": 326622,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "文章1.pdf",
+        "pageCount": 14,
+        "atMs": 1
+      },
+      {
+        "stage": "guide",
+        "chars": 29596,
+        "atMs": 1
+      },
+      {
+        "stage": "target",
+        "leads": 11,
+        "atMs": 60627
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 60627
+      },
+      {
+        "stage": "request",
+        "chars": 29596,
+        "chunks": 2,
+        "atMs": 60629
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 60633
+      },
+      {
+        "stage": "entries-repair",
+        "chunk": 1,
+        "total": 2,
+        "count": 9,
+        "atMs": 110378
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 118416
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 171722
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:2.6",
+        "retained": "coverage-or-first-seen",
+        "atMs": 171728
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:calculation:handle-slide",
+        "retained": "coverage-or-first-seen",
+        "atMs": 171728
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 39,
+        "leadGuided": 21,
+        "total": 58,
+        "conflicts": 2,
+        "atMs": 171728
+      },
+      {
+        "stage": "integrate",
+        "entries": 58,
+        "atMs": 171728
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 21,
+        "renameCount": 2,
+        "atMs": 181867
+      },
+      {
+        "stage": "assemble",
+        "entries": 43,
+        "atMs": 181868
+      },
+      {
+        "stage": "response",
+        "atMs": 224003
+      },
+      {
+        "stage": "autofix",
+        "count": 7,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃 conclusion 缺失或悬空的 第 4 条 Inference",
+          "丢弃以 Fact 为证明结论且前提含 Claim 的 第 9 条 Inference",
+          "丢弃 conclusion 缺失或悬空的 第 13 条 Inference",
+          "丢弃以 Fact 为证明结论且前提含 Claim 的 第 14 条 Inference",
+          "丢弃 premises 为空的 第 15 条 Inference"
+        ],
+        "atMs": 224008
+      },
+      {
+        "stage": "repair",
+        "reason": "10 处问题",
+        "attempt": 1,
+        "atMs": 224011
+      },
+      {
+        "stage": "response",
+        "atMs": 255659
+      },
+      {
+        "stage": "autofix",
+        "count": 6,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃 premises 为空的 第 9 条 Inference",
+          "丢弃 premises 为空的 第 10 条 Inference",
+          "丢弃以 Fact 为证明结论且前提含 Claim 的 第 11 条 Inference",
+          "丢弃 conclusion 缺失或悬空的 第 12 条 Inference"
+        ],
+        "atMs": 255659
+      },
+      {
+        "stage": "repair",
+        "reason": "14 处问题",
+        "attempt": 2,
+        "atMs": 255660
+      },
+      {
+        "stage": "response",
+        "atMs": 291169
+      },
+      {
+        "stage": "autofix",
+        "count": 4,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃以 Fact 为证明结论且前提含 Claim 的 第 11 条 Inference",
+          "丢弃 premises 为空的 第 14 条 Inference"
+        ],
+        "atMs": 291170
+      },
+      {
+        "stage": "repair",
+        "reason": "6 处问题",
+        "attempt": 3,
+        "atMs": 291170
+      },
+      {
+        "stage": "response",
+        "atMs": 326620
+      },
+      {
+        "stage": "autofix",
+        "count": 5,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃以 Fact 为证明结论且前提含 Claim 的 第 11 条 Inference",
+          "丢弃 premises 为空的 第 13 条 Inference",
+          "丢弃 premises 为空的 第 14 条 Inference"
+        ],
+        "atMs": 326621
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 60620,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9294,
+          "completion_tokens": 3248,
+          "total_tokens": 12542
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 24436,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12619,
+          "completion_tokens": 1253,
+          "total_tokens": 13872
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 49748,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7516,
+          "completion_tokens": 2611,
+          "total_tokens": 10127
+        }
+      },
+      {
+        "stage": "entries-repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 57785,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9852,
+          "completion_tokens": 3052,
+          "total_tokens": 12904
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 67004,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14110,
+          "completion_tokens": 3548,
+          "total_tokens": 17658
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 61343,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10574,
+          "completion_tokens": 2715,
+          "total_tokens": 13289
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 10136,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 5041,
+          "completion_tokens": 482,
+          "total_tokens": 5523
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 42133,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16589,
+          "completion_tokens": 2218,
+          "total_tokens": 18807
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 31645,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 21483,
+          "completion_tokens": 1605,
+          "total_tokens": 23088
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 35508,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 26131,
+          "completion_tokens": 1870,
+          "total_tokens": 28001,
+          "prompt_tokens_details": {
+            "cached_tokens": 21248
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 35447,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 30543,
+          "completion_tokens": 1864,
+          "total_tokens": 32407,
+          "prompt_tokens_details": {
+            "cached_tokens": 25344
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.2 定向修复已执行 3 次）：Claim paper:theorem:1.4（几何单连通正定流形的稳定不变量消失定理）闭包推导后仍未建立：其 proof 的前提 paper:lemma:representation 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:1.9（几何单连通流形的定向辛结构排除定理）闭包推导后仍未建立：其 proof 的前提 paper:lemma:representation 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:proof:main-vanishing（主定理的反证证明）闭包推导后仍未建立：其 proof 的前提 paper:lemma:representation 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:proof:orientation（定向辛结构排除的证明）闭包推导后仍未建立：其 proof 的前提 paper:lemma:representation 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:proof:handle-application（无 1–handles 提供非挠二次同调类）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:lemma:representation（几何单连通流形的每个二次同调类均由 2–handle neighborhood 表示）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样"
+  }
+}

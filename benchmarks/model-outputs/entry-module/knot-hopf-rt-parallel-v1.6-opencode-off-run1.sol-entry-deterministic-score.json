@@ -1,0 +1,145 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.6-opencode-off-run1.entry-deterministic.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 18,
+  "completeness": 17,
+  "solEntryScore": 35,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's principal mathematical pipeline—from framed-link surgery and Kirby calculus through ribbon Hopf algebras, modular categories, purification, and the normalized Reshetikhin–Turaev invariant—and most retained formulas agree with the Gold conventions. It is nevertheless substantially noisier than the Gold artifact: several entries are duplicated, a number of definitions or claims are classified as algorithms/calculations, some foundational and intermediate results are omitted as distinct entries, and a few statements introduce convention ambiguity or overstate attribution. The extraction is mathematically usable but requires consolidation and correction before serving as a precise entry inventory.",
+  "strengths": [
+    "Correctly extracts the Lickorish–Wallace theorem and Kirby-calculus equivalence, including orientation-preserving homeomorphism and the relevant Kirby moves.",
+    "Accurately represents the strict monoidal, braiding, rigidity, ribbon-category, quasitriangular Hopf, and ribbon Hopf definitions under the Gold convention.",
+    "Preserves the selected ribbon-element convention theta_V=rho_V(v) and the quantum-trace formula Tr_V(rho_V(uv) composed with f).",
+    "Captures the modular-category and modular-Hopf-algebra conditions, including finite simple colors, dual closure, domination or quasidomination, and invertibility of the Hopf-link matrix.",
+    "Correctly records the Kirby color, weighted surgery sum, rank and Delta data, and the exact Gold normalization tau_{V,D}(M_L)=Delta^{sigma(L)}D^{-sigma(L)-m-1}{L}.",
+    "Includes all four Gold background claims highlighted as externally grounded: Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, and the Turaev purification theorem.",
+    "The final Reshetikhin–Turaev theorem correctly states Kirby-move invariance and dependence only on the orientation-preserving homeomorphism class."
+  ],
+  "issues": [
+    "The artifact contains conspicuous unresolved duplication: colored ribbon graph, duality, ribbon category, the ribbon structure on Rep_fd(A), the sl_2 module V_n, and several Jones/writhe claims appear more than once under different IDs.",
+    "Several entries are mistyped: the surgery construction, tensor-product action, and purification are labeled algorithm, while graphical rules and the RT normalization are labeled calculation even though the Gold treats the corresponding material as definitions or mathematical facts.",
+    "The standalone Hopf-algebra definition is missing, despite being foundational for the subsequent quasitriangular and ribbon Hopf definitions.",
+    "The candidate does not isolate the Gold's twist definition, R-matrix-induced braiding claim, universal-twist compatibility claim, or the full antipode-induced duality claim as distinct entries.",
+    "The crucial handle-slide invariance and blow-up invariance results are only compressed into the final RT theorem rather than extracted as separate supporting claims; presentation independence and the Kirby-reduction principle are likewise not separately represented.",
+    "The negligible-module entry omits the Gold's definition of a negligible morphism, while the purification entry relies on negligible morphisms without defining the ideal explicitly.",
+    "The categorical-trace formula has ambiguous or malformed composition/tensor-product grouping; it should explicitly parenthesize ((theta_V composed with f) tensor id_{V*}) before composing with the braiding, evaluation, and coevaluation.",
+    "The additional S^{-1}-based dual-module action is presented alongside the declared S-based convention without explaining that it belongs to a different left/right-dual convention, creating avoidable ambiguity relative to the Gold profile.",
+    "The Rohlin/cobordism entry conflates Omega_3^{SO}=0 with the stronger assertion that the bounding four-manifold can be chosen as a B^4-plus-2-handles surgery trace; that stronger conclusion needs separate surgery input and is not simply the stated cobordism theorem.",
+    "Some extracted Jones-polynomial and root-of-unity assertions are repetitive, broadly phrased, and lack the precise hypotheses or convention declarations needed to function as reliable standalone propositions.",
+    "The global convention says only 'closed oriented' rather than the Gold's closed, connected, oriented convention.",
+    "Entry identifiers are inconsistent: several entries lack the paper-prefixed locator scheme, and the artifact gives page numbers but no finer source locators or labels comparable to the Gold source anchors."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "rt:entry:framed-link / rt:entry:surgery-manifold",
+      "candidateEntries": [
+        "paper:def:framing",
+        "paper:alg:handlebody-surgery"
+      ],
+      "status": "covered_with_type_issue",
+      "notes": "Statements are substantially faithful, but the surgery presentation is incorrectly classified as an algorithm."
+    },
+    {
+      "goldEntry": "rt:entry:lickorish-wallace / rt:entry:kirby-calculus",
+      "candidateEntries": [
+        "paper:thm:lickorish-wallace",
+        "paper:thm:kirby-calculus"
+      ],
+      "status": "well_covered",
+      "notes": "Both central external theorems are accurately stated and correctly typed."
+    },
+    {
+      "goldEntry": "rt:entry:kirby-reduction",
+      "candidateEntries": [
+        "paper:thm:reshetikhin-turaev"
+      ],
+      "status": "implicit_only",
+      "notes": "The reduction principle is used in the final theorem but is not extracted as a distinct general claim."
+    },
+    {
+      "goldEntry": "rt:entry:monoidal-category through rt:entry:ribbon-category",
+      "candidateEntries": [
+        "paper:def:strict-monoidal-category",
+        "paper:def:braiding",
+        "paper:def:duality-rigid",
+        "paper:def:ribbon-category"
+      ],
+      "status": "mostly_covered",
+      "notes": "Core definitions are accurate, but twist is not retained as a standalone entry and several definitions are duplicated."
+    },
+    {
+      "goldEntry": "rt:entry:graphical-calculus / rt:entry:turaev-ribbon-graph-functor / rt:entry:colored-link-invariant",
+      "candidateEntries": [
+        "graphical-calculus-rules",
+        "paper:thm:turaev-ribbon-graph-functor",
+        "paper:def:colored-framed-link-invariant"
+      ],
+      "status": "covered_with_classification_issue",
+      "notes": "The content is present, though graphical calculus is typed as a calculation and the link-invariant result is typed as a definition rather than a claim."
+    },
+    {
+      "goldEntry": "rt:entry:hopf-algebra through rt:entry:rep-ribbon",
+      "candidateEntries": [
+        "paper:def:tensor-product-action",
+        "paper:def:dual-module-action-first",
+        "paper:def:quasitriangular-hopf-algebra",
+        "paper:def:ribbon-hopf-algebra",
+        "paper:prop:ribbon-hopf-rep-cat"
+      ],
+      "status": "partially_covered",
+      "notes": "The main construction is represented, but the Hopf-algebra definition and separate structural claims for braiding, twist, and duality are missing or compressed."
+    },
+    {
+      "goldEntry": "rt:entry:quantum-trace",
+      "candidateEntries": [
+        "paper:calc:quantum-trace-relation",
+        "paper:def:quantum-trace",
+        "paper:def:quantum-dimension"
+      ],
+      "status": "covered",
+      "notes": "The selected uv convention agrees with Gold, although the equality to categorical trace is typed as a calculation."
+    },
+    {
+      "goldEntry": "rt:entry:modular-category / rt:entry:modular-data / rt:entry:kirby-color",
+      "candidateEntries": [
+        "paper:def:modular-category",
+        "paper:def:rank-and-delta",
+        "paper:def:kirby-color",
+        "paper:def:weighted-sum-l"
+      ],
+      "status": "well_covered",
+      "notes": "The essential conditions and formulas are present and consistent with the Gold convention."
+    },
+    {
+      "goldEntry": "rt:entry:negligible-module / rt:entry:purification / rt:entry:turaev-purification-theorem",
+      "candidateEntries": [
+        "paper:def:negligible-module",
+        "paper:def:purification",
+        "paper:thm:turaev-purification"
+      ],
+      "status": "mostly_covered",
+      "notes": "The purification theorem is strong, but the negligible-morphism definition is absent and purification is mistyped as an algorithm."
+    },
+    {
+      "goldEntry": "rt:entry:handle-slide-invariance / rt:entry:blowup-invariance / rt:entry:kirby-presentation-independence",
+      "candidateEntries": [
+        "paper:thm:reshetikhin-turaev"
+      ],
+      "status": "compressed_and_incomplete",
+      "notes": "The final theorem asserts Kirby invariance, but the supporting invariance statements are not separately delimited."
+    },
+    {
+      "goldEntry": "rt:entry:signature-normalization / rt:entry:rt-invariant",
+      "candidateEntries": [
+        "paper:calc:tau-normalization",
+        "paper:thm:reshetikhin-turaev"
+      ],
+      "status": "well_covered_with_type_issue",
+      "notes": "The exact normalization and final invariant are correct; the normalization should be classified as a definition or fact rather than a calculation."
+    }
+  ]
+}

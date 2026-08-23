@@ -1,0 +1,28 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "workflowUnderTest": "v3.9.7",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-17T16:07:26.714Z",
+  "durationMs": 219070,
+  "status": "completed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/4-dim-skein-modules-handles-tangles-v3.9.7-20260817T160726Z.json",
+  "auditScore": 88,
+  "auditStatus": "audited-primary-agent",
+  "auditBreakdown": {
+    "format": 40,
+    "semantic": 48,
+    "notes": [
+      "mainTarget paper:theorem:gluing is semantically equivalent to Gold's gluing isomorphism target",
+      "Core definitions, gluing proof, handle-attachment results, evaluation and Khovanov dependencies are represented with a closed proof DAG",
+      "Deducted for missing explicit Gold B0 entries: Morrison-Walker-Wedrich skein-lasagna foundation and Ren-Willis gluing surjection"
+    ]
+  },
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

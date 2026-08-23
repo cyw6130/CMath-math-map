@@ -1,0 +1,414 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-map-off-compact-v3.9.7",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.7",
+  "promptSetVersion": "v3.9.7",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 275158,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "hopf map.pdf",
+        "pageCount": 13,
+        "atMs": 1
+      },
+      {
+        "stage": "guide",
+        "chars": 32011,
+        "atMs": 3
+      },
+      {
+        "stage": "target",
+        "leads": 18,
+        "atMs": 76169
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 76170
+      },
+      {
+        "stage": "request",
+        "chars": 32011,
+        "chunks": 2,
+        "atMs": 76171
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 10,
+        "atMs": 76177
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 111690
+      },
+      {
+        "stage": "entries-repair",
+        "chunk": 2,
+        "total": 2,
+        "count": 1,
+        "atMs": 127488
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 179201
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:zero-degree-general",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:linear-isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:local-winding",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:orientation-sum",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:proposition:boundary-extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:proposition:range-adjustment",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:poincare-hopf",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hairy-ball",
+        "retained": "coverage-or-first-seen",
+        "atMs": 179203
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 36,
+        "leadGuided": 21,
+        "total": 46,
+        "conflicts": 11,
+        "atMs": 179203
+      },
+      {
+        "stage": "integrate",
+        "entries": 46,
+        "atMs": 179203
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 13,
+        "renameCount": 0,
+        "atMs": 185759
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "entry:isotopy-lemma",
+          "entry:linear-isotopy-lemma",
+          "entry:taylor-theorem",
+          "entry:sard-theorem",
+          "entry:epsilon-neighborhood-theorem",
+          "entry:transversality-extension-theorem",
+          "entry:transversality-homotopy-theorem",
+          "entry:poincare-hopf-index-theorem",
+          "paper:lemma:isotopy",
+          "paper:theorem:epsilon-neighborhood",
+          "paper:theorem:poincare-hopf",
+          "paper:proposition:hopf-fibration"
+        ],
+        "fixedCount": 8,
+        "atMs": 185766
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 2,
+        "candidates": [
+          "The Hopf Degree",
+          "Hopf Degree"
+        ],
+        "atMs": 185771
+      },
+      {
+        "stage": "assemble",
+        "entries": 41,
+        "atMs": 185772
+      },
+      {
+        "stage": "response",
+        "atMs": 234640
+      },
+      {
+        "stage": "autofix",
+        "count": 4,
+        "actions": [
+          "丢弃 premises 为空的 第 4 条 Inference",
+          "第 6 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃跨越 Fact/Claim 的 organization 第 17 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 18 条 Inference"
+        ],
+        "atMs": 234657
+      },
+      {
+        "stage": "repair",
+        "reason": "13 处问题",
+        "attempt": 1,
+        "atMs": 234672
+      },
+      {
+        "stage": "response",
+        "atMs": 262924
+      },
+      {
+        "stage": "autofix",
+        "count": 2,
+        "actions": [
+          "丢弃 premises 为空的 第 17 条 Inference",
+          "丢弃 premises 为空的 第 18 条 Inference"
+        ],
+        "atMs": 262925
+      },
+      {
+        "stage": "repair",
+        "reason": "13 处问题",
+        "attempt": 2,
+        "atMs": 262926
+      },
+      {
+        "stage": "response",
+        "atMs": 270242
+      },
+      {
+        "stage": "autofix",
+        "count": 3,
+        "actions": [
+          "丢弃 premises 为空的 第 19 条 Inference",
+          "丢弃 premises 为空的 第 20 条 Inference",
+          "丢弃 premises 为空的 第 21 条 Inference"
+        ],
+        "atMs": 270243
+      },
+      {
+        "stage": "repair",
+        "reason": "13 处问题",
+        "attempt": 3,
+        "atMs": 270243
+      },
+      {
+        "stage": "response",
+        "atMs": 275157
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 76154,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9354,
+          "completion_tokens": 4062,
+          "total_tokens": 13416
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 23612,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13337,
+          "completion_tokens": 1234,
+          "total_tokens": 14571
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 35515,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8718,
+          "completion_tokens": 1854,
+          "total_tokens": 10572
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 51314,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10693,
+          "completion_tokens": 2679,
+          "total_tokens": 13372
+        }
+      },
+      {
+        "stage": "entries-repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 56027,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 15177,
+          "completion_tokens": 2982,
+          "total_tokens": 18159
+        }
+      },
+      {
+        "stage": "entries-repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 51713,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13442,
+          "completion_tokens": 2683,
+          "total_tokens": 16125,
+          "prompt_tokens_details": {
+            "cached_tokens": 9984
+          }
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 6554,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3817,
+          "completion_tokens": 262,
+          "total_tokens": 4079
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 48867,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 19942,
+          "completion_tokens": 2619,
+          "total_tokens": 22561,
+          "completion_tokens_details": {
+            "reasoning_tokens": 516
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 28248,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 23848,
+          "completion_tokens": 1495,
+          "total_tokens": 25343,
+          "prompt_tokens_details": {
+            "cached_tokens": 19200
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 892
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 7313,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 24915,
+          "completion_tokens": 287,
+          "total_tokens": 25202
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 4912,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 25669,
+          "completion_tokens": 194,
+          "total_tokens": 25863,
+          "prompt_tokens_details": {
+            "cached_tokens": 24320
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.7 定向修复已执行 3 次）：Claim paper:lemma:linear-isotopy（线性同痕引理）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:theorem:zero-degree-base（圆到圆的零度映射同伦于常值映射）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:proposition:punctured-sphere-identifications（球面与去一点欧氏空间的识别）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:theorem:zero-degree-general（球面到自身的零度映射同伦于常值映射）闭包推导后仍未建立：其 proof 的前提 paper:theorem:zero-degree-base、paper:proposition:punctured-sphere-identifications 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:punctured-euclidean（去零欧氏空间中的零绕数映射同伦于常值映射）闭包推导后仍未建立：其 proof 的前提 paper:theorem:zero-degree-general、paper:proposition:punctured-sphere-identifications 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:range-adjustment（零方向总和下的值域调整）闭包推导后仍未建立：其 proof 的前提 paper:theorem:zero-degree-general、paper:proposition:punctured-sphere-identifications 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:extension（边界映射零度当且仅当可延拓到球面）闭包推导后仍未建立：其 proof 的前提 paper:theorem:zero-degree-general、paper:proposition:punctured-sphere-identifications 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:zero-degree-induction（零度球面映射的归纳步骤）闭包推导后仍未建立：其 proof 的前提 paper:theorem:zero-degree-general、paper:theorem:range-adjustment、paper:proposition:punctured-sphere-identifications 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:hopf-degree（Hopf 度定理）闭包推导后仍未建立：其 proof 的前提 paper:theorem:extension 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:proposition:vector-field-remove-zeros（零点指标总和为零时可消除向量场零点）闭包推导后仍未建立：其 proof 的前提 paper:theorem:range-adjustment 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:vector-field-euler（Euler 示性数为零当且仅当存在无零点向量场）闭包推导后仍未建立：其 proof 的前提 paper:proposition:vector-field-remove-zeros 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:pi-sphere-integer（等维球面的同伦群由整数度分类）闭包推导后仍未建立：其 proof 的前提 paper:theorem:hopf-degree 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:hairy-ball（二维球面的 Hairy Ball 定理）闭包推导后仍未建立：其 proof 的前提 paper:theorem:vector-field-euler 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise"
+  }
+}

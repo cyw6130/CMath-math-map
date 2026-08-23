@@ -1,0 +1,129 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-paper-entry-extraction-v1-baseline-run3.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 17,
+  "solEntryScore": 36,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main mathematical arc from framed-link surgery and Kirby calculus through ribbon categories, ribbon Hopf algebras, modular data, purification, and the Reshetikhin–Turaev invariant. Most formulas and page locators are faithful, and several source-level auxiliary results are extracted beyond the Gold inventory. However, the artifact does not cleanly represent several Gold entries, frequently classifies definitions or claims as generic calculations, contains duplicated overlapping entries, and has visible character corruption in important formulas. It is therefore mathematically useful but requires normalization and targeted correction before serving as a reliable entry index.",
+  "strengths": [
+    "Covers all central named results: Lickorish–Wallace, Kirby calculus, Turaev's ribbon graph functor, the ribbon structure on Rep_fd(A), purification, and the final Reshetikhin–Turaev invariant.",
+    "Faithfully records the principal formulas for quasitriangular and ribbon Hopf algebras, the R-matrix braiding, pivotal element, quantum trace, modular data, Kirby-color sum, and signature normalization.",
+    "Page locators are generally accurate and follow the source progression from pages 2 through 18.",
+    "Named external results are recognizably attributed through their names, including Lickorish–Wallace, Rohlin, Kirby, Turaev, and Reshetikhin–Turaev.",
+    "Useful source-level infrastructure absent from the Gold inventory is captured, including blackboard framing, the unit-braiding lemma, Yang–Baxter identity, categorical trace, colored ribbon graphs, and root-of-unity examples."
+  ],
+  "issues": [
+    "Several Gold entries are absent as distinct entries: the standalone Hopf algebra definition, standalone twist definition, finite simple system/domination, Hopf-link S-matrix, purification definition, blow-up invariance, and Kirby-presentation independence.",
+    "Some missing Gold material is only implicit or bundled into broader entries. In particular, handle-slide and blow-up invariance are compressed into the final RT theorem or normalization entry rather than delimited as separate supporting claims.",
+    "Entry typing is inconsistent with the mathematical role of the text: categorical trace, tensor-product action, dual action, R-matrix braiding, quantum trace, modular data, Kirby sum, and normalization are labeled `calculation` even where the Gold treats them as definitions or claims.",
+    "The colored framed-link invariant is typed as a definition although its invariance is proposition-level content in the Gold reference.",
+    "The negligible-module entry incorrectly says that vanishing quantum trace of every endomorphism is equivalent merely to vanishing quantum dimension; that equivalence does not hold without additional hypotheses. It also omits the Gold definition of a negligible morphism.",
+    "The dual-module entry mentions both S and S^{-1} actions but does not delimit their left-versus-right dual roles as carefully as the verified reference.",
+    "There is visible text corruption in formulas, notably control characters replacing `±1` in the blackboard-framing and Kirby-calculus entries and replacing the boundary symbol in the handlebody entry.",
+    "The candidate contains overlapping duplicates, especially `hopf-tensor-action` versus `hopf-rep-structure` and the separate pivotal/quantum-trace entries versus `pivotal-quantum-trace`.",
+    "Candidate IDs are source-oriented and mostly stable, but they do not correspond directly to the verified Gold IDs, making alignment less transparent."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryIds": [
+        "paper:theorem:lickorish-wallace"
+      ],
+      "status": "matched",
+      "note": "Faithful theorem statement and correct page."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryIds": [
+        "paper:theorem:kirby-calculus"
+      ],
+      "status": "matched_with_corruption",
+      "note": "Substantively correct, but the ±1 notation contains a corrupted control character."
+    },
+    {
+      "goldEntryId": "rt:entry:hopf-algebra",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "note": "Hopf algebra structure is discussed in other statements but never extracted as its own definition."
+    },
+    {
+      "goldEntryId": "rt:entry:twist",
+      "candidateEntryIds": [
+        "paper:definition:ribbon-category"
+      ],
+      "status": "bundled",
+      "note": "The twist axioms occur inside the ribbon-category definition rather than as a distinct entry."
+    },
+    {
+      "goldEntryId": "rt:entry:r-matrix-braiding",
+      "candidateEntryIds": [
+        "paper:calculation:universal-r-braiding"
+      ],
+      "status": "matched_with_type_issue",
+      "note": "The formula is correct, but the result is classified as a calculation rather than a lemma or claim."
+    },
+    {
+      "goldEntryId": "rt:entry:quantum-trace",
+      "candidateEntryIds": [
+        "paper:calculation:quantum-trace",
+        "paper:calculation:pivotal-quantum-trace"
+      ],
+      "status": "duplicated",
+      "note": "The essential formula is present twice in overlapping entries; the categorical-trace equality is not cleanly isolated as a claim."
+    },
+    {
+      "goldEntryId": "rt:entry:modular-category",
+      "candidateEntryIds": [
+        "paper:definition:modular-category"
+      ],
+      "status": "matched",
+      "note": "Captures the finite simple system, domination, dual closure, and nondegenerate S-matrix conditions."
+    },
+    {
+      "goldEntryId": "rt:entry:negligible-module",
+      "candidateEntryIds": [
+        "paper:definition:negligible-module"
+      ],
+      "status": "partially_incorrect",
+      "note": "The main definition is stated, but a false general equivalence with zero quantum dimension is asserted and negligible morphisms are omitted."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-purification-theorem",
+      "candidateEntryIds": [
+        "paper:theorem:purification"
+      ],
+      "status": "matched",
+      "note": "The purification theorem and resulting modular category are represented accurately."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryIds": [
+        "paper:calculation:signature-normalization",
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "implicit",
+      "note": "Cancellation of the ±1 Kirby move is mentioned but not extracted as a standalone lemma."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-presentation-independence",
+      "candidateEntryIds": [
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "bundled",
+      "note": "Presentation independence is folded into the final invariant theorem."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryIds": [
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "matched",
+      "note": "Correctly states Kirby-move invariance and dependence only on the oriented homeomorphism class."
+    }
+  ]
+}

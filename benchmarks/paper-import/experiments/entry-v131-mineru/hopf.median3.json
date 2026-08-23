@@ -1,0 +1,127 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "GPT-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/hopf.consolidated-v2.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 16,
+  "completeness": 15,
+  "solEntryScore": 31,
+  "verdict": "usable",
+  "summary": "The candidate captures most of the paper's main subject matter, including degree, winding number, Hopf degree classification, extension results, transversality, vector fields, Poincare-Hopf, and sphere homotopy groups. However, several entries are mathematically malformed or materially weaker than the Gold statements, external results are often recorded only as descriptions of how they were used, and substantial duplication obscures entry boundaries. The artifact is usable for coarse retrieval but requires consolidation and mathematical correction before serving as a reliable structured representation.",
+  "strengths": [
+    "Captures the central Hopf degree theorem and the consequence that \\(\\pi_k(S^k)\\cong\\mathbb Z\\).",
+    "Represents the main degree and winding-number infrastructure, including local orientation signs and the signed-preimage formula.",
+    "Includes most externally invoked results, such as the isotopy lemma, Sard's theorem, the epsilon-neighborhood theorem, both transversality results, and the Poincare-Hopf theorem.",
+    "Covers the vector-field application, including finite-zero constructions, zero removal, the Euler-characteristic criterion, and the hairy-ball theorem.",
+    "Page locators are generally plausible and concentrated near the corresponding Gold pages.",
+    "Entry classes and kinds are usually structurally consistent, with definitions and calculations represented as facts and mathematical assertions represented as claims."
+  ],
+  "issues": [
+    "The winding-number definition incorrectly fixes the direction map's codomain as \\(S^1\\) for a general domain \\(X\\); in the relevant higher-dimensional setting the codomain depends on the ambient dimension.",
+    "The stereographic-projection entries are inaccurate. In particular, \\(\\pi_s^{-1}:\\mathbb R^{k+1}\\setminus\\{0\\}\\to S^k\\) is not the standard stereographic identification, and the Gold definition \\(S^k\\setminus\\{N\\}\\cong\\mathbb R^k\\) is not cleanly extracted.",
+    "The epsilon-neighborhood theorem has a wrong quantifier: it says the conclusion holds when \\(\\varepsilon>0\\), rather than asserting the existence of a sufficiently small positive \\(\\varepsilon\\). It also omits the Gold vector-bundle/local-triviality conclusion.",
+    "The Euler-characteristic calculation gives \\(\\chi(T^k)=-2(k-2)\\), contradicting the Gold value \\(\\chi(T^n)=0\\).",
+    "The hairy-ball entry only states the two-dimensional case, omitting the Gold result for every even-dimensional sphere and its odd-dimensional contrast.",
+    "The extracted Sard and transversality entries are usage summaries rather than properly delimited theorem statements. They omit key hypotheses and conclusions such as density or full measure of regular values, arbitrary-small perturbation, and fixed-boundary extension.",
+    "The bump-function entry does not reproduce the required support and plateau conditions and mixes an \\(\\mathbb R^N\\) declaration with a one-variable example.",
+    "The Gold vector-field index definition is missing, so the meaning of the indices used later is not independently represented.",
+    "The finite-zero vector-field statements assert only that some finite-zero vector field exists, whereas the Gold lemma says a given vector field can be homotopically perturbed to have finitely many zeros.",
+    "The zero-localization entry differs from the Gold result: it moves zeros into an arbitrary open set but does not state that total index zero permits homotopy to a completely nonvanishing field.",
+    "The Gold lemma about cancellation of two isolated zeros whose indices sum to zero is not distinctly extracted.",
+    "The base \\(S^1\\) result is reduced to the degree-zero case and omits classification of equal-degree maps and the standard representative \\(z\\mapsto z^n\\).",
+    "The punctured-Euclidean-space criterion is represented only in its zero-winding direction rather than as the Gold if-and-only-if extension/null-homotopy criterion.",
+    "The extension results do not align cleanly with the Gold entries: the candidate combines a general manifold extension theorem with several fragmented or duplicated special cases, while the Gold sphere-to-disk statements are not distinctly preserved.",
+    "There is extensive duplication, including multiple degree-zero sphere claims, multiple zero-winding claims, repeated degree definitions, repeated isotopy results, duplicate vector-field zero-removal claims, and repeated Hopf classification statements.",
+    "Several proof steps or contextual formulas are incorrectly promoted to standalone definitions or theorems, including the homotopy-extension construction, codimension equation, and the page-9 extension-theorem step.",
+    "External attribution is inconsistent: some cited results are marked external, but the early isotopy and linear-isotopy entries are not, and source metadata is vague compared with the Gold references.",
+    "The main Hopf theorem is stated for maps from an arbitrary compact connected oriented \\(k\\)-manifold to \\(S^k\\), rather than matching the Gold target specifically for maps \\(S^k\\to S^k\\). Even if the broader theorem is intended by the source, it weakens alignment with the evaluated reference entry.",
+    "The candidate includes extra claims about the Hopf fibration and lower-dimensional sphere maps that are not part of the Gold entry set; these increase fragmentation without repairing missing foundational entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:degree",
+      "candidateEntryIds": [
+        "paper:def:degree",
+        "paper:definition:degree-intersection-number"
+      ],
+      "status": "covered_with_duplication",
+      "notes": "The intersection-number definition is present, but it is split and repeated."
+    },
+    {
+      "goldEntryId": "paper:def:winding",
+      "candidateEntryIds": [
+        "paper:def:winding-number"
+      ],
+      "status": "partially_correct",
+      "notes": "Core formula is present, but the codomain is incorrectly fixed as S^1."
+    },
+    {
+      "goldEntryId": "paper:def:stereo",
+      "candidateEntryIds": [
+        "hopf-marked:def:stereographic-identification",
+        "paper:definition:punctured-sphere-euclidean-identifications"
+      ],
+      "status": "inaccurate",
+      "notes": "The standard punctured-sphere diffeomorphism is mixed with an invalidly described punctured-Euclidean-space map."
+    },
+    {
+      "goldEntryId": "paper:b0:epsilon-nbhd",
+      "candidateEntryIds": [
+        "hopf-marked:theorem:epsilon-neighborhood-theorem"
+      ],
+      "status": "materially_inaccurate",
+      "notes": "The existence of a sufficiently small epsilon is replaced by an unrestricted epsilon condition."
+    },
+    {
+      "goldEntryId": "paper:thm:hopf",
+      "candidateEntryIds": [
+        "hopf-marked:theorem:hopf-degree-theorem",
+        "paper:lemma:degree-classifies-homotopy"
+      ],
+      "status": "covered_with_duplication",
+      "notes": "The classification principle is captured, although one entry broadens the domain beyond the Gold formulation."
+    },
+    {
+      "goldEntryId": "paper:def:vf-index",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No standalone definition of the index of an isolated vector-field zero is extracted."
+    },
+    {
+      "goldEntryId": "paper:calc:euler-sphere",
+      "candidateEntryIds": [
+        "paper:calculation:sphere-and-torus-euler-characteristics"
+      ],
+      "status": "partially_incorrect",
+      "notes": "Sphere values are correct, but the torus formula is wrong."
+    },
+    {
+      "goldEntryId": "paper:cor:hairy-ball",
+      "candidateEntryIds": [
+        "paper:theorem:hairy-ball-theorem"
+      ],
+      "status": "incomplete",
+      "notes": "Only S^2 is stated rather than all even-dimensional spheres."
+    }
+  ],
+  "scoreRuns": [
+    {
+      "correctness": 14,
+      "completeness": 14,
+      "solEntryScore": 28
+    },
+    {
+      "correctness": 16,
+      "completeness": 15,
+      "solEntryScore": 31
+    },
+    {
+      "correctness": 16,
+      "completeness": 16,
+      "solEntryScore": 32
+    }
+  ],
+  "aggregation": "median-of-3"
+}

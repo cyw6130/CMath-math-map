@@ -1,0 +1,32 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v121-mineru/hopf.raw-pool.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 16,
+  "completeness": 16,
+  "solEntryScore": 32,
+  "verdict": "usable",
+  "summary": "The candidate captures the central degree, null-homotopy, extension, Hopf classification, Poincare–Hopf, and vector-field themes, with substantial overlap with the 29 gold entries. However, it contains several duplicated or fragmented claims, multiple classification/type and locator mismatches, dimensionally imprecise winding statements, an incorrect torus Euler characteristic, weakened hypotheses for Poincare–Hopf, and a false claim that pi_k(S^n)=0 for n<k. The hairy-ball result is also only given for S^2 rather than all even-dimensional spheres.",
+  "strengths": [
+    "Main Hopf degree classification and degree-zero null-homotopy results are represented.",
+    "Most foundational tools, including isotopy, Sard, linear isotopy, tubular neighborhoods, transversality, and Poincare–Hopf, are present.",
+    "The vector-field application includes finite-zero reduction, localization/removal ideas, the Euler-characteristic criterion, and a hairy-ball consequence.",
+    "LaTeX delimiters are generally balanced and the extraction is broadly source-oriented."
+  ],
+  "issues": [
+    "The candidate states that pi_k(S^n)=0 for n<k, which is mathematically false; for example, pi_3(S^2) is nonzero.",
+    "The Euler characteristic formula for tori, chi(T^k)=-2(k-2), is incorrect; the gold value is chi(T^n)=0.",
+    "The winding-number definition fixes the target as S^1 and omits the required dimension/domain conditions, making it invalid for the general k-dimensional setting.",
+    "The degree-winding equality entry uses malformed or undefined notation such as f' and deg(f) for a map into punctured Euclidean space.",
+    "Several entries weaken or omit hypotheses, including finite isolated zeros and the boundaryless condition in Poincare–Hopf.",
+    "The vector-field index definition is missing, while the two-zero cancellation lemma is only replaced by a less precise Euclidean modification claim.",
+    "The S^1 supporting lemma is reduced to the degree-zero case rather than the equal-degree classification in the gold.",
+    "The hairy-ball result is restricted to S^2 instead of all even-dimensional spheres, reducing completeness.",
+    "Boundary-extension and degree-zero claims are repeated under multiple IDs, causing excessive fragmentation and redundancy.",
+    "Several entries are classified as generic claims or theorems instead of matching the gold's definition, lemma, proposition, or corollary roles, and page/source locators are not aligned with the gold artifact."
+  ],
+  "entryLevelComparison": []
+}

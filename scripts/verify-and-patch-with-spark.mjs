@@ -95,32 +95,13 @@ function resolveSparkProviderConfig() {
   };
 }
 
-async function main() {
-  const args = process.argv.slice(2);
-  if (args.length < 3) {
-    console.error("Usage: node scripts/verify-and-patch-with-spark.mjs <consolidated> <marked.md> <out> [--model=<model>]");
-    process.exit(1);
-  }
-  const [consolidatedPath, sourcePath, outPath] = args;
-  const modelArg = args.find((a) => a.startsWith("--model="))?.slice("--model=".length) || "muse-spark-1.2-contributor";
-
-  const consolidatedText = fs.readFileSync(consolidatedPath, "utf8");
-  const sourceText = fs.readFileSync(sourcePath, "utf8");
-  const consolidated = JSON.parse(consolidatedText);
-  const caseId = consolidated.caseId || path.basename(path.dirname(consolidatedPath));
-
-  const prompt = buildVerificationPrompt({ consolidatedText, sourceText, caseId });
-
-  // Call Spark via opencode-go
-  const provider = resolveSparkProviderConfig();
-  const targetModel = modelArg.includes("spark") ? modelArg : provider.model;
+async function callSparkOnce(prompt, provider, targetModel) {
   const body = {
     model: targetModel,
     messages: [{ role: "user", content: prompt }],
     temperature: 0,
     response_format: { type: "json_object" },
   };
-
   const endpoint = provider.endpoint.replace(/\/+$/u, "") + "/chat/completions";
   let lastText = "";
   let rawOutput = "";
@@ -140,7 +121,6 @@ async function main() {
     if (rawOutput.trim()) break;
   }
   if (!rawOutput.trim()) throw new Error(`Spark empty content: ${lastText.slice(0, 800)}`);
-
   let patch;
   try {
     const match = rawOutput.match(/\{[\s\S]*\}/u);
@@ -148,11 +128,49 @@ async function main() {
   } catch (err) {
     throw new Error(`Failed to parse patch JSON: ${err.message}\nOutput: ${rawOutput.slice(0, 500)}`);
   }
+  return patch;
+}
 
-  const patched = applyPatch(consolidated, patch);
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.length < 3) {
+    console.error("Usage: node scripts/verify-and-patch-with-spark.mjs <consolidated> <marked.md> <out> [--model=<model>] [--b0]");
+    process.exit(1);
+  }
+  const [consolidatedPath, sourcePath, outPath] = args.filter((a) => !a.startsWith("--"));
+  const modelArg = args.find((a) => a.startsWith("--model="))?.slice("--model=".length) || "muse-spark-1.2-contributor";
+  const withB0 = args.includes("--b0") || args.includes("--two-pass");
+
+  const consolidatedText = fs.readFileSync(consolidatedPath, "utf8");
+  const sourceText = fs.readFileSync(sourcePath, "utf8");
+  const consolidated = JSON.parse(consolidatedText);
+  const caseId = consolidated.caseId || path.basename(path.dirname(consolidatedPath));
+
+  const provider = resolveSparkProviderConfig();
+  const targetModel = modelArg.includes("spark") ? modelArg : provider.model;
+
+  // Pass 1: substantive-property + notation verify
+  const prompt = buildVerificationPrompt({ consolidatedText, sourceText, caseId });
+
+  // Pass 1
+  let patch = await callSparkOnce(prompt, provider, targetModel);
+  let patched = applyPatch(consolidated, patch);
+  console.log(`Pass 1 (verify): ${consolidated.entries.length} -> ${patched.entries.length} entries (added ${patch.addEntries?.length || 0}, corrected ${patch.corrections?.length || 0}, removed ${patch.removeIds?.length || 0})`);
+
+  // Optional Pass 2: B0 cited-external backfill (W8)
+  if (withB0) {
+    const patchedText = JSON.stringify(patched, null, 2);
+    const b0Prompt = buildB0BackfillPrompt({ consolidatedText: patchedText, sourceText, caseId });
+    const b0Patch = await callSparkOnce(b0Prompt, provider, targetModel);
+    const before = patched.entries.length;
+    patched = applyPatch(patched, b0Patch);
+    console.log(`Pass 2 (B0): ${before} -> ${patched.entries.length} entries (added ${b0Patch.addEntries?.length || 0})`);
+    patch = { ...patch, addEntries: [...(patch.addEntries || []), ...(b0Patch.addEntries || [])] };
+  }
+
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(patched, null, 2));
-  console.log(`Patched: ${consolidated.entries.length} -> ${patched.entries.length} entries (added ${patch.addEntries?.length || 0}, corrected ${patch.corrections?.length || 0}, removed ${patch.removeIds?.length || 0})`);
+  console.log(`Patched total: ${consolidated.entries.length} -> ${patched.entries.length} entries`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url))) {

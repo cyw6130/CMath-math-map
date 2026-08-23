@@ -1,0 +1,50 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "GPT-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/skein1.consolidated-v2.json",
+  "goldRevision": "v1",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "correctness": 18,
+  "completeness": 17,
+  "solEntryScore": 35,
+  "verdict": "usable",
+  "summary": "The candidate captures the principal gluing theorem, handle-attachment formulas, the algebra/module lemma, the Khovanov tangle test case, and the cited gluing-surjection result. However, several entries have imprecise or inconsistent mathematical notation, some classifications and attributions differ from the reference, the functorial link-theory definition is missing, and the extraction contains substantial duplication and fragmentation around the gluing and handle results.",
+  "strengths": [
+    "Covers the main Skein Lasagna bimodule tensor-product gluing theorem with the relative tensor product over the 3-manifold algebra.",
+    "Includes the 1-, 2-, and 3-handle attachment results, including the Hochschild and quotient descriptions.",
+    "Captures the definition of the triple Skein Lasagna module and the algebra associated to a 3-manifold with boundary points.",
+    "Includes the algebra/module evaluation lemma and the Khovanov tangle invariant test-case lemma.",
+    "Identifies several results as external and records their cited sources, including Morrison-Walker-Wedrich, Khovanov, Ren-Willis, and Manolescu-Neithalath."
+  ],
+  "issues": [
+    "The foundational definition of a functorial link homology theory and its axiomatic conditions is absent, despite being a Gold reference entry and a premise for the 2-handle result.",
+    "Notation is inconsistent and sometimes materially inaccurate: the candidate repeatedly uses S^\\star where the Gold uses \\mathcal{S}_*, and entries such as the evaluation calculation use expressions like S^2(B^4;L), which can be confused with a 2-sphere rather than the skein-module notation.",
+    "The candidate's MWW evaluation entry is classified as a proposition and states a narrower, somewhat different evaluation claim than the Gold background theorem; the cited result should be represented as an external foundational theorem with its broader role made explicit.",
+    "The Ren-Willis gluing-surjection result is classified as a proposition rather than a theorem and its conditions and source attribution are less precise than the Gold entry.",
+    "The bimodule gluing-map definition is extracted as an algorithm and includes an asserted inverse construction; this changes the entry type and risks treating proof or construction detail as a standalone definition.",
+    "The general gluing result is duplicated several times under different IDs, including a generic theorem, a theorem at page 5, and the source-specific Theorem 4.1. This weakens redundancy control and makes the canonical result unclear.",
+    "Handle results are fragmented into overlapping theorem, calculation, definition, and tensor-isomorphism entries. In particular, the 1-handle theorem with a surjection and kernel description does not cleanly correspond to the Gold 0th Hochschild homology statement.",
+    "The triple-module definition omits or weakens several Gold conditions, including the precise boundary-point set relation, the range of T_Y, and the explicit orientation/sign convention.",
+    "Some extracted definitions appear to introduce source-specific notation or claims not present in the Gold reference, such as four-handle invariance and several auxiliary submodule definitions, without clearly distinguishing them from the paper's canonical mathematical entries."
+  ],
+  "entryLevelComparison": [],
+  "scoreRuns": [
+    {
+      "correctness": 17,
+      "completeness": 18,
+      "solEntryScore": 35
+    },
+    {
+      "correctness": 18,
+      "completeness": 17,
+      "solEntryScore": 35
+    },
+    {
+      "correctness": 19,
+      "completeness": 18,
+      "solEntryScore": 37
+    }
+  ],
+  "aggregation": "median-of-3"
+}

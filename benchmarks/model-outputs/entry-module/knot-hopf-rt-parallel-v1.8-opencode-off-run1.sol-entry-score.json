@@ -1,0 +1,121 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.8-opencode-off-run1.entry-deterministic.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 14,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate accurately captures most major definitions and headline results, including surgery presentations, Kirby calculus, ribbon categories, ribbon Hopf algebras, modular categories, purification, and the final Reshetikhin–Turaev invariance claim. Its page locators and displayed formulas are generally sound. However, it omits substantial supporting infrastructure and, most importantly, never extracts the explicit Kirby-color surgery sum or the selected normalization formula for tau. Classification and redundancy are also uneven: Kirby calculus is duplicated as both a definition and theorem, the representation-category proposition is duplicated, and quantum trace is fragmented into three overlapping entries. External results are not explicitly attributed, and the additional 'Rohlin cobordism theorem' entry has dubious attribution and conflates oriented null-cobordism with the stronger 2-handle presentation statement.",
+  "strengths": [
+    "Covers the main geometric chain from framed links and surgery through the Lickorish–Wallace and Kirby theorems.",
+    "Faithfully extracts the strict monoidal, braiding, duality, ribbon-category, graphical-calculus, and Turaev functor material with mostly correct formulas and page numbers.",
+    "Correctly records the quasitriangular and ribbon Hopf algebra identities under the Gold reference's Turaev-style convention.",
+    "Captures the quantum trace formula tr_q(f)=Tr_V(rho_V(uv) composed with f), the modular-category axioms, Hopf-link matrix, Kirby color, rank, and Delta.",
+    "Includes the modular Hopf algebra and Turaev purification theorem, preserving an important bridge from Hopf-algebra data to modular categories.",
+    "Extracts the final RT theorem and correctly states orientation-preserving homeomorphism invariance."
+  ],
+  "issues": [
+    "The explicit surgery sum {L}=sum_lambda(product dim(lambda(L_n)))F(Gamma(L,lambda)) is missing.",
+    "The decisive normalization formula tau_{V,D}(M_L)=Delta^{sigma(L)}D^{-sigma(L)-m-1}{L} is missing; the final theorem refers only generically to signature normalization.",
+    "The handle-slide invariance lemma, blow-up invariance lemma, Kirby-presentation-independence proposition, and general Kirby-reduction proposition are not separately represented.",
+    "The Hopf algebra definition and the four structural lemmas explaining how coproduct, antipode, R-matrix, and universal twist induce the categorical structures are omitted.",
+    "The standalone twist definition, finite simple system/domination definition, negligible morphism definition, and purification quotient definition are absent or only embedded in broader entries.",
+    "Kirby calculus is arbitrarily duplicated as both a definition and a theorem even though the displayed biconditional is theorem-level content.",
+    "The proposition that Rep_fd(A) is ribbon appears twice with essentially identical statements, while quantum trace and quantum dimension are redundantly split across three overlapping entries.",
+    "The quantum-trace definition describes f merely as a linear operator rather than requiring an A-linear endomorphism, weakening the categorical statement.",
+    "The candidate does not mark Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, or purification as externally attributed results.",
+    "The extra 'Rohlin cobordism theorem' entry is poorly attributed and joins Omega_3^SO=0 to the stronger assertion that W can be chosen as W_L without explaining that the latter uses surgery theory.",
+    "Several peripheral Jones-polynomial entries add fragmentation without compensating for missing core RT-construction entries.",
+    "Candidate IDs are inconsistent in style and do not align with the stable Gold entry identifiers, although page locators are mostly accurate."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryId": "paper:thm:lickorish-wallace-surgery",
+      "status": "matched",
+      "assessment": "Mathematically faithful and correctly typed as a theorem on page 2, but external attribution is not represented."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryId": "paper:thm:kirby-calculus",
+      "status": "matched_with_redundancy",
+      "assessment": "The theorem statement is accurate, but an essentially identical entry is also incorrectly emitted as paper:def:kirby-calculus."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-reduction",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "The proposition reducing 3-manifold invariance to invariance under Kirby moves is not extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-ribbon-graph-functor",
+      "candidateEntryId": "thm-turaev-ribbon-graph-functor",
+      "status": "matched",
+      "assessment": "Accurate theorem-level extraction with a correct page locator, but without its external Turaev attribution."
+    },
+    {
+      "goldEntryId": "rt:entry:hopf-algebra",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "The foundational Hopf algebra definition is not extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:rep-ribbon",
+      "candidateEntryId": "prop-repfd-ribbon-category",
+      "status": "matched_with_duplicate",
+      "assessment": "The core proposition is correct but is repeated as prop:ribbon-hopf-ribbon-category."
+    },
+    {
+      "goldEntryId": "rt:entry:quantum-trace",
+      "candidateEntryId": "prop:quantum-trace-equals-categorical-trace",
+      "status": "matched",
+      "assessment": "The equality with categorical trace is captured, and the explicit formula occurs in adjacent duplicate entries; one definition weakens the hypothesis from A-linear endomorphism to linear operator."
+    },
+    {
+      "goldEntryId": "rt:entry:modular-category",
+      "candidateEntryId": "def:modular-category",
+      "status": "matched",
+      "assessment": "Faithfully includes finiteness, the tensor unit, dual closure, domination, and invertibility of the Hopf-link matrix."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-purification-theorem",
+      "candidateEntryId": "thm:turaev-purification",
+      "status": "matched",
+      "assessment": "The principal purification result is represented, but the separate definitions of negligible morphisms and the purification quotient are missing."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-color",
+      "candidateEntryId": "def:kirby-color",
+      "status": "partial",
+      "assessment": "The formal Kirby color is correct, but the associated colored surgery sum is omitted."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "The key lemma asserting handle-slide invariance of the Kirby-color sum is not extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:signature-normalization",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "Definitions of D, Delta, and signature are present, but the selected normalized tau formula itself is absent."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "No separate extraction explains why normalization cancels the plus-or-minus-one Kirby move."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryId": "thm:reshetikhin-turaev-invariant",
+      "status": "partial",
+      "assessment": "The final invariant and its orientation-preserving homeomorphism invariance are correctly stated, but the theorem lacks the explicit normalized expression needed to make the construction mathematically self-contained."
+    }
+  ]
+}

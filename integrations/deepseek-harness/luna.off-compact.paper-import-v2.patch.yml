@@ -4,6 +4,8 @@
 - id: cmath-paper-import-router
   config:
     extract: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
+    guide: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
+    aggregate: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
     integrate: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
     assemble: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
     repair: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: off, maxTokens: 32000 }
@@ -13,4 +15,4 @@
     condition: off-compact
     workflowVersion: v2
     concurrency: 4
-    tokenBudget: { integrate: 8000, normal: 16000, retry: 32000 }
+    tokenBudget: { aggregate: 8000, integrate: 8000, normal: 16000, retry: 32000 }

@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package math-map-workspace-v2
+ * @version v2
+ * @canonicalSource packages/math-map/presentation/math-map-workspace-v2/src/math-map-model.js
+ * @contentHash sha256:5b679f819dd8429e7cd5de849385ce9edc73b732bcb159fe2a18551d75ddcd29
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
 /* Interaction-only mathematical map model. It is not Gamma authority data. */
 (function publishMathMapModel(root, factory) {
   "use strict";

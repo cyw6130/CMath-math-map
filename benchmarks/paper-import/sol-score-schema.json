@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "scorer", "promptVersion", "caseId", "goldRevision", "candidateArtifact",
+    "solScore", "format", "entries", "inferences",
+    "matchedEntries", "missingEntries", "incorrectEntries",
+    "matchedInferences", "missingInferences", "incorrectInferences",
+    "summary", "verdict"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "cmath.paper-import-sol-score/v2" },
+    "scorer": { "type": "string", "const": "gpt-5.6-sol" },
+    "promptVersion": { "type": "string", "const": "sol-score-prompt-v2" },
+    "caseId": { "type": "string" },
+    "goldRevision": { "type": "string" },
+    "candidateArtifact": { "type": "string" },
+    "solScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "jsonValidity", "referenceIntegrity"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "jsonValidity": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "referenceIntegrity": { "type": "integer", "minimum": 0, "maximum": 6 }
+      }
+    },
+    "entries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "correctness", "completeness"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 45 },
+        "correctness": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "completeness": { "type": "integer", "minimum": 0, "maximum": 20 }
+      }
+    },
+    "inferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "correctness", "completeness"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 45 },
+        "correctness": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "completeness": { "type": "integer", "minimum": 0, "maximum": 20 }
+      }
+    },
+    "matchedEntries": { "type": "array", "items": { "type": "string" } },
+    "missingEntries": { "type": "array", "items": { "type": "string" } },
+    "incorrectEntries": { "type": "array", "items": { "type": "string" } },
+    "matchedInferences": { "type": "array", "items": { "type": "string" } },
+    "missingInferences": { "type": "array", "items": { "type": "string" } },
+    "incorrectInferences": { "type": "array", "items": { "type": "string" } },
+    "summary": { "type": "string" },
+    "verdict": { "type": "string", "enum": ["mature", "promising", "needs-revision", "invalid"] }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "GPT-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v135-mineru/skein1.consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "correctness": 17,
+  "completeness": 14,
+  "solEntryScore": 31,
+  "verdict": "usable",
+  "summary": "The candidate captures most foundational definitions, the main gluing result, the 1- and 2-handle formulas, and the two key lemmas. However, several statements are imprecise or overgeneralized, the principal gluing theorem initially omits the balanced tensor product over the 3-manifold algebra, and the 3-handle formula from the Gold reference is not directly represented as a paper theorem.",
+  "strengths": [
+    "Captures the functorial link homology conditions, the parameterized triple, the skein Lasagna module, and the 3-manifold algebra.",
+    "Includes the algebra/module evaluation lemma and the Khovanov tangle invariant identification with appropriate lemma classifications.",
+    "Represents the main gluing theorem and provides an additional definition of the balanced bimodule tensor product.",
+    "Includes external attributions for related 2-handle and 3-handle formulas."
+  ],
+  "issues": [
+    "The main gluing theorem entries omit the essential balanced tensor product subscript over S^star(Y;P) in their displayed formulas; this is a mathematically significant omission even though a separate definition later records the balanced tensor product.",
+    "The candidate does not directly extract the Gold reference's 3-handle attachment quotient-module theorem. The external 3-handle attribution is too vague and does not state the required quotient by the S_*(S^2 x D^1) action.",
+    "The parameterized-triple definition adds unsupported conditions about general intersection with every phi(Y) component and zero algebraic intersection, while failing to state the precise boundary condition involving P.",
+    "The evaluation-isomorphism calculation is narrowed to a specific map S^2(B^4;L) to KhR_2(L), whereas the Gold reference describes a broader prior evaluation-isomorphism result used in Example 3.5 and Lemma 3.6.",
+    "The 2-handle formula uses O in place of the empty link and describes the relation as '缠绕' without explicitly identifying the subalgebra Y' and the cable-equivalence quotient required by the reference.",
+    "The candidate omits or fails to clearly identify several background results represented in the Gold reference, including the MWW skein Lasagna theory, the Ren-Willis gluing surjection, and the Khovanov tangle functor as distinct external/background entries.",
+    "There is substantial duplication among the gluing-data definition, gluing-triples definition, gluing-overview theorem, gluing-homomorphism theorem, and Theorem 4.1, reducing distinct coverage quality.",
+    "Several notation choices are inconsistent with the Gold reference, including S^star versus S_* and B^1/D^1 conventions, and some statements use informal or ambiguous terminology such as '切链' and '缠绕'.",
+    "Page references are only page numbers rather than source-document locators, and many entries share page 2 despite corresponding to distinct source locations."
+  ],
+  "entryLevelComparison": [],
+  "scoreRuns": [
+    {
+      "correctness": 17,
+      "completeness": 14,
+      "solEntryScore": 31
+    }
+  ],
+  "aggregation": "median-of-1"
+}

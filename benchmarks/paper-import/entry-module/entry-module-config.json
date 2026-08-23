@@ -1,0 +1,28 @@
+{
+  "moduleName": "paper-entry-parallel-extraction-v1.7",
+  "experimentalNextVersion": "paper-entry-parallel-extraction-v1.10",
+  "status": "frozen",
+  "historicalBaseline": {"id":"luna-v3.26-entry-baseline-v1","path":"luna-v3.26-entry-baseline.json","scope":"six-case Luna V3.26 Entry projection","notProductionSelection":true},
+  "entryArtifactSchema": "cmath.paper-entry-artifact/v1",
+  "solScoreSchema": "cmath.paper-entry-sol-score/v1",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "selectedFrom": [
+    "paper-entry-extraction-v1.1 (V3.26 backbone)",
+    "paper-entry-parallel-extraction-v1.7",
+    "paper-entry-parallel-extraction-v1.9 (candidate; not frozen)",
+    "paper-entry-parallel-extraction-v1.10 (candidate; not frozen)"
+  ],
+  "maxScore": 45,
+  "scoringBreakdown": {
+    "correctness": 25,
+    "completeness": 20
+  },
+  "verdictBrackets": {
+    "flawless": 40,
+    "usable": 27
+  },
+  "paths": {
+    "prompt": "sol-entry-score-prompt-v1.md",
+    "schema": "sol-entry-score-schema-v1.json"
+  }
+}

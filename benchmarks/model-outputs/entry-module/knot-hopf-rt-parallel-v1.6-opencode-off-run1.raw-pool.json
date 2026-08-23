@@ -1,0 +1,3345 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.6",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507,
+    "sourceText": "[[PAGE 1]]\nKnot, Hopf Algebra and Quantum Invariants\nChen Yuwen\n2026 年 6 月 22 日\n摘要\n本文解释 Reshetikhin–Turaev 三维流形不变量的基本构造机制。几何侧的核心\n对象是 framed link：一个 framed link 可作为四维 2-handlebody 的 attaching link，\n其边界给出 closed oriented 3-manifold；不同 attaching links 给出同胚三维流形的\n差异由 Kirby calculus 控制。代数侧的核心对象是 ribbon Hopf algebra 及其表示范\n畴：coproduct 使表示范畴带有张量积，antipode 给出对偶，universal R-matrix 给\n出 braiding，Turaev 的 universal twist 给出 twist，从而可以通过 graphical calculus\n构造 colored framed link invariant。为了使 link invariant 下降为三维流形不变量，\n还需要 modular data：有限 simple colors、quantum dimensions、Hopf link S-matrix\n的非退化性，以及对 negligible morphisms 的处理。最终，通过 Kirby color 加权求\n和与 signature 归一化，得到对 Kirby moves 不变的数量，即 Reshetikhin–Turaev\n型 closed oriented 3-manifold invariant。\n\n关键词： framed link；Kirby calculus；ribbon Hopf algebra；ribbon category；modular\ncategory；Reshetikhin–Turaev invariant\n\n1\n\n引言\n\nJones polynomial 的发现把 knot theory、Lie theory 与 quantum groups 联系起来。\nReshetikhin 与 Turaev 的工作进一步说明，这种联系并不止于 S 3 中的 link invariants：在\n合适的 root of unity 情形下，quantum group 的表示论还可以通过 surgery presentation\n产生 closed oriented 3-manifold 的拓扑不变量 [RT2]。Turaev 后来的系统表述则把这种\n构造放入 ribbon category 与 modular category 的框架中 [T94]。\n本文按照“几何侧、代数侧、三维流形不变量”的顺序组织。几何侧解释为什么 framed\nlink 足以描述 closed oriented 3-manifold；代数侧解释 Hopf algebra 的结构如何对应\ntangle diagram 的局部构件；最后说明 modular data 如何保证由 link invariant 写出的\nsurgery expression 对 Kirby moves 不变。\n本文采用如下约定。三维流形均为 closed oriented 3-manifold；link 默认嵌入 S 3 中；\n从 Hopf algebra 出发时，表示范畴默认取有限秩表示。我们只讨论半单（或经 purification\n1\n\n[[PAGE 2]]\n2\n\nFRAMED LINK 与 CLOSED 3-MANIFOLD 的几何来源\n\n2\n\n后半单）的 modular category 构造，不涉及非半单的 Hennings、Lyubashenko 或 modified\ntrace 型推广。\n记号大体沿用 Turaev 1994 年的教材 [T94]（以下简称 T94）。\n\n2\n\nFramed link 与 closed 3-manifold 的几何来源\n\n2.1 Framing 与 writhe 的关系\n设 L 是 S 3 中的 oriented link。一个 framing 是 L 的法丛的一个平凡化，也就是\n沿每个分量取一个处处非零的法向量场并考虑其同伦类。对 S 3 中的 oriented knot 而\n言，framing 可以用一个整数记录；这个整数可理解为给定 framing longitude 与 Seifert\nlongitude 的差。\n在图示计算中，经常把 framing 转换成 writhe 的信息。具体地说，给定一个 link\ndiagram D，blackboard framing 把每条线段加厚为贴近平面的 ribbon。此时 framing 由\n图中的 twisting 反映出来；给 diagram 加一个正 curl 或负 curl 会使 writhe 改变 ±1，\n同时也改变 blackboard framing。因而，在采用 blackboard framing 的约定下，可以用\nwrithe 来代表 framing，并把 framed link 视为 ribbon link 的平面图示。\n这一点解释了为什么 RT 构造自然使用 framed link 而不是普通 link：ribbon category 中的 twist 正是代数侧记录 framing 的结构。\n\n2.2\n\n四维 handlebody 视角\n本文把四维 handlebody 视角作为 framed link 出现的主要几何来源。令 B 4 是四维\n\n球，且 ∂B 4 = S 3 。若 L = L1 ∪ · · · ∪ Lm 是 ∂B 4 中的 link，并给每个分量 Li 指定一个\n整数 framing ni ，则可以沿 L 的各分量附加 2-handles，得到四维 2-handlebody\nWL = B 4 ∪ L\n\n∪\n\n(D2 × D2 ).\n\ni\n\n这里每个 attaching map 的 framing 决定了 ∂D2 × D2 如何贴到 ∂B 4 的 tubular neighborhood 上。所得四维流形的边界 ∂WL 是一个 closed oriented 3-manifold。\n通常也把 ∂WL 说成由 S 3 沿 framed link L 做 integer Dehn surgery 得到的三维流\n形，并记为\nML = SL3 (n1 , . . . , nm ) = ∂WL .\n本文不需要把 Dehn surgery 作为独立定义；只需记住它与上述 2-handle attachment 的\n边界描述等价。\n定理 2.1 (Lickorish–Wallace surgery theorem). 任意 closed connected oriented 3-manifold\nM 都有一个 integer surgery presentation：存在 S 3 中的 link L = L1 ∪ · · · ∪ Lm 以及整\n\n[[PAGE 3]]\n2\n\nFRAMED LINK 与 CLOSED 3-MANIFOLD 的几何来源\n\n3\n\n数 framings n1 , . . . , nm ，使得\nM∼\n= SL3 (n1 , . . . , nm ).\n等价地，任意 closed connected oriented 3-manifold 都可由 S 3 中某个 framed link 的\ninteger surgery 得到。\n定理 2.2 (Rohlin cobordism theorem). 任意 closed oriented 3-manifold M 都是某个\ncompact oriented 4-manifold W 的边界：\n∂W = M.\n换言之，oriented cobordism group ΩSO\n为 0。进一步地，我们可以要求 W 由 B 4 附加\n3\n2-handles 得到，即 W = WL 。\n上面两个定理是等价的。因此，若要构造 closed oriented 3-manifold invariant，可以\n从 framed link 出发。但 framed link 表示并不唯一，因此还需要处理不同 handle diagrams\n之间的等价关系。\n\n2.3 Kirby calculus\nKirby calculus 描述了不同 framed links 何时给出同一个三维流形。它的几何含义\n是：改变四维 handle decomposition 的方式不应改变其边界三维流形。\n定理 2.3 (Kirby calculus). 设 L 与 L′ 是 S 3 中的 framed links。则 ML 与 ML′ orientationpreservingly homeomorphic 当且仅当 L 与 L′ 可通过有限次 framed isotopy、handle slides\n以及 ±1-framed unknot 的加入或删除相互变换。\n\n图 1: Kirby moves 的局部示意：在 surgery diagram 中加入或删除特定 framed unknot，\n以及将一个分量沿另一个分量滑过，都不改变所得三维流形。\n在 link diagram 中，handle slide 表现为一个分量沿另一分量做 band sum；±1 move\n表现为加入或删除一个与其余分量不交的 ±1-framed unknot。Turaev 在 RT 构造中使\n用的是等价版本的 Kirby moves。无论采用哪一套生成元，结论都是：若一个由 surgery\nlink 写出的数量要成为三维流形不变量，它必须在 Kirby moves 下保持不变。\n\n[[PAGE 4]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n3\n\n4\n\nRibbon category 与 graphical calculus\n\n3.1 Ribbon category 的定义\n为了把 framed link diagram 转化成线性代数，需要一个能够解释 crossing、cup、cap\n与 twist 的范畴结构。我们分几步来搭：先是 monoidal category，再加上 braiding 和\nduality，最后把它们合起来得到 ribbon category。\n定义 3.1 (strict monoidal category). 本节采用 strict 约定。一个 strict monoidal category\nC 带有 bifunctor\n⊗:C×C →C\n和单位对象 1，满足\n(U ⊗ V ) ⊗ W = U ⊗ (V ⊗ W ),\n\n1 ⊗ V = V = V ⊗ 1.\n\n一般非 strict 的情形中，上式应改为 associativity 与 unit constraints；Mac Lane coherence\n允许我们在图示计算中按 strict 情形书写。\n定义 3.2 (braiding). 设 C 是 strict monoidal category。一个 braiding 是一族对对象 V, W\n自然的同构\nc = {cV,W : V ⊗ W −→ W ⊗ V }V,W ∈C ,\n满足两条 hexagon identity：\ncU,V ⊗W = (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ),\ncU ⊗V,W = (cU,W ⊗ idV ) ◦ (idU ⊗cV,W ),\n以及自然性：对任意 f : V → V ′ 与 g : W → W ′ ，\n(g ⊗ f ) ◦ cV,W = cV ′ ,W ′ ◦ (f ⊗ g).\n配有 braiding 的 monoidal category 称为 braided monoidal category。\n由定义立刻能得到两条常用事实。其一，在两条 hexagon identity 中取 V = W = 1\n以及 U = V = 1，再用 c 的可逆性，就有\ncV,1 = c1,V = idV .\n其二，这些公理蕴含 Yang–Baxter（braid relation）恒等式\n(idW ⊗cU,V ) ◦ (cU,W ⊗ idV ) ◦ (idU ⊗cV,W ) = (cV,W ⊗ idU ) ◦ (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n直观上，cV,W 是把 V -colored strand 从 W -colored strand 上方穿过去的代数解释：两条\nhexagon identity 保证 crossing 与张量积相容，而 Yang–Baxter 恒等式在图示上正好是\n三条 strand 的 Reidemeister III 同痕（见后面的 graphical calculus 一节）。\n\n[[PAGE 5]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n5\n\n定义 3.3 (duality / rigid structure). 设 C 是 strict monoidal category。这里说的 duality，\n是给每个对象 V 指定一个对象 V ∗ 以及两个态射\nbV : 1 → V ⊗ V ∗ ,\n\ndV : V ∗ ⊗ V → 1,\n\n满足 zig-zag identities\n(idV ⊗dV ) ◦ (bV ⊗ idV ) = idV ,\n(dV ⊗ idV ∗ ) ◦ (idV ∗ ⊗bV ) = idV ∗ .\n这里 bV 是 coevaluation，dV 是 evaluation。具有这种 duality 的 monoidal category 常称\n为 rigid category。注意此处并不预先要求 (V ∗ )∗ = V ；在 ribbon category 中，这一点会\n由兼容性给出一个 canonical identification。\n定义 3.4 (ribbon category). 一个 ribbon category 是一个 monoidal category C，配有\nbraiding c、twist θ 以及与它们相容的 duality ( ∗ , b, d)。其中 twist 是一族自然同构\nθV : V → V,\n满足\nθV ⊗W = cW,V ◦ cV,W ◦ (θV ⊗ θW ).\nduality 与 braiding、twist 之间的兼容性则要求\n(θV ⊗ idV ∗ ) ◦ bV = (idV ⊗θV ∗ ) ◦ bV ,\n也就是常写成的 θV ∗ = (θV )∗ 。因此，ribbon category 正是能够同时解释 crossing、cup/cap\n和 framing twist 的范畴结构。\n\n3.2 Colored ribbon graph\n定义 3.5 (colored ribbon graph). 设 C 是一个 ribbon category。一个 ribbon graph 是三维\n流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons：bands\n可看作加厚的有向边，annuli 可看作加厚的闭边，coupons 是带有若干输入、输出边的\n矩形节点。一个 C-colored ribbon graph 是一个 ribbon graph，并附加如下标签：\n1. 每条 directed band 或 annulus 标以 C 中的一个对象 V ；若方向反转，则颜色改为\n对偶对象 V ∗ ；\n2. 每个 coupon 标以 C 中的一个 morphism，其 source 和 target 分别由 coupon 下方、\n上方边界上相遇的 colored strands 的张量积给出；\n3. isotopy 必须保持 ribbon graph 的分解、方向和 colors。\n普通的 colored framed link 是最简单的例子：它没有 coupons，每个 link component\n被加厚为一个 annulus，并标以某个对象 V ∈ C。framing 被 annulus 的嵌入方式记录；\n这就是为什么 RT 构造自然处理 framed links 而不是 unframed links。\n\n[[PAGE 6]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n6\n\n3.3 Graphical calculus\nGraphical calculus 指的是把 colored ribbon graph 的平面图示系统地翻译成 C 中\nmorphisms 的规则。具体地，先把图示切成局部生成元，再把它们替换为范畴中的结构\n态射：\n图示局部构件\n\n范畴解释\n\nidentity strand\n\nidV\n\npositive/negative crossing\n\ncV,W 或c−1\nV,W\n\ncup/cap\n\ncoevaluation/evaluation\n\npositive/negative twist\n\nθV 或θV−1\n\ncoupon\n\ncoupon 上标记的 morphism\n\n这些规则可以用下面几张图来读。一个带标签的 coupon 表示一个 morphism；多输\n入、多输出的 coupon 表示一般 morphism\nf : V1 ⊗ · · · ⊗ Vm −→ W1 ⊗ · · · ⊗ Wn .\n图元上下连接对应 morphism 的复合，并列放置对应 tensor product。\n\n图 2: Coupon 表示 morphism；一般 coupon 允许多个输入与多个输出。\n\n图 3: 水平并列表示 tensor product；改变 strand 的方向时，颜色改为对偶对象。\n\n[[PAGE 7]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n7\n\nbraiding 与 twist 是 framed link 图示中最重要的两个局部操作。Crossing 被读成\n−1\ncV,W 或 c−1\nV,W ；一圈正负 twist 被读成 θV 或 θV 。因此，framing 的改变不是额外信息，\n\n而是已经由 ribbon category 的 twist 记录在代数中。\n\n图 4: Crossing 对应 braiding；ribbon 的正负扭转对应 twist 及其逆。\n同痕变形的代数化，就是把“图可以连续拉动而不改变 isotopy class”翻译成范畴公\n理。比如，strand 穿过一个 tensor product 的两种画法相同，对应 braiding 的 hexagon\nidentity\ncU,V ⊗W = (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n图形上，这正是把 U 同时穿过 V ⊗ W ，或先穿过 V 再穿过 W ，所得图示同痕。\n\n图 5: Braiding 的 hexagon identity 是 crossing 与 tensor product 相容性的图示版本。\n三条 strand 的 Reidemeister III 型同痕对应 Yang–Baxter identity：\n(idW ⊗cU,V ) ◦ (cU,W ⊗ idV ) ◦ (idU ⊗cV,W )\n= (cV,W ⊗ idU ) ◦ (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n\n[[PAGE 8]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n这解释了为什么一个 braiding 不只是任意的交换同构，而必须满足 braid relation。\n\n图 6: Yang–Baxter identity 是三条 colored strands 的 Reidemeister III 型同痕。\n类似地，morphisms 可以沿着 crossing 滑动，这对应 braiding 的自然性：\n(g ⊗ f ) ◦ cV,W = cV ′ ,W ′ ◦ (f ⊗ g).\nCup 与 cap 的拉直则对应 duality 的 zig-zag identities：\n(idV ⊗dV ) ◦ (bV ⊗ idV ) = idV ,\n\n(dV ⊗ idV ∗ ) ◦ (idV ∗ ⊗bV ) = idV ∗ .\n\n8\n\n[[PAGE 9]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n9\n\n图 7: Naturality 允许 coupon 穿过 crossing；cup/cap 由 coevaluation/evaluation 给出，\nzig-zag identities 允许它们被拉直。\n最后，把这些局部规则拼起来，就可以解释带 coupons 的 ribbon graph。ribbon\ncategory 的公理正是保证这种翻译不依赖于图示切分方式，并且在 ribbon isotopy 下保\n持不变的代数条件。\n\n图 8: 一般 ribbon graph 由 strands、crossings、twists、cups/caps 和 coupons 拼接而成。\n\n[[PAGE 10]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n10\n\n3.4 Trace 与 dimension\nribbon category 中的 trace 是一个图形化的 trace，而不是一开始就给定的矩阵\ntrace。设 f : V → V 是 C 中的 endomorphism。记\nbV : 1 → V ⊗ V ∗ ,\n\ndV : V ∗ ⊗ V → 1\n\n为 coevaluation 和 evaluation。Turaev 的 categorical trace 定义为\n(\n)\ntrC (f ) = dV ◦ cV,V ∗ ◦ (θV ◦ f ) ⊗ idV ∗ ◦ bV ∈ EndC (1).\n对象 V 的 categorical dimension 定义为\ndimC (V ) = trC (idV ).\n图形上，trC (f ) 就是把一个标有 f 的 coupon 放到一条 V -colored closed ribbon 上后得\n到的 closed ribbon graph invariant。也就是说，若 Ωf 表示这个闭合图形，则\nF (Ωf ) = trC (f ).\n定理 3.6 (Turaev ribbon graph functor). 对任意 ribbon category C，存在一个拓扑不变\n量函子 F ，它把 C-colored ribbon graphs 映到 C 中的 morphisms。若 Γ 是 closed colored\nribbon graph，则\nF (Γ) ∈ EndC (1).\n在 EndC (1) = K 的情形下，F (Γ) 是 K 值不变量。\n这个定理是 graphical calculus 的严格表述。它说明，只要范畴结构满足 ribbon\ncategory 的公理，局部图元的代数解释就自动对 Reidemeister 型局部变形不变。\n\n4 Hopf 代数如何产生 ribbon category\n本节主线是：Hopf algebra A 的每一层代数结构，恰好在表示范畴 Rep(A) 上诱导\n一层范畴结构，从而逐步把 Rep(A) 提升为 ribbon category（与拓扑侧的完整对照见第\n9 节）\n。\nA 上的结构\n\nRep(A) 上的结构\n\n图示\n\nbialgebra：∆, ε\n\nmonoidal（张量积、单位） 并列 strands\n\nHopf：antipode S\n\nrigid / duality\n\ncup、cap\n\nquasitriangular：R-matrix braiding c\n\ncrossing\n\nribbon：universal twist v\n\nframing\n\ntwist θ\n\n[[PAGE 11]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n11\n\n设 A 是一个 Hopf algebra，结构映射为乘法、单位、coproduct ∆、counit ε 与 antipode\nS。若 V 与 W 是左 A-modules，则 V ⊗ W 上的 A-作用由 ∆ 给出：\na · (v ⊗ w) =\n\n∑\n\na(1) v ⊗ a(2) w,\n\n∆(a) =\n\n∑\n\na(1) ⊗ a(2) .\n\n因此 Rep(A) 是 monoidal category。\nantipode 的作用是构造 dual modules。设 V 是有限秩左 A-module，并记\nV ∗ = HomK (V, K).\n有两种自然的左 A-module 结构：\n(a · f )(v) = f (S(a)v),\n以及\n(a · f )(v) = f (S −1 (a)v),\n其中第二个公式要求 S 可逆。第一种结构使 evaluation V ∗ ⊗ V → K 与 coevaluation\nK → V ⊗V ∗ 成为 A-linear maps；第二种结构则对应另一侧的 duality。换言之，antipode\n是 cup 与 cap 可以被解释为 A-linear morphisms 的代数原因。\n这里的 A-linearity 可以直接检查。把 K 看成 counit 给出的平凡 A-module，即\na · c = ε(a)c。令\ndV : V ∗ ⊗ V → K,\n则\n\ndV (f ⊗ x) = f (x).\n\n(\n) ∑\ndV a · (f ⊗ x) =\ndV (a(1) f ⊗ a(2) x)\n∑ (\n)\n=\nf S(a(1) )a(2) x = ε(a)f (x),\n\n所以 dV 是 A-linear。若 {ei } 是 V 的一组基，{ei } 是对偶基，则\nbV : K → V ⊗ V ∗ ,\n\nbV (1) = δV =\n\n∑\n\nei ⊗ ei\n\ni\n\n也为 A-linear。事实上，将 V ⊗ V ∗ 识别为 EndK (V ) 时，δV 对应 idV ；而 a 作用在 δV\n上对应算子\nz 7−→\n\n∑\n\nei (S(a(2) )z) a(1) ei =\n\n∑\n\na(1) S(a(2) )z = ε(a)z.\n\ni\n\n因此 a · δV = ε(a)δV ，即 bV (a · 1) = a · bV (1)。\n需要注意，有限维向量空间的标准映射\njV : V → V ∗∗ ,\n\njV (x)(f ) = f (x)\n\n一般并不是 A-module isomorphism。事实上\n(a · jV (x))(f ) = jV (x)(S(a)f ) = f (S 2 (a)x) = jV (S 2 (a)x)(f ).\n\n[[PAGE 12]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n12\n\n因此 jV 只在 S 2 = id 的特殊情形下自动是 A-linear。若 A 是 ribbon Hopf algebra，则\nDrinfeld element u = m(S ⊗ id)(R21 ) 与 universal twist v 给出与 quantum trace 相容的\npivotal element\nS 2 (a) = gag −1 .\n\ng = uv,\n\n这时真正的 A-module isomorphism V → V ∗∗ 是\npV (x)(f ) = f (gx) = jV (gx)(f ).\n因为\n(a · pV (x))(f ) = pV (x)(S(a)f ) = f (S 2 (a)gx)\n= f (gax) = pV (ax)(f ).\n这也解释了为什么 quantum trace 中会出现同一个因子 g = uv。（有些文献把 r = v −1\n称为 ribbon element，于是同一个因子写成 ur−1 ；为避免来回切换，下文一律用 v。）\n左对偶与右对偶的差别来自 evaluation/coevaluation 放在 V 的哪一侧。在一般刚\n性 monoidal category 中，左对偶和右对偶不必相同；在 ribbon Hopf algebra 的表示范\n畴中，由于 ribbon 结构给出 compatible pivotal structure，左右对偶被系统地联系起来。\n这就是 framed oriented tangle 中方向反转与对偶颜色可以一致处理的原因。\n定义 4.1 (quasitriangular Hopf algebra). 一个 quasitriangular Hopf algebra 是一个 Hopf\nalgebra A，配有可逆元\nR=\n\n∑\n\nR(1) ⊗ R(2) ∈ A ⊗ A,\n\n称为 universal R-matrix，使得\nR∆(a)R−1 = ∆op (a),\n并且\n(∆ ⊗ id)(R) = R13 R23 ,\n\n(id ⊗∆)(R) = R13 R12 .\n\n这些恒等式保证 R 与 coproduct 相容，并推出 Yang–Baxter equation。\n若 V, W 是 A-modules，则 R 定义 braiding\ncV,W = P ◦ (ρV ⊗ ρW )(R) : V ⊗ W → W ⊗ V,\n其中 P 是交换两个张量因子的 flip。Yang–Baxter equation 正是 braid relations 的代数\n形式。因此 universal R-matrix 是 crossing 的代数来源。\n定义 4.2 (ribbon Hopf algebra). 一个 ribbon Hopf algebra 是 quasitriangular Hopf algebra\n(A, R)，再配有 central invertible element v ∈ A，Turaev 称之为 universal twist，使它满\n足\n∆(v) = R21 R(v ⊗ v),\n\nS(v) = v,\n\nε(v) = 1,\n\n其中 R21 = PA (R) 是交换两个张量因子后的 R-matrix。如前所述，文献里也常把 v −1\n称为 ribbon element，那时上面的 coproduct 公式会带一个 (R21 R)−1 因子。\n\n[[PAGE 13]]\n5\n\nCOLORED FRAMED LINK INVARIANT\n\n13\n\n命题 4.3. 若 A 是 ribbon Hopf algebra，则有限维表示范畴 Repfd (A) 是 ribbon category。\n其 braiding 由 universal R-matrix 给出，twist 则由 universal twist 的作用给出：\nθV = ρV (v) : V → V.\n这说明 Hopf algebra 并不是直接“描述 framed link”，而是通过其表示范畴给出\nribbon category，再由 Turaev 的 graphical calculus 得到 colored framed link invariant。\n现在可以解释几种 trace 的关系。普通 trace TrV 是有限维向量空间 V 上线性算\n子的矩阵 trace。quantum trace 则是先用 ribbon Hopf algebra 的 canonical element 把\nordinary trace 修正一下、再取 trace：\ntrq (f ) = TrV (ρV (uv) ◦ f ) ,\n其中 u = m(S ⊗ id)(R21 ) 是 Drinfeld element。于是\ndimq (V ) = trq (idV ) = TrV (ρV (uv)).\n另一方面，上一节定义的 categorical trace trC (f ) 是图形闭合得到的 morphism 1 → 1。\n当 C = Repfd (A) 时，把 braiding、duality 和 twist 的具体公式代入 categorical trace，正\n好得到上面的 quantum trace：\ntrRep(A) (f ) = trq (f ).\n因此三种写法并不矛盾：ordinary trace 是线性代数操作；quantum trace 是 Hopf algebra\n表示里的 ordinary trace 加权版本；categorical trace 是同一个量的 coordinate-free 图形\n化定义。\n\n5 Colored framed link invariant\n设 A 是 ribbon Hopf algebra，令 C = Repfd (A)。给定 oriented framed link\nL = L 1 ∪ · · · ∪ Lm ,\n并给每个分量 Li 指定一个 color Vi ∈ C，Turaev functor 给出标量\nF (L; V1 , . . . , Vm ) ∈ EndC (1).\n若 EndC (1) = K，则这就是 K 值的 colored framed link invariant。\n这里必须强调“framed”。在 ribbon category 中，正负 twist 分别由 θV 及其逆表示；\n因此 link component 的 framing 改变会改变 invariant。若采用 blackboard framing，则\ndiagram 的 writhe 可以用来编码 framing；这正是 framed link 与 ribbon diagram 对应\n的图示基础。\n\n[[PAGE 14]]\n6 从 LINK INVARIANT 到三维流形不变量\n\n6\n\n14\n\n从 link invariant 到三维流形不变量\n\n上一节得到的 F (L; V1 , . . . , Vm ) 只是 colored framed link invariant。要由它定义 ML\n的不变量，必须消除 surgery presentation 的非唯一性。按照 Kirby 定理，需要构造一个\n表达式 τ (L)，使其在 handle slides 与 ±1 moves 下不变。\n实现这一点的结构是 modular category。下文把它写成\n(V, {Vi }i∈I ),\n其 ground ring 为 K。\n定义 6.1 (modular category). 一个 modular category 是一个 ribbon K-linear category V，\n连同有限个 simple objects 的代表集 {Vi }i∈I ，满足以下条件：\n1. 单位对象属于这组 simples，即存在 0 ∈ I 使得 V0 = 1；\n2. 对偶封闭：对每个 i ∈ I，存在 i∗ ∈ I 使得 Vi∗ ∼\n= Vi∗ ；\n3. domination：每个对象 X 的 identity morphism 都可写成有限和\nidX =\n\n∑\n\nfr g r ,\n\nr\n\n其中 gr : X → Vi(r) ，fr : Vi(r) → X，且 i(r) ∈ I；\n4. Hopf link matrix\nSij = tr(cVj ,Vi ◦ cVi ,Vj )\n在 K 上可逆。\n前三条条件表达“有限 simple colors 足够控制整个范畴”；最后一条 non-degeneracy\n条件是 modularity 的核心，它使 Kirby color 具有 handle-slide 不变性。记\nSij = tr(cVj ,Vi ◦ cVi ,Vj ),\n\ndim(i) = dim(Vi ),\n\n其中 Sij 是 Hopf link matrix。若 twist 在 simple object Vi 上的标量为 vi ，则 Turaev 还\n引入\nD2 =\n\n∑\n\ndim(i)2 ,\n\n∆=\n\ni∈I\n\n∑\n\nvi−1 dim(i)2 .\n\ni∈I\n\n这里 D 称为 rank；∆ 是由 twist anomaly 决定的常数。\n定义 6.2 (Kirby color). Kirby color 是形式线性组合\nΩV =\n\n∑\ni∈I\n\ndim(i)Vi .\n\n[[PAGE 15]]\n7\n\nMODULAR HOPF ALGEBRA 与 PURIFICATION\n\n15\n\n若 L 有 m 个分量，把每个分量都染成 ΩV ，意思是取 Turaev 的加权求和\n(m\n)\n∑\n∏\n{L} =\ndim(λ(Ln )) F (Γ(L, λ)).\nλ∈col(L)\n\nn=1\n\n这里 col(L) 是从 L 的分量集合到 I 的所有 coloring，Γ(L, λ) 是对应的 colored ribbon\ngraph。ΩV 不是范畴中的普通对象，而是 surgery coloring sum 的记号。\nKirby color 的核心性质是 handle-slide property：一个 strand 在 ΩV -colored component 上滑过，不改变整体加权求和。这一性质的代数来源可以理解为 Hopf link S-matrix\n的非退化性和 quantum dimensions 的配合；几何上，它正是 Kirby handle slide 的不变\n性。\n设 BL 是 framed link L 的 linking matrix。对角元为 framing，非对角元为 pairwise\nlinking numbers。记\nσ(L) = σ+ (L) − σ− (L)\n为 BL 的 signature；等价地，它是 Turaev 的四维 WL 的 intersection form signature。\nKirby 的 ±1 move 会改变 signature，因此 {L} 本身通常不是三维流形不变量。\nT94 Chapter II 的归一化公式是\nτV,D (ML ) = ∆σ(L) D−σ(L)−m−1 {L}.\n这里 m 是 surgery link 的分量数。该公式的 normalization 给出 τV,D (S 3 ) = D−1 和\nτV,D (S 1 × S 2 ) = 1。不同文献可能把 D 或 ∆ 吸收到整体常数中；关键结构事实不变：\nKirby color 保证 handle slide 不变性，∆ 与 signature/rank normalization 保证 ±1 move\n不变性。\n定理 6.3 (Reshetikhin–Turaev invariant). 设 (V, {Vi }i∈I ) 是 modular category，并选定\nrank D。由 Kirby color 加权求和和 signature 归一化得到的数量 τV,D (ML ) 在 Kirby\nmoves 下不变。因此它只依赖于 closed oriented 3-manifold ML 的 orientation-preserving\nhomeomorphism class，给出三维流形不变量\nτV,D (M ) ∈ K.\n更一般地，若 closed 3-manifold M 中含有 V-colored framed ribbon graph Γ，同样可以\n定义 pair invariant τV,D (M, Γ)。\n\n7\n\nModular Hopf algebra 与 purification\n\nT94 Chapter XI 先在 Hopf 代数层面定义 modular Hopf algebra，再通过表示范畴\n与 purification 得到 modular category。本节记录这一步的具体形式。\n\n[[PAGE 16]]\n7\n\nMODULAR HOPF ALGEBRA 与 PURIFICATION\n\n16\n\n定义 7.1 (negligible module). 设 A 是 ribbon Hopf algebra，Z 是有限秩 A-module。若\n对任意 A-linear endomorphism f : Z → Z 都有\ntrq (f ) = 0,\n则称 Z 是 negligible module。等价地，idZ 的 quantum trace 为零，并且经过 Z 的\nmorphisms 在 purification 中会被商掉。\n定义 7.2 (modular Hopf algebra). 一个 modular Hopf algebra 是一个 ribbon Hopf Kalgebra A，连同一族有限秩 simple A-modules {Vi }i∈I ，满足：\n1. 存在 0 ∈ I，使 V0 = K，其中 A 通过 counit 作用在 K 上；\n2. 对每个 i ∈ I，存在 i∗ ∈ I，使 Vi∗ ∼\n= Vi∗ ；\n3. 对任意 k, l ∈ I，张量积 Vk ⊗ Vl 可分解为有限个 Vi 的直和，加上一个 negligible\nA-module；\n4. 由 monodromy R21 R 给出的 Hopf link matrix\n)\n(\nSij = trq (R21 R)|Vi ⊗Vj\n在 K 上可逆。\n这个定义是 modular category 公理在 Hopf algebra 表示论中的对应版本。单位对\n象、对偶闭合和 tensor product 分解对应 modular category 的前三条公理；S-matrix\n可逆对应 non-degeneracy。区别是：在 quantum group at roots of unity 中确实会出现\nnegligible modules，因此 Rep(A) 的相应子范畴一般首先是 quasimodular category，而\n不是已经纯粹的 modular category。\n定理 7.3 (Turaev). 设 (A, {Vi }) 是 modular Hopf algebra。由 {Vi } quasidominate 的 Amodules 构成 Rep(A) 的一个 ribbon 子范畴 T 。则 (T , {Vi }) 是 quasimodular category。\n将 T 按 negligible morphisms 取 quotient，即 purification，得到 modular category Tp 。\n于是每个 modular Hopf algebra canonically gives rise to a modular category。\n因此，在 T94 的层级中，modular Hopf algebra 是产生 quasimodular category 的\nHopf-algebraic input；purification 是从这个 quasimodular category 到 modular category\n的一步：\nmodular Hopf algebra −→ quasimodular category\n−→ purified modular category\n−→ RT invariant.\n\n[[PAGE 17]]\n8 Uq (sl2 )、JONES POLYNOMIAL 与 WRT INVARIANT\n\n8\n\n17\n\nUq (sl2)、Jones polynomial 与 WRT invariant\n\n最后说明本文主线如何包含 Jones polynomial。这里要区分 generic parameter 与\nroot of unity 两种情形。T94 Chapter XI §7.5 讨论的是 generic 或 h-adic 情形：由 Uh g\n的 regular finite-rank modules 组成 ribbon category。一个 indecomposable regular module\n由最高权标号，而这些最高权等价于 m = rank g 个非负整数。因此，若\nL = L 1 ∪ · · · ∪ Ls\n是 framed oriented link，给每个分量指定一个最高权\nLj 7−→ Vλj\n就得到一个 colored framed link。把这个 colored link 代入 Chapter I 的 operator invariant\nF ，得到\nF (L; Vλ1 , . . . , Vλs ) ∈ C[[h]].\nT94 §7.5 指出，这个不变量实际上是变量\nq = exp(−h/2)\n的 Laurent polynomial。\n当 g = sl2 (C) 时，rank 为 1，indecomposable regular modules 由一个非负整数标\n号：\nV0 , V 1 , V 2 , . . . .\n这里 Vn 是最高权为 n 的表示，经典维数为 n + 1。因此，对 knot K，每个 n ≥ 0 都给\n出一个 framed colored link polynomial\nF (K; Vn ).\n这些就是 colored Jones polynomial 的 quantum-group 来源。特别地，V1 是二维基本表\n示；T94 §7.5 说明，当 link 的所有分量都染成 sl2 的基本表示时，得到的 F 是 Jones\npolynomial 的一个版本。对 n > 1，得到的是 higher colored Jones polynomials。\n还需注意，operator invariant F 首先是 framed link invariant。若从一个普通 oriented\nlink diagram D 出发，通常先采用 blackboard framing，把 D 看成 framed link diagram，\n再给每个分量染成 V1 ，计算\nF (D; V1 , . . . , V1 ).\n这个量在 Reidemeister II、III 型变形下表现良好，但 Reidemeister I 会改变 blackboard\nframing。要得到普通 oriented link invariant，需要用 diagram 的 writhe 做归一化，抵\n消 twist eigenvalue 带来的 framing dependence。换言之，\nJones polynomial = writhe-normalized F (D; V1 , . . . , V1 ),\n\n[[PAGE 18]]\n9 结构表\n\n18\n\n其中变量替换和整体常数依 convention 而不同。T94 Chapter XII 从 Kauffman bracket\nviewpoint 给出同一现象：bracket 是 framed link invariant，乘以 writhe 修正因子后得\n到 ordinary oriented Jones polynomial。\n在 root of unity 情形，需要把允许的 colors 截断到有限的 Weyl alcove simple modules。T94 说明，对于满足相应阶数条件的 q，可以从 Uq (g) 得到 modular Hopf algebra；经\n过 purification 得到 modular category 后，再应用第 6 节所总结的 surgery construction，\n就得到 Witten–Reshetikhin–Turaev 型 3-manifold invariants。\n因此，三者的逻辑关系是：\n1. generic/h-adic 的 Uq (sl2 ) 给出 colored Jones polynomials；\n2. 颜色 V1 ，也就是二维基本表示，给出 ordinary Jones polynomial 的一个归一化版\n本；\n3. root of unity 下的有限 modular data 经过 surgery/Kirby normalization 给出 WRT\n3-manifold invariants。\n\n9\n\n结构表\n\nHopf 代数结构\n\n代数数据\n\n表示范畴中的结构\n\n拓扑解释\n\nalgebra\n\nmultiplication, unit\n\nA-modules 与\n\n只有表示论，还不能自然\n\nA-linear maps\n\n解释并列 strands\n\nmonoidal category\n\n解释 tensor product，即多\n\nbialgebra\n\ncoproduct, counit\n\n条线并列\nrigid category /\n\n解释 cup、cap、orientation\n\nduality\n\nreversal\n\nuniversal R-matrix\n\nbraided category\n\n解释 crossing\n\nuniversal twist\n\nribbon category\n\n解释 twist 与 framing\n\nmodular Hopf\n\nfinite simple colors,\n\nquasimodular\n\n通过 Kirby color 与 signa-\n\nalgebra\n\nquantum\n\ncategory；\n\nture 归一化得到三维流形\n\ndimensions,\n\npurification 后为\n\n不变量\n\ninvertible S-matrix,\n\nmodular category\n\nHopf algebra\n\nquasitriangular\n\nantipode\n\nHopf algebra\nribbon Hopf\nalgebra\n\nnegligible\nsummands\n\n表 1: 从 Hopf 代数结构到拓扑构造的对应关系\n\n[[PAGE 19]]\n参考文献\n\n19\n\n参考文献\n[RT1] N. Reshetikhin and V. Turaev, Ribbon graphs and their invariants derived from\nquantum groups, Communications in Mathematical Physics 127 (1990), 1–26.\n[RT2] N. Reshetikhin and V. Turaev, Invariants of 3-manifolds via link polynomials and\nquantum groups, Inventiones Mathematicae 103 (1991), 547–597.\n[T94] V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter, 1994.\n[Ki] R. Kirby, A calculus of framed links in S 3 , Inventiones Mathematicae 45 (1978),\n35–56."
+  },
+  "chunks": [
+    {
+      "chunkIndex": 0,
+      "pageRange": {
+        "first": 1,
+        "last": 5
+      },
+      "characterCount": 6918,
+      "text": "[[PAGE 1]]\nKnot, Hopf Algebra and Quantum Invariants\nChen Yuwen\n2026 年 6 月 22 日\n摘要\n本文解释 Reshetikhin–Turaev 三维流形不变量的基本构造机制。几何侧的核心\n对象是 framed link：一个 framed link 可作为四维 2-handlebody 的 attaching link，\n其边界给出 closed oriented 3-manifold；不同 attaching links 给出同胚三维流形的\n差异由 Kirby calculus 控制。代数侧的核心对象是 ribbon Hopf algebra 及其表示范\n畴：coproduct 使表示范畴带有张量积，antipode 给出对偶，universal R-matrix 给\n出 braiding，Turaev 的 universal twist 给出 twist，从而可以通过 graphical calculus\n构造 colored framed link invariant。为了使 link invariant 下降为三维流形不变量，\n还需要 modular data：有限 simple colors、quantum dimensions、Hopf link S-matrix\n的非退化性，以及对 negligible morphisms 的处理。最终，通过 Kirby color 加权求\n和与 signature 归一化，得到对 Kirby moves 不变的数量，即 Reshetikhin–Turaev\n型 closed oriented 3-manifold invariant。\n\n关键词： framed link；Kirby calculus；ribbon Hopf algebra；ribbon category；modular\ncategory；Reshetikhin–Turaev invariant\n\n1\n\n引言\n\nJones polynomial 的发现把 knot theory、Lie theory 与 quantum groups 联系起来。\nReshetikhin 与 Turaev 的工作进一步说明，这种联系并不止于 S 3 中的 link invariants：在\n合适的 root of unity 情形下，quantum group 的表示论还可以通过 surgery presentation\n产生 closed oriented 3-manifold 的拓扑不变量 [RT2]。Turaev 后来的系统表述则把这种\n构造放入 ribbon category 与 modular category 的框架中 [T94]。\n本文按照“几何侧、代数侧、三维流形不变量”的顺序组织。几何侧解释为什么 framed\nlink 足以描述 closed oriented 3-manifold；代数侧解释 Hopf algebra 的结构如何对应\ntangle diagram 的局部构件；最后说明 modular data 如何保证由 link invariant 写出的\nsurgery expression 对 Kirby moves 不变。\n本文采用如下约定。三维流形均为 closed oriented 3-manifold；link 默认嵌入 S 3 中；\n从 Hopf algebra 出发时，表示范畴默认取有限秩表示。我们只讨论半单（或经 purification\n1\n\n[[PAGE 2]]\n2\n\nFRAMED LINK 与 CLOSED 3-MANIFOLD 的几何来源\n\n2\n\n后半单）的 modular category 构造，不涉及非半单的 Hennings、Lyubashenko 或 modified\ntrace 型推广。\n记号大体沿用 Turaev 1994 年的教材 [T94]（以下简称 T94）。\n\n2\n\nFramed link 与 closed 3-manifold 的几何来源\n\n2.1 Framing 与 writhe 的关系\n设 L 是 S 3 中的 oriented link。一个 framing 是 L 的法丛的一个平凡化，也就是\n沿每个分量取一个处处非零的法向量场并考虑其同伦类。对 S 3 中的 oriented knot 而\n言，framing 可以用一个整数记录；这个整数可理解为给定 framing longitude 与 Seifert\nlongitude 的差。\n在图示计算中，经常把 framing 转换成 writhe 的信息。具体地说，给定一个 link\ndiagram D，blackboard framing 把每条线段加厚为贴近平面的 ribbon。此时 framing 由\n图中的 twisting 反映出来；给 diagram 加一个正 curl 或负 curl 会使 writhe 改变 ±1，\n同时也改变 blackboard framing。因而，在采用 blackboard framing 的约定下，可以用\nwrithe 来代表 framing，并把 framed link 视为 ribbon link 的平面图示。\n这一点解释了为什么 RT 构造自然使用 framed link 而不是普通 link：ribbon category 中的 twist 正是代数侧记录 framing 的结构。\n\n2.2\n\n四维 handlebody 视角\n本文把四维 handlebody 视角作为 framed link 出现的主要几何来源。令 B 4 是四维\n\n球，且 ∂B 4 = S 3 。若 L = L1 ∪ · · · ∪ Lm 是 ∂B 4 中的 link，并给每个分量 Li 指定一个\n整数 framing ni ，则可以沿 L 的各分量附加 2-handles，得到四维 2-handlebody\nWL = B 4 ∪ L\n\n∪\n\n(D2 × D2 ).\n\ni\n\n这里每个 attaching map 的 framing 决定了 ∂D2 × D2 如何贴到 ∂B 4 的 tubular neighborhood 上。所得四维流形的边界 ∂WL 是一个 closed oriented 3-manifold。\n通常也把 ∂WL 说成由 S 3 沿 framed link L 做 integer Dehn surgery 得到的三维流\n形，并记为\nML = SL3 (n1 , . . . , nm ) = ∂WL .\n本文不需要把 Dehn surgery 作为独立定义；只需记住它与上述 2-handle attachment 的\n边界描述等价。\n定理 2.1 (Lickorish–Wallace surgery theorem). 任意 closed connected oriented 3-manifold\nM 都有一个 integer surgery presentation：存在 S 3 中的 link L = L1 ∪ · · · ∪ Lm 以及整\n\n[[PAGE 3]]\n2\n\nFRAMED LINK 与 CLOSED 3-MANIFOLD 的几何来源\n\n3\n\n数 framings n1 , . . . , nm ，使得\nM∼\n= SL3 (n1 , . . . , nm ).\n等价地，任意 closed connected oriented 3-manifold 都可由 S 3 中某个 framed link 的\ninteger surgery 得到。\n定理 2.2 (Rohlin cobordism theorem). 任意 closed oriented 3-manifold M 都是某个\ncompact oriented 4-manifold W 的边界：\n∂W = M.\n换言之，oriented cobordism group ΩSO\n为 0。进一步地，我们可以要求 W 由 B 4 附加\n3\n2-handles 得到，即 W = WL 。\n上面两个定理是等价的。因此，若要构造 closed oriented 3-manifold invariant，可以\n从 framed link 出发。但 framed link 表示并不唯一，因此还需要处理不同 handle diagrams\n之间的等价关系。\n\n2.3 Kirby calculus\nKirby calculus 描述了不同 framed links 何时给出同一个三维流形。它的几何含义\n是：改变四维 handle decomposition 的方式不应改变其边界三维流形。\n定理 2.3 (Kirby calculus). 设 L 与 L′ 是 S 3 中的 framed links。则 ML 与 ML′ orientationpreservingly homeomorphic 当且仅当 L 与 L′ 可通过有限次 framed isotopy、handle slides\n以及 ±1-framed unknot 的加入或删除相互变换。\n\n图 1: Kirby moves 的局部示意：在 surgery diagram 中加入或删除特定 framed unknot，\n以及将一个分量沿另一个分量滑过，都不改变所得三维流形。\n在 link diagram 中，handle slide 表现为一个分量沿另一分量做 band sum；±1 move\n表现为加入或删除一个与其余分量不交的 ±1-framed unknot。Turaev 在 RT 构造中使\n用的是等价版本的 Kirby moves。无论采用哪一套生成元，结论都是：若一个由 surgery\nlink 写出的数量要成为三维流形不变量，它必须在 Kirby moves 下保持不变。\n\n[[PAGE 4]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n3\n\n4\n\nRibbon category 与 graphical calculus\n\n3.1 Ribbon category 的定义\n为了把 framed link diagram 转化成线性代数，需要一个能够解释 crossing、cup、cap\n与 twist 的范畴结构。我们分几步来搭：先是 monoidal category，再加上 braiding 和\nduality，最后把它们合起来得到 ribbon category。\n定义 3.1 (strict monoidal category). 本节采用 strict 约定。一个 strict monoidal category\nC 带有 bifunctor\n⊗:C×C →C\n和单位对象 1，满足\n(U ⊗ V ) ⊗ W = U ⊗ (V ⊗ W ),\n\n1 ⊗ V = V = V ⊗ 1.\n\n一般非 strict 的情形中，上式应改为 associativity 与 unit constraints；Mac Lane coherence\n允许我们在图示计算中按 strict 情形书写。\n定义 3.2 (braiding). 设 C 是 strict monoidal category。一个 braiding 是一族对对象 V, W\n自然的同构\nc = {cV,W : V ⊗ W −→ W ⊗ V }V,W ∈C ,\n满足两条 hexagon identity：\ncU,V ⊗W = (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ),\ncU ⊗V,W = (cU,W ⊗ idV ) ◦ (idU ⊗cV,W ),\n以及自然性：对任意 f : V → V ′ 与 g : W → W ′ ，\n(g ⊗ f ) ◦ cV,W = cV ′ ,W ′ ◦ (f ⊗ g).\n配有 braiding 的 monoidal category 称为 braided monoidal category。\n由定义立刻能得到两条常用事实。其一，在两条 hexagon identity 中取 V = W = 1\n以及 U = V = 1，再用 c 的可逆性，就有\ncV,1 = c1,V = idV .\n其二，这些公理蕴含 Yang–Baxter（braid relation）恒等式\n(idW ⊗cU,V ) ◦ (cU,W ⊗ idV ) ◦ (idU ⊗cV,W ) = (cV,W ⊗ idU ) ◦ (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n直观上，cV,W 是把 V -colored strand 从 W -colored strand 上方穿过去的代数解释：两条\nhexagon identity 保证 crossing 与张量积相容，而 Yang–Baxter 恒等式在图示上正好是\n三条 strand 的 Reidemeister III 同痕（见后面的 graphical calculus 一节）。\n\n[[PAGE 5]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n5\n\n定义 3.3 (duality / rigid structure). 设 C 是 strict monoidal category。这里说的 duality，\n是给每个对象 V 指定一个对象 V ∗ 以及两个态射\nbV : 1 → V ⊗ V ∗ ,\n\ndV : V ∗ ⊗ V → 1,\n\n满足 zig-zag identities\n(idV ⊗dV ) ◦ (bV ⊗ idV ) = idV ,\n(dV ⊗ idV ∗ ) ◦ (idV ∗ ⊗bV ) = idV ∗ .\n这里 bV 是 coevaluation，dV 是 evaluation。具有这种 duality 的 monoidal category 常称\n为 rigid category。注意此处并不预先要求 (V ∗ )∗ = V ；在 ribbon category 中，这一点会\n由兼容性给出一个 canonical identification。\n定义 3.4 (ribbon category). 一个 ribbon category 是一个 monoidal category C，配有\nbraiding c、twist θ 以及与它们相容的 duality ( ∗ , b, d)。其中 twist 是一族自然同构\nθV : V → V,\n满足\nθV ⊗W = cW,V ◦ cV,W ◦ (θV ⊗ θW ).\nduality 与 braiding、twist 之间的兼容性则要求\n(θV ⊗ idV ∗ ) ◦ bV = (idV ⊗θV ∗ ) ◦ bV ,\n也就是常写成的 θV ∗ = (θV )∗ 。因此，ribbon category 正是能够同时解释 crossing、cup/cap\n和 framing twist 的范畴结构。\n\n3.2 Colored ribbon graph\n定义 3.5 (colored ribbon graph). 设 C 是一个 ribbon category。一个 ribbon graph 是三维\n流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons：bands\n可看作加厚的有向边，annuli 可看作加厚的闭边，coupons 是带有若干输入、输出边的\n矩形节点。一个 C-colored ribbon graph 是一个 ribbon graph，并附加如下标签：\n1. 每条 directed band 或 annulus 标以 C 中的一个对象 V ；若方向反转，则颜色改为\n对偶对象 V ∗ ；\n2. 每个 coupon 标以 C 中的一个 morphism，其 source 和 target 分别由 coupon 下方、\n上方边界上相遇的 colored strands 的张量积给出；\n3. isotopy 必须保持 ribbon graph 的分解、方向和 colors。\n普通的 colored framed link 是最简单的例子：它没有 coupons，每个 link component\n被加厚为一个 annulus，并标以某个对象 V ∈ C。framing 被 annulus 的嵌入方式记录；\n这就是为什么 RT 构造自然处理 framed links 而不是 unframed links。",
+      "rawEntries": [
+        {
+          "id": "paper:def:global-conventions",
+          "type": "definition",
+          "name": "全局约定",
+          "statement": "三维流形均为 closed oriented 3-manifold；link 默认嵌入 $S^3$ 中；从 Hopf algebra 出发时，表示范畴默认取有限秩表示；只讨论半单（或经 purification 后半单）的 modular category 构造。",
+          "page": 1,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:t94-notation",
+          "type": "definition",
+          "name": "T94 记号约定",
+          "statement": "记号大体沿用 Turaev 1994 年的教材 [T94]。",
+          "page": 1,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:framing",
+          "type": "definition",
+          "name": "framing",
+          "statement": "设 $L$ 是 $S^3$ 中的 oriented link。一个 framing 是 $L$ 的法丛的一个平凡化，即沿每个分量取一个处处非零的法向量场并考虑其同伦类。对 $S^3$ 中的 oriented knot，framing 可用整数记录，即给定 framing longitude 与 Seifert longitude 的差。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:blackboard-framing",
+          "type": "definition",
+          "name": "blackboard framing",
+          "statement": "给定 link diagram $D$，blackboard framing 把每条线段加厚为贴近平面的 ribbon。framing 由图中的 twisting 反映；加正 curl 或负 curl 使 writhe 改变 $\\pm 1$，同时改变 blackboard framing。在 blackboard framing 约定下，可用 writhe 代表 framing，并把 framed link 视为 ribbon link 的平面图示。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:alg:handlebody-surgery",
+          "type": "algorithm",
+          "name": "四维 handlebody 与 Dehn surgery 构造",
+          "statement": "令 $B^4$ 是四维球，$\\partial B^4 = S^3$。若 $L = L_1 \\cup \\cdots \\cup L_m$ 是 $\\partial B^4$ 中的 link，给每个分量 $L_i$ 指定整数 framing $n_i$，则沿 $L$ 各分量附加 2-handles，得到 $W_L = B^4 \\cup_L \\cup_i (D^2 \\times D^2)$。边界 $\\partial W_L$ 是 closed oriented 3-manifold，记为 $M_L = S_L^3(n_1, \\ldots, n_m) = \\partial W_L$。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:lickorish-wallace",
+          "type": "claim",
+          "external": true,
+          "num": 2.1,
+          "name": "Lickorish–Wallace surgery 定理",
+          "statement": "任意 closed connected oriented 3-manifold $M$ 都有 integer surgery presentation：存在 $S^3$ 中的 link $L = L_1 \\cup \\cdots \\cup L_m$ 及整数 framings $n_1, \\ldots, n_m$，使得 $M \\cong S_L^3(n_1, \\ldots, n_m)$。等价地，任意 closed connected oriented 3-manifold 都可由 $S^3$ 中某个 framed link 的 integer surgery 得到。",
+          "page": 2,
+          "source": "Lickorish, Wallace",
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:rohlin-cobordism",
+          "type": "claim",
+          "external": true,
+          "num": 2.2,
+          "name": "Rohlin cobordism 定理",
+          "statement": "任意 closed oriented 3-manifold $M$ 都是某个 compact oriented 4-manifold $W$ 的边界：$\\partial W = M$。即 oriented cobordism group $\\Omega_3^{SO}$ 为 0。进一步地，可要求 $W$ 由 $B^4$ 附加 2-handles 得到，即 $W = W_L$。",
+          "page": 3,
+          "source": "Rohlin",
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:kirby-calculus",
+          "type": "claim",
+          "external": true,
+          "num": 2.3,
+          "name": "Kirby calculus",
+          "statement": "设 $L$ 与 $L'$ 是 $S^3$ 中的 framed links。则 $M_L$ 与 $M_{L'}$ orientation-preservingly homeomorphic 当且仅当 $L$ 与 $L'$ 可通过有限次 framed isotopy、handle slides 以及 $\\pm 1$-framed unknot 的加入或删除相互变换。",
+          "page": 3,
+          "source": "Kirby",
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:strict-monoidal-category",
+          "type": "definition",
+          "num": 3.1,
+          "name": "strict monoidal category",
+          "statement": "一个 strict monoidal category $C$ 带有 bifunctor $\\otimes: C \\times C \\to C$ 和单位对象 $\\mathbf{1}$，满足 $(U \\otimes V) \\otimes W = U \\otimes (V \\otimes W)$，$\\mathbf{1} \\otimes V = V = V \\otimes \\mathbf{1}$。一般非 strict 情形应改为 associativity 与 unit constraints；Mac Lane coherence 允许在图示计算中按 strict 情形书写。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:braiding",
+          "type": "definition",
+          "num": 3.2,
+          "name": "braiding",
+          "statement": "设 $C$ 是 strict monoidal category。一个 braiding 是一族对对象 $V, W$ 自然的同构 $c = \\{c_{V,W}: V \\otimes W \\to W \\otimes V\\}$，满足两条 hexagon identity：$c_{U,V \\otimes W} = (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$，$c_{U \\otimes V,W} = (c_{U,W} \\otimes \\mathrm{id}_V) \\circ (\\mathrm{id}_U \\otimes c_{V,W})$，以及自然性。配有 braiding 的 monoidal category 称为 braided monoidal category。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:duality-rigid",
+          "type": "definition",
+          "num": 3.3,
+          "name": "duality / rigid structure",
+          "statement": "设 $C$ 是 strict monoidal category。duality 给每个对象 $V$ 指定对象 $V^*$ 及两个态射 $b_V: \\mathbf{1} \\to V \\otimes V^*$（coevaluation）和 $d_V: V^* \\otimes V \\to \\mathbf{1}$（evaluation），满足 zig-zag identities：$(\\mathrm{id}_V \\otimes d_V) \\circ (b_V \\otimes \\mathrm{id}_V) = \\mathrm{id}_V$，$(d_V \\otimes \\mathrm{id}_{V^*}) \\circ (\\mathrm{id}_{V^*} \\otimes b_V) = \\mathrm{id}_{V^*}$。具有这种 duality 的 monoidal category 称为 rigid category。此处不预先要求 $(V^*)^* = V$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:ribbon-category",
+          "type": "definition",
+          "num": 3.4,
+          "name": "ribbon category",
+          "statement": "一个 ribbon category 是 monoidal category $C$，配有 braiding $c$、twist $\\theta$ 以及与它们相容的 duality $(^*, b, d)$。twist 是一族自然同构 $\\theta_V: V \\to V$，满足 $\\theta_{V \\otimes W} = c_{W,V} \\circ c_{V,W} \\circ (\\theta_V \\otimes \\theta_W)$。duality 与 braiding、twist 的兼容性要求 $(\\theta_V \\otimes \\mathrm{id}_{V^*}) \\circ b_V = (\\mathrm{id}_V \\otimes \\theta_{V^*}) \\circ b_V$，即 $\\theta_{V^*} = (\\theta_V)^*$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:colored-ribbon-graph",
+          "type": "definition",
+          "num": 3.5,
+          "name": "colored ribbon graph",
+          "statement": "设 $C$ 是 ribbon category。一个 ribbon graph 是三维流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons。$C$-colored ribbon graph 附加标签：每条 directed band 或 annulus 标以 $C$ 中对象 $V$，方向反转则颜色改为 $V^*$；每个 coupon 标以 $C$ 中 morphism，source 和 target 由 coupon 下方、上方边界上相遇的 colored strands 的张量积给出；isotopy 必须保持分解、方向和 colors。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:lickorish-wallace",
+          "type": "theorem",
+          "name": "Lickorish–Wallace 手术定理",
+          "statement": "任意闭连通定向三维流形 $M$ 都有整数手术表示：存在 $S^3$ 中的链环 $L=L_1\\cup\\cdots\\cup L_m$ 及整数框法 $n_1,\\dots,n_m$，使得 $M\\cong S_L^3(n_1,\\dots,n_m)$；等价地，任意闭连通定向三维流形都可由 $S^3$ 中某个带框链环的整数手术得到。",
+          "page": 2,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:rohlin-cobordism",
+          "type": "theorem",
+          "name": "Rohlin 配边定理",
+          "statement": "任意闭定向三维流形 $M$ 都是某个紧致定向四维流形 $W$ 的边界：$\\partial W=M$；即定向配边群 $\\Omega_3^{SO}=0$。进一步可要求 $W$ 由 $B^4$ 附加 2-柄得到，即 $W=W_L$。",
+          "page": 3,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:kirby-calculus",
+          "type": "theorem",
+          "name": "Kirby 演算",
+          "statement": "设 $L$ 与 $L'$ 是 $S^3$ 中的带框链环。则 $M_L$ 与 $M_{L'}$ 保定向同胚当且仅当 $L$ 与 $L'$ 可通过有限次带框同痕、柄滑动以及 $\\pm1$-带框平凡结的加入或删除相互变换。",
+          "page": 3,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:braiding-unit",
+          "type": "proposition",
+          "name": "辫子与单位对象的平凡性",
+          "statement": "设 $C$ 是辫子幺半范畴，$c$ 是其辫子，则对任意对象 $V$，有 $c_{V,1}=c_{1,V}=\\mathrm{id}_V$。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:yang-baxter",
+          "type": "proposition",
+          "name": "Yang–Baxter 恒等式",
+          "statement": "设 $C$ 是辫子幺半范畴，$c$ 是其辫子，则对任意对象 $U,V,W$，有 Yang–Baxter 恒等式：$(\\mathrm{id}_W\\otimes c_{U,V})\\circ(c_{U,W}\\otimes \\mathrm{id}_V)\\circ(\\mathrm{id}_U\\otimes c_{V,W})=(c_{V,W}\\otimes \\mathrm{id}_U)\\circ(\\mathrm{id}_V\\otimes c_{U,W})\\circ(c_{U,V}\\otimes \\mathrm{id}_W)$。",
+          "page": 4,
+          "_provenance": {
+            "chunkIndex": 0,
+            "blockIndex": 0,
+            "pageRange": {
+              "first": 1,
+              "last": 5
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 1,
+      "pageRange": {
+        "first": 5,
+        "last": 9
+      },
+      "characterCount": 3528,
+      "text": "[[PAGE 5]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n5\n\n定义 3.3 (duality / rigid structure). 设 C 是 strict monoidal category。这里说的 duality，\n是给每个对象 V 指定一个对象 V ∗ 以及两个态射\nbV : 1 → V ⊗ V ∗ ,\n\ndV : V ∗ ⊗ V → 1,\n\n满足 zig-zag identities\n(idV ⊗dV ) ◦ (bV ⊗ idV ) = idV ,\n(dV ⊗ idV ∗ ) ◦ (idV ∗ ⊗bV ) = idV ∗ .\n这里 bV 是 coevaluation，dV 是 evaluation。具有这种 duality 的 monoidal category 常称\n为 rigid category。注意此处并不预先要求 (V ∗ )∗ = V ；在 ribbon category 中，这一点会\n由兼容性给出一个 canonical identification。\n定义 3.4 (ribbon category). 一个 ribbon category 是一个 monoidal category C，配有\nbraiding c、twist θ 以及与它们相容的 duality ( ∗ , b, d)。其中 twist 是一族自然同构\nθV : V → V,\n满足\nθV ⊗W = cW,V ◦ cV,W ◦ (θV ⊗ θW ).\nduality 与 braiding、twist 之间的兼容性则要求\n(θV ⊗ idV ∗ ) ◦ bV = (idV ⊗θV ∗ ) ◦ bV ,\n也就是常写成的 θV ∗ = (θV )∗ 。因此，ribbon category 正是能够同时解释 crossing、cup/cap\n和 framing twist 的范畴结构。\n\n3.2 Colored ribbon graph\n定义 3.5 (colored ribbon graph). 设 C 是一个 ribbon category。一个 ribbon graph 是三维\n流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons：bands\n可看作加厚的有向边，annuli 可看作加厚的闭边，coupons 是带有若干输入、输出边的\n矩形节点。一个 C-colored ribbon graph 是一个 ribbon graph，并附加如下标签：\n1. 每条 directed band 或 annulus 标以 C 中的一个对象 V ；若方向反转，则颜色改为\n对偶对象 V ∗ ；\n2. 每个 coupon 标以 C 中的一个 morphism，其 source 和 target 分别由 coupon 下方、\n上方边界上相遇的 colored strands 的张量积给出；\n3. isotopy 必须保持 ribbon graph 的分解、方向和 colors。\n普通的 colored framed link 是最简单的例子：它没有 coupons，每个 link component\n被加厚为一个 annulus，并标以某个对象 V ∈ C。framing 被 annulus 的嵌入方式记录；\n这就是为什么 RT 构造自然处理 framed links 而不是 unframed links。\n\n[[PAGE 6]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n6\n\n3.3 Graphical calculus\nGraphical calculus 指的是把 colored ribbon graph 的平面图示系统地翻译成 C 中\nmorphisms 的规则。具体地，先把图示切成局部生成元，再把它们替换为范畴中的结构\n态射：\n图示局部构件\n\n范畴解释\n\nidentity strand\n\nidV\n\npositive/negative crossing\n\ncV,W 或c−1\nV,W\n\ncup/cap\n\ncoevaluation/evaluation\n\npositive/negative twist\n\nθV 或θV−1\n\ncoupon\n\ncoupon 上标记的 morphism\n\n这些规则可以用下面几张图来读。一个带标签的 coupon 表示一个 morphism；多输\n入、多输出的 coupon 表示一般 morphism\nf : V1 ⊗ · · · ⊗ Vm −→ W1 ⊗ · · · ⊗ Wn .\n图元上下连接对应 morphism 的复合，并列放置对应 tensor product。\n\n图 2: Coupon 表示 morphism；一般 coupon 允许多个输入与多个输出。\n\n图 3: 水平并列表示 tensor product；改变 strand 的方向时，颜色改为对偶对象。\n\n[[PAGE 7]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n7\n\nbraiding 与 twist 是 framed link 图示中最重要的两个局部操作。Crossing 被读成\n−1\ncV,W 或 c−1\nV,W ；一圈正负 twist 被读成 θV 或 θV 。因此，framing 的改变不是额外信息，\n\n而是已经由 ribbon category 的 twist 记录在代数中。\n\n图 4: Crossing 对应 braiding；ribbon 的正负扭转对应 twist 及其逆。\n同痕变形的代数化，就是把“图可以连续拉动而不改变 isotopy class”翻译成范畴公\n理。比如，strand 穿过一个 tensor product 的两种画法相同，对应 braiding 的 hexagon\nidentity\ncU,V ⊗W = (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n图形上，这正是把 U 同时穿过 V ⊗ W ，或先穿过 V 再穿过 W ，所得图示同痕。\n\n图 5: Braiding 的 hexagon identity 是 crossing 与 tensor product 相容性的图示版本。\n三条 strand 的 Reidemeister III 型同痕对应 Yang–Baxter identity：\n(idW ⊗cU,V ) ◦ (cU,W ⊗ idV ) ◦ (idU ⊗cV,W )\n= (cV,W ⊗ idU ) ◦ (idV ⊗cU,W ) ◦ (cU,V ⊗ idW ).\n\n[[PAGE 8]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n这解释了为什么一个 braiding 不只是任意的交换同构，而必须满足 braid relation。\n\n图 6: Yang–Baxter identity 是三条 colored strands 的 Reidemeister III 型同痕。\n类似地，morphisms 可以沿着 crossing 滑动，这对应 braiding 的自然性：\n(g ⊗ f ) ◦ cV,W = cV ′ ,W ′ ◦ (f ⊗ g).\nCup 与 cap 的拉直则对应 duality 的 zig-zag identities：\n(idV ⊗dV ) ◦ (bV ⊗ idV ) = idV ,\n\n(dV ⊗ idV ∗ ) ◦ (idV ∗ ⊗bV ) = idV ∗ .\n\n8\n\n[[PAGE 9]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n9\n\n图 7: Naturality 允许 coupon 穿过 crossing；cup/cap 由 coevaluation/evaluation 给出，\nzig-zag identities 允许它们被拉直。\n最后，把这些局部规则拼起来，就可以解释带 coupons 的 ribbon graph。ribbon\ncategory 的公理正是保证这种翻译不依赖于图示切分方式，并且在 ribbon isotopy 下保\n持不变的代数条件。\n\n图 8: 一般 ribbon graph 由 strands、crossings、twists、cups/caps 和 coupons 拼接而成。",
+      "rawEntries": [
+        {
+          "id": "duality-rigid-structure",
+          "type": "definition",
+          "name": "对偶与刚性结构",
+          "statement": "设 $C$ 是 strict monoidal category。对每个对象 $V$ 指定对象 $V^*$ 及态射 $b_V: 1 \\to V \\otimes V^*$（coevaluation）和 $d_V: V^* \\otimes V \\to 1$（evaluation），满足 zig-zag identities：$(\\mathrm{id}_V \\otimes d_V) \\circ (b_V \\otimes \\mathrm{id}_V) = \\mathrm{id}_V$，$(d_V \\otimes \\mathrm{id}_{V^*}) \\circ (\\mathrm{id}_{V^*} \\otimes b_V) = \\mathrm{id}_{V^*}$。具有此结构的 monoidal category 称为 rigid category。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "ribbon-category",
+          "type": "definition",
+          "name": "ribbon category",
+          "statement": "一个 ribbon category 是 monoidal category $C$，配有 braiding $c$、twist $\\theta$ 以及与它们相容的 duality $(^*, b, d)$。twist 是一族自然同构 $\\theta_V: V \\to V$，满足 $\\theta_{V \\otimes W} = c_{W,V} \\circ c_{V,W} \\circ (\\theta_V \\otimes \\theta_W)$，且 $\\theta_{V^*} = (\\theta_V)^*$。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "colored-ribbon-graph",
+          "type": "definition",
+          "name": "colored ribbon graph",
+          "statement": "设 $C$ 是 ribbon category。一个 $C$-colored ribbon graph 是三维流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons，并附加标签：每条 band/annulus 标以对象 $V$，方向反转则标 $V^*$；每个 coupon 标以 morphism，其 source 和 target 由边界上相遇的 colored strands 的张量积给出；isotopy 保持分解、方向和 colors。",
+          "page": 5,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "graphical-calculus-rules",
+          "type": "calculation",
+          "name": "图形演算局部对应规则",
+          "statement": "将 colored ribbon graph 的平面图示切成局部生成元并替换为范畴结构态射：identity strand 对应 $\\mathrm{id}_V$；positive/negative crossing 对应 $c_{V,W}$ 或 $c_{V,W}^{-1}$；cup/cap 对应 coevaluation/evaluation；positive/negative twist 对应 $\\theta_V$ 或 $\\theta_V^{-1}$；coupon 对应其标记的 morphism。上下连接对应复合，并列对应张量积，改变 strand 方向时颜色改为对偶对象。",
+          "page": 6,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "hexagon-identity",
+          "type": "calculation",
+          "name": "braiding 的 hexagon identity",
+          "statement": "对于 braiding $c$，有 $c_{U,V \\otimes W} = (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$。",
+          "page": 7,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "yang-baxter-identity",
+          "type": "calculation",
+          "name": "Yang–Baxter identity",
+          "statement": "对于 braiding $c$，有 $(\\mathrm{id}_W \\otimes c_{U,V}) \\circ (c_{U,W} \\otimes \\mathrm{id}_V) \\circ (\\mathrm{id}_U \\otimes c_{V,W}) = (c_{V,W} \\otimes \\mathrm{id}_U) \\circ (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$。",
+          "page": 7,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "braiding-naturality",
+          "type": "calculation",
+          "name": "braiding 的自然性",
+          "statement": "对于态射 $f: V \\to V'$，$g: W \\to W'$，有 $(g \\otimes f) \\circ c_{V,W} = c_{V',W'} \\circ (f \\otimes g)$。",
+          "page": 8,
+          "_provenance": {
+            "chunkIndex": 1,
+            "blockIndex": 1,
+            "pageRange": {
+              "first": 5,
+              "last": 9
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 2,
+      "pageRange": {
+        "first": 9,
+        "last": 13
+      },
+      "characterCount": 5607,
+      "text": "[[PAGE 9]]\n3\n\nRIBBON CATEGORY 与 GRAPHICAL CALCULUS\n\n9\n\n图 7: Naturality 允许 coupon 穿过 crossing；cup/cap 由 coevaluation/evaluation 给出，\nzig-zag identities 允许它们被拉直。\n最后，把这些局部规则拼起来，就可以解释带 coupons 的 ribbon graph。ribbon\ncategory 的公理正是保证这种翻译不依赖于图示切分方式，并且在 ribbon isotopy 下保\n持不变的代数条件。\n\n图 8: 一般 ribbon graph 由 strands、crossings、twists、cups/caps 和 coupons 拼接而成。\n\n[[PAGE 10]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n10\n\n3.4 Trace 与 dimension\nribbon category 中的 trace 是一个图形化的 trace，而不是一开始就给定的矩阵\ntrace。设 f : V → V 是 C 中的 endomorphism。记\nbV : 1 → V ⊗ V ∗ ,\n\ndV : V ∗ ⊗ V → 1\n\n为 coevaluation 和 evaluation。Turaev 的 categorical trace 定义为\n(\n)\ntrC (f ) = dV ◦ cV,V ∗ ◦ (θV ◦ f ) ⊗ idV ∗ ◦ bV ∈ EndC (1).\n对象 V 的 categorical dimension 定义为\ndimC (V ) = trC (idV ).\n图形上，trC (f ) 就是把一个标有 f 的 coupon 放到一条 V -colored closed ribbon 上后得\n到的 closed ribbon graph invariant。也就是说，若 Ωf 表示这个闭合图形，则\nF (Ωf ) = trC (f ).\n定理 3.6 (Turaev ribbon graph functor). 对任意 ribbon category C，存在一个拓扑不变\n量函子 F ，它把 C-colored ribbon graphs 映到 C 中的 morphisms。若 Γ 是 closed colored\nribbon graph，则\nF (Γ) ∈ EndC (1).\n在 EndC (1) = K 的情形下，F (Γ) 是 K 值不变量。\n这个定理是 graphical calculus 的严格表述。它说明，只要范畴结构满足 ribbon\ncategory 的公理，局部图元的代数解释就自动对 Reidemeister 型局部变形不变。\n\n4 Hopf 代数如何产生 ribbon category\n本节主线是：Hopf algebra A 的每一层代数结构，恰好在表示范畴 Rep(A) 上诱导\n一层范畴结构，从而逐步把 Rep(A) 提升为 ribbon category（与拓扑侧的完整对照见第\n9 节）\n。\nA 上的结构\n\nRep(A) 上的结构\n\n图示\n\nbialgebra：∆, ε\n\nmonoidal（张量积、单位） 并列 strands\n\nHopf：antipode S\n\nrigid / duality\n\ncup、cap\n\nquasitriangular：R-matrix braiding c\n\ncrossing\n\nribbon：universal twist v\n\nframing\n\ntwist θ\n\n[[PAGE 11]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n11\n\n设 A 是一个 Hopf algebra，结构映射为乘法、单位、coproduct ∆、counit ε 与 antipode\nS。若 V 与 W 是左 A-modules，则 V ⊗ W 上的 A-作用由 ∆ 给出：\na · (v ⊗ w) =\n\n∑\n\na(1) v ⊗ a(2) w,\n\n∆(a) =\n\n∑\n\na(1) ⊗ a(2) .\n\n因此 Rep(A) 是 monoidal category。\nantipode 的作用是构造 dual modules。设 V 是有限秩左 A-module，并记\nV ∗ = HomK (V, K).\n有两种自然的左 A-module 结构：\n(a · f )(v) = f (S(a)v),\n以及\n(a · f )(v) = f (S −1 (a)v),\n其中第二个公式要求 S 可逆。第一种结构使 evaluation V ∗ ⊗ V → K 与 coevaluation\nK → V ⊗V ∗ 成为 A-linear maps；第二种结构则对应另一侧的 duality。换言之，antipode\n是 cup 与 cap 可以被解释为 A-linear morphisms 的代数原因。\n这里的 A-linearity 可以直接检查。把 K 看成 counit 给出的平凡 A-module，即\na · c = ε(a)c。令\ndV : V ∗ ⊗ V → K,\n则\n\ndV (f ⊗ x) = f (x).\n\n(\n) ∑\ndV a · (f ⊗ x) =\ndV (a(1) f ⊗ a(2) x)\n∑ (\n)\n=\nf S(a(1) )a(2) x = ε(a)f (x),\n\n所以 dV 是 A-linear。若 {ei } 是 V 的一组基，{ei } 是对偶基，则\nbV : K → V ⊗ V ∗ ,\n\nbV (1) = δV =\n\n∑\n\nei ⊗ ei\n\ni\n\n也为 A-linear。事实上，将 V ⊗ V ∗ 识别为 EndK (V ) 时，δV 对应 idV ；而 a 作用在 δV\n上对应算子\nz 7−→\n\n∑\n\nei (S(a(2) )z) a(1) ei =\n\n∑\n\na(1) S(a(2) )z = ε(a)z.\n\ni\n\n因此 a · δV = ε(a)δV ，即 bV (a · 1) = a · bV (1)。\n需要注意，有限维向量空间的标准映射\njV : V → V ∗∗ ,\n\njV (x)(f ) = f (x)\n\n一般并不是 A-module isomorphism。事实上\n(a · jV (x))(f ) = jV (x)(S(a)f ) = f (S 2 (a)x) = jV (S 2 (a)x)(f ).\n\n[[PAGE 12]]\n4\n\nHOPF 代数如何产生 RIBBON CATEGORY\n\n12\n\n因此 jV 只在 S 2 = id 的特殊情形下自动是 A-linear。若 A 是 ribbon Hopf algebra，则\nDrinfeld element u = m(S ⊗ id)(R21 ) 与 universal twist v 给出与 quantum trace 相容的\npivotal element\nS 2 (a) = gag −1 .\n\ng = uv,\n\n这时真正的 A-module isomorphism V → V ∗∗ 是\npV (x)(f ) = f (gx) = jV (gx)(f ).\n因为\n(a · pV (x))(f ) = pV (x)(S(a)f ) = f (S 2 (a)gx)\n= f (gax) = pV (ax)(f ).\n这也解释了为什么 quantum trace 中会出现同一个因子 g = uv。（有些文献把 r = v −1\n称为 ribbon element，于是同一个因子写成 ur−1 ；为避免来回切换，下文一律用 v。）\n左对偶与右对偶的差别来自 evaluation/coevaluation 放在 V 的哪一侧。在一般刚\n性 monoidal category 中，左对偶和右对偶不必相同；在 ribbon Hopf algebra 的表示范\n畴中，由于 ribbon 结构给出 compatible pivotal structure，左右对偶被系统地联系起来。\n这就是 framed oriented tangle 中方向反转与对偶颜色可以一致处理的原因。\n定义 4.1 (quasitriangular Hopf algebra). 一个 quasitriangular Hopf algebra 是一个 Hopf\nalgebra A，配有可逆元\nR=\n\n∑\n\nR(1) ⊗ R(2) ∈ A ⊗ A,\n\n称为 universal R-matrix，使得\nR∆(a)R−1 = ∆op (a),\n并且\n(∆ ⊗ id)(R) = R13 R23 ,\n\n(id ⊗∆)(R) = R13 R12 .\n\n这些恒等式保证 R 与 coproduct 相容，并推出 Yang–Baxter equation。\n若 V, W 是 A-modules，则 R 定义 braiding\ncV,W = P ◦ (ρV ⊗ ρW )(R) : V ⊗ W → W ⊗ V,\n其中 P 是交换两个张量因子的 flip。Yang–Baxter equation 正是 braid relations 的代数\n形式。因此 universal R-matrix 是 crossing 的代数来源。\n定义 4.2 (ribbon Hopf algebra). 一个 ribbon Hopf algebra 是 quasitriangular Hopf algebra\n(A, R)，再配有 central invertible element v ∈ A，Turaev 称之为 universal twist，使它满\n足\n∆(v) = R21 R(v ⊗ v),\n\nS(v) = v,\n\nε(v) = 1,\n\n其中 R21 = PA (R) 是交换两个张量因子后的 R-matrix。如前所述，文献里也常把 v −1\n称为 ribbon element，那时上面的 coproduct 公式会带一个 (R21 R)−1 因子。\n\n[[PAGE 13]]\n5\n\nCOLORED FRAMED LINK INVARIANT\n\n13\n\n命题 4.3. 若 A 是 ribbon Hopf algebra，则有限维表示范畴 Repfd (A) 是 ribbon category。\n其 braiding 由 universal R-matrix 给出，twist 则由 universal twist 的作用给出：\nθV = ρV (v) : V → V.\n这说明 Hopf algebra 并不是直接“描述 framed link”，而是通过其表示范畴给出\nribbon category，再由 Turaev 的 graphical calculus 得到 colored framed link invariant。\n现在可以解释几种 trace 的关系。普通 trace TrV 是有限维向量空间 V 上线性算\n子的矩阵 trace。quantum trace 则是先用 ribbon Hopf algebra 的 canonical element 把\nordinary trace 修正一下、再取 trace：\ntrq (f ) = TrV (ρV (uv) ◦ f ) ,\n其中 u = m(S ⊗ id)(R21 ) 是 Drinfeld element。于是\ndimq (V ) = trq (idV ) = TrV (ρV (uv)).\n另一方面，上一节定义的 categorical trace trC (f ) 是图形闭合得到的 morphism 1 → 1。\n当 C = Repfd (A) 时，把 braiding、duality 和 twist 的具体公式代入 categorical trace，正\n好得到上面的 quantum trace：\ntrRep(A) (f ) = trq (f ).\n因此三种写法并不矛盾：ordinary trace 是线性代数操作；quantum trace 是 Hopf algebra\n表示里的 ordinary trace 加权版本；categorical trace 是同一个量的 coordinate-free 图形\n化定义。\n\n5 Colored framed link invariant\n设 A 是 ribbon Hopf algebra，令 C = Repfd (A)。给定 oriented framed link\nL = L 1 ∪ · · · ∪ Lm ,\n并给每个分量 Li 指定一个 color Vi ∈ C，Turaev functor 给出标量\nF (L; V1 , . . . , Vm ) ∈ EndC (1).\n若 EndC (1) = K，则这就是 K 值的 colored framed link invariant。\n这里必须强调“framed”。在 ribbon category 中，正负 twist 分别由 θV 及其逆表示；\n因此 link component 的 framing 改变会改变 invariant。若采用 blackboard framing，则\ndiagram 的 writhe 可以用来编码 framing；这正是 framed link 与 ribbon diagram 对应\n的图示基础。",
+      "rawEntries": [
+        {
+          "id": "paper:def:categorical-trace",
+          "type": "definition",
+          "name": "范畴迹",
+          "statement": "对endomorphism $f: V \\to V$，定义 $\\mathrm{tr}_C(f) = d_V \\circ c_{V,V^*} \\circ (\\theta_V \\circ f) \\otimes \\mathrm{id}_{V^*} \\circ b_V \\in \\mathrm{End}_C(1)$，其中 $b_V, d_V$ 为 coevaluation 和 evaluation。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:categorical-dimension",
+          "type": "definition",
+          "name": "范畴维数",
+          "statement": "对象 $V$ 的范畴维数定义为 $\\dim_C(V) = \\mathrm{tr}_C(\\mathrm{id}_V)$。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:tensor-product-action",
+          "type": "algorithm",
+          "name": "张量积上的A-作用",
+          "statement": "若 $V,W$ 是左 $A$-modules，则 $V \\otimes W$ 上的 $A$-作用由 $\\Delta$ 给出：$a \\cdot (v \\otimes w) = \\sum a_{(1)} v \\otimes a_{(2)} w$，其中 $\\Delta(a) = \\sum a_{(1)} \\otimes a_{(2)}$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:dual-module-action-first",
+          "type": "definition",
+          "name": "对偶模左作用（第一种）",
+          "statement": "设 $V$ 是有限秩左 $A$-module，$V^* = \\mathrm{Hom}_K(V,K)$，定义 $(a \\cdot f)(v) = f(S(a)v)$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:dual-module-action-second",
+          "type": "definition",
+          "name": "对偶模左作用（第二种）",
+          "statement": "设 $S$ 可逆，定义 $(a \\cdot f)(v) = f(S^{-1}(a)v)$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:evaluation-map",
+          "type": "definition",
+          "name": "求值映射",
+          "statement": "$d_V: V^* \\otimes V \\to K$，$d_V(f \\otimes x) = f(x)$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:coevaluation-map",
+          "type": "definition",
+          "name": "余求值映射",
+          "statement": "$b_V: K \\to V \\otimes V^*$，$b_V(1) = \\delta_V = \\sum_i e_i \\otimes e^i$，其中 $\\{e_i\\}$ 是 $V$ 的基，$\\{e^i\\}$ 是对偶基。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:double-dual-map",
+          "type": "definition",
+          "name": "双重对偶映射",
+          "statement": "$j_V: V \\to V^{**}$，$j_V(x)(f) = f(x)$。",
+          "page": 11,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:drinfeld-element",
+          "type": "definition",
+          "name": "Drinfeld元素",
+          "statement": "$u = m(S \\otimes \\mathrm{id})(R_{21})$，其中 $R$ 是 universal $R$-matrix，$R_{21}$ 是交换因子后的 $R$-matrix。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:pivotal-element",
+          "type": "definition",
+          "name": "pivotal元素",
+          "statement": "$g = uv$，其中 $u$ 是 Drinfeld 元素，$v$ 是 universal twist，满足 $S^2(a) = g a g^{-1}$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:pivotal-isomorphism",
+          "type": "definition",
+          "name": "pivotal同构",
+          "statement": "$p_V(x)(f) = f(gx) = j_V(gx)(f)$，给出 $A$-module 同构 $V \\to V^{**}$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:quasitriangular-hopf-algebra",
+          "type": "definition",
+          "name": "拟三角Hopf代数",
+          "statement": "一个 Hopf 代数 $A$ 配有可逆元 $R = \\sum R^{(1)} \\otimes R^{(2)} \\in A \\otimes A$，称为 universal $R$-matrix，满足 $R\\Delta(a)R^{-1} = \\Delta^{\\mathrm{op}}(a)$，且 $(\\Delta \\otimes \\mathrm{id})(R) = R_{13}R_{23}$，$(\\mathrm{id} \\otimes \\Delta)(R) = R_{13}R_{12}$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:ribbon-hopf-algebra",
+          "type": "definition",
+          "name": "ribbon Hopf代数",
+          "statement": "拟三角 Hopf 代数 $(A,R)$ 配有 central invertible element $v \\in A$，称为 universal twist，满足 $\\Delta(v) = R_{21}R(v \\otimes v)$，$S(v) = v$，$\\varepsilon(v) = 1$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:braiding",
+          "type": "definition",
+          "name": "braiding",
+          "statement": "若 $V,W$ 是 $A$-modules，则 $R$ 定义 braiding $c_{V,W} = P \\circ (\\rho_V \\otimes \\rho_W)(R): V \\otimes W \\to W \\otimes V$，其中 $P$ 是交换张量因子的 flip。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:quantum-trace",
+          "type": "definition",
+          "name": "量子迹",
+          "statement": "$\\mathrm{tr}_q(f) = \\mathrm{Tr}_V(\\rho_V(uv) \\circ f)$，其中 $u$ 是 Drinfeld 元素，$v$ 是 universal twist。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:quantum-dimension",
+          "type": "definition",
+          "name": "量子维数",
+          "statement": "$\\dim_q(V) = \\mathrm{tr}_q(\\mathrm{id}_V) = \\mathrm{Tr}_V(\\rho_V(uv))$。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:colored-framed-link-invariant",
+          "type": "definition",
+          "name": "着色框架链环不变量",
+          "statement": "设 $A$ 是 ribbon Hopf 代数，$C = \\mathrm{Rep}_{\\mathrm{fd}}(A)$，给定 oriented framed link $L = \\cup_i L_i$，每个分量指定 color $V_i \\in C$，Turaev functor 给出标量 $F(L; V_1, \\dots, V_m) \\in \\mathrm{End}_C(1)$，若 $\\mathrm{End}_C(1) = K$，则得到 $K$ 值 colored framed link invariant。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:turaev-ribbon-graph-functor",
+          "type": "theorem",
+          "name": "Turaev ribbon graph 函子",
+          "statement": "对任意 ribbon category $C$，存在一个拓扑不变量函子 $F$，它把 $C$-colored ribbon graphs 映到 $C$ 中的 morphisms。若 $\\Gamma$ 是 closed colored ribbon graph，则 $F(\\Gamma)\\in \\mathrm{End}_C(1)$。在 $\\mathrm{End}_C(1)=K$ 的情形下，$F(\\Gamma)$ 是 $K$ 值不变量。",
+          "page": 10,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:ribbon-hopfs-rep-cat",
+          "type": "proposition",
+          "name": "ribbon Hopf 代数的表示范畴是 ribbon category",
+          "statement": "若 $A$ 是 ribbon Hopf algebra，则有限维表示范畴 $\\mathrm{Rep}^{fd}(A)$ 是 ribbon category。其 braiding 由 universal $R$-matrix 给出，twist 则由 universal twist 的作用给出：$\\theta_V = \\rho_V(v): V \\to V$。",
+          "page": 12,
+          "_provenance": {
+            "chunkIndex": 2,
+            "blockIndex": 2,
+            "pageRange": {
+              "first": 9,
+              "last": 13
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 3,
+      "pageRange": {
+        "first": 13,
+        "last": 17
+      },
+      "characterCount": 6793,
+      "text": "[[PAGE 13]]\n5\n\nCOLORED FRAMED LINK INVARIANT\n\n13\n\n命题 4.3. 若 A 是 ribbon Hopf algebra，则有限维表示范畴 Repfd (A) 是 ribbon category。\n其 braiding 由 universal R-matrix 给出，twist 则由 universal twist 的作用给出：\nθV = ρV (v) : V → V.\n这说明 Hopf algebra 并不是直接“描述 framed link”，而是通过其表示范畴给出\nribbon category，再由 Turaev 的 graphical calculus 得到 colored framed link invariant。\n现在可以解释几种 trace 的关系。普通 trace TrV 是有限维向量空间 V 上线性算\n子的矩阵 trace。quantum trace 则是先用 ribbon Hopf algebra 的 canonical element 把\nordinary trace 修正一下、再取 trace：\ntrq (f ) = TrV (ρV (uv) ◦ f ) ,\n其中 u = m(S ⊗ id)(R21 ) 是 Drinfeld element。于是\ndimq (V ) = trq (idV ) = TrV (ρV (uv)).\n另一方面，上一节定义的 categorical trace trC (f ) 是图形闭合得到的 morphism 1 → 1。\n当 C = Repfd (A) 时，把 braiding、duality 和 twist 的具体公式代入 categorical trace，正\n好得到上面的 quantum trace：\ntrRep(A) (f ) = trq (f ).\n因此三种写法并不矛盾：ordinary trace 是线性代数操作；quantum trace 是 Hopf algebra\n表示里的 ordinary trace 加权版本；categorical trace 是同一个量的 coordinate-free 图形\n化定义。\n\n5 Colored framed link invariant\n设 A 是 ribbon Hopf algebra，令 C = Repfd (A)。给定 oriented framed link\nL = L 1 ∪ · · · ∪ Lm ,\n并给每个分量 Li 指定一个 color Vi ∈ C，Turaev functor 给出标量\nF (L; V1 , . . . , Vm ) ∈ EndC (1).\n若 EndC (1) = K，则这就是 K 值的 colored framed link invariant。\n这里必须强调“framed”。在 ribbon category 中，正负 twist 分别由 θV 及其逆表示；\n因此 link component 的 framing 改变会改变 invariant。若采用 blackboard framing，则\ndiagram 的 writhe 可以用来编码 framing；这正是 framed link 与 ribbon diagram 对应\n的图示基础。\n\n[[PAGE 14]]\n6 从 LINK INVARIANT 到三维流形不变量\n\n6\n\n14\n\n从 link invariant 到三维流形不变量\n\n上一节得到的 F (L; V1 , . . . , Vm ) 只是 colored framed link invariant。要由它定义 ML\n的不变量，必须消除 surgery presentation 的非唯一性。按照 Kirby 定理，需要构造一个\n表达式 τ (L)，使其在 handle slides 与 ±1 moves 下不变。\n实现这一点的结构是 modular category。下文把它写成\n(V, {Vi }i∈I ),\n其 ground ring 为 K。\n定义 6.1 (modular category). 一个 modular category 是一个 ribbon K-linear category V，\n连同有限个 simple objects 的代表集 {Vi }i∈I ，满足以下条件：\n1. 单位对象属于这组 simples，即存在 0 ∈ I 使得 V0 = 1；\n2. 对偶封闭：对每个 i ∈ I，存在 i∗ ∈ I 使得 Vi∗ ∼\n= Vi∗ ；\n3. domination：每个对象 X 的 identity morphism 都可写成有限和\nidX =\n\n∑\n\nfr g r ,\n\nr\n\n其中 gr : X → Vi(r) ，fr : Vi(r) → X，且 i(r) ∈ I；\n4. Hopf link matrix\nSij = tr(cVj ,Vi ◦ cVi ,Vj )\n在 K 上可逆。\n前三条条件表达“有限 simple colors 足够控制整个范畴”；最后一条 non-degeneracy\n条件是 modularity 的核心，它使 Kirby color 具有 handle-slide 不变性。记\nSij = tr(cVj ,Vi ◦ cVi ,Vj ),\n\ndim(i) = dim(Vi ),\n\n其中 Sij 是 Hopf link matrix。若 twist 在 simple object Vi 上的标量为 vi ，则 Turaev 还\n引入\nD2 =\n\n∑\n\ndim(i)2 ,\n\n∆=\n\ni∈I\n\n∑\n\nvi−1 dim(i)2 .\n\ni∈I\n\n这里 D 称为 rank；∆ 是由 twist anomaly 决定的常数。\n定义 6.2 (Kirby color). Kirby color 是形式线性组合\nΩV =\n\n∑\ni∈I\n\ndim(i)Vi .\n\n[[PAGE 15]]\n7\n\nMODULAR HOPF ALGEBRA 与 PURIFICATION\n\n15\n\n若 L 有 m 个分量，把每个分量都染成 ΩV ，意思是取 Turaev 的加权求和\n(m\n)\n∑\n∏\n{L} =\ndim(λ(Ln )) F (Γ(L, λ)).\nλ∈col(L)\n\nn=1\n\n这里 col(L) 是从 L 的分量集合到 I 的所有 coloring，Γ(L, λ) 是对应的 colored ribbon\ngraph。ΩV 不是范畴中的普通对象，而是 surgery coloring sum 的记号。\nKirby color 的核心性质是 handle-slide property：一个 strand 在 ΩV -colored component 上滑过，不改变整体加权求和。这一性质的代数来源可以理解为 Hopf link S-matrix\n的非退化性和 quantum dimensions 的配合；几何上，它正是 Kirby handle slide 的不变\n性。\n设 BL 是 framed link L 的 linking matrix。对角元为 framing，非对角元为 pairwise\nlinking numbers。记\nσ(L) = σ+ (L) − σ− (L)\n为 BL 的 signature；等价地，它是 Turaev 的四维 WL 的 intersection form signature。\nKirby 的 ±1 move 会改变 signature，因此 {L} 本身通常不是三维流形不变量。\nT94 Chapter II 的归一化公式是\nτV,D (ML ) = ∆σ(L) D−σ(L)−m−1 {L}.\n这里 m 是 surgery link 的分量数。该公式的 normalization 给出 τV,D (S 3 ) = D−1 和\nτV,D (S 1 × S 2 ) = 1。不同文献可能把 D 或 ∆ 吸收到整体常数中；关键结构事实不变：\nKirby color 保证 handle slide 不变性，∆ 与 signature/rank normalization 保证 ±1 move\n不变性。\n定理 6.3 (Reshetikhin–Turaev invariant). 设 (V, {Vi }i∈I ) 是 modular category，并选定\nrank D。由 Kirby color 加权求和和 signature 归一化得到的数量 τV,D (ML ) 在 Kirby\nmoves 下不变。因此它只依赖于 closed oriented 3-manifold ML 的 orientation-preserving\nhomeomorphism class，给出三维流形不变量\nτV,D (M ) ∈ K.\n更一般地，若 closed 3-manifold M 中含有 V-colored framed ribbon graph Γ，同样可以\n定义 pair invariant τV,D (M, Γ)。\n\n7\n\nModular Hopf algebra 与 purification\n\nT94 Chapter XI 先在 Hopf 代数层面定义 modular Hopf algebra，再通过表示范畴\n与 purification 得到 modular category。本节记录这一步的具体形式。\n\n[[PAGE 16]]\n7\n\nMODULAR HOPF ALGEBRA 与 PURIFICATION\n\n16\n\n定义 7.1 (negligible module). 设 A 是 ribbon Hopf algebra，Z 是有限秩 A-module。若\n对任意 A-linear endomorphism f : Z → Z 都有\ntrq (f ) = 0,\n则称 Z 是 negligible module。等价地，idZ 的 quantum trace 为零，并且经过 Z 的\nmorphisms 在 purification 中会被商掉。\n定义 7.2 (modular Hopf algebra). 一个 modular Hopf algebra 是一个 ribbon Hopf Kalgebra A，连同一族有限秩 simple A-modules {Vi }i∈I ，满足：\n1. 存在 0 ∈ I，使 V0 = K，其中 A 通过 counit 作用在 K 上；\n2. 对每个 i ∈ I，存在 i∗ ∈ I，使 Vi∗ ∼\n= Vi∗ ；\n3. 对任意 k, l ∈ I，张量积 Vk ⊗ Vl 可分解为有限个 Vi 的直和，加上一个 negligible\nA-module；\n4. 由 monodromy R21 R 给出的 Hopf link matrix\n)\n(\nSij = trq (R21 R)|Vi ⊗Vj\n在 K 上可逆。\n这个定义是 modular category 公理在 Hopf algebra 表示论中的对应版本。单位对\n象、对偶闭合和 tensor product 分解对应 modular category 的前三条公理；S-matrix\n可逆对应 non-degeneracy。区别是：在 quantum group at roots of unity 中确实会出现\nnegligible modules，因此 Rep(A) 的相应子范畴一般首先是 quasimodular category，而\n不是已经纯粹的 modular category。\n定理 7.3 (Turaev). 设 (A, {Vi }) 是 modular Hopf algebra。由 {Vi } quasidominate 的 Amodules 构成 Rep(A) 的一个 ribbon 子范畴 T 。则 (T , {Vi }) 是 quasimodular category。\n将 T 按 negligible morphisms 取 quotient，即 purification，得到 modular category Tp 。\n于是每个 modular Hopf algebra canonically gives rise to a modular category。\n因此，在 T94 的层级中，modular Hopf algebra 是产生 quasimodular category 的\nHopf-algebraic input；purification 是从这个 quasimodular category 到 modular category\n的一步：\nmodular Hopf algebra −→ quasimodular category\n−→ purified modular category\n−→ RT invariant.\n\n[[PAGE 17]]\n8 Uq (sl2 )、JONES POLYNOMIAL 与 WRT INVARIANT\n\n8\n\n17\n\nUq (sl2)、Jones polynomial 与 WRT invariant\n\n最后说明本文主线如何包含 Jones polynomial。这里要区分 generic parameter 与\nroot of unity 两种情形。T94 Chapter XI §7.5 讨论的是 generic 或 h-adic 情形：由 Uh g\n的 regular finite-rank modules 组成 ribbon category。一个 indecomposable regular module\n由最高权标号，而这些最高权等价于 m = rank g 个非负整数。因此，若\nL = L 1 ∪ · · · ∪ Ls\n是 framed oriented link，给每个分量指定一个最高权\nLj 7−→ Vλj\n就得到一个 colored framed link。把这个 colored link 代入 Chapter I 的 operator invariant\nF ，得到\nF (L; Vλ1 , . . . , Vλs ) ∈ C[[h]].\nT94 §7.5 指出，这个不变量实际上是变量\nq = exp(−h/2)\n的 Laurent polynomial。\n当 g = sl2 (C) 时，rank 为 1，indecomposable regular modules 由一个非负整数标\n号：\nV0 , V 1 , V 2 , . . . .\n这里 Vn 是最高权为 n 的表示，经典维数为 n + 1。因此，对 knot K，每个 n ≥ 0 都给\n出一个 framed colored link polynomial\nF (K; Vn ).\n这些就是 colored Jones polynomial 的 quantum-group 来源。特别地，V1 是二维基本表\n示；T94 §7.5 说明，当 link 的所有分量都染成 sl2 的基本表示时，得到的 F 是 Jones\npolynomial 的一个版本。对 n > 1，得到的是 higher colored Jones polynomials。\n还需注意，operator invariant F 首先是 framed link invariant。若从一个普通 oriented\nlink diagram D 出发，通常先采用 blackboard framing，把 D 看成 framed link diagram，\n再给每个分量染成 V1 ，计算\nF (D; V1 , . . . , V1 ).\n这个量在 Reidemeister II、III 型变形下表现良好，但 Reidemeister I 会改变 blackboard\nframing。要得到普通 oriented link invariant，需要用 diagram 的 writhe 做归一化，抵\n消 twist eigenvalue 带来的 framing dependence。换言之，\nJones polynomial = writhe-normalized F (D; V1 , . . . , V1 ),",
+      "rawEntries": [
+        {
+          "id": "paper:def:quantum-trace",
+          "type": "definition",
+          "name": "quantum trace",
+          "statement": "对有限维表示V上的线性算子f，quantum trace定义为 tr_q(f)=Tr_V(ρ_V(uv)∘f)，其中u是Drinfeld element。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:drinfeld-element",
+          "type": "definition",
+          "name": "Drinfeld element",
+          "statement": "在ribbon Hopf algebra中，Drinfeld element定义为 u = m(S⊗id)(R_{21})。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:colored-framed-link-invariant",
+          "type": "definition",
+          "name": "着色框架链接不变量",
+          "statement": "设A是ribbon Hopf algebra，C=Rep_fd(A)，对oriented framed link L的分量指定color V_i∈C，Turaev functor给出标量F(L;V_1,...,V_m)∈End_C(1)。若End_C(1)=K，则得到K值的colored framed link invariant。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:modular-category",
+          "type": "definition",
+          "num": 6.1,
+          "name": "modular category",
+          "statement": "一个modular category是ribbon K-linear category V，连同有限个simple objects代表集{V_i}_{i∈I}，满足：单位对象属于代表集；对偶封闭；domination（每个X的identity可写成有限和）；Hopf link矩阵S_{ij}=tr(c_{V_j,V_i}∘c_{V_i,V_j})在K上可逆。",
+          "page": 14,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:kirby-color",
+          "type": "definition",
+          "num": 6.2,
+          "name": "Kirby color",
+          "statement": "Kirby color是形式线性组合 Ω_V = Σ_{i∈I} dim(i) V_i，其中dim(i)=dim(V_i)。",
+          "page": 14,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:rank-and-delta",
+          "type": "definition",
+          "name": "rank与Delta",
+          "statement": "定义 D^2 = Σ_{i∈I} dim(i)^2，Δ = Σ_{i∈I} v_i^{-1} dim(i)^2，其中v_i是twist在simple object V_i上的标量。D称为rank，Δ由twist anomaly决定。",
+          "page": 14,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:weighted-sum-l",
+          "type": "definition",
+          "name": "加权求和{L}",
+          "statement": "对m分量链接L，{L} = Σ_{λ∈col(L)} ∏_{n=1}^m dim(λ(L_n)) F(Γ(L,λ))，其中col(L)是分量到I的所有coloring，Γ(L,λ)是对应colored ribbon graph。",
+          "page": 15,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:negligible-module",
+          "type": "definition",
+          "num": 7.1,
+          "name": "negligible module",
+          "statement": "设A是ribbon Hopf algebra，Z是有限秩A-module。若对任意A-linear endomorphism f:Z→Z都有tr_q(f)=0，则称Z是negligible module。",
+          "page": 15,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:modular-hopf-algebra",
+          "type": "definition",
+          "num": 7.2,
+          "name": "modular Hopf algebra",
+          "statement": "一个modular Hopf algebra是ribbon Hopf K-algebra A，连同有限秩simple A-modules {V_i}_{i∈I}，满足：单位对象V_0=K；对偶封闭；张量积分解为有限个V_i直和加negligible module；Hopf link矩阵S_{ij}=tr_q((R_{21}R)|_{V_i⊗V_j})在K上可逆。",
+          "page": 16,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:purification",
+          "type": "algorithm",
+          "name": "purification构造",
+          "statement": "设(A,{V_i})是modular Hopf algebra，由{V_i} quasidominate的A-modules构成ribbon子范畴T，将T按negligible morphisms取quotient，得到modular category T^p。",
+          "page": 16,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:highest-weight-label",
+          "type": "definition",
+          "name": "最高权标号",
+          "statement": "在generic或h-adic情形，indecomposable regular module由最高权标号，最高权等价于m=rank g个非负整数。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:vn-representation",
+          "type": "definition",
+          "name": "表示V_n",
+          "statement": "当g=sl_2(C)时，indecomposable regular modules由非负整数n标号，V_n是最高权为n的表示，经典维数为n+1。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:colored-jones-polynomial",
+          "type": "definition",
+          "name": "colored Jones polynomial",
+          "statement": "对knot K，每个n≥0给出framed colored link polynomial F(K;V_n)，这些是colored Jones polynomial的quantum-group来源；当所有分量染成sl_2基本表示时，F是Jones polynomial的一个版本。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:writhe-normalization",
+          "type": "calculation",
+          "name": "writhe归一化公式",
+          "statement": "Jones polynomial = writhe-normalized F(D;V_1,...,V_1)，即用diagram的writhe抵消twist eigenvalue带来的framing dependence。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:calc:tau-normalization",
+          "type": "calculation",
+          "name": "RT不变量归一化公式",
+          "statement": "τ_{V,D}(M_L) = Δ^{σ(L)} D^{-σ(L)-m-1} {L}，其中σ(L)是linking matrix的signature，m是surgery link分量数。",
+          "page": 15,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:calc:quantum-trace-relation",
+          "type": "calculation",
+          "name": "categorical trace与quantum trace关系",
+          "statement": "当C=Rep_fd(A)时，categorical trace tr_C(f)等于quantum trace tr_q(f)，即tr_{Rep(A)}(f)=tr_q(f)。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:ext:kirby-theorem",
+          "type": "claim",
+          "external": true,
+          "name": "Kirby定理",
+          "statement": "三维流形可由surgery link表示，且surgery presentation在handle slides与±1 moves下不变。",
+          "source": "Kirby (1978)",
+          "page": 14,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:ext:turaev-graphical-calculus",
+          "type": "claim",
+          "external": true,
+          "name": "Turaev graphical calculus",
+          "statement": "通过ribbon category的图形演算，将colored framed link映射到标量，得到colored framed link invariant。",
+          "source": "Turaev",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:ext:t94-laurent-polynomial",
+          "type": "claim",
+          "external": true,
+          "name": "T94 §7.5 Laurent多项式结论",
+          "statement": "在generic或h-adic情形，operator invariant F(L;V_{λ_1},...,V_{λ_s})是变量q=exp(-h/2)的Laurent多项式。",
+          "source": "Turaev, Quantum Invariants of Knots and 3-Manifolds, Chapter XI §7.5",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:ext:t94-normalization",
+          "type": "claim",
+          "external": true,
+          "name": "T94 Chapter II归一化公式",
+          "statement": "T94 Chapter II给出归一化公式 τ_{V,D}(M_L)=Δ^{σ(L)}D^{-σ(L)-m-1}{L}，并给出τ(S^3)=D^{-1}，τ(S^1×S^2)=1。",
+          "source": "Turaev, Quantum Invariants of Knots and 3-Manifolds, Chapter II",
+          "page": 15,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:ribbon-hopf-rep-cat",
+          "type": "proposition",
+          "name": "ribbon Hopf代数表示范畴的ribbon结构",
+          "statement": "若 $A$ 是 ribbon Hopf algebra，则有限维表示范畴 $\\mathrm{Rep}_{\\mathrm{fd}}(A)$ 是 ribbon category，其 braiding 由 universal $R$-matrix 给出，twist 由 universal twist 的作用给出：$\\theta_V = \\rho_V(v): V \\to V$。",
+          "page": 13,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:reshetikhin-turaev",
+          "type": "theorem",
+          "name": "Reshetikhin–Turaev不变量",
+          "statement": "设 $(V,\\{V_i\\}_{i\\in I})$ 是 modular category，并选定 rank $D$。由 Kirby color 加权求和和 signature 归一化得到的数量 $\\tau_{V,D}(M_L)$ 在 Kirby moves 下不变，因此只依赖于 closed oriented 3-manifold $M_L$ 的 orientation-preserving homeomorphism class，给出三维流形不变量 $\\tau_{V,D}(M)\\in K$。更一般地，若 $M$ 含 $V$-colored framed ribbon graph $\\Gamma$，可定义 pair invariant $\\tau_{V,D}(M,\\Gamma)$。",
+          "page": 15,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:thm:turaev-purification",
+          "type": "theorem",
+          "name": "Turaev purification定理",
+          "statement": "设 $(A,\\{V_i\\})$ 是 modular Hopf algebra。由 $\\{V_i\\}$ quasidominate 的 $A$-modules 构成 $\\mathrm{Rep}(A)$ 的一个 ribbon 子范畴 $T$，则 $(T,\\{V_i\\})$ 是 quasimodular category。将 $T$ 按 negligible morphisms 取 quotient（即 purification），得到 modular category $T_p$。于是每个 modular Hopf algebra canonically gives rise to a modular category。",
+          "page": 16,
+          "_provenance": {
+            "chunkIndex": 3,
+            "blockIndex": 3,
+            "pageRange": {
+              "first": 13,
+              "last": 17
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        }
+      ]
+    },
+    {
+      "chunkIndex": 4,
+      "pageRange": {
+        "first": 17,
+        "last": 19
+      },
+      "characterCount": 3271,
+      "text": "[[PAGE 17]]\n8 Uq (sl2 )、JONES POLYNOMIAL 与 WRT INVARIANT\n\n8\n\n17\n\nUq (sl2)、Jones polynomial 与 WRT invariant\n\n最后说明本文主线如何包含 Jones polynomial。这里要区分 generic parameter 与\nroot of unity 两种情形。T94 Chapter XI §7.5 讨论的是 generic 或 h-adic 情形：由 Uh g\n的 regular finite-rank modules 组成 ribbon category。一个 indecomposable regular module\n由最高权标号，而这些最高权等价于 m = rank g 个非负整数。因此，若\nL = L 1 ∪ · · · ∪ Ls\n是 framed oriented link，给每个分量指定一个最高权\nLj 7−→ Vλj\n就得到一个 colored framed link。把这个 colored link 代入 Chapter I 的 operator invariant\nF ，得到\nF (L; Vλ1 , . . . , Vλs ) ∈ C[[h]].\nT94 §7.5 指出，这个不变量实际上是变量\nq = exp(−h/2)\n的 Laurent polynomial。\n当 g = sl2 (C) 时，rank 为 1，indecomposable regular modules 由一个非负整数标\n号：\nV0 , V 1 , V 2 , . . . .\n这里 Vn 是最高权为 n 的表示，经典维数为 n + 1。因此，对 knot K，每个 n ≥ 0 都给\n出一个 framed colored link polynomial\nF (K; Vn ).\n这些就是 colored Jones polynomial 的 quantum-group 来源。特别地，V1 是二维基本表\n示；T94 §7.5 说明，当 link 的所有分量都染成 sl2 的基本表示时，得到的 F 是 Jones\npolynomial 的一个版本。对 n > 1，得到的是 higher colored Jones polynomials。\n还需注意，operator invariant F 首先是 framed link invariant。若从一个普通 oriented\nlink diagram D 出发，通常先采用 blackboard framing，把 D 看成 framed link diagram，\n再给每个分量染成 V1 ，计算\nF (D; V1 , . . . , V1 ).\n这个量在 Reidemeister II、III 型变形下表现良好，但 Reidemeister I 会改变 blackboard\nframing。要得到普通 oriented link invariant，需要用 diagram 的 writhe 做归一化，抵\n消 twist eigenvalue 带来的 framing dependence。换言之，\nJones polynomial = writhe-normalized F (D; V1 , . . . , V1 ),\n\n[[PAGE 18]]\n9 结构表\n\n18\n\n其中变量替换和整体常数依 convention 而不同。T94 Chapter XII 从 Kauffman bracket\nviewpoint 给出同一现象：bracket 是 framed link invariant，乘以 writhe 修正因子后得\n到 ordinary oriented Jones polynomial。\n在 root of unity 情形，需要把允许的 colors 截断到有限的 Weyl alcove simple modules。T94 说明，对于满足相应阶数条件的 q，可以从 Uq (g) 得到 modular Hopf algebra；经\n过 purification 得到 modular category 后，再应用第 6 节所总结的 surgery construction，\n就得到 Witten–Reshetikhin–Turaev 型 3-manifold invariants。\n因此，三者的逻辑关系是：\n1. generic/h-adic 的 Uq (sl2 ) 给出 colored Jones polynomials；\n2. 颜色 V1 ，也就是二维基本表示，给出 ordinary Jones polynomial 的一个归一化版\n本；\n3. root of unity 下的有限 modular data 经过 surgery/Kirby normalization 给出 WRT\n3-manifold invariants。\n\n9\n\n结构表\n\nHopf 代数结构\n\n代数数据\n\n表示范畴中的结构\n\n拓扑解释\n\nalgebra\n\nmultiplication, unit\n\nA-modules 与\n\n只有表示论，还不能自然\n\nA-linear maps\n\n解释并列 strands\n\nmonoidal category\n\n解释 tensor product，即多\n\nbialgebra\n\ncoproduct, counit\n\n条线并列\nrigid category /\n\n解释 cup、cap、orientation\n\nduality\n\nreversal\n\nuniversal R-matrix\n\nbraided category\n\n解释 crossing\n\nuniversal twist\n\nribbon category\n\n解释 twist 与 framing\n\nmodular Hopf\n\nfinite simple colors,\n\nquasimodular\n\n通过 Kirby color 与 signa-\n\nalgebra\n\nquantum\n\ncategory；\n\nture 归一化得到三维流形\n\ndimensions,\n\npurification 后为\n\n不变量\n\ninvertible S-matrix,\n\nmodular category\n\nHopf algebra\n\nquasitriangular\n\nantipode\n\nHopf algebra\nribbon Hopf\nalgebra\n\nnegligible\nsummands\n\n表 1: 从 Hopf 代数结构到拓扑构造的对应关系\n\n[[PAGE 19]]\n参考文献\n\n19\n\n参考文献\n[RT1] N. Reshetikhin and V. Turaev, Ribbon graphs and their invariants derived from\nquantum groups, Communications in Mathematical Physics 127 (1990), 1–26.\n[RT2] N. Reshetikhin and V. Turaev, Invariants of 3-manifolds via link polynomials and\nquantum groups, Inventiones Mathematicae 103 (1991), 547–597.\n[T94] V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter, 1994.\n[Ki] R. Kirby, A calculus of framed links in S 3 , Inventiones Mathematicae 45 (1978),\n35–56.",
+      "rawEntries": [
+        {
+          "id": "paper:def:colored-framed-link",
+          "type": "definition",
+          "name": "染色框架链环",
+          "statement": "对framed oriented link $L = L_1 \\cup \\cdots \\cup L_s$，给每个分量指定一个最高权表示 $V_{\\lambda_j}$，得到 colored framed link。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:sl2-regular-module",
+          "type": "definition",
+          "name": "sl2的不可分解正则模",
+          "statement": "当 $\\mathfrak{g} = \\mathfrak{sl}_2(\\mathbb{C})$ 时，indecomposable regular modules 由非负整数 $n$ 标号，$V_n$ 是最高权为 $n$ 的表示，经典维数为 $n+1$。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:def:blackboard-framing",
+          "type": "definition",
+          "name": "黑板框架",
+          "statement": "从普通 oriented link diagram $D$ 出发，采用 blackboard framing，把 $D$ 看成 framed link diagram。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:calc:jones-writhe-normalization",
+          "type": "calculation",
+          "name": "Jones多项式的writhe归一化",
+          "statement": "Jones polynomial $= $ writhe-normalized $F(D; V_1, \\ldots, V_1)$，其中变量替换和整体常数依 convention 而不同。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:t94-laurent-polynomial",
+          "type": "claim",
+          "external": true,
+          "name": "T94关于F为Laurent多项式的结论",
+          "statement": "T94 §7.5 指出，generic/h-adic 情形下，不变量 $F(L; V_{\\lambda_1}, \\ldots, V_{\\lambda_s})$ 实际上是变量 $q = \\exp(-h/2)$ 的 Laurent polynomial。",
+          "source": "T94",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:t94-jones-version",
+          "type": "claim",
+          "external": true,
+          "name": "T94关于基本表示给出Jones多项式的结论",
+          "statement": "T94 §7.5 说明，当 link 所有分量都染成 $\\mathfrak{sl}_2$ 的基本表示 $V_1$ 时，得到的 $F$ 是 Jones polynomial 的一个版本。",
+          "source": "T94",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:t94-kauffman-bracket",
+          "type": "claim",
+          "external": true,
+          "name": "T94关于Kauffman bracket与Jones多项式的关系",
+          "statement": "T94 Chapter XII 从 Kauffman bracket viewpoint 给出：bracket 是 framed link invariant，乘以 writhe 修正因子后得到 ordinary oriented Jones polynomial。",
+          "source": "T94",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:claim:t94-modular-hopfa",
+          "type": "claim",
+          "external": true,
+          "name": "T94关于modular Hopf algebra的结论",
+          "statement": "T94 说明，对于满足相应阶数条件的 $q$，可以从 $U_q(\\mathfrak{g})$ 得到 modular Hopf algebra；经过 purification 得到 modular category。",
+          "source": "T94",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "foundation",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:laurent-poly",
+          "type": "proposition",
+          "name": "generic/h-adic不变量为Laurent多项式",
+          "statement": "对于generic或h-adic情形，由$U_h\\mathfrak{g}$的regular finite-rank modules组成的ribbon category，对colored framed link的operator invariant $F$，其值实际上是变量$q=\\exp(-h/2)$的Laurent polynomial。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:jones-basic",
+          "type": "proposition",
+          "name": "基本表示给出Jones多项式",
+          "statement": "当link的所有分量都染成$\\mathfrak{sl}_2$的基本表示$V_1$时，得到的$F$是Jones polynomial的一个版本。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:higher-colored",
+          "type": "proposition",
+          "name": "高阶colored Jones多项式",
+          "statement": "对$n>1$，$F(K;V_n)$是higher colored Jones polynomials。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:jones-writhe",
+          "type": "proposition",
+          "name": "Jones多项式的writhe归一化",
+          "statement": "Jones polynomial等于writhe-normalized $F(D;V_1,\\ldots,V_1)$，其中变量替换和整体常数依convention而不同。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:kauffman-bracket",
+          "type": "proposition",
+          "name": "Kauffman bracket的writhe修正",
+          "statement": "bracket是framed link invariant，乘以writhe修正因子后得到ordinary oriented Jones polynomial。",
+          "page": 17,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:root-unity-wrt",
+          "type": "proposition",
+          "name": "root of unity得到WRT不变量",
+          "statement": "对于满足相应阶数条件的$q$，可以从$U_q(\\mathfrak{g})$得到modular Hopf algebra；经过purification得到modular category后，再应用surgery construction，就得到Witten–Reshetikhin–Turaev型3-manifold invariants。",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:generic-colored",
+          "type": "proposition",
+          "name": "generic情形给出colored Jones",
+          "statement": "generic/h-adic的$U_q(\\mathfrak{sl}_2)$给出colored Jones polynomials。",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:v1-jones",
+          "type": "proposition",
+          "name": "V1给出ordinary Jones",
+          "statement": "颜色$V_1$，即二维基本表示，给出ordinary Jones polynomial的一个归一化版本。",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        },
+        {
+          "id": "paper:prop:wrt-summary",
+          "type": "proposition",
+          "name": "root of unity给出WRT",
+          "statement": "root of unity下的有限modular data经过surgery/Kirby normalization给出WRT 3-manifold invariants。",
+          "page": 18,
+          "_provenance": {
+            "chunkIndex": 4,
+            "blockIndex": 4,
+            "pageRange": {
+              "first": 17,
+              "last": 19
+            },
+            "lane": "result",
+            "version": "paper-entry-parallel-extraction-v1.6"
+          }
+        }
+      ]
+    }
+  ],
+  "rawEntries": [
+    {
+      "id": "paper:def:global-conventions",
+      "type": "definition",
+      "name": "全局约定",
+      "statement": "三维流形均为 closed oriented 3-manifold；link 默认嵌入 $S^3$ 中；从 Hopf algebra 出发时，表示范畴默认取有限秩表示；只讨论半单（或经 purification 后半单）的 modular category 构造。",
+      "page": 1,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:t94-notation",
+      "type": "definition",
+      "name": "T94 记号约定",
+      "statement": "记号大体沿用 Turaev 1994 年的教材 [T94]。",
+      "page": 1,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:framing",
+      "type": "definition",
+      "name": "framing",
+      "statement": "设 $L$ 是 $S^3$ 中的 oriented link。一个 framing 是 $L$ 的法丛的一个平凡化，即沿每个分量取一个处处非零的法向量场并考虑其同伦类。对 $S^3$ 中的 oriented knot，framing 可用整数记录，即给定 framing longitude 与 Seifert longitude 的差。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:blackboard-framing",
+      "type": "definition",
+      "name": "blackboard framing",
+      "statement": "给定 link diagram $D$，blackboard framing 把每条线段加厚为贴近平面的 ribbon。framing 由图中的 twisting 反映；加正 curl 或负 curl 使 writhe 改变 $\\pm 1$，同时改变 blackboard framing。在 blackboard framing 约定下，可用 writhe 代表 framing，并把 framed link 视为 ribbon link 的平面图示。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:alg:handlebody-surgery",
+      "type": "algorithm",
+      "name": "四维 handlebody 与 Dehn surgery 构造",
+      "statement": "令 $B^4$ 是四维球，$\\partial B^4 = S^3$。若 $L = L_1 \\cup \\cdots \\cup L_m$ 是 $\\partial B^4$ 中的 link，给每个分量 $L_i$ 指定整数 framing $n_i$，则沿 $L$ 各分量附加 2-handles，得到 $W_L = B^4 \\cup_L \\cup_i (D^2 \\times D^2)$。边界 $\\partial W_L$ 是 closed oriented 3-manifold，记为 $M_L = S_L^3(n_1, \\ldots, n_m) = \\partial W_L$。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:lickorish-wallace",
+      "type": "claim",
+      "external": true,
+      "num": 2.1,
+      "name": "Lickorish–Wallace surgery 定理",
+      "statement": "任意 closed connected oriented 3-manifold $M$ 都有 integer surgery presentation：存在 $S^3$ 中的 link $L = L_1 \\cup \\cdots \\cup L_m$ 及整数 framings $n_1, \\ldots, n_m$，使得 $M \\cong S_L^3(n_1, \\ldots, n_m)$。等价地，任意 closed connected oriented 3-manifold 都可由 $S^3$ 中某个 framed link 的 integer surgery 得到。",
+      "page": 2,
+      "source": "Lickorish, Wallace",
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:rohlin-cobordism",
+      "type": "claim",
+      "external": true,
+      "num": 2.2,
+      "name": "Rohlin cobordism 定理",
+      "statement": "任意 closed oriented 3-manifold $M$ 都是某个 compact oriented 4-manifold $W$ 的边界：$\\partial W = M$。即 oriented cobordism group $\\Omega_3^{SO}$ 为 0。进一步地，可要求 $W$ 由 $B^4$ 附加 2-handles 得到，即 $W = W_L$。",
+      "page": 3,
+      "source": "Rohlin",
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:kirby-calculus",
+      "type": "claim",
+      "external": true,
+      "num": 2.3,
+      "name": "Kirby calculus",
+      "statement": "设 $L$ 与 $L'$ 是 $S^3$ 中的 framed links。则 $M_L$ 与 $M_{L'}$ orientation-preservingly homeomorphic 当且仅当 $L$ 与 $L'$ 可通过有限次 framed isotopy、handle slides 以及 $\\pm 1$-framed unknot 的加入或删除相互变换。",
+      "page": 3,
+      "source": "Kirby",
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:strict-monoidal-category",
+      "type": "definition",
+      "num": 3.1,
+      "name": "strict monoidal category",
+      "statement": "一个 strict monoidal category $C$ 带有 bifunctor $\\otimes: C \\times C \\to C$ 和单位对象 $\\mathbf{1}$，满足 $(U \\otimes V) \\otimes W = U \\otimes (V \\otimes W)$，$\\mathbf{1} \\otimes V = V = V \\otimes \\mathbf{1}$。一般非 strict 情形应改为 associativity 与 unit constraints；Mac Lane coherence 允许在图示计算中按 strict 情形书写。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:braiding",
+      "type": "definition",
+      "num": 3.2,
+      "name": "braiding",
+      "statement": "设 $C$ 是 strict monoidal category。一个 braiding 是一族对对象 $V, W$ 自然的同构 $c = \\{c_{V,W}: V \\otimes W \\to W \\otimes V\\}$，满足两条 hexagon identity：$c_{U,V \\otimes W} = (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$，$c_{U \\otimes V,W} = (c_{U,W} \\otimes \\mathrm{id}_V) \\circ (\\mathrm{id}_U \\otimes c_{V,W})$，以及自然性。配有 braiding 的 monoidal category 称为 braided monoidal category。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:duality-rigid",
+      "type": "definition",
+      "num": 3.3,
+      "name": "duality / rigid structure",
+      "statement": "设 $C$ 是 strict monoidal category。duality 给每个对象 $V$ 指定对象 $V^*$ 及两个态射 $b_V: \\mathbf{1} \\to V \\otimes V^*$（coevaluation）和 $d_V: V^* \\otimes V \\to \\mathbf{1}$（evaluation），满足 zig-zag identities：$(\\mathrm{id}_V \\otimes d_V) \\circ (b_V \\otimes \\mathrm{id}_V) = \\mathrm{id}_V$，$(d_V \\otimes \\mathrm{id}_{V^*}) \\circ (\\mathrm{id}_{V^*} \\otimes b_V) = \\mathrm{id}_{V^*}$。具有这种 duality 的 monoidal category 称为 rigid category。此处不预先要求 $(V^*)^* = V$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:ribbon-category",
+      "type": "definition",
+      "num": 3.4,
+      "name": "ribbon category",
+      "statement": "一个 ribbon category 是 monoidal category $C$，配有 braiding $c$、twist $\\theta$ 以及与它们相容的 duality $(^*, b, d)$。twist 是一族自然同构 $\\theta_V: V \\to V$，满足 $\\theta_{V \\otimes W} = c_{W,V} \\circ c_{V,W} \\circ (\\theta_V \\otimes \\theta_W)$。duality 与 braiding、twist 的兼容性要求 $(\\theta_V \\otimes \\mathrm{id}_{V^*}) \\circ b_V = (\\mathrm{id}_V \\otimes \\theta_{V^*}) \\circ b_V$，即 $\\theta_{V^*} = (\\theta_V)^*$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:colored-ribbon-graph",
+      "type": "definition",
+      "num": 3.5,
+      "name": "colored ribbon graph",
+      "statement": "设 $C$ 是 ribbon category。一个 ribbon graph 是三维流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons。$C$-colored ribbon graph 附加标签：每条 directed band 或 annulus 标以 $C$ 中对象 $V$，方向反转则颜色改为 $V^*$；每个 coupon 标以 $C$ 中 morphism，source 和 target 由 coupon 下方、上方边界上相遇的 colored strands 的张量积给出；isotopy 必须保持分解、方向和 colors。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:lickorish-wallace",
+      "type": "theorem",
+      "name": "Lickorish–Wallace 手术定理",
+      "statement": "任意闭连通定向三维流形 $M$ 都有整数手术表示：存在 $S^3$ 中的链环 $L=L_1\\cup\\cdots\\cup L_m$ 及整数框法 $n_1,\\dots,n_m$，使得 $M\\cong S_L^3(n_1,\\dots,n_m)$；等价地，任意闭连通定向三维流形都可由 $S^3$ 中某个带框链环的整数手术得到。",
+      "page": 2,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:rohlin-cobordism",
+      "type": "theorem",
+      "name": "Rohlin 配边定理",
+      "statement": "任意闭定向三维流形 $M$ 都是某个紧致定向四维流形 $W$ 的边界：$\\partial W=M$；即定向配边群 $\\Omega_3^{SO}=0$。进一步可要求 $W$ 由 $B^4$ 附加 2-柄得到，即 $W=W_L$。",
+      "page": 3,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:kirby-calculus",
+      "type": "theorem",
+      "name": "Kirby 演算",
+      "statement": "设 $L$ 与 $L'$ 是 $S^3$ 中的带框链环。则 $M_L$ 与 $M_{L'}$ 保定向同胚当且仅当 $L$ 与 $L'$ 可通过有限次带框同痕、柄滑动以及 $\\pm1$-带框平凡结的加入或删除相互变换。",
+      "page": 3,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:braiding-unit",
+      "type": "proposition",
+      "name": "辫子与单位对象的平凡性",
+      "statement": "设 $C$ 是辫子幺半范畴，$c$ 是其辫子，则对任意对象 $V$，有 $c_{V,1}=c_{1,V}=\\mathrm{id}_V$。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:yang-baxter",
+      "type": "proposition",
+      "name": "Yang–Baxter 恒等式",
+      "statement": "设 $C$ 是辫子幺半范畴，$c$ 是其辫子，则对任意对象 $U,V,W$，有 Yang–Baxter 恒等式：$(\\mathrm{id}_W\\otimes c_{U,V})\\circ(c_{U,W}\\otimes \\mathrm{id}_V)\\circ(\\mathrm{id}_U\\otimes c_{V,W})=(c_{V,W}\\otimes \\mathrm{id}_U)\\circ(\\mathrm{id}_V\\otimes c_{U,W})\\circ(c_{U,V}\\otimes \\mathrm{id}_W)$。",
+      "page": 4,
+      "_provenance": {
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "pageRange": {
+          "first": 1,
+          "last": 5
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "duality-rigid-structure",
+      "type": "definition",
+      "name": "对偶与刚性结构",
+      "statement": "设 $C$ 是 strict monoidal category。对每个对象 $V$ 指定对象 $V^*$ 及态射 $b_V: 1 \\to V \\otimes V^*$（coevaluation）和 $d_V: V^* \\otimes V \\to 1$（evaluation），满足 zig-zag identities：$(\\mathrm{id}_V \\otimes d_V) \\circ (b_V \\otimes \\mathrm{id}_V) = \\mathrm{id}_V$，$(d_V \\otimes \\mathrm{id}_{V^*}) \\circ (\\mathrm{id}_{V^*} \\otimes b_V) = \\mathrm{id}_{V^*}$。具有此结构的 monoidal category 称为 rigid category。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "ribbon-category",
+      "type": "definition",
+      "name": "ribbon category",
+      "statement": "一个 ribbon category 是 monoidal category $C$，配有 braiding $c$、twist $\\theta$ 以及与它们相容的 duality $(^*, b, d)$。twist 是一族自然同构 $\\theta_V: V \\to V$，满足 $\\theta_{V \\otimes W} = c_{W,V} \\circ c_{V,W} \\circ (\\theta_V \\otimes \\theta_W)$，且 $\\theta_{V^*} = (\\theta_V)^*$。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "colored-ribbon-graph",
+      "type": "definition",
+      "name": "colored ribbon graph",
+      "statement": "设 $C$ 是 ribbon category。一个 $C$-colored ribbon graph 是三维流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons，并附加标签：每条 band/annulus 标以对象 $V$，方向反转则标 $V^*$；每个 coupon 标以 morphism，其 source 和 target 由边界上相遇的 colored strands 的张量积给出；isotopy 保持分解、方向和 colors。",
+      "page": 5,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "graphical-calculus-rules",
+      "type": "calculation",
+      "name": "图形演算局部对应规则",
+      "statement": "将 colored ribbon graph 的平面图示切成局部生成元并替换为范畴结构态射：identity strand 对应 $\\mathrm{id}_V$；positive/negative crossing 对应 $c_{V,W}$ 或 $c_{V,W}^{-1}$；cup/cap 对应 coevaluation/evaluation；positive/negative twist 对应 $\\theta_V$ 或 $\\theta_V^{-1}$；coupon 对应其标记的 morphism。上下连接对应复合，并列对应张量积，改变 strand 方向时颜色改为对偶对象。",
+      "page": 6,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "hexagon-identity",
+      "type": "calculation",
+      "name": "braiding 的 hexagon identity",
+      "statement": "对于 braiding $c$，有 $c_{U,V \\otimes W} = (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$。",
+      "page": 7,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "yang-baxter-identity",
+      "type": "calculation",
+      "name": "Yang–Baxter identity",
+      "statement": "对于 braiding $c$，有 $(\\mathrm{id}_W \\otimes c_{U,V}) \\circ (c_{U,W} \\otimes \\mathrm{id}_V) \\circ (\\mathrm{id}_U \\otimes c_{V,W}) = (c_{V,W} \\otimes \\mathrm{id}_U) \\circ (\\mathrm{id}_V \\otimes c_{U,W}) \\circ (c_{U,V} \\otimes \\mathrm{id}_W)$。",
+      "page": 7,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "braiding-naturality",
+      "type": "calculation",
+      "name": "braiding 的自然性",
+      "statement": "对于态射 $f: V \\to V'$，$g: W \\to W'$，有 $(g \\otimes f) \\circ c_{V,W} = c_{V',W'} \\circ (f \\otimes g)$。",
+      "page": 8,
+      "_provenance": {
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "pageRange": {
+          "first": 5,
+          "last": 9
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:categorical-trace",
+      "type": "definition",
+      "name": "范畴迹",
+      "statement": "对endomorphism $f: V \\to V$，定义 $\\mathrm{tr}_C(f) = d_V \\circ c_{V,V^*} \\circ (\\theta_V \\circ f) \\otimes \\mathrm{id}_{V^*} \\circ b_V \\in \\mathrm{End}_C(1)$，其中 $b_V, d_V$ 为 coevaluation 和 evaluation。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:categorical-dimension",
+      "type": "definition",
+      "name": "范畴维数",
+      "statement": "对象 $V$ 的范畴维数定义为 $\\dim_C(V) = \\mathrm{tr}_C(\\mathrm{id}_V)$。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:tensor-product-action",
+      "type": "algorithm",
+      "name": "张量积上的A-作用",
+      "statement": "若 $V,W$ 是左 $A$-modules，则 $V \\otimes W$ 上的 $A$-作用由 $\\Delta$ 给出：$a \\cdot (v \\otimes w) = \\sum a_{(1)} v \\otimes a_{(2)} w$，其中 $\\Delta(a) = \\sum a_{(1)} \\otimes a_{(2)}$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:dual-module-action-first",
+      "type": "definition",
+      "name": "对偶模左作用（第一种）",
+      "statement": "设 $V$ 是有限秩左 $A$-module，$V^* = \\mathrm{Hom}_K(V,K)$，定义 $(a \\cdot f)(v) = f(S(a)v)$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:dual-module-action-second",
+      "type": "definition",
+      "name": "对偶模左作用（第二种）",
+      "statement": "设 $S$ 可逆，定义 $(a \\cdot f)(v) = f(S^{-1}(a)v)$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:evaluation-map",
+      "type": "definition",
+      "name": "求值映射",
+      "statement": "$d_V: V^* \\otimes V \\to K$，$d_V(f \\otimes x) = f(x)$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:coevaluation-map",
+      "type": "definition",
+      "name": "余求值映射",
+      "statement": "$b_V: K \\to V \\otimes V^*$，$b_V(1) = \\delta_V = \\sum_i e_i \\otimes e^i$，其中 $\\{e_i\\}$ 是 $V$ 的基，$\\{e^i\\}$ 是对偶基。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:double-dual-map",
+      "type": "definition",
+      "name": "双重对偶映射",
+      "statement": "$j_V: V \\to V^{**}$，$j_V(x)(f) = f(x)$。",
+      "page": 11,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:drinfeld-element",
+      "type": "definition",
+      "name": "Drinfeld元素",
+      "statement": "$u = m(S \\otimes \\mathrm{id})(R_{21})$，其中 $R$ 是 universal $R$-matrix，$R_{21}$ 是交换因子后的 $R$-matrix。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:pivotal-element",
+      "type": "definition",
+      "name": "pivotal元素",
+      "statement": "$g = uv$，其中 $u$ 是 Drinfeld 元素，$v$ 是 universal twist，满足 $S^2(a) = g a g^{-1}$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:pivotal-isomorphism",
+      "type": "definition",
+      "name": "pivotal同构",
+      "statement": "$p_V(x)(f) = f(gx) = j_V(gx)(f)$，给出 $A$-module 同构 $V \\to V^{**}$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:quasitriangular-hopf-algebra",
+      "type": "definition",
+      "name": "拟三角Hopf代数",
+      "statement": "一个 Hopf 代数 $A$ 配有可逆元 $R = \\sum R^{(1)} \\otimes R^{(2)} \\in A \\otimes A$，称为 universal $R$-matrix，满足 $R\\Delta(a)R^{-1} = \\Delta^{\\mathrm{op}}(a)$，且 $(\\Delta \\otimes \\mathrm{id})(R) = R_{13}R_{23}$，$(\\mathrm{id} \\otimes \\Delta)(R) = R_{13}R_{12}$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:ribbon-hopf-algebra",
+      "type": "definition",
+      "name": "ribbon Hopf代数",
+      "statement": "拟三角 Hopf 代数 $(A,R)$ 配有 central invertible element $v \\in A$，称为 universal twist，满足 $\\Delta(v) = R_{21}R(v \\otimes v)$，$S(v) = v$，$\\varepsilon(v) = 1$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:braiding",
+      "type": "definition",
+      "name": "braiding",
+      "statement": "若 $V,W$ 是 $A$-modules，则 $R$ 定义 braiding $c_{V,W} = P \\circ (\\rho_V \\otimes \\rho_W)(R): V \\otimes W \\to W \\otimes V$，其中 $P$ 是交换张量因子的 flip。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:quantum-trace",
+      "type": "definition",
+      "name": "量子迹",
+      "statement": "$\\mathrm{tr}_q(f) = \\mathrm{Tr}_V(\\rho_V(uv) \\circ f)$，其中 $u$ 是 Drinfeld 元素，$v$ 是 universal twist。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:quantum-dimension",
+      "type": "definition",
+      "name": "量子维数",
+      "statement": "$\\dim_q(V) = \\mathrm{tr}_q(\\mathrm{id}_V) = \\mathrm{Tr}_V(\\rho_V(uv))$。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:colored-framed-link-invariant",
+      "type": "definition",
+      "name": "着色框架链环不变量",
+      "statement": "设 $A$ 是 ribbon Hopf 代数，$C = \\mathrm{Rep}_{\\mathrm{fd}}(A)$，给定 oriented framed link $L = \\cup_i L_i$，每个分量指定 color $V_i \\in C$，Turaev functor 给出标量 $F(L; V_1, \\dots, V_m) \\in \\mathrm{End}_C(1)$，若 $\\mathrm{End}_C(1) = K$，则得到 $K$ 值 colored framed link invariant。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:turaev-ribbon-graph-functor",
+      "type": "theorem",
+      "name": "Turaev ribbon graph 函子",
+      "statement": "对任意 ribbon category $C$，存在一个拓扑不变量函子 $F$，它把 $C$-colored ribbon graphs 映到 $C$ 中的 morphisms。若 $\\Gamma$ 是 closed colored ribbon graph，则 $F(\\Gamma)\\in \\mathrm{End}_C(1)$。在 $\\mathrm{End}_C(1)=K$ 的情形下，$F(\\Gamma)$ 是 $K$ 值不变量。",
+      "page": 10,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:ribbon-hopfs-rep-cat",
+      "type": "proposition",
+      "name": "ribbon Hopf 代数的表示范畴是 ribbon category",
+      "statement": "若 $A$ 是 ribbon Hopf algebra，则有限维表示范畴 $\\mathrm{Rep}^{fd}(A)$ 是 ribbon category。其 braiding 由 universal $R$-matrix 给出，twist 则由 universal twist 的作用给出：$\\theta_V = \\rho_V(v): V \\to V$。",
+      "page": 12,
+      "_provenance": {
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "pageRange": {
+          "first": 9,
+          "last": 13
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:quantum-trace",
+      "type": "definition",
+      "name": "quantum trace",
+      "statement": "对有限维表示V上的线性算子f，quantum trace定义为 tr_q(f)=Tr_V(ρ_V(uv)∘f)，其中u是Drinfeld element。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:drinfeld-element",
+      "type": "definition",
+      "name": "Drinfeld element",
+      "statement": "在ribbon Hopf algebra中，Drinfeld element定义为 u = m(S⊗id)(R_{21})。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:colored-framed-link-invariant",
+      "type": "definition",
+      "name": "着色框架链接不变量",
+      "statement": "设A是ribbon Hopf algebra，C=Rep_fd(A)，对oriented framed link L的分量指定color V_i∈C，Turaev functor给出标量F(L;V_1,...,V_m)∈End_C(1)。若End_C(1)=K，则得到K值的colored framed link invariant。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:modular-category",
+      "type": "definition",
+      "num": 6.1,
+      "name": "modular category",
+      "statement": "一个modular category是ribbon K-linear category V，连同有限个simple objects代表集{V_i}_{i∈I}，满足：单位对象属于代表集；对偶封闭；domination（每个X的identity可写成有限和）；Hopf link矩阵S_{ij}=tr(c_{V_j,V_i}∘c_{V_i,V_j})在K上可逆。",
+      "page": 14,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:kirby-color",
+      "type": "definition",
+      "num": 6.2,
+      "name": "Kirby color",
+      "statement": "Kirby color是形式线性组合 Ω_V = Σ_{i∈I} dim(i) V_i，其中dim(i)=dim(V_i)。",
+      "page": 14,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:rank-and-delta",
+      "type": "definition",
+      "name": "rank与Delta",
+      "statement": "定义 D^2 = Σ_{i∈I} dim(i)^2，Δ = Σ_{i∈I} v_i^{-1} dim(i)^2，其中v_i是twist在simple object V_i上的标量。D称为rank，Δ由twist anomaly决定。",
+      "page": 14,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:weighted-sum-l",
+      "type": "definition",
+      "name": "加权求和{L}",
+      "statement": "对m分量链接L，{L} = Σ_{λ∈col(L)} ∏_{n=1}^m dim(λ(L_n)) F(Γ(L,λ))，其中col(L)是分量到I的所有coloring，Γ(L,λ)是对应colored ribbon graph。",
+      "page": 15,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:negligible-module",
+      "type": "definition",
+      "num": 7.1,
+      "name": "negligible module",
+      "statement": "设A是ribbon Hopf algebra，Z是有限秩A-module。若对任意A-linear endomorphism f:Z→Z都有tr_q(f)=0，则称Z是negligible module。",
+      "page": 15,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:modular-hopf-algebra",
+      "type": "definition",
+      "num": 7.2,
+      "name": "modular Hopf algebra",
+      "statement": "一个modular Hopf algebra是ribbon Hopf K-algebra A，连同有限秩simple A-modules {V_i}_{i∈I}，满足：单位对象V_0=K；对偶封闭；张量积分解为有限个V_i直和加negligible module；Hopf link矩阵S_{ij}=tr_q((R_{21}R)|_{V_i⊗V_j})在K上可逆。",
+      "page": 16,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:purification",
+      "type": "algorithm",
+      "name": "purification构造",
+      "statement": "设(A,{V_i})是modular Hopf algebra，由{V_i} quasidominate的A-modules构成ribbon子范畴T，将T按negligible morphisms取quotient，得到modular category T^p。",
+      "page": 16,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:highest-weight-label",
+      "type": "definition",
+      "name": "最高权标号",
+      "statement": "在generic或h-adic情形，indecomposable regular module由最高权标号，最高权等价于m=rank g个非负整数。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:vn-representation",
+      "type": "definition",
+      "name": "表示V_n",
+      "statement": "当g=sl_2(C)时，indecomposable regular modules由非负整数n标号，V_n是最高权为n的表示，经典维数为n+1。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:colored-jones-polynomial",
+      "type": "definition",
+      "name": "colored Jones polynomial",
+      "statement": "对knot K，每个n≥0给出framed colored link polynomial F(K;V_n)，这些是colored Jones polynomial的quantum-group来源；当所有分量染成sl_2基本表示时，F是Jones polynomial的一个版本。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:writhe-normalization",
+      "type": "calculation",
+      "name": "writhe归一化公式",
+      "statement": "Jones polynomial = writhe-normalized F(D;V_1,...,V_1)，即用diagram的writhe抵消twist eigenvalue带来的framing dependence。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:calc:tau-normalization",
+      "type": "calculation",
+      "name": "RT不变量归一化公式",
+      "statement": "τ_{V,D}(M_L) = Δ^{σ(L)} D^{-σ(L)-m-1} {L}，其中σ(L)是linking matrix的signature，m是surgery link分量数。",
+      "page": 15,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:calc:quantum-trace-relation",
+      "type": "calculation",
+      "name": "categorical trace与quantum trace关系",
+      "statement": "当C=Rep_fd(A)时，categorical trace tr_C(f)等于quantum trace tr_q(f)，即tr_{Rep(A)}(f)=tr_q(f)。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:ext:kirby-theorem",
+      "type": "claim",
+      "external": true,
+      "name": "Kirby定理",
+      "statement": "三维流形可由surgery link表示，且surgery presentation在handle slides与±1 moves下不变。",
+      "source": "Kirby (1978)",
+      "page": 14,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:ext:turaev-graphical-calculus",
+      "type": "claim",
+      "external": true,
+      "name": "Turaev graphical calculus",
+      "statement": "通过ribbon category的图形演算，将colored framed link映射到标量，得到colored framed link invariant。",
+      "source": "Turaev",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:ext:t94-laurent-polynomial",
+      "type": "claim",
+      "external": true,
+      "name": "T94 §7.5 Laurent多项式结论",
+      "statement": "在generic或h-adic情形，operator invariant F(L;V_{λ_1},...,V_{λ_s})是变量q=exp(-h/2)的Laurent多项式。",
+      "source": "Turaev, Quantum Invariants of Knots and 3-Manifolds, Chapter XI §7.5",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:ext:t94-normalization",
+      "type": "claim",
+      "external": true,
+      "name": "T94 Chapter II归一化公式",
+      "statement": "T94 Chapter II给出归一化公式 τ_{V,D}(M_L)=Δ^{σ(L)}D^{-σ(L)-m-1}{L}，并给出τ(S^3)=D^{-1}，τ(S^1×S^2)=1。",
+      "source": "Turaev, Quantum Invariants of Knots and 3-Manifolds, Chapter II",
+      "page": 15,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:ribbon-hopf-rep-cat",
+      "type": "proposition",
+      "name": "ribbon Hopf代数表示范畴的ribbon结构",
+      "statement": "若 $A$ 是 ribbon Hopf algebra，则有限维表示范畴 $\\mathrm{Rep}_{\\mathrm{fd}}(A)$ 是 ribbon category，其 braiding 由 universal $R$-matrix 给出，twist 由 universal twist 的作用给出：$\\theta_V = \\rho_V(v): V \\to V$。",
+      "page": 13,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:reshetikhin-turaev",
+      "type": "theorem",
+      "name": "Reshetikhin–Turaev不变量",
+      "statement": "设 $(V,\\{V_i\\}_{i\\in I})$ 是 modular category，并选定 rank $D$。由 Kirby color 加权求和和 signature 归一化得到的数量 $\\tau_{V,D}(M_L)$ 在 Kirby moves 下不变，因此只依赖于 closed oriented 3-manifold $M_L$ 的 orientation-preserving homeomorphism class，给出三维流形不变量 $\\tau_{V,D}(M)\\in K$。更一般地，若 $M$ 含 $V$-colored framed ribbon graph $\\Gamma$，可定义 pair invariant $\\tau_{V,D}(M,\\Gamma)$。",
+      "page": 15,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:thm:turaev-purification",
+      "type": "theorem",
+      "name": "Turaev purification定理",
+      "statement": "设 $(A,\\{V_i\\})$ 是 modular Hopf algebra。由 $\\{V_i\\}$ quasidominate 的 $A$-modules 构成 $\\mathrm{Rep}(A)$ 的一个 ribbon 子范畴 $T$，则 $(T,\\{V_i\\})$ 是 quasimodular category。将 $T$ 按 negligible morphisms 取 quotient（即 purification），得到 modular category $T_p$。于是每个 modular Hopf algebra canonically gives rise to a modular category。",
+      "page": 16,
+      "_provenance": {
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "pageRange": {
+          "first": 13,
+          "last": 17
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:colored-framed-link",
+      "type": "definition",
+      "name": "染色框架链环",
+      "statement": "对framed oriented link $L = L_1 \\cup \\cdots \\cup L_s$，给每个分量指定一个最高权表示 $V_{\\lambda_j}$，得到 colored framed link。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:sl2-regular-module",
+      "type": "definition",
+      "name": "sl2的不可分解正则模",
+      "statement": "当 $\\mathfrak{g} = \\mathfrak{sl}_2(\\mathbb{C})$ 时，indecomposable regular modules 由非负整数 $n$ 标号，$V_n$ 是最高权为 $n$ 的表示，经典维数为 $n+1$。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:def:blackboard-framing",
+      "type": "definition",
+      "name": "黑板框架",
+      "statement": "从普通 oriented link diagram $D$ 出发，采用 blackboard framing，把 $D$ 看成 framed link diagram。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:calc:jones-writhe-normalization",
+      "type": "calculation",
+      "name": "Jones多项式的writhe归一化",
+      "statement": "Jones polynomial $= $ writhe-normalized $F(D; V_1, \\ldots, V_1)$，其中变量替换和整体常数依 convention 而不同。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:t94-laurent-polynomial",
+      "type": "claim",
+      "external": true,
+      "name": "T94关于F为Laurent多项式的结论",
+      "statement": "T94 §7.5 指出，generic/h-adic 情形下，不变量 $F(L; V_{\\lambda_1}, \\ldots, V_{\\lambda_s})$ 实际上是变量 $q = \\exp(-h/2)$ 的 Laurent polynomial。",
+      "source": "T94",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:t94-jones-version",
+      "type": "claim",
+      "external": true,
+      "name": "T94关于基本表示给出Jones多项式的结论",
+      "statement": "T94 §7.5 说明，当 link 所有分量都染成 $\\mathfrak{sl}_2$ 的基本表示 $V_1$ 时，得到的 $F$ 是 Jones polynomial 的一个版本。",
+      "source": "T94",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:t94-kauffman-bracket",
+      "type": "claim",
+      "external": true,
+      "name": "T94关于Kauffman bracket与Jones多项式的关系",
+      "statement": "T94 Chapter XII 从 Kauffman bracket viewpoint 给出：bracket 是 framed link invariant，乘以 writhe 修正因子后得到 ordinary oriented Jones polynomial。",
+      "source": "T94",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:claim:t94-modular-hopfa",
+      "type": "claim",
+      "external": true,
+      "name": "T94关于modular Hopf algebra的结论",
+      "statement": "T94 说明，对于满足相应阶数条件的 $q$，可以从 $U_q(\\mathfrak{g})$ 得到 modular Hopf algebra；经过 purification 得到 modular category。",
+      "source": "T94",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "foundation",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:laurent-poly",
+      "type": "proposition",
+      "name": "generic/h-adic不变量为Laurent多项式",
+      "statement": "对于generic或h-adic情形，由$U_h\\mathfrak{g}$的regular finite-rank modules组成的ribbon category，对colored framed link的operator invariant $F$，其值实际上是变量$q=\\exp(-h/2)$的Laurent polynomial。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:jones-basic",
+      "type": "proposition",
+      "name": "基本表示给出Jones多项式",
+      "statement": "当link的所有分量都染成$\\mathfrak{sl}_2$的基本表示$V_1$时，得到的$F$是Jones polynomial的一个版本。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:higher-colored",
+      "type": "proposition",
+      "name": "高阶colored Jones多项式",
+      "statement": "对$n>1$，$F(K;V_n)$是higher colored Jones polynomials。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:jones-writhe",
+      "type": "proposition",
+      "name": "Jones多项式的writhe归一化",
+      "statement": "Jones polynomial等于writhe-normalized $F(D;V_1,\\ldots,V_1)$，其中变量替换和整体常数依convention而不同。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:kauffman-bracket",
+      "type": "proposition",
+      "name": "Kauffman bracket的writhe修正",
+      "statement": "bracket是framed link invariant，乘以writhe修正因子后得到ordinary oriented Jones polynomial。",
+      "page": 17,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:root-unity-wrt",
+      "type": "proposition",
+      "name": "root of unity得到WRT不变量",
+      "statement": "对于满足相应阶数条件的$q$，可以从$U_q(\\mathfrak{g})$得到modular Hopf algebra；经过purification得到modular category后，再应用surgery construction，就得到Witten–Reshetikhin–Turaev型3-manifold invariants。",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:generic-colored",
+      "type": "proposition",
+      "name": "generic情形给出colored Jones",
+      "statement": "generic/h-adic的$U_q(\\mathfrak{sl}_2)$给出colored Jones polynomials。",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:v1-jones",
+      "type": "proposition",
+      "name": "V1给出ordinary Jones",
+      "statement": "颜色$V_1$，即二维基本表示，给出ordinary Jones polynomial的一个归一化版本。",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    },
+    {
+      "id": "paper:prop:wrt-summary",
+      "type": "proposition",
+      "name": "root of unity给出WRT",
+      "statement": "root of unity下的有限modular data经过surgery/Kirby normalization给出WRT 3-manifold invariants。",
+      "page": 18,
+      "_provenance": {
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "pageRange": {
+          "first": 17,
+          "last": 19
+        },
+        "lane": "result",
+        "version": "paper-entry-parallel-extraction-v1.6"
+      }
+    }
+  ],
+  "diagnostics": {
+    "durationMs": 205580,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 21507,
+        "blocks": 5,
+        "overlapPages": 1,
+        "lanes": [
+          "foundation",
+          "result"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.6",
+        "atMs": 0
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 7,
+        "doneCalls": 1,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 69993
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 0,
+        "doneCalls": 2,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 84487
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 17,
+        "doneCalls": 3,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 118916
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 13,
+        "doneCalls": 4,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 119439
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 2,
+        "doneCalls": 5,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 131201
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 3,
+        "doneCalls": 6,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 141061
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 5,
+        "doneCalls": 7,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 147578
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 5,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 8,
+        "doneCalls": 8,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 159698
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 5,
+        "lane": "result",
+        "totalBlocks": 5,
+        "extractedCount": 9,
+        "doneCalls": 9,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 192319
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "foundation",
+        "totalBlocks": 5,
+        "extractedCount": 20,
+        "doneCalls": 10,
+        "totalCalls": 10,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 205579
+      },
+      {
+        "stage": "parallel-extract-done",
+        "totalRawEntries": 84,
+        "blocks": 5,
+        "version": "paper-entry-parallel-extraction-v1.6",
+        "atMs": 205579
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "lane": "foundation",
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "durationMs": 69959,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 2149,
+          "completion_tokens": 3774,
+          "total_tokens": 5923,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "result",
+        "chunkIndex": 1,
+        "blockIndex": 1,
+        "durationMs": 14493,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 2100,
+          "completion_tokens": 648,
+          "total_tokens": 2748,
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "foundation",
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "durationMs": 34427,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3111,
+          "completion_tokens": 5457,
+          "total_tokens": 8568,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "foundation",
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "durationMs": 119435,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3504,
+          "completion_tokens": 8653,
+          "total_tokens": 12157,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "result",
+        "chunkIndex": 2,
+        "blockIndex": 2,
+        "durationMs": 12285,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3062,
+          "completion_tokens": 1923,
+          "total_tokens": 4985,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "result",
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "durationMs": 9859,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3317,
+          "completion_tokens": 1626,
+          "total_tokens": 4943,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "result",
+        "chunkIndex": 0,
+        "blockIndex": 0,
+        "durationMs": 147545,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3455,
+          "completion_tokens": 8901,
+          "total_tokens": 12356,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "foundation",
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "durationMs": 18635,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 1818,
+          "completion_tokens": 2643,
+          "total_tokens": 4461,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "result",
+        "chunkIndex": 4,
+        "blockIndex": 4,
+        "durationMs": 44739,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 1769,
+          "completion_tokens": 3129,
+          "total_tokens": 4898,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      },
+      {
+        "stage": "extract",
+        "lane": "foundation",
+        "chunkIndex": 3,
+        "blockIndex": 3,
+        "durationMs": 86138,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3366,
+          "completion_tokens": 5755,
+          "total_tokens": 9121,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          }
+        },
+        "repaired": false,
+        "repairCount": 0
+      }
+    ],
+    "chunkCount": 5,
+    "rawEntryCount": 84,
+    "jsonRepairCount": 0,
+    "repairSummary": {
+      "totalJsonRepairs": 0,
+      "repairedChunkCount": 0
+    },
+    "modelCallMetadata": {
+      "model": "deepseek-v4-flash",
+      "provider": "OpenCode Go",
+      "reasoningEffort": "none"
+    },
+    "moduleIdentity": {
+      "name": "paper-entry-parallel-extraction-v1.6",
+      "schema": "cmath.paper-raw-entry-pool/v1"
+    }
+  }
+}

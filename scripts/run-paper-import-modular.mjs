@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import modules from "../paper-import-modules-v3.26.js";
+
+const [entryPath, outputDir, model = "gpt-5.6-luna", mode = "off-compact", workflowVersion = "v3.26"] = process.argv.slice(2);
+if (!entryPath || !outputDir) throw new Error("usage: node scripts/run-paper-import-modular.mjs <entry-artifact.json> <output-dir> [model] [mode] [workflowVersion]");
+const resolvedEntry = path.resolve(entryPath);
+const resolvedDir = path.resolve(outputDir);
+const entry = JSON.parse(fs.readFileSync(resolvedEntry, "utf8"));
+const caseId = (entry.source?.fileName || "paper.pdf").replace(/\.pdf$/iu, "").replace(/[^a-z0-9]+/giu, "-").replace(/^-+|-+$/gu, "").toLowerCase() || "paper";
+const stampedEntry = modules.createEntryModuleArtifact(entry, { caseId, sourceArtifact: path.relative(process.cwd(), resolvedEntry) });
+fs.mkdirSync(resolvedDir, { recursive: true });
+const entryOutput = path.join(resolvedDir, "entry-artifact.json");
+const inferenceOutput = path.join(resolvedDir, "inference-run.json");
+const inferenceArtifactOutput = path.join(resolvedDir, "inference-artifact.json");
+const formatOutput = path.join(resolvedDir, "format-report.json");
+fs.writeFileSync(entryOutput, JSON.stringify(stampedEntry, null, 2) + "\n");
+const inferenceScript = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "run-paper-inference-from-entry-artifact.mjs");
+const run = spawnSync(process.execPath, [inferenceScript, entryOutput, inferenceOutput, model, mode, workflowVersion], { cwd: process.cwd(), encoding: "utf8", stdio: ["inherit", "pipe", "pipe"], maxBuffer: 64 * 1024 * 1024 });
+if (run.stdout) process.stdout.write(run.stdout);
+if (run.stderr) process.stderr.write(run.stderr);
+if (run.status !== 0) throw new Error("Inference module failed (exit " + run.status + ")");
+const inferenceRun = JSON.parse(fs.readFileSync(inferenceOutput, "utf8"));
+const inferenceArtifact = modules.createInferenceModuleArtifact({ entryArtifact: stampedEntry, inferenceResult: inferenceRun, caseId });
+fs.writeFileSync(inferenceArtifactOutput, JSON.stringify(inferenceArtifact, null, 2) + "\n");
+const report = modules.validateFormatArtifact(inferenceArtifact, { caseId, sourcePath: inferenceArtifactOutput });
+fs.writeFileSync(formatOutput, JSON.stringify(report, null, 2) + "\n");
+const manifest = { schema: "cmath.paper-import-modular-run/v1", workflowVersion: modules.MODULAR_WORKFLOW_VERSION, backbone: workflowVersion, caseId, entryArtifact: path.basename(entryOutput), inferenceArtifact: path.basename(inferenceArtifactOutput), formatReport: path.basename(formatOutput), status: report.passed ? "completed" : "format-failed", formatScore: report.formatScore, formatScoreMax: report.formatScoreMax };
+fs.writeFileSync(path.join(resolvedDir, "run-manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
+process.stdout.write(JSON.stringify({ status: manifest.status, outputDir: resolvedDir, formatScore: manifest.formatScore, formatScoreMax: manifest.formatScoreMax }));

@@ -1,0 +1,25 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Gold-JSON comparison; no model scoring",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "artifact": "yasui-2019-geometrically-simply-connected-4-manifolds-v3.9.3-20260817T141056.572Z.json",
+  "workflowVersion": "v3.9.3",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "durationMs": 257781,
+  "modelCalls": 9,
+  "internalRepairs": 2,
+  "formatScore": 40,
+  "semanticScore": 54,
+  "auditScore": 94,
+  "matchedCoreObjects": 7,
+  "missingCoreObjects": [],
+  "b0Errors": [
+    "B0 使用了等价但更宽的外部边界表达，包含若干论文正文中的 sourced Claim；固定 Gold 的四个 canonical B0 仍可逐一对应。"
+  ],
+  "mainTarget": "Equivalent and correct: paper:theorem:main matches Gold paper:thm:geom-simply-connected-pos-definite (Theorem 1.4)",
+  "proofAndClosure": "No hard gate; proof DAG executable; explicit open questions preserved.",
+  "status": "target-met"
+}

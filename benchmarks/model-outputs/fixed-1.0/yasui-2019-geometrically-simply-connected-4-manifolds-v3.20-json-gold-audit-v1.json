@@ -1,0 +1,32 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Gold-JSON comparison; no model scoring and no source-PDF reread",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "artifact": "yasui-2019-geometrically-simply-connected-4-manifolds-v3.20-20260818T071447Z.json",
+  "workflowVersion": "v3.20",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "durationMs": 268834,
+  "modelCalls": 11,
+  "formatScore": 36,
+  "semanticScore": 51,
+  "auditScore": 87,
+  "matchedCore": [
+    "geometrically simply connected and 2-handle-neighborhood definitions",
+    "embedded zero-sphere construction and stable-cohomotopy obstruction chain",
+    "Bauer, Froyshov, Taubes, and symplectic-parity external ingredients",
+    "general positive-definite vanishing theorem and both-orientation symplectic obstruction",
+    "geometrically simply connected application selected as the correct mainTarget"
+  ],
+  "deductions": [
+    "The run exhausted three repairs and returned through score-first with one unresolved closure diagnostic.",
+    "The unresolved paper:theorem:3.2 is actually a paper question, so its theorem taxonomy is wrong even though leaving it unproved is mathematically safer than fabricating a proof.",
+    "B0 is over-complete and contains duplicate equivalent external Claims; several sourced context Claims remain open.",
+    "Some Gold definitions and intermediate theorem boundaries are represented through equivalent but coarser entries."
+  ],
+  "closureStatus": "Structurally valid and acyclic, but score-first diagnostics record one unresolved pseudo-theorem corresponding to a genuine open question.",
+  "mainTargetStatus": "Correct semantic match to Theorem 1.4.",
+  "status": "target-met-with-score-first-deduction"
+}

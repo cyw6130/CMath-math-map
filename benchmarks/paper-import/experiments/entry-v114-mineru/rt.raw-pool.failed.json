@@ -1,0 +1,157 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.14",
+  "status": "failed",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "rt-marked.md",
+    "pageCount": 19,
+    "characters": 30469
+  },
+  "diagnostics": {
+    "durationMs": 46937,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 30469,
+        "blocks": 5,
+        "overlapPages": 1,
+        "lanes": [
+          "combined"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.14",
+        "atMs": 2
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 8,
+        "foundationCount": 7,
+        "resultCount": 1,
+        "inferenceHintCount": 2,
+        "doneCalls": 1,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 21237
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 15,
+        "foundationCount": 12,
+        "resultCount": 3,
+        "inferenceHintCount": 3,
+        "doneCalls": 2,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 34007
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 5,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 1,
+        "foundationCount": 0,
+        "resultCount": 1,
+        "inferenceHintCount": 0,
+        "doneCalls": 3,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 39097
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 4,
+        "lane": "combined",
+        "totalBlocks": 5,
+        "extractedCount": 10,
+        "foundationCount": 8,
+        "resultCount": 2,
+        "inferenceHintCount": 2,
+        "doneCalls": 4,
+        "totalCalls": 5,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 46936
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 21203,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9342,
+          "completion_tokens": 1041,
+          "total_tokens": 10383
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 30980,
+        "status": 429,
+        "finishReason": null,
+        "usage": null
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 33973,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9477,
+          "completion_tokens": 1720,
+          "total_tokens": 11197
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 8113,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7841,
+          "completion_tokens": 158,
+          "total_tokens": 7999
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 25698,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9432,
+          "completion_tokens": 1279,
+          "total_tokens": 10711
+        }
+      }
+    ],
+    "error": "HTTP 429 block 1 combined extraction failed: {\"error\":{\"message\":\"Concurrency limit exceeded for account, please retry later\",\"type\":\"rate_limit_error\"}}"
+  }
+}

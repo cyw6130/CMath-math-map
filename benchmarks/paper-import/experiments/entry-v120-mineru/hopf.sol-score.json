@@ -1,0 +1,114 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v120-mineru/hopf.raw-pool.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 16,
+  "completeness": 16,
+  "solEntryScore": 32,
+  "verdict": "usable",
+  "summary": "The candidate captures most of the paper's central degree-theoretic chain, including degree and winding number, the degree-zero criterion, the extension theorem, the Hopf degree theorem, the Poincare-Hopf application, and the computation of pi_k(S^k). It is nevertheless weakened by several substantive mathematical errors, missing hypotheses, inconsistent classifications and locators, and substantial duplication. The most serious defects are the false torus Euler-characteristic formula, reversed sphere-homotopy inequalities, an incorrectly quantified epsilon-neighborhood theorem, and omission of the isolated-zero definition and hypotheses needed for the vector-field results.",
+  "strengths": [
+    "Extracts the main Hopf degree theorem and correctly represents equality of degree as the homotopy criterion.",
+    "Captures the principal supporting chain involving local degree, signed preimage counts, degree-zero null-homotopy, punctured Euclidean space, extension, and range adjustment.",
+    "Includes the conclusion pi_k(S^k) is isomorphic to Z and connects it to degree.",
+    "Covers the vector-field application through finite-zero constructions, zero removal, Poincare-Hopf, the Euler-characteristic criterion, and the hairy-ball consequence.",
+    "Marks several imported background results as external, including isotopy, linear isotopy, Sard, transversality extension, the epsilon-neighborhood theorem, and Poincare-Hopf.",
+    "Most displayed formulas have balanced LaTeX delimiters and most page locators lie near the corresponding source material."
+  ],
+  "issues": [
+    "The entry for sphere and torus Euler characteristics falsely states chi(T^k) = -2(k-2); the verified value is chi(T^k) = 0.",
+    "The claimed vanishing pi_k(S^n) = 0 for n < k is false, and it is immediately contradicted by the correctly cited nontrivial class in pi_3(S^2). The stable dimensional inequality was reversed.",
+    "The Hopf-fibration entry likewise says nontrivial classes occur when k < n even though its example pi_3(S^2) has k > n.",
+    "The epsilon-neighborhood theorem incorrectly quantifies over arbitrary epsilon and inadequately states the nearest-point projection result; only a sufficiently small tubular neighborhood is guaranteed.",
+    "The Poincare-Hopf entry omits the finite isolated-zero condition and the no-boundary hypothesis, while the nonvanishing-vector-field theorem also omits the no-boundary hypothesis. As written, these statements are overbroad.",
+    "The definition of the index of an isolated vector-field zero, foundational for the vector-field section, is absent.",
+    "The finite-zero vector-field entry only asserts existence of some such field, missing the stronger perturbation statement represented in the Gold artifact.",
+    "The hairy-ball entry covers only S^2 rather than all even-dimensional spheres S^{2m}; the odd-dimensional existence statement is also omitted.",
+    "Sard's theorem is classified as a lemma and reduced to a description of how it is used, rather than extracting its mathematical statement about critical values.",
+    "The transversality homotopy theorem is missing, and the extracted transversality extension theorem is too vague to preserve its domain, target, submanifold, and relative-boundary conditions.",
+    "The stereographic-projection entry is vague, describes the spaces imprecisely, and is located on page 5 rather than the Gold locator on page 13.",
+    "There is excessive duplication: boundary extension, degree-zero sphere null-homotopy, punctured-space null-homotopy, range adjustment, and finite-zero vector-field claims recur under multiple IDs. One ID, hopf:claim:finite-zero-vector-field, is reused for two different statements.",
+    "Many supporting lemmas are classified as theorems, reducing entry-type fidelity even when their underlying content is usable."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:degree",
+      "candidateEntries": [
+        "hopf-marked:def:degree"
+      ],
+      "assessment": "matched",
+      "notes": "Faithful definition with useful signed-intersection detail."
+    },
+    {
+      "goldEntry": "paper:b0:epsilon-nbhd",
+      "candidateEntries": [
+        "hopf:theorem:epsilon-neighborhood"
+      ],
+      "assessment": "incorrect",
+      "notes": "Missing the sufficiently-small-epsilon condition and misstating the projection conclusion."
+    },
+    {
+      "goldEntry": "paper:thm:hopf",
+      "candidateEntries": [
+        "hopf:theorem:hopf-degree"
+      ],
+      "assessment": "matched",
+      "notes": "Contains the Gold self-map theorem as a special case of the stated manifold-to-sphere result."
+    },
+    {
+      "goldEntry": "paper:cor:homotopy-group",
+      "candidateEntries": [
+        "hopf:result:homotopy-group-sphere-degree"
+      ],
+      "assessment": "matched",
+      "notes": "Correctly states that degree identifies pi_k(S^k) with Z, though the explicit k >= 1 condition is omitted."
+    },
+    {
+      "goldEntry": "paper:def:vf-index",
+      "candidateEntries": [],
+      "assessment": "missing",
+      "notes": "No entry defines isolated-zero index as the degree of the normalized boundary-sphere map."
+    },
+    {
+      "goldEntry": "paper:b0:poincare-hopf",
+      "candidateEntries": [
+        "hopf:theorem:poincare-hopf-index"
+      ],
+      "assessment": "partial",
+      "notes": "The main equality is present and externally attributed, but necessary boundary and isolated-zero hypotheses are missing."
+    },
+    {
+      "goldEntry": "paper:calc:euler-sphere",
+      "candidateEntries": [
+        "hopf:calculation:sphere-torus-euler-characteristics"
+      ],
+      "assessment": "incorrect",
+      "notes": "Sphere values are correct, but the torus formula is false."
+    },
+    {
+      "goldEntry": "paper:thm:vf-euler",
+      "candidateEntries": [
+        "hopf:theorem:nonvanishing-vector-field-euler"
+      ],
+      "assessment": "partial",
+      "notes": "The equivalence is captured but the no-boundary condition is omitted."
+    },
+    {
+      "goldEntry": "paper:cor:hairy-ball",
+      "candidateEntries": [
+        "hopf:theorem:hairy-ball"
+      ],
+      "assessment": "partial",
+      "notes": "Only the classical S^2 instance is extracted, not the full even-dimensional statement."
+    },
+    {
+      "goldEntry": "paper:b0:transversality-homotopy",
+      "candidateEntries": [],
+      "assessment": "missing",
+      "notes": "The general perturbation-to-transversality theorem used in the finite-zero argument is not represented."
+    }
+  ]
+}

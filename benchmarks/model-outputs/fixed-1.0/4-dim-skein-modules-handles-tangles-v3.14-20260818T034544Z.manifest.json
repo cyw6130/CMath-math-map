@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "workflowUnderTest": "v3.14",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-18T03:45:44.006Z",
+  "durationMs": 193012,
+  "status": "failed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/4-dim-skein-modules-handles-tangles-v3.14-20260818T034544Z.failed.json",
+  "auditScore": null,
+  "auditStatus": "pending-primary-agent-audit",
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

@@ -1,0 +1,106 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.2-consolidation-v1-run1.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 16,
+  "solEntryScore": 35,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main surgery-to-RT construction accurately, including Lickorish–Wallace, Kirby calculus, ribbon categories, ribbon Hopf algebras, modularity, Kirby coloring, normalization, purification, and the final RT invariant. Most formulas and page locators are plausible, but several Gold claims are absorbed into broader entries or assigned weaker entry classes such as calculation or definition. Important supporting entries are omitted, one Kirby-color formula has unbalanced math delimiters, and the extra item labeled as a Rohlin cobordism theorem is misleadingly attributed.",
+  "strengths": [
+    "Covers all major stages of the construction from framed-link surgery through modular categories to the Reshetikhin–Turaev invariant.",
+    "Faithfully reproduces the central quasitriangular and ribbon Hopf algebra identities under the Gold reference's stated conventions.",
+    "Correctly extracts the Lickorish–Wallace and Kirby calculus theorems and gives useful page locators.",
+    "Includes the modular Hopf algebra and purification theorem, together with the negligible-module condition.",
+    "Captures the Kirby color, Hopf-link matrix, rank and anomaly constants, signature normalization, and handle-slide invariance.",
+    "Adds several relevant explanatory entries, including categorical trace, linking-matrix signature, and root-of-unity specialization."
+  ],
+  "issues": [
+    "The standalone Hopf algebra definition in the Gold reference is missing.",
+    "The Gold entries for twist, graphical calculus, finite simple-system domination, purification, and negligible morphisms are not extracted as distinct entries.",
+    "The Kirby reduction proposition, blow-up invariance lemma, and Kirby-presentation-independence proposition are omitted as standalone supporting results; parts of their content are only implicit in the final theorem.",
+    "Several claim-level Gold entries are typed as definitions or calculations, notably the tensor-product module structure, R-matrix braiding, quantum-trace identity, and colored framed-link invariant.",
+    "The colored-link entry does not preserve the Gold condition End_C(1)=K or explicitly conclude that the value is a scalar depending only on colored ribbon isotopy.",
+    "The Kirby-color sum statement begins with an opening dollar delimiter in `${L}=...` but has no matching closing delimiter.",
+    "The entry named 'Rohlin cobordism theorem' conflates oriented null-cobordism and the surgery/2-handlebody presentation and is not a reliable attribution of Rohlin's theorem.",
+    "The dual-module entry presents an S^{-1} action as an interchangeable alternative without distinguishing the associated left-versus-right dual convention.",
+    "Some extra quantum-group and Jones-polynomial entries are broad or informal and are not supported by corresponding Gold entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryId": "paper:theorem:lickorish-wallace-surgery",
+      "status": "matched",
+      "assessment": "Faithful statement and appropriate theorem classification."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryId": "paper:theorem:kirby-calculus",
+      "status": "matched",
+      "assessment": "Correctly states the equivalence using framed isotopy, handle slides, and plus-or-minus-one blow-ups."
+    },
+    {
+      "goldEntryId": "rt:entry:hopf-algebra",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "No standalone definition records the bialgebra data and antipode identities."
+    },
+    {
+      "goldEntryId": "rt:entry:rep-ribbon",
+      "candidateEntryId": "paper:proposition:repfd-ribbon",
+      "status": "matched",
+      "assessment": "Correct proposition, though the separate Gold lemmas establishing tensor structure, duality, braiding, and twist are partly reclassified or compressed."
+    },
+    {
+      "goldEntryId": "rt:entry:colored-link-invariant",
+      "candidateEntryId": "paper:calculation:colored-framed-link-invariant",
+      "status": "partial",
+      "assessment": "Captures the functorial value but omits the End_C(1)=K scalar hypothesis and the explicit ribbon-isotopy invariance conclusion."
+    },
+    {
+      "goldEntryId": "rt:entry:finite-simple-system",
+      "candidateEntryId": null,
+      "status": "partial",
+      "assessment": "The domination condition appears inside the modular-category definition but is not extracted as its own foundational definition."
+    },
+    {
+      "goldEntryId": "rt:entry:purification",
+      "candidateEntryId": null,
+      "status": "partial",
+      "assessment": "Quotienting by negligible morphisms is mentioned in the purification theorem, but the quotient category and negligible-morphism ideal are not separately defined."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryId": "paper:proposition:handle-slide-invariance",
+      "status": "matched_with_type_difference",
+      "assessment": "Mathematical content is represented, but the Gold lemma is classified as a proposition."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "The final theorem says the normalized expression is Kirby-move invariant, but the essential plus-or-minus-one blow-up lemma is not extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryId": "paper:theorem:rt-invariant",
+      "status": "matched",
+      "assessment": "Accurately states the main orientation-preserving homeomorphism invariant."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-color",
+      "candidateEntryId": "paper:def:kirby-color",
+      "status": "matched",
+      "assessment": "Correctly identifies the Kirby color as a formal weighted combination rather than an ordinary categorical object."
+    },
+    {
+      "goldEntryId": "rt:entry:signature-normalization",
+      "candidateEntryId": "paper:calculation:rt-normalization",
+      "status": "matched_with_type_difference",
+      "assessment": "The normalization formula is correct, but it is classified as a calculation rather than a definition."
+    }
+  ]
+}

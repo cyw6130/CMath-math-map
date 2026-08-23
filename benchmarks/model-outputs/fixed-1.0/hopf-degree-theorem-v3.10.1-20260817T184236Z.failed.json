@@ -1,0 +1,423 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-map-off-compact-v3.10.1",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.10.1",
+  "promptSetVersion": "v3.10.1",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 235311,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "hopf map.pdf",
+        "pageCount": 13,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32011,
+        "atMs": 2
+      },
+      {
+        "stage": "target",
+        "leads": 16,
+        "atMs": 66258
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 66258
+      },
+      {
+        "stage": "request",
+        "chars": 32011,
+        "chunks": 2,
+        "atMs": 66260
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 9,
+        "atMs": 66264
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 102744
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 126013
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133571
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:linear-isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:claim:boundary-extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:claim:range-adjustment",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hopf-degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:vector-field",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hairy-ball",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133572
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 41,
+        "leadGuided": 27,
+        "total": 60,
+        "conflicts": 8,
+        "atMs": 133572
+      },
+      {
+        "stage": "integrate",
+        "entries": 60,
+        "atMs": 133572
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 18,
+        "renameCount": 0,
+        "atMs": 143491
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "lead:extension-theorem",
+          "lead:poincare-hopf"
+        ],
+        "fixedCount": 0,
+        "atMs": 143506
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 1,
+        "candidates": [
+          "The Hopf Degree"
+        ],
+        "atMs": 143514
+      },
+      {
+        "stage": "assemble",
+        "entries": 42,
+        "atMs": 143515
+      },
+      {
+        "stage": "response",
+        "atMs": 189371
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 10,
+        "removedClaimIds": [
+          "paper:theorem:zero-degree-nullhomotopy-base",
+          "paper:theorem:zero-degree-nullhomotopy-general",
+          "paper:theorem:punctured-euclidean-nullhomotopy",
+          "paper:proposition:vector-field-modification",
+          "paper:lemma:finite-zero-vector-field",
+          "paper:lemma:localized-vector-field",
+          "paper:theorem:vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-consequence",
+          "paper:theorem:hopf-fibration-example"
+        ],
+        "atMs": 189378
+      },
+      {
+        "stage": "repair",
+        "reason": "13 处问题",
+        "attempt": 1,
+        "atMs": 189394
+      },
+      {
+        "stage": "response",
+        "atMs": 228192
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃 premises 为空的 第 13 条 Inference"
+        ],
+        "atMs": 228195
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 14,
+        "removedClaimIds": [
+          "paper:lemma:linear-isotopy",
+          "paper:theorem:zero-degree-nullhomotopy-base",
+          "paper:theorem:punctured-euclidean-nullhomotopy",
+          "paper:theorem:extension",
+          "paper:proposition:vector-field-modification",
+          "paper:lemma:finite-zero-vector-field",
+          "paper:lemma:localized-vector-field",
+          "paper:theorem:vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-consequence",
+          "paper:theorem:hopf-fibration-example",
+          "paper:claim:base-nullhomotopy",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:claim:extension-to-euclidean"
+        ],
+        "repairRound": 1,
+        "atMs": 228195
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 2,
+        "atMs": 228196
+      },
+      {
+        "stage": "response",
+        "atMs": 233099
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 14,
+        "removedClaimIds": [
+          "paper:lemma:linear-isotopy",
+          "paper:theorem:zero-degree-nullhomotopy-base",
+          "paper:theorem:punctured-euclidean-nullhomotopy",
+          "paper:theorem:extension",
+          "paper:proposition:vector-field-modification",
+          "paper:lemma:finite-zero-vector-field",
+          "paper:lemma:localized-vector-field",
+          "paper:theorem:vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-consequence",
+          "paper:theorem:hopf-fibration-example",
+          "paper:claim:base-nullhomotopy",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:claim:extension-to-euclidean"
+        ],
+        "repairRound": 2,
+        "atMs": 233100
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 3,
+        "atMs": 233100
+      },
+      {
+        "stage": "response",
+        "atMs": 235309
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 14,
+        "removedClaimIds": [
+          "paper:lemma:linear-isotopy",
+          "paper:theorem:zero-degree-nullhomotopy-base",
+          "paper:theorem:punctured-euclidean-nullhomotopy",
+          "paper:theorem:extension",
+          "paper:proposition:vector-field-modification",
+          "paper:lemma:finite-zero-vector-field",
+          "paper:lemma:localized-vector-field",
+          "paper:theorem:vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-consequence",
+          "paper:theorem:hopf-fibration-example",
+          "paper:claim:base-nullhomotopy",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:claim:extension-to-euclidean"
+        ],
+        "repairRound": 3,
+        "atMs": 235310
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 66246,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9354,
+          "completion_tokens": 3572,
+          "total_tokens": 12926
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 13628,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12991,
+          "completion_tokens": 546,
+          "total_tokens": 13537
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 36481,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8216,
+          "completion_tokens": 1886,
+          "total_tokens": 10102
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 59751,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10191,
+          "completion_tokens": 3133,
+          "total_tokens": 13324
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 67304,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14760,
+          "completion_tokens": 3567,
+          "total_tokens": 18327
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 9916,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4819,
+          "completion_tokens": 365,
+          "total_tokens": 5184
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 45855,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 19340,
+          "completion_tokens": 2460,
+          "total_tokens": 21800,
+          "completion_tokens_details": {
+            "reasoning_tokens": 432
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 38795,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 26692,
+          "completion_tokens": 1980,
+          "total_tokens": 28672,
+          "prompt_tokens_details": {
+            "cached_tokens": 19200
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1034
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 4900,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 27982,
+          "completion_tokens": 194,
+          "total_tokens": 28176
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 2207,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 28439,
+          "completion_tokens": 29,
+          "total_tokens": 28468,
+          "prompt_tokens_details": {
+            "cached_tokens": 27392
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.9 定向修复已执行 3 次）：存在循环证明依赖：paper:claim:punctured-euclidean-zero-winding -> paper:theorem:zero-degree-nullhomotopy-general -> paper:theorem:zero-degree-induction -> paper:claim:punctured-euclidean-zero-winding"
+  }
+}

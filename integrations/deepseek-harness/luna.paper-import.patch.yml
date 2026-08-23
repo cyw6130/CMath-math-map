@@ -8,6 +8,8 @@
 - id: cmath-paper-import-router
   config:
     extract: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }
+    guide: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }
+    aggregate: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }
     integrate: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }
     assemble: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }
     repair: { provider: luna-gateway, model: gpt-5.6-luna, reasoningEffort: high, maxTokens: 64000 }

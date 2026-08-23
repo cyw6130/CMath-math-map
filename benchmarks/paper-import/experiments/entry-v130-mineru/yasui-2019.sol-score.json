@@ -1,0 +1,104 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v130-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 18,
+  "completeness": 14,
+  "solEntryScore": 32,
+  "verdict": "usable",
+  "summary": "The candidate captures the principal theorem chain, including Theorems 1.4, 1.9, 2.3, 2.4, the sphere obstruction, and Lemma 3.1, with generally correct hypotheses and page locators. However, several entries are duplicated, corollaries are classified as theorems, Bauer's theorem is substantially underspecified, and Lemma 2.6 uses the potentially incorrect signed class alpha-bar alpha instead of the gold reference's alpha times bar alpha. Coverage is incomplete because the Bauer-Furuta definition, symplectic-structure definition, Taubes result, and symplectic Betti-parity fact are absent.",
+  "strengths": [
+    "Core main results and supporting lemmas are represented with mostly accurate hypotheses and page references.",
+    "The candidate preserves external attribution for Bauer and Frøyshov and identifies their source references.",
+    "The geometric simply connectedness and 2-handle-neighborhood concepts are extracted in recognizable mathematical form.",
+    "The main obstruction and vanishing conclusions are substantially faithful to the gold statements."
+  ],
+  "issues": [
+    "The candidate omits four gold foundational/background entries: the Bauer-Furuta invariant definition, symplectic-structure definition, Taubes's symplectic Seiberg-Witten theorem, and the symplectic Betti-parity fact.",
+    "Bauer's Theorem 2.7 is reduced to 'conditions (1) or (2)' or '文中 (i)-(iii)' without extracting the actual conditions, making the statement non-self-contained.",
+    "Lemma 2.6 is duplicated and states alpha-bar alpha, whereas the gold reference specifies the class alpha times bar alpha; this is a substantive notation/sign discrepancy.",
+    "Many entries are exact duplicates under yasui-prefixed IDs, producing excessive fragmentation and unreliable entry identity management.",
+    "Corollaries 1.5, 1.6, 1.7, and 2.5 are typed as theorem rather than corollary, violating the requested entry classification.",
+    "The candidate includes additional entries not represented in the gold artifact, such as a positive-definite definition and several introductory corollaries; these are not inherently wrong but add noise relative to the verified target set.",
+    "The phrase '稳定上同调球Seiberg-Witten不变量' is a mistranslation or mangling of stable homotopy Seiberg-Witten invariant, reducing terminology precision.",
+    "Some duplicate theorem statements omit conditions such as orientation or the explicit non-torsion class, so the pool is internally inconsistent."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:geometrically-simply-connected",
+      "candidateEntries": [
+        "paper:def:geometrically-simply-connected"
+      ],
+      "assessment": "Accurate; minor formatting differences only."
+    },
+    {
+      "goldEntry": "paper:def:2-handle-neighborhood-class",
+      "candidateEntries": [
+        "paper:def:represented-by-2-handle-neighborhood"
+      ],
+      "assessment": "Substantively accurate and more explicit about the induced homology generator."
+    },
+    {
+      "goldEntry": "paper:lemma:embedded-sphere-double",
+      "candidateEntries": [
+        "paper:lemma:2-6",
+        "yasui:lemma:2-6"
+      ],
+      "assessment": "Captured but duplicated; the alpha-bar alpha notation conflicts with the gold alpha times bar alpha formulation."
+    },
+    {
+      "goldEntry": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:2-7"
+      ],
+      "assessment": "External attribution is present, but the hypotheses of case (2) are omitted."
+    },
+    {
+      "goldEntry": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntries": [
+        "yasui:thm:2-8"
+      ],
+      "assessment": "Essentially correct, with duplicate variants and minor omission of the explicit class variable in one version."
+    },
+    {
+      "goldEntry": "paper:thm:positive-definite-vanishing",
+      "candidateEntries": [
+        "paper:thm:2-3",
+        "yasui:thm:2-3"
+      ],
+      "assessment": "Correctly captured and duplicated."
+    },
+    {
+      "goldEntry": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntries": [
+        "paper:thm:2-4",
+        "yasui:thm:2-4"
+      ],
+      "assessment": "The complete variant is accurate; another duplicate is less explicit."
+    },
+    {
+      "goldEntry": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntries": [
+        "yasui:lemma:3-1"
+      ],
+      "assessment": "Accurate in substance, but repeated three times."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntries": [
+        "paper:thm:1-4"
+      ],
+      "assessment": "Core conclusion and hypotheses are captured, though terminology for stable homotopy is mistranslated."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntries": [
+        "paper:thm:1-9"
+      ],
+      "assessment": "Correctly captured; 'at least one orientation' is equivalent to the X/bar X formulation."
+    }
+  ]
+}

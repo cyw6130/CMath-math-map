@@ -1,0 +1,367 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-map-off-compact-v3.9.6",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.6",
+  "promptSetVersion": "v3.9.6",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 219323,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "hopf map.pdf",
+        "pageCount": 13,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32011,
+        "atMs": 1
+      },
+      {
+        "stage": "target",
+        "leads": 15,
+        "atMs": 69587
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 69587
+      },
+      {
+        "stage": "request",
+        "chars": 32011,
+        "chunks": 2,
+        "atMs": 69592
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 9,
+        "atMs": 69599
+      },
+      {
+        "stage": "entries-repair",
+        "chunk": 1,
+        "total": 2,
+        "count": 1,
+        "atMs": 110755
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 129658
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 146865
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:inductive-sphere-step",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:linear-isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:zero-degree-sphere",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:proposition:range-adjustment",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hopf-degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:proposition:vector-field-modification",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:proposition:vector-field-localization",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:vector-field-euler",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hairy-ball",
+        "retained": "coverage-or-first-seen",
+        "atMs": 146868
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 36,
+        "leadGuided": 22,
+        "total": 46,
+        "conflicts": 12,
+        "atMs": 146868
+      },
+      {
+        "stage": "integrate",
+        "entries": 46,
+        "atMs": 146868
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 13,
+        "renameCount": 0,
+        "atMs": 154317
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 1,
+        "candidates": [
+          "The Hopf Degree"
+        ],
+        "atMs": 154323
+      },
+      {
+        "stage": "assemble",
+        "entries": 41,
+        "atMs": 154325
+      },
+      {
+        "stage": "response",
+        "atMs": 200749
+      },
+      {
+        "stage": "repair",
+        "reason": "5 处问题",
+        "attempt": 1,
+        "atMs": 200761
+      },
+      {
+        "stage": "response",
+        "atMs": 212362
+      },
+      {
+        "stage": "repair",
+        "reason": "3 处问题",
+        "attempt": 2,
+        "atMs": 212365
+      },
+      {
+        "stage": "response",
+        "atMs": 216946
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 3,
+        "atMs": 216947
+      },
+      {
+        "stage": "response",
+        "atMs": 219321
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 69571,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9354,
+          "completion_tokens": 3732,
+          "total_tokens": 13086
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 25544,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13163,
+          "completion_tokens": 1311,
+          "total_tokens": 14474
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 41159,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8388,
+          "completion_tokens": 1822,
+          "total_tokens": 10210
+        }
+      },
+      {
+        "stage": "entries-repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 60060,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10363,
+          "completion_tokens": 2869,
+          "total_tokens": 13232
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 69196,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14933,
+          "completion_tokens": 3272,
+          "total_tokens": 18205
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 36109,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10279,
+          "completion_tokens": 1834,
+          "total_tokens": 12113
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 7447,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3800,
+          "completion_tokens": 257,
+          "total_tokens": 4057
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 46423,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 19980,
+          "completion_tokens": 2474,
+          "total_tokens": 22454,
+          "completion_tokens_details": {
+            "reasoning_tokens": 420
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 11598,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 26485,
+          "completion_tokens": 546,
+          "total_tokens": 27031,
+          "prompt_tokens_details": {
+            "cached_tokens": 19200
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 290
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 4578,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 30679,
+          "completion_tokens": 161,
+          "total_tokens": 30840
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 2371,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 34692,
+          "completion_tokens": 45,
+          "total_tokens": 34737,
+          "prompt_tokens_details": {
+            "cached_tokens": 30464
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.6 定向修复已执行 3 次）：Claim paper:lemma:isotopy（同痕引理及其推论）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:lemma:linear-isotopy（线性同痕引理）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样"
+  }
+}

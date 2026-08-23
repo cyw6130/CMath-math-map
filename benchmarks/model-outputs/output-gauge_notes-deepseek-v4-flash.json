@@ -1,0 +1,1328 @@
+{
+  "seconds": 87.6,
+  "stages": [
+    {
+      "stage": "request",
+      "chars": 80022,
+      "chunks": 4
+    },
+    {
+      "stage": "entries-progress",
+      "done": 1,
+      "total": 4
+    },
+    {
+      "stage": "entries-progress",
+      "done": 2,
+      "total": 4
+    },
+    {
+      "stage": "entries-repair",
+      "chunk": 2,
+      "total": 4,
+      "count": 1
+    },
+    {
+      "stage": "entries-repair",
+      "chunk": 4,
+      "total": 4,
+      "count": 5
+    },
+    {
+      "stage": "entries-progress",
+      "done": 3,
+      "total": 4
+    },
+    {
+      "stage": "entries-progress",
+      "done": 4,
+      "total": 4
+    },
+    {
+      "stage": "integrate",
+      "entries": 84
+    },
+    {
+      "stage": "assemble",
+      "entries": 84
+    },
+    {
+      "stage": "response"
+    },
+    {
+      "stage": "repair",
+      "reason": "4 处问题",
+      "attempt": 1
+    },
+    {
+      "stage": "response"
+    },
+    {
+      "stage": "repair",
+      "reason": "2 处问题",
+      "attempt": 2
+    },
+    {
+      "stage": "response"
+    },
+    {
+      "stage": "autofix",
+      "count": 2,
+      "actions": [
+        "第 5 条 Inference 以 Fact 为证明结论，已降级为 organization",
+        "丢弃以 Fact 为证明结论且前提含 Claim 的 第 27 条 Inference"
+      ]
+    },
+    {
+      "stage": "validate"
+    },
+    {
+      "stage": "closure",
+      "openClaims": [
+        "引理 · 5 · 超曲面陳類遞推公式",
+        "引理 · 6 · 第一龐特里亞金數的配邊不變性",
+        "引理 · 7 · 復向量叢的第一龐特里亞金類公式",
+        "定理 · 13 · Stiefel-Whitney 類作為障礙類",
+        "引理 · 8 · S^4 上存在秩四向量叢",
+        "定理 · 17 · Rokhlin 定理與同倫群的等價性",
+        "定理 · 18 · Thom–Pontryagin 同構",
+        "命题 · 3 · J_3 滿射",
+        "命题 · 4 · SO(4) 的短正合列",
+        "引理 · 9 · 可分解2形式与平面",
+        "命题 · 5 · 共形结构与极大正定子空间的双射",
+        "引理 · 10 · 调和形式严格最小化范数",
+        "引理 · 11 · 最小化者为调和形式",
+        "定理 · 20 · 霍奇定理",
+        "引理 · 13 · 耦合外微分平方的线性性"
+      ]
+    }
+  ],
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:gauge-notes",
+      "title": "Gauge Theory and 4-Manifolds"
+    },
+    "mainTargetEntryId": "paper:thm:rokhlin",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:gauge-notes",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:thm:milnor-classification",
+          "paper:thm:freedman-classification",
+          "paper:thm:rokhlin",
+          "paper:thm:donaldson-diagonalizability",
+          "paper:kunneth-theorem",
+          "paper:cellular-approximation-theorem",
+          "paper:thm:2.17",
+          "paper:thm:2.24",
+          "paper:thm:2.25",
+          "paper:external:sard"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:thm:rokhlin"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:thm:milnor-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · Milnor 分类定理",
+        "shortTitle": "Milnor 分类定理",
+        "title": "Milnor 分类定理",
+        "statement": "对四维单连通紧致 Poincaré 空间，按同伦等价分类与按整数上无模矩阵（模 Z 等价）分类之间存在双射。",
+        "sourcePath": "gauge_notes.pdf#page=4",
+        "sourceReference": "Milnor"
+      },
+      {
+        "id": "paper:thm:freedman-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · Freedman 分类定理",
+        "shortTitle": "Freedman 分类定理",
+        "title": "Freedman 分类定理",
+        "statement": "对紧致单连通拓扑四维流形，按同胚分类与按整数上无模矩阵（模 Z 等价）分类之间存在双射。",
+        "sourcePath": "gauge_notes.pdf#page=4",
+        "sourceReference": "Freedman, ~1980"
+      },
+      {
+        "id": "paper:thm:rokhlin",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · Rokhlin 定理",
+        "shortTitle": "Rokhlin 定理",
+        "title": "Rokhlin 定理",
+        "statement": "若 X 是光滑四维流形且其交形式 Q_X 的对角线元素均为偶数，则 Q_X 的符号差可被 16 整除。",
+        "sourcePath": "gauge_notes.pdf#page=4",
+        "sourceReference": "Rokhlin"
+      },
+      {
+        "id": "paper:thm:donaldson-diagonalizability",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · Donaldson 对角化定理",
+        "shortTitle": "Donaldson 对角化定理",
+        "title": "Donaldson 对角化定理",
+        "statement": "若 X 是紧致单连通光滑四维流形且其交形式 Q_X 是正定的，则 Q_X 等价于单位矩阵 I。",
+        "sourcePath": "gauge_notes.pdf#page=4",
+        "sourceReference": "Donaldson"
+      },
+      {
+        "id": "paper:kunneth-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · Künneth 定理",
+        "shortTitle": "Künneth 定理",
+        "title": "Künneth 定理",
+        "statement": "对 CW 复形 X 和 Y，有 C^*(X×Y) ≅ C^*(X) ⊗ C^*(Y)。",
+        "sourcePath": "gauge_notes.pdf#page=5",
+        "sourceReference": "Künneth"
+      },
+      {
+        "id": "paper:cellular-approximation-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 细胞逼近定理",
+        "shortTitle": "细胞逼近定理",
+        "title": "细胞逼近定理",
+        "statement": "任何连续映射同伦于一个细胞映射。",
+        "sourcePath": "gauge_notes.pdf#page=5",
+        "sourceReference": "细胞逼近定理"
+      },
+      {
+        "id": "paper:def:good-cover",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 好覆盖",
+        "shortTitle": "好覆盖",
+        "title": "好覆盖",
+        "statement": "光滑流形 M 的一个开覆盖 {U_i}_{i∈I} 称为好的，如果它是局部有限的且对每个非空 J⊂I，交集 U_J = ∩_{j∈J} U_j 要么为空要么连通。",
+        "sourcePath": "gauge_notes.pdf#page=5"
+      },
+      {
+        "id": "paper:def:cech-complex",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · Čech 上链复形",
+        "shortTitle": "Čech 上链复形",
+        "title": "Čech 上链复形",
+        "statement": "给定好覆盖 U，定义 k-单纯形集 S_k = {σ: {0,...,k} → I | U_{σ(0),...,σ(k)} 非空}，及 Čech 上链群 Č^k(M; U; A) = ∏_{S_k} A，微分 δ 由 δ η(σ) = Σ_{i=0}^{k+1} (-1)^{i+1} η(∂_i σ) 给出。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:cech-cohomology",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · Čech 上同调",
+        "shortTitle": "Čech 上同调",
+        "title": "Čech 上同调",
+        "statement": "Čech 上同调定义为 Ȟ^*(X; U; A) = ker δ / im δ。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:de-rham-complex",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · de Rham 复形",
+        "shortTitle": "de Rham 复形",
+        "title": "de Rham 复形",
+        "statement": "de Rham 复形为 Ω^*(M) = ⊕_{k≥0} Ω^k(M)，微分 d 为外微分，满足 d^2=0，其上同调为 de Rham 上同调 H_dR^*(M)。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:fundamental-class",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · 基本类",
+        "shortTitle": "基本类",
+        "title": "基本类",
+        "statement": "对紧致可定向 n 维光滑流形 X，H_n(X) ≅ Z，选择定向确定一个生成元 [X] ∈ H_n(X)，称为基本类，满足 f_*([X]) = [Y] 对保定向微分同胚 f 成立，反向则取负。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:trace-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 迹映射",
+        "shortTitle": "迹映射",
+        "title": "迹映射",
+        "statement": "基本类确定一个迹映射 H^n(X; A) → A，c ↦ eval(c, [X])；在 A=R 且用 de Rham 上同调时，即为积分映射 α ↦ ∫_X α。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:cap-product",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 帽积",
+        "shortTitle": "帽积",
+        "title": "帽积",
+        "statement": "帽积 _: H^k(X) ⊗ H_j(X) → H_{j-k}(X) 由 id⊗δ 与 eval⊗id 组合定义，δ 为对角映射的细胞同伦代表。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:de-rham-cohomology",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · de Rham 上同调",
+        "shortTitle": "de Rham 上同调",
+        "title": "de Rham 上同调",
+        "statement": "光滑流形 $M$ 的 de Rham 上同调定义为微分形式复形 $\\Omega^*(M)$ 的外微分 $d$ 的上同调：$H_{dR}^*(M)=\\ker d / \\operatorname{im} d$。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:entry:definition:1",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · 上积",
+        "shortTitle": "上积",
+        "title": "上积",
+        "statement": "上积 $\\frown: H^k(X)\\otimes H_j(X)\\to H_{j-k}(X)$ 由对角映射诱导，Poincaré 对偶给出 $H^k(X)\\cong H_{n-k}(X)$。",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:def:poincare-duality",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · Poincaré 对偶",
+        "shortTitle": "Poincaré 对偶",
+        "title": "Poincaré 对偶",
+        "statement": "由帽积 $(-) \\frown [X] : H^k(X) \\to H_{n-k}(X)$ 给出的同构。",
+        "sourcePath": "gauge_notes.pdf#page=7"
+      },
+      {
+        "id": "paper:example:2.4",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · 上积与拉回",
+        "shortTitle": "上积与拉回",
+        "title": "上积与拉回",
+        "statement": "设 $f:X^n\\to Y^m$ 光滑，则 $(-)\\frown f_*[M]: H_{dR}^n(Y)\\to H_{dR}^0(Y)\\cong \\mathbb{R}$，且 $\\eta\\mapsto \\int_X f^*\\eta$。",
+        "sourcePath": "gauge_notes.pdf#page=7"
+      },
+      {
+        "id": "paper:prop:2.6",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 相交形式的非退化性",
+        "shortTitle": "相交形式的非退化性",
+        "title": "相交形式的非退化性",
+        "statement": "闭可定向 $2n$ 维流形 $M$ 上，相交形式 $(\\cdot)$ 在 $H^n(M)_0$ 上非退化，即映射 $x\\mapsto (y\\mapsto x\\cdot y)$ 是同构。",
+        "sourcePath": "gauge_notes.pdf#page=8"
+      },
+      {
+        "id": "paper:prop:2.8",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 边界诱导的拉格朗日子空间",
+        "shortTitle": "边界诱导的拉格朗日子空间",
+        "title": "边界诱导的拉格朗日子空间",
+        "statement": "设 $M^{2n}=\\partial N^{2n+1}$，$i:M\\hookrightarrow N$ 为包含，则 $L=\\operatorname{im}(i^*)\\subset H^n(M)$ 是迷向的，且 $\\dim L=\\frac{1}{2}\\dim H^n(M)$，即 $L$ 是拉格朗日子空间。",
+        "sourcePath": "gauge_notes.pdf#page=8"
+      },
+      {
+        "id": "paper:def:unimodular-lattice",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · 幺模格",
+        "shortTitle": "幺模格",
+        "title": "幺模格",
+        "statement": "幺模格 $(\\Lambda,\\sigma)$ 是有限秩自由阿贝尔群 $\\Lambda$ 配非退化对称双线性型 $\\sigma:\\Lambda\\times\\Lambda\\to\\mathbb{Z}$。",
+        "sourcePath": "gauge_notes.pdf#page=8"
+      },
+      {
+        "id": "paper:def:signature",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · 符号差",
+        "shortTitle": "符号差",
+        "title": "符号差",
+        "statement": "对实对称双线性型 $(V,\\sigma)$，符号差 $\\tau=\\dim V^+-\\dim V^-$；对格 $(\\Lambda,\\sigma)$，$\\tau(\\Lambda\\otimes\\mathbb{R},\\sigma)$；对 $4m$ 维流形 $M$，$\\tau(M)=\\tau(H^{2m}(M)_0,(\\cdot))$。",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:2.11",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · Thom 定理",
+        "shortTitle": "Thom 定理",
+        "title": "Thom 定理",
+        "statement": "两个闭可定向 4 维流形 $X_1,X_2$ 具有相同符号差当且仅当它们定向配边。",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:def:characteristic-vector",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 13 · 特征向量",
+        "shortTitle": "特征向量",
+        "title": "特征向量",
+        "statement": "幺模格 $(\\Lambda,\\sigma)$ 的特征向量 $c\\in\\Lambda$ 满足 $\\sigma(c,x)\\equiv\\sigma(x,x)\\pmod 2$ 对所有 $x\\in\\Lambda$。",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:lemma:2.13",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 1 · 特征向量构成陪集",
+        "shortTitle": "特征向量构成陪集",
+        "title": "特征向量构成陪集",
+        "statement": "幺模格 $(\\Lambda,\\sigma)$ 的特征向量集合是 $2\\Lambda$ 的一个陪集。",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:lemma:2.15",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · 特征向量平方模 8 同余",
+        "shortTitle": "特征向量平方模 8 同余",
+        "title": "特征向量平方模 8 同余",
+        "statement": "若 $c,c'$ 是幺模格 $(\\Lambda,\\sigma)$ 的特征向量，则 $\\sigma(c,c)\\equiv\\sigma(c',c')\\pmod 8$。",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:def:type-of-lattice",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 14 · 格的型",
+        "shortTitle": "格的型",
+        "title": "格的型",
+        "statement": "幺模格 $(\\Lambda,\\sigma)$ 的型为 0（偶）若 $\\sigma(x,x)$ 对所有 $x$ 为偶，否则为 1（奇）。",
+        "sourcePath": "gauge_notes.pdf#page=10"
+      },
+      {
+        "id": "paper:thm:2.17",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · Hasse-Minkowski 定理",
+        "shortTitle": "Hasse-Minkowski 定理",
+        "title": "Hasse-Minkowski 定理",
+        "statement": "不定幺模形式（即既不正定也不负定）由秩、符号差和型（模 2 类）三个不变量唯一确定。",
+        "sourcePath": "gauge_notes.pdf#page=10",
+        "sourceReference": "Hasse-Minkowski 定理，证明见 [10]"
+      },
+      {
+        "id": "paper:cor:2.20",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · 特征向量平方模 8 等于符号差",
+        "shortTitle": "特征向量平方模 8 等于符号差",
+        "title": "特征向量平方模 8 等于符号差",
+        "statement": "对任意幺模格 $\\Lambda$ 和任一特征向量 $c$，有 $c\\cdot c\\equiv\\tau\\pmod 8$；特别地，若 $\\Lambda$ 是偶的则 $\\tau\\equiv 0\\pmod 8$。",
+        "sourcePath": "gauge_notes.pdf#page=10"
+      },
+      {
+        "id": "paper:example:2.21",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · E8 格",
+        "shortTitle": "E8 格",
+        "title": "E8 格",
+        "statement": "E8 格是唯一的正定偶幺模 8 维格，可显式地表示为 $\\{(x_i)\\in\\mathbb{Z}^8\\cup(\\mathbb{Z}+1/2)^8:\\sum x_i\\equiv0\\pmod 2\\}$。",
+        "sourcePath": "gauge_notes.pdf#page=10"
+      },
+      {
+        "id": "paper:thm:2.24",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · Wu 公式",
+        "shortTitle": "Wu 公式",
+        "title": "Wu 公式",
+        "statement": "若 $X$ 是闭 4 维流形，则 $\\omega:=(w_1^2+w_2)(TX)$ 是 $H^2(X,\\mathbb{Z}/2)$ 的特征元素，即 $\\omega\\cup u=u\\cup u$ 对所有 $u\\in H^2(X,\\mathbb{Z}/2)$。",
+        "sourcePath": "gauge_notes.pdf#page=11",
+        "sourceReference": "Wu 公式（Wu 1950）"
+      },
+      {
+        "id": "paper:thm:2.25",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 11 · Hirzebruch-Hopf 定理",
+        "shortTitle": "Hirzebruch-Hopf 定理",
+        "title": "Hirzebruch-Hopf 定理",
+        "statement": "对所有闭可定向四维流形 $X$，$w_3(TX)=0$。",
+        "sourcePath": "gauge_notes.pdf#page=11",
+        "sourceReference": "Hirzebruch-Hopf 定理"
+      },
+      {
+        "id": "paper:thm:2.28",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 12 · Stiefel-Whitney 类与 Chern 类关系",
+        "shortTitle": "Stiefel-Whitney 类与 Chern 类关系",
+        "title": "Stiefel-Whitney 类与 Chern 类关系",
+        "statement": "对复向量丛 $E$，将其视为实向量丛的 Stiefel-Whitney 类满足 $w_{2i}(E_{\\mathbb{R}})=c_i(E)\\bmod 2$，$w_{2i+1}(E_{\\mathbb{R}})=0$；特别地 $w_2=c_1\\bmod 2$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:def:almost-complex-structure",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 15 · 近复结构",
+        "shortTitle": "近复结构",
+        "title": "近复结构",
+        "statement": "流形 $M^{2r}$ 上的近复结构是 $J\\in\\operatorname{End}(TM)$ 满足 $J^2=-\\operatorname{id}$；它使 $TM$ 成为复向量丛，从而有 Chern 类 $c_i(TM,J)\\in H^{2i}(M,\\mathbb{Z})$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:2.31",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 3 · 第一 Pontryagin 类的配边不变性",
+        "shortTitle": "第一 Pontryagin 类的配边不变性",
+        "title": "第一 Pontryagin 类的配边不变性",
+        "statement": "对闭定向 4 流形 $X$，整数 $p_1(TX)[X]$ 只依赖于 $X$ 的配边类。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:2.32",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 4 · 复向量丛的 Pontryagin 类",
+        "shortTitle": "复向量丛的 Pontryagin 类",
+        "title": "复向量丛的 Pontryagin 类",
+        "statement": "对复向量丛 $V$，$p_1(V_{\\mathbb{R}})=c_1(V)^2-2c_2(V)$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:entry:definition:2",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 16 · 殆複結構",
+        "shortTitle": "殆複結構",
+        "title": "殆複結構",
+        "statement": "流形 $M^{2r}$ 上的殆複結構是 $J\\in \\operatorname{End}(TM)$，滿足 $J^2 = -\\mathrm{id}$。此時 $TM$ 成為復向量叢，其中 $i = \\sqrt{-1}$ 作用為 $J$，且有 $c_i(TM,J)\\in H^{2i}(M,\\mathbb{Z})$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:chern-class-hypersurface-recursion",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 5 · 超曲面陳類遞推公式",
+        "shortTitle": "超曲面陳類遞推公式",
+        "title": "超曲面陳類遞推公式",
+        "statement": "設 $X_d\\subset \\mathbb{CP}^n$ 為光滑 $d$ 次齊次多項式零點集，$h$ 為超平面類，則陳類滿足 $c_j(TX_d) + d h c_{j-1}(TX_d) = \\binom{n+1}{j} h^j$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:p1-cobordism-invariant",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 6 · 第一龐特里亞金數的配邊不變性",
+        "shortTitle": "第一龐特里亞金數的配邊不變性",
+        "title": "第一龐特里亞金數的配邊不變性",
+        "statement": "對於閉合可定向四流形 $X^4$，整數 $p_1(TX)[X]$ 僅依賴於 $X$ 的配邊類。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:lemma:p1-complex-formula",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 7 · 復向量叢的第一龐特里亞金類公式",
+        "shortTitle": "復向量叢的第一龐特里亞金類公式",
+        "title": "復向量叢的第一龐特里亞金類公式",
+        "statement": "若 $V\\to X$ 為復向量叢，則 $p_1(V_{\\mathbb{R}}) = c_1(V)^2 - 2c_2(V)$。",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:thm:stiefel-whitney-as-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 13 · Stiefel-Whitney 類作為障礙類",
+        "shortTitle": "Stiefel-Whitney 類作為障礙類",
+        "title": "Stiefel-Whitney 類作為障礙類",
+        "statement": "設 $E\\to X$ 為秩 $n$ 實向量叢，則 $O_n^k(E) = w_{n-k+1}(E)$，即第 $n-k+1$ 個 Stiefel-Whitney 類。",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:cor:trivialization-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 14 · 四流形餘一點切叢平凡化的障礙",
+        "shortTitle": "四流形餘一點切叢平凡化的障礙",
+        "title": "四流形餘一點切叢平凡化的障礙",
+        "statement": "設 $X$ 為閉合可定向四流形，則 $w_2(TX)$ 是在 $X-\\{pt\\}$ 上平凡化 $TX$ 的障礙。",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:thm:rank4-bundle-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 15 · 秩四向量丛的分类",
+        "shortTitle": "秩四向量丛的分类",
+        "title": "秩四向量丛的分类",
+        "statement": "设 $X^4$ 为闭定向四流形，$T, T'$ 为秩四定向向量丛且 $w_2(T)=w_2(T')=0$，则 $T\\oplus\\mathbb{R}\\cong T'\\oplus\\mathbb{R}$ 当且仅当 $p_1(T)=p_1(T')$；且 $T\\cong T'$ 当且仅当 $p_1$ 与欧拉类 $e$ 均相等。",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:lem:rank4-bundle-s4",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 8 · S^4 上存在秩四向量叢",
+        "shortTitle": "S^4 上存在秩四向量叢",
+        "title": "S^4 上存在秩四向量叢",
+        "statement": "存在秩四向量叢 $E\\to S^4$，滿足 $p_1(E)[S^4] = -2$ 且 $e(E)[S^4] = 1$。",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:cor:homotopy-equivalence-pullback-tangent",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 16 · 同倫等價拉回切叢",
+        "shortTitle": "同倫等價拉回切叢",
+        "title": "同倫等價拉回切叢",
+        "statement": "設 $X,X'$ 為閉合可定向單連通四流形，$f:X'\\to X$ 為度數 $+1$ 的同倫等價，則 $f^*TX \\cong TX'$ 作為可定向向量叢。",
+        "sourcePath": "gauge_notes.pdf#page=15"
+      },
+      {
+        "id": "paper:thm:equivalent-rokhlin-pi8",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 17 · Rokhlin 定理與同倫群的等價性",
+        "shortTitle": "Rokhlin 定理與同倫群的等價性",
+        "title": "Rokhlin 定理與同倫群的等價性",
+        "statement": "以下兩個陳述等價：\n• 若 $X$ 為閉合可定向四流形且 $w_2(TX)=0$，則 $48$ 整除 $p_1(X)$；\n• $\\pi_8(S^5) \\cong \\mathbb{Z}/24$。",
+        "sourcePath": "gauge_notes.pdf#page=15"
+      },
+      {
+        "id": "paper:def:normal-framing",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 17 · 法框架",
+        "shortTitle": "法框架",
+        "title": "法框架",
+        "statement": "子流形 $M^k\\subset \\mathbb{R}^{m+k}$ 的一個法框架是法叢 $NM$ 的平凡化 $\\varphi: NM \\to \\mathbb{R}^m$。",
+        "sourcePath": "gauge_notes.pdf#page=15"
+      },
+      {
+        "id": "paper:def:framed-cobordism",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 18 · 配邊框架",
+        "shortTitle": "配邊框架",
+        "title": "配邊框架",
+        "statement": "兩個法框架流形 $(M_0,\\varphi_0)$ 與 $(M_1,\\varphi_1)$ 之間的配邊框架是緊流形 $P$，滿足 $\\partial P = M_0 \\sqcup M_1$，且存在嵌入 $j: P \\to \\mathbb{R}^{k+m}\\times[0,1]$ 橫向於邊界，使得 $j^{-1}(\\mathbb{R}^{k+m}\\times\\{i\\})=M_i$（$i=0,1$），並有法框架 $\\Phi$ 在邊界上與 $\\varphi_i$ 一致。",
+        "sourcePath": "gauge_notes.pdf#page=15"
+      },
+      {
+        "id": "paper:thm:thom-pontryagin-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 18 · Thom–Pontryagin 同構",
+        "shortTitle": "Thom–Pontryagin 同構",
+        "title": "Thom–Pontryagin 同構",
+        "statement": "映射 $PT: \\pi_{k+m}(S^m) \\to \\Omega_f^{\\text{framed}}$ 是同構。",
+        "sourcePath": "gauge_notes.pdf#page=16"
+      },
+      {
+        "id": "paper:prop:j3-surjection",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · J_3 滿射",
+        "shortTitle": "J_3 滿射",
+        "title": "J_3 滿射",
+        "statement": "$J_3: \\pi_3 SO(5) \\to \\Omega_f^{\\text{framed}}$ 是滿射。",
+        "sourcePath": "gauge_notes.pdf#page=17"
+      },
+      {
+        "id": "paper:external:sard",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 19 · Sard 定理",
+        "shortTitle": "Sard 定理",
+        "title": "Sard 定理",
+        "statement": "光滑映射的臨界值測度為零。",
+        "sourcePath": "gauge_notes.pdf#page=16",
+        "sourceReference": "Sard (1942)"
+      },
+      {
+        "id": "paper:def:hodge-star",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 19 · 霍奇星算子",
+        "shortTitle": "霍奇星算子",
+        "title": "霍奇星算子",
+        "statement": "设 $(V,g)$ 为有限维定向实向量空间，$g$ 为正定双线性型。定义线性映射 $*: \\Lambda^k V \\to \\Lambda^{n-k} V$，满足 $\\alpha \\wedge *\\beta = \\langle\\alpha,\\beta\\rangle \\, \\mathrm{vol}$。",
+        "sourcePath": "gauge_notes.pdf#page=18"
+      },
+      {
+        "id": "paper:prop:so4-ses",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · SO(4) 的短正合列",
+        "shortTitle": "SO(4) 的短正合列",
+        "title": "SO(4) 的短正合列",
+        "statement": "存在李群的短正合列 $1 \\to \\{\\pm \\mathrm{id}\\} \\to SO(V) \\xrightarrow{(\\lambda_+,\\lambda_-)} SO(\\Lambda_+ V) \\times SO(\\Lambda_- V) \\to 1$，从而 $SO(4)/\\{\\pm 1\\} \\cong SO(3) \\times SO(3)$。",
+        "sourcePath": "gauge_notes.pdf#page=19"
+      },
+      {
+        "id": "paper:lem:decomposable-2form",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 9 · 可分解2形式与平面",
+        "shortTitle": "可分解2形式与平面",
+        "title": "可分解2形式与平面",
+        "statement": "单位长度可分解 2 形式 $u \\wedge v$ 与定向 2 平面 $P \\subset V$ 一一对应，将 $P$ 映为其体积形式。",
+        "sourcePath": "gauge_notes.pdf#page=19"
+      },
+      {
+        "id": "paper:prop:sigma-bijective",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 共形结构与极大正定子空间的双射",
+        "shortTitle": "共形结构与极大正定子空间的双射",
+        "title": "共形结构与极大正定子空间的双射",
+        "statement": "映射 $\\sigma: \\mathrm{Conf}(V) \\to \\mathrm{Gr}_3(\\Lambda^2 V)$，将共形类 $[g]$ 映到 $\\Lambda^+_{[g]}$，是双射。",
+        "sourcePath": "gauge_notes.pdf#page=19"
+      },
+      {
+        "id": "paper:lem:harmonic-minimizer",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 10 · 调和形式严格最小化范数",
+        "shortTitle": "调和形式严格最小化范数",
+        "title": "调和形式严格最小化范数",
+        "statement": "若 $\\eta$ 为调和形式，则在 $[\\eta]$ 的闭形式中，$\\eta$ 严格最小化 $L^2$ 范数平方 $\\|\\cdot\\|^2_{L^2}$。",
+        "sourcePath": "gauge_notes.pdf#page=20"
+      },
+      {
+        "id": "paper:lem:minimizer-harmonic",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 11 · 最小化者为调和形式",
+        "shortTitle": "最小化者为调和形式",
+        "title": "最小化者为调和形式",
+        "statement": "若闭形式 $\\eta$ 在 $[\\eta]$ 中最小化 $\\|\\cdot\\|^2_{L^2}$，则 $\\eta$ 是调和形式。",
+        "sourcePath": "gauge_notes.pdf#page=21"
+      },
+      {
+        "id": "paper:thm:hodge",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 20 · 霍奇定理",
+        "shortTitle": "霍奇定理",
+        "title": "霍奇定理",
+        "statement": "设 $(M^n,g)$ 紧致定向，则有 $L^2$ 正交分解 $\\Omega^k_M = \\ker d \\oplus \\operatorname{im} d^*$，且 $\\ker d = \\mathcal{H}_g^k \\oplus \\operatorname{im} d$。因此商映射 $\\mathcal{H}_g^k \\to H^k_{\\mathrm{dR}}(M)$ 是同构。",
+        "sourcePath": "gauge_notes.pdf#page=21"
+      },
+      {
+        "id": "paper:def:conformal-structure",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 20 · 共形结构",
+        "shortTitle": "共形结构",
+        "title": "共形结构",
+        "statement": "流形上的共形结构是黎曼度量模去正函数缩放。",
+        "sourcePath": "gauge_notes.pdf#page=21"
+      },
+      {
+        "id": "paper:def:signature-complex",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 21 · 符号复形",
+        "shortTitle": "符号复形",
+        "title": "符号复形",
+        "statement": "符号复形为 $\\Omega^0_X \\xrightarrow{d} \\Omega^1_X \\xrightarrow{d^+} \\Omega^+_g \\to 0$，其中 $d^+ = \\tfrac{1}{2}(1+*)d$。记作 $(E^*,D)$。",
+        "sourcePath": "gauge_notes.pdf#page=22"
+      },
+      {
+        "id": "paper:thm:signature-cohomology",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 21 · 符号复形上同调",
+        "shortTitle": "符号复形上同调",
+        "title": "符号复形上同调",
+        "statement": "符号复形的上同调为 $H^0(E)=\\Omega^0_X$（原文写 $H^0_{dR}(X)$），$H^1(E)=H^1_{dR}(X)$，$H^2(E)=\\mathcal{H}_g^+(X)$。",
+        "sourcePath": "gauge_notes.pdf#page=22"
+      },
+      {
+        "id": "paper:prop:derivative-period",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · 周期映射的导数",
+        "shortTitle": "周期映射的导数",
+        "title": "周期映射的导数",
+        "statement": "周期映射 $P$ 在 $[g_0]$ 处的导数 $D_{[g_0]}P: C^r(X,\\hom(\\Lambda^-,\\Lambda^+)) \\to \\hom(H^-,H^+)$ 作用为 $(D_{[g_0]}P)(m)(\\alpha^-)=m(\\alpha^-)_{\\mathrm{harm}}$，即 $m(\\alpha^-)$ 的 $L^2$ 调和投影。",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:prop:period-submersion",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 7 · 周期映射是浸没",
+        "shortTitle": "周期映射是浸没",
+        "title": "周期映射是浸没",
+        "statement": "周期映射 $P$ 是浸没。",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:def:covariant-derivative",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 22 · 协变导数",
+        "shortTitle": "协变导数",
+        "title": "协变导数",
+        "statement": "设 $E \\to M$ 为复向量丛，$(\\cdot,\\cdot)$ 为 Hermite 内积。协变导数（联络）是 $\\mathbb{C}$-线性映射 $\\nabla: \\Gamma(M,E) \\to \\Omega^1_M(E)$，满足莱布尼茨法则 $\\nabla(fs)=df\\otimes s+f\\nabla s$。若 $d(s_1,s_2)=(\\nabla s_1,s_2)+(s_1,\\nabla s_2)$ 则称为酉联络。",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:lem:connection-local",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 12 · 协变导数是局部算子",
+        "shortTitle": "协变导数是局部算子",
+        "title": "协变导数是局部算子",
+        "statement": "协变导数 $\\nabla$ 是局部算子：$(\\nabla s)(x)$ 只依赖于 $s$ 在 $x$ 附近的芽。",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:def:trivial-connection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 23 · 平凡联络",
+        "shortTitle": "平凡联络",
+        "title": "平凡联络",
+        "statement": "设 $\\mathbb{C}\\to M$ 为平凡线丛，外微分 $d$ 是满足莱布尼茨法则的协变导数，称为平凡联络。对平凡丛 $V=V\\times M$，$d=d\\otimes \\mathrm{id}_V$ 也是联络。",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:def:connections-on-trivial-bundle",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 24 · 平凡丛上的联络",
+        "shortTitle": "平凡丛上的联络",
+        "title": "平凡丛上的联络",
+        "statement": "对平凡丛 $V\\to M$，取参考联络 $d$，则任意联络形如 $\\nabla=d+A$，其中 $A\\in\\Omega^1_M(\\mathrm{End}(V))$。",
+        "sourcePath": "gauge_notes.pdf#page=24"
+      },
+      {
+        "id": "paper:lem:dlaplacian-linear",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 13 · 耦合外微分平方的线性性",
+        "shortTitle": "耦合外微分平方的线性性",
+        "title": "耦合外微分平方的线性性",
+        "statement": "耦合外微分 $d^\\nabla$ 的平方 $d^\\nabla\\circ d^\\nabla: \\Omega^*_M(E) \\to \\Omega^{*+2}_M(E)$ 是 $\\Omega^*_M$-线性的。",
+        "sourcePath": "gauge_notes.pdf#page=24"
+      },
+      {
+        "id": "paper:def:curvature",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 25 · 曲率",
+        "shortTitle": "曲率",
+        "title": "曲率",
+        "statement": "联络 $\\nabla$ 的曲率 $F_\\nabla \\in \\Omega^2_M(\\mathrm{End}(E))$ 由 $d^\\nabla\\circ d^\\nabla s = F_\\nabla \\wedge s$ 定义。对酉联络，$F_\\nabla\\in\\Omega^2_M(\\mathcal{U}(E))$。",
+        "sourcePath": "gauge_notes.pdf#page=24"
+      },
+      {
+        "id": "paper:def:flat-connection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 26 · 平坦联络",
+        "shortTitle": "平坦联络",
+        "title": "平坦联络",
+        "statement": "曲率为零的联络称为平坦联络。",
+        "sourcePath": "gauge_notes.pdf#page=25"
+      },
+      {
+        "id": "paper:def:curvature-trivial-bundle",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 27 · 平凡丛上的曲率",
+        "shortTitle": "平凡丛上的曲率",
+        "title": "平凡丛上的曲率",
+        "statement": "对平凡丛，$F_{d+A}=dA+A\\wedge A$，因为 $d$ 平坦。",
+        "sourcePath": "gauge_notes.pdf#page=25"
+      },
+      {
+        "id": "paper:def:curvature-line-bundle",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 28 · 线丛上的曲率",
+        "shortTitle": "线丛上的曲率",
+        "title": "线丛上的曲率",
+        "statement": "对复线丛 $L$，$\"End(L)$ 为 $\"Omega^1_M(\\mathbb{C})$，故 $A\\wedge A=0$。若 $L$ 为 Hermite 丛，则 $A\\in i\\Omega^1_M$。",
+        "sourcePath": "gauge_notes.pdf#page=25"
+      },
+      {
+        "id": "paper:lem:curvature-formula",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 14 · 曲率与向量场交换子",
+        "shortTitle": "曲率与向量场交换子",
+        "title": "曲率与向量场交换子",
+        "statement": "对任意向量场 $u,v$，矩阵值截面 $F_\\nabla(u,v)=[\\nabla_u,\\nabla_v]-\\nabla_{[u,v]}$。",
+        "sourcePath": "gauge_notes.pdf#page=25"
+      },
+      {
+        "id": "paper:prop:bianchi-identity",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 8 · Bianchi 恒等式",
+        "shortTitle": "Bianchi 恒等式",
+        "title": "Bianchi 恒等式",
+        "statement": "曲率是协变闭的：$d^\\nabla F_\\nabla=0$。",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:def:gauge-transformation",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 29 · 规范变换",
+        "shortTitle": "规范变换",
+        "title": "规范变换",
+        "statement": "向量丛 $E\\to M$ 的规范变换是（酉）丛自同构 $u:E\\to E$，即一族（酉）自同构 $u_x:E_x\\to E_x$。",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:lem:gauge-action-formulas",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 15 · 规范变换作用公式",
+        "shortTitle": "规范变换作用公式",
+        "title": "规范变换作用公式",
+        "statement": "对 $\\nabla\\in C(E)$，$u\\in G_E$，有：1. $F_{u\\cdot\\nabla}=u^*F_\\nabla=uF_\\nabla u^{-1}$；2. $u^*\\nabla-\\nabla=-(d^\\nabla u)u^{-1}$；3. 对平凡丛，$u^*(d+A)-d=-(du)u^{-1}+uAu^{-1}$。",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:thm:flat-local-trivialization",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 22 · 平坦联络的局部平凡化",
+        "shortTitle": "平坦联络的局部平凡化",
+        "title": "平坦联络的局部平凡化",
+        "statement": "若 $F_\\nabla=0$，则在 $M$ 中任意点附近存在 $E$ 的平凡化，使得在该平凡化下 $\\nabla$ 是平凡联络 $d$。",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:prop:flat-gauge-trivialization",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 9 · 平坦联络的规范变换平凡化",
+        "shortTitle": "平坦联络的规范变换平凡化",
+        "title": "平坦联络的规范变换平凡化",
+        "statement": "设 $H=(-1,1)^n\\subset\\mathbb{R}^n$，$\\mathbb{C}^r\\to H$ 为平凡丛。若 $\\nabla$ 为 $\\mathbb{C}^r$ 上的平坦（酉）联络，则存在规范变换 $u$ 使得 $u^*\\nabla$ 为平凡联络。",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:def:coulomb-gauge-slice",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 30 · Coulomb 规范切片",
+        "shortTitle": "Coulomb 规范切片",
+        "title": "Coulomb 规范切片",
+        "statement": "Coulomb 规范切片是集合 $S=\\{\\nabla+ia \\mid d^*a=0\\}$，其中 $\\nabla$ 为参考联络。",
+        "sourcePath": "gauge_notes.pdf#page=27"
+      },
+      {
+        "id": "paper:def:instanton",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 31 · 瞬子",
+        "shortTitle": "瞬子",
+        "title": "瞬子",
+        "statement": "设 $E\\to X$ 为带 Hermite 度量的向量丛。瞬子（又称反自对偶联络）是酉联络 $\\nabla$，满足 $(F_\\nabla)^+:=\\tfrac{1}{2}(1+*)(F_\\nabla)=0$。",
+        "sourcePath": "gauge_notes.pdf#page=28"
+      },
+      {
+        "id": "paper:thm:generic-nonexistence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 23 · 瞬子的一般不存在性",
+        "shortTitle": "瞬子的一般不存在性",
+        "title": "瞬子的一般不存在性",
+        "statement": "对 $k<b^+(X)$ 和任意 $C^r$ 族共形结构 $[g_t]_{t\\in T}$（$T$ 为 $k$ 维流形），存在扰动 $\\hat{g}_t$ 在 $C^r$ 范数下任意接近 $[g_t]$，使得对所有 $t\\in T$，$H^-_{\\hat{g}_t}(\\mathbb{Z})=0$。",
+        "sourcePath": "gauge_notes.pdf#page=29"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:organization:1",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 1 · Čech 上同调",
+        "shortTitle": "组织 · Čech 上同调",
+        "title": "组织 Čech 上同调",
+        "statement": "由Čech上链复形定义上同调",
+        "premises": [
+          "paper:def:cech-complex"
+        ],
+        "conclusion": "paper:def:cech-cohomology",
+        "argument": "由Čech上链复形定义上同调",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:organization:2",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 2 · de Rham 上同调",
+        "shortTitle": "组织 · de Rham 上同调",
+        "title": "组织 de Rham 上同调",
+        "statement": "由de Rham复形定义上同调",
+        "premises": [
+          "paper:def:de-rham-complex"
+        ],
+        "conclusion": "paper:def:de-rham-cohomology",
+        "argument": "由de Rham复形定义上同调",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:organization:3",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 3 · 迹映射",
+        "shortTitle": "组织 · 迹映射",
+        "title": "组织 迹映射",
+        "statement": "由基本类定义迹映射",
+        "premises": [
+          "paper:def:fundamental-class"
+        ],
+        "conclusion": "paper:def:trace-map",
+        "argument": "由基本类定义迹映射",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:organization:4",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 4 · 帽积",
+        "shortTitle": "组织 · 帽积",
+        "title": "组织 帽积",
+        "statement": "由基本类定义帽积",
+        "premises": [
+          "paper:def:fundamental-class"
+        ],
+        "conclusion": "paper:def:cap-product",
+        "argument": "由基本类定义帽积",
+        "sourcePath": "gauge_notes.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:organization:5",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 5 · Poincaré 对偶",
+        "shortTitle": "组织 · Poincaré 对偶",
+        "title": "组织 Poincaré 对偶",
+        "statement": "帽积诱导Poincaré对偶",
+        "premises": [
+          "paper:def:cap-product"
+        ],
+        "conclusion": "paper:def:poincare-duality",
+        "argument": "帽积诱导Poincaré对偶",
+        "sourcePath": "gauge_notes.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 相交形式的非退化性",
+        "shortTitle": "证明 · 相交形式的非退化性",
+        "title": "证明 相交形式的非退化性",
+        "statement": "通过Poincaré对偶证明非退化性",
+        "premises": [
+          "paper:def:poincare-duality"
+        ],
+        "conclusion": "paper:prop:2.6",
+        "argument": "通过Poincaré对偶证明非退化性",
+        "sourcePath": "gauge_notes.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 边界诱导的拉格朗日子空间",
+        "shortTitle": "证明 · 边界诱导的拉格朗日子空间",
+        "title": "证明 边界诱导的拉格朗日子空间",
+        "statement": "利用Poincaré对偶与正合列证明拉格朗日性质",
+        "premises": [
+          "paper:def:poincare-duality"
+        ],
+        "conclusion": "paper:prop:2.8",
+        "argument": "利用Poincaré对偶与正合列证明拉格朗日性质",
+        "sourcePath": "gauge_notes.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · Thom 定理",
+        "shortTitle": "证明 · Thom 定理",
+        "title": "证明 Thom 定理",
+        "statement": "利用边界拉格朗日子空间证明符号差配边不变",
+        "premises": [
+          "paper:prop:2.8"
+        ],
+        "conclusion": "paper:thm:2.11",
+        "argument": "利用边界拉格朗日子空间证明符号差配边不变",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:9",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 9 · 特征向量构成陪集",
+        "shortTitle": "证明 · 特征向量构成陪集",
+        "title": "证明 特征向量构成陪集",
+        "statement": "通过模2线性函数构造陪集",
+        "premises": [
+          "paper:def:characteristic-vector"
+        ],
+        "conclusion": "paper:lemma:2.13",
+        "argument": "通过模2线性函数构造陪集",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:10",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 10 · 特征向量平方模 8 同余",
+        "shortTitle": "证明 · 特征向量平方模 8 同余",
+        "title": "证明 特征向量平方模 8 同余",
+        "statement": "利用陪集表示差2x直接计算模8同余",
+        "premises": [
+          "paper:lemma:2.13"
+        ],
+        "conclusion": "paper:lemma:2.15",
+        "argument": "利用陪集表示差2x直接计算模8同余",
+        "sourcePath": "gauge_notes.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:11",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 11 · 特征向量平方模 8 等于符号差",
+        "shortTitle": "证明 · 特征向量平方模 8 等于符号差",
+        "title": "证明 特征向量平方模 8 等于符号差",
+        "statement": "由Hasse-Minkowski分类得到特征向量平方模8等于符号差",
+        "premises": [
+          "paper:thm:2.17",
+          "paper:lemma:2.15"
+        ],
+        "conclusion": "paper:cor:2.20",
+        "argument": "由Hasse-Minkowski分类得到特征向量平方模8等于符号差",
+        "sourcePath": "gauge_notes.pdf#page=10"
+      },
+      {
+        "id": "paper:inference:proof:12",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 12 · 第一 Pontryagin 类的配边不变性",
+        "shortTitle": "证明 · 第一 Pontryagin 类的配边不变性",
+        "title": "证明 第一 Pontryagin 类的配边不变性",
+        "statement": "由配边不变性直接得到",
+        "premises": [
+          "paper:def:signature"
+        ],
+        "conclusion": "paper:lemma:2.31",
+        "argument": "由配边不变性直接得到",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:inference:proof:13",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 13 · 复向量丛的 Pontryagin 类",
+        "shortTitle": "证明 · 复向量丛的 Pontryagin 类",
+        "title": "证明 复向量丛的 Pontryagin 类",
+        "statement": "利用分裂原理和复化分解证明",
+        "premises": [
+          "paper:def:characteristic-vector"
+        ],
+        "conclusion": "paper:lemma:2.32",
+        "argument": "利用分裂原理和复化分解证明",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:inference:proof:14",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 14 · 四流形餘一點切叢平凡化的障礙",
+        "shortTitle": "证明 · 四流形餘一點切叢平凡化的障礙",
+        "title": "证明 四流形餘一點切叢平凡化的障礙",
+        "statement": "由Wu公式与障碍类解释得到",
+        "premises": [
+          "paper:thm:2.24"
+        ],
+        "conclusion": "paper:cor:trivialization-obstruction",
+        "argument": "由Wu公式与障碍类解释得到",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:inference:proof:15",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 15 · 秩四向量丛的分类",
+        "shortTitle": "证明 · 秩四向量丛的分类",
+        "title": "证明 秩四向量丛的分类",
+        "statement": "利用Pontryagin-Thom collapse和S^4上束分类",
+        "premises": [
+          "paper:thm:2.28",
+          "paper:lemma:2.32"
+        ],
+        "conclusion": "paper:thm:rank4-bundle-classification",
+        "argument": "利用Pontryagin-Thom collapse和S^4上束分类",
+        "sourcePath": "gauge_notes.pdf#page=14"
+      },
+      {
+        "id": "paper:inference:proof:16",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 16 · 同倫等價拉回切叢",
+        "shortTitle": "证明 · 同倫等價拉回切叢",
+        "title": "证明 同倫等價拉回切叢",
+        "statement": "由同伦等价与特征类相等推出",
+        "premises": [
+          "paper:thm:rank4-bundle-classification"
+        ],
+        "conclusion": "paper:cor:homotopy-equivalence-pullback-tangent",
+        "argument": "由同伦等价与特征类相等推出",
+        "sourcePath": "gauge_notes.pdf#page=15"
+      },
+      {
+        "id": "paper:inference:proof:17",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 17 · Stiefel-Whitney 类与 Chern 类关系",
+        "shortTitle": "证明 · Stiefel-Whitney 类与 Chern 类关系",
+        "title": "证明 Stiefel-Whitney 类与 Chern 类关系",
+        "statement": "由Stiefel-Whitney类与Chern类关系证明",
+        "premises": [
+          "paper:thm:2.24"
+        ],
+        "conclusion": "paper:thm:2.28",
+        "argument": "由Stiefel-Whitney类与Chern类关系证明",
+        "sourcePath": "gauge_notes.pdf#page=12"
+      },
+      {
+        "id": "paper:inference:proof:18",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 18 · 符号复形上同调",
+        "shortTitle": "证明 · 符号复形上同调",
+        "title": "证明 符号复形上同调",
+        "statement": "通过谱序列或直接计算上同调",
+        "premises": [
+          "paper:def:signature-complex"
+        ],
+        "conclusion": "paper:thm:signature-cohomology",
+        "argument": "通过谱序列或直接计算上同调",
+        "sourcePath": "gauge_notes.pdf#page=22"
+      },
+      {
+        "id": "paper:inference:proof:19",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 19 · 周期映射的导数",
+        "shortTitle": "证明 · 周期映射的导数",
+        "title": "证明 周期映射的导数",
+        "statement": "由周期映射定义直接计算导数",
+        "premises": [
+          "paper:thm:signature-cohomology"
+        ],
+        "conclusion": "paper:prop:derivative-period",
+        "argument": "由周期映射定义直接计算导数",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:inference:proof:20",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 20 · 周期映射是浸没",
+        "shortTitle": "证明 · 周期映射是浸没",
+        "title": "证明 周期映射是浸没",
+        "statement": "利用满射性判定",
+        "premises": [
+          "paper:prop:derivative-period"
+        ],
+        "conclusion": "paper:prop:period-submersion",
+        "argument": "利用满射性判定",
+        "sourcePath": "gauge_notes.pdf#page=23"
+      },
+      {
+        "id": "paper:inference:proof:21",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 21 · 协变导数是局部算子",
+        "shortTitle": "证明 · 协变导数是局部算子",
+        "title": "证明 协变导数是局部算子",
+        "statement": "通过局部截断函数证明",
+        "premises": [
+          "paper:def:covariant-derivative"
+        ],
+        "conclusion": "paper:lem:connection-local",
+        "argument": "通过局部截断函数证明",
+        "sourcePath": "gauge_notes.pdf#page=24"
+      },
+      {
+        "id": "paper:inference:proof:22",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 22 · 曲率与向量场交换子",
+        "shortTitle": "证明 · 曲率与向量场交换子",
+        "title": "证明 曲率与向量场交换子",
+        "statement": "直接计算并利用李括号性质",
+        "premises": [
+          "paper:def:curvature"
+        ],
+        "conclusion": "paper:lem:curvature-formula",
+        "argument": "直接计算并利用李括号性质",
+        "sourcePath": "gauge_notes.pdf#page=25"
+      },
+      {
+        "id": "paper:inference:proof:23",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 23 · Bianchi 恒等式",
+        "shortTitle": "证明 · Bianchi 恒等式",
+        "title": "证明 Bianchi 恒等式",
+        "statement": "由曲率的定义和Jacobi恒等式",
+        "premises": [
+          "paper:def:curvature"
+        ],
+        "conclusion": "paper:prop:bianchi-identity",
+        "argument": "由曲率的定义和Jacobi恒等式",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:inference:proof:24",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 24 · 规范变换作用公式",
+        "shortTitle": "证明 · 规范变换作用公式",
+        "title": "证明 规范变换作用公式",
+        "statement": "直接计算作用公式",
+        "premises": [
+          "paper:def:gauge-transformation"
+        ],
+        "conclusion": "paper:lem:gauge-action-formulas",
+        "argument": "直接计算作用公式",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:inference:proof:25",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 25 · 平坦联络的规范变换平凡化",
+        "shortTitle": "证明 · 平坦联络的规范变换平凡化",
+        "title": "证明 平坦联络的规范变换平凡化",
+        "statement": "通过归纳解ODE构造平凡化",
+        "premises": [
+          "paper:def:flat-connection"
+        ],
+        "conclusion": "paper:prop:flat-gauge-trivialization",
+        "argument": "通过归纳解ODE构造平凡化",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:inference:proof:26",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 26 · 平坦联络的局部平凡化",
+        "shortTitle": "证明 · 平坦联络的局部平凡化",
+        "title": "证明 平坦联络的局部平凡化",
+        "statement": "由局部平凡化得到",
+        "premises": [
+          "paper:prop:flat-gauge-trivialization"
+        ],
+        "conclusion": "paper:thm:flat-local-trivialization",
+        "argument": "由局部平凡化得到",
+        "sourcePath": "gauge_notes.pdf#page=26"
+      },
+      {
+        "id": "paper:inference:proof:27",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 27 · 瞬子的一般不存在性",
+        "shortTitle": "证明 · 瞬子的一般不存在性",
+        "title": "证明 瞬子的一般不存在性",
+        "statement": "利用周期映射的横截性和维度论证",
+        "premises": [
+          "paper:def:instanton"
+        ],
+        "conclusion": "paper:thm:generic-nonexistence",
+        "argument": "利用周期映射的横截性和维度论证",
+        "sourcePath": "gauge_notes.pdf#page=29"
+      }
+    ]
+  }
+}

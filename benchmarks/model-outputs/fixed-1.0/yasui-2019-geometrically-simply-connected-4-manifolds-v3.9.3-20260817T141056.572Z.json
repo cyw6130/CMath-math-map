@@ -1,0 +1,986 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-1-off-compact-v3.9.3",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.3",
+  "promptSetVersion": "v3.9.3",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "文章1.pdf",
+    "pageCount": 14,
+    "characters": 29596
+  },
+  "diagnostics": {
+    "durationMs": 257781,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "文章1.pdf",
+        "pageCount": 14,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 29596,
+        "atMs": 0
+      },
+      {
+        "stage": "target",
+        "leads": 11,
+        "atMs": 60078
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 60078
+      },
+      {
+        "stage": "request",
+        "chars": 29596,
+        "chunks": 2,
+        "atMs": 60080
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 60083
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 112670
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 112682
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:main",
+        "retained": "coverage-or-first-seen",
+        "atMs": 132100
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:no-symplectic-positive",
+        "retained": "coverage-or-first-seen",
+        "atMs": 132100
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 35,
+        "leadGuided": 22,
+        "total": 55,
+        "conflicts": 2,
+        "atMs": 132100
+      },
+      {
+        "stage": "integrate",
+        "entries": 55,
+        "atMs": 132100
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 16,
+        "renameCount": 0,
+        "atMs": 141345
+      },
+      {
+        "stage": "assemble",
+        "entries": 39,
+        "atMs": 141346
+      },
+      {
+        "stage": "response",
+        "atMs": 176272
+      },
+      {
+        "stage": "autofix",
+        "count": 5,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "第 9 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃 premises 为空的 第 9 条 Inference",
+          "第 10 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃 premises 为空的 第 10 条 Inference"
+        ],
+        "atMs": 176275
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 1,
+        "atMs": 176277
+      },
+      {
+        "stage": "response",
+        "atMs": 215301
+      },
+      {
+        "stage": "autofix",
+        "count": 3,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "第 14 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃 premises 为空的 第 14 条 Inference"
+        ],
+        "atMs": 215303
+      },
+      {
+        "stage": "repair",
+        "reason": "11 处问题",
+        "attempt": 2,
+        "atMs": 215303
+      },
+      {
+        "stage": "response",
+        "atMs": 257774
+      },
+      {
+        "stage": "autofix",
+        "count": 2,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 1 条 Inference",
+          "第 14 条 Inference 的 conclusion 出现在 premises 中，已移除"
+        ],
+        "atMs": 257775
+      },
+      {
+        "stage": "validate",
+        "atMs": 257775
+      },
+      {
+        "stage": "closure",
+        "openClaims": [
+          "定理 · 1 · 问题 1.1：单连通性与几何单连通性",
+          "定理 · 2 · 问题 1.2：正定单连通流形上的非消失规范理论不变量",
+          "定理 · 7 · 问题 1.8：两个定向均具有辛结构",
+          "命题 · 1 · 2-柄邻域表示与 PL 嵌入球面等价",
+          "定理 · 16 · 正标量曲率余维一子流形导致稳定不变量消失"
+        ],
+        "atMs": 257780
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 257781
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 60070,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9294,
+          "completion_tokens": 3133,
+          "total_tokens": 12427
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 19310,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12504,
+          "completion_tokens": 810,
+          "total_tokens": 13314
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 52587,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9737,
+          "completion_tokens": 2781,
+          "total_tokens": 12518
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 52601,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7401,
+          "completion_tokens": 2734,
+          "total_tokens": 10135
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 72013,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13972,
+          "completion_tokens": 3859,
+          "total_tokens": 17831
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 9243,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 5305,
+          "completion_tokens": 367,
+          "total_tokens": 5672
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 34925,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16046,
+          "completion_tokens": 1852,
+          "total_tokens": 17898
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 39024,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 19421,
+          "completion_tokens": 1992,
+          "total_tokens": 21413,
+          "prompt_tokens_details": {
+            "cached_tokens": 15104
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 42468,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 23794,
+          "completion_tokens": 2249,
+          "total_tokens": 26043,
+          "prompt_tokens_details": {
+            "cached_tokens": 19200
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:1",
+      "title": "几何单连通 $4$-流形与稳定上同伦 Seiberg–Witten 不变量"
+    },
+    "projectTitle": "几何单连通 $4$-流形与稳定上同伦 Seiberg–Witten 不变量",
+    "mainTargetEntryId": "paper:theorem:main",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:1",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:theorem:bauer-nonvanishing",
+          "paper:theorem:stable-adjunction-obstruction",
+          "paper:theorem:froyshov",
+          "paper:proposition:sw-vanishing",
+          "paper:external:taubes",
+          "paper:fixed:symplectic-parity",
+          "paper:fixed:handlebody-2-homology-generation"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:theorem:main"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:def:geometric-simple-connectivity",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 几何单连通性",
+        "shortTitle": "几何单连通性",
+        "title": "几何单连通性",
+        "statement": "紧连通 $4$-流形称为几何单连通的，如果它具有一个不含 $1$-柄的柄分解。对于闭 $4$-流形，不含 $1$-柄等价于不含 $3$-柄。",
+        "sourcePath": "文章1.pdf#page=1"
+      },
+      {
+        "id": "paper:problem:simply-connected-geometric",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 问题 1.1：单连通性与几何单连通性",
+        "shortTitle": "问题 1.1：单连通性与几何单连通性",
+        "title": "问题 1.1：单连通性与几何单连通性",
+        "statement": "每个单连通、闭、光滑 $4$-流形是否都是几何单连通的？",
+        "sourcePath": "文章1.pdf#page=1"
+      },
+      {
+        "id": "paper:question:positive-definite-gauge-invariant",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 问题 1.2：正定单连通流形上的非消失规范理论不变量",
+        "shortTitle": "问题 1.2：正定单连通流形上的非消失规范理论不变量",
+        "title": "问题 1.2：正定单连通流形上的非消失规范理论不变量",
+        "statement": "是否存在具有非消失光滑结构规范理论不变量的单连通、正定、闭、光滑 $4$-流形？",
+        "sourcePath": "文章1.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:main",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "shortTitle": "几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "title": "几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "statement": "每个几何单连通、正定、闭、光滑 $4$-流形 $X$，若 $b_2^+(X)>1$，则 $X$ 的稳定上同伦 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:corollary-sw-vanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "shortTitle": "几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "title": "几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "statement": "每个几何单连通、正定、闭、光滑 $4$-流形 $X$，若 $b_2^+(X)>1$，则 $X$ 的 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:no-symplectic-positive",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 几何单连通正定闭 $4$-流形不存在辛结构",
+        "shortTitle": "几何单连通正定闭 $4$-流形不存在辛结构",
+        "title": "几何单连通正定闭 $4$-流形不存在辛结构",
+        "statement": "每个几何单连通、正定、闭、光滑 $4$-流形 $X$，若 $b_2^+(X)>1$，则 $X$ 不具有辛结构。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:symplectic-cp2",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "shortTitle": "正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "title": "正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "statement": "若单连通、正定、闭、辛 $4$-流形具有一个不含 $1$-柄和 $3$-柄的柄分解，则该 $4$-流形微分同胚于 $\u001b[?m\\mathbb{CP}^2$。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:question:both-orientations-symplectic",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · 问题 1.8：两个定向均具有辛结构",
+        "shortTitle": "问题 1.8：两个定向均具有辛结构",
+        "title": "问题 1.8：两个定向均具有辛结构",
+        "statement": "是否存在一个满足 $b_2^+(X)>1$ 的单连通、闭、定向、光滑 $4$-流形 $X$，使得 $X$ 的两个定向都具有辛结构？",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:orientation-symplectic-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · 几何单连通流形至少一个定向不存在辛结构",
+        "shortTitle": "几何单连通流形至少一个定向不存在辛结构",
+        "title": "几何单连通流形至少一个定向不存在辛结构",
+        "statement": "每个几何单连通、闭、定向、光滑 $4$-流形 $X$，若 $b_2^+(X)\\not\\equiv1$ 且 $b_2(X)\\not\\equiv1\\pmod 4$，则 $X$ 的至少一个定向不具有辛结构。",
+        "sourcePath": "文章1.pdf#page=4"
+      },
+      {
+        "id": "paper:definition:two-handle-neighborhood",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · 2-柄邻域表示",
+        "shortTitle": "2-柄邻域表示",
+        "title": "2-柄邻域表示",
+        "statement": "设 $X$ 是定向光滑 $4$-流形，且 $\u001b[?m\\alpha\\in H_2(X;\\mathbb Z)$。称 $\u001b[?m\\alpha$ 由一个 $2$-柄邻域表示，如果 $X$ 含有余维零子流形 $W$，满足：$W$ 微分同胚于由 $4$-球附加单个 $2$-柄得到的 $4$-流形；并且 $\u001b[?m\\alpha$ 是 $H_2(W;\\mathbb Z)\\cong\\mathbb Z$ 的一个生成元在包含映射诱导同态 $H_2(W;\\mathbb Z)\\to H_2(X;\\mathbb Z)$ 下的像。",
+        "sourcePath": "文章1.pdf#page=4"
+      },
+      {
+        "id": "paper:proposition:pl-sphere-equivalence",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 2-柄邻域表示与 PL 嵌入球面等价",
+        "shortTitle": "2-柄邻域表示与 PL 嵌入球面等价",
+        "title": "2-柄邻域表示与 PL 嵌入球面等价",
+        "statement": "根据文献 [29, Section 1]，紧、定向、光滑 $4$-流形 $X$ 的第二同调类 $\u001b[?m\\alpha$ 由一个 $2$-柄邻域表示，当且仅当 $\u001b[?m\\alpha$ 可由 $X$ 中的 PL 嵌入 $2$-球面表示。",
+        "sourcePath": "文章1.pdf#page=4",
+        "sourceReference": "[29, Section 1]"
+      },
+      {
+        "id": "paper:theorem:generalized-vanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "shortTitle": "含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "title": "含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "statement": "若闭、连通、正定、光滑 $4$-流形 $X$ 满足 $b_2^+(X)>1$，并且含有一个由 $2$-柄邻域表示的非扭结第二同调类，则 $X$ 的稳定上同伦 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:theorem:generalized-orientation",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · 2-柄邻域条件下的定向辛结构排除",
+        "shortTitle": "2-柄邻域条件下的定向辛结构排除",
+        "title": "2-柄邻域条件下的定向辛结构排除",
+        "statement": "若闭、连通、定向、光滑 $4$-流形 $X$ 满足 $b_2^+(X)\\not\\equiv1$、$b_2(X)\\not\\equiv1\\pmod 4$、$b_1(X)=0$，并且含有一个由 $2$-柄邻域表示的非扭结第二同调类，则 $X$ 与反向定向流形 $\\overline X$ 至少有一个不具有辛结构。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:theorem:generalized-sw-vanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 11 · 2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "shortTitle": "2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "title": "2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "statement": "若闭、连通、正定、光滑 $4$-流形 $X$ 满足 $b_2^+(X)>1$，并且含有一个由 $2$-柄邻域表示的非扭结第二同调类，则 $X$ 的 Seiberg–Witten 不变量消失；因此 $X$ 不具有任何辛结构。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:lemma:zero-sphere-connected-sum",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 1 · 反向定向连通和中的零自交 $2$-球",
+        "shortTitle": "反向定向连通和中的零自交 $2$-球",
+        "title": "反向定向连通和中的零自交 $2$-球",
+        "statement": "设 $X$ 是紧、定向、光滑 $4$-流形，且 $\u001b[?m\\alpha$ 是由 $2$-柄邻域表示的第二同调类。令 $\u001b[?m\\bar\\alpha$ 表示反向定向流形 $\\overline X$ 中对应的类，则 $\u001b[?m\\alpha+\\bar\\alpha\\in H_2(X\\#\\overline X;\\mathbb Z)\\cong H_2(X;\\mathbb Z)\\oplus H_2(\\overline X;\\mathbb Z)$ 可由一个光滑嵌入的自交数为零的 $2$-球面表示。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:calculation:handle-slide-slice-knot",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · 带框结滑动得到零框架切结",
+        "shortTitle": "带框结滑动得到零框架切结",
+        "title": "带框结滑动得到零框架切结",
+        "statement": "若 $W$ 由 $4$-球沿 $n$-框架结 $K$ 附加单个 $2$-柄得到，则 $X\\#\\overline X$ 含有由沿 $n$-框架结 $K$ 和沿 $(-n)$-框架镜像结 $\\bar K$ 附加两个 $2$-柄得到的边界连通和子流形；将 $K$ 上的 $2$-柄滑过 $\\bar K$ 后，得到沿切结 $K\\#\\bar K$ 的零框架 $2$-柄，其代表类为 $\u001b[?m\\alpha+\\bar\\alpha$。",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:calculation:zero-self-intersection-sphere",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · 切结零框架给出零自交球",
+        "shortTitle": "切结零框架给出零自交球",
+        "title": "切结零框架给出零自交球",
+        "statement": "由于 $K\\#\\bar K$ 是切结且框架为零，类 $\u001b[?m\\alpha+\\bar\\alpha$ 可由一个光滑嵌入的自交数为零的 $2$-球面表示。",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:theorem:bauer-nonvanishing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 12 · 连通和的稳定上同伦 Seiberg–Witten 不变量非消失判据",
+        "shortTitle": "连通和的稳定上同伦 Seiberg–Witten 不变量非消失判据",
+        "title": "连通和的稳定上同伦 Seiberg–Witten 不变量非消失判据",
+        "statement": "设闭、连通、定向、光滑 $4$-流形 $X$ 满足下列条件之一，则 $X$ 的稳定上同伦 Seiberg–Witten 不变量不消失：$(1)$ $X=X_1\\#X_2$，其中 $X_1$ 是稳定上同伦 Seiberg–Witten 不变量非零的闭、连通、定向、光滑 $4$-流形，且 $X_2$ 是满足 $b_2^+(X_2)=0$ 的闭、连通、定向、光滑 $4$-流形；$(2)$ $X=\\#_{i=1}^nX_i$，其中每个 $X_i$ 是闭、连通、定向、光滑 $4$-流形，并满足：(i) 对每个 $i$，$b_2^+(X_i)\\equiv3\\pmod4$ 且 $b_1(X_i)=0$；(ii) 每个 $X_i$ 存在与某个几乎复结构相容的 $\\mathrm{spin}^c$ 结构 $s_i$，且 $SW_{X_i}(s_i)\\equiv1\\pmod2$；(iii) $2\\le n\\le4$，并且当 $n=4$ 时，$b_2^+(X)\\equiv4\\pmod8$。",
+        "sourcePath": "文章1.pdf#page=6",
+        "sourceReference": "Bauer [4]；另见 [5, Theorem 8.8]"
+      },
+      {
+        "id": "paper:theorem:stable-adjunction-obstruction",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 13 · 稳定不变量非零时不存在非负自交的光滑 $2$-球",
+        "shortTitle": "稳定不变量非零时不存在非负自交的光滑 $2$-球",
+        "title": "稳定不变量非零时不存在非负自交的光滑 $2$-球",
+        "statement": "若闭、连通、定向、光滑 $4$-流形 $X$ 满足 $b_2^+(X)>1$ 且其稳定上同伦 Seiberg–Witten 不变量非零，则任何非扭结第二同调类若自交数非负，就不能由光滑嵌入的 $2$-球面表示。",
+        "sourcePath": "文章1.pdf#page=6",
+        "sourceReference": "文献 [27, page 53]；[35]"
+      },
+      {
+        "id": "paper:cor:2.5",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 14 · 普通 Seiberg–Witten 不变量消失及无辛结构",
+        "shortTitle": "普通 Seiberg–Witten 不变量消失及无辛结构",
+        "title": "普通 Seiberg–Witten 不变量消失及无辛结构",
+        "statement": "若闭、连通、正定光滑 4-流形 $X$ 满足 $b_2^+(X)>1$，并且存在一个由 2-柄邻域表示的非扭结第二同调类，则 $X$ 的 Seiberg–Witten 不变量消失；因此 $X$ 不具有任何辛结构。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:lemma:2.6",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · 反向定向连通和中的零自交球",
+        "shortTitle": "反向定向连通和中的零自交球",
+        "title": "反向定向连通和中的零自交球",
+        "statement": "设 $X$ 是紧定向光滑 4-流形，且 $\\alpha$ 是 $X$ 的一个由 2-柄邻域表示的第二同调类。令 $\\bar\\alpha$ 表示反向定向流形 $\\overline X$ 中对应的类，则 $\\alpha+\\bar\\alpha\\in H_2(X\\#\\overline X;\\mathbb Z)\\cong H_2(X;\\mathbb Z)\\oplus H_2(\\overline X;\\mathbb Z)$ 可由一个光滑嵌入的 2-球表示，且其自交数为零。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:calculation:2.6-proof",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 3 · 带框结与镜像结滑动产生零框架切片结",
+        "shortTitle": "带框结与镜像结滑动产生零框架切片结",
+        "title": "带框结与镜像结滑动产生零框架切片结",
+        "statement": "若 2-柄邻域 $W$ 由 4-球沿带 $n$ 框架的结 $K$ 附加得到，则 $W\\natural W$ 可看作沿位于 $S^3$ 中两个不交 3-球内的 $n$ 框架结 $K$ 与 $(-n)$ 框架镜像结 $\\bar K$ 附加得到。将沿 $K$ 的 2-柄滑过沿 $\\bar K$ 的 2-柄后，得到沿切片结 $K\\#\\bar K$ 以零框架附加的 2-柄；因此 $\\alpha+\\bar\\alpha$ 由自交数为零的光滑嵌入 2-球表示。",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:thm:2.8",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 15 · 稳定不变量非零时不存在非负自交的球",
+        "shortTitle": "稳定不变量非零时不存在非负自交的球",
+        "title": "稳定不变量非零时不存在非负自交的球",
+        "statement": "设闭、连通、定向光滑 4-流形 $X$ 满足 $b_2^+(X)>1$，且其稳定上同伦 Seiberg–Witten 不变量非零。若 $\\alpha$ 是 $X$ 的非扭结第二同调类，且自交数非负，则 $\\alpha$ 不能由光滑嵌入的 2-球表示。",
+        "sourcePath": "文章1.pdf#page=7"
+      },
+      {
+        "id": "paper:thm:2.9",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 16 · 正标量曲率余维一子流形导致稳定不变量消失",
+        "shortTitle": "正标量曲率余维一子流形导致稳定不变量消失",
+        "title": "正标量曲率余维一子流形导致稳定不变量消失",
+        "statement": "设闭、连通、定向光滑 4-流形 $X$ 满足 $b_2^+(X)>1$。若 $X$ 的闭、可定向余维一子流形 $Y$ 满足：$Y$ 存在正标量曲率的黎曼度量；且包含映射诱导的同态 $H^2(X;\\mathbb Q)\\to H^2(Y;\\mathbb Q)$ 非零，则 $X$ 的稳定上同伦 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=7",
+        "sourceReference": "Frøyshov [11, Theorem 1.1]"
+      },
+      {
+        "id": "paper:calculation:blowup",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 4 · 吹起构造零自交球及正标量曲率边界",
+        "shortTitle": "吹起构造零自交球及正标量曲率边界",
+        "title": "吹起构造零自交球及正标量曲率边界",
+        "statement": "令 $n\\ge0$ 为 $\\alpha$ 的自交数，并令 $Z=X\\# n\\overline{\\mathbb{CP}}^2$。若 $\\alpha$ 在 $X$ 中由光滑嵌入 2-球表示，则吹起可得到 $Z$ 中表示非扭结第二同调类且自交数为零的光滑嵌入 2-球 $S$。其管状邻域满足 $\\nu(S)\\cong S^2\\times D^2$，边界 $Y\\cong S^2\\times S^1$，因而 $Y$ 具有正标量曲率度量；并且包含映射诱导的同态 $H^2(Z;\\mathbb Q)\\to H^2(Y;\\mathbb Q)$ 非零。",
+        "sourcePath": "文章1.pdf#page=7"
+      },
+      {
+        "id": "paper:theorem:2.3-proof",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 5 · 定理 2.3 的反证链",
+        "shortTitle": "定理 2.3 的反证链",
+        "title": "定理 2.3 的反证链",
+        "statement": "若定理 2.3 的稳定不变量不消失，则因 $X$ 正定而 $\\overline X$ 负定，从定理 2.7(1) 得 $X\\#\\overline X$ 的稳定不变量不消失。由定理 2.8，$X\\#\\overline X$ 不存在表示非扭结类且自交数为零的光滑嵌入 2-球；但由引理 2.6，$\\alpha+\\bar\\alpha$ 正由此类 2-球表示，矛盾。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:theorem:2.4-proof",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 6 · 定理 2.4 的反证链",
+        "shortTitle": "定理 2.4 的反证链",
+        "title": "定理 2.4 的反证链",
+        "statement": "若 $b_2^+(X)$ 或 $b_2(X)$ 为偶数，则闭辛 4-流形的 $b_2^+(X)+b_1(X)$ 为奇数，故结论成立。剩下 $b_2^+(X)\\equiv b_2(X)\\equiv3\\pmod4$ 的情形中，若 $X$ 与 $\\overline X$ 均为辛流形，则由 Taubes 结果二者均满足定理 2.7(2)(ii)，结合 $b_2^+(X),b_2^+(\\overline X)\\equiv3\\pmod4$，得 $X\\#\\overline X$ 的稳定不变量不消失。定理 2.8 禁止其中存在表示非扭结类且自交数为零的光滑嵌入 2-球，但引理 2.6 构造了表示 $\\alpha+\\bar\\alpha$ 的此类 2-球，矛盾。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:lemma:3.1",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 3 · 几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "shortTitle": "几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "title": "几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "statement": "若 $X$ 是几何单连通的紧定向光滑 4-流形，则 $X$ 的每个第二同调类都由某个 2-柄邻域表示。",
+        "sourcePath": "文章1.pdf#page=9"
+      },
+      {
+        "id": "paper:calculation:handle-slides",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 7 · 由 2-柄生成线性组合的同调类",
+        "shortTitle": "由 2-柄生成线性组合的同调类",
+        "title": "由 2-柄生成线性组合的同调类",
+        "statement": "固定一个没有 1-柄的柄分解。第二链群由该分解的 2-柄生成，因此任意第二同调类 $\\alpha$ 可表示为 2-柄的线性组合。加入一对相消的 2-柄与 3-柄，并将新加入的 2-柄沿原有 2-柄进行 handle slide，可构造出与该线性组合同调的单个 2-柄；新 2-柄代表第二同调群中的零元，而每次 handle slide 对应于第二链群中的加法或减法。",
+        "sourcePath": "文章1.pdf#page=9"
+      },
+      {
+        "id": "paper:definition:3.2",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 以 2-柄邻域表示刻画单连通性的两个问题",
+        "shortTitle": "以 2-柄邻域表示刻画单连通性的两个问题",
+        "title": "以 2-柄邻域表示刻画单连通性的两个问题",
+        "statement": "问题 1：每个满足 $b_2(X)\\ne0$ 的单连通、闭、定向、光滑 4-流形 $X$ 是否都存在一个非零且由 2-柄邻域表示的第二同调类？问题 2：对于任意单连通、闭、定向、光滑 4-流形 $X$，是否每个第二同调类都由 2-柄邻域表示？",
+        "sourcePath": "文章1.pdf#page=10"
+      },
+      {
+        "id": "paper:proposition:question-consequence",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 问题 3.2 肯定回答的推论",
+        "shortTitle": "问题 3.2 肯定回答的推论",
+        "title": "问题 3.2 肯定回答的推论",
+        "statement": "若问题 3.2(1) 的答案为肯定，则定理 1.4 与定理 1.9 中的“几何单连通”条件可替换为“单连通”。若更强问题 3.2(2) 的答案为否定，则由引理 3.1 可得到 Kirby 问题 1.1 的反例。",
+        "sourcePath": "文章1.pdf#page=10"
+      },
+      {
+        "id": "paper:calculation:nonsimplyconnected-counterexample",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 8 · 正曲面乘积作为非单连通反例",
+        "shortTitle": "正曲面乘积作为非单连通反例",
+        "title": "正曲面乘积作为非单连通反例",
+        "statement": "去掉单连通条件后，两个闭、定向、正亏格曲面的乘积是问题 3.2(1) 的反例：该 4-流形满足 $b_2\\ne0$ 且 $\\pi_2=0$，而由 2-柄邻域给出的第二同调类必须由浸入的 2-球表示。",
+        "sourcePath": "文章1.pdf#page=10"
+      },
+      {
+        "id": "paper:theorem:froyshov",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 17 · 正标量曲率余维一子流形判据",
+        "shortTitle": "正标量曲率余维一子流形判据",
+        "title": "正标量曲率余维一子流形判据",
+        "statement": "设闭、连通、定向光滑 $4$-流形 $X$ 满足 $b_2^+(X)>1$。若 $X$ 的闭、可定向余维一子流形 $Y$ 满足：$Y$ 存在正标量曲率黎曼度量；包含映射诱导同态 $H^2(X;\\mathbb Q)\\to H^2(Y;\\mathbb Q)$ 非零；则 $X$ 的稳定上同伦 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=7",
+        "sourceReference": "Frøyshov [11, Theorem 1.1]"
+      },
+      {
+        "id": "paper:proof:main",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 9 · 由无 $1$-柄分解提取非扭结第二同调类",
+        "shortTitle": "由无 $1$-柄分解提取非扭结第二同调类",
+        "title": "由无 $1$-柄分解提取非扭结第二同调类",
+        "statement": "对任意具有 $b_2(X)\\ne0$ 且不含 $1$-柄的紧 $4$-维柄体，第二同调群由 $2$-柄生成，因此存在一个表示非扭结第二同调类的 $2$-柄。将该类视为闭流形 $X$ 中由 $2$-柄邻域表示的非扭结类，即可应用定理 2.3，得到定理 1.4。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:proposition:sw-vanishing",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · 稳定不变量消失推出普通不变量消失",
+        "shortTitle": "稳定不变量消失推出普通不变量消失",
+        "title": "稳定不变量消失推出普通不变量消失",
+        "statement": "闭、定向、光滑 $4$-流形的普通 Seiberg–Witten 不变量非零会推出其稳定上同伦 Seiberg–Witten 不变量非零；因此稳定不变量消失推出普通 Seiberg–Witten 不变量消失。",
+        "sourcePath": "文章1.pdf#page=3",
+        "sourceReference": "Bauer–Furuta [6, Proposition 3.3]；Bauer [5, Proposition 4.4]"
+      },
+      {
+        "id": "paper:external:taubes",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · 辛流形的 Seiberg–Witten 不变量非零",
+        "shortTitle": "辛流形的 Seiberg–Witten 不变量非零",
+        "title": "辛流形的 Seiberg–Witten 不变量非零",
+        "statement": "闭、定向、辛 $4$-流形若满足 $b_2^+>1$，则其 Seiberg–Witten 不变量不消失，甚至其模 $2$ 版本也不消失。",
+        "sourcePath": "文章1.pdf#page=3",
+        "sourceReference": "Taubes [36]"
+      },
+      {
+        "id": "paper:fixed:symplectic-parity",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 闭辛 $4$-流形的奇性条件",
+        "shortTitle": "闭辛 $4$-流形的奇性条件",
+        "title": "闭辛 $4$-流形的奇性条件",
+        "statement": "闭定向辛 $4$-流形满足 $b_2^++b_1$ 为奇数。",
+        "sourcePath": "文章1.pdf#page=8",
+        "sourceReference": "Gompf–Stipsicz, 4-Manifolds and Kirby Calculus, [14, Corollary 10.1.10]"
+      },
+      {
+        "id": "paper:fixed:handlebody-2-homology-generation",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · 无 $1$-柄柄体的第二同调由 $2$-柄生成",
+        "shortTitle": "无 $1$-柄柄体的第二同调由 $2$-柄生成",
+        "title": "无 $1$-柄柄体的第二同调由 $2$-柄生成",
+        "statement": "具有 $b_2\\ne0$ 且无 $1$-柄的紧 $4$-维柄体，其第二同调群由 $2$-柄生成，因而存在代表非扭结第二同调类的 $2$-柄。",
+        "sourcePath": "文章1.pdf#page=8",
+        "sourceReference": "论文第 8 页 Proof of Theorems 1.4 and 1.9 中明确使用的柄分解基础事实"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:proof:1",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 1 · 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "shortTitle": "证明 · 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "title": "证明 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "statement": "假设稳定不变量非零，则 Bauer 判据使 $X\\#\\overline X$ 的稳定不变量非零；稳定邻接障碍禁止其中存在零自交球，但引理构造出代表 $\\alpha+\\bar\\alpha$ 的此类球，矛盾。",
+        "premises": [
+          "paper:theorem:bauer-nonvanishing",
+          "paper:theorem:stable-adjunction-obstruction",
+          "paper:lemma:zero-sphere-connected-sum",
+          "paper:calculation:handle-slide-slice-knot",
+          "paper:calculation:zero-self-intersection-sphere"
+        ],
+        "conclusion": "paper:theorem:generalized-vanishing",
+        "argument": "假设稳定不变量非零，则 Bauer 判据使 $X\\#\\overline X$ 的稳定不变量非零；稳定邻接障碍禁止其中存在零自交球，但引理构造出代表 $\\alpha+\\bar\\alpha$ 的此类球，矛盾。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · 稳定不变量非零时不存在非负自交的球",
+        "shortTitle": "证明 · 稳定不变量非零时不存在非负自交的球",
+        "title": "证明 稳定不变量非零时不存在非负自交的球",
+        "statement": "将非负自交球吹起为零自交球，构造边界 $S^2\\times S^1$ 的正标量曲率余维一子流形，并验证限制映射非零；Frøyshov 定理导致吹起流形稳定不变量消失，与 Bauer 非消失矛盾。",
+        "premises": [
+          "paper:theorem:bauer-nonvanishing",
+          "paper:theorem:froyshov",
+          "paper:calculation:blowup"
+        ],
+        "conclusion": "paper:thm:2.8",
+        "argument": "将非负自交球吹起为零自交球，构造边界 $S^2\\times S^1$ 的正标量曲率余维一子流形，并验证限制映射非零；Frøyshov 定理导致吹起流形稳定不变量消失，与 Bauer 非消失矛盾。",
+        "sourcePath": "文章1.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:3",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 3 · 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "shortTitle": "证明 · 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "title": "证明 含非扭结 2-柄邻域类的正定流形的稳定不变量消失",
+        "statement": "若 $X$ 的稳定不变量非零，则 Bauer 定理使 $X\\#\\overline X$ 的稳定不变量非零；定理 $2.8$ 禁止其中存在非扭结零自交光滑球，而引理 $2.6$ 构造出代表 $\\alpha+\\bar\\alpha$ 的此类球，矛盾。",
+        "premises": [
+          "paper:lemma:zero-sphere-connected-sum",
+          "paper:thm:2.8"
+        ],
+        "conclusion": "paper:theorem:generalized-vanishing",
+        "argument": "若 $X$ 的稳定不变量非零，则 Bauer 定理使 $X\\#\\overline X$ 的稳定不变量非零；定理 $2.8$ 禁止其中存在非扭结零自交光滑球，而引理 $2.6$ 构造出代表 $\\alpha+\\bar\\alpha$ 的此类球，矛盾。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · 2-柄邻域条件下的定向辛结构排除",
+        "shortTitle": "证明 · 2-柄邻域条件下的定向辛结构排除",
+        "title": "证明 2-柄邻域条件下的定向辛结构排除",
+        "statement": "偶数情形由辛流形的奇性条件排除；奇数模 $4$ 情形若两种定向均辛，则 Taubes 与 Bauer 定理使连通和稳定不变量非零，定理 $2.8$ 又禁止引理 $2.6$ 给出的零自交球，矛盾。",
+        "premises": [
+          "paper:theorem:bauer-nonvanishing",
+          "paper:thm:2.8",
+          "paper:lemma:zero-sphere-connected-sum",
+          "paper:external:taubes",
+          "paper:fixed:symplectic-parity"
+        ],
+        "conclusion": "paper:theorem:generalized-orientation",
+        "argument": "偶数情形由辛流形的奇性条件排除；奇数模 $4$ 情形若两种定向均辛，则 Taubes 与 Bauer 定理使连通和稳定不变量非零，定理 $2.8$ 又禁止引理 $2.6$ 给出的零自交球，矛盾。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "shortTitle": "证明 · 几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "title": "证明 几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失",
+        "statement": "无 $1$-柄柄分解且 $b_2\\ne0$ 时，第二同调群由 $2$-柄生成，存在代表非扭结类的 $2$-柄邻域；应用定理 $2.3$ 得主定理。",
+        "premises": [
+          "paper:theorem:generalized-vanishing",
+          "paper:fixed:handlebody-2-homology-generation"
+        ],
+        "conclusion": "paper:theorem:main",
+        "argument": "无 $1$-柄柄分解且 $b_2\\ne0$ 时，第二同调群由 $2$-柄生成，存在代表非扭结类的 $2$-柄邻域；应用定理 $2.3$ 得主定理。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "shortTitle": "证明 · 几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "title": "证明 几何单连通正定闭 $4$-流形的 Seiberg–Witten 不变量消失",
+        "statement": "普通 Seiberg–Witten 不变量非零会推出稳定上同伦不变量非零，因此主定理的稳定不变量消失蕴含普通不变量消失。",
+        "premises": [
+          "paper:theorem:main",
+          "paper:proposition:sw-vanishing"
+        ],
+        "conclusion": "paper:theorem:corollary-sw-vanishing",
+        "argument": "普通 Seiberg–Witten 不变量非零会推出稳定上同伦不变量非零，因此主定理的稳定不变量消失蕴含普通不变量消失。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 几何单连通正定闭 $4$-流形不存在辛结构",
+        "shortTitle": "证明 · 几何单连通正定闭 $4$-流形不存在辛结构",
+        "title": "证明 几何单连通正定闭 $4$-流形不存在辛结构",
+        "statement": "Taubes 定理表明闭辛 $4$-流形的 Seiberg–Witten 不变量非零，与推论 $1.5$ 的消失结论矛盾。",
+        "premises": [
+          "paper:theorem:corollary-sw-vanishing",
+          "paper:external:taubes"
+        ],
+        "conclusion": "paper:theorem:no-symplectic-positive",
+        "argument": "Taubes 定理表明闭辛 $4$-流形的 Seiberg–Witten 不变量非零，与推论 $1.5$ 的消失结论矛盾。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · 正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "shortTitle": "证明 · 正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "title": "证明 正定单连通辛流形的 $\u001b[?m\\mathbb{CP}^2$ 分类",
+        "statement": "推论 $1.6$ 迫使正定辛流形满足 $b_2^+=b_2=1$，再用无 $1$、$3$-柄且 $b_2=1$ 的分类结果得到 $\\mathbb{CP}^2$ 或其反向定向。",
+        "premises": [
+          "paper:theorem:no-symplectic-positive"
+        ],
+        "conclusion": "paper:theorem:symplectic-cp2",
+        "argument": "推论 $1.6$ 迫使正定辛流形满足 $b_2^+=b_2=1$，再用无 $1$、$3$-柄且 $b_2=1$ 的分类结果得到 $\\mathbb{CP}^2$ 或其反向定向。",
+        "sourcePath": "文章1.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:9",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 9 · 几何单连通流形至少一个定向不存在辛结构",
+        "shortTitle": "证明 · 几何单连通流形至少一个定向不存在辛结构",
+        "title": "证明 几何单连通流形至少一个定向不存在辛结构",
+        "statement": "几何单连通性提供非扭结第二同调类的 $2$-柄邻域表示，应用定理 $2.4$ 得至少一个定向不存在辛结构。",
+        "premises": [
+          "paper:theorem:generalized-orientation",
+          "paper:fixed:handlebody-2-homology-generation"
+        ],
+        "conclusion": "paper:theorem:orientation-symplectic-obstruction",
+        "argument": "几何单连通性提供非扭结第二同调类的 $2$-柄邻域表示，应用定理 $2.4$ 得至少一个定向不存在辛结构。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:10",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 10 · 反向定向连通和中的零自交 $2$-球",
+        "shortTitle": "证明 · 反向定向连通和中的零自交 $2$-球",
+        "title": "证明 反向定向连通和中的零自交 $2$-球",
+        "statement": "在 $W\\natural\\overline W$ 中沿镜像结附加两个 $2$-柄，滑柄得到零框架切结；其核心闭合给出代表 $\\alpha+\\bar\\alpha$ 的零自交光滑 $2$-球。",
+        "premises": [
+          "paper:calculation:handle-slide-slice-knot",
+          "paper:calculation:zero-self-intersection-sphere"
+        ],
+        "conclusion": "paper:lemma:zero-sphere-connected-sum",
+        "argument": "在 $W\\natural\\overline W$ 中沿镜像结附加两个 $2$-柄，滑柄得到零框架切结；其核心闭合给出代表 $\\alpha+\\bar\\alpha$ 的零自交光滑 $2$-球。",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:organization:11",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 11 · 切结零框架给出零自交球",
+        "shortTitle": "组织 · 切结零框架给出零自交球",
+        "title": "组织 切结零框架给出零自交球",
+        "statement": "零框架切结的 $2$-柄对应零自交球。",
+        "premises": [
+          "paper:calculation:handle-slide-slice-knot"
+        ],
+        "conclusion": "paper:calculation:zero-self-intersection-sphere",
+        "argument": "零框架切结的 $2$-柄对应零自交球。",
+        "sourcePath": "文章1.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:proof:12",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 12 · 2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "shortTitle": "证明 · 2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "title": "证明 2-柄邻域条件下的 Seiberg–Witten 不变量消失",
+        "statement": "推广稳定不变量消失后，由普通不变量非零推出稳定不变量非零，再得普通 Seiberg–Witten 不变量消失并排除辛结构。",
+        "premises": [
+          "paper:theorem:generalized-vanishing",
+          "paper:proposition:sw-vanishing",
+          "paper:external:taubes"
+        ],
+        "conclusion": "paper:theorem:generalized-sw-vanishing",
+        "argument": "推广稳定不变量消失后，由普通不变量非零推出稳定不变量非零，再得普通 Seiberg–Witten 不变量消失并排除辛结构。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:13",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 13 · 2-柄邻域条件下的定向辛结构排除",
+        "shortTitle": "证明 · 2-柄邻域条件下的定向辛结构排除",
+        "title": "证明 2-柄邻域条件下的定向辛结构排除",
+        "statement": "定理 $2.4$ 的偶数情形使用辛 $4$-流形的奇性条件；奇数情形使用 Bauer、Taubes、定理 $2.8$ 与引理 $2.6$ 完成反证。",
+        "premises": [
+          "paper:fixed:symplectic-parity"
+        ],
+        "conclusion": "paper:theorem:generalized-orientation",
+        "argument": "定理 $2.4$ 的偶数情形使用辛 $4$-流形的奇性条件；奇数情形使用 Bauer、Taubes、定理 $2.8$ 与引理 $2.6$ 完成反证。",
+        "sourcePath": "文章1.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:14",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 14 · 几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "shortTitle": "证明 · 几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "title": "证明 几何单连通流形中所有二次同调类的 2-柄邻域表示",
+        "statement": "无 $1$-柄时第二链群由 $2$-柄生成；加入可消去的 $2$、$3$-柄对并滑动新 $2$-柄，使其代表给定线性组合。",
+        "premises": [
+          "paper:calculation:handle-slides",
+          "paper:fixed:handlebody-2-homology-generation"
+        ],
+        "conclusion": "paper:lemma:3.1",
+        "argument": "无 $1$-柄时第二链群由 $2$-柄生成；加入可消去的 $2$、$3$-柄对并滑动新 $2$-柄，使其代表给定线性组合。",
+        "sourcePath": "文章1.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:15",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 15 · 问题 3.2 肯定回答的推论",
+        "shortTitle": "证明 · 问题 3.2 肯定回答的推论",
+        "title": "证明 问题 3.2 肯定回答的推论",
+        "statement": "若问题 $3.2(2)$ 的答案是否定的，则引理 $3.1$ 给出单连通但非几何单连通的流形，从而产生 Kirby 问题 $4.18$ 的反例。",
+        "premises": [
+          "paper:lemma:3.1"
+        ],
+        "conclusion": "paper:proposition:question-consequence",
+        "argument": "若问题 $3.2(2)$ 的答案是否定的，则引理 $3.1$ 给出单连通但非几何单连通的流形，从而产生 Kirby 问题 $4.18$ 的反例。",
+        "sourcePath": "文章1.pdf#page=10"
+      },
+      {
+        "id": "paper:inference:proof:16",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 16 · 普通 Seiberg–Witten 不变量消失及无辛结构",
+        "shortTitle": "证明 · 普通 Seiberg–Witten 不变量消失及无辛结构",
+        "title": "证明 普通 Seiberg–Witten 不变量消失及无辛结构",
+        "statement": "定理 $2.3$ 给出稳定不变量消失；由普通不变量非零蕴含稳定不变量非零，普通不变量消失；Taubes 定理进一步排除辛结构。",
+        "premises": [
+          "paper:theorem:generalized-vanishing",
+          "paper:proposition:sw-vanishing",
+          "paper:external:taubes"
+        ],
+        "conclusion": "paper:cor:2.5",
+        "argument": "定理 $2.3$ 给出稳定不变量消失；由普通不变量非零蕴含稳定不变量非零，普通不变量消失；Taubes 定理进一步排除辛结构。",
+        "sourcePath": "文章1.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:17",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 17 · 反向定向连通和中的零自交球",
+        "shortTitle": "证明 · 反向定向连通和中的零自交球",
+        "title": "证明 反向定向连通和中的零自交球",
+        "statement": "论文第 6 页直接证明：反向定向连通和中的两个带框结经滑柄变为零框架切结，其对应 $2$-柄邻域的生成类由零自交光滑 $2$-球表示。",
+        "premises": [
+          "paper:calculation:handle-slide-slice-knot",
+          "paper:calculation:zero-self-intersection-sphere"
+        ],
+        "conclusion": "paper:lemma:2.6",
+        "argument": "论文第 6 页直接证明：反向定向连通和中的两个带框结经滑柄变为零框架切结，其对应 $2$-柄邻域的生成类由零自交光滑 $2$-球表示。",
+        "sourcePath": "文章1.pdf#page=6"
+      }
+    ]
+  }
+}

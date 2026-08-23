@@ -1,0 +1,114 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.1-consolidation-v1-run1.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 21,
+  "completeness": 16,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate accurately captures the paper's main surgery-to-RT-invariant chain, including Lickorish–Wallace, Kirby calculus, ribbon categories, ribbon Hopf algebras, modular categories, purification, Kirby colors, the selected normalization formula, and the final RT invariance theorem. Its formulas are generally well formed, page locators are plausible, and all four principal external results identified by the gold artifact receive attribution. It is nevertheless not flawless: several foundational or intermediate gold entries are absent as distinct entries, some logically important Kirby-invariance steps are compressed into the final theorem, and a few statements or classifications are imprecise under the gold conventions.",
+  "strengths": [
+    "Faithfully extracts the core Lickorish–Wallace and Kirby calculus theorems and marks both as external results.",
+    "Correctly states the quasitriangular and ribbon Hopf algebra axioms in the gold artifact's Turaev-style convention.",
+    "Captures the induced braiding, twist, ribbon representation category, and quantum-trace formula using the convention u=m(S⊗id)(R_{21}) and tr_q(f)=Tr(ρ(uv)∘f).",
+    "Includes the modular-category and modular-Hopf-algebra conditions, the Kirby color and coloring sum, and the exact selected normalization τ=Δ^{σ(L)}D^{-σ(L)-m-1}{L}.",
+    "The final RT theorem explicitly states Kirby-move invariance and dependence only on the orientation-preserving homeomorphism class.",
+    "Entry IDs are stable and descriptive, page values are valid, and the displayed LaTeX is generally balanced."
+  ],
+  "issues": [
+    "There is no standalone Hopf algebra definition, despite its foundational role and its presence in the gold reference.",
+    "Standalone gold entries for twist, ribbon graphical calculus, the finite simple system/domination condition, and purification are missing or only indirectly folded into other entries.",
+    "The negligible-module entry omits the gold definition of a negligible morphism, which is needed to define the quotient ideal used in purification.",
+    "Handle-slide invariance, blow-up invariance, and Kirby-presentation independence are not extracted as distinct results; they are only summarized collectively inside the final RT theorem.",
+    "The dual-module entry says that an S^{-1}-based action may also be used without specifying the corresponding change of left/right-dual convention and structural maps; this conflicts with the gold artifact's fixed left-dual convention and is potentially misleading.",
+    "The modular-data entry writes dim(i)=dim(V_i), which can be read as ordinary vector-space dimension; the gold reference requires categorical dimension tr(id_{V_i}).",
+    "Several result-like entries are typed as calculation or definition rather than claim/proposition, notably the R-matrix-induced braiding, the quantum-trace identity, and the colored framed-link invariant.",
+    "The framing definition omits the gold statement that, relative to the Seifert longitude, each component framing is represented by an integer.",
+    "The additional Rohlin, Yang–Baxter, pivotal-element, and Jones-polynomial entries are meaningful but do not compensate for missing gold infrastructure and modestly dilute redundancy control."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryIds": [
+        "paper:theorem:lickorish-wallace-surgery"
+      ],
+      "status": "matched",
+      "assessment": "The mathematical content and theorem classification agree, and external attribution is supplied."
+    },
+    {
+      "goldEntryId": "rt:entry:rep-ribbon",
+      "candidateEntryIds": [
+        "paper:proposition:rep-ribbon-category",
+        "paper:calculation:r-matrix-braiding"
+      ],
+      "status": "matched",
+      "assessment": "The induced ribbon structure is correctly stated, including braiding from R and twist θ_V=ρ_V(v)."
+    },
+    {
+      "goldEntryId": "rt:entry:quantum-trace",
+      "candidateEntryIds": [
+        "paper:calculation:quantum-trace"
+      ],
+      "status": "partial",
+      "assessment": "The selected trace formula is correct, but the candidate presents it as a calculation and does not explicitly identify it as equality with the categorical trace."
+    },
+    {
+      "goldEntryId": "rt:entry:negligible-module",
+      "candidateEntryIds": [
+        "paper:def:negligible-module"
+      ],
+      "status": "partial",
+      "assessment": "The negligible-module condition is correct, but the negligible-morphism condition is omitted."
+    },
+    {
+      "goldEntryId": "rt:entry:purification",
+      "candidateEntryIds": [
+        "paper:theorem:turaev-purification"
+      ],
+      "status": "partial",
+      "assessment": "Purification is mentioned as quotienting by negligible morphisms, but its same-objects and quotient-Hom definition is not independently extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryIds": [
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "partial",
+      "assessment": "Kirby-move invariance is asserted globally, but the Kirby-color handle-slide lemma is not separately represented."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryIds": [
+        "paper:calculation:rt-normalization",
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "partial",
+      "assessment": "The correct normalization is present and the final theorem asserts Kirby invariance, but cancellation of the individual ±1 move is not delimited as its own claim."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryIds": [
+        "paper:theorem:rt-invariant"
+      ],
+      "status": "matched",
+      "assessment": "The main target is accurately and appropriately classified as a theorem."
+    },
+    {
+      "goldEntryId": "rt:entry:hopf-algebra",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "assessment": "No entry defines the underlying Hopf algebra structure or antipode axioms."
+    },
+    {
+      "goldEntryId": "rt:entry:graphical-calculus",
+      "candidateEntryIds": [
+        "paper:def:colored-ribbon-graph"
+      ],
+      "status": "partial",
+      "assessment": "The candidate defines colored ribbon graphs but omits the generator-to-morphism dictionary and composition/tensor rules of the gold graphical-calculus entry."
+    }
+  ]
+}

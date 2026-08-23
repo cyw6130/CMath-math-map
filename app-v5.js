@@ -2424,7 +2424,6 @@
           <div class="map-card-info">
             <div class="map-card-title-row">
               <strong class="map-title-text">${escapeHtml(demo.title)}</strong>
-              ${isActive ? `<span class="map-active-pill">当前浏览中</span>` : ""}
             </div>
             <span class="map-boundary-text">${escapeHtml(demo.boundary)}</span>
           </div>

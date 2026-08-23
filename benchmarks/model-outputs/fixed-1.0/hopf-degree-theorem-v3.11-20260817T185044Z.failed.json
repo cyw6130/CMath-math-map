@@ -1,0 +1,113 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-map-off-compact-v3.11",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.11",
+  "promptSetVersion": "v3.11",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 152362,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "hopf map.pdf",
+        "pageCount": 13,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32011,
+        "atMs": 3
+      },
+      {
+        "stage": "target",
+        "leads": 22,
+        "atMs": 91959
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 91960
+      },
+      {
+        "stage": "request",
+        "chars": 32011,
+        "chunks": 2,
+        "atMs": 91961
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 11,
+        "atMs": 91967
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 134028
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 91945,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9354,
+          "completion_tokens": 5001,
+          "total_tokens": 14355
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 10611,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14424,
+          "completion_tokens": 476,
+          "total_tokens": 14900
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 42065,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9649,
+          "completion_tokens": 2203,
+          "total_tokens": 11852
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 60394,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16513,
+          "completion_tokens": 2991,
+          "total_tokens": 19504
+        }
+      }
+    ],
+    "error": "lead-guided Entry type 无效：paper:claim:finite-zero-vector-field"
+  }
+}

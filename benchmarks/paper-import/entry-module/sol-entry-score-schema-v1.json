@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CMath Paper Entry Sol Score Schema v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "scorerModel",
+    "promptVersion",
+    "candidateArtifact",
+    "goldRevision",
+    "caseId",
+    "correctness",
+    "completeness",
+    "solEntryScore",
+    "verdict",
+    "summary",
+    "strengths",
+    "issues"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cmath.paper-entry-sol-score/v1"
+    },
+    "scorerModel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "promptVersion": {
+      "type": "string",
+      "const": "sol-entry-score-prompt-v1"
+    },
+    "candidateArtifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goldRevision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "caseId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "correctness": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 25
+    },
+    "completeness": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "solEntryScore": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 45
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["flawless", "usable", "unusable"]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "issues": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "entryLevelComparison": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  },
+  "additionalProperties": true
+}

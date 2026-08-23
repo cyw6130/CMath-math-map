@@ -1,0 +1,48 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "caseId": "knot-hopf-rt",
+  "workflowVersion": "v3.17",
+  "runArtifact": "knot-hopf-rt-v3.17-20260818T061626Z.json",
+  "auditMethod": "Primary Codex comparison of candidate JSON against the fixed Gold JSON under benchmarks/paper-import/SCORING-PROTOCOL.md; no source-PDF reread and no model judge",
+  "auditScore": {
+    "format": 38,
+    "semantic": 48,
+    "overall": 86,
+    "formatComponents": {
+      "normalizationAndProjectIdentity": 10,
+      "entryAndSourceValidity": 8,
+      "inferenceValidity": 8,
+      "b0Structure": 5,
+      "dagAndClosure": 7
+    },
+    "semanticComponents": {
+      "objectsAndHypotheses": 17,
+      "b0Boundary": 10,
+      "mainTarget": 8,
+      "proofDependencies": 8,
+      "claimStates": 3,
+      "sourceAttribution": 2
+    }
+  },
+  "matchedCore": [
+    "the four canonical external foundations are represented in B0",
+    "ribbon-category, Hopf-algebra representation, modular-data, Kirby-color, normalization, and purification objects are present",
+    "the RT invariant is the mainTarget, remains outside B0, and is established by a valid proof inference",
+    "the candidate proof graph is acyclic and structurally executable"
+  ],
+  "deductions": [
+    "handle-slide is additionally externalized into B0 although Gold treats it as an internally derived lemma",
+    "the surviving six-inference graph compresses or omits much of the Gold intermediate chain, especially Kirby reduction, colored-link construction, blow-up invariance, presentation independence, and purification-to-modularity",
+    "Rohlin and root-of-unity results remain open context Claims; they do not block the RT target but reduce claim-state precision",
+    "some source attribution is broader than the fixed Gold boundary"
+  ],
+  "closureStatus": "acyclic; main target established; two non-core sourced context Claims remain open",
+  "mainTargetStatus": "correct semantic target, correctly outside B0, and established",
+  "durationMs": 232618,
+  "promotionChecks": {
+    "completedOnce": true,
+    "auditScoreAtLeast85": true,
+    "durationAtMost300000": true
+  }
+}

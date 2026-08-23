@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "knot-hopf-rt",
+  "workflowUnderTest": "v3.17",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-18T06:16:26.267Z",
+  "durationMs": 232618,
+  "status": "completed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/knot-hopf-rt-v3.17-20260818T061626Z.json",
+  "auditScore": 86,
+  "auditStatus": "completed-primary-agent-audit",
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

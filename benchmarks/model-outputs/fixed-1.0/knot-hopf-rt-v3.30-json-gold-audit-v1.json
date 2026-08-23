@@ -1,0 +1,29 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Manual Gold-JSON comparison; no machine evaluator or model judge",
+  "caseId": "knot-hopf-rt",
+  "artifact": "knot-hopf-rt-v3.30-20260818T114550Z.json",
+  "workflowVersion": "v3.30",
+  "reasoningProfile": "guide=low; assembly=medium; repair1=low; all other calls=none",
+  "durationMs": 279439,
+  "formatScore": 38,
+  "semanticScore": 35,
+  "auditScore": 73,
+  "matchedCore": [
+    "The artifact is structurally readable and completed on its first fixed-protocol run within 300 seconds.",
+    "It extracts the main surgery, ribbon-category, Hopf-algebra, modular-data, Kirby-color, normalization, and RT-invariant objects.",
+    "A surviving proof inference concludes the formal Reshetikhin-Turaev invariant theorem from several relevant ingredients."
+  ],
+  "deductions": [
+    "mainTargetEntryId incorrectly points to the external Lickorish-Wallace surgery theorem rather than the paper's formal Reshetikhin-Turaev invariant theorem.",
+    "B0 is empty even though Gold treats Lickorish-Wallace, Kirby calculus, the Turaev ribbon-graph functor, and purification as sourced external foundations.",
+    "The workflow therefore leaves several external foundations as open internal Claims and reports unresolved closure after three repair rounds.",
+    "The eight-inference graph substantially compresses the Gold chain and omits distinct Kirby reduction, colored-link evaluation, normalization, blow-up, presentation-independence, and purification dependencies.",
+    "The lead-guided extraction lane timed out, leaving the canonical-target rule dependent on a mistaken Paper Guide main-target classification."
+  ],
+  "closureStatus": "Acyclic but semantically unresolved: external foundations remain open and B0 is empty; the RT theorem has a proof edge but is not the selected target.",
+  "mainTargetStatus": "Incorrect: an external foundational theorem is selected instead of the paper's headline RT-invariant theorem.",
+  "status": "below-target"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "cmath.paper-entry-baseline/v1",
+  "baselineId": "luna-v3.26-entry-baseline-v1",
+  "status": "historical-baseline",
+  "workflowVersion": "v3.26",
+  "model": "gpt-5.6-luna",
+  "provider": "luna-gateway",
+  "condition": "off-compact",
+  "scoreModel": "gpt-5.6-sol",
+  "scorePromptVersion": "sol-score-prompt-v2",
+  "goldPolicy": "existing case Gold; no Gold or scorer changes",
+  "projection": "view.entries",
+  "inferenceExcludedFromEntryScore": true,
+  "purpose": "Register the historical Luna V3.26 full-workflow outputs as a separate multi-case Entry baseline. This is a comparison baseline, not the production Entry module selection.",
+  "cases": [
+    {"caseId":"knot-hopf-rt","sourcePdf":"/Users/chenyuwen/Desktop/Knot_hopf_alg&quantum_invs/RT.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/knot-hopf-rt-v3.26-20260818T095734Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/knot-hopf-rt-v3.26-20260818T095734Z-sol-score-v2.json","entryCount":44,"inferenceCount":4,"entryScore":38,"entryScoreMax":45},
+    {"caseId":"hopf-degree-theorem","sourcePdf":"/Users/chenyuwen/Desktop/hopf map.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/hopf-degree-theorem-v3.26-20260818T095349Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/hopf-degree-theorem-v3.26-20260818T095349Z-sol-score-v2.json","entryCount":37,"inferenceCount":21,"entryScore":41,"entryScoreMax":45},
+    {"caseId":"4-dim-skein-modules-handles-tangles","sourcePdf":"/Users/chenyuwen/Desktop/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/4-dim-skein-modules-handles-tangles-v3.26-20260818T100409Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/4-dim-skein-modules-handles-tangles-v3.26-20260818T100409Z-sol-score-v2.json","entryCount":39,"inferenceCount":15,"entryScore":44,"entryScoreMax":45},
+    {"caseId":"cornered-skein-lasagna-theory","sourcePdf":"/Users/chenyuwen/Desktop/CORNERED SKEIN LASAGNA THEORY.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/cornered-skein-lasagna-theory-v3.26-20260818T100746Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/cornered-skein-lasagna-theory-v3.26-20260818T100746Z-sol-score-v2.json","entryCount":29,"inferenceCount":10,"entryScore":41,"entryScoreMax":45},
+    {"caseId":"yasui-2019-geometrically-simply-connected-4-manifolds","sourcePdf":"/Users/chenyuwen/Desktop/文章1.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/yasui-2019-geometrically-simply-connected-4-manifolds-v3.26-20260818T101135Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/yasui-2019-geometrically-simply-connected-4-manifolds-v3.26-20260818T101135Z-sol-score-v2.json","entryCount":28,"inferenceCount":11,"entryScore":40,"entryScoreMax":45},
+    {"caseId":"kirby-2018-trisections","sourcePdf":"/Users/chenyuwen/Desktop/kirby-2018-trisections-of-4-manifolds.pdf","workflowArtifact":"benchmarks/model-outputs/fixed-1.0/kirby-2018-trisections-v3.26-20260818T101550Z.json","scoreArtifact":"benchmarks/model-outputs/fixed-1.0/kirby-2018-trisections-v3.26-20260818T101550Z-sol-score-v2.json","entryCount":32,"inferenceCount":0,"entryScore":35,"entryScoreMax":45}
+  ]
+}

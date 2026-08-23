@@ -1,0 +1,29 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Manual Gold-JSON comparison; no machine evaluator or model judge",
+  "caseId": "knot-hopf-rt",
+  "artifact": "knot-hopf-rt-v3.29-20260818T111955Z.json",
+  "workflowVersion": "v3.29",
+  "reasoningProfile": "guide=low; assembly=medium; repair1=low; all other calls=none",
+  "durationMs": 270420,
+  "formatScore": 38,
+  "semanticScore": 39,
+  "auditScore": 77,
+  "matchedCore": [
+    "The artifact is structurally valid, acyclic, and completes within 300 seconds.",
+    "The output contains the major category, Hopf-algebra, modular-data, Kirby-color, normalization, and surgery ingredients.",
+    "A proof inference establishes the selected synthetic construction target."
+  ],
+  "deductions": [
+    "The selected main target is a newly synthesized unnumbered construction Claim rather than the paper's formal Reshetikhin-Turaev invariant theorem used by Gold.",
+    "The formal RT invariant theorem is incorrectly externalized into B0 and remains open.",
+    "A duplicate external RT Claim is used as a premise of the synthetic target, so the workflow satisfies the formal main-target proof invariant without establishing the actual headline theorem.",
+    "B0 is substantially broader than Gold and includes internal or duplicated results such as handle-slide, representation-ribbon, RT, and root-of-unity claims.",
+    "The surviving six-inference graph still compresses or omits much of the Gold Kirby reduction, colored-link, normalization, blow-up, presentation-independence, and purification chain."
+  ],
+  "closureStatus": "Acyclic, but the formal RT theorem and purification theorem remain open; only a synthetic replacement target is established.",
+  "mainTargetStatus": "Conceptually related but canonically wrong: a synthetic summary theorem replaces the formal RT invariant theorem.",
+  "status": "below-target"
+}

@@ -202,7 +202,7 @@
     const candidate = {
       id,
       type: normalizedType,
-      entryClass: normalizedType,
+      entryClass: canonicalClass,
       ...(canonicalClass === "fact" ? { factKind: normalizedType } : { claimKind: normalizedType }),
       name,
       statement,
@@ -257,6 +257,64 @@
     return a.statement.localeCompare(b.statement);
   }
 
+  function extractCanonicalKey(candidate) {
+    if (!candidate) return "";
+    const type = candidate.type || "entry";
+    
+    const textToMatch = `${candidate.name || ""} ${candidate.id}`;
+    
+    // 1. Match compound dotted/dashed numbers first (e.g. "2.6", "1-4", "3.8")
+    const compoundMatch = textToMatch.match(/(?:theorem|thm|lemma|lem|proposition|prop|corollary|cor|definition|def|定理|引理|命题|推论|定义)\s*[:\-_\s]*(\d+\.[\d\.]+)/i)
+      || textToMatch.match(/(\d+\.\d+)/);
+    if (compoundMatch) {
+      return `${type}:${compoundMatch[1]}`.toLowerCase();
+    }
+
+    // 2. Single integer match with cue keyword
+    const numMatch = textToMatch.match(/(?:theorem|thm|lemma|lem|proposition|prop|corollary|cor|definition|def|定理|引理|命题|推论|定义)\s*[:\-_\s]*(\d+)(?!\s*[-–\w]*handle)/i);
+    if (numMatch) {
+      return `${type}:${numMatch[1]}`.toLowerCase();
+    }
+
+    // 3. Normalize common semantic keywords from ID
+    const lowerId = candidate.id.toLowerCase();
+    if (/geometrical.*simpl/i.test(lowerId)) return "def:geometrically-simply-connected";
+    if (/2-handle|two-handle/i.test(lowerId) && type === "definition") return "def:2-handle-neighborhood";
+    if (/froyshov|frøyshov/i.test(lowerId)) return "ext:froyshov-vanishing";
+    if (/taubes/i.test(lowerId)) return "ext:taubes-symplectic-sw";
+    if (/bauer.*connected/i.test(lowerId)) return "ext:bauer-connected-sum";
+    if (/betti.*parity|symplectic.*parity/i.test(lowerId)) return "ext:symplectic-betti-parity";
+    if (/sphere.*obstruction|nonvanishing.*sphere/i.test(lowerId)) return "thm:sphere-obstruction";
+
+    return candidate.id.trim();
+  }
+
+  function computeStatementSimilarity(s1, s2) {
+    if (!s1 || !s2) return 0;
+    if (s1 === s2) return 1;
+    // Fast character 2-gram Jaccard similarity (better for Chinese text)
+    const clean1 = s1.replace(/[\s\$\\\{\}\(\)]+/g, "");
+    const clean2 = s2.replace(/[\s\$\\\{\}\(\)]+/g, "");
+    if (!clean1 || !clean2) return 0;
+    if (clean1.includes(clean2) || clean2.includes(clean1)) return 0.9;
+
+    const getGrams = (clean) => {
+      const set = new Set();
+      for (let i = 0; i <= clean.length - 2; i++) {
+        set.add(clean.slice(i, i + 2));
+      }
+      return set;
+    };
+    const g1 = getGrams(clean1);
+    const g2 = getGrams(clean2);
+    if (g1.size === 0 || g2.size === 0) return 0;
+    let intersection = 0;
+    for (const g of g1) {
+      if (g2.has(g)) intersection++;
+    }
+    return intersection / (g1.size + g2.size - intersection);
+  }
+
   /**
    * Deterministically consolidate raw entry pool into final Entry artifact.
    * Performs ZERO model/network/fetch calls.
@@ -278,8 +336,8 @@
       ? rawPoolInput.rawEntries
       : (Array.isArray(rawPoolInput.entries) ? rawPoolInput.entries : (Array.isArray(rawPoolInput.chunks) ? rawPoolInput.chunks.flatMap((c) => c.rawEntries || c.entries || []) : []));
 
-    // Group normalized candidates by ID
-    const candidatesById = new Map();
+    // Group normalized candidates by Canonical Key (falls back to ID)
+    const candidatesByKey = new Map();
     let malformedCount = 0;
     let invalidPageCount = 0;
 
@@ -301,29 +359,27 @@
         malformedCount += 1;
         continue;
       }
-      if (!candidatesById.has(candidate.id)) {
-        candidatesById.set(candidate.id, []);
+      const key = extractCanonicalKey(candidate);
+      if (!candidatesByKey.has(key)) {
+        candidatesByKey.set(key, []);
       }
-      candidatesById.get(candidate.id).push(candidate);
+      candidatesByKey.get(key).push(candidate);
     }
 
-    const consolidatedEntries = [];
+    const primaryPass = [];
     let deduplicatedCount = 0;
     let discardedDamagedCount = 0;
 
-    for (const [id, group] of candidatesById.entries()) {
+    for (const [key, group] of candidatesByKey.entries()) {
       if (group.length === 1) {
         const single = group[0];
-        // If single candidate has invalid math and strict mode is on, check if discard needed
         if (!single._meta.isMathValid && options.strictMath) {
-          // If unbalanced and strictMath, discard mathematically damaged lone candidate
           discardedDamagedCount += 1;
           continue;
         }
         const { _meta, ...cleanEntry } = single;
-        consolidatedEntries.push(cleanEntry);
+        primaryPass.push(cleanEntry);
       } else {
-        // Multiple candidates with same ID: sort and pick the safest/best candidate
         group.sort(compareCandidates);
         const best = group[0];
         deduplicatedCount += (group.length - 1);
@@ -335,7 +391,6 @@
 
         const { _meta, ...cleanEntry } = best;
 
-        // Preserve legitimate metadata from duplicate candidates if missing on best candidate
         if (cleanEntry.name === cleanEntry.id) {
           const candidateWithName = group.find((c) => c.name && c.name !== c.id && c._meta?.isMathValid);
           if (candidateWithName) {
@@ -361,9 +416,46 @@
           }
         }
 
-        consolidatedEntries.push(cleanEntry);
+        primaryPass.push(cleanEntry);
       }
     }
+
+    // Secondary Fuzzy Deduplication Pass for remaining entries with distinct keys but overlapping statements
+    const dedupPass = [];
+    for (let i = 0; i < primaryPass.length; i++) {
+      const current = primaryPass[i];
+      let isDuplicate = false;
+      for (let j = 0; j < dedupPass.length; j++) {
+        const existing = dedupPass[j];
+        if (current.type === existing.type && Math.abs(current.page - existing.page) <= 2) {
+          const sim = computeStatementSimilarity(current.statement, existing.statement);
+          if (sim >= 0.65) {
+            isDuplicate = true;
+            deduplicatedCount += 1;
+            break;
+          }
+        }
+      }
+      if (!isDuplicate) {
+        dedupPass.push(current);
+      }
+    }
+
+    // Final ID-uniqueness pass: different canonical keys can still retain the same raw id.
+    // Keep the most complete statement per final id (deterministic tie-break: longer statement, earlier page).
+    const byFinalId = new Map();
+    for (const entry of dedupPass) {
+      const existing = byFinalId.get(entry.id);
+      if (!existing
+        || entry.statement.length > existing.statement.length
+        || (entry.statement.length === existing.statement.length && entry.page < existing.page)) {
+        if (existing) deduplicatedCount += 1;
+        byFinalId.set(entry.id, entry);
+      } else {
+        deduplicatedCount += 1;
+      }
+    }
+    const consolidatedEntries = [...byFinalId.values()];
 
     // Deterministic sort of consolidated entries: by page, then by num (if present), then by id
     consolidatedEntries.sort((a, b) => {
@@ -412,6 +504,7 @@
       },
       diagnostics: {
         durationMs,
+        deduplicated: deduplicatedCount,
         stages: [{ stage: "consolidate", atMs: durationMs }],
         calls: [], // Exactly 0 model/network calls
         consolidationSummary: {

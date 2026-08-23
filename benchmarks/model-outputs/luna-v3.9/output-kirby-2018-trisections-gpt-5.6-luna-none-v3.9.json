@@ -1,0 +1,993 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-kirby-2018-trisections-of-4-manifolds-off-compact-v3.9",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9",
+  "promptSetVersion": "v3.9",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+    "pageCount": 4,
+    "characters": 20959
+  },
+  "diagnostics": {
+    "durationMs": 259101,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "kirby-2018-trisections-of-4-manifolds.pdf",
+        "pageCount": 4,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 20959,
+        "atMs": 2
+      },
+      {
+        "stage": "target",
+        "leads": 12,
+        "atMs": 57883
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 57883
+      },
+      {
+        "stage": "request",
+        "chars": 20959,
+        "chunks": 1,
+        "atMs": 57884
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 5,
+        "atMs": 57889
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 1,
+        "atMs": 139842
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:heegaard-splitting",
+        "retained": "coverage-or-first-seen",
+        "atMs": 139843
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:trisection-diagram",
+        "retained": "coverage-or-first-seen",
+        "atMs": 139843
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:bridge-trisection-position",
+        "retained": "coverage-or-first-seen",
+        "atMs": 139843
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 38,
+        "leadGuided": 14,
+        "total": 49,
+        "conflicts": 3,
+        "atMs": 139843
+      },
+      {
+        "stage": "integrate",
+        "entries": 49,
+        "atMs": 139843
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 9,
+        "renameCount": 0,
+        "atMs": 145771
+      },
+      {
+        "stage": "assemble",
+        "entries": 42,
+        "atMs": 145773
+      },
+      {
+        "stage": "response",
+        "atMs": 180413
+      },
+      {
+        "stage": "autofix",
+        "count": 12,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 7 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 9 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 10 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 14 条 Inference",
+          "第 17 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃跨越 Fact/Claim 的 organization 第 18 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 19 条 Inference",
+          "B0 清单移除非 Claim 条目：paper:algorithm:triangulation-trisection",
+          "B0 清单移除非 Claim 条目：ext:group-trisection-existence-correspondence",
+          "B0 清单移除非 Claim 条目：ext:bridge-trisection-existence",
+          "B0 清单移除非 Claim 条目：ext:generalized-trisections"
+        ],
+        "atMs": 180418
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 1,
+        "atMs": 180423
+      },
+      {
+        "stage": "response",
+        "atMs": 215918
+      },
+      {
+        "stage": "autofix",
+        "count": 12,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 7 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 9 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 10 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 14 条 Inference",
+          "第 17 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃跨越 Fact/Claim 的 organization 第 18 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 19 条 Inference",
+          "B0 清单移除非 Claim 条目：paper:algorithm:triangulation-trisection",
+          "B0 清单移除非 Claim 条目：ext:group-trisection-existence-correspondence",
+          "B0 清单移除非 Claim 条目：ext:bridge-trisection-existence",
+          "B0 清单移除非 Claim 条目：ext:generalized-trisections"
+        ],
+        "atMs": 215920
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 2,
+        "atMs": 215923
+      },
+      {
+        "stage": "response",
+        "atMs": 259095
+      },
+      {
+        "stage": "autofix",
+        "count": 12,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 2 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 7 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 9 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 10 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 14 条 Inference",
+          "第 17 条 Inference 的 conclusion 出现在 premises 中，已移除",
+          "丢弃跨越 Fact/Claim 的 organization 第 18 条 Inference",
+          "丢弃跨越 Fact/Claim 的 organization 第 19 条 Inference",
+          "B0 清单移除非 Claim 条目：paper:algorithm:triangulation-trisection",
+          "B0 清单移除非 Claim 条目：ext:group-trisection-existence-correspondence",
+          "B0 清单移除非 Claim 条目：ext:bridge-trisection-existence",
+          "B0 清单移除非 Claim 条目：ext:generalized-trisections"
+        ],
+        "atMs": 259096
+      },
+      {
+        "stage": "validate",
+        "atMs": 259096
+      },
+      {
+        "stage": "closure",
+        "openClaims": [
+          "命题 · 1 · 三分解交集的边界与 Heegaard 分解",
+          "定理 · 3 · 群三分解对应的函子性",
+          "命题 · 4 · $R$-link 产生同伦四球",
+          "定理 · 5 · 光滑四维 Poincaré 猜想",
+          "命题 · 5 · 矩形条件对不可去稳定化的证实作用",
+          "定理 · 6 · 亏格三有理同调四球三分解族",
+          "命题 · 7 · 标准单连通四维流形的最小三分解计算",
+          "命题 · 8 · 广义三分解的低维退化",
+          "命题 · 9 · 复射影空间的矩映射例子",
+          "定理 · 10 · 带边界三分解的存在性与唯一性"
+        ],
+        "atMs": 259101
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 259101
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 57875,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 6171,
+          "completion_tokens": 3040,
+          "total_tokens": 9211
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 19585,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9284,
+          "completion_tokens": 1013,
+          "total_tokens": 10297
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 37637,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10129,
+          "completion_tokens": 1983,
+          "total_tokens": 12112
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 81956,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9088,
+          "completion_tokens": 4441,
+          "total_tokens": 13529
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 8000,
+        "reasoningEffort": "none",
+        "durationMs": 5926,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4065,
+          "completion_tokens": 203,
+          "total_tokens": 4268
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 34639,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9515,
+          "completion_tokens": 1834,
+          "total_tokens": 11349
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 35493,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13152,
+          "completion_tokens": 1903,
+          "total_tokens": 15055,
+          "prompt_tokens_details": {
+            "cached_tokens": 8960
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 43170,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16594,
+          "completion_tokens": 2288,
+          "total_tokens": 18882,
+          "prompt_tokens_details": {
+            "cached_tokens": 12032
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "title": "四维流形三分解及其相关结构综述"
+    },
+    "mainTargetEntryId": "paper:theorem:bridge-position-existence",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:kirby-2018-trisections-of-4-manifolds",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:theorem:monodromy-classification",
+          "paper:proposition:boundary-trisection-gluing",
+          "paper:proposition:classical-invariants",
+          "paper:theorem:group-trisection-existence-correspondence",
+          "paper:theorem:bridge-position-existence",
+          "paper:proposition:lefschetz-trisection-conversion",
+          "paper:external:trisection-existence-uniqueness",
+          "ext:heegaard-splitting-existence-uniqueness",
+          "ext:trisection-existence-stable-uniqueness",
+          "ext:relative-trisection-gluing"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:theorem:bridge-position-existence"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:def:heegaard-splitting",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · Heegaard 分解",
+        "shortTitle": "Heegaard 分解",
+        "title": "Heegaard 分解",
+        "statement": "闭、定向、连通三维流形 $Y$ 可表示为两个三维把手体沿其公共边界粘合，公共边界是亏格为 $g$ 的曲面 $\\Sigma_g$；三维把手体由一个 $0$-把手和 $g$ 个 $1$-把手组成。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:heegaard-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · Heegaard 图",
+        "shortTitle": "Heegaard 图",
+        "title": "Heegaard 图",
+        "statement": "Heegaard 图是曲面 $\\Sigma_g$ 及两组分别为 $g$ 条、彼此不相交嵌入的圆曲线 $\\alpha$ 和 $\\beta$；每组曲线将 $\\Sigma_g$ 切成一个带 $2g$ 个穿孔的球面，并且每条曲线在相应把手体中界定一个嵌入的二维球，从而将把手体切成三维球。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:morse-function-heegaard",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 由 Morse 函数产生的 Heegaard 图",
+        "shortTitle": "由 Morse 函数产生的 Heegaard 图",
+        "title": "由 Morse 函数产生的 Heegaard 图",
+        "statement": "对 Morse 函数 $f:M\\to[0,3]$，将指标 $0$ 和 $3$ 的临界点分别取值于 $0$ 和 $3$，将 Heegaard 曲面取为正则值 $1.5$ 的逆像，将指标 $1$ 的临界点取值于 $(0,1)$，将指标 $2$ 的临界点取值于 $(2,3)$；指标 $1$ 临界点的上升圆和指标 $2$ 临界点的下降圆分别给出 $\\Sigma_g$ 上的 $\\alpha$ 曲线和 $\\beta$ 曲线。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:def:trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 四维流形的三分解",
+        "shortTitle": "四维流形的三分解",
+        "title": "四维流形的三分解",
+        "statement": "光滑、连通、闭、定向四维流形 $X^4$ 的三分解 $\\tau$ 是分解 $X=X_1\\cup X_2\\cup X_3$，其中每个 $X_i$ 都是四维把手体，即 $\\#^k(S^1\\times B^3)$；每个两两交集 $X_i\\cap X_j$ 是三维把手体，三者交集 $X_1\\cap X_2\\cap X_3=\\Sigma_g$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:proposition:boundary-heegaard-data",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 三分解交集的边界与 Heegaard 分解",
+        "shortTitle": "三分解交集的边界与 Heegaard 分解",
+        "title": "三分解交集的边界与 Heegaard 分解",
+        "statement": "若 $i\\ne j\\ne k$，则 $(X_i\\cap X_j)\\cup(X_j\\cap X_k)=\\partial X_j$ 是 $\\#^k(S^1\\times S^2)$，并且 $\\Sigma_g$ 是其亏格为 $g$ 的 Heegaard 分解的 Heegaard 曲面。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Kirby, Trisections of 4-manifolds, page 2: the defining trisection description explicitly states that the pairwise intersections form the Heegaard splitting of each sector boundary."
+      },
+      {
+        "id": "paper:def:trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · 三分解图",
+        "shortTitle": "三分解图",
+        "title": "三分解图",
+        "statement": "三分解图是在中心曲面 $\\Sigma_g$ 上给出的三组附着圆曲线 $\\alpha=\\alpha_1,\\alpha_2,\\ldots,\\alpha_g$、$\\beta$ 和 $\\gamma$；其中 $\\alpha$、$\\beta$、$\\gamma$ 分别是三种两两交集中的二维把手附着圆曲线。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:morse-2-function",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 产生三分解图的 Morse 2-函数",
+        "shortTitle": "产生三分解图的 Morse 2-函数",
+        "title": "产生三分解图的 Morse 2-函数",
+        "statement": "三分解图可由 Morse 2-函数 $f:X\\to B^2$ 产生；在 $B^2$ 的任意一般半径上，纤维是通过向 $\\Sigma$ 添加 $g$ 个 $2$-把手和一个 $3$-把手得到的三维流形，即 $\\#^g(S^1\\times B^2)$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:calculation:morse-2-function-local-model",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · Morse 2-函数折叠曲线的局部模型",
+        "shortTitle": "Morse 2-函数折叠曲线的局部模型",
+        "title": "Morse 2-函数折叠曲线的局部模型",
+        "statement": "在局部坐标中，Morse 2-函数的折叠模型为 $f(t,x,y,z)=(t,-x^2-y^2\\pm z^2)$；其中 $t$ 参数化折叠曲线，外侧定指标折叠曲线的 $z^2$ 系数为负，表示极小值弧，其他 $g$ 条不定折叠曲线的系数为正。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:def:morse-2-function-cusp",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · Morse 2-函数的尖点",
+        "shortTitle": "Morse 2-函数的尖点",
+        "title": "Morse 2-函数的尖点",
+        "statement": "尖点是在适当坐标中表示一对相互消去的指标 $1$ 和指标 $2$ 临界点出生的点；指标 $1$ 临界点的上升圆与指标 $2$ 临界点的下降圆恰好相交于一点。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:definition:monodromy",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · 三分解单值化",
+        "shortTitle": "三分解单值化",
+        "title": "三分解单值化",
+        "statement": "三分解的单值化是沿逆时针方向绕 $B^2$ 移动某个把手体时，使其返回自身所需把手滑动次数的最小总数；若某些曲线已处于标准位置，则把手滑动是将相应曲线组变为标准位置所需的滑动。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:theorem:monodromy-classification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 低单值化分类结论",
+        "shortTitle": "低单值化分类结论",
+        "title": "低单值化分类结论",
+        "statement": "如果三分解的单值化为 $0$ 或 $1$，则 $X$ 必为四个基本四维流形之一。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Kirby–Thompson, A new invariant of 4-manifolds, PNAS 115 (2018), 10857–10860；本文引用文献 6。"
+      },
+      {
+        "id": "paper:def:open-book",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · 三维流形的开书分解",
+        "shortTitle": "三维流形的开书分解",
+        "title": "三维流形的开书分解",
+        "statement": "三维边界流形 $Y$ 的开书分解是分解为绑定链结 $L\\subset Y$ 与纤维化 $Y-L\\to S^1$；纤维称为页面，并且每个页面的边界都是绑定 $L$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:proposition:boundary-trisection-gluing",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 一致开书边界数据下的三分解粘合",
+        "shortTitle": "一致开书边界数据下的三分解粘合",
+        "title": "一致开书边界数据下的三分解粘合",
+        "statement": "若两个具有相同边界的带边界三分解诱导的一致开书分解相同，则这两个三分解可粘合为所得闭四维流形的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "本文引用文献 8；相对三分解结果亦见 Castro、Gay、Pinzón-Caicedo，文献 7。"
+      },
+      {
+        "id": "paper:proposition:classical-invariants",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · 由三分解图计算经典不变量",
+        "shortTitle": "由三分解图计算经典不变量",
+        "title": "由三分解图计算经典不变量",
+        "statement": "若四维流形 $X^4$ 由三分解 $\\tau$ 描述，则可由 $\\tau$ 的数据确定 $X$ 的同调群、交叉形式和签名。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Feller、Klug、Schirmer、Zemke，Calculating the homology and intersection form of a 4-manifold from a trisection diagram, PNAS 115 (2018), 10869–10874；本文引用文献 9。"
+      },
+      {
+        "id": "paper:def:group-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · 群的三分解",
+        "shortTitle": "群的三分解",
+        "title": "群的三分解",
+        "statement": "对三分解应用基本群函子得到一个满射立方体：中心曲面 $\\Sigma_g$ 的基本群映到三个三维把手体 $X_i\\cap X_j$ 的基本群，三个四维把手体 $X_i$ 的基本群分别由相应两两交集的基本群满射得到，且最终满射到 $\\pi_1(X^4)$；该立方体称为群 $G$ 的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:group-trisection-existence-correspondence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 有限表示群的三分解及其与四维流形的对应",
+        "shortTitle": "有限表示群的三分解及其与四维流形的对应",
+        "title": "有限表示群的三分解及其与四维流形的对应",
+        "statement": "任意有限表示群 $G$ 都有群三分解，并且群三分解与光滑、闭、定向四维流形一一对应。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Abrams、Gay、Kirby，Group trisections and smooth 4-manifolds, Geom. Topol. 22 (2018), 1537–1545；本文引用文献 10。"
+      },
+      {
+        "id": "paper:theorem:group-trisection-functoriality",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 群三分解对应的函子性",
+        "shortTitle": "群三分解对应的函子性",
+        "title": "群三分解对应的函子性",
+        "statement": "群三分解与光滑、闭、定向四维流形之间的一一对应实际上具有函子性。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Klug，Functoriality of group trisections, PNAS 115 (2018), 10875–10879；本文引用文献 11。"
+      },
+      {
+        "id": "paper:def:bridge-trisection-position",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · 桥式三分解位置",
+        "shortTitle": "桥式三分解位置",
+        "title": "桥式三分解位置",
+        "statement": "嵌入三分解四维流形中的曲面处于桥式三分解位置，是指该曲面与三分解的三维把手体相交为平凡弧系，并与四维把手体相交为平凡圆盘系；“平凡”意为边界平行。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:theorem:bridge-position-existence",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 嵌入曲面的桥式三分解位置存在性",
+        "shortTitle": "嵌入曲面的桥式三分解位置存在性",
+        "title": "嵌入曲面的桥式三分解位置存在性",
+        "statement": "给定一个三分解的四维流形和其中的嵌入曲面，该曲面总能通过同位变形置于桥式三分解位置。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier、Zupan，Bridge trisections of knotted surfaces in 4-manifolds, PNAS 115 (2018), 10880–10886；本文引用文献 12。"
+      },
+      {
+        "id": "paper:definition:doubly-pointed-trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · 双标记三分解图",
+        "shortTitle": "双标记三分解图",
+        "title": "双标记三分解图",
+        "statement": "双标记三分解图是在中心曲面上对三分解图附加两个标记点，用于图示编码四维流形中的结球。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:dehn-surgery",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 13 · Dehn 手术",
+        "shortTitle": "Dehn 手术",
+        "title": "Dehn 手术",
+        "statement": "给定边界三维流形 $Y$ 中带框结 $K$，设 $V$ 是 $K$ 的实心环面邻域；Dehn 手术是从 $Y$ 去除 $V$，再将实心环面重新粘回，并把 $V$ 的一条子午线曲线粘到 $K$ 的框架曲线上的过程。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:R-link",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 14 · $R$-link",
+        "shortTitle": "$R$-link",
+        "title": "$R$-link",
+        "statement": "若 $S^3$ 中的 $n$ 分量链结经过 Dehn 手术后得到三维流形 $\\#_n(S^1\\times S^2)$，则该链结称为 $R$-link。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:proposition:R-link-four-manifold",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · $R$-link 产生同伦四球",
+        "shortTitle": "$R$-link 产生同伦四球",
+        "title": "$R$-link 产生同伦四球",
+        "statement": "一个 $R$-link $L$ 可解释为构造闭四维流形 $X_L$ 的粘合指令，并且 $X_L$ 同伦等价于 $S^4$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier and Zupan, Characterizing Dehn surgeries on links via trisections, ref. 14; Kirby explicitly states on page 3 that an $R$-link gives the gluing instructions for such an $X_L$."
+      },
+      {
+        "id": "paper:theorem:smooth-poincare-conjecture",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 光滑四维 Poincaré 猜想",
+        "shortTitle": "光滑四维 Poincaré 猜想",
+        "title": "光滑四维 Poincaré 猜想",
+        "statement": "每一个同伦等价于 $S^4$ 的闭四维流形都微分同胚于 $S^4$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "本文对光滑四维 Poincaré 猜想的陈述。"
+      },
+      {
+        "id": "paper:def:generalized-property-r",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 15 · 广义 Property R 猜想",
+        "shortTitle": "广义 Property R 猜想",
+        "title": "广义 Property R 猜想",
+        "statement": "每一个 $R$-link 都可以通过有限次把手滑动化为一个平凡链结。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:proposition:rectangle-condition",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 矩形条件对不可去稳定化的证实作用",
+        "shortTitle": "矩形条件对不可去稳定化的证实作用",
+        "title": "矩形条件对不可去稳定化的证实作用",
+        "statement": "矩形条件可作为证据，证明某个三分解不能进行特定类型的去稳定化；该条件是研究广义 Property R 猜想潜在反例的部分进展。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Meier、Zupan，Characterizing Dehn surgeries on links via trisections, PNAS 115 (2018), 10887–10893；本文引用文献 14。"
+      },
+      {
+        "id": "paper:def:lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 16 · Lefschetz 纤维化",
+        "shortTitle": "Lefschetz 纤维化",
+        "title": "Lefschetz 纤维化",
+        "statement": "Lefschetz 纤维化是复解析映射 $X\\to\\mathbb{CP}^1$，除 Lefschetz 奇异点外是丛映射；其局部坐标中的奇异性为 $(z,w)\\mapsto zw$。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:broken-lefschetz-fibration",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 17 · 破裂 Lefschetz 纤维化",
+        "shortTitle": "破裂 Lefschetz 纤维化",
+        "title": "破裂 Lefschetz 纤维化",
+        "statement": "破裂 Lefschetz 纤维化允许实曲面纤维在穿过 $\\mathbb{CP}^1$ 中的折叠曲线时改变亏格。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:def:simplified-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 18 · 简化三分解",
+        "shortTitle": "简化三分解",
+        "title": "简化三分解",
+        "statement": "简化三分解是由到圆盘的 Morse 2-函数产生的三分解，并要求该 Morse 2-函数的奇异值图是嵌入的。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:proposition:lefschetz-trisection-conversion",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · Lefschetz 纤维化与简化三分解的互化",
+        "shortTitle": "Lefschetz 纤维化与简化三分解的互化",
+        "title": "Lefschetz 纤维化与简化三分解的互化",
+        "statement": "通过拓扑修改，简化三分解可由破裂 Lefschetz 纤维化产生，反之亦可由简化三分解得到相应的破裂 Lefschetz 纤维化。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Baykur、Saeki，Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900；本文引用文献 17。"
+      },
+      {
+        "id": "paper:theorem:genus-three-rational-homology-spheres",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 亏格三有理同调四球三分解族",
+        "shortTitle": "亏格三有理同调四球三分解族",
+        "title": "亏格三有理同调四球三分解族",
+        "statement": "存在有理同调四球的无限族，每个成员具有亏格为 $3$ 的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Baykur、Saeki，Simplified broken Lefschetz fibrations and trisections of 4-manifolds, PNAS 115 (2018), 10894–10900；本文引用文献 17。"
+      },
+      {
+        "id": "paper:def:pl-triangulation",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 19 · 四维流形的 PL 三角剖分",
+        "shortTitle": "四维流形的 PL 三角剖分",
+        "title": "四维流形的 PL 三角剖分",
+        "statement": "光滑四维流形 $X$ 可表示为四维单形沿其三维面粘合的并；这种表示在细分和单纯同构意义下唯一，并称为 $X$ 上的 PL 结构；反映流形结构的三角剖分称为组合三角剖分。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:algorithm:triangulation-trisection",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 1 · 由三角剖分构造三分解",
+        "shortTitle": "由三角剖分构造三分解",
+        "title": "由三角剖分构造三分解",
+        "statement": "输入具有 PL 结构的四维流形 $X$ 及其三角剖分；构造从三角剖分的四维流形到二维单纯形的 PL 映射，使二维单纯形的对偶立方结构的逆像成为三分解，并由此得到三分解图。该算法已被实现。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Bell、Hass、Rubinstein、Tillmann，Computing trisections of 4-manifolds, PNAS 115 (2018), 10901–10907；本文引用文献 18。"
+      },
+      {
+        "id": "paper:proposition:minimal-standard-trisections",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 7 · 标准单连通四维流形的最小三分解计算",
+        "shortTitle": "标准单连通四维流形的最小三分解计算",
+        "title": "标准单连通四维流形的最小三分解计算",
+        "statement": "上述三角剖分算法已用于建立标准单连通四维流形的最小三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Spreer、Tillmann，The trisection genus of the standard simply connected PL 4-manifolds；本文引用文献 19。"
+      },
+      {
+        "id": "paper:def:generalized-trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 20 · 广义三分解",
+        "shortTitle": "广义三分解",
+        "title": "广义三分解",
+        "statement": "设 $N$ 是适当三角剖分的 $n$ 维流形，其中 $n=2k$ 或 $n=2k+1$；将 $N$ 映到 $B^k$，把 $B^k$ 视为 $k$-单纯形，并取其自然的对偶胞腔分解为 $k+1$ 个 $k$-立方体。要求每个立方体的逆像是 $n$ 维把手体，并对这些把手体的交集施加附加条件；二维单纯形的立方结构逆像给出该 $n$ 维流形的多分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:proposition:low-dimensional-generalized-trisections",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 8 · 广义三分解的低维退化",
+        "shortTitle": "广义三分解的低维退化",
+        "title": "广义三分解的低维退化",
+        "statement": "在 $n=3$ 和 $n=4$ 的情形，广义三分解分别给出经典的 Heegaard 分解和三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Rubinstein and Tillmann, Generalized trisections in all dimensions, ref. 20; Kirby explicitly states on page 4 that the cases $n=3,4$ yield the classical decompositions."
+      },
+      {
+        "id": "paper:definition:vertex-coloring-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 21 · 由顶点着色产生的单纯映射",
+        "shortTitle": "由顶点着色产生的单纯映射",
+        "title": "由顶点着色产生的单纯映射",
+        "statement": "若三角剖分的每个 $n$-单形具有 $2k+1$ 或 $2k+2$ 个顶点，并带有一个 $(k+1)$-着色，使得存在一个或两个同色顶点，则将同色顶点映到 $k$-单纯形中的同一顶点，得到自然的单纯映射；拉回该 $k$-单纯形的立方结构即得到 $n$ 维流形的多分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      },
+      {
+        "id": "paper:proposition:complex-projective-moment-map",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 9 · 复射影空间的矩映射例子",
+        "shortTitle": "复射影空间的矩映射例子",
+        "title": "复射影空间的矩映射例子",
+        "statement": "在偶数维广义三分解中，定义在复射影空间上的矩映射是一个关键例子。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+        "sourceReference": "Rubinstein、Tillmann，Generalized trisections in all dimensions；本文引用文献 20。"
+      },
+      {
+        "id": "paper:external:trisection-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · 闭四维流形三分解的存在性与稳定唯一性",
+        "shortTitle": "闭四维流形三分解的存在性与稳定唯一性",
+        "title": "闭四维流形三分解的存在性与稳定唯一性",
+        "statement": "每个光滑、闭、定向四维流形都存在三分解，且三分解满足稳定唯一性。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Gay–Kirby, Trisecting 4-manifolds, ref. 5；论文第4页参考文献"
+      },
+      {
+        "id": "paper:def:surface-diagram-encoding",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 22 · 桥式曲面的中心曲面编码",
+        "shortTitle": "桥式曲面的中心曲面编码",
+        "title": "桥式曲面的中心曲面编码",
+        "statement": "处于桥式三分解位置的曲面可由三分解的中心曲面上的图示编码；特别地，四维流形中的任意结球可由双标记三分解图表示。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "ext:heegaard-splitting-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · Heegaard splitting existence and stable uniqueness",
+        "shortTitle": "Heegaard splitting existence and stable uniqueness",
+        "title": "Heegaard splitting existence and stable uniqueness",
+        "statement": "Every closed, connected, orientable 3-manifold admits a Heegaard splitting, and any two Heegaard splittings become equivalent after stabilization.",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1",
+        "sourceReference": "Heegaard splittings are introduced on page 1 as the framework analogous to trisections; the existence and uniqueness framework is invoked in the discussion of trisections and attributed to the standard Heegaard theory."
+      },
+      {
+        "id": "ext:trisection-existence-stable-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · Existence and stable uniqueness of trisections",
+        "shortTitle": "Existence and stable uniqueness of trisections",
+        "title": "Existence and stable uniqueness of trisections",
+        "statement": "Every smooth, connected, closed, oriented 4-manifold admits a trisection, and trisections satisfy stable uniqueness.",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+        "sourceReference": "Gay and Kirby, “Trisecting 4-manifolds,” ref. 5; page 3 explicitly refers to the existence and stable uniqueness theorems of Gay–Kirby."
+      },
+      {
+        "id": "ext:relative-trisection-existence-uniqueness",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · 带边界三分解的存在性与唯一性",
+        "shortTitle": "带边界三分解的存在性与唯一性",
+        "title": "带边界三分解的存在性与唯一性",
+        "statement": "带边界四维流形的三分解存在性与稳定唯一性可由闭情形推广得到。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Gay–Kirby, Trisecting 4-manifolds, ref. 5"
+      },
+      {
+        "id": "ext:relative-trisection-gluing",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 10 · 相容开书边界数据下的相对三分解粘合",
+        "shortTitle": "相容开书边界数据下的相对三分解粘合",
+        "title": "相容开书边界数据下的相对三分解粘合",
+        "statement": "若两个带边界三分解诱导的开书分解一致，则沿边界粘合后得到闭四维流形的三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+        "sourceReference": "Castro, Relative trisections of smooth 4-manifolds with boundary, ref. 8"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:organization:1",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 1 · 由 Morse 函数产生的 Heegaard 图",
+        "shortTitle": "组织 · 由 Morse 函数产生的 Heegaard 图",
+        "title": "组织 由 Morse 函数产生的 Heegaard 图",
+        "statement": "Morse 函数的临界点与升降圆圈组织出 Heegaard 图。",
+        "premises": [
+          "paper:def:heegaard-splitting",
+          "paper:def:heegaard-diagram"
+        ],
+        "conclusion": "paper:def:morse-function-heegaard",
+        "argument": "Morse 函数的临界点与升降圆圈组织出 Heegaard 图。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      },
+      {
+        "id": "paper:inference:organization:2",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 2 · Morse 2-函数折叠曲线的局部模型",
+        "shortTitle": "组织 · Morse 2-函数折叠曲线的局部模型",
+        "title": "组织 Morse 2-函数折叠曲线的局部模型",
+        "statement": "Morse 2-函数的折叠临界值由局部坐标模型计算。",
+        "premises": [
+          "paper:def:morse-2-function"
+        ],
+        "conclusion": "paper:calculation:morse-2-function-local-model",
+        "argument": "Morse 2-函数的折叠临界值由局部坐标模型计算。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:organization:3",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 3 · Morse 2-函数的尖点",
+        "shortTitle": "组织 · Morse 2-函数的尖点",
+        "title": "组织 Morse 2-函数的尖点",
+        "statement": "局部模型中的尖点组织为一对相消临界点的出生。",
+        "premises": [
+          "paper:calculation:morse-2-function-local-model"
+        ],
+        "conclusion": "paper:def:morse-2-function-cusp",
+        "argument": "局部模型中的尖点组织为一对相消临界点的出生。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:organization:4",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 4 · 三分解单值化",
+        "shortTitle": "组织 · 三分解单值化",
+        "title": "组织 三分解单值化",
+        "statement": "沿底空间绕行跟踪曲线柄体的滑动，组织出三分解单值化。",
+        "premises": [
+          "paper:def:trisection-diagram"
+        ],
+        "conclusion": "paper:definition:monodromy",
+        "argument": "沿底空间绕行跟踪曲线柄体的滑动，组织出三分解单值化。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 低单值化分类结论",
+        "shortTitle": "证明 · 低单值化分类结论",
+        "title": "证明 低单值化分类结论",
+        "statement": "文中引用单值化分类结果：单值化为零或一时，四维流形属于四个基本流形之一。",
+        "premises": [
+          "paper:def:trisection-diagram",
+          "paper:definition:monodromy"
+        ],
+        "conclusion": "paper:theorem:monodromy-classification",
+        "argument": "文中引用单值化分类结果：单值化为零或一时，四维流形属于四个基本流形之一。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 由三分解图计算经典不变量",
+        "shortTitle": "证明 · 由三分解图计算经典不变量",
+        "title": "证明 由三分解图计算经典不变量",
+        "statement": "文中引用由三分解图计算同调群、交叉形式和符号的结果。",
+        "premises": [
+          "paper:def:trisection-diagram"
+        ],
+        "conclusion": "paper:proposition:classical-invariants",
+        "argument": "文中引用由三分解图计算同调群、交叉形式和符号的结果。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 嵌入曲面的桥式三分解位置存在性",
+        "shortTitle": "证明 · 嵌入曲面的桥式三分解位置存在性",
+        "title": "证明 嵌入曲面的桥式三分解位置存在性",
+        "statement": "文中明确引用 ref. 12 的主结果：任意嵌入曲面可同位变换到桥式三分解位置。",
+        "premises": [
+          "paper:def:trisection",
+          "paper:def:bridge-trisection-position"
+        ],
+        "conclusion": "paper:theorem:bridge-position-existence",
+        "argument": "文中明确引用 ref. 12 的主结果：任意嵌入曲面可同位变换到桥式三分解位置。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:organization:8",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 8 · 桥式曲面的中心曲面编码",
+        "shortTitle": "组织 · 桥式曲面的中心曲面编码",
+        "title": "组织 桥式曲面的中心曲面编码",
+        "statement": "桥式曲面与三分解中心曲面的交会组织出双标记图及中心曲面编码。",
+        "premises": [
+          "paper:def:bridge-trisection-position",
+          "paper:definition:doubly-pointed-trisection-diagram"
+        ],
+        "conclusion": "paper:def:surface-diagram-encoding",
+        "argument": "桥式曲面与三分解中心曲面的交会组织出双标记图及中心曲面编码。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:organization:9",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 9 · $R$-link",
+        "shortTitle": "组织 · $R$-link",
+        "title": "组织 $R$-link",
+        "statement": "以 Dehn 手术结果为条件定义 $R$-link。",
+        "premises": [
+          "paper:def:dehn-surgery"
+        ],
+        "conclusion": "paper:def:R-link",
+        "argument": "以 Dehn 手术结果为条件定义 $R$-link。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:organization:10",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 10 · 简化三分解",
+        "shortTitle": "组织 · 简化三分解",
+        "title": "组织 简化三分解",
+        "statement": "嵌入奇异值像的 Morse 2-函数组织出简化三分解。",
+        "premises": [
+          "paper:def:lefschetz-fibration",
+          "paper:def:broken-lefschetz-fibration"
+        ],
+        "conclusion": "paper:def:simplified-trisection",
+        "argument": "嵌入奇异值像的 Morse 2-函数组织出简化三分解。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:11",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 11 · Lefschetz 纤维化与简化三分解的互化",
+        "shortTitle": "证明 · Lefschetz 纤维化与简化三分解的互化",
+        "title": "证明 Lefschetz 纤维化与简化三分解的互化",
+        "statement": "文中引用通过拓扑修改在（破裂）Lefschetz 纤维化与简化三分解之间互化。",
+        "premises": [
+          "paper:def:lefschetz-fibration",
+          "paper:def:broken-lefschetz-fibration",
+          "paper:def:simplified-trisection"
+        ],
+        "conclusion": "paper:proposition:lefschetz-trisection-conversion",
+        "argument": "文中引用通过拓扑修改在（破裂）Lefschetz 纤维化与简化三分解之间互化。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:organization:12",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 12 · 由三角剖分构造三分解",
+        "shortTitle": "组织 · 由三角剖分构造三分解",
+        "title": "组织 由三角剖分构造三分解",
+        "statement": "外部算法以 PL 三角剖分为输入，通过映射到二维单纯形构造三分解及图。",
+        "premises": [
+          "paper:def:pl-triangulation"
+        ],
+        "conclusion": "paper:algorithm:triangulation-trisection",
+        "argument": "外部算法以 PL 三角剖分为输入，通过映射到二维单纯形构造三分解及图。",
+        "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      }
+    ]
+  }
+}

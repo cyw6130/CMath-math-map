@@ -1,0 +1,64 @@
+{
+  "schema": "cmath.paper-import-inference-experiment/v1",
+  "experimentId": "knot-v326-inference-v4-assembly",
+  "status": "needs-review",
+  "decision": "not-promoted",
+  "objective": "Improve V3.26 Inference proof-chain and Paper Guide branch coverage while keeping the Entry artifact and all downstream inference stages fixed.",
+  "base": {
+    "workflowVersion": "v3.26-inference-v3",
+    "entryArtifact": "benchmarks/model-outputs/modular-v326-ab/knot-v326/entry-artifact.json",
+    "solScore": 72,
+    "formatScore": 40,
+    "inferenceCount": 5,
+    "isolatedEntryCount": 27,
+    "largestNontrivialComponentSize": 5
+  },
+  "candidate": {
+    "workflowVersion": "v3.26-inference-v4-assembly",
+    "runtimeWorkflowVersion": "v3.26-inference-v3",
+    "changedStage": "assembly",
+    "entryArtifact": "entry-artifact.json",
+    "inferenceRun": "inference-run.json",
+    "inferenceArtifact": "inference-artifact.json",
+    "formatReport": "format-report.json",
+    "solScore": 74,
+    "formatScore": 40,
+    "entryCount": 47,
+    "inferenceCount": 10,
+    "isolatedEntryCount": 26,
+    "largestNontrivialComponentSize": 11,
+    "largestNontrivialComponentCoverage": 0.23404255319148937,
+    "nontrivialComponentCount": 3,
+    "provider": "luna-gateway",
+    "model": "gpt-5.6-luna",
+    "mode": "off-compact",
+    "calls": 2,
+    "durationMs": 89214,
+    "reasoningVector": {
+      "guide": "low",
+      "assembly": "medium",
+      "repair1": "low",
+      "laterRepair": "none"
+    }
+  },
+  "hardGates": {
+    "format": "passed",
+    "jsonAndReferences": "passed",
+    "proofAndOrganizationBoundaries": "passed",
+    "proofCycles": "passed",
+    "openClaims": 0,
+    "entryPayloadUnchanged": true
+  },
+  "evaluation": {
+    "officialSolScore": 74,
+    "verdict": "needs-revision",
+    "reason": "Improves over V3.26-inference-v3 (72) but remains below the frozen baseline best (77); the graph is still fragmented and key proof branches remain missing.",
+    "nextExperiment": "Keep Entry, Gold, scorer, validator, Repair, and Convergence fixed; change one targeted relationship-coverage or proof-branch repair policy and rerun the same benchmark."
+  },
+  "sha256": {
+    "frozenEntryArtifact": "346e57b69cdb531b119831fb5680e4764bf9f43fd4fbe9beefe49bdfa6770615",
+    "candidateInferenceRun": "bf7e2753cf377dd6cb7d8fdd90cfdb70ea5a138860b654c59789b80f52415f94",
+    "candidateFormatReport": "31eaf647db21f598ee86d0d48be54317eb024fe24dc6db129e38712d5609e34d",
+    "candidateSolScore": "431101a476f9f41acfe077bfdab97281d22aa2c22d5d93d5faa6e2efd5c0cd60"
+  }
+}

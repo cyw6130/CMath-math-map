@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cmath.paper-import-sol-score/v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "scorer", "promptVersion", "caseId", "goldRevision", "candidateArtifact",
+    "graphComparison",
+    "solScore", "format", "entries", "inferences",
+    "matchedEntries", "missingEntries", "incorrectEntries",
+    "matchedInferences", "missingInferences", "incorrectInferences",
+    "summary", "verdict"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "cmath.paper-import-sol-score/v3" },
+    "scorer": { "type": "string", "const": "gpt-5.6-sol" },
+    "promptVersion": { "type": "string", "const": "sol-score-prompt-v3" },
+    "caseId": { "type": "string" },
+    "goldRevision": { "type": "string" },
+    "candidateArtifact": { "type": "string" },
+    "graphComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gold", "candidate"],
+      "properties": {
+        "gold": { "$ref": "#/$defs/graphDescriptor" },
+        "candidate": { "$ref": "#/$defs/graphDescriptor" }
+      }
+    },
+    "solScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "jsonValidity", "referenceIntegrity"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "jsonValidity": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "referenceIntegrity": { "type": "integer", "minimum": 0, "maximum": 6 }
+      }
+    },
+    "entries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "correctness", "completeness"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 45 },
+        "correctness": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "completeness": { "type": "integer", "minimum": 0, "maximum": 20 }
+      }
+    },
+    "inferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "correctness", "completeness"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 45 },
+        "correctness": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "completeness": { "type": "integer", "minimum": 0, "maximum": 20 }
+      }
+    },
+    "matchedEntries": { "type": "array", "items": { "type": "string" } },
+    "missingEntries": { "type": "array", "items": { "type": "string" } },
+    "incorrectEntries": { "type": "array", "items": { "type": "string" } },
+    "matchedInferences": { "type": "array", "items": { "type": "string" } },
+    "missingInferences": { "type": "array", "items": { "type": "string" } },
+    "incorrectInferences": { "type": "array", "items": { "type": "string" } },
+    "summary": { "type": "string" },
+    "verdict": { "type": "string", "enum": ["mature", "promising", "needs-revision", "invalid"] }
+  },
+  "$defs": {
+    "graphDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entryCount",
+        "inferenceCount",
+        "isolatedEntryCount",
+        "isolatedEntryRatio",
+        "nontrivialComponentCount",
+        "largestNontrivialComponentSize",
+        "largestNontrivialComponentCoverage",
+        "isolatedEntryIds"
+      ],
+      "properties": {
+        "entryCount": { "type": "integer", "minimum": 0 },
+        "inferenceCount": { "type": "integer", "minimum": 0 },
+        "isolatedEntryCount": { "type": "integer", "minimum": 0 },
+        "isolatedEntryRatio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "nontrivialComponentCount": { "type": "integer", "minimum": 0 },
+        "largestNontrivialComponentSize": { "type": "integer", "minimum": 0 },
+        "largestNontrivialComponentCoverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "isolatedEntryIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "cmath.paper-json-gold-audit/v1",
+  "experimentId": "luna-paper-import-workflow-v3.3",
+  "workflowVersion": "v3.3",
+  "auditMethod": "candidate JSON versus fixed Gold JSON under benchmarks/paper-import/SCORING-PROTOCOL.md; semantic equivalence reviewed by Codex",
+  "cases": [
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "runArtifact": "output-4-dim-skein-modules-handles-tangles-gpt-5.6-luna-none-v3.3.json",
+      "status": "completed",
+      "auditScore": {
+        "format": 36,
+        "semantic": 41,
+        "overall": 77,
+        "formatComponents": {
+          "normalizationAndProjectIdentity": 8,
+          "entryAndSourceValidity": 7,
+          "inferenceValidity": 7,
+          "b0Structure": 6,
+          "dagAndClosure": 8
+        },
+        "semanticComponents": {
+          "objectsAndHypotheses": 17,
+          "b0Boundary": 2,
+          "mainTarget": 5,
+          "proofDependencies": 11,
+          "claimStates": 5,
+          "sourceAttribution": 1
+        }
+      },
+      "reasons": [
+        "The candidate recovers the parameterized triple module, boundary algebra, gluing theorem, evaluation/Khovanov comparison, and the 1-, 2-, and 3-handle formulas with materially equivalent mathematical direction.",
+        "The candidate selects an added handle-summary theorem as main target. This is narratively plausible but differs from the fixed Gold main target, the general bimodule tensor-product gluing theorem.",
+        "The decisive defect is an empty B0: the fixed Gold requires the MWW skein-lasagna foundation, evaluation isomorphism, Khovanov tangle functor, and Ren-Willis gluing result. The candidate instead represents evaluation as a Fact and leaves the other external dependencies unclassified or absent.",
+        "The internal proof graph is acyclic and all represented Claims close, but closure is too optimistic because the external boundary was erased rather than correctly sourced.",
+        "Four deterministic structural removals were needed before the single focused review; the final JSON is executable and contains no unresolved formal Claim."
+      ]
+    }
+  ],
+  "summary": {
+    "completedCases": 1,
+    "failedCases": 0,
+    "auditOverallMacroAverageCompleted": 77,
+    "minimumAuditScore": 77,
+    "hardGateCount": 0,
+    "durationMs": 273913,
+    "modelCalls": 7,
+    "reasoningEffortSentOnEveryCall": "none"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "cmath.paper-raw-entry-pool/v1",
+  "extractionModuleVersion": "paper-entry-parallel-extraction-v1.14",
+  "status": "failed",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "skein1-marked.md",
+    "pageCount": 10,
+    "characters": 43689
+  },
+  "diagnostics": {
+    "durationMs": 31065,
+    "stages": [
+      {
+        "stage": "parallel-extract-start",
+        "chars": 43689,
+        "blocks": 3,
+        "overlapPages": 1,
+        "lanes": [
+          "combined"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.14",
+        "atMs": 2
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 8,
+        "foundationCount": 6,
+        "resultCount": 2,
+        "inferenceHintCount": 2,
+        "doneCalls": 1,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 21946
+      }
+    ],
+    "calls": [
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 21912,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8503,
+          "completion_tokens": 1091,
+          "total_tokens": 9594
+        }
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 31031,
+        "status": 429,
+        "finishReason": null,
+        "usage": null
+      },
+      {
+        "stage": "extract",
+        "attempt": 1,
+        "requestedMaxTokens": null,
+        "reasoningEffort": "none",
+        "durationMs": 31061,
+        "status": 429,
+        "finishReason": null,
+        "usage": null
+      }
+    ],
+    "error": "HTTP 429 block 2 combined extraction failed: {\"error\":{\"message\":\"Concurrency limit exceeded for account, please retry later\",\"type\":\"rate_limit_error\"}}"
+  }
+}

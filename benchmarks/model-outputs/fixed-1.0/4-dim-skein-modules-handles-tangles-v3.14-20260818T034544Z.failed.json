@@ -1,0 +1,387 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-4-dimensional-skein-modules-handle-attachments-and-tangles-off-compact-v3.14",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.14",
+  "promptSetVersion": "v3.14",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+    "pageCount": 10,
+    "characters": 32140
+  },
+  "diagnostics": {
+    "durationMs": 192880,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+        "pageCount": 10,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32140,
+        "atMs": 4
+      },
+      {
+        "stage": "target",
+        "leads": 9,
+        "atMs": 60898
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 60898
+      },
+      {
+        "stage": "request",
+        "chars": 32140,
+        "chunks": 2,
+        "atMs": 60900
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 60906
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 117443
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 129967
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:3.6",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:vertical-composition",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:gluing-map",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:four-handle",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:two-handle",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:three-handle",
+        "retained": "coverage-or-first-seen",
+        "atMs": 135462
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 40,
+        "leadGuided": 23,
+        "total": 57,
+        "conflicts": 6,
+        "atMs": 135462
+      },
+      {
+        "stage": "integrate",
+        "entries": 57,
+        "atMs": 135462
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 19,
+        "renameCount": 3,
+        "atMs": 145429
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "paper:lemma:3.6",
+          "paper:claim:kh-handle-recovery",
+          "paper:claim:other-theories-recovery"
+        ],
+        "fixedCount": 11,
+        "atMs": 145445
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 4,
+        "items": [
+          {
+            "canonicalId": "paper:lemma:3.6",
+            "page": 3,
+            "source": "similar pictures"
+          },
+          {
+            "canonicalId": "paper:claim:kh-handle-recovery",
+            "page": 8,
+            "source": "Manolescu–Walker–Wedrich [5]；Manolescu–Neithalath [4]"
+          },
+          {
+            "canonicalId": "paper:claim:other-theories-recovery",
+            "page": 9,
+            "source": "Chen [2]；Ren–Willis [8]"
+          },
+          {
+            "canonicalId": "ext:mwwe-evaluation-isomorphism",
+            "page": 3,
+            "source": "Morrison–Walker–Wedrich [6], p. 3"
+          }
+        ],
+        "atMs": 145448
+      },
+      {
+        "stage": "assemble",
+        "entries": 39,
+        "atMs": 145451
+      },
+      {
+        "stage": "response",
+        "atMs": 180207
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 4,
+        "removedClaimIds": [
+          "paper:thm:1.1",
+          "paper:thm:1.2",
+          "paper:thm:1.3",
+          "paper:lemma:khovanov-bimodule-structure"
+        ],
+        "atMs": 180222
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 1,
+        "atMs": 180224
+      },
+      {
+        "stage": "response",
+        "atMs": 187220
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 4,
+        "removedClaimIds": [
+          "paper:thm:1.1",
+          "paper:thm:1.2",
+          "paper:thm:1.3",
+          "paper:lemma:khovanov-bimodule-structure"
+        ],
+        "repairRound": 1,
+        "atMs": 187223
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 2,
+        "atMs": 187223
+      },
+      {
+        "stage": "response",
+        "atMs": 189324
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 4,
+        "removedClaimIds": [
+          "paper:thm:1.1",
+          "paper:thm:1.2",
+          "paper:thm:1.3",
+          "paper:lemma:khovanov-bimodule-structure"
+        ],
+        "repairRound": 2,
+        "atMs": 189325
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 3,
+        "atMs": 189325
+      },
+      {
+        "stage": "response",
+        "atMs": 192879
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 4,
+        "removedClaimIds": [
+          "paper:thm:1.1",
+          "paper:thm:1.2",
+          "paper:thm:1.3",
+          "paper:lemma:khovanov-bimodule-structure"
+        ],
+        "repairRound": 3,
+        "atMs": 192880
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 60891,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10566,
+          "completion_tokens": 3053,
+          "total_tokens": 13619
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 24348,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13693,
+          "completion_tokens": 1152,
+          "total_tokens": 14845
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 56538,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7607,
+          "completion_tokens": 2855,
+          "total_tokens": 10462
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 69062,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 11270,
+          "completion_tokens": 3632,
+          "total_tokens": 14902
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 74554,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 15432,
+          "completion_tokens": 3985,
+          "total_tokens": 19417
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 9964,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4817,
+          "completion_tokens": 428,
+          "total_tokens": 5245
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 34751,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 20806,
+          "completion_tokens": 1826,
+          "total_tokens": 22632,
+          "completion_tokens_details": {
+            "reasoning_tokens": 356
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 6979,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 28426,
+          "completion_tokens": 291,
+          "total_tokens": 28717,
+          "prompt_tokens_details": {
+            "cached_tokens": 20224
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 165
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 2096,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 34091,
+          "completion_tokens": 29,
+          "total_tokens": 34120
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 3550,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 39662,
+          "completion_tokens": 29,
+          "total_tokens": 39691,
+          "prompt_tokens_details": {
+            "cached_tokens": 33536
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.9 定向修复已执行 3 次）：Claim paper:lemma:parameterization-warning（参数化映射不可省略）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样"
+  }
+}

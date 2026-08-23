@@ -1,0 +1,176 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/hopf-degree-theorem-parallel-v1.6-opencode-off-run1.entry-model.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 19,
+  "completeness": 16,
+  "solEntryScore": 35,
+  "verdict": "usable",
+  "summary": "The candidate is broadly usable and captures the paper's main mathematical arc: degree and winding number, the degree-zero criterion, the Hopf degree theorem, the computation of π_k(S^k), and the vector-field application. Most formulas are well formed and most classifications and page locators are reasonable. It nevertheless omits several cited infrastructure theorems, weakens or changes some gold statements, drops important closedness and based-homotopy conventions, and repeats the source's erroneous torus Euler-characteristic formula instead of the objective gold correction.",
+  "strengths": [
+    "Captures all principal conclusions: the Hopf degree theorem, π_k(S^k) ≅ Z, the Euler-characteristic criterion for a nowhere-zero vector field, and the hairy-ball consequence.",
+    "Extracts the central definitions of degree, winding number, zero index, bump functions, and punctured-sphere/Euclidean identifications.",
+    "Includes useful supporting propositions for local winding numbers, signed preimage counts, removal of a zero from the range, finite-zero vector fields, and localization of zeros.",
+    "Entry typing is generally appropriate, and the LaTeX is balanced and readable.",
+    "Correctly marks Poincaré–Hopf as an external result and supplies a literature source.",
+    "Additional entries such as oriented intersection number, Euler characteristic, tangent bundle, and vector-field graph are meaningful rather than merely duplicated fragments."
+  ],
+  "issues": [
+    "The candidate states χ(T^k) = -2(k-2), contradicting the verified gold convention χ(T^n) = 0. This is a substantive mathematical error.",
+    "The Hopf theorem is broadened from sphere self-maps to maps X → S^k but fails to require that X be closed or without boundary, a condition needed for the stated degree classification.",
+    "The π_k(S^k) corollary omits both k ≥ 1 and the based-homotopy convention explicitly required by the gold revision.",
+    "The candidate extension theorem changes the domain and target relative to the gold extension entries, so it does not faithfully preserve their precise formulations.",
+    "Sard's theorem, the transversality extension theorem, the transversality homotopy theorem, and the ε-neighborhood theorem are absent.",
+    "The isotopy and linear-isotopy lemmas are captured but are not identified as externally cited background results.",
+    "Poincaré–Hopf omits the boundaryless and finite-isolated-zero hypotheses; the nowhere-zero vector-field theorem likewise omits the no-boundary condition.",
+    "The S^1 base case, including classification by z ↦ z^n, is missing.",
+    "The punctured-space criterion records only the zero-winding implication rather than the gold if-and-only-if criterion.",
+    "The finite-zero vector-field entry asserts mere existence, losing the stronger gold statement that a given field can be homotopically perturbed to have finitely many zeros.",
+    "The hairy-ball entry covers only S^2, whereas the gold entry also records the even-dimensional obstruction and odd-dimensional existence statement.",
+    "A few locators differ from the gold reference, notably the bump-function and degree-zero-null-homotopy entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryIds": [
+        "paper:def:degree",
+        "paper:def:winding",
+        "paper:def:bump",
+        "paper:def:vf-index"
+      ],
+      "candidateEntryIds": [
+        "paper:def:degree",
+        "paper:def:winding-number",
+        "paper:def:bump-function",
+        "paper:def:index-of-zero"
+      ],
+      "status": "mostly-matched",
+      "notes": "The foundational definitions are represented with intelligible formulas, though some ambient hypotheses and one page locator are omitted or changed."
+    },
+    {
+      "goldEntryIds": [
+        "paper:calc:euler-sphere"
+      ],
+      "candidateEntryIds": [
+        "paper:def:euler-characteristic-sphere",
+        "paper:def:euler-characteristic-torus"
+      ],
+      "status": "partially-incorrect",
+      "notes": "The sphere calculation is correct, but the torus formula contradicts the verified gold value χ(T^n)=0."
+    },
+    {
+      "goldEntryIds": [
+        "paper:b0:isotopy",
+        "paper:b0:linear-isotopy",
+        "paper:b0:poincare-hopf"
+      ],
+      "candidateEntryIds": [
+        "paper:lem:isotopy",
+        "paper:lem:linear-isotopy",
+        "paper:thm:poincare-hopf"
+      ],
+      "status": "mostly-matched",
+      "notes": "The statements are recognizable, but only Poincaré–Hopf receives external attribution, and its hypotheses are incomplete."
+    },
+    {
+      "goldEntryIds": [
+        "paper:b0:sard",
+        "paper:b0:transversality-extension",
+        "paper:b0:transversality-homotopy",
+        "paper:b0:epsilon-nbhd"
+      ],
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "Four cited infrastructure theorems used by the paper are not extracted as entries."
+    },
+    {
+      "goldEntryIds": [
+        "paper:lemma:regular-winding",
+        "paper:lemma:winding-sum",
+        "paper:lemma:remove-origin"
+      ],
+      "candidateEntryIds": [
+        "paper:prop:winding-regular-point",
+        "paper:prop:winding-sum-orientation",
+        "paper:prop:range-adjustment"
+      ],
+      "status": "matched-with-generalization",
+      "notes": "The candidate gives higher-dimensional versions that preserve the main signed-preimage and zero-removal content."
+    },
+    {
+      "goldEntryIds": [
+        "paper:lemma:boundary-extension",
+        "paper:lemma:punctured-euclidean",
+        "paper:thm:degree-zero-null"
+      ],
+      "candidateEntryIds": [
+        "paper:prop:extension-homotopy-constant",
+        "paper:prop:winding-zero-punctured-space",
+        "paper:prop:degree-zero-sphere-homotopy-constant"
+      ],
+      "status": "partially-matched",
+      "notes": "The degree-zero null-homotopy result is present, but the extension formulation changes and the punctured-space equivalence is reduced to one direction."
+    },
+    {
+      "goldEntryIds": [
+        "paper:lemma:base-s1"
+      ],
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The S^1 base case and the standard representative z ↦ z^n are absent."
+    },
+    {
+      "goldEntryIds": [
+        "paper:lemma:extend-rk1",
+        "paper:thm:extension"
+      ],
+      "candidateEntryIds": [
+        "paper:thm:extension-theorem"
+      ],
+      "status": "statement-mismatch",
+      "notes": "The candidate substitutes a more general manifold-with-boundary extension assertion and does not preserve the domains and codomains of the two gold entries."
+    },
+    {
+      "goldEntryIds": [
+        "paper:thm:hopf",
+        "paper:cor:homotopy-group"
+      ],
+      "candidateEntryIds": [
+        "paper:thm:hopf-degree-theorem",
+        "paper:thm:pi-k-s-k-isomorphism"
+      ],
+      "status": "core-result-captured-with-missing-conditions",
+      "notes": "Both core conclusions are present, but closedness, k ≥ 1, and the distinction between free and based homotopy classes are not recorded."
+    },
+    {
+      "goldEntryIds": [
+        "paper:lemma:vf-index-zero",
+        "paper:lemma:vf-finite-zeros",
+        "paper:lemma:vf-localize",
+        "paper:thm:vf-euler",
+        "paper:cor:hairy-ball"
+      ],
+      "candidateEntryIds": [
+        "paper:claim:vector-field-compact-support",
+        "paper:claim:compact-manifold-finite-zeros",
+        "paper:claim:localize-zeros",
+        "paper:thm:nonvanishing-vector-field",
+        "paper:thm:hairy-ball"
+      ],
+      "status": "mostly-matched",
+      "notes": "The vector-field argument is well represented at a high level, but several auxiliary statements are weakened or reformulated, boundary hypotheses are absent, and the hairy-ball consequence is restricted to S^2."
+    },
+    {
+      "goldEntryIds": [
+        "paper:def:stereo"
+      ],
+      "candidateEntryIds": [
+        "paper:def:sphere-euclidean-homeomorphism"
+      ],
+      "status": "partially-matched",
+      "notes": "The punctured-sphere identification is present, but the candidate uses homotopy-equivalence notation and does not explicitly state the stereographic diffeomorphism or one-point compactification."
+    }
+  ]
+}

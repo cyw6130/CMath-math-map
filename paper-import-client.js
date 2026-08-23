@@ -1456,7 +1456,7 @@
     let lastMerged = null;
     let lastIssues = ["装配没有产出有效输出"];
     let truncated = false;
-    const maxRounds = 4;
+    const maxRounds = Number(process.env.INFERENCE_MAX_ROUNDS || 4);
     for (let round = 0; round < maxRounds; round += 1) {
       const maxTokens = truncated ? (tokenBudget?.retry ?? 32000) : (tokenBudget?.normal ?? 16000);
       const { content, finishReason } = await executeChatCall(messages, maxTokens);
@@ -1638,7 +1638,8 @@
       let lastMerged = null;
       let lastIssues = ["装配没有产出有效输出"];
       let truncated = false;
-      for (let round = 0; round < 4; round += 1) {
+      const maxRounds = Number(process.env.INFERENCE_MAX_ROUNDS || 4);
+      for (let round = 0; round < maxRounds; round += 1) {
         const { content, finishReason } = await executeChatCall(messages, truncated ? 32000 : 16000);
         truncated = finishReason === "length";
         notify("response", {});

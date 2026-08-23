@@ -1,0 +1,132 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-1-off-compact-v3.9.2",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.2",
+  "promptSetVersion": "v3.9.2",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "文章1.pdf",
+    "pageCount": 14,
+    "characters": 29596
+  },
+  "diagnostics": {
+    "durationMs": 132115,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "文章1.pdf",
+        "pageCount": 14,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 29596,
+        "atMs": 0
+      },
+      {
+        "stage": "target",
+        "leads": 15,
+        "atMs": 74191
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 74191
+      },
+      {
+        "stage": "request",
+        "chars": 29596,
+        "chunks": 2,
+        "atMs": 74195
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 10,
+        "atMs": 74199
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 121367
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 123398
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 74183,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9294,
+          "completion_tokens": 4006,
+          "total_tokens": 13300
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 13079,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13377,
+          "completion_tokens": 637,
+          "total_tokens": 14014
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 47169,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10610,
+          "completion_tokens": 2493,
+          "total_tokens": 13103
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 49202,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8274,
+          "completion_tokens": 2570,
+          "total_tokens": 10844
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 57916,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 15491,
+          "completion_tokens": 3084,
+          "total_tokens": 18575
+        }
+      }
+    ],
+    "error": "lead-guided Entry type 无效：paper:calculation:symplectic-parity"
+  }
+}

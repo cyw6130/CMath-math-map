@@ -1,0 +1,153 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/yasui-2019.consolidated-v2.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 20,
+  "completeness": 17,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate captures all central paper-specific results and most of the external infrastructure, with generally accurate pages, entry classes, hypotheses, and formulas. It is nevertheless not flawless: it systematically mistranslates stable cohomotopy as stable cohomology, omits two foundational definitions and a standalone precise Taubes theorem, duplicates Lemma 2.6, drops the non-torsion hypothesis from that lemma, and formats two mod-4 hypotheses ambiguously.",
+  "strengths": [
+    "Correctly captures the main Theorem 1.4, Theorem 1.9, Theorems 2.3 and 2.4, Lemma 3.1, and the sphere obstruction corresponding to Theorem 2.8.",
+    "Accurately extracts the definitions of geometrically simply connected manifolds and classes represented by a 2-handle neighborhood, with appropriate fact/definition classification.",
+    "Includes the key Bauer connected-sum theorem and Frøyshov vanishing theorem as external results with accurate source attribution and page locators.",
+    "Represents the symplectic Betti-number parity input and the Taubes input in partial form, and correctly marks them as external.",
+    "Adds relevant paper results beyond the Gold set, including Corollaries 1.6 and 1.7 and the PL-embedded-sphere characterization.",
+    "LaTeX is generally balanced, readable, and mathematically interpretable."
+  ],
+  "issues": [
+    "The phrase \"稳定上同调 Seiberg–Witten 不变量\" is used repeatedly for stable cohomotopy/Bauer–Furuta invariants; \"稳定上同伦\" or an equally precise stable-cohomotopy term is required. This is a systematic mathematical terminology error affecting several core entries.",
+    "The Bauer–Furuta invariant itself is not extracted as a definition, although it is foundational in the Gold reference.",
+    "The definition of a symplectic form and its induced canonical spin^c structure is missing.",
+    "The Taubes result is not captured as the standalone statement SW_X(s_X)=±1, hence nonzero mod 2. The candidate only records the narrower consequence used when both orientations are assumed symplectic.",
+    "Both yasui:lemma:2-6 and yasui:lemma:2-handle-sphere encode essentially the same result, creating an unnecessary duplicate.",
+    "The two versions of Lemma 2.6 omit the Gold reference's non-torsion hypothesis on alpha, thereby stating a potentially broader claim than the verified entry.",
+    "The candidate writes the doubled class as alpha-bar alpha, whereas the Gold notation is alpha times bar alpha. This may reflect a notation convention, but it should be checked because subtraction can suggest a different homology class.",
+    "The congruence hypotheses in Theorems 1.9 and 2.4 are malformed or ambiguous: mod 4 is visibly attached only to the b_2^- condition, while both b_2^+ and b_2^- conditions should be modulo 4.",
+    "Entries yasui:theorem:1-6 and yasui:theorem:1-7 are classified with type and claimKind \"theorem\" even though their own names and the source identify them as corollaries.",
+    "The external adjunction-inequality and blow-up-formula entries are overly vague compared with the otherwise precise extraction standard and do not delimit the hypotheses and conclusions needed to function as reliable mathematical entries.",
+    "The artifact contains no inference hints, so the proof dependency structure among the definitions, external results, intermediate lemmas, and main theorems is not represented."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:geometrically-simply-connected",
+      "candidateEntryIds": [
+        "yasui:def:geometrically-simply-connected"
+      ],
+      "status": "matched",
+      "notes": "Faithful definition and correct page."
+    },
+    {
+      "goldEntryId": "paper:def:2-handle-neighborhood-class",
+      "candidateEntryIds": [
+        "yasui:def:two-handle-neighborhood-represented-class"
+      ],
+      "status": "matched",
+      "notes": "Precise formulation using the generator of H_2(W)."
+    },
+    {
+      "goldEntryId": "paper:def:bauer-furuta-invariant",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No standalone definition of the stable cohomotopy/Bauer–Furuta invariant."
+    },
+    {
+      "goldEntryId": "paper:def:symplectic-structure-4mfld",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No definition connecting a symplectic form to the canonical orientation and spin^c structure."
+    },
+    {
+      "goldEntryId": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:bauer-stable-cohomotopy"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "Substantively complete, but the Chinese terminology inconsistently says stable cohomology rather than stable cohomotopy."
+    },
+    {
+      "goldEntryId": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntryIds": [
+        "yasui:theorem:froyshov-vanishing"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "Hypotheses and conclusion are faithful; the same stable-cohomotopy terminology issue remains."
+    },
+    {
+      "goldEntryId": "paper:b0:taubes-symplectic-sw",
+      "candidateEntryIds": [
+        "yasui:lemma:taubes-condition"
+      ],
+      "status": "partial",
+      "notes": "Records the mod-2 consequence only under the additional assumption that both orientations are symplectic, rather than extracting the general Taubes theorem."
+    },
+    {
+      "goldEntryId": "paper:b0:symplectic-betti-parity",
+      "candidateEntryIds": [
+        "yasui:lemma:external-symplectic-parity"
+      ],
+      "status": "matched",
+      "notes": "The formula b_2^+-b_1 odd is equivalent to the Gold parity statement."
+    },
+    {
+      "goldEntryId": "paper:lemma:embedded-sphere-double",
+      "candidateEntryIds": [
+        "yasui:lemma:2-6",
+        "yasui:lemma:2-handle-sphere"
+      ],
+      "status": "matched_with_errors",
+      "notes": "Captured twice, but both copies omit the non-torsion condition and use potentially inconsistent notation for the doubled class."
+    },
+    {
+      "goldEntryId": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:stable-adjunction"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "Mathematical content matches, subject to the stable-cohomotopy terminology error."
+    },
+    {
+      "goldEntryId": "paper:thm:positive-definite-vanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:2-3"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "All central hypotheses are present; invariant terminology is imprecise."
+    },
+    {
+      "goldEntryId": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntryIds": [
+        "yasui:theorem:2-4"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "Substantively correct, but the mod-4 qualifier is not clearly attached to both congruence conditions."
+    },
+    {
+      "goldEntryId": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntryIds": [
+        "yasui:lemma:3-1"
+      ],
+      "status": "matched",
+      "notes": "Faithful statement and correct page."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntryIds": [
+        "yasui:theorem:1-4"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "The main theorem is correctly delimited without conflating it with the symplectic corollary, but the invariant is mistranslated."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntryIds": [
+        "yasui:theorem:1-9"
+      ],
+      "status": "matched_with_minor_error",
+      "notes": "Correct intended conclusion, with ambiguous formatting of the first mod-4 hypothesis."
+    }
+  ]
+}

@@ -1,0 +1,447 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-cornered-skein-lasagna-theory-off-compact-v3.18",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.18",
+  "promptSetVersion": "v3.18",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "CORNERED SKEIN LASAGNA THEORY.pdf",
+    "pageCount": 20,
+    "characters": 48787
+  },
+  "diagnostics": {
+    "durationMs": 218484,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "CORNERED SKEIN LASAGNA THEORY.pdf",
+        "pageCount": 20,
+        "atMs": 1
+      },
+      {
+        "stage": "guide",
+        "chars": 48787,
+        "atMs": 3
+      },
+      {
+        "stage": "target",
+        "leads": 12,
+        "atMs": 68610
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 68611
+      },
+      {
+        "stage": "request",
+        "chars": 48787,
+        "chunks": 2,
+        "atMs": 68613
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 68622
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 117089
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 126447
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:lasagna-filling",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:skein-lasagna-module",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:three-manifold-category",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:calculation:basic-gluing-map",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:two-piece-gluing",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:self-gluing",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:definition:trisection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:definition:trisection-diagram",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:definition:surface-bicategory",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:surface-gluing",
+        "retained": "coverage-or-first-seen",
+        "atMs": 164980
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 25,
+        "leadGuided": 23,
+        "total": 38,
+        "conflicts": 10,
+        "atMs": 164980
+      },
+      {
+        "stage": "integrate",
+        "entries": 38,
+        "atMs": 164980
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 9,
+        "renameCount": 1,
+        "atMs": 171761
+      },
+      {
+        "stage": "cited-external-candidates",
+        "count": 2,
+        "candidates": [
+          "paper:lemma:gluing-fillings-isomorphism",
+          "paper:claim:external-trisection"
+        ],
+        "mutated": false,
+        "atMs": 171784
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 2,
+        "items": [
+          {
+            "canonicalId": "paper:lemma:gluing-fillings-isomorphism",
+            "page": 7,
+            "source": "gluing the skein lasagna fillings"
+          },
+          {
+            "canonicalId": "paper:claim:external-trisection",
+            "page": 13,
+            "source": "[GK16] David Gay and Robion Kirby, “Trisecting 4-manifolds,” Geometry & Topology 20.6 (2016), 3097–3132."
+          }
+        ],
+        "atMs": 171785
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 33,
+        "candidates": [
+          "Direct calculation of the skein lasagna module from its definition",
+          "following theorem",
+          "more precise theorem",
+          "[MWW22",
+          "Definition 2.4",
+          "In this section we define the invariant of cornered 4-manifolds and present our gluing\ntheorem",
+          "Definition 3.1",
+          "will be relevant in Definition",
+          "Definition 3.6",
+          "Associativity will be discussed after Lemma",
+          "This motivates the following lemma",
+          "the fragmentation lemma",
+          "The following theorem",
+          "Theorem 3.8",
+          "CORNERED SKEIN LASAGNA THEORY\n\n11\n\nDefinition",
+          "Lemma 3.13",
+          "The following theorem",
+          "Theorem 3.14",
+          "Theorem 3.15",
+          "[GK16",
+          "this with Theorem",
+          "Definition 3.18",
+          "Definition 4.1",
+          "Definition 4.2",
+          "Definition 4.3",
+          "the 3-manifold Y and the point set P in Definition",
+          "Definition 4.4",
+          "Lemma 4.5",
+          "The equivalence relation on morphisms in Definition",
+          "Theorem 4.7",
+          "analogous to the proof of Lemma",
+          "morphisms in Definition",
+          "The proof of Theorem"
+        ],
+        "atMs": 171799
+      },
+      {
+        "stage": "assemble",
+        "entries": 32,
+        "atMs": 171799
+      },
+      {
+        "stage": "response",
+        "atMs": 193527
+      },
+      {
+        "stage": "autofix",
+        "count": 3,
+        "actions": [
+          "丢弃 premises 为空的 第 3 条 Inference",
+          "丢弃 premises 为空的 第 5 条 Inference",
+          "丢弃 premises 为空的 第 7 条 Inference"
+        ],
+        "atMs": 193531
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:theorem:boundary-gluing-special-case"
+        ],
+        "atMs": 193533
+      },
+      {
+        "stage": "repair",
+        "reason": "7 处问题",
+        "attempt": 1,
+        "atMs": 193536
+      },
+      {
+        "stage": "response",
+        "atMs": 209576
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:theorem:boundary-gluing-special-case"
+        ],
+        "repairRound": 1,
+        "atMs": 209578
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 2,
+        "atMs": 209579
+      },
+      {
+        "stage": "response",
+        "atMs": 215188
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "第 1 条 Inference 的 conclusion 出现在 premises 中，已移除"
+        ],
+        "atMs": 215189
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:theorem:boundary-gluing-special-case"
+        ],
+        "repairRound": 2,
+        "atMs": 215189
+      },
+      {
+        "stage": "repair",
+        "reason": "1 处问题",
+        "attempt": 3,
+        "atMs": 215189
+      },
+      {
+        "stage": "response",
+        "atMs": 218483
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:theorem:boundary-gluing-special-case"
+        ],
+        "repairRound": 3,
+        "atMs": 218484
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 68600,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 17165,
+          "completion_tokens": 3674,
+          "total_tokens": 20839
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 27115,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 20962,
+          "completion_tokens": 1378,
+          "total_tokens": 22340
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 48463,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 11863,
+          "completion_tokens": 2553,
+          "total_tokens": 14416
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 57828,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14731,
+          "completion_tokens": 3088,
+          "total_tokens": 17819
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 96354,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 22648,
+          "completion_tokens": 5224,
+          "total_tokens": 27872
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 6779,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3087,
+          "completion_tokens": 226,
+          "total_tokens": 3313
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 21726,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 28708,
+          "completion_tokens": 1106,
+          "total_tokens": 29814,
+          "completion_tokens_details": {
+            "reasoning_tokens": 249
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 16011,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 37586,
+          "completion_tokens": 800,
+          "total_tokens": 38386,
+          "prompt_tokens_details": {
+            "cached_tokens": 28416
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 345
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 5589,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 44718,
+          "completion_tokens": 183,
+          "total_tokens": 44901
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 3272,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 51581,
+          "completion_tokens": 49,
+          "total_tokens": 51630,
+          "prompt_tokens_details": {
+            "cached_tokens": 43776
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.9 定向修复已执行 3 次）：Claim paper:lemma:gluing-filling（拼接填充的双线性映射同构）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样"
+  }
+}

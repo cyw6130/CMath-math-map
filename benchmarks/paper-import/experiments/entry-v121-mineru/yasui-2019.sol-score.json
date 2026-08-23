@@ -1,0 +1,28 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v121-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 18,
+  "completeness": 15,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures nearly all principal theorems, corollaries, the 2-handle representation lemma, the embedded-sphere obstruction, and the key Bauer and Frøyshov external results with generally accurate hypotheses and page locators. However, it omits four gold entries, misclassifies four corollaries as theorems, contains substantial duplicate entries, abbreviates important external hypotheses, and includes several vague or weakly delimited auxiliary claims.",
+  "strengths": [
+    "The main results Theorems 1.4, 1.9, 2.3, and 2.4, as well as Corollary 2.5, are represented with their essential manifold, Betti-number, torsion, and symplectic hypotheses.",
+    "The 2-handle-neighborhood definition and Lemma 2.6 / Lemma 3.1 infrastructure are extracted with mathematically meaningful statements.",
+    "Bauer's connected-sum nonvanishing result and Frøyshov's positive-scalar-curvature vanishing result are identified as external results and include source references.",
+    "Most extracted entries have plausible page locators, and the pool includes the important PL-embedded-sphere characterization."
+  ],
+  "issues": [
+    "Four gold entries are missing: the Bauer–Furuta invariant definition, the symplectic-structure definition, Taubes's symplectic Seiberg–Witten theorem, and the symplectic Betti-parity fact.",
+    "Corollaries 1.5, 1.6, 1.7, and 2.5 are all typed as theorem instead of corollary, violating the requested classification dimension.",
+    "The pool contains duplicate or near-duplicate entries for geometric simple connectivity, reverse orientation, Lemma 2.6, and Lemma 3.1, with inconsistent IDs and locators; this reduces redundancy control and canonical coverage.",
+    "The Bauer theorem entry abbreviates essential conditions as '(i)--(iii)' rather than extracting them, and the blow-up and adjunction entries are overly vague and not cleanly delimited mathematical statements.",
+    "The repeated rendering of stable cohomotopy Seiberg–Witten invariants as '稳定上同调球面' is nonstandard and risks terminology-level mathematical distortion.",
+    "Several extra entries are not present in the gold artifact and appear to be loosely inferred background claims, increasing noise relative to the verified reference set."
+  ],
+  "entryLevelComparison": []
+}

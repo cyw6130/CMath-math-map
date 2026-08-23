@@ -1,0 +1,558 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-off-compact-v1",
+  "condition": "off-compact",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "CORNERED SKEIN LASAGNA THEORY.pdf",
+    "pageCount": 20,
+    "characters": 48787
+  },
+  "diagnostics": {
+    "durationMs": 168510,
+    "stages": [
+      {
+        "stage": "request",
+        "chars": 48787,
+        "chunks": 2,
+        "atMs": 0
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 46718
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 60541
+      },
+      {
+        "stage": "integrate",
+        "entries": 22,
+        "atMs": 60542
+      },
+      {
+        "stage": "assemble",
+        "entries": 22,
+        "atMs": 72604
+      },
+      {
+        "stage": "response",
+        "atMs": 133982
+      },
+      {
+        "stage": "repair",
+        "reason": "6 处问题",
+        "attempt": 1,
+        "atMs": 133984
+      },
+      {
+        "stage": "response",
+        "atMs": 168505
+      },
+      {
+        "stage": "validate",
+        "atMs": 168506
+      },
+      {
+        "stage": "closure",
+        "openClaims": [],
+        "atMs": 168510
+      }
+    ],
+    "calls": [
+      {
+        "stage": "request",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": null,
+        "durationMs": 46713,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8689,
+          "completion_tokens": 2074,
+          "total_tokens": 10763,
+          "completion_tokens_details": {
+            "reasoning_tokens": 516
+          }
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": null,
+        "durationMs": 60508,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10693,
+          "completion_tokens": 2924,
+          "total_tokens": 13617,
+          "completion_tokens_details": {
+            "reasoning_tokens": 745
+          }
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 8000,
+        "reasoningEffort": null,
+        "durationMs": 12060,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 1896,
+          "completion_tokens": 534,
+          "total_tokens": 2430,
+          "completion_tokens_details": {
+            "reasoning_tokens": 516
+          }
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": null,
+        "durationMs": 61377,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 18585,
+          "completion_tokens": 3251,
+          "total_tokens": 21836,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2052
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": null,
+        "durationMs": 34519,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 20500,
+          "completion_tokens": 1764,
+          "total_tokens": 22264,
+          "prompt_tokens_details": {
+            "cached_tokens": 18176
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 516
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:cornered-skein-lasagna-theory",
+      "title": "带角千层面纽结理论及拼接公式"
+    },
+    "mainTargetEntryId": "paper:theorem:cornered-gluing-formula",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:cornered-skein-lasagna-theory",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:external:rw24-gluing-surjectivity",
+          "paper:external:ban97-fragmentation-lemma",
+          "paper:external:mn22-isotopy-filling-result"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:theorem:cornered-gluing-formula"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:def:lasagna-filling",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 千层面填充",
+        "shortTitle": "千层面填充",
+        "title": "千层面填充",
+        "statement": "给定带定向框架链结$L\\subset\\partial X$的定向4-流形$X$，千层面填充$F$由$(S,\\{(B_i,L_i,v_i)\\})$组成：$B_i$是内部有限个互不相交的4-球，$L_i\\subset\\partial B_i$为带定向框架链结，$v_i\\in Z(L_i)$，且$S\\subset X\\setminus\\bigcup_iB_i$是满足$S\\cap\\partial X=L$、$S\\cap\\partial B_i=L_i$的定向带框架正规嵌入曲面。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=3"
+      },
+      {
+        "id": "paper:def:skein-lasagna-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · 千层面纽结模",
+        "shortTitle": "千层面纽结模",
+        "title": "千层面纽结模",
+        "statement": "给定带定向框架链结$L\\subset\\partial X$的定向4-流形$X$，$S(X,L)$是由$(X,L)$的千层面填充生成的$R$-模，按标签的多线性关系及替换输入球的关系取商：若$v_1=Z(S')(\\bigotimes_jv_j)$，则用$(B_1,L_1,v_1)$替换为$(B_1,L_1)$中的填充$F_3=(S',\\{(B_j,L_j,v_j)\\})$所得填充等价。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=3"
+      },
+      {
+        "id": "paper:calculation:gluing-map",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · 千层面填充拼接映射",
+        "shortTitle": "千层面填充拼接映射",
+        "title": "千层面填充拼接映射",
+        "statement": "在满足边界切分与$T'_2=T_2$的两个4-流形及切链结条件下，拼接填充诱导双线性映射$\\mathrm{glue}_{T_2}:S(X_1,-T_1\\cup T_2)\\otimes_{\\mathbb Z}S(X_2,-T_2\\cup T_3)\\to S(X_1\\cup X_2,-T_1\\cup T_3)$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=4"
+      },
+      {
+        "id": "paper:def:three-manifold-category",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 3-流形范畴",
+        "shortTitle": "3-流形范畴",
+        "title": "3-流形范畴",
+        "statement": "给定带边界定向紧3-流形$Y$、微分同胚$\\iota:\\Sigma\\to\\partial Y$及有限带框架点集$P\\subset\\Sigma$，定义范畴$S(Y,P)$：对象是满足$\\partial T=\\iota(P)$的定向带框架正规嵌入切链；$T,T'$间态射模为$\\mathrm{Hom}_{S(Y,P)}(T,T')=S(Y\\times I,L)$，其中$L=(-T'\\times\\{-1\\})\\cup(\\iota(P)\\times I)\\cup(T\\times\\{1\\})$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=4"
+      },
+      {
+        "id": "paper:def:cornered-bimodule",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 带角4-流形千层面双模",
+        "shortTitle": "带角4-流形千层面双模",
+        "title": "带角4-流形千层面双模",
+        "statement": "若$\\partial X=(-Y_1)\\cup_\\Sigma Y_2$，且给定$\\varphi:(-Y_1)\\cup_\\Sigma Y_2\\to\\partial X$及$P\\subset\\Sigma$，定义双函子$F_{X,P}:S(Y_1,P)\\times S(Y_2,P)^{op}\\to\\mathcal V$，其对象值为$F_{X,P}(T_1,T_2)=S(X,\\varphi(-T_1\\cup T_2))$，态射作用由与$(\\varphi\\times I)(\\alpha_1\\cup\\alpha_2)$拼接诱导。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=5"
+      },
+      {
+        "id": "paper:def:tensor-product-bimodule",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 双模张量积",
+        "shortTitle": "双模张量积",
+        "title": "双模张量积",
+        "statement": "给定双模$F_{X_1,P}:S(Y_1,P)\\times S(Y_2,P)^{op}\\to\\mathcal V$与$F_{X_2,P}:S(Y_2,P)\\times S(Y_3,P)^{op}\\to\\mathcal V$，定义$F_{X_1,P}\\otimes_{S(Y_2,P)}F_{X_2,P}$，其$(T',T''')$值为$\\bigoplus_{T''}F_{X_1,P}(T',T'')\\otimes_{\\mathbb Z}F_{X_2,P}(T'',T''')$模去$(a\\cdot\\beta)\\otimes c\\sim_1a\\otimes(\\beta\\cdot c)$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=6"
+      },
+      {
+        "id": "paper:lemma:gluing-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 7 · 拼接同构",
+        "shortTitle": "拼接同构",
+        "title": "拼接同构",
+        "statement": "在$X_1,X_2$沿$Y_2$拼接且$T'\\in S(Y_1,P)$、$T'''\\in S(Y_3,P)$时，映射$\\tau:\\left(\\bigoplus_{T''}S(X_1,-T'\\cup T'')\\otimes_{\\mathbb Z}S(X_2,-T''\\cup T''')\\,/\\sim_1\\right)\\to S(X_1\\cup X_2,-T'\\cup T''')$，$[a\\otimes c]\\mapsto a\\cup c$是同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+      },
+      {
+        "id": "paper:external:rw24-gluing-surjectivity",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 无角情形拼接映射的满射性",
+        "shortTitle": "无角情形拼接映射的满射性",
+        "title": "无角情形拼接映射的满射性",
+        "statement": "当所涉及4-流形没有角时，千层面填充的拼接映射是满射。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7",
+        "sourceReference": "[RW24, Proposition 2.3]"
+      },
+      {
+        "id": "paper:theorem:cornered-gluing-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · 带角4-流形双模拼接公式",
+        "shortTitle": "带角4-流形双模拼接公式",
+        "title": "带角4-流形双模拼接公式",
+        "statement": "设$P\\subset\\Sigma$为有限带符号点集，$\\partial Y_i=\\Sigma$，$\\partial X_1=(-Y_1)\\cup_\\Sigma Y_2$且$\\partial X_2=(-Y_2)\\cup_\\Sigma Y_3$。则$F_{X_1,P}\\otimes_{S(Y_2,P)}F_{X_2,P}\\cong F_{X_1\\cup_{Y_2}X_2,P}$，且该同构是$(S(Y_1,P),S(Y_3,P))$-双模同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:theorem:gluing-bimodules",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 角化骨牌模的张量积拼接公式",
+        "shortTitle": "角化骨牌模的张量积拼接公式",
+        "title": "角化骨牌模的张量积拼接公式",
+        "statement": "设有向闭曲面 $\u0003a3$ 含有限个带符号点集 $P$，$\u0003a3$ 是三个有向紧 $3$-流形 $Y_1,Y_2,Y_3$ 的共同边界；若 $\u0003a3X_1=\u0003a3(-Y_1)\u0003bigsqcup_\u0003a3Y_2$、$\u0003a3X_2=\u0003a3(-Y_2)\u0003bigsqcup_\u0003a3Y_3$，则 $F_{X_1,P}\u0003otimes_{S(Y_2,P)}F_{X_2,P}\u0003cong F_{X_1\u0003cup X_2,P}$，为 $(S(Y_1,P),S(Y_3,P))$-双模同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:definition:zeroth-hochschild-homology",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 零阶 Hochschild 同调",
+        "shortTitle": "零阶 Hochschild 同调",
+        "title": "零阶 Hochschild 同调",
+        "statement": "给定 $(S(Y,P),S(Y,P))$-双模 $F_{X,P}$，定义其零阶 Hochschild 同调为 $\u0003bigoplus_{T\u0003in Obj(S(Y,P))}F_{X,P}(T,T)$ 对等价关系 $a\u0003b7beta\u0003sim_2\u0003beta\u0003b7a$ 的商：$HH_0(F_{X,P})=\\left(\\bigoplus_TF_{X,P}(T,T)\\right)/\\u0003sim_2$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+      },
+      {
+        "id": "paper:lemma:self-gluing-intermediate-isomorphism",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · 自拼接中间模同构",
+        "shortTitle": "自拼接中间模同构",
+        "title": "自拼接中间模同构",
+        "statement": "在上述记号下，将 $F\\u0003in F_{X,P}(T,T)$ 中两份 $T'$ 识别，得到 $F_{T'}^0\\u0003in S(\\bar X^0,P\\u0003times S^1)$。映射 $\\rho:HH_0(F_{X,P})\\u0003to S(\\bar X^0,P\\u0003times S^1)$，$F\\u0003mapsto F_{T'}^0$，是同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+      },
+      {
+        "id": "paper:theorem:self-gluing-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 自拼接公式",
+        "shortTitle": "自拼接公式",
+        "title": "自拼接公式",
+        "statement": "设有向闭曲面 $\u0003a3$ 含有限带符号点集 $P$，$\u0003a3Y$ 为边界为 $\u0003a3$ 的有向紧 $3$-流形，$\u0003a3X$ 满足 $\u0003a3X=\\u0003a3(-Y)\\u0003bigsqcup_\\u0003a3Y$。则 $HH_0(F_{X,P})\\cong S(\\bar X^0,P\\u0003times S^1)$，且为 $\u0003a3mathbb Z_2$-分次 $\u0003a3mathbb Z$-模同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:theorem:filling-central-surface-quotient",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 填回中心曲面公式",
+        "shortTitle": "填回中心曲面公式",
+        "title": "填回中心曲面公式",
+        "statement": "由所有有限个同基数带符号点集 $P$ 的 $S(\\bar X^0,P\\u0003times S^1)$ 对关系 $\\beta(b)(F)\\u0003sim_3F$ 和 $F\\#A_{p_+,p_-}\\u0003sim_3F$ 取商，得到同构 $\\left(\\bigoplus_P S(\\bar X^0,P\\u0003times S^1)\\right)/\\u0003sim_3\\cong S(\\bar X)$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:definition:trisection",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 四流形三分解",
+        "shortTitle": "四流形三分解",
+        "title": "四流形三分解",
+        "statement": "闭、连通、有向光滑 $4$-流形 $X^4$ 的 $(g;k_1,k_2,k_3)$-三分解是分解 $X^4=X_1\\cup X_2\\cup X_3$，其中 $X_i\\cong\\natural^{k_i}(S^1\\times B^3)$，$Y_{i,i+1}=X_i\\cap X_{i+1}\\cong\\natural^g(S^1\\times B^2)$，且三重交为中心曲面 $\\Sigma_g$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13"
+      },
+      {
+        "id": "paper:definition:trisection-diagram",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · 三分解图",
+        "shortTitle": "三分解图",
+        "title": "三分解图",
+        "statement": "$(g;k_1,k_2,k_3)$-三分解图是三元组 $(\\Sigma_g;\\alpha,\\beta,\\gamma)$，其中 $\u0003b1,\u0003b2,\u0003b3$ 均为 $\\Sigma_g$ 的曲线切系统，且 $(\\Sigma_g;\\alpha,\\beta)$、$(\\Sigma_g;\\beta,\\gamma)$、$(\\Sigma_g;\\gamma,\\alpha)$ 分别是对应于 $\\#^{k_1}(S^1\\times S^2)$、$\\#^{k_2}(S^1\\times S^2)$、$\\#^{k_3}(S^1\\times S^2)$ 的亏格 $g$ Heegaard 图。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+      },
+      {
+        "id": "paper:definition:surface-bicategory",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · 曲面骨牌双范畴",
+        "shortTitle": "曲面骨牌双范畴",
+        "title": "曲面骨牌双范畴",
+        "statement": "对有向曲面 $\\Sigma$，定义双范畴 $S(\\Sigma)$：对象是嵌入于 $\\Sigma$ 的有限带符号点集；$1$-态射是 $\\Sigma\\times I$ 中连接两点集的有向切；从切结 $b'$ 到 $b$ 的 $2$-态射是 $S(\\Sigma\\times I\\times I,L)$ 的元素，其中 $L$ 按文中四段边界链构成。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=14"
+      },
+      {
+        "id": "paper:definition:left-right-module-bicategory",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · 双范畴模",
+        "shortTitle": "双范畴模",
+        "title": "双范畴模",
+        "statement": "对双范畴 $C$，左 $C$-模是从 $C$ 到 Cat 的伪函子，右 $C$-模是从 $C^{op}$ 到 Cat 的伪函子。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=15"
+      },
+      {
+        "id": "paper:definition:three-manifold-right-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · 三流形右模",
+        "shortTitle": "三流形右模",
+        "title": "三流形右模",
+        "statement": "若 $\\iota:\\Sigma\\to\\partial Y$ 保向，则定义右 $S(\\Sigma)$-模 $S_Y:S(\\Sigma)^{op}\\to Cat$：$S_Y(P)=S(Y,P)$；对切 $b:Q\\to P$，$S_Y(b)(u,\\tilde u)=S(Y\\times I,(u\\times\\{-1\\})\\cup b\\cup(-\\tilde u\\times\\{1\\}))$；对 $2$-态射由拼接压缩后的骨牌填充诱导。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=16"
+      },
+      {
+        "id": "paper:definition:module-tensor-product",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · 三流形模的张量积",
+        "shortTitle": "三流形模的张量积",
+        "title": "三流形模的张量积",
+        "statement": "若 $\\partial Y_1=\\Sigma$、$\\partial Y_2=-\\Sigma$，则 $S_{Y_1}\\otimes_{S(\\Sigma)}S_{Y_2}$ 的对象为 $\\coprod_P Obj(S_{Y_1}(P))\\times Obj(S_{Y_2}(P))$；$(u,v)$ 到 $(u',v')$ 的态射是对所有水平切 $b$ 的 $S_{Y_1}(b)(u,u')\\otimes S_{Y_2}(b)(v,v')$ 直和，再商去 $F\\otimes(\\beta\\cdot G)\\sim(F\\cdot\\beta)\\otimes G$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=16"
+      },
+      {
+        "id": "paper:lemma:isotopic-links-objects",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 3 · 同位链对应对象同构",
+        "shortTitle": "同位链对应对象同构",
+        "title": "同位链对应对象同构",
+        "statement": "若 $L,L'$ 是横截于 $\u0003a3$ 的同位链，沿 $\u0003a3$ 切开所得的切对 $(u,v)$ 与 $(u',v')$ 在 $S_{Y_1}\\otimes_{S(\\Sigma)}S_{Y_2}$ 中是同构对象。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+      },
+      {
+        "id": "paper:theorem:three-manifold-category-gluing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 三流形骨牌范畴拼接公式",
+        "shortTitle": "三流形骨牌范畴拼接公式",
+        "title": "三流形骨牌范畴拼接公式",
+        "statement": "若 $\\partial Y_1=\\Sigma$、$\\partial Y_2=-\\Sigma$，且 $Y=Y_1\\cup_\\Sigma Y_2$，则右模对应的范畴满足 $S_Y\\cong S_{Y_1}\\otimes_{S(\\Sigma)}S_{Y_2}$。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+      },
+      {
+        "id": "paper:external:ban97-fragmentation-lemma",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 4 · 同位的局部碎片化引理",
+        "shortTitle": "同位的局部碎片化引理",
+        "title": "同位的局部碎片化引理",
+        "statement": "任意同位可分解为有限个支撑在局部邻域中的同位的复合。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=8",
+        "sourceReference": "Banyaga, The Structure of Classical Diffeomorphism Groups, 1997, Fragmentation Lemma"
+      },
+      {
+        "id": "paper:external:mn22-isotopy-filling-result",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 填充同位代表关系",
+        "shortTitle": "填充同位代表关系",
+        "title": "填充同位代表关系",
+        "statement": "关于千层面填充在切割、填回及同位代表变换下所得关系的结论，论文在证明填回中心曲面公式时采用与该定理证明相同的论证。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13",
+        "sourceReference": "Manolescu–Neithalath, Skein lasagna modules for 2-handlebodies, 2022, Theorem 1.1"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:proof:1",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 1 · 拼接同构",
+        "shortTitle": "证明 · 拼接同构",
+        "title": "证明 拼接同构",
+        "statement": "先用无角情形拼接映射的满射性，再验证平衡关系被拼接映射消去；通过将填充横截于公共边界并分析输入球穿越与曲面 Morse 奇点，构造逆映射并证明良定义。",
+        "premises": [
+          "paper:calculation:gluing-map",
+          "paper:external:rw24-gluing-surjectivity",
+          "paper:def:lasagna-filling",
+          "paper:def:skein-lasagna-module"
+        ],
+        "conclusion": "paper:lemma:gluing-isomorphism",
+        "argument": "先用无角情形拼接映射的满射性，再验证平衡关系被拼接映射消去；通过将填充横截于公共边界并分析输入球穿越与曲面 Morse 奇点，构造逆映射并证明良定义。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · 带角4-流形双模拼接公式",
+        "shortTitle": "证明 · 带角4-流形双模拼接公式",
+        "title": "证明 带角4-流形双模拼接公式",
+        "statement": "逐对象用拼接同构定义自然同构，检查左右两侧的态射作用与填充拼接相容，得到双模同构。",
+        "premises": [
+          "paper:lemma:gluing-isomorphism",
+          "paper:def:cornered-bimodule",
+          "paper:def:tensor-product-bimodule"
+        ],
+        "conclusion": "paper:theorem:cornered-gluing-formula",
+        "argument": "逐对象用拼接同构定义自然同构，检查左右两侧的态射作用与填充拼接相容，得到双模同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:3",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 3 · 角化骨牌模的张量积拼接公式",
+        "shortTitle": "证明 · 角化骨牌模的张量积拼接公式",
+        "title": "证明 角化骨牌模的张量积拼接公式",
+        "statement": "由拼接同构逐对象识别两个角化骨牌双模沿公共三流形的张量积，并验证双模结构相容。",
+        "premises": [
+          "paper:lemma:gluing-isomorphism",
+          "paper:def:cornered-bimodule",
+          "paper:def:tensor-product-bimodule"
+        ],
+        "conclusion": "paper:theorem:gluing-bimodules",
+        "argument": "由拼接同构逐对象识别两个角化骨牌双模沿公共三流形的张量积，并验证双模结构相容。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · 自拼接中间模同构",
+        "shortTitle": "证明 · 自拼接中间模同构",
+        "title": "证明 自拼接中间模同构",
+        "statement": "将拼接同构的证明应用于自拼接情形：把填充横截于公共边界，切分为两侧填充，并利用自拼接关系识别不同切分，构造与拼接映射互逆的映射。",
+        "premises": [
+          "paper:lemma:gluing-isomorphism",
+          "paper:def:cornered-bimodule",
+          "paper:definition:zeroth-hochschild-homology"
+        ],
+        "conclusion": "paper:lemma:self-gluing-intermediate-isomorphism",
+        "argument": "将拼接同构的证明应用于自拼接情形：把填充横截于公共边界，切分为两侧填充，并利用自拼接关系识别不同切分，构造与拼接映射互逆的映射。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=11"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 自拼接公式",
+        "shortTitle": "证明 · 自拼接公式",
+        "title": "证明 自拼接公式",
+        "statement": "按零阶 Hochschild 同调的商定义，应用自拼接中间模同构，将每个对角分量的填充送到去除中心曲面邻域后的自拼接流形，得到分次模同构。",
+        "premises": [
+          "paper:lemma:self-gluing-intermediate-isomorphism",
+          "paper:definition:zeroth-hochschild-homology",
+          "paper:def:cornered-bimodule"
+        ],
+        "conclusion": "paper:theorem:self-gluing-formula",
+        "argument": "按零阶 Hochschild 同调的商定义，应用自拼接中间模同构，将每个对角分量的填充送到去除中心曲面邻域后的自拼接流形，得到分次模同构。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=12"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 填回中心曲面公式",
+        "shortTitle": "证明 · 填回中心曲面公式",
+        "title": "证明 填回中心曲面公式",
+        "statement": "将带边界 $P\\times S^1$ 的填充用子午圆盘封口，证明映射满射；借用 MN22 定理 1.1 的同位代表论证，说明不同切割代表恰由辫作用和相反符号点的环带连通和关系识别。",
+        "premises": [
+          "paper:lemma:self-gluing-intermediate-isomorphism",
+          "paper:external:mn22-isotopy-filling-result"
+        ],
+        "conclusion": "paper:theorem:filling-central-surface-quotient",
+        "argument": "将带边界 $P\\times S^1$ 的填充用子午圆盘封口，证明映射满射；借用 MN22 定理 1.1 的同位代表论证，说明不同切割代表恰由辫作用和相反符号点的环带连通和关系识别。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=13"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 同位链对应对象同构",
+        "shortTitle": "证明 · 同位链对应对象同构",
+        "title": "证明 同位链对应对象同构",
+        "statement": "取链同位的轨迹环带，使其横截于 $\\Sigma\\times I$；在有限个切触时刻局部构造互逆态射，并利用张量积中的等价关系证明复合为恒等。",
+        "premises": [
+          "paper:definition:surface-bicategory",
+          "paper:definition:left-right-module-bicategory",
+          "paper:definition:three-manifold-right-module",
+          "paper:definition:module-tensor-product"
+        ],
+        "conclusion": "paper:lemma:isotopic-links-objects",
+        "argument": "取链同位的轨迹环带，使其横截于 $\\Sigma\\times I$；在有限个切触时刻局部构造互逆态射，并利用张量积中的等价关系证明复合为恒等。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=17"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · 三流形骨牌范畴拼接公式",
+        "shortTitle": "证明 · 三流形骨牌范畴拼接公式",
+        "title": "证明 三流形骨牌范畴拼接公式",
+        "statement": "对每个链选取横截于 $\\Sigma$ 的固定代表，定义切割与拼接函子；利用同位链对应对象同构处理对象和态射，并验证两个复合函子分别自然同构于恒等函子。",
+        "premises": [
+          "paper:definition:surface-bicategory",
+          "paper:definition:left-right-module-bicategory",
+          "paper:definition:three-manifold-right-module",
+          "paper:definition:module-tensor-product",
+          "paper:lemma:isotopic-links-objects"
+        ],
+        "conclusion": "paper:theorem:three-manifold-category-gluing",
+        "argument": "对每个链选取横截于 $\\Sigma$ 的固定代表，定义切割与拼接函子；利用同位链对应对象同构处理对象和态射，并验证两个复合函子分别自然同构于恒等函子。",
+        "sourcePath": "CORNERED SKEIN LASAGNA THEORY.pdf#page=18"
+      }
+    ]
+  }
+}

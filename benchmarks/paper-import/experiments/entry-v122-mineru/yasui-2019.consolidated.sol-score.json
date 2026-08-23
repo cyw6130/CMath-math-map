@@ -1,0 +1,29 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v122-mineru/yasui-2019.consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 19,
+  "completeness": 18,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate covers nearly all core theorems, lemmas, definitions, and external results in the gold artifact with generally accurate statements and page locators. However, it omits the symplectic-structure definition, truncates important hypotheses in Bauer's connected-sum theorem, and misstates or ambiguously formats mod-4 hypotheses in Theorems 1.9 and 2.4. Several corollaries are typed as theorems, the open problem is incorrectly typed as a lemma, and duplicate orientation/2-handle definitions reduce extraction precision.",
+  "strengths": [
+    "Represents the principal Theorem 1.4 and Theorem 1.9 results, the 2-handle-based Theorems 2.3–2.5, Lemma 2.6, Lemma 3.1, and the sphere obstruction theorem.",
+    "Accurately captures most external results, including Bauer, Frøyshov, Taubes, the stable-cohomotopy refinement, and symplectic Betti-parity fact.",
+    "Statements generally preserve mathematical objects, non-torsion conditions, positivity assumptions, and conclusions; page numbers align with the source.",
+    "Coverage is broader than the gold set and includes several legitimate supporting corollaries and background results."
+  ],
+  "issues": [
+    "The gold definition of a 4-manifold symplectic structure is missing.",
+    "Bauer Theorem 2.7 is overly compressed and omits substantive conditions, including the compatible spin^c/almost-complex structure and mod-2 Seiberg–Witten requirements, as well as the n=4 mod-8 condition.",
+    "Theorem 2.4 is recorded with b_2^+ != 1 instead of the gold condition b_2^+ not congruent to 1 modulo 4.",
+    "Theorem 1.9 states the mod-4 qualifier ambiguously, effectively attaching it only to b_2^- rather than clearly applying to both b_2^+ and b_2^-.",
+    "Corollaries 1.5–1.7 and 2.5 are typed as theorem rather than corollary, while Problem 1.1 is incorrectly typed as a lemma.",
+    "Orientation reversal is duplicated under two definition IDs, and the 2-handle-neighborhood definition is duplicated in abbreviated form.",
+    "Some extracted external/background entries are generic descriptions rather than fully delimited mathematical statements."
+  ],
+  "entryLevelComparison": []
+}

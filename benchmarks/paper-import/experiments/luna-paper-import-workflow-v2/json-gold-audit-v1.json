@@ -1,0 +1,124 @@
+{
+  "schema": "cmath.paper-json-gold-audit/v1",
+  "experimentId": "luna-paper-import-workflow-v2",
+  "workflowVersion": "v2",
+  "auditMethod": "candidate JSON versus fixed Gold JSON/spec; no PDF reread",
+  "semanticWeights": {
+    "objectsAndHypotheses": 18,
+    "b0Boundary": 12,
+    "mainTarget": 8,
+    "proofDependencies": 14,
+    "claimStates": 5,
+    "sourceAttribution": 3
+  },
+  "cases": [
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "runArtifact": "../luna-paper-import-off-compact-v1/skein4-prompt-v2-run-1.json",
+      "status": "completed",
+      "machineScore": { "format": 95, "semantic": 12, "overall": 45.2 },
+      "auditScore": {
+        "format": 38,
+        "semantic": 42,
+        "overall": 80,
+        "semanticComponents": {
+          "objectsAndHypotheses": 12,
+          "b0Boundary": 5,
+          "mainTarget": 8,
+          "proofDependencies": 10,
+          "claimStates": 5,
+          "sourceAttribution": 2
+        }
+      },
+      "reasons": [
+        "The triple module, associated algebra, evaluation isomorphism, gluing result, Khovanov comparison, and all three handle formulas are materially present.",
+        "The selected target is semantically the Gold gluing theorem despite a different identifier.",
+        "The B0 set omits the MWW and Ren-Willis inputs and contains only two of the four Gold boundary inputs.",
+        "The proof chain is substantially present but compresses the bimodule/gluing setup and omits two external dependencies."
+      ]
+    },
+    {
+      "caseId": "kirby-2018-trisections",
+      "runArtifact": "../luna-paper-import-off-compact-v1/kirby-prompt-v2-run-1.json",
+      "status": "completed",
+      "machineScore": { "format": 95, "semantic": 39, "overall": 61.4 },
+      "auditScore": {
+        "format": 38,
+        "semantic": 30,
+        "overall": 68,
+        "semanticComponents": {
+          "objectsAndHypotheses": 8,
+          "b0Boundary": 4,
+          "mainTarget": 0,
+          "proofDependencies": 13,
+          "claimStates": 3,
+          "sourceAttribution": 2
+        }
+      },
+      "reasons": [
+        "Several surveyed definitions and results are present, and emitting no proof edges is directionally correct for this survey case.",
+        "The candidate chooses bridge position as the main target instead of the Gay-Kirby existence/stable-uniqueness theorem.",
+        "Freedman, Donaldson, and CGP boundary results are missing; the B0 set is not equivalent to the fixed Gold boundary.",
+        "Correct absence of invented proof edges earns dependency credit but cannot compensate for the wrong target and incomplete B0."
+      ]
+    },
+    {
+      "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+      "runArtifact": "../luna-paper-import-off-compact-v1/yasui-prompt-v2-run-1.json",
+      "status": "completed",
+      "machineScore": { "format": 95, "semantic": 60, "overall": 74 },
+      "auditScore": {
+        "format": 38,
+        "semantic": 34,
+        "overall": 72,
+        "semanticComponents": {
+          "objectsAndHypotheses": 14,
+          "b0Boundary": 8,
+          "mainTarget": 0,
+          "proofDependencies": 8,
+          "claimStates": 2,
+          "sourceAttribution": 2
+        }
+      },
+      "reasons": [
+        "Most Seiberg-Witten, Bauer, Froyshov, Taubes, handle-neighborhood, and symplectic-obstruction objects are represented.",
+        "The selected target is stable-cohomotopy vanishing rather than the Gold geometrically-simply-connected positive-definite theorem.",
+        "The B0 set contains the main external families but is over-expanded and not equivalent to the Gold boundary.",
+        "Five candidate Claims remain open and the proof chain contains compressed, missing, or locally autofixed dependencies."
+      ]
+    },
+    {
+      "caseId": "cornered-skein-lasagna-theory",
+      "runArtifact": "cornered-skein-run-2.json",
+      "status": "completed",
+      "machineScore": { "format": 95, "semantic": 31, "overall": 56.6 },
+      "auditScore": {
+        "format": 38,
+        "semantic": 51,
+        "overall": 89,
+        "semanticComponents": {
+          "objectsAndHypotheses": 17,
+          "b0Boundary": 8,
+          "mainTarget": 8,
+          "proofDependencies": 11,
+          "claimStates": 5,
+          "sourceAttribution": 2
+        }
+      },
+      "reasons": [
+        "All six Gold definition families are materially represented, including the cornered category/bimodule, tensor product, HH0, trisection diagram, and surface bicategory.",
+        "The selected cornered gluing theorem is semantically equivalent to the Gold main target.",
+        "Ren-Willis and fragmentation inputs are correctly placed in B0, but the Gay-Kirby trisection boundary input is missing and the foundational lasagna attribution is not exactly the Gold boundary.",
+        "The gluing, self-gluing, trisection, and 2D gluing chains are materially present, with some intermediate dependencies compressed."
+      ]
+    }
+  ],
+  "summary": {
+    "completedCases": 4,
+    "failedCases": 0,
+    "machineOverallMacroAverageCompleted": 59.3,
+    "auditOverallMacroAverageCompleted": 77.25,
+    "auditSemanticMacroAverageCompleted": 39.25,
+    "decision": "preserve as workflow v2 experiment; not promoted over v1 baseline"
+  }
+}

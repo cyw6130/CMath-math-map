@@ -1,0 +1,328 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-1-off-compact-v3.9.2",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.9.2",
+  "promptSetVersion": "v3.9.2",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "文章1.pdf",
+    "pageCount": 14,
+    "characters": 29596
+  },
+  "diagnostics": {
+    "durationMs": 218752,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "文章1.pdf",
+        "pageCount": 14,
+        "atMs": 1
+      },
+      {
+        "stage": "guide",
+        "chars": 29596,
+        "atMs": 1
+      },
+      {
+        "stage": "target",
+        "leads": 11,
+        "atMs": 62685
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 62685
+      },
+      {
+        "stage": "request",
+        "chars": 29596,
+        "chunks": 2,
+        "atMs": 62689
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 5,
+        "atMs": 62695
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 117251
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 118010
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:definition:2handle-neighborhood",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:geometrically-simply-connected",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:zero-sphere",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:bauer-nonvanishing",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:adjunction-obstruction",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:general-vanishing",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:orientation-obstruction",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:external:symplectic-parity",
+        "retained": "coverage-or-first-seen",
+        "atMs": 133779
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 39,
+        "leadGuided": 22,
+        "total": 53,
+        "conflicts": 8,
+        "atMs": 133779
+      },
+      {
+        "stage": "integrate",
+        "entries": 53,
+        "atMs": 133779
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 13,
+        "renameCount": 0,
+        "atMs": 140573
+      },
+      {
+        "stage": "assemble",
+        "entries": 40,
+        "atMs": 140574
+      },
+      {
+        "stage": "response",
+        "atMs": 166548
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 13 条 Inference"
+        ],
+        "atMs": 166551
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "B0 移除本文已有 proof 的 Claim：paper:theorem:adjunction-obstruction"
+        ],
+        "atMs": 166552
+      },
+      {
+        "stage": "repair",
+        "reason": "16 处问题",
+        "attempt": 1,
+        "atMs": 166556
+      },
+      {
+        "stage": "response",
+        "atMs": 191380
+      },
+      {
+        "stage": "autofix",
+        "count": 2,
+        "actions": [
+          "丢弃 premises 为空的 第 12 条 Inference",
+          "丢弃 premises 为空的 第 13 条 Inference"
+        ],
+        "atMs": 191381
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "B0 移除本文已有 proof 的 Claim：paper:theorem:adjunction-obstruction"
+        ],
+        "atMs": 191381
+      },
+      {
+        "stage": "repair",
+        "reason": "14 处问题",
+        "attempt": 2,
+        "atMs": 191381
+      },
+      {
+        "stage": "response",
+        "atMs": 218751
+      },
+      {
+        "stage": "autofix",
+        "count": 2,
+        "actions": [
+          "丢弃 premises 为空的 第 12 条 Inference",
+          "丢弃 premises 为空的 第 13 条 Inference"
+        ],
+        "atMs": 218752
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 62677,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9294,
+          "completion_tokens": 3366,
+          "total_tokens": 12660
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 19199,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12737,
+          "completion_tokens": 965,
+          "total_tokens": 13702
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 54556,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9970,
+          "completion_tokens": 2896,
+          "total_tokens": 12866
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 55319,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7634,
+          "completion_tokens": 2919,
+          "total_tokens": 10553
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 71080,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 13786,
+          "completion_tokens": 3788,
+          "total_tokens": 17574
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 8000,
+        "reasoningEffort": "none",
+        "durationMs": 6792,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4852,
+          "completion_tokens": 256,
+          "total_tokens": 5108
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 25973,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12694,
+          "completion_tokens": 1355,
+          "total_tokens": 14049
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 24823,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 17202,
+          "completion_tokens": 1303,
+          "total_tokens": 18505,
+          "prompt_tokens_details": {
+            "cached_tokens": 12032
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "none",
+        "durationMs": 27368,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 21226,
+          "completion_tokens": 1293,
+          "total_tokens": 22519,
+          "prompt_tokens_details": {
+            "cached_tokens": 16128
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.2 定向修复已执行 2 次）：B0 Claim paper:external:handle-class 缺少 sourceReference/source（所引文献信息）；Claim paper:theorem:main（几何单连通正定闭 $4$-流形的稳定上同伦 Seiberg–Witten 不变量消失）闭包推导后仍未建立：其 proof 的前提 paper:theorem:general-vanishing、paper:lemma:3.1 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:sw-vanishing（几何单连通正定闭 $4$-流形的普通 Seiberg–Witten 不变量消失）闭包推导后仍未建立：其 proof 的前提 paper:theorem:general-vanishing 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:no-symplectic（几何单连通正定闭 $4$-流形无辛结构）闭包推导后仍未建立：其 proof 的前提 paper:theorem:sw-vanishing 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:cp2-consequence（无 $1$、$3$-手柄的正定辛流形限制）闭包推导后仍未建立：其 proof 的前提 paper:theorem:no-symplectic 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:both-orientations-question（问题：两种定向均具有辛结构）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:theorem:orientation-obstruction（至少一种定向不具有辛结构）闭包推导后仍未建立：其 proof 的前提 paper:theorem:orientation-obstruction-general、paper:lemma:3.1 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:general-vanishing（2-手柄邻域条件下的稳定不变量消失）闭包推导后仍未建立：其 proof 的前提 paper:lemma:zero-sphere 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:orientation-obstruction-general（2-手柄邻域条件下的定向辛结构障碍）闭包推导后仍未建立：其 proof 的前提 paper:lemma:zero-sphere 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:corollary:general-sw-vanishing（2-手柄邻域条件下的普通 Seiberg–Witten 不变量消失）闭包推导后仍未建立：其 proof 的前提 paper:theorem:general-vanishing 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:lemma:zero-sphere（反向定向连通和中的零自交嵌入 $2$-球）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:lemma:3.1（几何单连通流形中同调类的二手柄表示）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:corollary:sw-vanishing（普通 Seiberg–Witten 不变量的消失）闭包推导后仍未建立：其 proof 的前提 paper:theorem:main 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:corollary:no-symplectic（辛结构不存在性推论）闭包推导后仍未建立：其 proof 的前提 paper:corollary:sw-vanishing 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise"
+  }
+}

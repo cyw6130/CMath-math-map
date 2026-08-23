@@ -1,0 +1,30 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v129-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 18,
+  "completeness": 16,
+  "solEntryScore": 34,
+  "verdict": "usable",
+  "summary": "The candidate captures the main vanishing theorem, the orientation-dependent symplectic obstruction, the 2-handle-neighborhood definition, the embedded-sphere lemma, the geometric-simple-connectivity lemma, Bauer/Froyshov results, and several valid corollaries. However, one Bauer theorem is materially under-specified, some statements are less precise than the gold reference, foundational entries such as the symplectic-structure definition and Betti-parity fact are absent, and the pool contains substantial duplication and several extra entries not aligned with the gold entry set.",
+  "strengths": [
+    "The principal Theorem 1.4 result is present with the essential hypotheses and conclusion.",
+    "Theorem 2.3, Theorem 2.4, the sphere obstruction, Frøyshov vanishing, and Lemma 3.1 are all represented with mostly correct mathematical content.",
+    "External attribution is explicitly recorded for Bauer, Taubes, Frøyshov, and the auxiliary classification result.",
+    "The candidate includes useful supporting definitions and corollaries, including orientation reversal and the corresponding homology-class notation."
+  ],
+  "issues": [
+    "The Bauer stable-cohomotopy theorem is compressed to 'conditions (i)–(iii)' and omits the substantive hypotheses, including the b2+ congruence, b1, spin-c, and mod-8 details required for a precise extraction.",
+    "The candidate omits the gold foundational definition of a symplectic structure/canonical spin-c structure and the external symplectic Betti-parity fact.",
+    "Several entries are duplicated or near-duplicated: the geometric-simple-connectivity lemma appears repeatedly, and the embedded-sphere lemma is repeated with different IDs.",
+    "Entry typing is inconsistent for corollaries, which are labeled as theorem rather than corollary; the raw pool also mixes alternate IDs for the same source entry.",
+    "The Taubes statement is weaker and less precise than the gold reference, which records the canonical spin-c structure and SW value ±1 (hence mod-2 nonzero).",
+    "The embedded-sphere statement uses α−bar(α), while the gold wording records the doubled class as α×bar(α); this notation mismatch should be resolved against the source.",
+    "The pool includes extra definitions and results, such as positive-definite terminology and the b2=1 classification, that are not represented in the gold reference and increase redundancy without consistently improving coverage.",
+    "Page-only locators are generally coarse and do not provide reliable theorem/lemma labels for many entries."
+  ],
+  "entryLevelComparison": []
+}

@@ -1,0 +1,149 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/skein1.consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "4-dim-skein-modules-handles-tangles",
+  "correctness": 19,
+  "completeness": 17,
+  "solEntryScore": 36,
+  "verdict": "usable",
+  "summary": "The candidate is mathematically usable and covers nearly all central results, including the tensor-product gluing theorem, both comparison lemmas, the three handle-attachment formulas, and the principal external inputs. Its strongest entries preserve the essential formulas and hypotheses accurately. The score is reduced by omission of the functorial link-homology axioms and the foundational MWW construction, inconsistent classification of the gluing map and evaluation result, imprecise tangle terminology, several weakened formulas, locator discrepancies, and substantial duplication of the gluing and handle results.",
+  "strengths": [
+    "Captures the main gluing isomorphism with the correct balanced tensor product over the 3-manifold algebra in skein1:thm:gluing-formula.",
+    "Represents all three core 1-, 2-, and 3-handle attachment results, including the Hochschild-homology, cabling-quotient, and module-quotient descriptions.",
+    "Extracts both supporting comparison lemmas concerning the evaluation algebra/module and the Khovanov tangle test case with essentially correct formulas.",
+    "Correctly marks the Khovanov tangle construction and Ren-Willis gluing surjection as external results and supplies source attributions.",
+    "Captures the two foundational definitions of the triple skein module and the algebra associated to a 3-manifold."
+  ],
+  "issues": [
+    "The gold definition specifying the axioms of the functorial link-homology theory is absent.",
+    "The foundational Morrison-Walker-Wedrich skein-lasagna construction is not extracted as a distinct external result; only its evaluation is represented.",
+    "The bimodule gluing map is classified as an algorithm rather than a definition, even though its mathematical construction is substantially captured.",
+    "Several duplicate gluing entries omit the balancing algebra from the displayed tensor product and merely say afterward that the tensor product is a bimodule tensor product.",
+    "The triple-module definition uses imprecise terminology such as knot/tangent in place of framed oriented tangle and does not state the boundary condition as precisely as the gold entry.",
+    "The evaluation isomorphism is redundantly split into a calculation and an external proposition, while the gold treats the cited evaluation theorem as one background claim.",
+    "The handle formulas and gluing theorem are repeated multiple times at different levels of detail, creating excessive redundancy and making entry boundaries unstable.",
+    "Some high-level entries are assigned page 2 even though the gold locates the introductory handle statements on page 1; IDs also mix paper: and skein1: namespaces inconsistently.",
+    "The detailed 2-handle entries express the quotient using braid and decorated-sphere relations but do not clearly identify the subalgebra action in the same precise form as the gold reference."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:functorial-link-theory",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No entry states the strict monoidality and framed-cobordism extension axioms."
+    },
+    {
+      "goldEntryId": "paper:def:triple-skein-module",
+      "candidateEntryIds": [
+        "paper:def:skein-lasagna-module-triple"
+      ],
+      "status": "partial",
+      "notes": "The direct-sum definition is present, but tangle terminology and boundary hypotheses are less precise."
+    },
+    {
+      "goldEntryId": "paper:def:3-manifold-algebra",
+      "candidateEntryIds": [
+        "paper:def:algebra-associated-to-3-manifold"
+      ],
+      "status": "matched",
+      "notes": "The direct sum and gluing multiplication are accurately represented."
+    },
+    {
+      "goldEntryId": "paper:def:bimodule-gluing-map",
+      "candidateEntryIds": [
+        "skein1:alg:gluing-map"
+      ],
+      "status": "misclassified",
+      "notes": "The construction is accurate but is typed as an algorithm rather than a definition."
+    },
+    {
+      "goldEntryId": "paper:b0:mww-skein-lasagna",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The general external MWW construction is not isolated as an entry."
+    },
+    {
+      "goldEntryId": "paper:b0:evaluation-isomorphism",
+      "candidateEntryIds": [
+        "paper:calc:evaluation-isomorphism",
+        "paper:external:evaluation-isomorphism-mww"
+      ],
+      "status": "matched_with_redundancy",
+      "notes": "The result and attribution are present but split across two differently classified entries."
+    },
+    {
+      "goldEntryId": "paper:b0:khovanov-tangle-functor",
+      "candidateEntryIds": [
+        "paper:external:khovanov-tangle-invariant"
+      ],
+      "status": "matched",
+      "notes": "External attribution and the bimodule-chain-complex construction are captured."
+    },
+    {
+      "goldEntryId": "paper:b0:ren-willis-gluing-surjection",
+      "candidateEntryIds": [
+        "paper:external:gluing-surjection"
+      ],
+      "status": "matched",
+      "notes": "The surjection, boundary setup, and literature attribution are represented."
+    },
+    {
+      "goldEntryId": "paper:lemma:algebra-isomorphism",
+      "candidateEntryIds": [
+        "paper:lemma:evaluation-algebra-module-isomorphism"
+      ],
+      "status": "matched",
+      "notes": "Both the algebra and module isomorphisms are stated."
+    },
+    {
+      "goldEntryId": "paper:lemma:khovanov-tangle-isomorphism",
+      "candidateEntryIds": [
+        "paper:lemma:khovanov-tangle-test-case"
+      ],
+      "status": "matched",
+      "notes": "The sign caveat and both required isomorphisms are retained."
+    },
+    {
+      "goldEntryId": "paper:thm:gluing-isomorphism",
+      "candidateEntryIds": [
+        "paper:thm:gluing-formula",
+        "paper:thm:gluing-homomorphism-tensor-product",
+        "skein1:thm:gluing-formula"
+      ],
+      "status": "matched_with_redundancy",
+      "notes": "The exact balanced tensor-product formula appears once, while two duplicates weaken its notation."
+    },
+    {
+      "goldEntryId": "paper:thm:1-handle-formula",
+      "candidateEntryIds": [
+        "paper:thm:one-handle-attachment",
+        "skein1:theorem:one-handle-formula"
+      ],
+      "status": "matched_with_redundancy",
+      "notes": "The introductory entry correctly gives the zeroth Hochschild homology description."
+    },
+    {
+      "goldEntryId": "paper:thm:2-handle-formula",
+      "candidateEntryIds": [
+        "paper:thm:two-handle-attachment",
+        "skein1:theorem:two-handle-formula",
+        "skein1:thm:two-handle-isomorphism"
+      ],
+      "status": "matched_with_redundancy",
+      "notes": "The cabling quotient is covered, though the controlling subalgebra action is less explicit in the theorem entries."
+    },
+    {
+      "goldEntryId": "paper:thm:3-handle-formula",
+      "candidateEntryIds": [
+        "paper:thm:three-handle-attachment",
+        "skein1:theorem:three-handle-formula",
+        "skein1:thm:three-handle-tensor-isomorphism"
+      ],
+      "status": "matched_with_redundancy",
+      "notes": "The tensor-product and quotient descriptions are correct but fragmented across several entries."
+    }
+  ]
+}

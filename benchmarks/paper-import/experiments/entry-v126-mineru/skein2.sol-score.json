@@ -1,0 +1,28 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v126-mineru/skein2.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "cornered-skein-lasagna-theory",
+  "correctness": 21,
+  "completeness": 18,
+  "solEntryScore": 39,
+  "verdict": "usable",
+  "summary": "The candidate captures essentially all core definitions, Lemma 3.7, Theorems 3.8, 3.14, and 3.15, Corollary 3.19, Lemma 4.5, and Theorem 4.7 with generally faithful formulas and useful supporting infrastructure. However, it contains substantial duplication, misclassifies Definition 3.17 and Corollary 3.19 as theorems, has at least one clearly incorrect locator, and does not consistently preserve the Gold artifact's external-attribution structure.",
+  "strengths": [
+    "Core cornered 3-manifold category, 4-manifold bimodule, tensor product, Hochschild homology, trisection, and surface bicategory content is represented.",
+    "The main gluing and self-gluing formulas are extracted with mathematically recognizable and mostly accurate LaTeX statements.",
+    "Supporting definitions for lasagna fillings, the skein lasagna module, grading, self-gluing, punctured self-gluing, and the third equivalence relation improve foundational coverage.",
+    "RW24 and Ban97 are explicitly marked as external results, and Lemma 3.7 is connected to those prerequisites through inference hints."
+  ],
+  "issues": [
+    "The first 'skein2:thm:gluing-formula' entry is a duplicate of Theorem 3.8 and is assigned page 2, whereas the verified theorem is located on page 9; this is a significant locator and redundancy error.",
+    "Theorem 3.8 is duplicated again under multiple IDs, and the cornered bimodule definition is duplicated, weakening entry identity and redundancy control.",
+    "Definition 3.17 is emitted as type 'theorem' even though the source explicitly labels it as a definition; Corollary 3.19 is also typed as 'theorem' rather than a corollary.",
+    "The Gold MWW foundational background and Gay–Kirby external attribution are not explicitly preserved; the candidate supplies related definitions but loses provenance and external-result classification.",
+    "Some statements are less precise than Gold: the self-gluing quotient notation is awkward, the capping-off theorem omits much of the explicit generator description, and Lemma 4.5 is described with '同伦' in places where Gold specifies isotopy.",
+    "Several entries use inconsistent namespaces and IDs, making canonical matching to the verified Gold entries difficult despite good semantic overlap."
+  ],
+  "entryLevelComparison": []
+}

@@ -1,0 +1,848 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-resumed-import-rt-off-compact-v3.26-inference-v7-repair-queue",
+  "condition": "off-compact",
+  "workflowVersion": "v3.26-inference-v7-repair-queue",
+  "promptSetVersion": "v3.26-inference-v7-repair-queue",
+  "resumedFromEntryArtifact": {
+    "schema": "cmath.paper-entry-artifact/v1",
+    "entryModuleVersion": "paper-entry-consolidation-v1",
+    "entriesCount": 47
+  },
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "RT.pdf",
+    "pageCount": 19,
+    "characters": 21507
+  },
+  "diagnostics": {
+    "durationMs": 102818,
+    "stages": [
+      {
+        "stage": "assemble",
+        "entries": 47,
+        "atMs": 2
+      },
+      {
+        "stage": "response",
+        "atMs": 73104
+      },
+      {
+        "stage": "repair",
+        "reason": "7 处问题",
+        "attempt": 1,
+        "atMs": 73130
+      },
+      {
+        "stage": "response",
+        "atMs": 94866
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 2,
+        "atMs": 94873
+      },
+      {
+        "stage": "response",
+        "atMs": 102813
+      },
+      {
+        "stage": "validate",
+        "atMs": 102815
+      },
+      {
+        "stage": "closure",
+        "openClaims": [],
+        "atMs": 102818
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 102818
+      }
+    ],
+    "calls": [
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "medium",
+        "durationMs": 73094,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14808,
+          "completion_tokens": 3905,
+          "total_tokens": 18713,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2345
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 21722,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 27191,
+          "completion_tokens": 1102,
+          "total_tokens": 28293,
+          "completion_tokens_details": {
+            "reasoning_tokens": 493
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 7931,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 28172,
+          "completion_tokens": 346,
+          "total_tokens": 28518
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:rt",
+      "title": "结、Hopf代数与量子不变量"
+    },
+    "mainTargetEntryId": "paper:thm:reshetikhin-turaev-invariant",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:rt",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:thm:kirby-calculus",
+          "paper:thm:turaev-ribbon-graph-functor",
+          "paper:thm:turaev-purification",
+          "paper:thm:turaev-generic-laurent",
+          "paper:thm:lickorish-wallace",
+          "paper:thm:rohlin-cobordism"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:thm:reshetikhin-turaev-invariant"
+      }
+    },
+    "projectTitle": "结、Hopf代数与量子不变量",
+    "entries": [
+      {
+        "id": "paper:def:integer-surgery",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · integer Dehn surgery",
+        "shortTitle": "integer Dehn surgery",
+        "title": "integer Dehn surgery",
+        "statement": "ML = S_L^3(n_1,...,n_m) = ∂W_L，其中 W_L 是沿 framed link L 附加 2-handles 得到的四维 handlebody。",
+        "sourcePath": "RT.pdf#page=2"
+      },
+      {
+        "id": "paper:thm:lickorish-wallace",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · Lickorish–Wallace surgery theorem",
+        "shortTitle": "Lickorish–Wallace surgery theorem",
+        "title": "Lickorish–Wallace surgery theorem",
+        "statement": "任意 closed connected oriented 3-manifold M 都有一个 integer surgery presentation：存在 S^3 中的 link L 以及整数 framings n_i，使得 M ≅ S_L^3(n_1,...,n_m)。",
+        "sourcePath": "RT.pdf#page=2",
+        "sourceReference": "A. H. Wallace, Modifications and cobounding manifolds, Canadian Journal of Mathematics 12 (1960), 503–528；W. B. R. Lickorish, A representation of orientable combinatorial 3-manifolds, Annals of Mathematics 76 (1962), 531–540."
+      },
+      {
+        "id": "paper:thm:kirby-calculus",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · Kirby calculus",
+        "shortTitle": "Kirby calculus",
+        "title": "Kirby calculus",
+        "statement": "带框架链环给出定向保持同胚的三维流形，当且仅当它们可由 framed isotopy、handle slides 及加入或删除 $\\pm1$-framed unknot 相互变换。",
+        "sourcePath": "RT.pdf#page=3",
+        "sourceReference": "R. Kirby, A calculus of framed links in $S^3$, Inventiones Mathematicae 45 (1978), 35–56."
+      },
+      {
+        "id": "paper:thm:rohlin-cobordism",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · Rohlin cobordism theorem",
+        "shortTitle": "Rohlin cobordism theorem",
+        "title": "Rohlin cobordism theorem",
+        "statement": "任意 closed oriented 3-manifold M 都是某个 compact oriented 4-manifold W 的边界，且可要求 W 由 B^4 附加 2-handles 得到。",
+        "sourcePath": "RT.pdf#page=3",
+        "sourceReference": "V. A. Rokhlin, Three-dimensional manifolds which are boundaries of four-dimensional manifolds, Doklady Akademii Nauk SSSR 81 (1951), 355–357."
+      },
+      {
+        "id": "paper:def:braiding",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · braiding",
+        "shortTitle": "braiding",
+        "title": "braiding",
+        "statement": "设 C 是 strict monoidal category。一个 braiding 是一族自然同构 c = {c_{V,W}: V⊗W → W⊗V}，满足两条 hexagon identity 和自然性。",
+        "sourcePath": "RT.pdf#page=4"
+      },
+      {
+        "id": "paper:def:strict-monoidal-category",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · strict monoidal category",
+        "shortTitle": "strict monoidal category",
+        "title": "strict monoidal category",
+        "statement": "一个 strict monoidal category C 带有 bifunctor ⊗: C×C → C 和单位对象 1，满足 (U⊗V)⊗W = U⊗(V⊗W) 和 1⊗V = V = V⊗1。",
+        "sourcePath": "RT.pdf#page=4"
+      },
+      {
+        "id": "paper:def:colored-ribbon-graph",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · colored ribbon graph",
+        "shortTitle": "colored ribbon graph",
+        "title": "colored ribbon graph",
+        "statement": "设 C 是 ribbon category。一个 ribbon graph 是三维流形中的紧定向曲面，分解为有限个 directed bands、directed annuli 和 coupons。C-colored ribbon graph 附加标签：每条 band/annulus 标以 C 中对象 V，方向反转则颜色改为 V*；每个 coupon 标以 C 中 morphism，其 source/target 由 coupon 下方/上方边界上 colored strands 的张量积给出；isotopy 保持分解、方向和 colors。",
+        "sourcePath": "RT.pdf#page=5"
+      },
+      {
+        "id": "paper:def:duality",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · duality / rigid structure",
+        "shortTitle": "duality / rigid structure",
+        "title": "duality / rigid structure",
+        "statement": "设 C 是 strict monoidal category。duality 给每个对象 V 指定对象 V* 及态射 b_V: 1 → V⊗V*, d_V: V*⊗V → 1，满足 zig-zag identities: (id_V⊗d_V)∘(b_V⊗id_V)=id_V, (d_V⊗id_V*)∘(id_V*⊗b_V)=id_V*。具有这种 duality 的 monoidal category 称为 rigid category。",
+        "sourcePath": "RT.pdf#page=5"
+      },
+      {
+        "id": "paper:def:ribbon-category",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · ribbon category",
+        "shortTitle": "ribbon category",
+        "title": "ribbon category",
+        "statement": "一个 ribbon category 是 monoidal category C，配有 braiding c、twist θ 以及与它们相容的 duality (*, b, d)。twist 是自然同构 θ_V: V→V，满足 θ_{V⊗W}=c_{W,V}∘c_{V,W}∘(θ_V⊗θ_W)。duality 与 braiding、twist 的兼容性要求 (θ_V⊗id_V*)∘b_V=(id_V⊗θ_V*)∘b_V，即 θ_V*=(θ_V)*。",
+        "sourcePath": "RT.pdf#page=5"
+      },
+      {
+        "id": "paper:def:graphical-calculus",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · graphical calculus",
+        "shortTitle": "graphical calculus",
+        "title": "graphical calculus",
+        "statement": "Graphical calculus 是把 colored ribbon graph 的平面图示翻译成 C 中 morphisms 的规则：identity strand 对应 id_V，positive/negative crossing 对应 c_{V,W} 或 c^{-1}_{V,W}，cup/cap 对应 coevaluation/evaluation，positive/negative twist 对应 θ_V 或 θ_V^{-1}，coupon 对应其标记的 morphism。",
+        "sourcePath": "RT.pdf#page=6"
+      },
+      {
+        "id": "paper:prop:hexagon-identity",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · hexagon identity",
+        "shortTitle": "hexagon identity",
+        "title": "hexagon identity",
+        "statement": "对于 braiding c，有 c_{U,V⊗W} = (id_V⊗c_{U,W})∘(c_{U,V}⊗id_W)。",
+        "sourcePath": "RT.pdf#page=7"
+      },
+      {
+        "id": "paper:prop:yang-baxter-identity",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · Yang–Baxter identity",
+        "shortTitle": "Yang–Baxter identity",
+        "title": "Yang–Baxter identity",
+        "statement": "对于 braiding c，有 (id_W⊗c_{U,V})∘(c_{U,W}⊗id_V)∘(id_U⊗c_{V,W}) = (c_{V,W}⊗id_U)∘(id_V⊗c_{U,W})∘(c_{U,V}⊗id_W)。",
+        "sourcePath": "RT.pdf#page=7"
+      },
+      {
+        "id": "paper:prop:naturality-of-braiding",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · braiding 的自然性",
+        "shortTitle": "braiding 的自然性",
+        "title": "braiding 的自然性",
+        "statement": "对于 morphisms f: V→V', g: W→W'，有 (g⊗f)∘c_{V,W} = c_{V',W'}∘(f⊗g)。",
+        "sourcePath": "RT.pdf#page=8"
+      },
+      {
+        "id": "paper:prop:zigzag-identities",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · zig-zag identities",
+        "shortTitle": "zig-zag identities",
+        "title": "zig-zag identities",
+        "statement": "对于 duality (b,d)，有 (id_V⊗d_V)∘(b_V⊗id_V)=id_V 和 (d_V⊗id_V*)∘(id_V*⊗b_V)=id_V*。",
+        "sourcePath": "RT.pdf#page=8"
+      },
+      {
+        "id": "paper:def:categorical-trace",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · categorical trace 与 categorical dimension",
+        "shortTitle": "categorical trace 与 categorical dimension",
+        "title": "categorical trace 与 categorical dimension",
+        "statement": "设 $f: V \\to V$ 是 ribbon category $\\mathcal{C}$ 中的 endomorphism，$b_V: \\mathbf{1} \\to V \\otimes V^*$ 与 $d_V: V^* \\otimes V \\to \\mathbf{1}$ 为 coevaluation 与 evaluation。定义 $\\mathrm{tr}_{\\mathcal{C}}(f) = d_V \\circ c_{V,V^*} \\circ ((\\theta_V \\circ f) \\otimes \\mathrm{id}_{V^*}) \\circ b_V \\in \\mathrm{End}_{\\mathcal{C}}(\\mathbf{1})$，且 $\\dim_{\\mathcal{C}}(V) = \\mathrm{tr}_{\\mathcal{C}}(\\mathrm{id}_V)$。",
+        "sourcePath": "RT.pdf#page=10"
+      },
+      {
+        "id": "paper:thm:turaev-ribbon-graph-functor",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · Turaev ribbon graph functor",
+        "shortTitle": "Turaev ribbon graph functor",
+        "title": "Turaev ribbon graph functor",
+        "statement": "任意 ribbon category 都存在将着色 ribbon graphs 映到范畴态射的拓扑不变量函子；闭着色 ribbon graph 映到 $\\mathrm{End}_{\\mathcal C}(\\mathbf 1)$。",
+        "sourcePath": "RT.pdf#page=10",
+        "sourceReference": "V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter, 1994, Chapter I."
+      },
+      {
+        "id": "paper:def:quasitriangular-hopf-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · quasitriangular Hopf algebra",
+        "shortTitle": "quasitriangular Hopf algebra",
+        "title": "quasitriangular Hopf algebra",
+        "statement": "一个 quasitriangular Hopf algebra 是 Hopf algebra $A$ 配有可逆元 $R = \\sum R^{(1)} \\otimes R^{(2)} \\in A \\otimes A$，称为 universal R-matrix，满足 $R\\Delta(a)R^{-1} = \\Delta^{op}(a)$，$(\\Delta \\otimes \\mathrm{id})(R) = R_{13}R_{23}$，$(\\mathrm{id} \\otimes \\Delta)(R) = R_{13}R_{12}$。",
+        "sourcePath": "RT.pdf#page=12"
+      },
+      {
+        "id": "paper:def:ribbon-hopf-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · ribbon Hopf algebra",
+        "shortTitle": "ribbon Hopf algebra",
+        "title": "ribbon Hopf algebra",
+        "statement": "一个 ribbon Hopf algebra 是 quasitriangular Hopf algebra $(A,R)$ 配有 central invertible element $v \\in A$，称为 universal twist，满足 $\\Delta(v) = R_{21}R(v \\otimes v)$，$S(v) = v$，$\\varepsilon(v) = 1$。",
+        "sourcePath": "RT.pdf#page=12"
+      },
+      {
+        "id": "paper:calc:quantum-trace-categorical",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · quantum trace 与 categorical trace 的关系",
+        "shortTitle": "quantum trace 与 categorical trace 的关系",
+        "title": "quantum trace 与 categorical trace 的关系",
+        "statement": "当 C = Repfd(A) 时，把 braiding、duality 和 twist 的具体公式代入 categorical trace，正好得到 quantum trace：trRep(A)(f) = trq(f)。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:def:drinfeld-element",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 11 · Drinfeld element",
+        "shortTitle": "Drinfeld element",
+        "title": "Drinfeld element",
+        "statement": "u = m(S ⊗ id)(R21) 是 Drinfeld element。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:def:quantum-dimension",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 12 · quantum dimension",
+        "shortTitle": "quantum dimension",
+        "title": "quantum dimension",
+        "statement": "dimq(V) = trq(idV) = TrV(ρV(uv))。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:def:quantum-trace",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 13 · quantum trace",
+        "shortTitle": "quantum trace",
+        "title": "quantum trace",
+        "statement": "设 $A$ 是 ribbon Hopf algebra，$V$ 是有限维表示，$f \\in \\mathrm{End}_K(V)$。定义 $\\mathrm{tr}_q(f) = \\mathrm{Tr}_V(\\rho_V(uv) \\circ f)$，其中 $u = m(S \\otimes \\mathrm{id})(R_{21})$ 是 Drinfeld element，$v$ 是 universal twist。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:prop:repfd-ribbon-category",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · ribbon Hopf 代数的表示范畴是 ribbon category",
+        "shortTitle": "ribbon Hopf 代数的表示范畴是 ribbon category",
+        "title": "ribbon Hopf 代数的表示范畴是 ribbon category",
+        "statement": "若 $A$ 是 ribbon Hopf algebra，则有限维表示范畴 $\\mathrm{Rep}_{fd}(A)$ 是 ribbon category。其 braiding 由 universal R-matrix 给出，twist 由 universal twist 的作用给出：$\\theta_V = \\rho_V(v): V \\to V$。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:prop:ribbon-hopf-rep-category",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "shortTitle": "ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "title": "ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "statement": "若 A 是 ribbon Hopf algebra，则有限维表示范畴 Repfd(A) 是 ribbon category。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:def:hopf-link-matrix",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 14 · Hopf link matrix",
+        "shortTitle": "Hopf link matrix",
+        "title": "Hopf link matrix",
+        "statement": "S_ij = tr(c_{Vj,Vi} ◦ c_{Vi,Vj})，其中 c 是 braiding。",
+        "sourcePath": "RT.pdf#page=14"
+      },
+      {
+        "id": "paper:def:kirby-color",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 15 · Kirby color",
+        "shortTitle": "Kirby color",
+        "title": "Kirby color",
+        "statement": "Kirby color 是形式线性组合 ΩV = Σ_{i∈I} dim(i)Vi。",
+        "sourcePath": "RT.pdf#page=14"
+      },
+      {
+        "id": "paper:def:modular-category",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 16 · modular category",
+        "shortTitle": "modular category",
+        "title": "modular category",
+        "statement": "一个 modular category 是一个 ribbon K-linear category V，连同有限个 simple objects 的代表集 {Vi}_{i∈I}，满足：1. 单位对象属于这组 simples；2. 对偶封闭；3. domination：每个对象 X 的 identity morphism 都可写成有限和 idX = Σ_r f_r g_r；4. Hopf link matrix S_ij = tr(c_{Vj,Vi} ◦ c_{Vi,Vj}) 在 K 上可逆。",
+        "sourcePath": "RT.pdf#page=14"
+      },
+      {
+        "id": "paper:calc:kirby-color-sum",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · Kirby color 加权求和",
+        "shortTitle": "Kirby color 加权求和",
+        "title": "Kirby color 加权求和",
+        "statement": "若 L 有 m 个分量，把每个分量都染成 ΩV，意思是取 Turaev 的加权求和 {L} = Σ_{λ∈col(L)} Π_{n=1}^{m} dim(λ(Ln)) F(Γ(L, λ))。",
+        "sourcePath": "RT.pdf#page=15"
+      },
+      {
+        "id": "paper:calc:rt-normalization",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 3 · RT 归一化公式",
+        "shortTitle": "RT 归一化公式",
+        "title": "RT 归一化公式",
+        "statement": "τV,D(ML) = Δ^{σ(L)} D^{-σ(L)-m-1} {L}。这里 m 是 surgery link 的分量数。",
+        "sourcePath": "RT.pdf#page=15"
+      },
+      {
+        "id": "paper:thm:reshetikhin-turaev-invariant",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · Reshetikhin–Turaev invariant",
+        "shortTitle": "Reshetikhin–Turaev invariant",
+        "title": "Reshetikhin–Turaev invariant",
+        "statement": "设 (V, {Vi}_{i∈I}) 是 modular category，并选定 rank D。由 Kirby color 加权求和和 signature 归一化得到的数量 τV,D(ML) 在 Kirby moves 下不变。因此它只依赖于 closed oriented 3-manifold ML 的 orientation-preserving homeomorphism class，给出三维流形不变量 τV,D(M) ∈ K。更一般地，若 closed 3-manifold M 中含有 V-colored framed ribbon graph Γ，同样可以定义 pair invariant τV,D(M, Γ)。",
+        "sourcePath": "RT.pdf#page=15"
+      },
+      {
+        "id": "paper:def:modular-hopf-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 17 · modular Hopf algebra",
+        "shortTitle": "modular Hopf algebra",
+        "title": "modular Hopf algebra",
+        "statement": "一个 modular Hopf algebra 是一个 ribbon Hopf K-algebra A，连同一族有限秩 simple A-modules {Vi}_{i∈I}，满足：1. 存在 0 ∈ I，使 V0 = K；2. 对每个 i ∈ I，存在 i* ∈ I，使 Vi* ≅ Vi*；3. 对任意 k, l ∈ I，张量积 Vk ⊗ Vl 可分解为有限个 Vi 的直和，加上一个 negligible A-module；4. 由 monodromy R21R 给出的 Hopf link matrix S_ij = trq((R21R)|_{Vi⊗Vj}) 在 K 上可逆。",
+        "sourcePath": "RT.pdf#page=16"
+      },
+      {
+        "id": "paper:def:negligible-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 18 · negligible module",
+        "shortTitle": "negligible module",
+        "title": "negligible module",
+        "statement": "设 A 是 ribbon Hopf algebra，Z 是有限秩 A-module。若对任意 A-linear endomorphism f : Z → Z 都有 trq(f) = 0，则称 Z 是 negligible module。",
+        "sourcePath": "RT.pdf#page=16"
+      },
+      {
+        "id": "paper:def:purification",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 19 · purification",
+        "shortTitle": "purification",
+        "title": "purification",
+        "statement": "将 T 按 negligible morphisms 取 quotient，即 purification，得到 modular category Tp。",
+        "sourcePath": "RT.pdf#page=16"
+      },
+      {
+        "id": "paper:thm:turaev-purification",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · Turaev purification 定理",
+        "shortTitle": "Turaev purification 定理",
+        "title": "Turaev purification 定理",
+        "statement": "模 Hopf 代数的拟支配表示构成 ribbon 子范畴，商去 negligible morphisms 后得到 modular category。",
+        "sourcePath": "RT.pdf#page=16",
+        "sourceReference": "V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter, 1994, Chapter XI."
+      },
+      {
+        "id": "paper:calc:jones-writhe-normalization",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 4 · Jones 多项式的 writhe 归一化计算",
+        "shortTitle": "Jones 多项式的 writhe 归一化计算",
+        "title": "Jones 多项式的 writhe 归一化计算",
+        "statement": "从普通定向链环图 $D$ 出发，采用黑板框架，给每个分量染成 $V_1$，计算 $F(D; V_1, \\ldots, V_1)$，再用 writhe 归一化得到 Jones 多项式。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:blackboard-framing",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 20 · 黑板框架",
+        "shortTitle": "黑板框架",
+        "title": "黑板框架",
+        "statement": "从普通定向链环图 $D$ 出发，采用黑板框架将 $D$ 视为框架链环图。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:colored-framed-link",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 21 · 着色框架链环",
+        "shortTitle": "着色框架链环",
+        "title": "着色框架链环",
+        "statement": "设 $L = L_1 \\cup \\cdots \\cup L_s$ 为框架定向链环，给每个分量指定一个最高权 $L_j \\mapsto V_{\\lambda_j}$，得到着色框架链环。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:colored-jones-polynomial",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 22 · colored Jones polynomial",
+        "shortTitle": "colored Jones polynomial",
+        "title": "colored Jones polynomial",
+        "statement": "对 knot K，每个 n ≥ 0 都给出一个 framed colored link polynomial F(K; Vn)。这些就是 colored Jones polynomial 的 quantum-group 来源。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:jones-polynomial",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 23 · Jones 多项式",
+        "shortTitle": "Jones 多项式",
+        "title": "Jones 多项式",
+        "statement": "Jones polynomial = writhe-normalized $F(D; V_1, \\ldots, V_1)$，其中变量替换和整体常数依 convention 而不同。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:operator-invariant-f",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 24 · 算子不变量 F",
+        "shortTitle": "算子不变量 F",
+        "title": "算子不变量 F",
+        "statement": "将着色框架链环代入 Chapter I 的算子不变量 $F$，得到 $F(L; V_{\\lambda_1}, \\ldots, V_{\\lambda_s}) \\in \\mathbb{C}[[h]]$。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:writhe-normalization",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 25 · writhe 归一化",
+        "shortTitle": "writhe 归一化",
+        "title": "writhe 归一化",
+        "statement": "用图的 writhe 做归一化，抵消 twist eigenvalue 带来的 framing dependence，得到普通定向链环不变量。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:prop:generic-invariant-laurent",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 7 · generic 情形下不变量为 Laurent 多项式",
+        "shortTitle": "generic 情形下不变量为 Laurent 多项式",
+        "title": "generic 情形下不变量为 Laurent 多项式",
+        "statement": "当 $g = sl_2(\\mathbb{C})$ 时，$F(L; V_{\\lambda_1}, \\ldots, V_{\\lambda_s})$ 实际上是变量 $q = \\exp(-h/2)$ 的 Laurent polynomial。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:prop:jones-from-basic-representation",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 8 · 基本表示给出 Jones 多项式",
+        "shortTitle": "基本表示给出 Jones 多项式",
+        "title": "基本表示给出 Jones 多项式",
+        "statement": "当 link 的所有分量都染成 $sl_2$ 的基本表示 $V_1$ 时，得到的 $F$ 是 Jones polynomial 的一个版本。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:def:modular-hop-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 26 · 模 Hopf 代数",
+        "shortTitle": "模 Hopf 代数",
+        "title": "模 Hopf 代数",
+        "statement": "对于满足相应阶数条件的 $q$，从 $U_q(g)$ 得到 modular Hopf algebra。",
+        "sourcePath": "RT.pdf#page=18"
+      },
+      {
+        "id": "paper:def:weyl-alcove-simple-modules",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 27 · Weyl alcove 单模",
+        "shortTitle": "Weyl alcove 单模",
+        "title": "Weyl alcove 单模",
+        "statement": "在 root of unity 情形，允许的 colors 截断到有限的 Weyl alcove simple modules。",
+        "sourcePath": "RT.pdf#page=18"
+      },
+      {
+        "id": "paper:def:wrt-invariant",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 28 · WRT 三维流形不变量",
+        "shortTitle": "WRT 三维流形不变量",
+        "title": "WRT 三维流形不变量",
+        "statement": "root of unity 下的有限 modular data 经过 surgery/Kirby normalization 给出 WRT 3-manifold invariants。",
+        "sourcePath": "RT.pdf#page=18"
+      },
+      {
+        "id": "paper:prop:root-of-unity-wrt",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 9 · root of unity 情形给出 WRT 不变量",
+        "shortTitle": "root of unity 情形给出 WRT 不变量",
+        "title": "root of unity 情形给出 WRT 不变量",
+        "statement": "对于满足相应阶数条件的 $q$，从 $U_q(g)$ 得到 modular Hopf algebra，经 purification 得到 modular category 后，应用 surgery construction 得到 Witten–Reshetikhin–Turaev 型 3-manifold invariants。",
+        "sourcePath": "RT.pdf#page=18"
+      },
+      {
+        "id": "paper:thm:turaev-generic-laurent",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · Turaev generic 情形 Laurent 多项式定理",
+        "shortTitle": "Turaev generic 情形 Laurent 多项式定理",
+        "title": "Turaev generic 情形 Laurent 多项式定理",
+        "statement": "对 generic 或 $h$-adic 情形的量子群表示，着色链环算子不变量是变量 $q=\\exp(-h/2)$ 的 Laurent 多项式。",
+        "sourcePath": "RT.pdf#page=17",
+        "sourceReference": "V. G. Turaev, Quantum Invariants of Knots and 3-Manifolds, de Gruyter, 1994, §7.5."
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:organization:1",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 1 · RT 归一化公式",
+        "shortTitle": "组织 · RT 归一化公式",
+        "title": "组织 RT 归一化公式",
+        "statement": "先对各链环分量施加 Kirby color 加权求和，再依据 linking matrix 的 signature、分量数及 rank 进行归一化，形成 RT 三维流形不变量的计算公式。",
+        "premises": [
+          "paper:calc:kirby-color-sum"
+        ],
+        "conclusion": "paper:calc:rt-normalization",
+        "argument": "先对各链环分量施加 Kirby color 加权求和，再依据 linking matrix 的 signature、分量数及 rank 进行归一化，形成 RT 三维流形不变量的计算公式。",
+        "sourcePath": "RT.pdf#page=15"
+      },
+      {
+        "id": "paper:inference:organization:2",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 2 · Jones 多项式的 writhe 归一化计算",
+        "shortTitle": "组织 · Jones 多项式的 writhe 归一化计算",
+        "title": "组织 Jones 多项式的 writhe 归一化计算",
+        "statement": "将普通链环图视为黑板框架链环，先计算基本表示着色的框架不变量，再用 writhe 修正 Reidemeister I 引起的 framing 依赖。",
+        "premises": [
+          "paper:def:blackboard-framing"
+        ],
+        "conclusion": "paper:calc:jones-writhe-normalization",
+        "argument": "将普通链环图视为黑板框架链环，先计算基本表示着色的框架不变量，再用 writhe 修正 Reidemeister I 引起的 framing 依赖。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:inference:organization:3",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 3 · quantum trace 与 categorical trace 的关系",
+        "shortTitle": "组织 · quantum trace 与 categorical trace 的关系",
+        "title": "组织 quantum trace 与 categorical trace 的关系",
+        "statement": "把表示范畴中的 braiding、duality 与 twist 公式代入 categorical trace，并用 Drinfeld 元素与 ribbon 元素合成为量子迹中的修正因子。",
+        "premises": [
+          "paper:def:quantum-trace",
+          "paper:def:categorical-trace",
+          "paper:def:drinfeld-element"
+        ],
+        "conclusion": "paper:calc:quantum-trace-categorical",
+        "argument": "把表示范畴中的 braiding、duality 与 twist 公式代入 categorical trace，并用 Drinfeld 元素与 ribbon 元素合成为量子迹中的修正因子。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · ribbon Hopf 代数的表示范畴是 ribbon category",
+        "shortTitle": "证明 · ribbon Hopf 代数的表示范畴是 ribbon category",
+        "title": "证明 ribbon Hopf 代数的表示范畴是 ribbon category",
+        "statement": "coproduct 给出张量积，antipode 给出有限维对偶，universal R-matrix 给出 braiding，而 universal twist 的作用给出 twist；这些结构满足 ribbon 范畴公理。",
+        "premises": [
+          "paper:def:quasitriangular-hopf-algebra",
+          "paper:def:ribbon-hopf-algebra",
+          "paper:def:duality"
+        ],
+        "conclusion": "paper:prop:repfd-ribbon-category",
+        "argument": "coproduct 给出张量积，antipode 给出有限维对偶，universal R-matrix 给出 braiding，而 universal twist 的作用给出 twist；这些结构满足 ribbon 范畴公理。",
+        "sourcePath": "RT.pdf#page=13"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · Yang–Baxter identity",
+        "shortTitle": "证明 · Yang–Baxter identity",
+        "title": "证明 Yang–Baxter identity",
+        "statement": "将两次 hexagon 分解连续作用于三重张量积，并利用 braiding 的自然性与可逆性，可将两种三股交叉的复合改写为相同的态射，得到 Yang–Baxter 恒等式。",
+        "premises": [
+          "paper:def:braiding",
+          "paper:prop:hexagon-identity"
+        ],
+        "conclusion": "paper:prop:yang-baxter-identity",
+        "argument": "将两次 hexagon 分解连续作用于三重张量积，并利用 braiding 的自然性与可逆性，可将两种三股交叉的复合改写为相同的态射，得到 Yang–Baxter 恒等式。",
+        "sourcePath": "RT.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 基本表示给出 Jones 多项式",
+        "shortTitle": "证明 · 基本表示给出 Jones 多项式",
+        "title": "证明 基本表示给出 Jones 多项式",
+        "statement": "对所有链环分量取 $sl_2$ 的二维基本表示 $V_1$，算子不变量即为相应的 colored framed link 多项式；按 writhe 归一化后得到 Jones polynomial 的一个约定版本。",
+        "premises": [
+          "paper:def:operator-invariant-f",
+          "paper:def:colored-framed-link",
+          "paper:def:colored-jones-polynomial",
+          "paper:def:jones-polynomial"
+        ],
+        "conclusion": "paper:prop:jones-from-basic-representation",
+        "argument": "对所有链环分量取 $sl_2$ 的二维基本表示 $V_1$，算子不变量即为相应的 colored framed link 多项式；按 writhe 归一化后得到 Jones polynomial 的一个约定版本。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · generic 情形下不变量为 Laurent 多项式",
+        "shortTitle": "证明 · generic 情形下不变量为 Laurent 多项式",
+        "title": "证明 generic 情形下不变量为 Laurent 多项式",
+        "statement": "Turaev 的 generic 或 $h$-adic 结果表明，$sl_2$ 着色链环的算子不变量属于变量 $q=\u0000exp(-h/2)$ 的 Laurent 多项式环。",
+        "premises": [
+          "paper:thm:turaev-generic-laurent",
+          "paper:def:operator-invariant-f",
+          "paper:def:colored-framed-link"
+        ],
+        "conclusion": "paper:prop:generic-invariant-laurent",
+        "argument": "Turaev 的 generic 或 $h$-adic 结果表明，$sl_2$ 着色链环的算子不变量属于变量 $q=\u0000exp(-h/2)$ 的 Laurent 多项式环。",
+        "sourcePath": "RT.pdf#page=17"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · Reshetikhin–Turaev invariant",
+        "shortTitle": "证明 · Reshetikhin–Turaev invariant",
+        "title": "证明 Reshetikhin–Turaev invariant",
+        "statement": "Turaev 函子把着色 ribbon 图转为态射；modular 性保证 Kirby color 加权和在 handle slide 下不变，signature 与 rank 归一化抵消 $\\pm1$ Kirby move 的变化，故结果只依赖 $M_L$ 的定向同胚类。",
+        "premises": [
+          "paper:thm:kirby-calculus",
+          "paper:thm:turaev-ribbon-graph-functor",
+          "paper:def:modular-category",
+          "paper:def:kirby-color",
+          "paper:calc:kirby-color-sum",
+          "paper:calc:rt-normalization"
+        ],
+        "conclusion": "paper:thm:reshetikhin-turaev-invariant",
+        "argument": "Turaev 函子把着色 ribbon 图转为态射；modular 性保证 Kirby color 加权和在 handle slide 下不变，signature 与 rank 归一化抵消 $\\pm1$ Kirby move 的变化，故结果只依赖 $M_L$ 的定向同胚类。",
+        "sourcePath": "RT.pdf#page=15"
+      },
+      {
+        "id": "paper:inference:proof:9",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 9 · root of unity 情形给出 WRT 不变量",
+        "shortTitle": "证明 · root of unity 情形给出 WRT 不变量",
+        "title": "证明 root of unity 情形给出 WRT 不变量",
+        "statement": "根单位情形的有限 Weyl alcove colors 形成 modular Hopf 代数；经 negligible morphisms purification 得到 modular category，再应用 surgery、Kirby color 与 signature 归一化构造 WRT 不变量。",
+        "premises": [
+          "paper:thm:turaev-purification",
+          "paper:thm:reshetikhin-turaev-invariant",
+          "paper:def:wrt-invariant"
+        ],
+        "conclusion": "paper:prop:root-of-unity-wrt",
+        "argument": "根单位情形的有限 Weyl alcove colors 形成 modular Hopf 代数；经 negligible morphisms purification 得到 modular category，再应用 surgery、Kirby color 与 signature 归一化构造 WRT 不变量。",
+        "sourcePath": "RT.pdf#page=18"
+      },
+      {
+        "id": "paper:inference:proof:10",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 10 · hexagon identity",
+        "shortTitle": "证明 · hexagon identity",
+        "title": "证明 hexagon identity",
+        "statement": "hexagon identity 已作为 braiding 定义的一部分明确要求，命题直接由定义得到。",
+        "premises": [
+          "paper:def:braiding"
+        ],
+        "conclusion": "paper:prop:hexagon-identity",
+        "argument": "hexagon identity 已作为 braiding 定义的一部分明确要求，命题直接由定义得到。",
+        "sourcePath": "RT.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:11",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 11 · braiding 的自然性",
+        "shortTitle": "证明 · braiding 的自然性",
+        "title": "证明 braiding 的自然性",
+        "statement": "braiding 的自然性已包含在 braiding 的定义中，代入任意态射 $f$ 与 $g$ 即得所述交换关系。",
+        "premises": [
+          "paper:def:braiding"
+        ],
+        "conclusion": "paper:prop:naturality-of-braiding",
+        "argument": "braiding 的自然性已包含在 braiding 的定义中，代入任意态射 $f$ 与 $g$ 即得所述交换关系。",
+        "sourcePath": "RT.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:12",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 12 · zig-zag identities",
+        "shortTitle": "证明 · zig-zag identities",
+        "title": "证明 zig-zag identities",
+        "statement": "两条 zig-zag identities 正是 duality 定义中的公理，因此命题由定义直接成立。",
+        "premises": [
+          "paper:def:duality"
+        ],
+        "conclusion": "paper:prop:zigzag-identities",
+        "argument": "两条 zig-zag identities 正是 duality 定义中的公理，因此命题由定义直接成立。",
+        "sourcePath": "RT.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:13",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 13 · ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "shortTitle": "证明 · ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "title": "证明 ribbon Hopf algebra 的表示范畴是 ribbon category",
+        "statement": "Hopf 代数的 coproduct 诱导张量积，antipode 诱导有限维对偶；universal $R$-matrix 给出 braiding，universal twist 给出 twist，且这些结构满足 ribbon 范畴公理。",
+        "premises": [
+          "paper:def:quasitriangular-hopf-algebra",
+          "paper:def:ribbon-hopf-algebra",
+          "paper:def:duality"
+        ],
+        "conclusion": "paper:prop:ribbon-hopf-rep-category",
+        "argument": "Hopf 代数的 coproduct 诱导张量积，antipode 诱导有限维对偶；universal $R$-matrix 给出 braiding，universal twist 给出 twist，且这些结构满足 ribbon 范畴公理。",
+        "sourcePath": "RT.pdf#page=13"
+      }
+    ],
+    "diagnostics": {
+      "workflowVersion": "v3.26-inference-v7-repair-queue",
+      "runtimeWorkflowVersion": "v3.26-inference-v3",
+      "repairPromptVersion": "v3.26-inference-v7-repair-queue"
+    },
+    "workflowDiagnostics": {
+      "workflowVersion": "v3.26-inference-v7-repair-queue",
+      "runtimeWorkflowVersion": "v3.26-inference-v3",
+      "changedStage": "repair"
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v120-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 18,
+  "completeness": 18,
+  "solEntryScore": 36,
+  "verdict": "usable",
+  "summary": "The candidate covers nearly all core definitions, external inputs, lemmas, and main theorems, but it contains substantial duplication and several precision defects. In particular, the embedded-sphere lemma uses alpha - bar alpha instead of the gold reference's alpha times bar alpha notation, Theorem 2.4 drops the modulo-4 condition on b2+, and the Bauer theorem is abbreviated with important hypotheses omitted. The Bauer–Furuta and symplectic-structure definitions are also incomplete or missing.",
+  "strengths": [
+    "Captures the main Theorems 1.4, 1.9, 2.3, and 2.4, the main corollaries, and Lemma 3.1.",
+    "Includes the key external results from Bauer, Frøyshov, Taubes, and the symplectic Betti-parity fact with attribution fields.",
+    "Provides useful page locators and generally preserves the principal hypotheses such as closedness, smoothness, b2+ bounds, b1=0, and non-torsion classes."
+  ],
+  "issues": [
+    "The candidate contains many duplicate entries for the same concepts and results, reducing distinctness and making the raw pool redundant.",
+    "Lemma 2.6 is stated with alpha - bar alpha rather than the gold reference's alpha times bar alpha representative; this is not merely a harmless wording change without an explicit convention.",
+    "Theorem 2.4 incorrectly or ambiguously gives b2+ != 1 instead of b2+ not congruent to 1 modulo 4.",
+    "The Bauer connected-sum theorem is summarized as satisfying condition (2) but omits several detailed hypotheses, including the precise spin-c, ordinary SW, congruence, and n=4 conditions.",
+    "The stable cohomotopy invariant definition is only a vague refinement claim and does not faithfully describe the Bauer–Furuta construction.",
+    "The gold's definition of a symplectic 4-manifold and its canonical spin-c structure is missing.",
+    "Some extracted items are unsupported or overgeneralized relative to the gold, such as the b2=1 handlebody classification, blow-up formula, and generic adjunction-inequality entries; several entries are typed as theorem where corollary/fact distinctions would be more accurate.",
+    "Theorem 1.9's modulo-4 formatting is malformed or unclear for the b2+ condition."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:def:geometrically-simply-connected",
+      "candidateMatches": [
+        "paper:def:geometrically-simply-connected"
+      ],
+      "assessment": "Accurate but abbreviated."
+    },
+    {
+      "goldEntry": "paper:def:2-handle-neighborhood-class",
+      "candidateMatches": [
+        "paper:def:represented-by-2-handle-neighborhood",
+        "yasui:def:2-handle-neighborhood-class",
+        "paper:def-two-handle-neighborhood"
+      ],
+      "assessment": "Covered multiple times; first formulation is close, later entries are vague or redundant."
+    },
+    {
+      "goldEntry": "paper:def:bauer-furuta-invariant",
+      "candidateMatches": [
+        "yasui:def:stable-cohomotopy-sw-invariant"
+      ],
+      "assessment": "Only partially faithful; construction and mathematical precision are missing."
+    },
+    {
+      "goldEntry": "paper:def:symplectic-structure-4mfld",
+      "candidateMatches": [],
+      "assessment": "Missing."
+    },
+    {
+      "goldEntry": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateMatches": [
+        "yasui:thm:bauer-connected-sum"
+      ],
+      "assessment": "Present with attribution, but key condition details are elided."
+    },
+    {
+      "goldEntry": "paper:b0:froyshov-vanishing-theorem",
+      "candidateMatches": [
+        "yasui:thm:froyshov-vanishing"
+      ],
+      "assessment": "Substantially accurate."
+    },
+    {
+      "goldEntry": "paper:b0:taubes-symplectic-sw",
+      "candidateMatches": [
+        "paper:theorem:external-taubes-nonvanishing",
+        "yasui:external:taubes-spin-c"
+      ],
+      "assessment": "Covered through two partial entries; neither alone matches the gold statement exactly."
+    },
+    {
+      "goldEntry": "paper:b0:symplectic-betti-parity",
+      "candidateMatches": [
+        "yasui:external:symplectic-parity"
+      ],
+      "assessment": "Accurate."
+    },
+    {
+      "goldEntry": "paper:lemma:embedded-sphere-double",
+      "candidateMatches": [
+        "paper:lemma:2.6-zero-self-intersection-sphere",
+        "yasui:lemma:2-handle-double-sphere"
+      ],
+      "assessment": "Covered redundantly, but the homology-class notation differs materially from the gold."
+    },
+    {
+      "goldEntry": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateMatches": [
+        "yasui:thm:stable-cohomotopy-adjunction"
+      ],
+      "assessment": "Substantially accurate, despite a misleading title."
+    },
+    {
+      "goldEntry": "paper:thm:positive-definite-vanishing",
+      "candidateMatches": [
+        "paper:theorem:2.3-vanishing-stable-cohomotopy-class",
+        "yasui:thm:stable-cohomotopy-vanishing-positive-definite"
+      ],
+      "assessment": "Accurate but duplicated."
+    },
+    {
+      "goldEntry": "paper:thm:orientation-symplectic-obstruction",
+      "candidateMatches": [
+        "paper:theorem:2.4-no-symplectic-one-orientation-class",
+        "yasui:thm:symplectic-orientation-obstruction"
+      ],
+      "assessment": "Covered redundantly; one version drops the modulo-4 condition on b2+."
+    },
+    {
+      "goldEntry": "paper:lemma:geom-simply-connected-homology",
+      "candidateMatches": [
+        "yasui:lemma:geometrically-simply-connected-classes",
+        "yasui:thm:geometrically-simply-connected-lemma",
+        "paper:lemma:3-1"
+      ],
+      "assessment": "Accurate in substance but excessively duplicated."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateMatches": [
+        "paper:theorem:1.4-vanishing-stable-cohomotopy-sw"
+      ],
+      "assessment": "Accurate."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateMatches": [
+        "paper:theorem:1.9-no-symplectic-one-orientation"
+      ],
+      "assessment": "Present, but modulo-4 delimiters are malformed or ambiguous."
+    }
+  ]
+}

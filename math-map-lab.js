@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package math-map-workspace-v2
+ * @version v2
+ * @canonicalSource packages/math-map/presentation/math-map-workspace-v2/src/math-map-lab.js
+ * @contentHash sha256:ac507c416004093704dd43a3812d9c736fe3e38a57a7f1536f29d4289057e245
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
 (() => {
   "use strict";
 
@@ -181,7 +190,7 @@
         const blocker = review.decisionNote ?? review.bodyMarkdown;
         const decidedAt = review.decidedAt ? `<div><dt>时间</dt><dd>${escapeHtml(review.decidedAt)}</dd></div>` : "";
         const blockerMarkup = blocker
-          ? `<p>${escapeHtml(blocker).replace(/\n/g, "<br>")}</p>`
+          ? `<p>${renderMath(blocker).replace(/\n/g, "<br>")}</p>`
           : "<p>该 Review 未记录 blocker 文本。</p>";
         sections.push(`<details class="governance-review"><summary>最新 Review blocker</summary><dl><div><dt>Decision</dt><dd>${escapeHtml(review.decision)}</dd></div>${decidedAt}<div><dt>Review</dt><dd><code>${escapeHtml(review.id)}</code></dd></div></dl>${blockerMarkup}</details>`);
       }
@@ -200,7 +209,7 @@
       lineage.sourceLoopId ? `<div><dt>Source Loop</dt><dd><code>${escapeHtml(lineage.sourceLoopId)}</code></dd></div>` : "",
       `<div><dt>Formal Entry</dt><dd><code>${escapeHtml(node.id)}</code></dd></div>`,
     ].filter(Boolean).join("");
-    return `<h3>转正来源</h3><p>本节点已折叠原候选「${escapeHtml(lineage.candidateTitle)}」，经 ${reviewCount} 条 accepted Review 转为当前正式 Entry${escapeHtml(loop)}。该转正不等于进入 established 闭包。</p><details class="source-lineage"><summary>展开审计标识</summary><dl>${auditRows}</dl></details>`;
+    return `<h3>转正来源</h3><p>本节点已折叠原候选「${renderMath(lineage.candidateTitle)}」，经 ${reviewCount} 条 accepted Review 转为当前正式 Entry${renderMath(loop)}。该转正不等于进入 established 闭包。</p><details class="source-lineage"><summary>展开审计标识</summary><dl>${auditRows}</dl></details>`;
   }
 
   function activeFocusEntryId() {

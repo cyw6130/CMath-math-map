@@ -1,0 +1,833 @@
+{
+  "schema": "cmath.capability-consumer-manifest/v1",
+  "authority": "../CMath-capabilities/exports/canonical.json",
+  "generatedBy": "scripts/consume-capabilities.mjs",
+  "projectId": "cmath-math-map",
+  "mode": "canonical-runtime-assets",
+  "packages": [
+    {
+      "capabilityId": "cmath-gamma.math-map-semantics/v2",
+      "packageId": "math-graph-semantics-v2",
+      "version": "v2",
+      "authorityRecord": {
+        "id": "math-graph-semantics-v2",
+        "version": "v2",
+        "kind": "module",
+        "title": "数学地图语义",
+        "summary": "定义 Fact、Claim、organization、proof 及 Claim 闭包，不混入命名、Loop 或路线。",
+        "responsibility": "定义 Fact、Claim、organization、proof 及 Claim 闭包，不混入命名、Loop 或路线。",
+        "status": "stable",
+        "provides": [
+          "mathematical map object semantics",
+          "claim closure computation"
+        ],
+        "requires": null,
+        "dependencies": [],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/math-graph-semantics-v2/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-map-semantics.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/state/math-graph-semantics-v2",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/state/math-graph-semantics-v2",
+          "manifest": "packages/math-map/state/math-graph-semantics-v2/manifest.json",
+          "entrypoint": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
+          "contract": "packages/math-map/state/math-graph-semantics-v2/contract/GAMMA_MATH_MAP_SEMANTICS_CAPABILITY_V0.2.md",
+          "tests": [
+            "packages/math-map/state/math-graph-semantics-v2/tests/math_graph_semantics.test.mjs"
+          ],
+          "variantDir": "packages/math-map/state/math-graph-semantics-v2/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/state/math-graph-semantics-v2/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": "math-graph-semantics-v1",
+        "constraints": [
+          "不拥有命名、视觉、Loop、路线或工作区"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_capability_suite_v2.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "state"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.math-map-naming/v2",
+      "packageId": "math-map-naming-v2",
+      "version": "v2",
+      "authorityRecord": {
+        "id": "math-map-naming-v2",
+        "version": "v2",
+        "kind": "view",
+        "title": "数学地图命名",
+        "summary": "统一数学地图名称与永久编号生命周期：候选待编号，接受后领号，废弃或合并后不复用。",
+        "responsibility": "统一数学地图名称与永久编号生命周期：候选待编号，接受后领号，废弃或合并后不复用。",
+        "status": "stable",
+        "provides": [
+          "canonical mathematical map names",
+          "durable type-local numbering ledger",
+          "search aliases"
+        ],
+        "requires": null,
+        "dependencies": [
+          {
+            "id": "math-graph-semantics-v2",
+            "version": "v2"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/math-map-naming-v2/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-map-naming.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/presentation/math-map-naming-v2",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/presentation/math-map-naming-v2",
+          "manifest": "packages/math-map/presentation/math-map-naming-v2/manifest.json",
+          "entrypoint": "packages/math-map/presentation/math-map-naming-v2/src/index.js",
+          "contract": "packages/math-map/presentation/math-map-naming-v2/contract/GAMMA_MATH_MAP_NAMING_CAPABILITY_V0.2.md",
+          "tests": [
+            "packages/math-map/presentation/math-map-naming-v2/tests/math_map_naming_v2.test.mjs"
+          ],
+          "variantDir": "packages/math-map/presentation/math-map-naming-v2/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/presentation/math-map-naming-v2/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": "math-map-naming-v1",
+        "constraints": [
+          "不决定数学真值或 Acceptance",
+          "不拥有视觉、Loop 或路线状态"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_naming_v2.test.mjs",
+          "tests/math_map_capability_suite_v2.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "presentation"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.research-loop-progress/v1",
+      "packageId": "research-loop-progress-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "research-loop-progress-v1",
+        "version": "v1",
+        "kind": "view",
+        "title": "研究 Loop 进展",
+        "summary": "按 Loop 重放同一数学地图的正式增量，并复用既有目标、使用对象和新对象高亮。",
+        "responsibility": "按 Loop 重放同一数学地图的正式增量，并复用既有目标、使用对象和新对象高亮。",
+        "status": "candidate",
+        "provides": [
+          "ordered Loop records",
+          "incremental mathematical map slices"
+        ],
+        "requires": null,
+        "dependencies": [
+          {
+            "id": "math-graph-semantics-v2",
+            "version": "v2"
+          },
+          {
+            "id": "math-map-naming-v2",
+            "version": "v2"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/research-loop-progress-v1/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/research-loop-progress.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/presentation/research-loop-progress-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/presentation/research-loop-progress-v1",
+          "manifest": "packages/math-map/presentation/research-loop-progress-v1/manifest.json",
+          "entrypoint": "packages/math-map/presentation/research-loop-progress-v1/src/index.js",
+          "contract": "packages/math-map/presentation/research-loop-progress-v1/contract/GAMMA_RESEARCH_LOOP_PROGRESS_CAPABILITY_V0.1.md",
+          "tests": [
+            "packages/math-map/presentation/research-loop-progress-v1/tests/research_loop_progress.test.mjs"
+          ],
+          "variantDir": "packages/math-map/presentation/research-loop-progress-v1/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/presentation/research-loop-progress-v1/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": null,
+        "constraints": [
+          "无 plan",
+          "无多路线或路线切换",
+          "不自定义视觉规则"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_capability_suite_v2.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "presentation"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.math-map-visual-semantics/v1",
+      "packageId": "math-map-visual-semantics-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "math-map-visual-semantics-v1",
+        "version": "v1",
+        "kind": "module",
+        "title": "数学地图视觉语义",
+        "summary": "把 Fact、Claim、Inference、B₀ Claim 与目标聚焦投影为稳定且可组合的数学地图视觉语言。",
+        "responsibility": "把 Fact、Claim、Inference、B₀ Claim 与目标聚焦投影为稳定且可组合的数学地图视觉语言。",
+        "status": "candidate",
+        "provides": [
+          "mathematical node visual classification",
+          "shared palette and legend projection"
+        ],
+        "requires": null,
+        "dependencies": [
+          {
+            "id": "graph-core-v1",
+            "version": "v1"
+          },
+          {
+            "id": "math-graph-semantics-v2",
+            "version": "v2"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/math-map-visual-semantics-v1/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-map-visual-semantics.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/presentation/math-map-visual-semantics-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/presentation/math-map-visual-semantics-v1",
+          "manifest": "packages/math-map/presentation/math-map-visual-semantics-v1/manifest.json",
+          "entrypoint": "packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js",
+          "contract": "packages/math-map/presentation/math-map-visual-semantics-v1/contract/GAMMA_MATH_MAP_VISUAL_SEMANTICS_CAPABILITY_V0.1.md",
+          "tests": [
+            "packages/math-map/presentation/math-map-visual-semantics-v1/tests/math_map_visual_semantics_capability.test.mjs"
+          ],
+          "variantDir": "packages/math-map/presentation/math-map-visual-semantics-v1/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/presentation/math-map-visual-semantics-v1/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": null,
+        "constraints": [
+          "不决定数学真值或 Claim 闭包",
+          "不拥有布局、Loop 或路线语义"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_visual_semantics_capability.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "presentation"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.graph-core/v1",
+      "packageId": "graph-core-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "graph-core-v1",
+        "version": "v1",
+        "kind": "view",
+        "title": "图画布核心",
+        "summary": "维持同一张图及其空间连续性，提供布局、拖动、聚焦、子图增量和返回全图。",
+        "responsibility": "维持同一张图及其空间连续性，提供布局、拖动、聚焦、子图增量和返回全图。",
+        "status": "candidate",
+        "provides": [
+          "persistent interactive graph canvas",
+          "focus and incremental graph actions"
+        ],
+        "requires": null,
+        "dependencies": [],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/graph-core-v1/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/graph-canvas-v3.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/presentation/graph-core-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/presentation/graph-core-v1",
+          "manifest": "packages/math-map/presentation/graph-core-v1/manifest.json",
+          "entrypoint": "packages/math-map/presentation/graph-core-v1/src/index.js",
+          "tests": [
+            "packages/math-map/presentation/graph-core-v1/tests/graph_canvas_v3.test.mjs",
+            "packages/math-map/presentation/graph-core-v1/tests/graph_contract.test.mjs"
+          ],
+          "variantDir": "packages/math-map/presentation/graph-core-v1/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/presentation/graph-core-v1/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": null,
+        "constraints": [
+          "不定义数学对象语义",
+          "不拥有项目数据"
+        ],
+        "acceptanceTests": [
+          "tests/graph_canvas_v3.test.mjs",
+          "tests/graph_contract.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "presentation"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.math-map-workspace/v2",
+      "packageId": "math-map-workspace-v2",
+      "version": "v2",
+      "authorityRecord": {
+        "id": "math-map-workspace-v2",
+        "version": "v2",
+        "kind": "view",
+        "title": "数学地图工作区",
+        "summary": "组合全图、单目标上下文、Loop 进展、Section、搜索和对象详情；默认进入全图。",
+        "responsibility": "组合全图、单目标上下文、Loop 进展、Section、搜索和对象详情；默认进入全图。",
+        "status": "integration",
+        "provides": [
+          "interactive mathematical map workspace",
+          "single-target Loop progress lens"
+        ],
+        "requires": null,
+        "dependencies": [
+          {
+            "id": "graph-core-v1",
+            "version": "v1"
+          },
+          {
+            "id": "math-rendering-v1",
+            "version": "v1"
+          },
+          {
+            "id": "math-graph-semantics-v2",
+            "version": "v2"
+          },
+          {
+            "id": "math-map-naming-v2",
+            "version": "v2"
+          },
+          {
+            "id": "math-map-visual-semantics-v1",
+            "version": "v1"
+          },
+          {
+            "id": "research-loop-progress-v1",
+            "version": "v1"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/math-map-workspace-v2/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-map-lab.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/presentation/math-map-workspace-v2",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/presentation/math-map-workspace-v2",
+          "manifest": "packages/math-map/presentation/math-map-workspace-v2/manifest.json",
+          "entrypoint": "packages/math-map/presentation/math-map-workspace-v2/src/math-map-lab.js",
+          "contract": "packages/math-map/presentation/math-map-workspace-v2/contract/GAMMA_MATH_MAP_WORKSPACE_CAPABILITY_V0.2.md",
+          "tests": [
+            "packages/math-map/presentation/math-map-workspace-v2/tests/math_map_lab.test.mjs"
+          ],
+          "variantDir": "packages/math-map/presentation/math-map-workspace-v2/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/presentation/math-map-workspace-v2/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": "math-map-workspace-v1",
+        "constraints": [
+          "不拥有数学内容或 Alpha 数据",
+          "无 plan 或多路线切换"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_lab.test.mjs",
+          "tests/math_map_capability_suite_v2.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "presentation"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.math-rendering/v1",
+      "packageId": "math-rendering-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "math-rendering-v1",
+        "version": "v1",
+        "kind": "view",
+        "title": "数学公式渲染",
+        "summary": "统一渲染自然语言中的行内与独立数学公式，并为旧数据、Canvas 和失败场景保留可读文本。",
+        "responsibility": "统一渲染自然语言中的行内与独立数学公式，并为旧数据、Canvas 和失败场景保留可读文本。",
+        "status": "stable",
+        "provides": [
+          "mixed mathematical text rendering",
+          "plain-text mathematical fallback"
+        ],
+        "requires": null,
+        "dependencies": [],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/math-rendering-v1/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-text.js"
+          ]
+        },
+        "canonicalPackage": "packages/math-map/rendering/math-rendering-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/rendering/math-rendering-v1",
+          "manifest": "packages/math-map/rendering/math-rendering-v1/manifest.json",
+          "entrypoint": "packages/math-map/rendering/math-rendering-v1/src/index.mjs",
+          "contract": "packages/math-map/rendering/math-rendering-v1/contract/GAMMA_MATH_RENDERING_CAPABILITY_V0.1.md",
+          "browserAssets": [
+            "packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js",
+            "packages/math-map/rendering/math-rendering-v1/browser-assets/math-rendering-loader.js",
+            "packages/math-map/rendering/math-rendering-v1/browser-assets/vendor/katex"
+          ],
+          "tests": [
+            "packages/math-map/rendering/math-rendering-v1/tests/math_rendering.test.mjs"
+          ],
+          "variantDir": "packages/math-map/rendering/math-rendering-v1/variants/cmath-gamma",
+          "variantManifest": "packages/math-map/rendering/math-rendering-v1/variants/cmath-gamma/manifest.json"
+        },
+        "supersedes": null,
+        "constraints": [
+          "不判断数学语义",
+          "不回写或规范化权威数学数据"
+        ],
+        "acceptanceTests": [
+          "tests/math_rendering_capability.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "rendering"
+      }
+    },
+    {
+      "capabilityId": "cmath-gamma.alpha-project-adapter/v0.2",
+      "packageId": "alpha-project-adapter-v0.2",
+      "version": "v0.2",
+      "authorityRecord": {
+        "id": "alpha-project-adapter-v0.2",
+        "version": "v0.2",
+        "kind": "adapter",
+        "title": "Alpha 项目适配",
+        "summary": "只读把 Alpha Project View 接到 Gamma 地图语义、命名和 Loop 进展，不拥有路线或工作区。",
+        "responsibility": "只读把 Alpha Project View 接到 Gamma 地图语义、命名和 Loop 进展，不拥有路线或工作区。",
+        "status": "experimental",
+        "provides": [
+          "read-only Alpha Project View adaptation",
+          "Alpha-to-Gamma semantic projection"
+        ],
+        "requires": null,
+        "dependencies": [
+          {
+            "id": "math-graph-semantics-v2",
+            "version": "v2"
+          },
+          {
+            "id": "math-map-naming-v2",
+            "version": "v2"
+          },
+          {
+            "id": "research-loop-progress-v1",
+            "version": "v1"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-gamma",
+          "repo": "CMath_gamma",
+          "manifestPath": "capabilities/alpha-project-adapter-v0.2/manifest.json",
+          "upstreamSchema": "cmath-gamma.capability-manifest/v1",
+          "entrypoints": [
+            "frontend/math-map-project-adapter.js"
+          ]
+        },
+        "supersedes": "alpha-project-adapter-v0.1",
+        "canonicalPackage": "packages/math-map/synchronization/alpha-project-adapter-v0.2",
+        "canonicalPaths": {
+          "packageDir": "packages/math-map/synchronization/alpha-project-adapter-v0.2",
+          "manifest": "packages/math-map/synchronization/alpha-project-adapter-v0.2/manifest.json",
+          "entrypoint": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
+          "contract": "packages/math-map/synchronization/alpha-project-adapter-v0.2/contract/GAMMA_ALPHA_PROJECT_ADAPTER_CAPABILITY_V0.2.md",
+          "tests": [
+            "packages/math-map/synchronization/alpha-project-adapter-v0.2/tests/alpha_project_adapter.test.mjs"
+          ]
+        },
+        "constraints": [
+          "Alpha 到 Gamma 只读",
+          "不拥有工作区、plan 或路线语义"
+        ],
+        "acceptanceTests": [
+          "tests/math_map_project_adapter.test.mjs",
+          "tests/math_map_capability_suite_v2.test.mjs"
+        ],
+        "domain": "math-map",
+        "role": "synchronization"
+      }
+    },
+    {
+      "capabilityId": "cmath.paper-guide/v1",
+      "packageId": "paper-dossier-extractor-v2",
+      "version": "v2.1",
+      "authorityRecord": {
+        "id": "paper-dossier-extractor-v2",
+        "version": "v2.1",
+        "kind": "module",
+        "title": "Paper Dossier Extractor with PDF Paper Guide",
+        "summary": "Build a source-anchored PDF Paper Guide, broad coverage, and one batched narrative-lead extraction proposal.",
+        "responsibility": "Build and validate a source-anchored PDF Paper Guide, then produce broad coverage plus one batched narrative-lead extraction proposal.",
+        "status": "candidate",
+        "provides": [
+          {
+            "port": "cmath.paper-guide/v1",
+            "contract": "cmath.paper-guide/v0.1"
+          },
+          {
+            "port": "cmath.paper-extraction-proposal/v2",
+            "contract": "cmath.paper-extraction-proposal/v0.2"
+          }
+        ],
+        "requires": [
+          {
+            "port": "cmath.pdf-source-snapshot/v1",
+            "contract": "cmath.pdf-source-snapshot/v0.1"
+          }
+        ],
+        "dependencies": [
+          {
+            "id": "pdf-source-snapshot-v1",
+            "version": "v1"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-math-map",
+          "repo": "CMath-math-map",
+          "entrypoints": [
+            "paper-import-client.js"
+          ]
+        },
+        "supersedes": "paper-dossier-extractor-v1",
+        "constraints": [
+          "The guide is limited to the supplied PDF snapshot",
+          "Lead relations are narrative navigation aids, not proof edges",
+          "Expansion needs must remain explicit rather than being silently filled by the extractor",
+          "Source anchors must be block IDs from the same PDF digest"
+        ],
+        "acceptanceTests": [
+          "packages/research-process/import/paper-dossier-extractor-v2/tests/paper_dossier_extractor_v2.test.mjs"
+        ],
+        "canonicalPackage": "packages/research-process/import/paper-dossier-extractor-v2",
+        "canonicalPaths": {
+          "packageDir": "packages/research-process/import/paper-dossier-extractor-v2",
+          "manifest": "packages/research-process/import/paper-dossier-extractor-v2/manifest.json",
+          "sourceManifest": "packages/research-process/import/paper-dossier-extractor-v2/manifest.source.json",
+          "entrypoint": "packages/research-process/import/paper-dossier-extractor-v2/src/index.mjs",
+          "browserAssets": [
+            "packages/research-process/import/paper-dossier-extractor-v2/browser-assets/paper-import-v3.js"
+          ],
+          "tests": [
+            "packages/research-process/import/paper-dossier-extractor-v2/tests/paper_dossier_extractor_v2.test.mjs"
+          ]
+        },
+        "domain": "research-process",
+        "role": "import"
+      }
+    },
+    {
+      "capabilityId": "cmath.guide-lead/v1",
+      "packageId": "guide-lead-contract-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "guide-lead-contract-v1",
+        "version": "v1",
+        "kind": "module",
+        "title": "Source-Neutral Guide/Lead Contract",
+        "summary": "Unify paper and corpus narrative leads behind a source-neutral contract and explicit adapters.",
+        "responsibility": "Create, validate, and adapt source-neutral narrative Guide Leads and collections.",
+        "status": "candidate",
+        "provides": [
+          {
+            "port": "cmath.guide-lead/v1",
+            "contract": "cmath.guide-lead/v0.1"
+          },
+          {
+            "port": "cmath.guide-lead-set/v1",
+            "contract": "cmath.guide-lead-set/v0.1"
+          }
+        ],
+        "requires": [],
+        "dependencies": [],
+        "sourceAuthority": {
+          "sourceId": "cmath-math-map",
+          "repo": "CMath-math-map",
+          "entrypoints": [
+            "paper-import-client.js"
+          ]
+        },
+        "constraints": [
+          "Lead relations are narrative navigation only, never proof edges",
+          "Source references remain source-neutral"
+        ],
+        "acceptanceTests": [
+          "packages/research-process/import/guide-lead-contract-v1/tests/guide_lead_contract_v1.test.mjs"
+        ],
+        "canonicalPackage": "packages/research-process/import/guide-lead-contract-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/research-process/import/guide-lead-contract-v1",
+          "manifest": "packages/research-process/import/guide-lead-contract-v1/manifest.json",
+          "entrypoint": "packages/research-process/import/guide-lead-contract-v1/src/index.mjs",
+          "tests": [
+            "packages/research-process/import/guide-lead-contract-v1/tests/guide_lead_contract_v1.test.mjs"
+          ]
+        },
+        "domain": "research-process",
+        "role": "import"
+      }
+    },
+    {
+      "capabilityId": "cmath.lead-guided-extraction/v1",
+      "packageId": "lead-guided-extraction-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "lead-guided-extraction-v1",
+        "version": "v1",
+        "kind": "module",
+        "title": "Lead-Guided Extraction",
+        "summary": "Build source-neutral lead-guided extraction requests and validate temporary opaque proposals.",
+        "responsibility": "Build a pure source-agnostic lead-guided extraction request and validate temporary opaque proposals.",
+        "status": "candidate",
+        "provides": [
+          {
+            "port": "cmath.lead-guided-extraction/v1",
+            "contract": "cmath.lead-guided-extraction-proposal/v0.1"
+          }
+        ],
+        "requires": [
+          {
+            "port": "cmath.guide-lead/v1",
+            "contract": "cmath.guide-lead/v0.1"
+          }
+        ],
+        "dependencies": [
+          {
+            "id": "guide-lead-contract-v1",
+            "version": "v1"
+          }
+        ],
+        "sourceAuthority": {
+          "sourceId": "cmath-math-map",
+          "repo": "CMath-math-map",
+          "entrypoints": [
+            "paper-import-client.js"
+          ]
+        },
+        "constraints": [
+          "Proposal-only",
+          "Opaque source packages and record payloads",
+          "Related leads do not imply proof edges"
+        ],
+        "acceptanceTests": [
+          "packages/research-process/import/lead-guided-extraction-v1/tests/lead_guided_extraction_v1.test.mjs"
+        ],
+        "canonicalPackage": "packages/research-process/import/lead-guided-extraction-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/research-process/import/lead-guided-extraction-v1",
+          "manifest": "packages/research-process/import/lead-guided-extraction-v1/manifest.json",
+          "entrypoint": "packages/research-process/import/lead-guided-extraction-v1/src/index.mjs",
+          "tests": [
+            "packages/research-process/import/lead-guided-extraction-v1/tests/lead_guided_extraction_v1.test.mjs"
+          ]
+        },
+        "domain": "research-process",
+        "role": "import"
+      }
+    },
+    {
+      "capabilityId": "cmath.dual-lane-extraction-aggregation/v1",
+      "packageId": "dual-lane-extraction-aggregation-v1",
+      "version": "v1",
+      "authorityRecord": {
+        "id": "dual-lane-extraction-aggregation-v1",
+        "version": "v1",
+        "kind": "module",
+        "title": "Dual-Lane Extraction Aggregation",
+        "summary": "Deterministically aggregate opaque extraction lanes while preserving provenance and explicit conflicts.",
+        "responsibility": "Deterministically aggregate opaque records from coverage, lead-guided, and optional additional extraction lanes.",
+        "status": "candidate",
+        "provides": [
+          {
+            "port": "cmath.dual-lane-extraction-aggregation/v1",
+            "contract": "cmath.dual-lane-extraction-aggregation/v0.1"
+          }
+        ],
+        "requires": [],
+        "dependencies": [],
+        "sourceAuthority": {
+          "sourceId": "cmath-math-map",
+          "repo": "CMath-math-map",
+          "entrypoints": [
+            "paper-import-client.js"
+          ]
+        },
+        "constraints": [
+          "Conflicts are preserved, never renamed or silently overwritten",
+          "No admission, mutation, or store effects"
+        ],
+        "acceptanceTests": [
+          "packages/research-process/import/dual-lane-extraction-aggregation-v1/tests/dual_lane_extraction_aggregation_v1.test.mjs"
+        ],
+        "canonicalPackage": "packages/research-process/import/dual-lane-extraction-aggregation-v1",
+        "canonicalPaths": {
+          "packageDir": "packages/research-process/import/dual-lane-extraction-aggregation-v1",
+          "manifest": "packages/research-process/import/dual-lane-extraction-aggregation-v1/manifest.json",
+          "sourceManifest": "packages/research-process/import/dual-lane-extraction-aggregation-v1/manifest.source.json",
+          "entrypoint": "packages/research-process/import/dual-lane-extraction-aggregation-v1/src/index.mjs",
+          "tests": [
+            "packages/research-process/import/dual-lane-extraction-aggregation-v1/tests/dual_lane_extraction_aggregation_v1.test.mjs"
+          ]
+        },
+        "domain": "research-process",
+        "role": "import"
+      }
+    }
+  ],
+  "runtimeAssets": [
+    {
+      "packageId": "math-graph-semantics-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
+      "target": "math-map-semantics.js",
+      "contentHash": "sha256:7fbf4121b3da2fce34944fc483f9fbdeecea40f031bec9a19703413af9f98d46",
+      "distributedHash": "sha256:0100fdd44ae70cdcd357f98cb98e5d9baeb6f89a37170c1063d217870a0ce3a6"
+    },
+    {
+      "packageId": "math-map-naming-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/presentation/math-map-naming-v2/src/index.js",
+      "target": "math-map-naming.js",
+      "contentHash": "sha256:55fbb6a7cfe141f63ef1269ca5deced2024c0895bfa2b3c2d906abf56685661a",
+      "distributedHash": "sha256:b69e6779ba2734326a9c8fbdc6d12e2f55c36dc80d6139f291b108edab5cf411"
+    },
+    {
+      "packageId": "research-loop-progress-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/presentation/research-loop-progress-v1/src/index.js",
+      "target": "research-loop-progress.js",
+      "contentHash": "sha256:b625462b4b92a0ada38acf3c5fd66990d1b64a03055df9fc643e37250c5725cd",
+      "distributedHash": "sha256:4c7658b6a4f4ad219cc130722a6eb8cca778052ac42d0274c2e1ac6819438a24"
+    },
+    {
+      "packageId": "math-map-visual-semantics-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js",
+      "target": "math-map-visual-semantics.js",
+      "contentHash": "sha256:ad805038e9aab4e0d83ea731b16edbd0cea150b19f52ad264621a014a846c20d",
+      "distributedHash": "sha256:67dd33c76171841f855064c2f4f70adeca0d8beff0e2bafbfdccd48cc1f705fe"
+    },
+    {
+      "packageId": "graph-core-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/graph-contract.js",
+      "target": "graph-contract.js",
+      "contentHash": "sha256:df474b48e44e3ec0e2fc73582929d6272a9a306a7f1e094e8e326eae8b3e07a7",
+      "distributedHash": "sha256:c2f2a018a410885b1cb5da23de35cc6ab64994cc2752507812d119818ca2477b"
+    },
+    {
+      "packageId": "graph-core-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/index.js",
+      "target": "graph-canvas.js",
+      "contentHash": "sha256:29973f25267a0e8ec46f7ccfac5fbe633e25cd78a0a7cbf961e2b63d841b1854",
+      "distributedHash": "sha256:c2370d26477e06beb73157effef4792757dfc3b7516ca893a362e39548e55c42"
+    },
+    {
+      "packageId": "math-map-workspace-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/presentation/math-map-workspace-v2/src/math-map-model.js",
+      "target": "math-map-model.js",
+      "contentHash": "sha256:5b679f819dd8429e7cd5de849385ce9edc73b732bcb159fe2a18551d75ddcd29",
+      "distributedHash": "sha256:e00ee0513aaa449117b6b5ee8817969da2f94b85092fea162a37d10608a7f1e8"
+    },
+    {
+      "packageId": "math-map-workspace-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/presentation/math-map-workspace-v2/src/math-map-lab.js",
+      "target": "math-map-lab.js",
+      "contentHash": "sha256:ac507c416004093704dd43a3812d9c736fe3e38a57a7f1536f29d4289057e245",
+      "distributedHash": "sha256:b7b0630fc4c2e360feb57a62990b588d8eda2fb8424fbe03dcec4de0e56f6467"
+    },
+    {
+      "packageId": "math-rendering-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js",
+      "target": "math-text.js",
+      "contentHash": "sha256:cb0a77ed4ad56c57ce029541334fc67063c0cd8356371bb369140b0d4b07de04",
+      "distributedHash": "sha256:a61d7272ff12e5cd9c1a10fda4c163282f230123ee276ba37460c26b0992018c"
+    },
+    {
+      "packageId": "math-rendering-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-rendering-loader.js",
+      "target": "math-rendering-loader.js",
+      "contentHash": "sha256:efe17847852974e4722b1af571d7f1aaa4a3ba9dd56a77760b53a8b0ada47f15",
+      "distributedHash": "sha256:ef49948c32d8442ce209c9a04242ec4488d173e914a0c514708d33fa619f9317"
+    },
+    {
+      "packageId": "alpha-project-adapter-v0.2",
+      "version": "v0.2",
+      "canonicalSource": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
+      "target": "math-map-project-adapter.js",
+      "contentHash": "sha256:d2fedaed7af0b932697f99b36e4c0c58bcfd97e028cbc7cf605cb8d9b3e615ec",
+      "distributedHash": "sha256:15204c08f78c2df7df17950f534b8e975ceeda8431a35029e93a1c3af7d3bbbd"
+    },
+    {
+      "packageId": "paper-dossier-extractor-v2",
+      "version": "v2.1",
+      "canonicalSource": "packages/research-process/import/paper-dossier-extractor-v2/browser-assets/paper-import-v3.js",
+      "target": "paper-import-v3-capability.js",
+      "contentHash": "sha256:0e7c646b02a7a8c51fe76ce906faaf1b2ceb7d86016a3ea2eaca6374ac5da782",
+      "distributedHash": "sha256:6824d4ffa9f7c4d4cc473f9067e6262135a1b0ee813839d834515e41e699632b"
+    },
+    {
+      "packageId": "guide-lead-contract-v1",
+      "version": "v1",
+      "canonicalSource": "packages/research-process/import/guide-lead-contract-v1/browser-assets/guide-lead-contract.js",
+      "target": "guide-lead-contract-v1.js",
+      "contentHash": "sha256:d300838fcbbc006f484f42eed7df4ef8a36d4d89e3552dcad1c9b336a5799e1d",
+      "distributedHash": "sha256:f834297e189d39b3a36024793ceff3dacc78c9e44a3194253896b84935c76a16"
+    },
+    {
+      "packageId": "lead-guided-extraction-v1",
+      "version": "v1",
+      "canonicalSource": "packages/research-process/import/lead-guided-extraction-v1/browser-assets/lead-guided-extraction.js",
+      "target": "lead-guided-extraction-v1.js",
+      "contentHash": "sha256:5ae33e211dca861881adc741c2026705127ac1c6d4dc5bb23706a1063c9390c4",
+      "distributedHash": "sha256:6b78ab4df3207abf2c61516496b95fabcd1a008bd98ea4274fb9d33fca041701"
+    },
+    {
+      "packageId": "dual-lane-extraction-aggregation-v1",
+      "version": "v1",
+      "canonicalSource": "packages/research-process/import/dual-lane-extraction-aggregation-v1/browser-assets/dual-lane-extraction-aggregation.js",
+      "target": "dual-lane-extraction-aggregation-v1.js",
+      "contentHash": "sha256:bb192a28ad56b3eaec22c6b6032883a8bc0bc2784155ff013709cee6b80fcc56",
+      "distributedHash": "sha256:206bca5270e38458c56193acfe6dfb89fe67b4aaf92c982f3beb2428756281c9"
+    }
+  ]
+}

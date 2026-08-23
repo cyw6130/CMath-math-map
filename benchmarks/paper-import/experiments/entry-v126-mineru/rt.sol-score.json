@@ -1,0 +1,110 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v126-mineru/rt.raw-pool.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 20,
+  "completeness": 16,
+  "solEntryScore": 36,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main mathematical arc and all four central external or terminal theorems: Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, purification, and the Reshetikhin–Turaev invariant. Its principal formulas, including the ribbon Hopf conventions, quantum trace, Kirby-color sum, and selected RT normalization, agree closely with the Gold reference. The artifact is nevertheless a raw overlapping pool rather than a clean entry set: several entries have duplicate IDs, a number of Gold lemmas and propositions are downgraded to definitions or absorbed into larger statements, and important supporting results such as handle-slide invariance and blow-up invariance are not independently extracted. A few statements also lose convention-sensitive distinctions or source attribution.",
+  "strengths": [
+    "Faithfully extracts the central surgery, Kirby-calculus, ribbon-category, ribbon-Hopf, modular-category, purification, and RT-invariant results.",
+    "Preserves the Gold convention theta_V=rho_V(v) and the quantum-trace formula Tr_V(rho_V(uv) composed with f).",
+    "Reproduces the selected normalization tau(M_L)=Delta^{sigma(L)}D^{-sigma(L)-m-1}{L} accurately.",
+    "Provides generally plausible page locators and recognizable theorem or definition names.",
+    "Includes useful supporting material beyond the minimum Gold coverage, such as categorical trace, pivotal structure, linking-matrix signature, and root-of-unity truncation."
+  ],
+  "issues": [
+    "Duplicate raw entries reuse identical IDs for duality, ribbon category, categorical dimension, and the Turaev ribbon-graph theorem; the tensor-product action and purification theorem also appear in near-duplicate forms under different IDs.",
+    "The Gold handle-slide invariance lemma, blow-up invariance lemma, Kirby-presentation-independence proposition, and Kirby-reduction proposition are not extracted as distinct entries; their content is only partly implicit in the final RT theorem.",
+    "Several structural Gold claims are misclassified as definitions: coproduct-induced monoidality, antipode-induced duality, R-matrix braiding, and quantum-trace/categorical-trace compatibility.",
+    "The standalone Hopf algebra definition, standalone twist definition, finite simple system/domination definition, purification definition, and negligible-morphism definition are absent or only embedded in broader entries.",
+    "The dual-module entry presents both S and S^{-1} formulas as alternative actions on V* without explaining the left-versus-right dual convention, weakening mathematical precision relative to the Gold ambient convention.",
+    "The colored framed-link invariant is typed as a definition and does not clearly state the Gold proposition's ribbon-isotopy invariance under the general End_C(1)=K hypothesis.",
+    "Classic external results are recognizable by name but lack explicit source-attribution metadata comparable to the Gold references.",
+    "The RT theorem contains the unexplained notation D_circ while the surrounding entries use D, creating a minor convention and transcription inconsistency."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryIds": [
+        "paper:thm:lickorish-wallace-surgery"
+      ],
+      "status": "matched",
+      "assessment": "The theorem statement and page locator are faithful, though explicit literature attribution is absent."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryIds": [
+        "paper:thm:kirby-calculus"
+      ],
+      "status": "matched",
+      "assessment": "Correctly states the orientation-preserving classification using framed isotopy, handle slides, and plus-or-minus-one unknots."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-ribbon-graph-functor",
+      "candidateEntryIds": [
+        "paper:thm:turaev-ribbon-graph-functor",
+        "paper:thm:turaev-ribbon-graph-functor"
+      ],
+      "status": "matched_with_duplication",
+      "assessment": "Mathematically accurate but emitted twice with the same ID and slightly different delimitations."
+    },
+    {
+      "goldEntryId": "rt:entry:rep-ribbon",
+      "candidateEntryIds": [
+        "paper:prop:rep-ribbon-category"
+      ],
+      "status": "matched",
+      "assessment": "Correctly gives the induced braiding and Turaev-style twist on finite-dimensional representations."
+    },
+    {
+      "goldEntryId": "rt:entry:quantum-trace",
+      "candidateEntryIds": [
+        "paper:def:quantum-trace"
+      ],
+      "status": "partial",
+      "assessment": "The formula is correct, but the candidate records it as a definition and omits the Gold claim that it equals the categorical trace."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-purification-theorem",
+      "candidateEntryIds": [
+        "paper:thm:turaev-purification",
+        "paper:thm:turaev-modular-hopf-to-modular-category"
+      ],
+      "status": "matched_with_duplication",
+      "assessment": "Both entries capture the theorem, but they redundantly describe the same result under separate IDs."
+    },
+    {
+      "goldEntryId": "rt:entry:signature-normalization",
+      "candidateEntryIds": [
+        "paper:calculation:rt-normalization"
+      ],
+      "status": "matched",
+      "assessment": "The convention-sensitive normalization formula agrees with the Gold revision."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryIds": [
+        "paper:thm:reshetikhin-turaev-invariant"
+      ],
+      "status": "matched",
+      "assessment": "Captures Kirby invariance and dependence only on the orientation-preserving homeomorphism type, with a minor unexplained D_circ notation."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "assessment": "The decisive Kirby-color handle-slide lemma is not separately represented."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "assessment": "The lemma explaining how signature/rank normalization removes the plus-or-minus-one Kirby move is not separately represented."
+    }
+  ]
+}

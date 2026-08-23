@@ -6,8 +6,8 @@ Push `inferences.score` (sol-score-prompt-v3: 45 = correctness 25 + completeness
 Scorer: `scripts/score-paper-import-with-sol.mjs:17` (`SCORER_MODEL=gpt-5.6-sol`, `PROMPT_VERSION=sol-score-prompt-v3`, isolated Gold+candidate+graph-metrics).
 
 ## Architecture
-- **Entry** frozen: `benchmarks/paper-import/entry-module/frozen-entry-module.json:4` → `paper-entry-parallel-extraction-v1.7` (det. consolidation `paper-entry-consolidation-v1.js:1`, artifact `paper-entry-artifact-v1.js:15` SCHEMA `cmath.paper-entry-artifact/v1`). Do NOT modify entry.
-- **Inference** iterated only: `scripts/run-paper-inference-from-entry-artifact.mjs:1` → `paper-import-client.js:273` assemblyPrompt. Variants in `benchmarks/paper-import/runner-config.json:42`: `v3.26-inference-v3` (current best), `v3.26-inference-v5-repair-coverage`, `v6-repair-chain`, `v7-repair-queue`, `v3.41`. Entry→Inference isolation via `paper-entry-artifact-v1.js:171 validatePaperEntryArtifact` + `paper-import-modules-v3.26.js:27` modular wrapper.
+- **Entry** frozen: `benchmarks/paper-import/entry-module/frozen-entry-module.json:4` → `paper-entry-parallel-extraction-v1.31` (det. consolidation `paper-entry-consolidation-v1.js:1`, artifact `paper-entry-artifact-v1.js:15` SCHEMA `cmath.paper-entry-artifact/v1`). Do NOT modify entry — `frozenAt: 2026-08-22T00:00:00+00:00` (was `v1.7` baseline, promoted to `v1.31` per `frozen-entry-module.json:4`).
+- **Inference** frozen: `benchmarks/paper-import/inference-module/frozen-inference-module.json:4` → `v4` mean 83.8 (entry `v1.31`, model `muse-spark-1.2-contributor`). Iterated only: `scripts/run-paper-inference-from-entry-artifact.mjs:1` → `paper-import-client.js:273` assemblyPrompt. Variants in `benchmarks/paper-import/runner-config.json:42`: `v3.26-inference-v3` (current best), `v3.26-inference-v5-repair-coverage`, `v6-repair-chain`, `v7-repair-queue`, `v3.41`. Entry→Inference isolation via `paper-entry-artifact-v1.js:171 validatePaperEntryArtifact` + `paper-import-modules-v3.26.js:27` modular wrapper.
 
 ## Baseline (fixed-1.0 v3.26)
 From `benchmarks/model-outputs/fixed-1.0/*-sol-score-v2.json:1`:

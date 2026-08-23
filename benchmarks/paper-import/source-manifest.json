@@ -1,0 +1,48 @@
+{
+  "schema": "cmath.paper-source-manifest/v1",
+  "generatedAt": "2026-08-16",
+  "files": [
+    {
+      "caseId": "knot-hopf-rt",
+      "sourcePdf": "/Users/chenyuwen/Desktop/Knot_hopf_alg&quantum_invs/RT.pdf",
+      "sourcePdfSha256": "ff72f37c5be8a72f1ad9dc0988ace1c6da44333bf7771c2d58c05eb26ae6c4e4",
+      "extractedText": null,
+      "extractedTextSha256": null
+    },
+    {
+      "caseId": "hopf-degree-theorem",
+      "sourcePdf": "/Users/chenyuwen/Desktop/hopf map.pdf",
+      "sourcePdfSha256": "f1e48afdbdd029d965e38aaa6b15211d049a33a148c21d34f621c48f8620911b",
+      "extractedText": null,
+      "extractedTextSha256": null
+    },
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "sourcePdf": "/Users/chenyuwen/Desktop/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+      "sourcePdfSha256": "c2a5eb78918c1b55551bbb8bff5ecbe8eb25a930b7277d4d769f736c01b28e1a",
+      "extractedText": "/tmp/cmath-pdftext/skein1.txt",
+      "extractedTextSha256": "17ec4621b383545c8f6cbd6d7781fbab67640fe7c64c0b2aff6c2e495c725c0c"
+    },
+    {
+      "caseId": "cornered-skein-lasagna-theory",
+      "sourcePdf": "/Users/chenyuwen/Desktop/CORNERED SKEIN LASAGNA THEORY.pdf",
+      "sourcePdfSha256": "a61ff0d04cbd115996a00e571b6666146d13b64b02a1dbb934d8c7b7032d849f",
+      "extractedText": "/tmp/cmath-pdftext/skein2.txt",
+      "extractedTextSha256": "89d1a1898f1070a1f90e3b70f6d1148d4a02b4f0a531cbe6ae2a67f541e1d022"
+    },
+    {
+      "caseId": "kirby-2018-trisections",
+      "sourcePdf": "/Users/chenyuwen/Desktop/kirby-2018-trisections-of-4-manifolds.pdf",
+      "sourcePdfSha256": "4eb59288f2eb705a053a58dd5c1353d3696dd7d764445c9ca4d1d230976a87f5",
+      "extractedText": "/tmp/cmath-pdftext/kirby.txt",
+      "extractedTextSha256": "ca9daae618a3f693e5f60710fca0c380fdeb56103a2e2af50b6a5d966e98f1d0"
+    },
+    {
+      "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+      "sourcePdf": "/Users/chenyuwen/Desktop/文章1.pdf",
+      "sourcePdfSha256": "311439b9cfa6e78cca7dbba6e8868ee4451511003a3e398dbfb1285db6bc414b",
+      "extractedText": "/tmp/cmath-pdftext/yasui.txt",
+      "extractedTextSha256": "b4f375c69c13862dba028577bacf0e0f919f005e02b0e3fb3535f8fcba388291"
+    }
+  ]
+}

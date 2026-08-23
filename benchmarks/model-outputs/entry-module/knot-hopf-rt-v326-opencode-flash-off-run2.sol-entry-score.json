@@ -1,0 +1,106 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-v326-opencode-flash-off-run2.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 14,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main construction chain—from surgery and Kirby calculus through ribbon Hopf algebras, modular categories, purification, Kirby color, normalization, and the RT invariant—with generally accurate page locators and mathematical conventions. It is nevertheless substantially less granular than the Gold artifact, omitting many supporting lemmas and intermediate propositions. Correctness is also reduced by absent external-result attribution, a false equivalence in the negligible-module entry, an ill-delimited categorical-trace formula, and redundant Yang–Baxter entries.",
+  "strengths": [
+    "Covers every major theorem needed for the RT construction: Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, Turaev purification, and the final Reshetikhin–Turaev invariance theorem.",
+    "Accurately records the Gold convention for a ribbon Hopf algebra, including Δ(v)=R_{21}R(v⊗v), S(v)=v, ε(v)=1, and θ_V=ρ_V(v).",
+    "Preserves the selected normalization τ_{V,D}(M_L)=Δ^{σ(L)}D^{-σ(L)-m-1}{L}.",
+    "Provides strong coverage of foundational definitions such as framing, surgery presentation, braiding, duality, ribbon category, graphical calculus, modular category, Kirby color, and modular Hopf algebra.",
+    "Entry types and page numbers are mostly appropriate and consistent with the source."
+  ],
+  "issues": [
+    "All external-attribution fields are null, so Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, and the Turaev purification theorem are not identified as cited external results as required by the Gold reference.",
+    "The negligible-module entry incorrectly says that vanishing quantum trace of id_Z is equivalent to vanishing quantum trace for every endomorphism of Z; this is not true without additional hypotheses.",
+    "The categorical-trace formula is insufficiently parenthesized: the tensor product with id_{V*} is not clearly placed inside the composite, leaving the displayed expression formally ill-typed or ambiguous.",
+    "The Yang–Baxter identity is extracted twice, once inside paper:lemma:braiding-properties and again as paper:lemma:yang-baxter.",
+    "The Rohlin entry appends the stronger assertion that W may be chosen as a B^4-based 2-handlebody without distinguishing that surgery conclusion from the stated cobordism theorem; it is also outside the Gold entry set.",
+    "Missing standalone foundational entries include the Hopf algebra definition, twist definition, finite simple system/domination, Hopf-link matrix, and purification.",
+    "Missing representation-theoretic infrastructure includes the coproduct-monoidal, antipode-duality, R-matrix-braiding, universal-twist, and categorical/quantum-trace lemmas. Some content is compressed into broader entries, but the logical steps are not separately represented.",
+    "Missing surgery-invariance infrastructure includes Kirby reduction, handle-slide invariance, blow-up invariance, and Kirby-presentation independence.",
+    "The modular data entry defining dim(i), S_{ij}, twist eigenvalues v_i, rank D, and Δ is absent; these quantities appear only partially and across other entries.",
+    "The colored framed-link invariant and the proposition that purification concretely produces a modular category are not separately extracted."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "rt:entry:rt-invariant",
+      "candidateEntry": "paper:thm:reshetikhin-turaev-invariant",
+      "status": "matched",
+      "notes": "Faithfully captures orientation-preserving homeomorphism invariance and the Kirby-move basis of the construction."
+    },
+    {
+      "goldEntry": "rt:entry:signature-normalization",
+      "candidateEntry": "paper:def:rt-normalization",
+      "status": "matched",
+      "notes": "Uses the exact Gold/Turaev normalization convention."
+    },
+    {
+      "goldEntry": "rt:entry:ribbon-hopf-algebra",
+      "candidateEntry": "paper:def:ribbon-hopf-algebra",
+      "status": "matched",
+      "notes": "Centrality, invertibility, coproduct, antipode, and counit conditions are all preserved."
+    },
+    {
+      "goldEntry": "rt:entry:modular-category",
+      "candidateEntry": "paper:def:modular-category",
+      "status": "matched",
+      "notes": "Correctly includes finite simples, the unit, dual closure, domination, and invertibility of the Hopf-link matrix."
+    },
+    {
+      "goldEntry": "rt:entry:turaev-purification-theorem",
+      "candidateEntry": "paper:thm:turaev-purification",
+      "status": "matched_with_metadata_issue",
+      "notes": "The mathematical statement is substantially accurate, but its external Turaev attribution is not encoded."
+    },
+    {
+      "goldEntry": "rt:entry:negligible-module",
+      "candidateEntry": "paper:def:negligible-module",
+      "status": "partially_incorrect",
+      "notes": "The universal endomorphism condition is stated, but the claimed equivalence with tr_q(id_Z)=0 is unjustified in general, and negligible morphisms are omitted."
+    },
+    {
+      "goldEntry": "rt:entry:quantum-trace",
+      "candidateEntry": "paper:def:quantum-trace",
+      "status": "matched_with_type_difference",
+      "notes": "The formula and equality with categorical trace are present, but the Gold lemma is packaged as a definition."
+    },
+    {
+      "goldEntry": "rt:entry:handle-slide-invariance",
+      "candidateEntry": null,
+      "status": "missing",
+      "notes": "The essential Kirby-color handle-slide lemma is not independently extracted."
+    },
+    {
+      "goldEntry": "rt:entry:blowup-invariance",
+      "candidateEntry": null,
+      "status": "missing",
+      "notes": "The lemma showing that normalization removes the ±1 Kirby-move dependence is absent."
+    },
+    {
+      "goldEntry": "rt:entry:kirby-presentation-independence",
+      "candidateEntry": null,
+      "status": "missing",
+      "notes": "Its conclusion is compressed into the final RT theorem rather than represented as the intermediate proposition."
+    },
+    {
+      "goldEntry": "rt:entry:modular-data",
+      "candidateEntry": null,
+      "status": "missing",
+      "notes": "No single entry gathers the dimension, S-matrix, twist eigenvalues, D, and Δ conventions."
+    },
+    {
+      "goldEntry": null,
+      "candidateEntry": "paper:lemma:yang-baxter",
+      "status": "redundant",
+      "notes": "Duplicates the same identity already contained in paper:lemma:braiding-properties."
+    }
+  ]
+}

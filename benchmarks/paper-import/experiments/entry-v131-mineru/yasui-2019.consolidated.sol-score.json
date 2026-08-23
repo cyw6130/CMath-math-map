@@ -1,0 +1,150 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/yasui-2019.consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 21,
+  "completeness": 18,
+  "solEntryScore": 39,
+  "verdict": "usable",
+  "summary": "The candidate captures nearly all central results and the main supporting chain with accurate page locators, generally faithful formulas, and unusually good attribution of external results. It falls short of flawless quality because Lemma 2.6 is duplicated and drops the Gold reference's non-torsion condition, two foundational definitions are absent, some external theorems are classified as lemmas, and a few statements or congruence expressions are less precise than the reference.",
+  "strengths": [
+    "All principal internal results in the Gold artifact are represented, including Theorems 1.4, 1.9, 2.3, and 2.4 and Lemmas 2.6 and 3.1.",
+    "The definition of representation by a 2-handle neighborhood is more explicit than the Gold formulation and correctly describes the generator and inclusion-induced homology map.",
+    "The Bauer and Frøyshov external results are clearly marked as external, carry citations, and retain their important hypotheses.",
+    "The candidate correctly captures the stable-cohomotopy sphere obstruction and the parity input used in the symplectic obstruction argument.",
+    "Entry pages agree with the Gold reference for the matched definitions, lemmas, and theorems.",
+    "Useful paper-level corollaries and additional cited infrastructure are extracted beyond the minimum Gold coverage."
+  ],
+  "issues": [
+    "The Lemma 2.6 extraction omits the Gold reference's assumption that the represented homology class is non-torsion.",
+    "Lemma 2.6 is extracted twice as yasui:lemma:2-6 and yasui:lemma:2-handle-sphere with essentially identical statements, creating arbitrary redundancy.",
+    "No standalone entry captures the Gold definition or conceptual description of the Bauer-Furuta stable cohomotopy Seiberg-Witten invariant.",
+    "No standalone entry captures the Gold definition of a symplectic form and its induced canonical spin^c structure.",
+    "The Taubes input is represented only as a conditional lemma about both orientations being symplectic, rather than as the direct external theorem that the canonical spin^c structure has Seiberg-Witten invariant equal to plus or minus one.",
+    "The symplectic Betti-number parity result and the Taubes result are typed as lemmas even though they function as externally cited theorem-level facts.",
+    "Theorem 1.9 and Theorem 2.4 place the explicit modulo-4 qualifier only after the second congruence, making the first congruence typographically ambiguous.",
+    "Some additional external entries, especially the adjunction inequality and blow-up formula, are too vaguely stated to be independently useful mathematical entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:geometrically-simply-connected",
+      "candidateEntryIds": [
+        "yasui:def:geometrically-simply-connected"
+      ],
+      "status": "matched",
+      "note": "Faithful definition with the closed-manifold equivalence retained."
+    },
+    {
+      "goldEntryId": "paper:def:2-handle-neighborhood-class",
+      "candidateEntryIds": [
+        "yasui:def:two-handle-neighborhood-represented-class"
+      ],
+      "status": "matched",
+      "note": "Accurate and more explicit than the Gold statement."
+    },
+    {
+      "goldEntryId": "paper:def:bauer-furuta-invariant",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "note": "The invariant is used repeatedly but is not introduced in a standalone definition."
+    },
+    {
+      "goldEntryId": "paper:def:symplectic-structure-4mfld",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "note": "The symplectic-form and canonical spin^c definitions are absent."
+    },
+    {
+      "goldEntryId": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:bauer-stable-cohomotopy"
+      ],
+      "status": "matched",
+      "note": "External attribution and both nonvanishing cases are preserved."
+    },
+    {
+      "goldEntryId": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntryIds": [
+        "yasui:theorem:froyshov-vanishing"
+      ],
+      "status": "matched",
+      "note": "Hypotheses, conclusion, page, and external citation are accurate."
+    },
+    {
+      "goldEntryId": "paper:b0:taubes-symplectic-sw",
+      "candidateEntryIds": [
+        "yasui:lemma:taubes-condition"
+      ],
+      "status": "partial",
+      "note": "The needed mod-2 nonvanishing consequence is present, but only in a specialized conditional form and with lemma classification."
+    },
+    {
+      "goldEntryId": "paper:b0:symplectic-betti-parity",
+      "candidateEntryIds": [
+        "yasui:lemma:external-symplectic-parity"
+      ],
+      "status": "matched_with_type_issue",
+      "note": "The equivalent parity formula is correct, but the external theorem-level fact is classified as a lemma."
+    },
+    {
+      "goldEntryId": "paper:lemma:embedded-sphere-double",
+      "candidateEntryIds": [
+        "yasui:lemma:2-6",
+        "yasui:lemma:2-handle-sphere"
+      ],
+      "status": "partial_duplicate",
+      "note": "The sphere and zero-self-intersection conclusion is captured twice, but the non-torsion condition from Gold is omitted."
+    },
+    {
+      "goldEntryId": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:stable-adjunction"
+      ],
+      "status": "matched",
+      "note": "The non-torsion, nonnegative-square sphere obstruction is faithfully represented."
+    },
+    {
+      "goldEntryId": "paper:thm:positive-definite-vanishing",
+      "candidateEntryIds": [
+        "yasui:theorem:2-3"
+      ],
+      "status": "matched",
+      "note": "All substantive hypotheses and the vanishing conclusion are retained."
+    },
+    {
+      "goldEntryId": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntryIds": [
+        "yasui:theorem:2-4"
+      ],
+      "status": "matched_with_notation_issue",
+      "note": "The result is correct, though the modulo-4 scope is typographically ambiguous for the first congruence."
+    },
+    {
+      "goldEntryId": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntryIds": [
+        "yasui:lemma:3-1"
+      ],
+      "status": "matched",
+      "note": "The full every-class conclusion is present on the correct page."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntryIds": [
+        "yasui:theorem:1-4"
+      ],
+      "status": "matched",
+      "note": "The main vanishing theorem is accurately delimited without conflating it with the later symplectic corollary."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntryIds": [
+        "yasui:theorem:1-9"
+      ],
+      "status": "matched_with_notation_issue",
+      "note": "The orientation obstruction is captured, with a minor ambiguity in the placement of the modulo-4 qualifier."
+    }
+  ]
+}

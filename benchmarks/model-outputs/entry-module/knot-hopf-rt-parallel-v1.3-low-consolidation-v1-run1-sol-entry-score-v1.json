@@ -1,0 +1,97 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.3-low-consolidation-v1-run1.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 21,
+  "completeness": 15,
+  "solEntryScore": 36,
+  "verdict": "usable",
+  "summary": "The candidate accurately captures most of the paper's central mathematical chain from framed-link surgery and ribbon categories through ribbon Hopf algebras, modular data, purification, and the RT invariant. Formulas, page locators, and external attributions are generally strong. However, numerous lemma- or definition-level results are typed merely as calculations, several foundational Gold entries are absent as distinct entries, and the Kirby-invariance proof infrastructure is compressed into the final RT theorem. The negligible-module entry also makes an unjustified equivalence between vanishing quantum trace for every endomorphism and vanishing quantum dimension.",
+  "strengths": [
+    "Faithfully extracts the Lickorish–Wallace theorem, Kirby calculus, Turaev ribbon-graph theorem, purification theorem, and final Reshetikhin–Turaev invariance theorem.",
+    "Preserves the principal formulas for the universal R-matrix, ribbon element, quantum trace, modular data, Kirby color, surgery sum, and signature normalization.",
+    "Accurately covers the categorical progression from monoidal structure and duality to braiding, ribbon structure, and the ribbon structure on finite-dimensional representations.",
+    "Page locators are valid and closely aligned with the source, while major literature-derived theorems are explicitly marked as external.",
+    "Includes several legitimate source entries beyond the Gold set, such as blackboard framing, categorical trace, the pivotal isomorphism, Yang–Baxter identity, and the colored Jones specialization."
+  ],
+  "issues": [
+    "The standalone Hopf algebra definition in the Gold reference is missing.",
+    "The standalone definitions of twist, finite simple system/domination, Hopf-link S-matrix, negligible morphism, and purification are missing or only implicit inside broader entries.",
+    "The handle-slide invariance lemma, blow-up invariance lemma, Kirby-presentation-independence proposition, and the explicit reduction from Kirby invariance to a 3-manifold invariant are not extracted as distinct results.",
+    "Several mathematical results corresponding to Gold lemmas or definitions are classified as \"calculation\", including coproduct-induced monoidality, antipode-induced duality, R-matrix braiding, quantum trace, modular data, graphical calculus, and RT normalization.",
+    "The negligible-module statement incorrectly says that vanishing quantum trace for every endomorphism is equivalent to vanishing quantum trace of the identity; this equivalence does not hold for a general module without additional assumptions.",
+    "The colored framed-link invariant is classified as a definition even though the Gold reference treats its isotopy invariance as a proposition-level claim.",
+    "The final RT theorem absorbs several logically distinct invariance results, reducing the auditability and completeness of the extracted proof structure."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryId": "paper:theorem:lickorish-wallace-surgery",
+      "status": "match",
+      "note": "Accurate statement and appropriate theorem classification."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryId": "paper:theorem:kirby-calculus",
+      "status": "match",
+      "note": "Faithfully includes framed isotopy, handle slides, and the plus-or-minus-one move."
+    },
+    {
+      "goldEntryId": "rt:entry:hopf-algebra",
+      "candidateEntryId": null,
+      "status": "missing",
+      "note": "No standalone definition of a Hopf algebra and its antipode identities."
+    },
+    {
+      "goldEntryId": "rt:entry:rep-ribbon",
+      "candidateEntryId": "paper:proposition:rep-ribbon-category",
+      "status": "match",
+      "note": "Correctly states that a ribbon Hopf algebra produces a ribbon representation category."
+    },
+    {
+      "goldEntryId": "rt:entry:quantum-trace",
+      "candidateEntryId": "paper:calculation:quantum-trace",
+      "status": "partial",
+      "note": "The formula is accurate, but the lemma-level assertion is classified as a calculation."
+    },
+    {
+      "goldEntryId": "rt:entry:negligible-module",
+      "candidateEntryId": "paper:def:negligible-module",
+      "status": "partial",
+      "note": "The primary definition is captured, but the claimed equivalence with vanishing trace of the identity is unjustified and negligible morphisms are omitted."
+    },
+    {
+      "goldEntryId": "rt:entry:purification",
+      "candidateEntryId": "paper:theorem:turaev-purification",
+      "status": "partial",
+      "note": "The quotient construction appears inside the theorem, but purification is not delimited as its own definition."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryId": null,
+      "status": "missing",
+      "note": "Handle-slide invariance of the Kirby-color sum is not extracted separately."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryId": null,
+      "status": "missing",
+      "note": "The normalization's invariance under plus-or-minus-one blow-up moves is only implicit in the final theorem."
+    },
+    {
+      "goldEntryId": "rt:entry:signature-normalization",
+      "candidateEntryId": "paper:calculation:rt-normalization",
+      "status": "partial",
+      "note": "The normalization formula is correct, but it is classified as a calculation rather than a definition."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryId": "paper:theorem:rt-invariant",
+      "status": "match",
+      "note": "Correctly captures the main RT invariant and its dependence only on the oriented homeomorphism class."
+    }
+  ]
+}

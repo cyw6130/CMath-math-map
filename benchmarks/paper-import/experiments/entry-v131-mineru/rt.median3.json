@@ -1,0 +1,55 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "GPT-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/rt.consolidated-v2.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 14,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main progression from surgery and ribbon categories through ribbon Hopf algebras, modular categories, purification, and the Reshetikhin-Turaev invariant. Most formulas corresponding to the gold entries are recognizable and mathematically faithful. However, several supporting claims are omitted or absorbed into broader entries, and a number of results are misclassified as definitions or calculations. There are also substantive precision problems in the dual-module and negligible-module entries, incomplete external attribution, duplication, and missing inference structure.",
+  "strengths": [
+    "Correctly extracts the Lickorish-Wallace theorem, Kirby calculus, the Turaev ribbon-graph functor, the purification theorem, and the main Reshetikhin-Turaev invariant.",
+    "Accurately captures the core definitions of framing, surgery manifolds, strict monoidal categories, braiding, rigid duality, ribbon categories, quasitriangular Hopf algebras, ribbon Hopf algebras, modular categories, modular Hopf algebras, Kirby color, and signature normalization.",
+    "Preserves the principal formulas for the universal R-matrix, ribbon element, quantum trace, modular data, surgery sum, and RT normalization.",
+    "The main RT theorem explicitly includes Kirby-move invariance and dependence only on the orientation-preserving homeomorphism class.",
+    "Page locators are consistently supplied, and the Turaev purification result and later quantum-group material are explicitly attributed as external."
+  ],
+  "issues": [
+    "The Hopf algebra definition itself is missing, despite being foundational to the extracted quasitriangular and ribbon Hopf algebra entries.",
+    "Several gold claims are absent as distinct mathematical entries: Kirby reduction, handle-slide invariance, blowup invariance, Kirby-presentation independence, and the proposition that purification produces the required modular category.",
+    "The graphical-calculus entry is not captured: defining a colored ribbon graph does not record the assignments of crossings, cups, caps, twists, and coupons or the composition/tensor rules.",
+    "The twist definition is only embedded in the ribbon-category entry rather than extracted independently, and the compatibility equation with duality is not stated explicitly.",
+    "The coproduct tensor action, R-matrix braiding, antipode duality, and categorical/quantum trace equality are typed as definitions or calculations even though the gold treats their structural consequences as lemmas or claims.",
+    "The dual-module entry states that either S or S^{-1} may define the left action without clearly distinguishing left- versus right-dual conventions; this is not a faithful substitute for the gold's fixed action and A-linearity lemma.",
+    "The negligible-module entry claims that vanishing quantum trace of every endomorphism is equivalent to vanishing quantum dimension alone. That equivalence is not valid for an arbitrary module without additional hypotheses. The definition of negligible morphism is also omitted.",
+    "Purification is not extracted as a definition of the quotient by the ideal of negligible morphisms, even though the external purification theorem refers to that construction.",
+    "The Turaev ribbon-graph functor, Lickorish-Wallace theorem, and Kirby calculus are background results cited from the literature in the gold but are not marked or attributed as external in the candidate.",
+    "The ribbon-category statement contains the malformed or unexplained notation '(\\mathbf{\\Omega}^*,b,d)' where the duality functor/object notation should be '*', V^*, or an equivalent conventional expression.",
+    "The colored framed-link invariant is classified as a definition/fact rather than as the proposition that functor evaluation is invariant under colored ribbon isotopy.",
+    "There is avoidable duplication: categorical dimension appears twice, blackboard framing appears twice under different IDs, and closely overlapping colored-link invariant entries are split across pages 13 and 17.",
+    "The Rohlin cobordism entry and several Jones-polynomial/root-of-unity entries are outside the gold entry set and add noise; the attribution 'Rohlin cobordism theorem' is also questionable for the bare statement that every closed oriented 3-manifold bounds.",
+    "The candidate provides no inference hints, so none of the gold's dependency structure from surgery, ribbon structure, purification, and Kirby invariance to the final RT theorem is represented."
+  ],
+  "entryLevelComparison": [],
+  "scoreRuns": [
+    {
+      "correctness": 18,
+      "completeness": 14,
+      "solEntryScore": 32
+    },
+    {
+      "correctness": 19,
+      "completeness": 14,
+      "solEntryScore": 33
+    },
+    {
+      "correctness": 19,
+      "completeness": 15,
+      "solEntryScore": 34
+    }
+  ],
+  "aggregation": "median-of-3"
+}

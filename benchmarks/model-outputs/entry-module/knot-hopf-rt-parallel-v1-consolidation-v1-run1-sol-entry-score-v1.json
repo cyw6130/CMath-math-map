@@ -1,0 +1,115 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1-consolidation-v1-run1.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 22,
+  "completeness": 11,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate accurately extracts most of the paper's headline definitions and theorems, with sound classifications, balanced LaTeX, plausible page locators, and explicit attribution of the principal external results. It directly or substantially represents about 16 of the 39 Gold entries. Coverage is nevertheless too coarse: many foundational definitions, intermediate lemmas, and the separate normalization results needed to make the RT construction mathematically self-contained are omitted. In particular, the candidate states the final invariant only qualitatively and does not extract the definitions of D and Delta, the full surgery sum, the displayed tau formula, handle-slide invariance, blow-up invariance, or presentation independence.",
+  "strengths": [
+    "Faithfully captures the Lickorish–Wallace theorem, Kirby calculus, Turaev ribbon-graph functor, ribbon-representation proposition, purification theorem, and final RT invariance statement.",
+    "Correctly extracts the central definitions of strict monoidal, braided, rigid, ribbon, quasitriangular Hopf, ribbon Hopf, modular, Kirby-color, negligible-module, and modular-Hopf structures.",
+    "Mathematical formulas in the retained entries are generally accurate, well delimited, and consistent with the Gold convention theta_V = rho_V(v).",
+    "Definitions, propositions, and theorems are assigned appropriate entry types.",
+    "External status and sources are recorded for Lickorish–Wallace, Kirby calculus, the ribbon-graph functor, and Turaev purification.",
+    "Entries are concise and mostly nonredundant within the consolidated coverage lane."
+  ],
+  "issues": [
+    "The framed-link and surgery-manifold definitions are absent, leaving the geometric input to surgery insufficiently delimited.",
+    "The candidate omits the Kirby-reduction proposition connecting link-level Kirby invariance to a 3-manifold invariant.",
+    "It omits the separate twist and graphical-calculus definitions and the colored framed-link invariant proposition.",
+    "The Hopf-algebra definition and the coproduct, antipode, R-matrix, universal-twist, and quantum-trace lemmas are not extracted; these form the main supporting chain behind the ribbon representation category.",
+    "The finite-simple-system, Hopf-link-matrix, purification, and full modular-data definitions are missing or only compressed into broader entries.",
+    "The Kirby-color entry gives only Omega and omits the associated weighted link sum {L}.",
+    "The displayed normalization tau_{V,D}(M_L) = Delta^{sigma(L)} D^{-sigma(L)-m-1}{L} is not extracted, nor are the definitions of D, Delta, and sigma(L). Consequently, tau and D are referenced in the final theorem without being defined by candidate entries.",
+    "The handle-slide lemma, blow-up invariance lemma, and Kirby-presentation-independence proposition are omitted, so the proof infrastructure for the main theorem is not represented.",
+    "The negligible-module entry omits the accompanying definition of negligible morphisms, which is needed to state purification precisely.",
+    "The extra Rohlin entry follows the source text but has no Gold counterpart and attributes the stronger 2-handle presentation clause to the cobordism theorem without distinguishing that additional handle-theoretic reduction."
+  ],
+  "entryLevelComparison": [
+    {
+      "group": "geometry-and-kirby-calculus",
+      "matchedGoldEntries": [
+        "rt:entry:lickorish-wallace",
+        "rt:entry:kirby-calculus"
+      ],
+      "missingGoldEntries": [
+        "rt:entry:framed-link",
+        "rt:entry:surgery-manifold",
+        "rt:entry:kirby-reduction"
+      ],
+      "candidateOnlyEntries": [
+        "paper:theorem:rohlin-cobordism"
+      ],
+      "assessment": "Headline existence and equivalence theorems are accurate, but the basic geometric objects and the explicit reduction principle are missing."
+    },
+    {
+      "group": "ribbon-category-and-graphical-calculus",
+      "matchedGoldEntries": [
+        "rt:entry:monoidal-category",
+        "rt:entry:braiding",
+        "rt:entry:duality",
+        "rt:entry:ribbon-category",
+        "rt:entry:turaev-ribbon-graph-functor"
+      ],
+      "missingGoldEntries": [
+        "rt:entry:twist",
+        "rt:entry:graphical-calculus",
+        "rt:entry:colored-link-invariant"
+      ],
+      "assessment": "The structural category definitions and Turaev theorem are correct, while the local graphical dictionary and its scalar link-invariant consequence are not separately captured."
+    },
+    {
+      "group": "hopf-to-ribbon-representation-chain",
+      "matchedGoldEntries": [
+        "rt:entry:quasitriangular-hopf-algebra",
+        "rt:entry:ribbon-hopf-algebra",
+        "rt:entry:rep-ribbon"
+      ],
+      "missingGoldEntries": [
+        "rt:entry:hopf-algebra",
+        "rt:entry:coproduct-monoidal",
+        "rt:entry:antipode-duality",
+        "rt:entry:r-matrix-braiding",
+        "rt:entry:universal-twist",
+        "rt:entry:quantum-trace"
+      ],
+      "assessment": "The endpoint proposition is accurate, but most of the mathematical infrastructure establishing it is omitted."
+    },
+    {
+      "group": "modularity-and-purification",
+      "matchedGoldEntries": [
+        "rt:entry:modular-category",
+        "rt:entry:negligible-module",
+        "rt:entry:modular-hopf-algebra",
+        "rt:entry:turaev-purification-theorem"
+      ],
+      "missingGoldEntries": [
+        "rt:entry:finite-simple-system",
+        "rt:entry:hopf-link-matrix",
+        "rt:entry:purification",
+        "rt:entry:purified-category-modular"
+      ],
+      "assessment": "The main definitions and purification theorem are substantially correct, but the candidate compresses or drops several independently meaningful Gold entries."
+    },
+    {
+      "group": "rt-surgery-invariant",
+      "matchedGoldEntries": [
+        "rt:entry:kirby-color",
+        "rt:entry:rt-invariant"
+      ],
+      "missingGoldEntries": [
+        "rt:entry:modular-data",
+        "rt:entry:handle-slide-invariance",
+        "rt:entry:signature-normalization",
+        "rt:entry:blowup-invariance",
+        "rt:entry:kirby-presentation-independence"
+      ],
+      "assessment": "The main outcome is present and correctly stated at a high level, but the exact selected Turaev normalization and all three intermediate invariance steps are absent."
+    }
+  ]
+}

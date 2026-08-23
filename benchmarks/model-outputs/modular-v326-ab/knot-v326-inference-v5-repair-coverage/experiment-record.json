@@ -1,0 +1,62 @@
+{
+  "schema": "cmath.paper-import-inference-experiment/v1",
+  "experimentId": "knot-v326-inference-v5-repair-coverage",
+  "status": "discard",
+  "decision": "not-promoted",
+  "objective": "Improve V3.26 Inference proof-chain coverage by changing only the first Repair prompt, while keeping the frozen Entry artifact, Gold, scorer, validator, Assembly, topology, convergence policy, and token budget fixed.",
+  "base": {
+    "workflowVersion": "v3.26-inference-v3",
+    "entryArtifact": "benchmarks/model-outputs/modular-v326-ab/knot-v326/entry-artifact.json",
+    "entryArtifactSha256": "346e57b69cdb531b119831fb5680e4764bf9f43fd4fbe9beefe49bdfa6770615",
+    "solScore": 77,
+    "formatScore": 40,
+    "inferenceScore": 8,
+    "isolatedEntryCount": 23,
+    "largestNontrivialComponentSize": 11
+  },
+  "candidate": {
+    "workflowVersion": "v3.26-inference-v5-repair-coverage",
+    "runtimeWorkflowVersion": "v3.26-inference-v3",
+    "changedStage": "repair",
+    "repairPromptVersion": "v3.26-inference-v5-repair-coverage",
+    "entryArtifact": "benchmarks/model-outputs/modular-v326-ab/knot-v326/entry-artifact.json",
+    "inferenceRun": "inference-run.json",
+    "inferenceArtifact": "inference-artifact.json",
+    "formatReport": "format-report.json",
+    "solScoreArtifact": "sol-score-v3.json",
+    "solScore": 70,
+    "formatScore": 40,
+    "entryCount": 47,
+    "inferenceCount": 4,
+    "inferenceScore": 24,
+    "isolatedEntryCount": 41,
+    "largestNontrivialComponentSize": 4,
+    "largestNontrivialComponentCoverage": 0.0851063829787234,
+    "nontrivialComponentCount": 2,
+    "provider": "luna-gateway",
+    "model": "gpt-5.6-luna",
+    "mode": "off-compact",
+    "calls": 3,
+    "durationMs": 77195
+  },
+  "hardGates": {
+    "format": "passed",
+    "jsonAndReferences": "passed",
+    "proofAndOrganizationBoundaries": "passed",
+    "proofCycles": "passed",
+    "openClaims": 1,
+    "entryPayloadUnchanged": true
+  },
+  "evaluation": {
+    "officialSolScore": 70,
+    "verdict": "needs-revision",
+    "reason": "The Repair 1 coverage plan did not recover the main Hopf→ribbon→modular→Kirby→RT proof chain. It reduced the candidate to four correct local relations, leaving 41/47 Entries isolated and lowering the official score below both the frozen baseline (77) and V4 assembly candidate (74).",
+    "nextExperiment": "Keep the frozen Entry artifact and all scoring gates fixed; change one Repair policy to explicitly construct the ordered main proof chain from the coverage plan, with a minimum chain checklist before convergence."
+  },
+  "sha256": {
+    "frozenEntryArtifact": "346e57b69cdb531b119831fb5680e4764bf9f43fd4fbe9beefe49bdfa6770615",
+    "candidateInferenceRun": "e27a69cae2b0f42fccba11af28d4e7b2e49177d81852e422e757cdb5bfef4900",
+    "candidateFormatReport": "b0187fa11f430cd5b64db8e74d187f50b133db693acf89aa28da0bc7d456c87f",
+    "candidateSolScore": "ea34e69b899049386f977ade2a2d9c7f151e7101eed67d5a1d483bdeb4d18980"
+  }
+}

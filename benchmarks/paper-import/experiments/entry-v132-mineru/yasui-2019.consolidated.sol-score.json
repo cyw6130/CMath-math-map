@@ -1,0 +1,150 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v132-mineru/yasui-2019.consolidated.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 21,
+  "completeness": 16,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate captures all principal paper-specific theorems and the main supporting lemmas with generally faithful hypotheses and formulas. It is nevertheless short of flawless because several foundational or externally used Gold entries are absent, some statements lose mathematical precision, the stable cohomotopy terminology is inconsistently mistranslated as stable cohomology, and Lemma 2.6 is duplicated.",
+  "strengths": [
+    "Faithfully captures the definition of geometrical simple connectivity and both principal results, Theorems 1.4 and 1.9.",
+    "Covers the central proof infrastructure: the 2-handle-neighborhood definition, Lemma 2.6, Theorems 2.3 and 2.4, the embedded-sphere obstruction, and the lemma that every second homology class of a geometrically simply connected manifold is represented by a 2-handle neighborhood.",
+    "The extracted hypotheses for Theorems 2.3 and 2.4 closely match the Gold reference, including non-torsion, Betti-number, parity, and orientation conditions.",
+    "Recognizes the Bauer connected-sum theorem and the Frøyshov vanishing theorem as distinct mathematical entries and preserves their important technical conditions.",
+    "Includes several meaningful results beyond the Gold subset, such as Corollaries 1.6 and 1.7, the PL-sphere characterization, and cited Seiberg-Witten tools."
+  ],
+  "issues": [
+    "The Gold definition of the Bauer-Furuta stable homotopy refinement is missing.",
+    "The Gold definition of a symplectic structure and its canonical spin^c structure is missing.",
+    "The external Betti-parity fact for closed symplectic 4-manifolds, b_2^+ + b_1 congruent to 1 modulo 2, is missing even though it supports Theorem 2.4.",
+    "The Taubes entry is weaker and less precise than the Gold entry: it imposes b_2^+ > 1, speaks only of a nonzero Seiberg-Witten invariant, and omits the canonical spin^c structure and the exact value SW_X(s_X) = plus or minus 1.",
+    "Several entries call the invariant '稳定上同调 Seiberg-Witten 不变量', meaning stable cohomology, instead of stable cohomotopy or stable homotopy. This affects the main theorem and other central claims.",
+    "Lemma 2.6 appears twice under paper:lemma:2-6 and yasui:lemma:two-handle-sphere, creating avoidable redundancy.",
+    "Both versions of Lemma 2.6 omit the Gold reference's explicit non-torsion hypothesis. The notation alpha minus bar-alpha may be a convention-dependent rendering of the Gold class alpha times bar-alpha and should have been normalized or explained.",
+    "The embedded-sphere obstruction is accurately stated but assigned an ID and name suggesting a lemma or adjunction inequality while its type is theorem; this weakens label fidelity relative to Theorem 2.8.",
+    "The Bauer and Frøyshov results are recognizable as external through their IDs or names, but they lack consistent external=true metadata and bibliographic source fields.",
+    "The geometrically simply connected homology lemma is located on page 10 rather than the Gold locator page 9, indicating a page-offset or locator-normalization problem.",
+    "The candidate uses entryClass values such as definition, theorem, and lemma rather than the Gold view model's fact and claim classes. These are understandable extraction-level types but reduce direct schema alignment."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:def:geometrically-simply-connected",
+      "candidateEntryIds": [
+        "paper:def:geometrically-simply-connected"
+      ],
+      "status": "matched",
+      "notes": "Accurate definition and page."
+    },
+    {
+      "goldEntryId": "paper:def:2-handle-neighborhood-class",
+      "candidateEntryIds": [
+        "paper:def:two-handle-neighborhood-represented-class"
+      ],
+      "status": "matched",
+      "notes": "Candidate gives a precise generator-and-inclusion formulation."
+    },
+    {
+      "goldEntryId": "paper:def:bauer-furuta-invariant",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No foundational definition of the invariant as a refinement of the ordinary Seiberg-Witten invariant."
+    },
+    {
+      "goldEntryId": "paper:def:symplectic-structure-4mfld",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "No definition connecting a symplectic form to the canonical orientation and spin^c structure."
+    },
+    {
+      "goldEntryId": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:external:bauer-connected-sum"
+      ],
+      "status": "matched_with_metadata_issue",
+      "notes": "Substantively detailed, but consistent external attribution fields are absent."
+    },
+    {
+      "goldEntryId": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntryIds": [
+        "yasui:theorem:froyshov-vanishing"
+      ],
+      "status": "matched_with_metadata_issue",
+      "notes": "Statement is faithful, but explicit external metadata and source citation are absent."
+    },
+    {
+      "goldEntryId": "paper:b0:taubes-symplectic-sw",
+      "candidateEntryIds": [
+        "paper:external:taubes-nonvanishing"
+      ],
+      "status": "partial",
+      "notes": "Captures nonvanishing but loses the canonical spin^c structure, exact value, and full scope."
+    },
+    {
+      "goldEntryId": "paper:b0:symplectic-betti-parity",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The parity theorem used in the symplectic obstruction argument is absent."
+    },
+    {
+      "goldEntryId": "paper:lemma:embedded-sphere-double",
+      "candidateEntryIds": [
+        "paper:lemma:2-6",
+        "yasui:lemma:two-handle-sphere"
+      ],
+      "status": "matched_with_issues",
+      "notes": "Duplicated and missing the explicit non-torsion condition."
+    },
+    {
+      "goldEntryId": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntryIds": [
+        "yasui:lemma:stable-cohomotopy-adjunction"
+      ],
+      "status": "matched",
+      "notes": "Mathematical content is accurate, although the identifier and display name do not preserve Theorem 2.8."
+    },
+    {
+      "goldEntryId": "paper:thm:positive-definite-vanishing",
+      "candidateEntryIds": [
+        "paper:thm:2-3"
+      ],
+      "status": "matched",
+      "notes": "Hypotheses and conclusion are faithful aside from inconsistent stable-cohomotopy terminology."
+    },
+    {
+      "goldEntryId": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntryIds": [
+        "paper:thm:2-4"
+      ],
+      "status": "matched",
+      "notes": "Faithfully preserves the parity, b_1, non-torsion, and 2-handle-neighborhood conditions."
+    },
+    {
+      "goldEntryId": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntryIds": [
+        "paper:lemma:every-homology-class-2-handle-neighborhood"
+      ],
+      "status": "matched_with_locator_issue",
+      "notes": "Statement is accurate, but the candidate gives page 10 instead of Gold page 9."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntryIds": [
+        "paper:thm:1-4"
+      ],
+      "status": "matched_with_terminology_issue",
+      "notes": "Correct theorem boundary and hypotheses; 'stable cohomology' should be stable cohomotopy or stable homotopy."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntryIds": [
+        "paper:thm:1-9"
+      ],
+      "status": "matched",
+      "notes": "Accurate statement and locator."
+    }
+  ]
+}

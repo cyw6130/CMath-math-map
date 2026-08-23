@@ -1,0 +1,995 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-4-dimensional-skein-modules-handle-attachments-and-tangles-off-compact-v3.15",
+  "condition": "off-compact",
+  "workflowVersion": "v3.15",
+  "promptSetVersion": "v3.15",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+    "pageCount": 10,
+    "characters": 32140
+  },
+  "diagnostics": {
+    "durationMs": 222018,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf",
+        "pageCount": 10,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32140,
+        "atMs": 2
+      },
+      {
+        "stage": "target",
+        "leads": 10,
+        "atMs": 70657
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 70657
+      },
+      {
+        "stage": "request",
+        "chars": 32140,
+        "chunks": 2,
+        "atMs": 70659
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 7,
+        "atMs": 70663
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 126525
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 141349
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:boundary-algebra",
+        "retained": "coverage-or-first-seen",
+        "atMs": 144861
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:calculation:gluing-surjection",
+        "retained": "coverage-or-first-seen",
+        "atMs": 144861
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 34,
+        "leadGuided": 20,
+        "total": 52,
+        "conflicts": 2,
+        "atMs": 144861
+      },
+      {
+        "stage": "integrate",
+        "entries": 52,
+        "atMs": 144861
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 19,
+        "renameCount": 5,
+        "atMs": 159755
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "entry:MW-W-2023-evaluation",
+          "entry:MW-2023-1handle-formula",
+          "entry:MN-2022-2handle-formula",
+          "paper:proposition:khovanov-tangle-test-case",
+          "paper:lemma:evaluation-algebra-module"
+        ],
+        "fixedCount": 5,
+        "atMs": 159774
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 5,
+        "items": [
+          {
+            "canonicalId": "paper:proposition:khovanov-tangle-test-case",
+            "page": 4,
+            "source": "Khovanov 的切结不变量构造，文中引为 [3]"
+          },
+          {
+            "canonicalId": "paper:lemma:evaluation-algebra-module",
+            "page": 3,
+            "source": "Morrison-Walker-Wedrich in [6]"
+          },
+          {
+            "canonicalId": "entry:MW-W-2023-evaluation",
+            "page": 3,
+            "source": "Morrison–Walker–Wedrich [6], as cited on p. 3."
+          },
+          {
+            "canonicalId": "entry:MW-2023-1handle-formula",
+            "page": 8,
+            "source": "Manolescu–Walker–Wedrich [5, Theorem 4.7], as cited on p. 8."
+          },
+          {
+            "canonicalId": "entry:MN-2022-2handle-formula",
+            "page": 9,
+            "source": "Manolescu–Neithalath [4], as cited on p. 9."
+          }
+        ],
+        "atMs": 159781
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 8,
+        "candidates": [
+          "theorem 1.1",
+          "theorem 1.2",
+          "theorem 1.3",
+          "theorem 1.4",
+          "The skein lasagna module of a triple",
+          "The algebra associated to a 3-manifold",
+          "lemma 3.6",
+          "theorem 4.1"
+        ],
+        "atMs": 159785
+      },
+      {
+        "stage": "assemble",
+        "entries": 36,
+        "atMs": 159786
+      },
+      {
+        "stage": "response",
+        "atMs": 196761
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃 conclusion 缺失或悬空的 第 8 条 Inference"
+        ],
+        "atMs": 196766
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:proposition:3.7"
+        ],
+        "atMs": 196767
+      },
+      {
+        "stage": "repair",
+        "reason": "6 处问题",
+        "attempt": 1,
+        "atMs": 196790
+      },
+      {
+        "stage": "response",
+        "atMs": 210409
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:proposition:3.7"
+        ],
+        "repairRound": 1,
+        "atMs": 210410
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 2,
+        "atMs": 210411
+      },
+      {
+        "stage": "response",
+        "atMs": 222011
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 1,
+        "removedClaimIds": [
+          "paper:proposition:3.7"
+        ],
+        "repairRound": 2,
+        "atMs": 222012
+      },
+      {
+        "stage": "validate",
+        "atMs": 222013
+      },
+      {
+        "stage": "closure",
+        "openClaims": [],
+        "atMs": 222017
+      },
+      {
+        "stage": "compile-candidate",
+        "admission": false,
+        "mutation": false,
+        "store": false,
+        "atMs": 222017
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 70650,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10566,
+          "completion_tokens": 3709,
+          "total_tokens": 14275
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 17646,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14352,
+          "completion_tokens": 854,
+          "total_tokens": 15206
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 55864,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 8266,
+          "completion_tokens": 2510,
+          "total_tokens": 10776
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 70687,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 11929,
+          "completion_tokens": 3803,
+          "total_tokens": 15732
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 74195,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16218,
+          "completion_tokens": 3960,
+          "total_tokens": 20178
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 14891,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 4404,
+          "completion_tokens": 548,
+          "total_tokens": 4952
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 36971,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 21692,
+          "completion_tokens": 1867,
+          "total_tokens": 23559,
+          "completion_tokens_details": {
+            "reasoning_tokens": 463
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 13615,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 30141,
+          "completion_tokens": 551,
+          "total_tokens": 30692,
+          "prompt_tokens_details": {
+            "cached_tokens": 21248
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 291
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 11593,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 36667,
+          "completion_tokens": 428,
+          "total_tokens": 37095
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:4-dimensional-skein-modules-handle-attachments-and-tangles",
+      "title": "通过三元组拼接公式统一导出一般函子性链环理论下的把手附着公式"
+    },
+    "projectTitle": "通过三元组拼接公式统一导出一般函子性链环理论下的把手附着公式",
+    "mainTargetEntryId": "paper:theorem:gluing",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:4-dimensional-skein-modules-handle-attachments-and-tangles",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "entry:MW-W-2023-evaluation",
+          "entry:MW-2023-1handle-formula",
+          "entry:MN-2022-2handle-formula",
+          "paper:proposition:khovanov-tangle-test-case"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:theorem:gluing"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:thm:general-gluing-formula-intro",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 一般拼接公式",
+        "shortTitle": "一般拼接公式",
+        "title": "一般拼接公式",
+        "statement": "若四流形—链环对 $(X;T_1\\cup T_2)$ 由四流形、三流形和切结三元组 $(X_1;Y;T_1)$ 与 $(X_2;Y;T_2)$ 沿三流形 $Y$ 拼接得到，则 $(X;T_1\\cup T_2)$ 的 skein lasagna module 可由与 $(X_1;Y;T_1)$ 关联的左模和与 $(X_2;Y;T_2)$ 关联的右模作双模张量积得到。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:def:boundary-algebra",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 与三流形关联的代数",
+        "shortTitle": "与三流形关联的代数",
+        "title": "与三流形关联的代数",
+        "statement": "对嵌入于 $Y$ 中且具有 Definition 3.1 所同一边界条件的带框架定向切结 $T_Y^0,T_Y^1$，关联\n$$S^\\star(Y\\times I;-T_Y^0\\cup_{\\phi^{-1}(P)}T_Y^1),$$\n其中 $T_Y^0\\subset Y\\times0$、$T_Y^1\\subset Y\\times1$，并且边界链环由\n$$-T_Y^0\\cup_{\\phi^{-1}(P)\\times0}(-\\phi^{-1}(P)\\times I)\\cup_{\\phi(P)\\times1}T_Y^1$$\n给出。令\n$$S^\\star(Y;P):=\\bigoplus_{T_Y^0,T_Y^1}S^\\star(Y\\times I;-T_Y^0\\cup_{\\phi^{-1}(P)}T_Y^1).$$\n其乘法对 fillings $S_1,S_2$ 定义为：若 $S_1\\cap Y\\times\\{1\\}=-(S_2\\cap Y\\times\\{0\\})$，则\n$$S_1\\cdot S_2=S_1\\cup_{S_1\\cap Y\\times\\{1\\\text{}}}S_2=S_1\\cup_{S_2\\cap Y\\times\\{0\\}}S_2,$$\n否则 $S_1\\cdot S_2=0$。该代数具有由具有相同嵌入和边界条件的切结上的有限个圆柱之和指定的局部单位。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:prop:right-module-action",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 三元组 module 的右模结构",
+        "shortTitle": "三元组 module 的右模结构",
+        "title": "三元组 module 的右模结构",
+        "statement": "代数 $S^\\star(Y;P)$ 按照与其乘法相似的规则在右侧作用于 $S^\\star(X;Y;T)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:definition:khovanov-tangle-complex",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · Khovanov 切结图链复形",
+        "shortTitle": "Khovanov 切结图链复形",
+        "title": "Khovanov 切结图链复形",
+        "statement": "对一个 $(m,n)$-切结 $T$ 的 $n$-交叉图 $D$，Khovanov 赋予一个 $(H^m,H^n)$-双模链复形 $F(D)$；其同调记为 $H^\\bullet(F(D))$，并且在双模意义下分解为\n$$H^\\bullet(F(D))\\cong\\bigoplus_{(a,b)\\in B^m\\times B^n}\\mathrm{Kh}(W(a)Db).$$",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=4"
+      },
+      {
+        "id": "paper:proposition:khovanov-tangle-test-case",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 三元组 module 与 Khovanov 切结不变量的对应",
+        "shortTitle": "三元组 module 与 Khovanov 切结不变量的对应",
+        "title": "三元组 module 与 Khovanov 切结不变量的对应",
+        "statement": "在 Definition 3.1 的特化情形中，令 $T$ 为具有相容框架和定向边界 $P$ 的 $(0,n)$-切结，并满足 $(B^4;B^3;T)$ 的嵌入和边界条件，则三元组 skein module 的上述直和描述与 Khovanov 的切结图复形 $F(D)$ 及其同调 $H^\\bullet(F(D))$ 的 $(H^0,H^n)$-双模结构对应；左右作用由与图 1 相同的竖直复合 cobordism 诱导。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=4",
+        "sourceReference": "Khovanov 的切结不变量构造，文中引为 [3]"
+      },
+      {
+        "id": "paper:remark:3.4",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · 反向定向下的左模结构",
+        "shortTitle": "反向定向下的左模结构",
+        "title": "反向定向下的左模结构",
+        "statement": "若给定保持定向的映射 $\\phi:-Y\\to\\partial X$，其延拓到一个可能不同的固定框架，并给定边界为 $-P$ 且框架、定向相容的切结 $T$，则收集 $S^\\star(X;-\\phi(T_Y)\\cup_P T)$（其中 $T_Y$ 遍历 $Y$ 中边界为 $-\\phi^{-1}(P)$ 且框架、定向相容的切结）得到的模组自然组成 $S^\\star(Y;P)$ 上的左模。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:example:3.5",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · KhR₂ 三元组检验案例",
+        "shortTitle": "KhR₂ 三元组检验案例",
+        "title": "KhR₂ 三元组检验案例",
+        "statement": "当 $X=B^4$、$Y=B^3$ 且理论取为 $\\star=2$ 时，有同构 $S^2(B^4;B^3;T)\\cong\\bigoplus_{T_Y}\\mathrm{KhR}_2(T\\cup_P T_Y)$ 以及 $S^2(B^3;P)\\cong\\bigoplus_{T_Y^0,T_Y^1}\\mathrm{KhR}_2(-T_Y^0\\cup_P T_Y^1)$。这些同构由 evaluation 同构 $\\mathrm{ev}:S^2(B^4;L)\\to\\mathrm{KhR}_2(L)$ 导出，并且可增强为与 $S^2(B^3;P)$ 作用相容的映射。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:definition:vertical-composition",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 边界代数的垂直复合乘法",
+        "shortTitle": "边界代数的垂直复合乘法",
+        "title": "边界代数的垂直复合乘法",
+        "statement": "若 $v\\in\\mathrm{KhR}_2(-T_Y^0\\cup_P T_Y^1)$ 且 $w\\in\\mathrm{KhR}_2(-T_Y^2\\cup_P T_Y^3)$，当 $T_Y^1\\ne T_Y^2$ 时定义 $v\\cdot w=0$；当 $T_Y^1=T_Y^2$ 时，定义 $v\\cdot w$ 为 $v\\otimes w$ 在垂直复合链环 cobordism 下的像，该 cobordism 的入边界为 $-T_Y^0\\cup_P T_Y^1\\sqcup -T_Y^1\\cup_P T_Y^2$，出边界为 $-T_Y^0\\cup_P T_Y^2$，并在顶部和底部为柱状、在中部为 $T_Y^1\\times$ 半圆。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:calculation:3.8",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · 三元组检验案例与 Khovanov 切结不变量",
+        "shortTitle": "三元组检验案例与 Khovanov 切结不变量",
+        "title": "三元组检验案例与 Khovanov 切结不变量",
+        "statement": "对一个 $(0,n)$-切结 $T$ 及其边界 $P$，为每个 $b\\in B^n$ 选取由图 $b$ 表示的嵌入切结 $T_b$，则模组 $\\bigoplus_{b\\in H^n}S^2(B^4;T\\cup_P T_b)$ 具有右作用代数 $\\bigoplus_{(a,b)\\in B^n\\times B^n}S^2(B^3\\times I;-T_a\\cup_P T_b)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:lemma:3.9",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 1 · 与 Khovanov 切结链复形同调的识别",
+        "shortTitle": "与 Khovanov 切结链复形同调的识别",
+        "title": "与 Khovanov 切结链复形同调的识别",
+        "statement": "除一个符号歧义外，有 $k$-子代数同构 $\\bigoplus_{(a,b)\\in B^n\\times B^n}S^2(B^3\\times I;-T_a\\cup_P T_b)\\cong H_n$，并有右 $H_n$-模同构 $\\bigoplus_{b\\in H^n}S^2(B^4;T\\cup_P T_b)\\cong H^\\bullet(F(D))$。若 $T$ 是边界为 $-P$ 的 $(m,0)$-切结，则相应模组组成为左 $H_m$-模，并与 $H^\\bullet(F(D))$ 作为左 $H_m$-模同构，仍有符号歧义。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:calculation:gluing-surjection",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 3 · 拼接满射",
+        "shortTitle": "拼接满射",
+        "title": "拼接满射",
+        "statement": "在上述设定下，存在满射 $\\bigoplus_{T_Y\\subset Y,\\ \\partial T_Y=-\\phi_1^{-1}(P)}S^\\star(X_1;T_1\\cup_P\\phi_1(T_Y))\\otimes S^\\star(X_2;-\\phi_2(T_Y)\\cup_PT_2)\\to S^\\star(X;T_1\\cup_PT_2)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:proposition:4.2",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · 拼接同态的 pushout 解释",
+        "shortTitle": "拼接同态的 pushout 解释",
+        "title": "拼接同态的 pushout 解释",
+        "statement": "拼接同态两侧的双模张量积与整体 skein lasagna module 都可视为特定 skein lasagna modules 图表的 pushout 的代表。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      },
+      {
+        "id": "paper:proposition:one-handle-surjection",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 1-handle filling 的满射与核关系",
+        "shortTitle": "1-handle filling 的满射与核关系",
+        "title": "1-handle filling 的满射与核关系",
+        "statement": "利用 $S^\\star(X_2)\\cong S^\\star(B^4)$，若 $S_1,S_2$ 满足 $S_2\\cdot S_1=\\Sigma_2$，则 filling 可表示为 $S_1\\cdot\\Sigma_1\\cdot S_2$；因此存在满射 $f:\\bigoplus_{T_i}S^\\star(X_1,T\\cup(T_i\\sqcup -T_i))\\to S^\\star(X,L)$，其核由不同分解 $S_2\\cdot S_1=\\Sigma_2$ 所产生的识别关系生成。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8"
+      },
+      {
+        "id": "paper:proposition:two-handle-quotient",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · 2-handle attachment 的 cabling 商公式",
+        "shortTitle": "2-handle attachment 的 cabling 商公式",
+        "title": "2-handle attachment 的 cabling 商公式",
+        "statement": "在上述设定下，存在映射 $X_1'\\otimes_{Y'}X_2'\\to X_1\\otimes_YX_2\\cong S^\\star(X,L)$，并且将 $v\\in X_1'$ 与正确取向、横截于 cocore 的圆盘 $d(v)\\in X_2'$ 张量。对 $(n,n+2)$-sheet $a\\in Y'$，关系为 $v\\cdot a\\otimes d(v\\cdot a)=v\\otimes a\thickspace\\cdot d(v)$；其中 $a\\cdot d(v)$ 是 $v\\sqcup S$，$S$ 为可能带装饰的球面；编织 sheet 对 $d(v)$ 的作用平凡。因此该映射下降到 $X_1'$ 按编织关系及可能带装饰球面的评价关系取商，并给出 $\\bigoplus S^\\star(X_1,L\\cup K_{n^+,n^-})/\\sim\\ \\cong S^\\star(X,L)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:proposition:three-handle-quotient",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 7 · 3-handle attachment 的模组商公式",
+        "shortTitle": "3-handle attachment 的模组商公式",
+        "title": "3-handle attachment 的模组商公式",
+        "statement": "由于 $X_2\\cong k$，有 $S^\\star(X)\\cong X_1/\\sim$，其中关系 $\\sim$ 由 $S^\\star(S^2\\times B^2)$ 在 $X_1$ 上的右作用与其在 $S^\\star(B^4)=k$ 上的左作用相等所诱导。特别地，在 $\\mathfrak{gl}_n$ 的 Khovanov–Rozansky 同调情形，使用 $S^n(S^2\\times B^2)$ 的计算可恢复既有的 3-handle 公式。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:def:functorial-link-theory",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 函子性链环理论的最小条件",
+        "shortTitle": "函子性链环理论的最小条件",
+        "title": "函子性链环理论的最小条件",
+        "statement": "固定地环为域 $k$。所用函子性链环同调理论 $H^\\star$ 满足：$(1)$ 关于不交并与张量积严格单幺；$(2)$ 可扩展到抽象 $S^3$ 中的带框架定向链环以及抽象 $S^3\\times I$ 中的链环 cobordism。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:parameterized-triple",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · 参数化四流形—三流形—切结三元组",
+        "shortTitle": "参数化四流形—三流形—切结三元组",
+        "title": "参数化四流形—三流形—切结三元组",
+        "statement": "设 $X$ 为带边界的定向四流形，设 $\\phi:Y\\to\\partial X$ 为紧致定向三流形的保定向嵌入，并延拓到某个固定框架；设 $T$ 为嵌入在 $\\partial X\\setminus\\phi(\\operatorname{int}(Y))$ 中的带框架定向切结，其边界与 $\\phi(\\partial Y)$ 相交为框架、定向相容的点集 $P$。另假设 $T$ 与 $\\phi(Y)$ 的每个分支一般位置相交且代数交数为零。该数据称为参数化三元组 $(X;(Y,\\phi);T)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:def:triple-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 三元组 skein lasagna module",
+        "shortTitle": "三元组 skein lasagna module",
+        "title": "三元组 skein lasagna module",
+        "statement": "对 $Y$ 中任意嵌入的带框架定向切结 $T_Y$，其边界为与 $P$ 相容的定向集合 $-\\phi^{-1}(P)$，定义 $S^\\star(X;Y;T)$ 为 $k$-模 $\\displaystyle\\bigoplus_{T_Y}S^\\star(X;T\\cup_P\\phi(T_Y))$。记号中省略参数化映射 $\\phi$，但 $Y$ 始终指带有该嵌入和框架的数据。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:warning:parameterization",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 8 · 参数化映射不可省略",
+        "shortTitle": "参数化映射不可省略",
+        "title": "参数化映射不可省略",
+        "statement": "虽然记号 $S^\\star(X;Y;T)$ 中省略了参数化映射，但 $Y$ 由其到 $\\partial X$ 的显式嵌入和框架确定，而非仅由抽象三流形确定。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:remark:left-module",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 反向定向下的左模结构",
+        "shortTitle": "反向定向下的左模结构",
+        "title": "反向定向下的左模结构",
+        "statement": "若给定保定向映射 $\\phi:-Y\\to\\partial X$，并给定边界为 $-P$ 的框架、定向相容切结 $T$，则收集 $S^\\star(X;-\\phi(T_Y)\\cup_PT)$ 得到的模是 $S^\\star(Y;P)$ 的左模。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:lemma:evaluation-algebra-module",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · $\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "shortTitle": "$\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "title": "$\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "statement": "当 $X=B^4$、$Y=B^3$ 且理论为 $\\star=2$ 时，评价同构给出 $k$-代数同构 $\\displaystyle S^2(B^3;P)\\cong\\bigoplus_{T_Y^0,T_Y^1}\\mathrm{KhR}_2(-T_Y^0\\cup_PT_Y^1)$，并给出 $S^2(B^3;P)$-模同构 $\\displaystyle S^2(B^4;B^3;T)\\cong\\bigoplus_{T_Y}\\mathrm{KhR}_2(T\\cup_PT_Y)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3",
+        "sourceReference": "Morrison-Walker-Wedrich in [6]"
+      },
+      {
+        "id": "paper:theorem:gluing",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 三元组 skein module 的双模张量积拼接公式",
+        "shortTitle": "三元组 skein module 的双模张量积拼接公式",
+        "title": "三元组 skein module 的双模张量积拼接公式",
+        "statement": "设 $(X_1;(Y,\\phi_1);T_1)$ 与 $(X_2;(-Y,\\phi_2);T_2)$ 为参数化三元组，参数化映射延拓到相容框架，且 $\\phi_1^{-1}(\\partial T_1)=-\\phi_2^{-1}(\\partial T_2)$ 作为 $Y$ 中框架、定向相容的点集。令 $X=X_1\\cup_YX_2$ 为沿 $Y\\times I$ 邻域光滑拼接的四流形，则 $\\displaystyle S^\\star(X;T_1\\cup_PT_2)\\cong S^\\star(X_1;Y;T_1)\\mathop{\\otimes}_{S^\\star(Y;P)}S^\\star(X_2;Y;T_2)$，其中前者按反向定向约定为左模，后者为右模。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:algorithm:glue-map",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 1 · 自然 glue 映射",
+        "shortTitle": "自然 glue 映射",
+        "title": "自然 glue 映射",
+        "statement": "对 $S^\\star(X_1;Y;T_1)\\otimes_{S^\\star(Y;P)}S^\\star(X_2;Y;T_2)$ 中由 fillings $\\Sigma_1,\\Sigma_2$ 表示的简单张量，定义 $\\Psi(\\Sigma_1\\otimes\\Sigma_2)=\\Sigma_1\\cup\\Sigma_2$，条件是 $\\partial\\Sigma_1\\cap Y=-\\partial\\Sigma_2\\cap(-Y)$；若边界不相容，则其值为 $0$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:algorithm:cut-map",
+        "entryClass": "fact",
+        "factKind": "algorithm",
+        "displayLabel": "算法 · 2 · 拼接公式的 cut 逆映射",
+        "shortTitle": "拼接公式的 cut 逆映射",
+        "title": "拼接公式的 cut 逆映射",
+        "statement": "对整体 filling $\\Sigma\\in S^\\star(X;T_1\\cup_PT_2)$，通过 isotopy 使其输入球远离 $Y$ 的邻域并使其与 $\\phi_i(Y)$ 横截，从而写成 $\\Sigma=\\Sigma_1\\cup_{\\phi_i(T_Y)}\\Sigma_2$，其中 $\\Sigma_i$ 分别是两个三元组中的 fillings；定义 $\\Psi^{-1}(\\Sigma)=\\Sigma_1\\otimes\\Sigma_2$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:theorem:gluing-proof",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · cut 映射的良定义与拼接同构",
+        "shortTitle": "cut 映射的良定义与拼接同构",
+        "title": "cut 映射的良定义与拼接同构",
+        "statement": "cut 映射与 isotopy 选择无关：输入球穿过 $Y$ 时，可用替代参数化三流形及 $S^\\star(Y;P)$ 中沿两者切割所得 filling 的双模作用识别两种 cut；固定输入球时，交集族 $J_t=\\Sigma_t\\cap Y$ 汇成带角曲面 $J$，插入 neck 得到 $\\Sigma_J$，并由双模关系识别 $\\Sigma_1\\otimes J\\cdot\\Sigma_2'$ 与 $\\Sigma_1\\cdot J\\otimes\\Sigma_2'$。因此 $\\Psi$ 与 $\\Psi^{-1}$ 互为逆同构。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:theorem:four-handle-invariance",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · 4-handle attachment 不改变 skein module",
+        "shortTitle": "4-handle attachment 不改变 skein module",
+        "title": "4-handle attachment 不改变 skein module",
+        "statement": "若沿 $S^3$ 添加 4-handle，则由余维和一般位置原因，边界链环及 fillings 不与 4-handle 相交；取 $X_2=B^4$ 且 $S^\\star(B^4,\\varnothing)\\cong k$，并且 $S^\\star(S^3\\times I,\\varnothing)$ 在 $S^\\star(X_1,L)$ 上的作用就是 $k$-模作用，则拼接公式给出 $S^\\star(X,L)\\cong S^\\star(X_1,L)$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      },
+      {
+        "id": "paper:theorem:one-handle",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · 1-handle attachment 公式",
+        "shortTitle": "1-handle attachment 公式",
+        "title": "1-handle attachment 公式",
+        "statement": "若 $X_1$ 由 $X$ 沿 $S^0\\times B^3$ 添加 1-handle，且 $T$ 为沿该 1-handle 的 cocore 对 $L$ 切割所得的切结，则 $S^\\star(X_1;L)$ 是与三元组 $(X;S^0\\times B^3;T)$ 关联的双模的零阶 Hochschild 同调；双模结构由与 $S^0\\times B^3$ 关联的代数作用诱导。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:calculation:one-handle-algebra",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 4 · 1-handle 边界代数与商描述",
+        "shortTitle": "1-handle 边界代数与商描述",
+        "title": "1-handle 边界代数与商描述",
+        "statement": "在 1-handle 例中，$Y=S^0\\times B^3=-B^3\\sqcup B^3$，补充部分 $X_2=B^1\\times B^3\\cong B^4$。一般位置下 $L$ 在 $X_1$ 中给出切结 $T$，在 $X_2$ 中给出 $P\\times I$。两侧均为 $S^\\star(-B^3\\sqcup B^3;P)$-模，且该代数同构于 $S^\\star(B^3;P)^{\\mathrm{op}}\\times S^\\star(B^3;P)$；拼接 module 由 $S^\\star(X_1)\\otimes_kS^\\star(X_2)$ 施加两组左右作用相容关系得到。利用 $S^\\star(X_2)\\cong S^\\star(B^4)$，存在满射 $\\displaystyle\\bigoplus_{T_i}S^\\star(X_1,T\\cup(T_i\\sqcup-T_i))\\twoheadrightarrow S^\\star(X,L)$，其核由不同分解 $S_2\\cdot S_1=\\Sigma_2$ 所产生的 $S_1\\cdot\\Sigma_1\\cdot S_2$ 识别关系生成。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      },
+      {
+        "id": "paper:theorem:two-handle",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 2-handle attachment 公式",
+        "shortTitle": "2-handle attachment 公式",
+        "title": "2-handle attachment 公式",
+        "statement": "若 $X_1$ 由 $X$ 沿 $S^1\\times D^2$ 添加 2-handle，则 $S^\\star(X_1;L)$ 可由与三元组 $(X;S^1\\times D^2;\\varnothing)$ 关联的 module 通过 cabling 得到，cabling 关系由与 $S^1\\times D^2$ 关联的代数作用诱导。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:calculation:two-handle-cabling",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 5 · 2-handle 的 cabling 子代数与关系",
+        "shortTitle": "2-handle 的 cabling 子代数与关系",
+        "title": "2-handle 的 cabling 子代数与关系",
+        "statement": "在 2-handle 例中取 $Y=S^1\\times B^2$、$X_2=B^2\\times B^2\\cong B^4$，并可令 $L$ 与 $Y$ 不相交。令 $Y'$ 为由 $S^1\\times T$ 生成的子代数，其中 $T$ 是无交叉 $(n,n+2)$-切结（在 $n+2$ 侧有一个半圆）或其反向 $(n+2,n)$-切结，允许由 $H^\\star$ 指定的理论装饰，并允许 $S^1\\times B$ 形式的编织 filling。令 $X_1'$ 由 $S^\\star(X_1,L\\cup K_{n^+,n^-})$ 直和生成，令 $X_2'$ 由 $S^\\star(X_2,U_{n^+,n^-})$ 直和生成。对 $v\\in X_1'$，以与 cocore 横截的圆盘 $d(v)\\in X_2'$ 构造映射 $X_1'\\to X_1'\\otimes_{Y'}X_2'$。若 $a\\in Y'$ 为带装饰的 $(n,n+2)$-sheet，则关系 $a.d(v)$ 等于 $v$ 与一个可能带装饰球面 $S$ 的不交并；若 $a$ 为编织 sheet，则其在 $d(v)$ 上的作用平凡。因此附着 module 是 $X_1'$ 按编织关系及由可能带装饰球面的评价诱导的关系取商：$\\displaystyle S^\\star(X,L)\\cong\\left(\\bigoplus S^\\star(X_1,L\\cup K_{n^+,n^-})\\right)/\\sim$。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:theorem:three-handle",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · 3-handle attachment 公式",
+        "shortTitle": "3-handle attachment 公式",
+        "title": "3-handle attachment 公式",
+        "statement": "若 $X$ 由 $X_1$ 沿 $S^2\\times D^1$ 添加 3-handle，则 $S^\\star(X;L)$ 是与三元组 $(X_1;S^2\\times D^1;\\varnothing)$ 关联的 module 按与 $S^2\\times D^1$ 关联的代数作用诱导的关系取商。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:calculation:three-handle-quotient",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 6 · 3-handle 的模组商化简",
+        "shortTitle": "3-handle 的模组商化简",
+        "title": "3-handle 的模组商化简",
+        "statement": "在 3-handle 例中取 $Y=S^2\\times B^1$，$X_2=B^3\\times B^1\\cong B^4$，定义 $X_1=S^\\star(X_1,L)$、$X_2=S^\\star(X_2,\\varnothing)$ 及 $Y=S^\\star(S^2\\times B^2,\\varnothing)$。一般位置论证将拼接公式化为 $S^\\star(X)\\cong X_1\\otimes_YX_2$。由于 $X_2\\cong k$，得到 $S^\\star(X)$ 是 $X_1$ 按 $S^\\star(S^2\\times B^2)$ 的右作用与其在 $S^\\star(B^4)=k$ 上的左作用相等所施加关系的商；在 $\\mathrm{KhR}_n$ 情形，使用 $S^n(S^2\\times B^2)$ 的计算恢复既有 3-handle 公式。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "entry:MW-W-2023-evaluation",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · Evaluation isomorphism for the 4-ball",
+        "shortTitle": "Evaluation isomorphism for the 4-ball",
+        "title": "Evaluation isomorphism for the 4-ball",
+        "statement": "For a framed oriented link L in S^3, evaluation induces an isomorphism S^2(B^4;L) ≅ KhR_2(L).",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3",
+        "sourceReference": "Morrison–Walker–Wedrich [6], as cited on p. 3."
+      },
+      {
+        "id": "entry:MW-2023-1handle-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · 1-handle formula",
+        "shortTitle": "1-handle formula",
+        "title": "1-handle formula",
+        "statement": "The Khovanov–Rozansky gl_n skein lasagna module formula for a 1-handle attachment is recovered by the construction in Example 5.1.",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8",
+        "sourceReference": "Manolescu–Walker–Wedrich [5, Theorem 4.7], as cited on p. 8."
+      },
+      {
+        "id": "entry:MN-2022-2handle-formula",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · 2-handle formula",
+        "shortTitle": "2-handle formula",
+        "title": "2-handle formula",
+        "statement": "The Khovanov–Rozansky gl_n 2-handle attachment formula is recovered by the construction in Example 5.2.",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9",
+        "sourceReference": "Manolescu–Neithalath [4], as cited on p. 9."
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:proof:1",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 1 · cut 映射的良定义与拼接同构",
+        "shortTitle": "证明 · cut 映射的良定义与拼接同构",
+        "title": "证明 cut 映射的良定义与拼接同构",
+        "statement": "定义 glue 与 cut。对整体 filling 作同位移，使输入球避开 $Y$ 且与 $Y$ 横截，再分解为两侧 filling；分析输入球穿越 $Y$及固定输入球的同位移，利用边界代数的双模作用证明 cut 良定义并与 glue 互逆。",
+        "premises": [
+          "paper:def:parameterized-triple",
+          "paper:def:triple-module",
+          "paper:def:boundary-algebra",
+          "paper:algorithm:glue-map",
+          "paper:algorithm:cut-map"
+        ],
+        "conclusion": "paper:theorem:gluing-proof",
+        "argument": "定义 glue 与 cut。对整体 filling 作同位移，使输入球避开 $Y$ 且与 $Y$ 横截，再分解为两侧 filling；分析输入球穿越 $Y$及固定输入球的同位移，利用边界代数的双模作用证明 cut 良定义并与 glue 互逆。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · 三元组 skein module 的双模张量积拼接公式",
+        "shortTitle": "证明 · 三元组 skein module 的双模张量积拼接公式",
+        "title": "证明 三元组 skein module 的双模张量积拼接公式",
+        "statement": "自然 glue 映射由两侧 fillings 的并给出，cut 映射提供逆映射；双模平衡关系正好识别沿 $Y$ 的中间 filling，因而得到双模张量积与整体 skein lasagna module 的同构。",
+        "premises": [
+          "paper:def:parameterized-triple",
+          "paper:def:triple-module",
+          "paper:def:boundary-algebra",
+          "paper:theorem:gluing-proof"
+        ],
+        "conclusion": "paper:theorem:gluing",
+        "argument": "自然 glue 映射由两侧 fillings 的并给出，cut 映射提供逆映射；双模平衡关系正好识别沿 $Y$ 的中间 filling，因而得到双模张量积与整体 skein lasagna module 的同构。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:3",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 3 · 1-handle attachment 公式",
+        "shortTitle": "证明 · 1-handle attachment 公式",
+        "title": "证明 1-handle attachment 公式",
+        "statement": "将 1-handle 的 attaching region 取为 $S^0\\times B^3=-B^3\\sqcup B^3$，补充部分同胚于 $B^4$；拼接定理把结果化为两个 $B^3$ 代数作用下的张量积，再整理为零阶 Hochschild 关系，并与已知公式核对。",
+        "premises": [
+          "paper:theorem:gluing",
+          "paper:calculation:one-handle-algebra",
+          "entry:MW-2023-1handle-formula"
+        ],
+        "conclusion": "paper:theorem:one-handle",
+        "argument": "将 1-handle 的 attaching region 取为 $S^0\\times B^3=-B^3\\sqcup B^3$，补充部分同胚于 $B^4$；拼接定理把结果化为两个 $B^3$ 代数作用下的张量积，再整理为零阶 Hochschild 关系，并与已知公式核对。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · 2-handle attachment 的 cabling 商公式",
+        "shortTitle": "证明 · 2-handle attachment 的 cabling 商公式",
+        "title": "证明 2-handle attachment 的 cabling 商公式",
+        "statement": "在 $Y=S^1\\times B^2$ 中取由加帽、去帽、编织及理论装饰生成的子代数 $Y'$，限制两侧为 $X_1'$、$X_2'$；cocore 横截切割给出满射，球面评价与编织作用产生商关系，单射沿既有 2-handle 论证得到。",
+        "premises": [
+          "paper:theorem:gluing",
+          "paper:calculation:two-handle-cabling",
+          "entry:MN-2022-2handle-formula"
+        ],
+        "conclusion": "paper:proposition:two-handle-quotient",
+        "argument": "在 $Y=S^1\\times B^2$ 中取由加帽、去帽、编织及理论装饰生成的子代数 $Y'$，限制两侧为 $X_1'$、$X_2'$；cocore 横截切割给出满射，球面评价与编织作用产生商关系，单射沿既有 2-handle 论证得到。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 2-handle attachment 公式",
+        "shortTitle": "证明 · 2-handle attachment 公式",
+        "title": "证明 2-handle attachment 公式",
+        "statement": "将一般拼接定理应用于 $S^1\\times D^2$ 的 attaching region，得到由三元组 module 的 cabling 及边界代数作用描述附着后的 skein module。",
+        "premises": [
+          "paper:proposition:two-handle-quotient",
+          "paper:theorem:gluing"
+        ],
+        "conclusion": "paper:theorem:two-handle",
+        "argument": "将一般拼接定理应用于 $S^1\\times D^2$ 的 attaching region，得到由三元组 module 的 cabling 及边界代数作用描述附着后的 skein module。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 3-handle attachment 的模组商公式",
+        "shortTitle": "证明 · 3-handle attachment 的模组商公式",
+        "title": "证明 3-handle attachment 的模组商公式",
+        "statement": "对 $Y=S^2\\times B^1$ 应用拼接定理，补充部分为 $B^4$ 且其 skein module 为 $k$，故张量积化为 $X_1$ 按 $S^\\star(S^2\\times B^2)$ 右作用施加关系所得的商。",
+        "premises": [
+          "paper:theorem:gluing",
+          "paper:calculation:three-handle-quotient"
+        ],
+        "conclusion": "paper:proposition:three-handle-quotient",
+        "argument": "对 $Y=S^2\\times B^1$ 应用拼接定理，补充部分为 $B^4$ 且其 skein module 为 $k$，故张量积化为 $X_1$ 按 $S^\\star(S^2\\times B^2)$ 右作用施加关系所得的商。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 3-handle attachment 公式",
+        "shortTitle": "证明 · 3-handle attachment 公式",
+        "title": "证明 3-handle attachment 公式",
+        "statement": "将 3-handle attachment 识别为沿 $S^2\\times D^1$ 的拼接，并使用补充 $B^4$ 一侧的模组化简，得到相应边界代数作用下的商描述。",
+        "premises": [
+          "paper:proposition:three-handle-quotient",
+          "paper:theorem:gluing"
+        ],
+        "conclusion": "paper:theorem:three-handle",
+        "argument": "将 3-handle attachment 识别为沿 $S^2\\times D^1$ 的拼接，并使用补充 $B^4$ 一侧的模组化简，得到相应边界代数作用下的商描述。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · $\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "shortTitle": "证明 · $\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "title": "证明 $\\mathrm{KhR}_2$ 检验案例中的评价同构",
+        "statement": "evaluation 同构把 $B^4$ 与 $B^3\\times I$ 中的 skein fillings 识别为 $\\mathrm{KhR}_2$；逐个切结三元组检查垂直复合图表交换，遂得到代数同构及相容的模同构。",
+        "premises": [
+          "entry:MW-W-2023-evaluation",
+          "paper:def:boundary-algebra",
+          "paper:def:triple-module"
+        ],
+        "conclusion": "paper:lemma:evaluation-algebra-module",
+        "argument": "evaluation 同构把 $B^4$ 与 $B^3\\times I$ 中的 skein fillings 识别为 $\\mathrm{KhR}_2$；逐个切结三元组检查垂直复合图表交换，遂得到代数同构及相容的模同构。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=4"
+      },
+      {
+        "id": "paper:inference:proof:9",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 9 · 与 Khovanov 切结链复形同调的识别",
+        "shortTitle": "证明 · 与 Khovanov 切结链复形同调的识别",
+        "title": "证明 与 Khovanov 切结链复形同调的识别",
+        "statement": "将评价同构与 $\\mathrm{KhR}_2$ 到 Khovanov 同调的识别复合，并按平面切结基底分解；垂直复合对应链复形同调的双模作用，非典范识别导致符号歧义。",
+        "premises": [
+          "paper:lemma:evaluation-algebra-module",
+          "paper:proposition:khovanov-tangle-test-case",
+          "paper:definition:khovanov-tangle-complex"
+        ],
+        "conclusion": "paper:lemma:3.9",
+        "argument": "将评价同构与 $\\mathrm{KhR}_2$ 到 Khovanov 同调的识别复合，并按平面切结基底分解；垂直复合对应链复形同调的双模作用，非典范识别导致符号歧义。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:10",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 10 · 4-handle attachment 不改变 skein module",
+        "shortTitle": "证明 · 4-handle attachment 不改变 skein module",
+        "title": "证明 4-handle attachment 不改变 skein module",
+        "statement": "4-handle 的余维与一般位置性保证边界链环和 fillings 不进入把手；补充部分为 $B^4$ 且 skein module 为 $k$，边界代数作用退化为标量作用，张量积商恢复附着前 module。",
+        "premises": [
+          "paper:theorem:gluing"
+        ],
+        "conclusion": "paper:theorem:four-handle-invariance",
+        "argument": "4-handle 的余维与一般位置性保证边界链环和 fillings 不进入把手；补充部分为 $B^4$ 且 skein module 为 $k$，边界代数作用退化为标量作用，张量积商恢复附着前 module。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:proof:11",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 11 · 一般拼接公式",
+        "shortTitle": "证明 · 一般拼接公式",
+        "title": "证明 一般拼接公式",
+        "statement": "引言中的一般拼接公式正是 Theorem 4.1 的概括：沿共同三流形 $Y$ 拼接后，整体 skein lasagna module 由两侧三元组 module 的双模张量积给出。",
+        "premises": [
+          "paper:theorem:gluing"
+        ],
+        "conclusion": "paper:thm:general-gluing-formula-intro",
+        "argument": "引言中的一般拼接公式正是 Theorem 4.1 的概括：沿共同三流形 $Y$ 拼接后，整体 skein lasagna module 由两侧三元组 module 的双模张量积给出。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=1"
+      },
+      {
+        "id": "paper:inference:proof:12",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 12 · 1-handle filling 的满射与核关系",
+        "shortTitle": "证明 · 1-handle filling 的满射与核关系",
+        "title": "证明 1-handle filling 的满射与核关系",
+        "statement": "在 1-handle 情形，补充部分 $X_2\\cong B^4$，由拼接定理可将 filling 表示为 $S_1\\cdot\\Sigma_1\\cdot S_2$，其中 $S_2\\cdot S_1=\\Sigma_2$；因此得到满射，且不同分解产生的关系生成其核。",
+        "premises": [
+          "paper:theorem:gluing",
+          "paper:calculation:one-handle-algebra"
+        ],
+        "conclusion": "paper:proposition:one-handle-surjection",
+        "argument": "在 1-handle 情形，补充部分 $X_2\\cong B^4$，由拼接定理可将 filling 表示为 $S_1\\cdot\\Sigma_1\\cdot S_2$，其中 $S_2\\cdot S_1=\\Sigma_2$；因此得到满射，且不同分解产生的关系生成其核。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:13",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 13 · 参数化映射不可省略",
+        "shortTitle": "证明 · 参数化映射不可省略",
+        "title": "证明 参数化映射不可省略",
+        "statement": "定义明确要求嵌入和框架数据；因此记号虽省略参数化映射，$Y$ 仍由其嵌入到 $\\partial X$ 及固定框架确定，不能仅视为抽象三流形。",
+        "premises": [
+          "paper:def:parameterized-triple"
+        ],
+        "conclusion": "paper:warning:parameterization",
+        "argument": "定义明确要求嵌入和框架数据；因此记号虽省略参数化映射，$Y$ 仍由其嵌入到 $\\partial X$ 及固定框架确定，不能仅视为抽象三流形。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:14",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 14 · 三元组 module 的右模结构",
+        "shortTitle": "证明 · 三元组 module 的右模结构",
+        "title": "证明 三元组 module 的右模结构",
+        "statement": "三元组 module 按 $T_Y$ 求直和，边界代数按相容切结对求直和；将三元组 filling 与 $Y\\times I$ 中的 filling 沿共同边界拼接，即得与代数乘法同规则的右作用。",
+        "premises": [
+          "paper:def:triple-module",
+          "paper:def:boundary-algebra"
+        ],
+        "conclusion": "paper:prop:right-module-action",
+        "argument": "三元组 module 按 $T_Y$ 求直和，边界代数按相容切结对求直和；将三元组 filling 与 $Y\\times I$ 中的 filling 沿共同边界拼接，即得与代数乘法同规则的右作用。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:15",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 15 · 反向定向下的左模结构",
+        "shortTitle": "证明 · 反向定向下的左模结构",
+        "title": "证明 反向定向下的左模结构",
+        "statement": "把参数化映射改为保定向映射 $\\phi:-Y\\to\\partial X$，并收集 $S^\\star(X;-\\phi(T_Y)\\cup_P T)$，沿共同边界的拼接方向反转，遂得到 $S^\\star(Y;P)$ 的左模结构。",
+        "premises": [
+          "paper:def:parameterized-triple",
+          "paper:def:triple-module"
+        ],
+        "conclusion": "paper:remark:3.4",
+        "argument": "把参数化映射改为保定向映射 $\\phi:-Y\\to\\partial X$，并收集 $S^\\star(X;-\\phi(T_Y)\\cup_P T)$，沿共同边界的拼接方向反转，遂得到 $S^\\star(Y;P)$ 的左模结构。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:16",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 16 · 拼接同态的 pushout 解释",
+        "shortTitle": "证明 · 拼接同态的 pushout 解释",
+        "title": "证明 拼接同态的 pushout 解释",
+        "statement": "glue 与 cut 给出张量积和整体 module 的代表；二者均可视为相应 skein module 图表的余极限代表，因此两侧分别实现同一 pushout。",
+        "premises": [
+          "paper:theorem:gluing",
+          "paper:algorithm:glue-map",
+          "paper:algorithm:cut-map"
+        ],
+        "conclusion": "paper:proposition:4.2",
+        "argument": "glue 与 cut 给出张量积和整体 module 的代表；二者均可视为相应 skein module 图表的余极限代表，因此两侧分别实现同一 pushout。",
+        "sourcePath": "4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf#page=7"
+      }
+    ]
+  }
+}

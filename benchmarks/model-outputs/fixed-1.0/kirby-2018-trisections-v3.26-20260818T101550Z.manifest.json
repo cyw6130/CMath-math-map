@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "kirby-2018-trisections",
+  "workflowUnderTest": "v3.26",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-18T10:15:50.209Z",
+  "durationMs": 202280,
+  "status": "completed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/kirby-2018-trisections-v3.26-20260818T101550Z.json",
+  "auditScore": 74,
+  "auditStatus": "completed-primary-agent-audit-held-out",
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

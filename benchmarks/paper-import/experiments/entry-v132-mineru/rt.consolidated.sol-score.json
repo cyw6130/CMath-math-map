@@ -1,0 +1,121 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v132-mineru/rt.consolidated.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 19,
+  "completeness": 14,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures the paper's main mathematical arc and all four B0 reference claims, with generally accurate formulas for ribbon categories, Hopf-algebra representations, modular data, the RT invariant, and purification. It is nevertheless incomplete at the supporting-entry level and contains several typing, delimitation, attribution, and precision defects. Most importantly, it omits the explicit normalized surgery formula and the separate handle-slide, blow-up, presentation-independence, and Kirby-reduction claims that establish the RT theorem. It also makes a false equivalence in the negligible-module entry and duplicates the purification theorem.",
+  "strengths": [
+    "All four B0 claims are represented: Lickorish–Wallace, Kirby calculus, the Turaev ribbon-graph functor, and the Turaev purification theorem.",
+    "The main Reshetikhin–Turaev invariant theorem is extracted and correctly states invariance under Kirby moves and dependence only on the orientation-preserving homeomorphism class.",
+    "Core definitions of strict monoidal category, braiding, duality, ribbon category, graphical calculus, quasitriangular Hopf algebra, ribbon Hopf algebra, modular category, Kirby color, modular Hopf algebra, and negligible module are substantially represented.",
+    "Important formulas are preserved accurately, including the universal R-matrix identities, ribbon-element identities, module tensor action, quantum trace, modular normalization constants, Kirby-color sum, and Hopf-link S-matrix.",
+    "The representation-category construction and equality of categorical and quantum traces are both captured.",
+    "Page locators and descriptive IDs are present consistently, and the displayed LaTeX is generally balanced and readable.",
+    "The candidate includes several legitimate source-level entries beyond the Gold target set, such as categorical trace, categorical dimension, pivotal isomorphism, linking-matrix signature, and quantum-group link-polynomial results."
+  ],
+  "issues": [
+    "The candidate systematically uses values such as `definition`, `theorem`, and `proposition` for `entryClass`, whereas the Gold project-view convention distinguishes `fact` from `claim`; the semantic `type`, `factKind`, and `claimKind` fields partly compensate, but classification is not normalized to the reference model.",
+    "The explicit signature-normalized surgery expression `tau_{V,D}(M_L)=Delta^{sigma(L)}D^{-sigma(L)-m-1}{L}` is missing. The normalization constants and signature are extracted separately, but the defining formula itself is not represented.",
+    "The supporting proof chain for the RT invariant is substantially under-extracted: there are no distinct entries for handle-slide invariance, cancellation of the plus-or-minus-one Kirby move, Kirby-presentation independence, or reduction of three-manifold invariance to Kirby invariance.",
+    "The entry for a negligible module incorrectly says that vanishing quantum trace of every endomorphism is equivalent to vanishing quantum trace of the identity. The latter condition alone is generally weaker and is not the Gold definition.",
+    "Negligible morphisms and the purification quotient category are not extracted as their own definitions, even though they are necessary to state the purification theorem precisely.",
+    "The Turaev purification theorem is duplicated as `paper:theorem:7-3-turaev` and `paper:thm:modular-hopf-algebra-purification` with nearly identical content.",
+    "No standalone Hopf algebra definition is extracted.",
+    "No standalone twist definition is extracted; twist is only embedded in the ribbon-category definition, whose duality compatibility condition is left vague rather than stated explicitly.",
+    "The finite simple system/domination definition and the Hopf-link S-matrix definition are folded into the modular-category entry rather than delimited as distinct foundational entries.",
+    "The coproduct construction is classified as a definition rather than as the lemma-level claim that it defines an A-module structure and makes the representation category monoidal.",
+    "The R-matrix braiding is classified as a definition and mentions braid relations, but does not explicitly record naturality and the hexagon identities required by the corresponding Gold lemma.",
+    "The universal twist lemma and the separate antipode-duality lemma are not fully represented. A-linearity of evaluation and coevaluation is extracted, but the broader conclusion that the construction supplies categorical duality is not clearly stated.",
+    "The colored framed-link invariant is typed as a definition and does not explicitly state dependence only on the colored framed-link ribbon-isotopy class.",
+    "External classical results are not marked with source references or explicit external-attribution metadata, despite the Gold reference identifying Lickorish–Wallace, Kirby calculus, the ribbon-graph functor, and purification as cited results without proofs.",
+    "The Rohlin cobordism entry combines the cobordism theorem with the stronger handlebody presentation conclusion; the latter follows through surgery theory but is not properly delimited or attributed in that entry.",
+    "The framing definition omits the Gold reference's explicit integer parametrization relative to a Seifert longitude.",
+    "The four-dimensional handlebody and integer-surgery entries fragment a single surgery-presentation construction, adding mild redundancy.",
+    "The alternative dual action using `S^{-1}` is presented without explaining that it corresponds to a different left/right dual convention; alongside the displayed evaluation and coevaluation maps, this can mislead readers about which structure is being asserted.",
+    "The candidate has no inference hints, so the dependency structure connecting geometry, ribbon categories, Hopf algebra representations, modularity, Kirby invariance, and the final RT theorem is entirely absent."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "rt:entry:lickorish-wallace",
+      "candidateEntryIds": [
+        "paper:thm:lickorish-wallace-surgery"
+      ],
+      "status": "matched",
+      "notes": "Mathematical content is substantially accurate, but external attribution metadata is absent."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-calculus",
+      "candidateEntryIds": [
+        "paper:thm:kirby-calculus"
+      ],
+      "status": "matched",
+      "notes": "The if-and-only-if statement and move set are accurately captured; external attribution metadata is absent."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-ribbon-graph-functor",
+      "candidateEntryIds": [
+        "paper:thm:turaev-ribbon-graph-functor"
+      ],
+      "status": "matched",
+      "notes": "Closed-graph evaluation is included, though preservation of composition and tensor product is not explicit."
+    },
+    {
+      "goldEntryId": "rt:entry:turaev-purification-theorem",
+      "candidateEntryIds": [
+        "paper:theorem:7-3-turaev",
+        "paper:thm:modular-hopf-algebra-purification"
+      ],
+      "status": "duplicated",
+      "notes": "The theorem is captured twice with essentially the same content."
+    },
+    {
+      "goldEntryId": "rt:entry:signature-normalization",
+      "candidateEntryIds": [
+        "paper:def:modular-category-normalization-constants",
+        "paper:def:linking-matrix-signature"
+      ],
+      "status": "partial",
+      "notes": "The ingredients are present, but the defining normalized surgery formula is missing."
+    },
+    {
+      "goldEntryId": "rt:entry:rt-invariant",
+      "candidateEntryIds": [
+        "paper:thm:reshetikhin-turaev-invariant"
+      ],
+      "status": "matched",
+      "notes": "The main conclusion is present, but the intermediate invariance claims supporting it are not separately extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:negligible-module",
+      "candidateEntryIds": [
+        "paper:def:negligible-module"
+      ],
+      "status": "incorrect",
+      "notes": "The universal quantification over endomorphisms is stated correctly, but the asserted equivalence with zero quantum dimension is false in general; negligible morphisms are also omitted."
+    },
+    {
+      "goldEntryId": "rt:entry:handle-slide-invariance",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "Only implicitly subsumed by the final RT theorem."
+    },
+    {
+      "goldEntryId": "rt:entry:blowup-invariance",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "The effect of normalization on the plus-or-minus-one Kirby move is not separately extracted."
+    },
+    {
+      "goldEntryId": "rt:entry:kirby-presentation-independence",
+      "candidateEntryIds": [],
+      "status": "missing",
+      "notes": "Presentation independence is mentioned only inside the final theorem."
+    }
+  ]
+}

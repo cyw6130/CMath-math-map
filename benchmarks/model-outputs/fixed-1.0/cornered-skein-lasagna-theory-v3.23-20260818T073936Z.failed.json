@@ -1,0 +1,47 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-cornered-skein-lasagna-theory-off-compact-v3.23",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.23",
+  "promptSetVersion": "v3.23",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "CORNERED SKEIN LASAGNA THEORY.pdf",
+    "pageCount": 20,
+    "characters": 48787
+  },
+  "diagnostics": {
+    "durationMs": 72158,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "CORNERED SKEIN LASAGNA THEORY.pdf",
+        "pageCount": 20,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 48787,
+        "atMs": 3
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 72152,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 17165,
+          "completion_tokens": 3870,
+          "total_tokens": 21035
+        }
+      }
+    ],
+    "error": "Paper Guide 必须包含 sections、symbols 和非空 leads"
+  }
+}

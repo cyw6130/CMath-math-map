@@ -1,0 +1,52 @@
+{
+  "schema": "cmath.paper-json-gold-audit/v1",
+  "experimentId": "luna-paper-import-workflow-v3.9",
+  "workflowVersion": "v3.9",
+  "auditMethod": "candidate JSON versus fixed Gold JSON under benchmarks/paper-import/SCORING-PROTOCOL.md; semantic equivalence reviewed by Codex",
+  "cases": [
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "runArtifact": "output-4-dim-skein-modules-handles-tangles-gpt-5.6-luna-none-v3.9.json",
+      "status": "completed",
+      "auditScore": {
+        "format": 37,
+        "semantic": 54,
+        "overall": 91,
+        "formatComponents": {
+          "normalizationAndProjectIdentity": 10,
+          "entryAndSourceValidity": 8,
+          "inferenceValidity": 5,
+          "b0Structure": 6,
+          "dagAndClosure": 8
+        },
+        "semanticComponents": {
+          "objectsAndHypotheses": 18,
+          "b0Boundary": 9,
+          "mainTarget": 8,
+          "proofDependencies": 12,
+          "claimStates": 4,
+          "sourceAttribution": 3
+        }
+      },
+      "reasons": [
+        "The candidate has excellent object and hypothesis coverage: it recovers the parameterized triple module, boundary algebra and module actions, evaluation bridge, Khovanov tangle comparison, the general gluing theorem, and the handle-attachment consequences.",
+        "The selected main target paper:theorem:4.1 is semantically equivalent to the Gold general gluing isomorphism and is the strongest new theorem rather than a summary or historical special case.",
+        "The B0 contains correctly sourced semantic equivalents of the Gold evaluation isomorphism, Khovanov tangle functor, and Ren-Willis gluing surjection, with no historical handle formulas misclassified as active B0. The separate Gold MWW skein-lasagna foundation is not represented as its own fourth B0 Claim.",
+        "The proof graph correctly directs the external evaluation and Khovanov inputs into the comparison lemmas, the gluing-surjection boundary into Theorem 4.1, and Theorem 4.1 into the handle formulas. Some proof dependencies remain summarized rather than decomposed as fully as the Gold.",
+        "The final graph is acyclic and executable. One non-core generalization Claim remains open, and each assembly pass required the same three deterministic removals of invalid organization/self-premise edges, so the result does not receive full structure or claim-state credit."
+      ]
+    }
+  ],
+  "summary": {
+    "completedCases": 1,
+    "failedCases": 0,
+    "auditOverallMacroAverageCompleted": 91,
+    "minimumAuditScore": 91,
+    "hardGateCount": 0,
+    "durationMs": 238836,
+    "modelCalls": 9,
+    "reasoningEffortSentOnEveryCall": "none",
+    "targetAuditScoreMet": true,
+    "targetDurationMet": true
+  }
+}

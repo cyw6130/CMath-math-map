@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "hopf-degree-theorem",
+  "workflowUnderTest": "v3.9.6",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-17T15:49:18.313Z",
+  "durationMs": 219459,
+  "status": "failed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/hopf-degree-theorem-v3.9.6-20260817T154918Z.failed.json",
+  "auditScore": null,
+  "auditStatus": "not-applicable-run-failed",
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

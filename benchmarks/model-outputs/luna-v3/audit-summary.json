@@ -1,0 +1,41 @@
+{
+  "schema": "cmath.paper-import-benchmark-run/v1",
+  "workflowVersion": "v3",
+  "model": "gpt-5.6-luna",
+  "condition": "off-compact",
+  "scoreName": "auditScore",
+  "scoreMaximum": 100,
+  "auditMethod": "Codex semantic Gold-JSON audit under benchmarks/paper-import/SCORING-PROTOCOL.md",
+  "machineScoresAreDiagnosticOnly": true,
+  "averageAuditScore": 86.75,
+  "cases": [
+    {
+      "caseId": "kirby-2018-trisections",
+      "candidate": "output-kirby-2018-trisections-gpt-5.6-luna-off-v3.json",
+      "auditScore": 78,
+      "durationMs": 412211,
+      "calls": 14
+    },
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "candidate": "output-4-dim-skein-modules-handles-tangles-gpt-5.6-luna-off-v3.json",
+      "auditScore": 90,
+      "durationMs": 386410,
+      "calls": 13
+    },
+    {
+      "caseId": "cornered-skein-lasagna-theory",
+      "candidate": "output-cornered-skein-lasagna-theory-gpt-5.6-luna-off-v3.json",
+      "auditScore": 89,
+      "durationMs": 382346,
+      "calls": 13
+    },
+    {
+      "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+      "candidate": "output-yasui-gpt-5.6-luna-off-v3.json",
+      "auditScore": 90,
+      "durationMs": 477232,
+      "calls": 11
+    }
+  ]
+}

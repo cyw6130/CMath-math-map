@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-benchmark-run/v1",
+  "runId": "2026-08-16-deepseek-official-v2",
+  "model": "deepseek-v4-flash",
+  "requiredProvider": "deepseek-official",
+  "actualProvider": "deepseek-official",
+  "executionSurface": "dsh-profile:math-map",
+  "workflowVersion": "v2",
+  "promptSetVersion": "v1",
+  "status": "running",
+  "scored": false,
+  "completedCases": [],
+  "attemptedCases": [],
+  "caseCount": 6,
+  "notes": [
+    "Workflow v2 fixes the v1 runtime regression: all paper stages use deepseek-v4-flash with reasoning off, preserve dynamic 8k/16k/32k request budgets, and map Harness max-tokens back to the client's length retry signal.",
+    "A one-page theorem smoke test completed successfully before the formal run."
+  ]
+}

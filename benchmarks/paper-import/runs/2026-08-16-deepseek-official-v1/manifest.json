@@ -1,0 +1,42 @@
+{
+  "schema": "cmath.paper-benchmark-run/v1",
+  "runId": "2026-08-16-deepseek-official-v1",
+  "model": "deepseek-v4-flash",
+  "requiredProvider": "deepseek-official",
+  "actualProvider": "deepseek-official",
+  "executionSurface": "dsh-profile:math-map",
+  "workflowVersion": "v1",
+  "promptSetVersion": "v1",
+  "status": "incomplete-max-tokens-regression",
+  "scored": false,
+  "completedCases": [],
+  "attempts": [
+    {
+      "caseId": "hopf-degree-theorem",
+      "status": "incomplete",
+      "failedStage": "repair",
+      "finishReason": "max-tokens",
+      "artifactComplete": false,
+      "scored": false
+    },
+    {
+      "caseId": "4-dim-skein-modules-handles-tangles",
+      "status": "incomplete",
+      "failedStage": "assemble",
+      "finishReason": "max-tokens",
+      "artifactComplete": false,
+      "scored": false
+    }
+  ],
+  "unattemptedCases": [
+    "knot-hopf-rt",
+    "cornered-skein-lasagna-theory",
+    "kirby-2018-trisections",
+    "yasui-2019-geometrically-simply-connected-4-manifolds"
+  ],
+  "notes": [
+    "This is the official-provider workflow v1 regression record, distinct from the historical OpenCode Go invalid run.",
+    "The route enabled high reasoning while imposing 6000/8000 output caps and converted max-tokens into an exception before the legacy 32000-token retry could run.",
+    "No complete artifact was produced; no case is eligible for scoring."
+  ]
+}

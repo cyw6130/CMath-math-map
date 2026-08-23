@@ -1,0 +1,116 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v131-mineru/hopf.model-consolidated.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "hopf-map",
+  "correctness": 17,
+  "completeness": 16,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate captures most of the paper's main mathematical arc, including degree, winding number, extension results, the Hopf degree theorem, transversality inputs, vector-field applications, Poincare-Hopf, and the hairy-ball theorem. However, several entries are weakened, overgeneralized, or mathematically inaccurate. The most serious errors are the incorrect torus Euler-characteristic formula and the epsilon-neighborhood theorem's quantification. Several foundational results are represented only vaguely, and some Gold claims are missing or replaced by materially different statements.",
+  "strengths": [
+    "The main Hopf degree theorem is extracted clearly and in a form that includes the Gold sphere-to-sphere case.",
+    "All seven major external/background inputs are at least recognized: isotopy, linear isotopy, Sard, transversality extension, transversality homotopy, epsilon-neighborhood, and Poincare-Hopf.",
+    "The degree-zero null-homotopy result, extension theorem, regular-point local degree, signed-preimage formula, and punctured-space criterion are substantially represented.",
+    "The candidate captures the vector-field application sequence, including finite-zero fields, zero removal, localization, the Euler-characteristic criterion, and hairy ball.",
+    "Entries generally have usable page locators, stable IDs, balanced LaTeX delimiters, and appropriate broad classifications.",
+    "Several useful source-level entries beyond the Gold set are retained, including the tangent bundle, zero section, Euler characteristic, and explicit construction steps."
+  ],
+  "issues": [
+    "The Euler-characteristic calculation incorrectly states $\\chi(T^k)=-2(k-2)$; the Gold reference gives $\\chi(T^n)=0$. This is a substantive mathematical error.",
+    "The epsilon-neighborhood theorem says the conclusion holds when $\\varepsilon>0$ is given. The required condition is existence of a sufficiently small $\\varepsilon>0$; arbitrary epsilon-neighborhoods need not have a unique smooth nearest-point projection.",
+    "The winding-number definition fixes the direction map's codomain as $S^1$ while presenting a general domain $X$. In dimension $k$, the normalized direction map should generally land in $S^{k-1}$.",
+    "The Sard entry is too vague: it records only that the theorem is invoked to choose a regular value and omits the full-measure/density or critical-value measure-zero statement.",
+    "The transversality extension and homotopy entries are application paraphrases rather than properly delimited theorem statements, dropping hypotheses, relative-boundary behavior, and the general target-submanifold formulation.",
+    "The bump-function definition does not preserve the Gold normalization and support conditions $\\beta=1$ on $B_{1/2}$ and $\\beta=0$ outside $B_1$; its one-variable example is also mixed with a claim about arbitrary dimension.",
+    "The candidate omits the definition of the index of an isolated vector-field zero, despite later using the index in multiple claims.",
+    "The $S^1$ base case is reduced to the degree-zero case. It omits classification of equal-degree maps and the standard representative $z\\mapsto z^n$.",
+    "The finite-zero vector-field entry merely asserts existence of some finite-zero vector field. The Gold claim says an arbitrary given vector field can be homotopically perturbed to have finitely many zeros.",
+    "The vector-field localization entry states that zeros can be moved into an arbitrary open set, but it does not capture the Gold zero-total-index conclusion that all zeros can be eliminated.",
+    "The hairy-ball theorem is extracted only for $S^2$, omitting the full even-dimensional statement and the existence result for odd-dimensional spheres.",
+    "The corollary $\\pi_k(S^k)\\cong\\mathbb Z$ is missing.",
+    "The punctured-sphere identification is typed only as a homeomorphic or homotopy-equivalent identification and does not clearly state the stereographic-projection diffeomorphism $S^k\\setminus\\{N\\}\\cong\\mathbb R^k$.",
+    "The Poincare-Hopf entry omits the explicit finite or isolated-zero hypothesis needed for the displayed sum of local indices.",
+    "Some Gold support claims are replaced by nearby but non-equivalent entries, particularly the boundary-fixed removal-of-origin lemma and the degree-zero extension criterion into $S^k$.",
+    "Several page locators differ from the Gold reference, including the degree-zero sphere result and Poincare-Hopf, reducing locator reliability.",
+    "The artifact contains no inference hints, so it does not preserve the dependency structure among extracted entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:thm:hopf",
+      "candidateEntry": "paper:theorem:hopf-degree-theorem",
+      "status": "covered",
+      "note": "The candidate gives a broader domain-manifold formulation that includes the Gold sphere case."
+    },
+    {
+      "goldEntry": "paper:thm:degree-zero-null",
+      "candidateEntry": "paper:proposition:degree-zero-sphere-map",
+      "status": "covered",
+      "note": "Mathematical content is present, though classification and page locator differ."
+    },
+    {
+      "goldEntry": "paper:thm:extension",
+      "candidateEntry": "paper:theorem:extension-theorem",
+      "status": "partial",
+      "note": "A general boundary-to-sphere extension theorem is extracted, but it is not delimited in the same form as the Gold ball-extension entry."
+    },
+    {
+      "goldEntry": "paper:def:vf-index",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "No definition of the local index as a normalized-map degree is extracted."
+    },
+    {
+      "goldEntry": "paper:cor:homotopy-group",
+      "candidateEntry": null,
+      "status": "missing",
+      "note": "The consequence $\\pi_k(S^k)\\cong\\mathbb Z$ is absent."
+    },
+    {
+      "goldEntry": "paper:calc:euler-sphere",
+      "candidateEntry": "paper:calculation:sphere-and-torus-euler-characteristics",
+      "status": "incorrect",
+      "note": "The sphere values are correct, but the torus formula is wrong."
+    },
+    {
+      "goldEntry": "paper:b0:epsilon-nbhd",
+      "candidateEntry": "paper:external:epsilon-neighborhood-theorem",
+      "status": "incorrect",
+      "note": "The candidate fails to require a sufficiently small epsilon and weakens the tubular-neighborhood/vector-bundle conclusion."
+    },
+    {
+      "goldEntry": "paper:lemma:base-s1",
+      "candidateEntry": "paper:proposition:degree-zero-circle-map",
+      "status": "partial",
+      "note": "Only the degree-zero special case is retained."
+    },
+    {
+      "goldEntry": "paper:lemma:vf-finite-zeros",
+      "candidateEntry": "paper:proposition:finitely-many-zeroes-vector-field",
+      "status": "partial",
+      "note": "Existence is captured, but perturbation of a prescribed vector field is not."
+    },
+    {
+      "goldEntry": "paper:lemma:vf-localize",
+      "candidateEntry": "paper:proposition:vector-field-zeros-localized",
+      "status": "partial",
+      "note": "The candidate captures movement of zeros into an open set, not elimination under the zero-total-index hypothesis."
+    },
+    {
+      "goldEntry": "paper:cor:hairy-ball",
+      "candidateEntry": "paper:theorem:hairy-ball-theorem",
+      "status": "partial",
+      "note": "Only the two-dimensional sphere is stated."
+    }
+  ],
+  "scoreRuns": [
+    {
+      "correctness": 17,
+      "completeness": 16,
+      "solEntryScore": 33
+    }
+  ],
+  "aggregation": "median-of-1"
+}

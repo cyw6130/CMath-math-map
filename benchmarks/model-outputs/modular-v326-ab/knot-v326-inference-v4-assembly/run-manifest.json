@@ -1,0 +1,12 @@
+{
+  "schema": "cmath.paper-import-modular-run/v1",
+  "workflowVersion": "v3.26-modular",
+  "backbone": "v3.26-inference-v4-assembly",
+  "caseId": "rt",
+  "entryArtifact": "entry-artifact.json",
+  "inferenceArtifact": "inference-artifact.json",
+  "formatReport": "format-report.json",
+  "status": "completed",
+  "formatScore": 40,
+  "formatScoreMax": 40
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v2",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.2",
+  "caseId": "kirby-2018-trisections",
+  "workflowUnderTest": "v3.41",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v2",
+  "promptVersion": "sol-score-prompt-v3",
+  "startedAt": "2026-08-19T07:28:12.821Z",
+  "generationDurationMs": 209124,
+  "scoringDurationMs": 140546,
+  "status": "completed",
+  "artifact": "benchmarks/model-outputs/fixed-1.2/kirby-2018-trisections-v3.41-20260819T072812Z.json",
+  "solScore": 42,
+  "solScoreArtifact": "benchmarks/model-outputs/fixed-1.2/kirby-2018-trisections-v3.41-20260819T072812Z-sol-score-v2.json",
+  "solScoreStatus": "completed",
+  "scoringNote": "solScore from gpt-5.6-sol is the only official score; deterministic machine scores are not part of this workflow"
+}

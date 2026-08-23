@@ -1,0 +1,93 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v128-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 19,
+  "completeness": 18,
+  "solEntryScore": 37,
+  "verdict": "usable",
+  "summary": "The candidate captures nearly all central definitions, obstruction theorems, supporting lemmas, and cited background results, with generally accurate pages and formulas. Its main weaknesses are duplicate entries and IDs, several incorrectly delimited congruence hypotheses, weak external attribution for Bauer and Frøyshov results, and misclassification of corollaries as theorems. These defects prevent flawless use but do not erase the strong coverage of the paper's mathematical structure.",
+  "strengths": [
+    "Correctly extracts the main Theorem 1.4 vanishing result and Theorem 1.9 symplectic obstruction with accurate page locations.",
+    "Covers Theorems 2.3, 2.4, 2.7, 2.8, and 2.9 and Lemmas 2.6 and 3.1, thereby preserving nearly all of the Gold reference's proof infrastructure.",
+    "Accurately captures the geometrically simply connected and 2-handle-neighborhood definitions.",
+    "Includes the Taubes nonvanishing and symplectic Betti-parity facts, as well as additional meaningful corollaries and external results.",
+    "Most mathematical notation is readable, balanced, and sufficiently faithful to identify the intended results."
+  ],
+  "issues": [
+    "Theorem 1.9 and one copy of Theorem 2.4 write the positive Betti-number condition as $b_2^+\\not\\equiv1$ without the required modulus $\\pmod4$.",
+    "The duplicate copy of Theorem 2.4 makes the stronger and incorrect replacement $b_2^+\\neq1$ instead of $b_2^+\\not\\equiv1\\pmod4$.",
+    "Entries for Theorems 2.3 and 2.4, Corollary 2.5, Lemma 2.6, and Lemma 3.1 are duplicated with identical IDs, creating ambiguity and unnecessary redundancy.",
+    "Corollaries 1.5, 1.6, 1.7, and 2.5 are typed as theorem rather than corollary.",
+    "Theorem 2.7 is only summarized as having unspecified 'listed connected-sum conditions,' dropping the detailed hypotheses, including the $2\\le n\\le4$ range, congruence, $b_1$, mod-2 Seiberg-Witten, and special $n=4$ conditions.",
+    "The Bauer connected-sum theorem and Frøyshov vanishing theorem are represented as internal numbered theorems without explicit external flags or source references.",
+    "The standalone Bauer–Furuta invariant and symplectic-structure definitions from the Gold reference are absent.",
+    "The Taubes entry is weaker than the Gold statement: it only states nonvanishing for $b_2^+>1$ rather than recording the canonical $\\mathrm{spin}^c$ invariant $SW_X(s_X)=\\pm1$.",
+    "The translation 'stable cohomology sphere Seiberg–Witten invariant' is terminologically imprecise compared with the stable cohomotopy or Bauer–Furuta invariant."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntryId": "paper:thm:1-4",
+      "status": "matched",
+      "assessment": "Faithful statement and correct page."
+    },
+    {
+      "goldEntryId": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntryId": "paper:thm:1-9",
+      "status": "partial",
+      "assessment": "Core conclusion is present, but the modulus is omitted from the $b_2^+$ congruence."
+    },
+    {
+      "goldEntryId": "paper:thm:positive-definite-vanishing",
+      "candidateEntryId": "paper:thm:2-3",
+      "status": "matched_with_duplicate",
+      "assessment": "Accurate theorem appears twice under the same ID."
+    },
+    {
+      "goldEntryId": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntryId": "paper:thm:2-4",
+      "status": "partial_with_duplicate",
+      "assessment": "Both copies preserve the conclusion, but one omits a modulus and the other incorrectly changes a congruence condition to inequality."
+    },
+    {
+      "goldEntryId": "paper:lemma:embedded-sphere-double",
+      "candidateEntryId": "paper:lemma:2-6",
+      "status": "matched_with_duplicate",
+      "assessment": "The embedded zero-square sphere result is captured twice; the class notation differs but expresses the intended doubled class."
+    },
+    {
+      "goldEntryId": "paper:thm:sphere-obstruction-nonvanishing",
+      "candidateEntryId": "paper:thm:2-8",
+      "status": "matched",
+      "assessment": "Faithful statement with the non-torsion and nonnegative self-intersection conditions."
+    },
+    {
+      "goldEntryId": "paper:b0:bauer-connected-sum-nonvanishing",
+      "candidateEntryId": "paper:thm:2-7",
+      "status": "partial",
+      "assessment": "Both branches are recognized, but the second branch is compressed and important hypotheses and external attribution are missing."
+    },
+    {
+      "goldEntryId": "paper:b0:froyshov-vanishing-theorem",
+      "candidateEntryId": "paper:thm:2-9",
+      "status": "matched_but_unattributed",
+      "assessment": "The mathematical hypotheses and conclusion are accurate, but the result is not identified as external."
+    },
+    {
+      "goldEntryId": "paper:lemma:geom-simply-connected-homology",
+      "candidateEntryId": "paper:lemma:3-1",
+      "status": "matched_with_duplicate",
+      "assessment": "Faithful lemma appears twice under the same ID."
+    },
+    {
+      "goldEntryId": "paper:def:bauer-furuta-invariant",
+      "candidateEntryId": null,
+      "status": "missing",
+      "assessment": "No standalone definition of the stable cohomotopy Seiberg–Witten invariant is extracted."
+    }
+  ]
+}

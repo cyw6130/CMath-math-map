@@ -1,0 +1,41 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v133-mineru/rt.consolidated.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 18,
+  "completeness": 14,
+  "solEntryScore": 32,
+  "verdict": "usable",
+  "summary": "The artifact captures the paper's main mathematical arc from surgery and ribbon categories through ribbon Hopf algebras, modular categories, purification, and the Reshetikhin–Turaev invariant. Most formulas and named results are recognizable and substantially accurate, but the extraction has systematic class-schema mismatches, several claims recorded as definitions or calculations, one materially false equivalence for negligible modules, and incomplete extraction of the Kirby-invariance proof chain. It is useful as a mathematical entry inventory but requires consolidation and correction before serving as a faithful structured representation of the Gold reference.",
+  "strengths": [
+    "Correctly extracts the Lickorish–Wallace theorem, Kirby calculus, Turaev ribbon-graph functor, RT invariant theorem, and Turaev purification theorem.",
+    "Accurately represents most foundational definitions, including framed links, surgery manifolds, strict monoidal categories, braiding, duality, ribbon categories, quasitriangular and ribbon Hopf algebras, modular categories, Kirby color, and modular Hopf algebras.",
+    "Preserves important formulas such as the universal R-matrix identities, ribbon-element identities, categorical trace, quantum trace, Hopf-link S-matrix, Kirby-color sum, and modular normalization constants.",
+    "Includes useful supporting material absent as separate Gold entries, such as categorical trace and dimension, pivotal structures, Yang–Baxter compatibility, and root-of-unity examples.",
+    "Page locators are present throughout and broadly consistent with the mathematical progression of the source.",
+    "External attribution is explicitly recorded for Mac Lane coherence and the Turaev purification theorem."
+  ],
+  "issues": [
+    "The artifact systematically uses entryClass values such as \"definition\", \"theorem\", \"lemma\", and \"proposition\" instead of the Gold model's semantic split between entryClass \"fact\" or \"claim\" and factKind or claimKind. This weakens schema-level typing even when the human-readable type is correct.",
+    "The negligible-module entry falsely states that requiring every endomorphism to have zero quantum trace is equivalent to requiring only tr_q(id_Z)=0. Vanishing quantum dimension alone does not generally imply that all endomorphism traces vanish.",
+    "The Gold Hopf algebra definition is missing as a standalone entry, despite later entries relying on Hopf-algebra structure.",
+    "The twist definition is not independently extracted and is compressed into the ribbon-category definition, reducing definition-level coverage and delimitation.",
+    "The Gold finite simple system/domination and Hopf-link S-matrix definitions are folded into the modular-category entry rather than represented as distinct mathematical entries.",
+    "The negligible morphism definition is omitted, even though it is essential to the definition of purification as a quotient by the negligible ideal.",
+    "The purification entry conflates the definition of the quotient with the theorem that the quotient is modular, and it is incorrectly classified as a definition.",
+    "Several mathematical claims are misclassified as definitions or calculations: coproduct-induced monoidal structure, R-matrix-induced braiding, categorical trace equals quantum trace, and the construction of the colored framed-link invariant.",
+    "The candidate does not extract the Gold antipode-duality lemma as a unified claim; it fragments the content into definitions and two low-level calculations.",
+    "The universal ribbon element inducing the categorical twist is not extracted as a separate lemma.",
+    "The colored framed-link entry states the construction but omits the key proposition-level assertion that the resulting scalar is invariant under colored ribbon isotopy when End_C(1)=K.",
+    "The Kirby-reduction proposition is missing: the candidate does not explicitly state that invariance under framed isotopy, handle slides, and ±1 moves yields a closed oriented 3-manifold invariant.",
+    "The handle-slide invariance lemma, signature-normalization definition with the full formula, blowup-invariance lemma, and Kirby-presentation-independence proposition are all absent as separate entries. Their conclusions are only compressed into the final RT theorem.",
+    "The RT theorem uses inconsistent notation, introducing a selected rank D_\\circ but then writing tau_{V,D}; it also omits the explicit normalization formula found in the Gold reference.",
+    "The Rohlin cobordism entry adds that W may be chosen as W_L. That conclusion follows from surgery presentation rather than from the cobordism statement alone, so the entry improperly merges two results and their justifications.",
+    "Some entries are excessively fragmented into implementation-style calculations, while several structurally important propositions and lemmas are merged into larger entries. This produces uneven granularity relative to the Gold reference.",
+    "A few formulas contain Chinese punctuation inside math delimiters, which is syntactically balanced but degrades LaTeX cleanliness and downstream rendering reliability."
+  ],
+  "entryLevelComparison": []
+}

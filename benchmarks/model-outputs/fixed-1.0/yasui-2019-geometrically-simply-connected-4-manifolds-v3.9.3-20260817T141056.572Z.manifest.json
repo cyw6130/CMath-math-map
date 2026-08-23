@@ -1,0 +1,19 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v1",
+  "workflowId": "paper-import-fixed-luna-benchmark",
+  "protocolVersion": "1.0",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "workflowUnderTest": "v3.9.3",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "reasoningEffort": "none",
+  "mode": "off-compact",
+  "goldRevision": "v1",
+  "startedAt": "2026-08-17T14:10:56.577Z",
+  "durationMs": 257981,
+  "status": "completed",
+  "artifact": "benchmarks/model-outputs/fixed-1.0/yasui-2019-geometrically-simply-connected-4-manifolds-v3.9.3-20260817T141056.572Z.json",
+  "auditScore": null,
+  "auditStatus": "pending-primary-agent-audit",
+  "scoringNote": "machine diagnostic never replaces auditScore"
+}

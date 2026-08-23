@@ -1,0 +1,72 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/paper-import/experiments/entry-v120-mineru/yasui-2019.raw-pool.json",
+  "goldRevision": "v1",
+  "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+  "correctness": 17,
+  "completeness": 16,
+  "solEntryScore": 33,
+  "verdict": "usable",
+  "summary": "The candidate covers most principal results and many supporting results, including the main Theorems 1.4 and 1.9, Theorems 2.3 and 2.4, Lemmas 2.6 and 3.1, and the major Bauer, Frøyshov, Taubes, and parity inputs. However, several statements are materially weakened or malformed, external results are sometimes overgeneralized, key definitions are vague or duplicated, and locator/ID consistency is poor. The most serious mathematical error is Theorem 2.4, where the condition b_2^+ not congruent to 1 modulo 4 is reduced to b_2^+ != 1, dropping the required congruence condition; Theorem 1.9 has the same missing modulo-4 qualification.",
+  "strengths": [
+    "Broad coverage of the paper's main theorems, lemmas, corollaries, and external inputs.",
+    "The main vanishing theorem, orientation obstruction theorem, Bauer connected-sum result, Frøyshov vanishing theorem, and geometrically simply connected homology lemma are recognizable and mostly faithful.",
+    "Most entries preserve relevant hypotheses such as closedness, smoothness, positivity of b_2^+, non-torsion classes, and b_1=0.",
+    "External attribution is explicitly marked for many cited results, including Bauer, Frøyshov, Taubes, parity, and classification results."
+  ],
+  "issues": [
+    "The candidate's Theorem 2.4 statement incorrectly writes b_2^+ != 1 instead of b_2^+ not congruent to 1 modulo 4, a substantive loss of hypotheses.",
+    "Theorem 1.9 likewise omits the modulo-4 qualifier on b_2^+, making the extracted condition malformed.",
+    "Lemma 2.6 uses alpha - bar alpha rather than the gold reference's alpha times bar alpha notation, and the relation between the class in X#bar X and the original class is not clarified.",
+    "The Bauer connected-sum theorem is abbreviated and omits or obscures important detailed hypotheses, including the precise spin^c, congruence, and mod-8 conditions.",
+    "The Taubes entry is weakened to generic nonvanishing and does not capture the canonical spin^c structure and SW value ±1 congruent to 1 modulo 2 used by the paper.",
+    "The stable cohomotopy invariant definition is vague and does not accurately state the Bauer-Furuta stable equivariant stable-homotopy construction.",
+    "The symplectic structure/canonical spin^c definition from the gold reference is missing.",
+    "There are substantial duplicate entries for the 2-handle-neighborhood definition, Lemma 2.6, and Lemma 3.1, reducing redundancy control.",
+    "Several corollaries are typed as theorem rather than corollary, and many IDs do not match the canonical gold identifiers or numbered-entry conventions.",
+    "Some extra entries are weakly supported or overgeneralized, such as the generic adjunction-inequality and blow-up-formula entries, whose statements are not precise enough to serve as mathematical entries."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-pos-definite",
+      "candidateEntries": [
+        "paper:theorem:1.4-vanishing-stable-cohomotopy-sw",
+        "yasui:thm:stable-cohomotopy-vanishing-positive-definite"
+      ],
+      "assessment": "Core theorem captured twice with essentially correct hypotheses and conclusion, but duplicated and inconsistently identified."
+    },
+    {
+      "goldEntry": "paper:thm:geom-simply-connected-symplectic-obstruction",
+      "candidateEntry": "paper:theorem:1.9-no-symplectic-one-orientation",
+      "assessment": "Conclusion is captured, but the b_2^+ modulo-4 condition is malformed or incomplete."
+    },
+    {
+      "goldEntry": "paper:thm:orientation-symplectic-obstruction",
+      "candidateEntries": [
+        "paper:theorem:2.4-no-symplectic-one-orientation-class",
+        "yasui:thm:symplectic-orientation-obstruction"
+      ],
+      "assessment": "Captured twice, but both versions risk dropping the required b_2^+ congruence condition; one explicitly says b_2^+ != 1."
+    },
+    {
+      "goldEntry": "paper:lemma:embedded-sphere-double",
+      "candidateEntries": [
+        "paper:lemma:2.6-zero-self-intersection-sphere",
+        "yasui:lemma:2-handle-double-sphere"
+      ],
+      "assessment": "Captured twice with the zero-self-intersection sphere conclusion, but notation for the represented class differs from the gold reference and is not explained."
+    },
+    {
+      "goldEntry": "paper:def:bauer-furuta-invariant",
+      "candidateEntry": "yasui:def:stable-cohomotopy-sw-invariant",
+      "assessment": "Only a high-level informal description is provided; the defining construction and mathematical precision are missing."
+    },
+    {
+      "goldEntry": "paper:def:symplectic-structure-4mfld",
+      "candidateEntry": null,
+      "assessment": "No corresponding precise definition of symplectic form and canonical spin^c structure."
+    }
+  ]
+}

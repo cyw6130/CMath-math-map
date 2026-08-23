@@ -1,0 +1,114 @@
+{
+  "schema": "cmath.paper-entry-sol-score/v1",
+  "scorerModel": "gpt-5.6-sol",
+  "promptVersion": "sol-entry-score-prompt-v1",
+  "candidateArtifact": "benchmarks/model-outputs/entry-module/knot-hopf-rt-parallel-v1.6-opencode-off-run1.entry-model.json",
+  "goldRevision": "gold-v2-objective-conventions",
+  "caseId": "knot-hopf-rt",
+  "correctness": 21,
+  "completeness": 18,
+  "solEntryScore": 39,
+  "verdict": "usable",
+  "summary": "The candidate accurately captures nearly the entire framed-link-to-Reshetikhin–Turaev construction, including the principal theorems, convention-sensitive ribbon Hopf formulas, modular data, purification, and the selected normalization. Its main weaknesses are systematic entry-class errors, omission of a few standalone foundational or intermediate entries, a malformed or ambiguous categorical-trace formula, absent explicit external-attribution metadata, and avoidable duplication among auxiliary entries.",
+  "strengths": [
+    "Correctly extracts the Lickorish–Wallace, Kirby calculus, Turaev ribbon-graph, purification, and Reshetikhin–Turaev theorems with accurate page locators.",
+    "Preserves the gold revision's Turaev-style conventions: the universal twist acts as theta_V=rho_V(v), the quantum trace uses rho_V(uv), and the displayed tau normalization agrees with the selected convention.",
+    "Covers the principal categorical infrastructure: strict monoidal structure, braiding, duality, ribbon category, graphical calculus, categorical trace and dimension, and colored ribbon graphs.",
+    "Covers the modular stage well, including the modular-category conditions, Hopf-link matrix, Kirby color, weighted surgery sum, rank D, Delta, modular Hopf algebra, and purification.",
+    "Includes several valid source-grounded supporting entries beyond the gold set, such as blackboard framing, pivotal data, colored Jones material, and the root-of-unity route to WRT invariants.",
+    "Entry identifiers and page numbers are generally descriptive and consistent with the source locations."
+  ],
+  "issues": [
+    "Several entries are assigned unsuitable classes: the surgery construction, tensor-product action, and purification are labeled algorithm, while graphical-calculus rules, the trace relation, and the tau definition are labeled calculation rather than definition, fact, claim, or theorem-like infrastructure.",
+    "The categorical-trace formula is not properly grouped: the tensor product with id_{V*} appears outside the intended parenthesized composite, making the displayed expression mathematically ambiguous or ill-typed as written.",
+    "There is no standalone definition of a Hopf algebra, although this is foundational in the gold reference.",
+    "The R-matrix-induced braiding and antipode-induced rigid structure are only summarized inside broader entries; the explicit braiding formula and the full structural claims represented separately in the gold are not extracted.",
+    "Negligible modules are defined, but negligible morphisms and their trace-pairing condition are not explicitly defined even though purification depends on their ideal.",
+    "Handle-slide invariance and blow-up invariance are compressed into the final RT theorem instead of being represented as distinct intermediate results, reducing visibility of the two key Kirby-invariance mechanisms.",
+    "Named results from prior literature have null attribution metadata; names such as Lickorish–Wallace and Turaev communicate attribution informally but do not satisfy structured external-attribution handling.",
+    "The artifact contains redundant fragmentation: Yang–Baxter appears as both a proposition and a calculation, one hexagon identity repeats part of the braiding definition, and several colored-Jones entries substantially overlap.",
+    "Some extra proposition entries are too weak or tautological to merit independent entry status, notably the assertion that F(K;V_n) for n>1 is a higher colored Jones polynomial."
+  ],
+  "entryLevelComparison": [
+    {
+      "goldEntry": "rt:entry:framed-link",
+      "candidateEntries": [
+        "paper:def:framing",
+        "paper:def:blackboard-framing"
+      ],
+      "status": "covered",
+      "note": "The intrinsic framing definition is accurate, with an additional useful blackboard-framing entry."
+    },
+    {
+      "goldEntry": "rt:entry:surgery-manifold",
+      "candidateEntries": [
+        "paper:alg:handlebody-surgery"
+      ],
+      "status": "covered_with_classification_issue",
+      "note": "The construction and notation are accurate, but this is a definition or fact rather than an algorithm."
+    },
+    {
+      "goldEntry": "rt:entry:kirby-calculus",
+      "candidateEntries": [
+        "paper:thm:kirby-calculus"
+      ],
+      "status": "covered",
+      "note": "The equivalence and all move types are faithfully stated."
+    },
+    {
+      "goldEntry": "rt:entry:hopf-algebra",
+      "candidateEntries": [],
+      "status": "missing",
+      "note": "The artifact begins using Hopf-algebra structure without extracting its standalone definition."
+    },
+    {
+      "goldEntry": "rt:entry:rep-ribbon",
+      "candidateEntries": [
+        "paper:prop:ribbon-hopf-rep-cat"
+      ],
+      "status": "covered",
+      "note": "The central representation-category result and the twist convention are correct, though the induced braiding formula is not displayed."
+    },
+    {
+      "goldEntry": "rt:entry:quantum-trace",
+      "candidateEntries": [
+        "paper:def:quantum-trace",
+        "paper:calc:quantum-trace-relation"
+      ],
+      "status": "covered",
+      "note": "The quantum-trace convention agrees with the gold reference."
+    },
+    {
+      "goldEntry": "rt:entry:negligible-module",
+      "candidateEntries": [
+        "paper:def:negligible-module"
+      ],
+      "status": "partially_covered",
+      "note": "The module definition is correct, but the accompanying definition of negligible morphisms is absent."
+    },
+    {
+      "goldEntry": "rt:entry:handle-slide-invariance",
+      "candidateEntries": [
+        "paper:thm:reshetikhin-turaev"
+      ],
+      "status": "implicitly_covered",
+      "note": "Kirby-move invariance is asserted globally, but handle-slide invariance is not extracted as its own structural result."
+    },
+    {
+      "goldEntry": "rt:entry:signature-normalization",
+      "candidateEntries": [
+        "paper:calc:tau-normalization"
+      ],
+      "status": "covered_with_classification_issue",
+      "note": "The selected normalization formula is correct but should be typed as a definition or fact, not a calculation."
+    },
+    {
+      "goldEntry": "rt:entry:rt-invariant",
+      "candidateEntries": [
+        "paper:thm:reshetikhin-turaev"
+      ],
+      "status": "covered",
+      "note": "The main result is accurately and comprehensively stated, including orientation-preserving homeomorphism invariance."
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-paper-import-hopf-map-off-compact-v3.12",
+  "status": "failed",
+  "condition": "off-compact",
+  "workflowVersion": "v3.12",
+  "promptSetVersion": "v3.12",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-luna",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 197852,
+    "stages": [
+      {
+        "stage": "prepare",
+        "fileName": "hopf map.pdf",
+        "pageCount": 13,
+        "atMs": 0
+      },
+      {
+        "stage": "guide",
+        "chars": 32011,
+        "atMs": 3
+      },
+      {
+        "stage": "target",
+        "leads": 14,
+        "atMs": 61938
+      },
+      {
+        "stage": "boundary",
+        "concurrent": true,
+        "atMs": 61939
+      },
+      {
+        "stage": "request",
+        "chars": 32011,
+        "chunks": 2,
+        "atMs": 61940
+      },
+      {
+        "stage": "lead-guided",
+        "leads": 9,
+        "atMs": 61945
+      },
+      {
+        "stage": "entries-progress",
+        "done": 1,
+        "total": 2,
+        "atMs": 101111
+      },
+      {
+        "stage": "entries-progress",
+        "done": 2,
+        "total": 2,
+        "atMs": 121276
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hopf-degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:def:winding-number",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:isotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:zero-degree-nullhomotopy",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:extension",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:hopf-degree",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:finitely-many-zeros",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:localized-zeros",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:lemma:vector-field-modification",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:external:poincare-hopf",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate-conflict",
+        "id": "paper:theorem:euler-vector-field",
+        "retained": "coverage-or-first-seen",
+        "atMs": 124257
+      },
+      {
+        "stage": "aggregate",
+        "coverage": 35,
+        "leadGuided": 24,
+        "total": 46,
+        "conflicts": 12,
+        "atMs": 124257
+      },
+      {
+        "stage": "integrate",
+        "entries": 46,
+        "atMs": 124258
+      },
+      {
+        "stage": "integrate-applied",
+        "aliasCount": 15,
+        "renameCount": 0,
+        "atMs": 132598
+      },
+      {
+        "stage": "cited-external-reconciliation",
+        "b0": [
+          "lead:main-theorem",
+          "lead:local-degree",
+          "lead:degree-sum",
+          "lead:boundary-extension",
+          "lead:zero-degree-nullhomotopy",
+          "lead:range-puncture",
+          "lead:euclidean-extension",
+          "lead:extension-theorem",
+          "lead:product-cobordism",
+          "lead:vector-field-modification",
+          "lead:finitely-many-zeros",
+          "lead:localized-zeros",
+          "lead:euler-vector-field"
+        ],
+        "fixedCount": 11,
+        "atMs": 132619
+      },
+      {
+        "stage": "external-evidence-index",
+        "count": 2,
+        "items": [
+          {
+            "canonicalId": "ext:punctured-space-sphere-identification",
+            "page": 5,
+            "source": "the manifold structure of the k-sphere"
+          },
+          {
+            "canonicalId": "ext:degree-homotopy-invariance",
+            "page": 2,
+            "source": "本文第2页以 degree map 到同伦类的叙述使用，并在第9页围绕同伦与度数进行论证；文献4为 Guillemin and Pollack, Differential Topology"
+          }
+        ],
+        "atMs": 132625
+      },
+      {
+        "stage": "completeness-precheck",
+        "count": 1,
+        "candidates": [
+          "The Hopf Degree"
+        ],
+        "atMs": 132627
+      },
+      {
+        "stage": "assemble",
+        "entries": 41,
+        "atMs": 132628
+      },
+      {
+        "stage": "response",
+        "atMs": 177652
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃跨越 Fact/Claim 的 organization 第 9 条 Inference"
+        ],
+        "atMs": 177665
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 16,
+        "removedClaimIds": [
+          "paper:lemma:isotopy",
+          "paper:proposition:local-degree",
+          "paper:proposition:degree-sum",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:theorem:range-puncture",
+          "paper:theorem:inductive-zero-degree",
+          "paper:external:epsilon-neighborhood-theorem",
+          "paper:lemma:vector-field-modification",
+          "paper:lemma:finitely-many-zeros",
+          "paper:lemma:localized-zeros",
+          "paper:external:poincare-hopf",
+          "paper:theorem:euler-vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-conclusion",
+          "paper:external:transversality-extension",
+          "paper:proposition:euler-applications"
+        ],
+        "atMs": 177666
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 1,
+        "atMs": 177670
+      },
+      {
+        "stage": "response",
+        "atMs": 190026
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃 premises 为空的 第 6 条 Inference"
+        ],
+        "atMs": 190031
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 16,
+        "removedClaimIds": [
+          "paper:lemma:isotopy",
+          "paper:proposition:local-degree",
+          "paper:proposition:degree-sum",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:theorem:range-puncture",
+          "paper:theorem:inductive-zero-degree",
+          "paper:external:epsilon-neighborhood-theorem",
+          "paper:lemma:vector-field-modification",
+          "paper:lemma:finitely-many-zeros",
+          "paper:lemma:localized-zeros",
+          "paper:external:poincare-hopf",
+          "paper:theorem:euler-vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-conclusion",
+          "paper:external:transversality-extension",
+          "paper:proposition:euler-applications"
+        ],
+        "repairRound": 1,
+        "atMs": 190032
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 2,
+        "atMs": 190032
+      },
+      {
+        "stage": "response",
+        "atMs": 194251
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃 premises 为空的 第 6 条 Inference"
+        ],
+        "atMs": 194252
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 16,
+        "removedClaimIds": [
+          "paper:lemma:isotopy",
+          "paper:proposition:local-degree",
+          "paper:proposition:degree-sum",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:theorem:range-puncture",
+          "paper:theorem:inductive-zero-degree",
+          "paper:external:epsilon-neighborhood-theorem",
+          "paper:lemma:vector-field-modification",
+          "paper:lemma:finitely-many-zeros",
+          "paper:lemma:localized-zeros",
+          "paper:external:poincare-hopf",
+          "paper:theorem:euler-vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-conclusion",
+          "paper:external:transversality-extension",
+          "paper:proposition:euler-applications"
+        ],
+        "repairRound": 2,
+        "atMs": 194253
+      },
+      {
+        "stage": "repair",
+        "reason": "4 处问题",
+        "attempt": 3,
+        "atMs": 194253
+      },
+      {
+        "stage": "response",
+        "atMs": 197850
+      },
+      {
+        "stage": "autofix",
+        "count": 1,
+        "actions": [
+          "丢弃 premises 为空的 第 6 条 Inference"
+        ],
+        "atMs": 197851
+      },
+      {
+        "stage": "reachable-closure-convergence",
+        "removedCount": 16,
+        "removedClaimIds": [
+          "paper:lemma:isotopy",
+          "paper:proposition:local-degree",
+          "paper:proposition:degree-sum",
+          "paper:theorem:zero-degree-nullhomotopy",
+          "paper:theorem:range-puncture",
+          "paper:theorem:inductive-zero-degree",
+          "paper:external:epsilon-neighborhood-theorem",
+          "paper:lemma:vector-field-modification",
+          "paper:lemma:finitely-many-zeros",
+          "paper:lemma:localized-zeros",
+          "paper:external:poincare-hopf",
+          "paper:theorem:euler-vector-field",
+          "paper:theorem:hairy-ball",
+          "paper:theorem:homotopy-group-conclusion",
+          "paper:external:transversality-extension",
+          "paper:proposition:euler-applications"
+        ],
+        "repairRound": 3,
+        "atMs": 197852
+      }
+    ],
+    "calls": [
+      {
+        "stage": "guide",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 61929,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9354,
+          "completion_tokens": 3280,
+          "total_tokens": 12634
+        }
+      },
+      {
+        "stage": "lead-guided",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 39168,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 7936,
+          "completion_tokens": 1883,
+          "total_tokens": 9819
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 45689,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 12711,
+          "completion_tokens": 2366,
+          "total_tokens": 15077
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 59333,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9911,
+          "completion_tokens": 3156,
+          "total_tokens": 13067
+        }
+      },
+      {
+        "stage": "entries-progress",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 62307,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 14462,
+          "completion_tokens": 3325,
+          "total_tokens": 17787
+        }
+      },
+      {
+        "stage": "integrate",
+        "requestedMaxTokens": 6000,
+        "reasoningEffort": "none",
+        "durationMs": 8336,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 3739,
+          "completion_tokens": 293,
+          "total_tokens": 4032
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 45023,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 20260,
+          "completion_tokens": 2409,
+          "total_tokens": 22669,
+          "completion_tokens_details": {
+            "reasoning_tokens": 417
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "low",
+        "durationMs": 12355,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 26928,
+          "completion_tokens": 513,
+          "total_tokens": 27441,
+          "prompt_tokens_details": {
+            "cached_tokens": 19200
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 408
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 4216,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 27314,
+          "completion_tokens": 102,
+          "total_tokens": 27416
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 10000,
+        "reasoningEffort": "none",
+        "durationMs": 3595,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 27700,
+          "completion_tokens": 106,
+          "total_tokens": 27806,
+          "prompt_tokens_details": {
+            "cached_tokens": 26368
+          }
+        }
+      }
+    ],
+    "error": "Luna Gateway 论文导入失败（V3.9.9 定向修复已执行 3 次）：Claim paper:theorem:base-case（圆的零度数基例）没有 proof 且不在 b0：若论文实际证明了它，请补对应 proof；若为外部引用结果，请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；仅当论文明确未证明（猜想/开放问题）时保持原样；Claim paper:theorem:punctured-euclidean-nullhomotopy（去一点欧氏空间中零绕数映射同伦于常值）闭包推导后仍未建立：其 proof 的前提 paper:theorem:base-case 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:extension（边界映射向球面的延拓判据）闭包推导后仍未建立：其 proof 的前提 paper:theorem:punctured-euclidean-nullhomotopy 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise；Claim paper:theorem:hopf-degree（Hopf Degree Theorem）闭包推导后仍未建立：其 proof 的前提 paper:theorem:extension 未建立。若这些前提是外部结果（论文未证明、直接引用），请用 fixedEntries 补 \"external\":true 与 source 并列入 b0；若论文实际证明了它们，请补全对应 proof 链；若论文明确未证明，则不应作为 premise"
+  }
+}

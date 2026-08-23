@@ -1,0 +1,29 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "auditor": "primary-agent",
+  "method": "Gold-JSON comparison; no model scoring and no source-PDF reread",
+  "caseId": "cornered-skein-lasagna-theory",
+  "artifact": "cornered-skein-lasagna-theory-v3.24-20260818T075748Z.json",
+  "workflowVersion": "v3.24",
+  "model": "gpt-5.6-luna",
+  "reasoningProfile": "guide=low; assembly=low; repair1=low; all other calls=none",
+  "durationMs": 206786,
+  "modelCalls": 8,
+  "formatScore": 40,
+  "semanticScore": 51,
+  "auditScore": 91,
+  "matchedCore": [
+    "Correct bimodule gluing theorem as main target and a closed gluing proof chain.",
+    "The Guide supports coherent gluing, self-gluing/HH_0, central-surface filling, trisection, isotopy-cutting, and 3-manifold-gluing branches.",
+    "RW24 surjectivity and fragmentation are represented as external B0 premises."
+  ],
+  "deductions": [
+    "B0 omits the Gold MWW foundation and Gay-Kirby trisection theorem.",
+    "The extra MN22 isotopy theorem is used as B0 while not corresponding to the Gold boundary.",
+    "Duplicate gluing/self-gluing objects and coarser proof granularity remain."
+  ],
+  "closureStatus": "Acyclic and closed for the scored internal claims.",
+  "mainTargetStatus": "Correct semantic match to the bimodule gluing theorem.",
+  "status": "target-met"
+}

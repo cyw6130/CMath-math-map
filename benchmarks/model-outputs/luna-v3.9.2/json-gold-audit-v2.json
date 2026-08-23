@@ -1,0 +1,44 @@
+{
+  "schema": "cmath.paper-import-gold-audit/v1",
+  "goldRevision": "v1",
+  "scoringProtocol": "benchmarks/paper-import/SCORING-PROTOCOL.md",
+  "auditor": "primary-agent",
+  "method": "Gold-JSON comparison; no model scoring",
+  "results": [
+    {
+      "caseId": "cornered-skein-lasagna-theory",
+      "artifact": "output-cornered-skein-lasagna-theory-gpt-5.6-luna-none-v3.9.2-final.json",
+      "durationMs": 251834,
+      "formatScore": 38,
+      "semanticScore": 47,
+      "auditScore": 85,
+      "matchedCoreObjects": 6,
+      "missingCoreObjects": ["paper:def:trisection-diagram","paper:lemma:isotopy-cutting","paper:thm:capping-off-neighborhood"],
+      "b0Errors": ["B0 has 3 canonical external claims instead of 4; identifiers are equivalent but Gay–Kirby is omitted"],
+      "mainTarget": "Equivalent: dimension-two-gluing corresponds to the gold 2d-gluing theorem",
+      "proofAndClosure": "No hard gate; proof DAG executable",
+      "status": "below-target-semantic"
+    },
+    {
+      "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+      "artifact": "output-yasui-gpt-5.6-luna-none-v3.9.2-v4.json",
+      "durationMs": 310406,
+      "formatScore": 38,
+      "semanticScore": 51,
+      "auditScore": 89,
+      "matchedCoreObjects": 11,
+      "missingCoreObjects": ["paper:def:2-handle-neighborhood-class","paper:lemma:embedded-sphere-double","paper:thm:sphere-obstruction-nonvanishing","paper:thm:orientation-symplectic-obstruction"],
+      "b0Errors": ["B0 contains local/proof-derived or unneeded external entries beyond the four canonical Gold boundary claims"],
+      "mainTarget": "Equivalent: geometric-stable-vanishing corresponds to the Gold main theorem",
+      "proofAndClosure": "No hard gate; proof DAG executable; explicit open problems preserved",
+      "status": "below-target-time-and-semantic"
+    }
+  ],
+  "summary": {
+    "macroAverageAuditScore": 87,
+    "minimumAuditScore": 85,
+    "allScoresAreFormalAuditScore": true,
+    "target": {"auditScore": 90, "durationMs": 300000},
+    "targetMet": false
+  }
+}
