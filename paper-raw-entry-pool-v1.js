@@ -843,6 +843,11 @@
           }
         }
         try { return JSON.parse(escaped); } catch (_) { candidate = escaped; }
+        // Fallback: globally escape any remaining bare control chars (Ox sometimes mixes)
+        try {
+          const globallyEscaped = candidate.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/gu, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"));
+          return JSON.parse(globallyEscaped);
+        } catch (_) {}
       }
       let matchedSlice = false;
 
@@ -880,6 +885,8 @@
           }
           return parsed;
         } catch (repairErr) {
+          try { require('fs').writeFileSync('/tmp/ox-block1-raw.json', candidate); } catch {}
+          try { require('fs').writeFileSync('/tmp/ox-block1-repaired.json', repaired); } catch {}
           throw new Error(`JSON 修复后解析仍失败: ${repairErr.message}`);
         }
       }
