@@ -71,7 +71,6 @@
     "paper-entry-parallel-extraction-v1.22",
     "paper-entry-parallel-extraction-v1.23",
     "paper-entry-parallel-extraction-v1.24",
-    "paper-entry-parallel-extraction-v1.25",
     "paper-entry-parallel-extraction-v1.26",
     "paper-entry-parallel-extraction-v1.27",
     "paper-entry-parallel-extraction-v1.28",
@@ -1117,6 +1116,9 @@
         targetVersion = "paper-entry-parallel-extraction-v1.1";
       } else if (v === "paper-entry-parallel-extraction-v1" || v === "v1" || v === "1") {
         targetVersion = "paper-entry-parallel-extraction-v1";
+      } else if (requestedVersion.trim().endsWith("-v1.25")) {
+        // ADR-0002: v1.25 (corollary experiment) violates the 6-type contract; hard-reject.
+        throw new Error(`无效的 extractionModuleVersion: v1.25 已废弃（违反 CONTEXT.md 6 类型契约），请使用 v1.26 及以上或冻结的 ${EXTRACTION_MODULE_VERSION_V1_31}`);
       } else if (VALID_EXTRACTION_MODULE_VERSIONS.includes(v)) {
         targetVersion = v;
       }
