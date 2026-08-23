@@ -50,62 +50,13 @@
     return value.trim();
   }
 
-  function hasBalancedMathDelimiters(text) {
-    if (typeof text !== "string") return true;
-    let inInline = false;
-    let inDisplay = false;
-    let i = 0;
-    const len = text.length;
-
-    while (i < len) {
-      let backslashCount = 0;
-      let j = i - 1;
-      while (j >= 0 && text[j] === "\\") {
-        backslashCount += 1;
-        j -= 1;
-      }
-      const isEscaped = backslashCount % 2 === 1;
-
-      if (!isEscaped && text[i] === "$") {
-        const isDouble = i + 1 < len && text[i + 1] === "$";
-        if (inDisplay) {
-          if (isDouble) {
-            inDisplay = false;
-            i += 2;
-            continue;
-          }
-        } else if (inInline) {
-          if (!isDouble) {
-            inInline = false;
-            i += 1;
-            continue;
-          } else {
-            return false;
-          }
-        } else {
-          if (isDouble) {
-            inDisplay = true;
-            i += 2;
-            continue;
-          } else {
-            inInline = true;
-            i += 1;
-            continue;
-          }
-        }
-      }
-      i += 1;
-    }
-
-    return !inInline && !inDisplay;
+  const coreValidation = root?.CMathPaperCoreValidation
+    ?? (typeof require === "function" ? require("./src/paper-import/core/validation.js") : null);
+  if (!coreValidation || typeof coreValidation.hasBalancedMathDelimiters !== "function" || typeof coreValidation.validateMathDelimiters !== "function") {
+    throw new Error("CMath 核心校验能力没有加载（src/paper-import/core/validation.js）");
   }
-
-  function validateMathDelimiters(value, label) {
-    if (typeof value !== "string") return;
-    if (!hasBalancedMathDelimiters(value)) {
-      throw new Error(`${label} 包含未配对的数学公式定界符 $ 或 $$（请确保成对闭合或使用 \\$ 转义）`);
-    }
-  }
+  const hasBalancedMathDelimiters = coreValidation.hasBalancedMathDelimiters;
+  const validateMathDelimiters = coreValidation.validateMathDelimiters;
 
   function endpointUrl(endpoint) {
     let url;
@@ -1606,6 +1557,8 @@
     entriesPrompt,
     assemblyPrompt,
     parseModelJson,
+    hasBalancedMathDelimiters,
+    validateMathDelimiters,
     normalizeRawProjectView,
     collectRawProjectViewIssues,
     sanitizeRawProjectView,
