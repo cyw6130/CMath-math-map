@@ -1750,6 +1750,12 @@
         tokenBudget: { normal: 10000, retry: 16000 },
       };
     }
+    if (mode === "max-compact") {
+      return {
+        reasoningEffort: "max",
+        tokenBudget: { normal: 32000, retry: 64000 },
+      };
+    }
     if (mode === "low-compact") {
       return {
         reasoningEffort: "low",
