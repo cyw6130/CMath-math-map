@@ -437,8 +437,10 @@ export async function scorePaperEntryExtraction({
   const goldObj = JSON.parse(goldRawFull);
   const candidateObj = JSON.parse(candidateRawFull);
 
-  // Fast pre-filter sanity check (0 Token rejection for defective artifacts)
-  validateCandidateSanity(candidateObj, { minEntries: 5 });
+  // Fast pre-filter sanity check (0 Token rejection for defective artifacts).
+  // dry-run plans must stay auditable for staging validation, so the entry-count
+  // gate is skipped there (no API credits are spent in dry-run anyway).
+  if (!dryRun) validateCandidateSanity(candidateObj, { minEntries: 5 });
 
   // Slim both Gold and Candidate artifacts to eliminate bloated config/source text/diagnostics
   const slimGoldObj = prepareSlimGold(goldObj);

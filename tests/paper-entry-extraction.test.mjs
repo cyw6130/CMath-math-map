@@ -774,10 +774,11 @@ test("Paper Entry Extraction Module - Development Sol Entry Scorer", async (t) =
       assert.equal(plan.goldRevision, "v1");
       assert.equal(plan.schemaId, SOL_ENTRY_SCHEMA_ID);
       assert.equal(plan.promptVersion, SOL_ENTRY_PROMPT_VERSION);
-      assert.deepEqual(plan.stagingPlan.files, ["gold.json", "candidate.json", "sol-entry-score-schema.json"]);
-      assert.deepEqual(plan.stagingPlan.excludes, ["pdf", "spec", "conventions", "graph-metrics"]);
-      assert.ok(plan.renderedPrompt.includes("./gold.json"));
-      assert.ok(plan.renderedPrompt.includes("./candidate.json"));
+      assert.deepEqual(plan.stagingPlan.files, [], "inline-single-turn mode stages no files");
+      assert.equal(plan.stagingPlan.mode, "inline-single-turn");
+      assert.ok(plan.renderedPrompt.includes("Gold Reference Artifact (inlined below)"), "inline prompt inlines gold artifact");
+      assert.ok(plan.renderedPrompt.includes("Candidate Entry Extraction Artifact (inlined below)"), "inline prompt inlines candidate artifact");
+      assert.ok(!plan.renderedPrompt.includes("__GOLD_PATH__"), "placeholder must be replaced");
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
@@ -1358,12 +1359,12 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     assert.equal(dirty.name, "Dirty Name");
     assert.equal(dirty.statement, "Statement with control char.");
     assert.equal(dirty.type, "definition");
-    assert.equal(dirty.entryClass, "definition");
+    assert.equal(dirty.entryClass, "fact");
 
     const lem = artifact.entries.find((e) => e.id === "lem:quick");
     assert.ok(lem);
     assert.equal(lem.type, "lemma");
-    assert.equal(lem.entryClass, "lemma");
+    assert.equal(lem.entryClass, "claim");
 
     // Broken lone entry with unbalanced math was discarded under strictMath
     const broken = artifact.entries.find((e) => e.id === "thm:broken_lone");
@@ -1551,7 +1552,7 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
       assert.equal(plan.dryRun, true);
       assert.equal(plan.caseId, "sample-case");
       assert.equal(plan.goldRevision, "v1");
-      assert.ok(plan.renderedPrompt.includes("./candidate.json"));
+      assert.ok(plan.renderedPrompt.includes("Candidate Entry Extraction Artifact (inlined below)"), "inline prompt inlines candidate artifact");
     } finally {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }

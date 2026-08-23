@@ -349,7 +349,8 @@
         "paper:def:heegaard-splitting"
       ],
       "conclusion": "paper:def:heegaard-diagram",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=1",
+      "argument": "组织性关联：将 由 Heegaard 分解组织 Heegaard 图数据 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     },
     {
       "id": "paper:organization:trisection-diagram",
@@ -363,7 +364,8 @@
         "paper:def:morse-2-function"
       ],
       "conclusion": "paper:def:trisection-diagram",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=2",
+      "argument": "组织性关联：将 由三截面与 Morse 2-函数组织三截面图数据 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     },
     {
       "id": "paper:organization:doubly-pointed-diagram",
@@ -376,7 +378,8 @@
         "paper:def:trisection-diagram"
       ],
       "conclusion": "paper:def:doubly-pointed-diagram",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+      "argument": "组织性关联：将 在三截面图上加入双重点数据 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     },
     {
       "id": "paper:organization:group-trisection",
@@ -389,7 +392,8 @@
         "paper:def:trisection"
       ],
       "conclusion": "paper:def:group-trisection",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+      "argument": "组织性关联：将 对三截面骨架取基本群得到群三截面数据 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     },
     {
       "id": "paper:organization:r-link",
@@ -402,7 +406,8 @@
         "paper:def:dehn-surgery"
       ],
       "conclusion": "paper:def:r-link",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=3",
+      "argument": "组织性关联：将 以 Dehn 手术结果定义 R-link 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     },
     {
       "id": "paper:organization:generalized-trisection",
@@ -417,7 +422,8 @@
         "paper:algorithm:triangulation-to-trisection"
       ],
       "conclusion": "paper:def:generalized-trisection",
-      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4"
+      "sourcePath": "kirby-2018-trisections-of-4-manifolds.pdf#page=4",
+      "argument": "组织性关联：将 由着色三角剖分与单纯映射组织广义三截面 所述的结构关系归入地图；该操作不声称证明任何 Claim。"
     }
   ],
   "b0ClaimEntryIds": [

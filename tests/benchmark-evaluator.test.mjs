@@ -302,10 +302,10 @@ describe("Regression: Proof closure, cycles, boundary invariants, and single aut
     const kirbySpec = JSON.parse(fs.readFileSync(path.join(casesRoot, "kirby-2018-trisections", "benchmark-spec.json"), "utf8"));
 
     const externalIds = [
-      "paper:thm:relative-trisection-gluing",
-      "paper:thm:trisection-homology-intersection-form",
-      "paper:thm:morse2-simplified-trisection-correspondence",
-      "paper:thm:triangulation-pl-trisection-algorithm",
+      "paper:thm:relative-trisection",
+      "paper:thm:existence-stable-uniqueness",
+      "paper:prop:open-book-gluing",
+      "paper:thm:group-trisection-existence",
     ];
 
     const goldB0 = new Set(kirbyGold.b0ClaimEntryIds);

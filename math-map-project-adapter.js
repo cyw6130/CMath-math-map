@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package alpha-project-adapter-v0.2
+ * @version v0.2
+ * @canonicalSource packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js
+ * @contentHash sha256:d2fedaed7af0b932697f99b36e4c0c58bcfd97e028cbc7cf605cb8d9b3e615ec
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
 /* Alpha Project View Model -> Gamma mathematical-map projection.
  * This layer is read-only: it never edits Alpha authority or graph rendering state.
  * Current semantics: contracts/MATHEMATICAL_MAP_SEMANTICS_V0.1.md.
@@ -15,12 +24,14 @@
   "use strict";
 
   const RECENT_LOOP_LIMIT = 3;
-  const semantics = root?.GammaMathMapSemantics
-    ?? (typeof require === "function" ? require("./math-map-semantics.js") : null);
-  const naming = root?.GammaMathMapNaming
-    ?? (typeof require === "function" ? require("./math-map-naming.js") : null);
-  const loopProgress = root?.GammaResearchLoopProgress
-    ?? (typeof require === "function" ? require("./research-loop-progress.js") : null);
+  const loadDependency = (browserGlobal, canonicalPath, legacyPath) => {
+    if (root?.[browserGlobal]) return root[browserGlobal];
+    if (typeof require !== "function") return null;
+    try { return require(canonicalPath); } catch { return require(legacyPath); }
+  };
+  const semantics = loadDependency("GammaMathMapSemantics", "../../../module/math-graph-semantics-v2/src/index.js", "./math-map-semantics.js");
+  const naming = loadDependency("GammaMathMapNaming", "../../../view/math-map-naming-v2/src/index.js", "./math-map-naming.js");
+  const loopProgress = loadDependency("GammaResearchLoopProgress", "../../../view/research-loop-progress-v1/src/index.js", "./research-loop-progress.js");
   const CAPABILITY_ID = "cmath-gamma.alpha-project-adapter/v0.2";
   const SEMANTIC_CONTRACT = Object.freeze({
     id: semantics?.SEMANTIC_MODEL_ID ?? "cmath.fact-claim-operation/v0.1",
@@ -571,7 +582,12 @@
       hierarchySource: finalGoalId || milestoneIds.length ? "explicit-compatibility-map" : "not-declared-by-focus-v0.1",
     });
     const goalLevel = (id) => id === currentGoalId ? "current" : id === finalGoalId ? "final" : milestoneIds.includes(id) ? "milestone" : null;
-    const visibleTitle = (record) => record.isLegacy ? removeWorkflowWords(record.item.title ?? record.displayName) : record.item.title ?? record.displayName;
+    const visibleTitle = (record) => {
+      const title = record.isLegacy ? removeWorkflowWords(record.item.title ?? record.displayName) : record.item.title ?? record.displayName;
+      if (record.item.openDisposition?.code === "conditional_downstream") return title + "（条件性下游结论）";
+      if (record.operationKind && !record.closureEligible) return title + "（待复核）";
+      return title;
+    };
     const visibleStatement = (record, value) => record.isLegacy ? removeWorkflowWords(value) : value;
     const visibleEvidence = (record, value) => record.isLegacy ? removeWorkflowWords(value) : value;
 
@@ -843,6 +859,7 @@
         && entryRecordByProjectedId.get(id)?.closureEligible));
       const establishedClaims = new Set([
         ...b0ClaimEntryIds,
+        ...(options.establishedClaimEntryIds ?? []).map(projectEndpoint),
       ].filter((id) => available.has(id) && claimIdSet.has(id)
         && entryRecordByProjectedId.get(id)?.closureEligible));
       const availableProofs = visibleInferenceRecords.filter((record) => available.has(record.projectedId)
@@ -901,7 +918,10 @@
       targetGroups.set(loop.targetEntryId, [...(targetGroups.get(loop.targetEntryId) ?? []), loop]);
     });
     if (!targetGroups.has(currentGoalId)) targetGroups.set(currentGoalId, []);
-    const orderedTargets = [...targetGroups.keys()].sort((left, right) => {
+    const requestedRouteTargets = Array.isArray(options.routeTargetIds)
+      ? unique(options.routeTargetIds.map(projectEndpoint)).filter((id) => targetGroups.has(id))
+      : null;
+    const orderedTargets = (requestedRouteTargets ?? [...targetGroups.keys()]).sort((left, right) => {
       if (left === currentGoalId) return -1;
       if (right === currentGoalId) return 1;
       const leftIndex = loopRecords.findIndex((loop) => loop.id === targetGroups.get(left).at(-1)?.id);

@@ -11,8 +11,9 @@ import semantics from "../math-map-semantics.js";
 import paperImportClient from "../paper-import-client.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const goldFixturePath = path.join(__dirname, "fixtures", "hopf-paper", "hopf-map-gold.json");
-const specFixturePath = path.join(__dirname, "fixtures", "hopf-paper", "benchmark-spec.json");
+const casesRoot = path.resolve(__dirname, "../benchmarks/paper-import/cases");
+const goldFixturePath = path.join(casesRoot, "hopf-degree-theorem", "gold-project-view.json");
+const specFixturePath = path.join(casesRoot, "hopf-degree-theorem", "benchmark-spec.json");
 
 const goldJson = JSON.parse(fs.readFileSync(goldFixturePath, "utf-8"));
 const benchmarkSpec = JSON.parse(fs.readFileSync(specFixturePath, "utf-8"));

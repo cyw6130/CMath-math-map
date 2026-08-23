@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package math-map-visual-semantics-v1
+ * @version v1
+ * @canonicalSource packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js
+ * @contentHash sha256:ad805038e9aab4e0d83ea731b16edbd0cea150b19f52ad264621a014a846c20d
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
 /* Stable visual projection for Gamma mathematical maps.
    This module reads semantic fields; it never decides mathematical truth. */
 ((root, factory) => {

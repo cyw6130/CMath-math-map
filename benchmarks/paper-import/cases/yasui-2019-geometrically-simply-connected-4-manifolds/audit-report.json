@@ -2,9 +2,9 @@
   "schema": "cmath.paper-benchmark-audit/v2",
   "benchmarkId": "benchmark:yasui-2019-geometrically-simply-connected-4-manifolds:pdf-import-gold:v1",
   "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
-  "status": "structural-draft",
+  "status": "accepted-gold",
   "reviewStatus": "accepted-gold",
-  "scoringEligible": false,
+  "scoringEligible": true,
   "auditedFiles": [
     "benchmark-spec.json",
     "gold-project-view.json",
@@ -17,9 +17,7 @@
     "entries": 15,
     "inferences": 7
   },
-  "errors": [
-    "source PDF is unreadable"
-  ],
+  "errors": [],
   "warnings": [
     "review evidence extractedSourceText is missing or unreadable (acceptable for provisional-reference/needs-revision)"
   ]

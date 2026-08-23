@@ -84,7 +84,7 @@
     for (const lead of guide.leads) lead.related_lead_ids = lead.related_lead_ids.filter((related) => ids.has(related) && related !== lead.id);
     return guide;
   }
-  function parseExtractionEntriesResponse(value, lane, { normalizeGenericClaims = false, genericClaimFallback = null } = {}) {
+  function parseExtractionEntriesResponse(value, lane, { normalizeGenericClaims = false } = {}) {
     const proposal = typeof value === "string" ? JSON.parse(value) : value;
     if (!proposal || typeof proposal !== "object" || !Array.isArray(proposal.entries)) throw new Error(`${lane} 提取结果必须包含 entries`);
     if (proposal.schema && proposal.schema !== EXTRACTION_SCHEMA) throw new Error(`${lane} 提取 schema 不匹配`);
@@ -129,10 +129,6 @@
           entry.type = "theorem";
         } else if (rawName.includes("命题") || rawStatement.includes("命题") || rawName.includes("推论") || rawStatement.includes("推论") || rawName.includes("proposition") || rawStatement.includes("proposition") || rawName.includes("corollary") || rawStatement.includes("corollary")) {
           entry.type = "proposition";
-        } else if (genericClaimFallback === "lemma") {
-          // V3.19-only caller contract: retain an otherwise untyped local
-          // Claim as a proof obligation instead of failing at parsing.
-          entry.type = "lemma";
         }
       }
 

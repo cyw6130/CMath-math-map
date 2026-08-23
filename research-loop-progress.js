@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package research-loop-progress-v1
+ * @version v1
+ * @canonicalSource packages/math-map/presentation/research-loop-progress-v1/src/index.js
+ * @contentHash sha256:b625462b4b92a0ada38acf3c5fd66990d1b64a03055df9fc643e37250c5725cd
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ */
 /* Research Loop history and incremental map slices. Deliberately excludes plan and route selection. */
 (function publishResearchLoopProgress(root, factory) {
   "use strict";

@@ -21,14 +21,14 @@ function readJsonRobust(relPath) {
 }
 
 test("frozen entry module V4.1 points to v1.31", () => {
-  const frozen = readJsonRobust("paper-import/entry-module/frozen-entry-module.json");
+  const frozen = readJsonRobust("benchmarks/paper-import/entry-module/frozen-entry-module.json");
   assert.equal(frozen.selectedModuleVersion, "paper-entry-parallel-extraction-v1.31");
   assert.equal(frozen.consolidationModuleVersion, "paper-entry-consolidation-v1");
   assert.equal(frozen.status, "frozen");
 });
 
 test("frozen inference module V4.1 points to entry v1.31 (T2)", () => {
-  const frozen = readJsonRobust("paper-import/inference-module/frozen-inference-module.json");
+  const frozen = readJsonRobust("benchmarks/paper-import/inference-module/frozen-inference-module.json");
   assert.equal(frozen.entryModuleVersion, "paper-entry-parallel-extraction-v1.31");
   assert.equal(frozen.selectedInferenceVersion, "v4");
 });
