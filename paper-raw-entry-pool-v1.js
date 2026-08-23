@@ -843,7 +843,11 @@
           }
         }
         try { return JSON.parse(escaped); } catch (_) { candidate = escaped; }
-        // Fallback: globally escape any remaining bare control chars (Ox sometimes mixes)
+        // Fallback: strip any remaining bare control chars globally (Ox mixes newlines inside strings)
+        try {
+          const stripped = candidate.replace(/[\x00-\x1F\x7F]/gu, (c) => (c === "\t" ? " " : " "));
+          return JSON.parse(stripped);
+        } catch (_) {}
         try {
           const globallyEscaped = candidate.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/gu, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"));
           return JSON.parse(globallyEscaped);
