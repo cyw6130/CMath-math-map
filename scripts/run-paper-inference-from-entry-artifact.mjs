@@ -27,8 +27,8 @@ function resolveProviderConfig(providerName, explicitModel) {
   // auto-detect from model name if provider not given
   const autoProvider = norm || (explicitModel === "muse-spark-1.2-contributor" || explicitModel === "deepseek-v4-flash" ? "opencode-go" : "luna-gateway");
   if (autoProvider === "opencode-go" || autoProvider === "opencode") {
-    const supported = new Set(["deepseek-v4-flash", "muse-spark-1.2-contributor", "ox-alpha-free"]);
-    if (!supported.has(explicitModel)) throw new Error(`opencode-go supports deepseek-v4-flash, muse-spark-1.2-contributor, and ox-alpha-free, received '${explicitModel}'`);
+    const supported = new Set(["deepseek-v4-flash", "muse-spark-1.2-contributor", "ox-alpha-free", "kimi-k3"]);
+    if (!supported.has(explicitModel)) throw new Error(`opencode-go supports deepseek-v4-flash, muse-spark-1.2-contributor, ox-alpha-free, and kimi-k3, received '${explicitModel}'`);
     let opencodeKey = process.env.OPENCODE_GO_API_KEY?.trim();
     if (!opencodeKey) {
       const keysPath = process.env.CMATH_KEYS_FILE?.trim() || path.join(process.env.HOME || "/Users/chenyuwen", ".gamma-math-map/keys.json");

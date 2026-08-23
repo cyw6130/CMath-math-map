@@ -4,23 +4,182 @@
  * Evaluates entry extraction artifacts against Gold reference entries under strict
  * Gold + candidate + schema staging isolation (no PDF, no graph-metrics, no spec/conventions).
  */
-import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import os from "node:os";
-import { spawnSync } from "node:child_process";
+import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 export const PROMPT_VERSION = "sol-entry-score-prompt-v1";
 export const SCHEMA_ID = "cmath.paper-entry-sol-score/v1";
 export const SCORER_MODEL = "gpt-5.6-sol";
 export const SPARK_SCORER_MODEL = "muse-spark-1.2-contributor";
-export const VALID_SCORER_MODELS = new Set([SCORER_MODEL, SPARK_SCORER_MODEL]);
+export const VALID_SCORER_MODELS = new Set([SCORER_MODEL, SPARK_SCORER_MODEL, "ox-alpha-free", "opencode-go/ox-alpha-free", "muse-spark-1.2", "kimi-k3", "opencode-go/kimi-k3"]);
 
 /**
  * Validate that an input path exists, is a regular file (not a symlink or directory),
  * and return its resolved absolute path.
  */
+export function prepareSlimCandidate(candidateObj) {
+  if (!candidateObj || typeof candidateObj !== "object") return candidateObj;
+  
+  const entries = candidateObj.rawEntries || candidateObj.entries || [];
+  const inferenceHints = candidateObj.inferenceHints || [];
+  
+  const slim = {
+    schema: candidateObj.schema || SCHEMA_ID,
+    extractionModuleVersion: candidateObj.extractionModuleVersion || candidateObj.entryModuleVersion || "paper-entry-parallel-extraction-v1.20",
+    source: {
+      fileName: candidateObj.source?.fileName || "paper.pdf",
+      pageCount: candidateObj.source?.pageCount || 1,
+    },
+    rawEntries: entries.map((e) => {
+      // Strip chunk-level duplicate verbose text/provenance if needed
+      const { _provenance, ...rest } = e;
+      return rest;
+    }),
+    inferenceHints,
+  };
+
+  return slim;
+}
+
+export function prepareSlimGold(goldObj) {
+  if (!goldObj || typeof goldObj !== "object") return goldObj;
+
+  const entries = goldObj.entries || [];
+  const inferences = goldObj.inferences || [];
+  const b0ClaimEntryIds = goldObj.b0ClaimEntryIds || goldObj.derivedResearchState?.mathematicalState?.b0ClaimEntryIds || [];
+
+  const slim = {
+    schema: goldObj.schema || "cmath.project-view-model/v0.1",
+    caseId: goldObj.caseId || goldObj.project?.id || "paper-case",
+    projectTitle: goldObj.projectTitle || goldObj.project?.title || "",
+    mainTargetEntryId: goldObj.mainTargetEntryId || null,
+    b0ClaimEntryIds,
+    entries: entries.map((e) => ({
+      id: e.id,
+      entryClass: e.entryClass,
+      factKind: e.factKind,
+      claimKind: e.claimKind,
+      title: e.title,
+      statement: e.statement,
+      sourcePath: e.sourcePath,
+      sourceReference: e.sourceReference,
+    })),
+    inferences: inferences.map((inf) => ({
+      id: inf.id,
+      premiseEntryIds: inf.premiseEntryIds || inf.premises || [],
+      targetEntryId: inf.targetEntryId || inf.conclusion || null,
+    })),
+  };
+
+  return slim;
+}
+
+export function validateCandidateSanity(candidateObj, { minEntries = 5 } = {}) {
+  if (!candidateObj || typeof candidateObj !== "object") {
+    throw new Error("Invalid candidate object: parsed payload is null or not an object");
+  }
+  const entries = candidateObj.rawEntries || candidateObj.entries || [];
+  if (!Array.isArray(entries) || entries.length < minEntries) {
+    throw new Error(`Candidate artifact contains too few entries (${entries.length} < ${minEntries}); rejected prior to Sol scoring to save API credits`);
+  }
+  return true;
+}
+
+export function buildInlineSingleTurnPrompt({ promptTemplate, goldRaw, candidateRaw, schemaText, caseId, goldRevision, candidateArtifact }) {
+  const inlineSection = [
+    "## Case Metadata",
+    `- Case ID (copy exactly): \`${caseId}\``,
+    `- Gold revision (copy exactly): \`${goldRevision}\``,
+    `- Candidate artifact identity (copy exactly): \`${candidateArtifact}\``,
+    "",
+    "## Gold Reference Artifact (inlined below)",
+    "```json",
+    goldRaw,
+    "```",
+    "",
+    "## Candidate Entry Extraction Artifact (inlined below)",
+    "```json",
+    candidateRaw,
+    "```",
+    "",
+    "## Sol Entry Score Schema (inlined below)",
+    "```json",
+    schemaText,
+    "```",
+    "",
+    "## Execution Mode (strict)",
+    "- All input data has already been inlined above; do not use any tools, do not read any files, and do not run any commands.",
+    "- Complete the entire evaluation in a single response consisting ONLY of the JSON object specified in the Output Format section.",
+    "",
+  ].join("\n");
+
+  let prompt = promptTemplate.replace(/## Input Files[\s\S]*?(?=## Evaluation Dimensions)/u, `${inlineSection}\n`);
+  prompt = prompt.replace(/matching the schema in `[^`]*`/u, "matching the schema inlined above");
+  return prompt;
+}
+
+export function buildGatewayChatRequest({ renderedPrompt, model, reasoningEffort, serviceTier }) {
+  return {
+    model,
+    messages: [{ role: "user", content: renderedPrompt }],
+    ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+    ...(serviceTier ? { service_tier: serviceTier } : {}),
+  };
+}
+
+async function scoreViaGatewayHttp({ renderedPrompt, model, reasoningEffort, serviceTier, baseUrl }) {
+  const root = (baseUrl || process.env.SOL_GATEWAY_URL || "http://127.0.0.1:10100").replace(/\/+$/u, "");
+  const res = await fetch(`${root}/v1/chat/completions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(buildGatewayChatRequest({ renderedPrompt, model, reasoningEffort, serviceTier })),
+  });
+  if (!res.ok) {
+    throw new Error(`Sol gateway HTTP ${res.status}: ${(await res.text()).slice(0, 300)} — check that the local gateway (default http://127.0.0.1:10100, override via SOL_GATEWAY_URL) is running`);
+  }
+  const data = await res.json();
+  const usage = data.usage || {};
+  process.stderr.write(`[sol-score] gateway usage: prompt=${usage.prompt_tokens ?? "?"} completion=${usage.completion_tokens ?? "?"} cached=${usage.prompt_tokens_details?.cached_tokens ?? 0} reasoning=${usage.completion_tokens_details?.reasoning_tokens ?? 0}\n`);
+  return (data.choices?.[0]?.message?.content ?? "").trim();
+}
+
+export function aggregateMedianScore(scoreObjs) {
+  if (!Array.isArray(scoreObjs) || scoreObjs.length === 0) {
+    throw new Error("aggregateMedianScore requires at least one score object");
+  }
+  const sorted = [...scoreObjs].sort((a, b) => (a.solEntryScore ?? 0) - (b.solEntryScore ?? 0));
+  const mid = Math.floor((sorted.length - 1) / 2);
+  const medianRun = sorted[mid];
+  const aggregated = {
+    ...medianRun,
+    scoreRuns: sorted.map((r) => ({
+      correctness: r.correctness,
+      completeness: r.completeness,
+      solEntryScore: r.solEntryScore,
+    })),
+    aggregation: `median-of-${scoreObjs.length}`,
+  };
+  return aggregated;
+}
+
+export function computeScoreCacheKey({ goldText, candText, promptText, model, reasoning = "medium", runs = 1 }) {
+  const hash = crypto.createHash("sha256");
+  hash.update(goldText || "");
+  hash.update("||");
+  hash.update(candText || "");
+  hash.update("||");
+  hash.update(promptText || "");
+  hash.update("||");
+  hash.update(model || "");
+  hash.update("||");
+  hash.update(reasoning || "medium");
+  hash.update("||");
+  hash.update(`runs=${runs}`);
+  return hash.digest("hex");
+}
+
 function resolveRegularFile(filePath, label) {
   if (typeof filePath !== "string" || !filePath) {
     throw new Error(`required scoring input path is invalid: ${filePath}`);
@@ -62,9 +221,11 @@ export function validateSolEntryScore(score, {
   // Allow canonical names and free-form model-reporting that contains spark/sol token (e.g. "Muse Spark - Sol Auditor")
   const isSparkLabel = normalized.includes("spark") || normalized.includes("musespark");
   const isSolLabel = normalized.includes("sol") || normalized.includes("gpt56sol") || normalized.includes("gpt5");
+  const isOxAlphaLabel = normalized.includes("oxalpha") || normalized.includes("oxalphafree") || normalized.includes("kimik3") || normalized.includes("k3");
   const valid = VALID_SCORER_MODELS.has(modelName)
     || (isSparkLabel && VALID_SCORER_MODELS.has(SPARK_SCORER_MODEL))
-    || (isSolLabel && VALID_SCORER_MODELS.has(SCORER_MODEL));
+    || (isSolLabel && VALID_SCORER_MODELS.has(SCORER_MODEL))
+    || (isOxAlphaLabel && (VALID_SCORER_MODELS.has("ox-alpha-free") || VALID_SCORER_MODELS.has("kimi-k3")));
   if (!valid) {
     throw new Error(`Invalid scorer model: expected one of ${[...VALID_SCORER_MODELS].join(", ")}, got "${modelName}"`);
   }
@@ -170,11 +331,14 @@ export function renderPromptTemplate(template, replacements = {}) {
 /**
  * Main execution function
  */
-function isSparkScorer(model) {
-  return model === SPARK_SCORER_MODEL || model === "muse-spark-1.2";
+export function isSparkScorer(model) {
+  if (model === SPARK_SCORER_MODEL || model === "muse-spark-1.2" || model === "kimi-k3") return true;
+  // opencode-go served models (e.g. ox-alpha-free, muse-spark variants)
+  if (model === "ox-alpha-free" || model === "kimi-k3" || model.startsWith("opencode-go/")) return true;
+  return false;
 }
 
-function resolveSparkProviderConfig(explicitModel = SPARK_SCORER_MODEL) {
+export function resolveSparkProviderConfig(explicitModel = SPARK_SCORER_MODEL) {
   const keysPath = process.env.OPENCODE_KEYS_FILE?.trim() || path.join(process.env.HOME || "/Users/chenyuwen", ".gamma-math-map/keys.json");
   let apiKey = process.env.OPENCODE_GO_API_KEY?.trim() || "";
   if (!apiKey && fs.existsSync(keysPath)) {
@@ -189,8 +353,12 @@ function resolveSparkProviderConfig(explicitModel = SPARK_SCORER_MODEL) {
   };
 }
 
-function createProxyFetch({ proxyUrl, apiKey, fetchImpl = globalThis.fetch } = {}) {
+function createProxyFetch({ proxyUrl, apiKey, endpoint, fetchImpl = globalThis.fetch } = {}) {
+  const directFetch = async function directFetch(targetUrl, init = {}) {
+    return fetchImpl(targetUrl, init);
+  };
   return async function proxyFetch(targetUrl, init = {}) {
+    if (process.env.OPENCODE_GO_DIRECT === "1") return directFetch(targetUrl, init);
     let requestBody = null;
     if (init.body) {
       try { requestBody = JSON.parse(String(init.body)); } catch { requestBody = init.body; }
@@ -199,22 +367,31 @@ function createProxyFetch({ proxyUrl, apiKey, fetchImpl = globalThis.fetch } = {
     const authKey = typeof authHeader === "string" ? authHeader.replace(/^Bearer\s+/iu, "").trim() : "";
     const resolvedKey = authKey || apiKey;
     const payload = { targetUrl: String(targetUrl), apiKey: resolvedKey, body: requestBody };
-    let proxyResponse;
+    let text = "";
     try {
-      proxyResponse = await fetchImpl(proxyUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: init?.signal });
+      const proxyResponse = await fetchImpl(proxyUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: init?.signal });
+      text = await proxyResponse.text();
+      if (proxyResponse.ok && text.trim()) {
+        return new Response(text, { status: proxyResponse.status, headers: proxyResponse.headers });
+      }
+      process.stderr.write(`[opencode-go] local proxy responded ${proxyResponse.status}; falling back to direct call\n`);
     } catch (err) {
-      const isConnRefused = err?.cause?.code === "ECONNREFUSED" || /ECONNREFUSED|connect refused/iu.test(err?.message || "");
-      if (isConnRefused) { const e = new Error(`Local model proxy unavailable at ${proxyUrl}`); e.cause = err; throw e; }
-      throw err;
+      process.stderr.write(`[opencode-go] local proxy unavailable (${err.message}); falling back to direct call\n`);
     }
-    const text = await proxyResponse.text();
-    return new Response(text, { status: proxyResponse.status, headers: proxyResponse.headers });
+    // 直连兜底：代理不可用或返回空时直接访问 opencode-go 端点
+    if (endpoint && String(targetUrl).startsWith(endpoint)) {
+      const headers = new Headers(init?.headers || {});
+      if (resolvedKey && !headers.get("Authorization")) headers.set("Authorization", `Bearer ${resolvedKey}`);
+      return directFetch(targetUrl, { ...init, headers });
+    }
+    const err = new Error(`Local model proxy failed and direct fallback is not applicable for ${targetUrl}`);
+    throw err;
   };
 }
 
 async function scoreViaSpark({ renderedPrompt, goldRaw, candidateRaw, schemaText, caseId, goldRevision, candidateArtifact, scorerModel, reasoningEffort = "xhigh" }) {
   const provider = resolveSparkProviderConfig(scorerModel);
-  const proxyFetch = createProxyFetch({ proxyUrl: provider.proxyUrl, apiKey: provider.apiKey });
+  const proxyFetch = createProxyFetch({ proxyUrl: provider.proxyUrl, apiKey: provider.apiKey, endpoint: provider.endpoint });
   const inlinePrompt = `${renderedPrompt}\n\n---\nINLINED ARTIFACTS (spark scoring — file staging not available over network; use these verbatim)\n- CaseId: ${caseId}\n- GoldRevision: ${goldRevision}\n- CandidateArtifact: ${candidateArtifact}\n\nGOLD JSON (gold.json):\n\`\`\`json\n${goldRaw.slice(0, 90000)}\n\`\`\`\n\nCANDIDATE JSON (candidate.json):\n\`\`\`json\n${candidateRaw.slice(0, 90000)}\n\`\`\`\n\nSCHEMA JSON (sol-entry-score-schema.json):\n\`\`\`json\n${schemaText}\n\`\`\`\n\nInstructions for spark: You MUST base the numeric scores strictly on the inlined JSON contents above, not on file-system access. Return ONLY the JSON object defined by the schema. Ensure scorerModel is "${SPARK_SCORER_MODEL}", promptVersion is "${PROMPT_VERSION}".`;
   const body = { model: provider.model, messages: [{ role: "user", content: inlinePrompt }], temperature: 0, reasoning_effort: reasoningEffort, response_format: { type: "json_object" } };
   // retry once on 5xx like extraction runner
@@ -248,15 +425,27 @@ export async function scorePaperEntryExtraction({
   dryRun = false,
   scorerModel = SCORER_MODEL,
   reasoningEffort,
+  runs = 1,
+  serviceTier,
   rootDir = process.cwd(),
 } = {}) {
   const resolvedGold = resolveRegularFile(goldPath, "gold");
   const resolvedCandidate = resolveRegularFile(candidatePath, "candidate");
 
-  const goldRaw = fs.readFileSync(resolvedGold, "utf8");
-  const candidateRaw = fs.readFileSync(resolvedCandidate, "utf8");
-  const goldObj = JSON.parse(goldRaw);
-  const candidateObj = JSON.parse(candidateRaw);
+  const goldRawFull = fs.readFileSync(resolvedGold, "utf8");
+  const candidateRawFull = fs.readFileSync(resolvedCandidate, "utf8");
+  const goldObj = JSON.parse(goldRawFull);
+  const candidateObj = JSON.parse(candidateRawFull);
+
+  // Fast pre-filter sanity check (0 Token rejection for defective artifacts)
+  validateCandidateSanity(candidateObj, { minEntries: 5 });
+
+  // Slim both Gold and Candidate artifacts to eliminate bloated config/source text/diagnostics
+  const slimGoldObj = prepareSlimGold(goldObj);
+  const slimCandidateObj = prepareSlimCandidate(candidateObj);
+
+  const goldRaw = JSON.stringify(slimGoldObj, null, 2);
+  const candidateRaw = JSON.stringify(slimCandidateObj, null, 2);
 
   const caseId = goldObj.caseId
     || goldObj.project?.id?.replace(/^cmath:project:paper:/u, "")
@@ -274,14 +463,41 @@ export async function scorePaperEntryExtraction({
   const promptTemplate = fs.readFileSync(promptTemplatePath, "utf8");
   const schemaText = fs.readFileSync(schemaPath, "utf8");
 
+  const effectiveReasoning = reasoningEffort || "medium";
+
+  // Check persistent/local score cache
+  const cacheDir = path.join(rootDir, "benchmarks/paper-import/.score-cache");
+  const runCount = Math.max(1, Number(runs) || 1);
+  const cacheKey = computeScoreCacheKey({
+    goldText: goldRaw,
+    candText: candidateRaw,
+    promptText: promptTemplate,
+    model: scorerModel,
+    reasoning: effectiveReasoning,
+    runs: runCount,
+  });
+  const cacheFilePath = path.join(cacheDir, `${cacheKey}.json`);
+
+  if (!dryRun && fs.existsSync(cacheFilePath)) {
+    try {
+      const cachedScore = JSON.parse(fs.readFileSync(cacheFilePath, "utf8"));
+      if (outputPath) {
+        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+        fs.writeFileSync(outputPath, `${JSON.stringify(cachedScore, null, 2)}\n`);
+      }
+      return cachedScore;
+    } catch {}
+  }
+
   if (dryRun) {
-    const renderedPrompt = renderPromptTemplate(promptTemplate, {
-      GOLD_PATH: "./gold.json",
-      CANDIDATE_PATH: "./candidate.json",
-      SOL_ENTRY_SCORE_SCHEMA_PATH: "./sol-entry-score-schema.json",
-      CASE_ID: caseId,
-      GOLD_REVISION: goldRevision,
-      CANDIDATE_ARTIFACT: candidateArtifact,
+    const renderedPrompt = buildInlineSingleTurnPrompt({
+      promptTemplate,
+      goldRaw,
+      candidateRaw,
+      schemaText,
+      caseId,
+      goldRevision,
+      candidateArtifact,
     });
 
     return {
@@ -291,64 +507,38 @@ export async function scorePaperEntryExtraction({
       scorerModel,
       promptVersion: PROMPT_VERSION,
       schemaId: SCHEMA_ID,
-      stagingPlan: {
-        files: ["gold.json", "candidate.json", "sol-entry-score-schema.json"],
-        excludes: ["pdf", "spec", "conventions", "graph-metrics"],
-      },
+      stagingPlan: { files: [], excludes: ["pdf", "spec", "conventions", "graph-metrics"], mode: "inline-single-turn" },
       renderedPrompt,
     };
   }
 
-  // Create isolated temp staging directory
-  const stagingDir = fs.mkdtempSync(path.join(os.tmpdir(), "sol-entry-score-"));
+  const renderedPrompt = buildInlineSingleTurnPrompt({
+    promptTemplate,
+    goldRaw,
+    candidateRaw,
+    schemaText,
+    caseId,
+    goldRevision,
+    candidateArtifact,
+  });
 
-  try {
-    const stagedGoldPath = path.join(stagingDir, "gold.json");
-    const stagedCandidatePath = path.join(stagingDir, "candidate.json");
-    const stagedSchemaPath = path.join(stagingDir, "sol-entry-score-schema.json");
-
-    fs.writeFileSync(stagedGoldPath, goldRaw);
-    fs.writeFileSync(stagedCandidatePath, candidateRaw);
-    fs.writeFileSync(stagedSchemaPath, schemaText);
-
-    const renderedPrompt = renderPromptTemplate(promptTemplate, {
-      GOLD_PATH: "./gold.json",
-      CANDIDATE_PATH: "./candidate.json",
-      SOL_ENTRY_SCORE_SCHEMA_PATH: "./sol-entry-score-schema.json",
-      CASE_ID: caseId,
-      GOLD_REVISION: goldRevision,
-      CANDIDATE_ARTIFACT: candidateArtifact,
-    });
-
-    const sparkScoring = isSparkScorer(scorerModel);
+  const sparkScoring = isSparkScorer(scorerModel);
+  const runResults = [];
+  for (let runIndex = 1; runIndex <= runCount; runIndex += 1) {
+    if (runCount > 1) process.stderr.write(`[sol-score] run ${runIndex}/${runCount}\n`);
     let rawOutput;
     if (sparkScoring) {
-      const sparkEffort = reasoningEffort || "xhigh";
-      rawOutput = (await scoreViaSpark({ renderedPrompt, goldRaw, candidateRaw, schemaText, caseId, goldRevision, candidateArtifact, scorerModel: SPARK_SCORER_MODEL, reasoningEffort: sparkEffort })).trim();
+      rawOutput = (await scoreViaSpark({ renderedPrompt, goldRaw, candidateRaw, schemaText, caseId, goldRevision, candidateArtifact, scorerModel: SPARK_SCORER_MODEL, reasoningEffort: effectiveReasoning })).trim();
     } else {
-      const codexBin = process.env.CODEX_BIN || "codex";
-      const result = spawnSync(codexBin, [
-        "exec", "--ephemeral", "--skip-git-repo-check",
-        "--model", scorerModel, "--sandbox", "read-only", "-",
-      ], {
-        input: renderedPrompt,
-        cwd: stagingDir,
-        encoding: "utf8",
-        maxBuffer: 64 * 1024 * 1024,
-      });
-
-      if (result.status !== 0) {
-        throw new Error(`Codex execution failed (exit code ${result.status}): ${result.stderr || result.stdout}`);
-      }
-
-      rawOutput = (result.stdout || "").trim();
+      // Direct single-turn HTTP call to the local gateway. No CLI, no agent scaffolding.
+      rawOutput = await scoreViaGatewayHttp({ renderedPrompt, model: scorerModel, reasoningEffort: effectiveReasoning, serviceTier });
     }
     let scoreObj;
     try {
       const match = rawOutput.match(/\{[\s\S]*\}/u);
       scoreObj = JSON.parse(match ? match[0] : rawOutput);
     } catch (err) {
-      throw new Error(`Failed to parse Sol score JSON from codex output: ${err.message}\nOutput: ${rawOutput.slice(0, 500)}`);
+      throw new Error(`Failed to parse Sol score JSON from run ${runIndex}: ${err.message}\nOutput: ${rawOutput.slice(0, 500)}`);
     }
 
     validateSolEntryScore(scoreObj, {
@@ -357,16 +547,23 @@ export async function scorePaperEntryExtraction({
       candidatePath,
       rootDir,
     });
-
-    if (outputPath) {
-      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-      fs.writeFileSync(outputPath, `${JSON.stringify(scoreObj, null, 2)}\n`);
-    }
-
-    return scoreObj;
-  } finally {
-    try { fs.rmSync(stagingDir, { recursive: true, force: true }); } catch {}
+    runResults.push(scoreObj);
   }
+
+  const scoreObj = aggregateMedianScore(runResults);
+
+  // Write to cache
+  try {
+    fs.mkdirSync(cacheDir, { recursive: true });
+    fs.writeFileSync(cacheFilePath, `${JSON.stringify(scoreObj, null, 2)}\n`);
+  } catch {}
+
+  if (outputPath) {
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    fs.writeFileSync(outputPath, `${JSON.stringify(scoreObj, null, 2)}\n`);
+  }
+
+  return scoreObj;
 }
 
 // CLI handler if executed directly
@@ -375,6 +572,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToP
   const dryRun = args.includes("--dry-run");
   let scorerModel = SCORER_MODEL;
   let reasoningEffort;
+  let runs = 1;
+  let serviceTier;
   const filteredArgs = [];
   for (let i = 0; i < args.length; i += 1) {
     const a = args[i];
@@ -383,6 +582,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToP
     if ((a === "--scorer" || a === "--model") && args[i + 1]) { scorerModel = args[i + 1].trim(); i += 1; continue; }
     if (a.startsWith("--reasoning=")) { reasoningEffort = a.slice("--reasoning=".length).trim(); continue; }
     if (a === "--reasoning" && args[i + 1]) { reasoningEffort = args[i + 1].trim(); i += 1; continue; }
+    if (a.startsWith("--runs=")) { runs = Math.max(1, Number(a.slice("--runs=".length)) || 1); continue; }
+    if (a.startsWith("--tier=")) { serviceTier = a.slice("--tier=".length).trim(); continue; }
     if (a === "--spark") { scorerModel = SPARK_SCORER_MODEL; reasoningEffort = reasoningEffort || "xhigh"; continue; }
     filteredArgs.push(a);
   }
@@ -390,8 +591,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToP
 
   const [goldPath, candidatePath, outputPath] = filteredArgs;
   if (!goldPath || !candidatePath) {
-    console.error("Usage: node scripts/score-paper-entry-extraction-with-sol.mjs <goldPath> <candidatePath> [outputPath] [--dry-run] [--scorer=<model>] [--reasoning=<effort>] [--spark]");
-    console.error(`  scorers: ${SCORER_MODEL} (default, via codex), ${SPARK_SCORER_MODEL} (via opencode-go+proxy, xhigh)`);
+    console.error("Usage: node scripts/score-paper-entry-extraction-with-sol.mjs <goldPath> <candidatePath> [outputPath] [--dry-run] [--scorer=<model>] [--reasoning=<effort>] [--runs=N] [--spark]");
+    console.error(`  scorers: ${SCORER_MODEL} (default, via gateway HTTP), ox-alpha-free, muse-spark-1.2 (via opencode-go+proxy), ${SPARK_SCORER_MODEL} (via opencode-go+proxy, xhigh), gpt-5.6-luna (cheap iteration)`);
     process.exit(1);
   }
 
@@ -402,6 +603,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToP
     dryRun,
     scorerModel,
     reasoningEffort,
+    runs,
+    serviceTier,
   }).then((res) => {
     process.stdout.write(`${JSON.stringify(res, null, 2)}\n`);
   }).catch((err) => {

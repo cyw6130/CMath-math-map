@@ -113,9 +113,9 @@ export function resolveProviderConfig(providerName = "luna", explicitModel = nul
 
   if (norm === "opencode-go" || norm === "opencode") {
     const model = explicitModel || "deepseek-v4-flash";
-    const supportedModels = new Set(["deepseek-v4-flash", "muse-spark-1.2-contributor", "ox-alpha-free"]);
+    const supportedModels = new Set(["deepseek-v4-flash", "muse-spark-1.2-contributor", "ox-alpha-free", "kimi-k3"]);
     if (!supportedModels.has(model)) {
-      throw new Error(`Provider 'opencode-go' supports models 'deepseek-v4-flash', 'muse-spark-1.2-contributor', and 'ox-alpha-free' (received '${model}')`);
+      throw new Error(`Provider 'opencode-go' supports models 'deepseek-v4-flash', 'muse-spark-1.2-contributor', 'ox-alpha-free', and 'kimi-k3' (received '${model}')`);
     }
 
     let opencodeKey = options.apiKey || process.env.OPENCODE_GO_API_KEY?.trim();
