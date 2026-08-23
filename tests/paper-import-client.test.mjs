@@ -21,6 +21,46 @@ const rawMap = {
   ],
 };
 
+// ── Frozen Workflow V4.1 测试基础设施 ──
+// 抽取窗口响应体（pool v1.31 dual-output：三个数组必须存在）。
+function dualOutputPayload({ foundation = [], result = [], hints = [] } = {}) {
+  return { foundationEntries: foundation, resultEntries: result, inferenceHints: hints };
+}
+function respOf(content) {
+  return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content } }] }) };
+}
+// 全链路 mock：含 "Foundation Entries" 标记的调用按抽取窗口消费 dual-output，
+// 其余调用按顺序消费 later 中脚本化的装配 rawMap 对象（耗尽后重复最后一个）。
+function makePipelineFetch({ extractPayload = null, later = [], onCall = null } = {}) {
+  const state = { calls: [] };
+  let idx = 0;
+  const impl = async (url, options) => {
+    const body = JSON.parse(options.body);
+    const content = body.messages?.[0]?.content ?? "";
+    state.calls.push({ url, options, content });
+    onCall?.(state.calls.length, body, content);
+    if (content.includes("Foundation Entries")) {
+      return respOf(JSON.stringify(extractPayload ?? dualOutputPayload({
+        result: [{ id: "thm:main", type: "theorem", name: "主定理", statement: "$\\phi$ 是同构。", page: 1 }],
+      })));
+    }
+    const scripted = later.length ? later[Math.min(idx, later.length - 1)] : { unexpected: true };
+    idx += 1;
+    return respOf(JSON.stringify(scripted));
+  };
+  return { impl, state };
+}
+// 直调 Inference 装配用的最小 Entry artifact（确定性整合阶段的产物形态）。
+function makeEntryArtifact({ fileName = "paper.pdf", pageCount = 1, sourceText = "paper text", entries }) {
+  return {
+    schema: "cmath.paper-entry-artifact/v1",
+    consolidationModuleVersion: "paper-entry-consolidation-v1",
+    source: { fileName, pageCount, characters: sourceText.length, sourceText },
+    entries,
+    inferenceHints: [],
+  };
+}
+
 test("normalizes secure OpenAI-compatible endpoints", () => {
   assert.equal(paperImportClient.endpointUrl("https://api.deepseek.com/v1"), "https://api.deepseek.com/v1/chat/completions");
   assert.equal(paperImportClient.endpointUrl("https://api.deepseek.com/v1/chat/completions"), "https://api.deepseek.com/v1/chat/completions");
@@ -198,42 +238,31 @@ test("rejects broken inference references", () => {
 });
 
 test("sends the key only in the authorization header and parses the model result", async () => {
-  let observed;
-  const fetchImpl = async (url, options) => {
-    observed = { url, options };
-    return {
-      ok: true,
-      status: 200,
-      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(rawMap) } }] }),
-    };
-  };
+  const { impl, state } = makePipelineFetch({ later: [rawMap] });
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test",
     model: "deepseek-chat",
     fileName: "paper.pdf",
     pageCount: 2,
-    text: "[[PAGE 1]]\nDefinition",
-    fetchImpl,
+    text: "[[PAGE 1]]\nDefinition\n[[PAGE 2]]\nTheorem",
+    fetchImpl: impl,
   });
-  assert.equal(observed.url, "https://api.deepseek.com/v1/chat/completions");
-  assert.equal(observed.options.headers.Authorization, "Bearer test");
-  assert.doesNotMatch(observed.url, /Bearer test/u);
-  assert.doesNotMatch(observed.options.body, /Bearer test/u);
+  // 冻结管线：抽取窗口 + 装配各至少一次；装配 URL 是标准的 endpoint join
+  assert.ok(state.calls.length >= 2);
+  const assemble = state.calls[1];
+  assert.equal(assemble.url, "https://api.deepseek.com/v1/chat/completions");
+  for (const call of state.calls) {
+    assert.equal(call.options.headers.Authorization, "Bearer test");
+    assert.doesNotMatch(call.url, /Bearer test/u);
+    assert.doesNotMatch(call.options.body, /Bearer test/u);
+  }
   assert.doesNotMatch(JSON.stringify(view), /Bearer test/u);
   assert.equal(view.project.title, "A Paper");
 });
 
 test("sends Kimi K3 through the Moonshot preset without leaking the API key", async () => {
-  let observed;
-  const fetchImpl = async (url, options) => {
-    observed = { url, options };
-    return {
-      ok: true,
-      status: 200,
-      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(rawMap) } }] }),
-    };
-  };
+  const { impl, state } = makePipelineFetch({ later: [rawMap] });
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://api.moonshot.cn/v1",
     apiKey: "test",
@@ -241,118 +270,97 @@ test("sends Kimi K3 through the Moonshot preset without leaking the API key", as
     providerLabel: "Kimi",
     fileName: "paper.pdf",
     pageCount: 2,
-    text: "[[PAGE 1]]\nDefinition",
-    fetchImpl,
+    text: "[[PAGE 1]]\nDefinition\n[[PAGE 2]]\nTheorem",
+    fetchImpl: impl,
   });
-  const requestBody = JSON.parse(observed.options.body);
-  assert.equal(observed.url, "https://api.moonshot.cn/v1/chat/completions");
-  assert.equal(observed.options.headers.Authorization, "Bearer test");
-  assert.equal(requestBody.model, "kimi-k3");
-  assert.doesNotMatch(observed.url, /Bearer test/u);
-  assert.doesNotMatch(observed.options.body, /Bearer test/u);
+  const assemble = state.calls[1];
+  assert.equal(assemble.url, "https://api.moonshot.cn/v1/chat/completions");
+  assert.equal(assemble.options.headers.Authorization, "Bearer test");
+  assert.equal(JSON.parse(assemble.options.body).model, "kimi-k3");
+  for (const call of state.calls) {
+    assert.doesNotMatch(call.url, /Bearer test/u);
+    assert.doesNotMatch(call.options.body, /Bearer test/u);
+  }
   assert.doesNotMatch(JSON.stringify(view), /Bearer test/u);
 });
 
 test("returns structural failures to the model for a targeted repair round", async () => {
   let callCount = 0;
   const observedMessages = [];
+  const goodMap = {
+    projectTitle: "Draft Paper",
+    mainTargetEntryId: "e2",
+    b0ClaimEntryIds: [],
+    inferences: [{ operationKind: "proof", premises: ["e1"], conclusion: "e2", argument: "Arg", sourceLocator: "p#2" }],
+  };
   const fetchImpl = async (url, options) => {
     callCount += 1;
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
-    if (callCount === 1) {
-      // 分段提取输出不含任何可用 Entry
-      return {
-        ok: true,
-        status: 200,
-        text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify({ unexpected: true }) } }] }),
-      };
-    }
-    const goodMap = {
-      projectTitle: "Draft Paper",
-      mainTargetEntryId: "e2",
-      b0ClaimEntryIds: [],
-      entries: [
-        { id: "e1", entryClass: "fact", factKind: "definition", title: "Def 1", statement: "Def", sourceLocator: "p#1" },
-        { id: "e2", entryClass: "claim", claimKind: "theorem", title: "Thm 1", statement: "Thm", sourceLocator: "p#2" },
-      ],
-      inferences: [{ operationKind: "proof", premises: ["e1"], conclusion: "e2", argument: "Arg", sourceLocator: "p#2" }],
-    };
-    return {
-      ok: true,
-      status: 200,
-      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(goodMap) } }] }),
-    };
+    // 第一次装配输出不含任何可用的结构字段
+    return respOf(JSON.stringify(callCount === 1 ? { unexpected: true } : goodMap));
   };
+  const artifact = makeEntryArtifact({
+    fileName: "retry-test.pdf",
+    sourceText: "Some paper text",
+    entries: [
+      { id: "e1", entryClass: "fact", factKind: "definition", name: "Def 1", statement: "Def", page: 1 },
+      { id: "e2", entryClass: "claim", claimKind: "theorem", name: "Thm 1", statement: "Thm", page: 2 },
+    ],
+  });
 
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact,
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test-key",
     model: "deepseek-chat",
-    fileName: "retry-test.pdf",
-    pageCount: 1,
-    text: "Some paper text",
     fetchImpl,
   });
 
-  // 分段提取 + 分段修复 + 整合 + 装配各一次
-  assert.equal(callCount, 4);
+  // 结构坏输出 + 定点修复各一次：装配循环之外没有任何其他模型调用
+  assert.equal(callCount, 2);
   // 修复调用把模型上一次输出和问题清单一并返还（3 条消息：原 prompt、坏输出、问题清单）
   assert.equal(observedMessages[1].length, 3);
   assert.equal(observedMessages[1][0].role, "user");
   assert.equal(observedMessages[1][1].role, "assistant");
   assert.equal(observedMessages[1][2].role, "user");
   assert.match(observedMessages[1][2].content, /存在以下问题/u);
-  assert.match(observedMessages[1][2].content, /未提取到任何 Entry/u);
+  assert.match(observedMessages[1][2].content, /未输出 projectTitle/u);
+  assert.equal(view.mainTargetEntryId, "e2");
   assert.equal(view.entries.length, 2);
   assert.equal(view.inferences.length, 1);
   assert.equal(view.inferences[0].conclusion, "e2");
 });
 
 test("does not retry on HTTP errors and fails closed on repeated schema error", async () => {
-  let callCount = 0;
-  const httpErrorFetch = async () => {
-    callCount += 1;
-    return { ok: false, status: 401, text: async () => JSON.stringify({ error: { message: "Invalid key" } }) };
-  };
+  const artifact = makeEntryArtifact({
+    // 目录只有 Fact：模型始终不输出结构字段时，兜底修复也无法造出合法主目标
+    entries: [{ id: "f1", entryClass: "fact", factKind: "definition", name: "Def", statement: "$D$。", page: 1 }],
+  });
+  const baseArgs = { artifact, endpoint: "https://api.deepseek.com/v1", apiKey: "key", model: "deepseek-chat" };
 
+  let httpCalls = 0;
+  const httpErrorFetch = async () => {
+    httpCalls += 1;
+    return { ok: false, status: 500, text: async () => "boom" };
+  };
   await assert.rejects(
-    () => paperImportClient.requestPaperProjectView({
-      endpoint: "https://api.deepseek.com/v1",
-      apiKey: "bad-key",
-      model: "deepseek-chat",
-      fileName: "p.pdf",
-      pageCount: 1,
-      text: "txt",
-      fetchImpl: httpErrorFetch,
-    }),
-    /HTTP 401/u
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({ ...baseArgs, fetchImpl: httpErrorFetch }),
+    /HTTP 500/u,
   );
-  assert.equal(callCount, 1); // No retry for HTTP error
+  assert.equal(httpCalls, 1); // No retry for HTTP error
 
   let persistentBadCount = 0;
   const persistentBadFetch = async () => {
     persistentBadCount += 1;
-    return {
-      ok: true,
-      status: 200,
-      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify({ entries: [], inferences: [] }) } }] }),
-    };
+    return respOf(JSON.stringify({ unexpected: true }));
   };
-
   await assert.rejects(
-    () => paperImportClient.requestPaperProjectView({
-      endpoint: "https://api.deepseek.com/v1",
-      apiKey: "key",
-      model: "deepseek-chat",
-      fileName: "p.pdf",
-      pageCount: 1,
-      text: "txt",
-      fetchImpl: persistentBadFetch,
-    }),
-    /没有提取出任何数学 Entry/u
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({ ...baseArgs, fetchImpl: persistentBadFetch }),
+    /论文导入失败/u,
   );
-  assert.equal(persistentBadCount, 2); // 分段初提 + 分段修复各一次后放弃
+  // 装配循环最多 INFERENCE_MAX_ROUNDS（默认 4）轮后显式放弃，不无限重试
+  assert.equal(persistentBadCount, Number(process.env.INFERENCE_MAX_ROUNDS || 4));
 });
 
 test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => {
@@ -393,10 +401,9 @@ test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => 
 
 test("returns proof-to-Fact violations to the model and applies the targeted fix", async () => {
   let callCount = 0;
-  let assemblyCalls = 0;
-  const stageLog = [];
   const observedMessages = [];
   const observedAuth = [];
+  const stageLog = [];
 
   // 装配阶段输出了一条以 Fact 为结论的 proof（违规），修复轮改正为 organization
   const badAssembly = {
@@ -417,51 +424,38 @@ test("returns proof-to-Fact violations to the model and applies the targeted fix
       { type: "proof", premises: ["paper:def:manifold", "paper:fact:calc"], conclusion: "paper:claim:euler", argument: "曲率积分。", page: 2 },
     ],
   };
-  const chunkEntries = {
-    entries: [
-      { id: "paper:def:manifold", type: "definition", num: 1, name: "流形", statement: "设 $M$ 为光滑流形。", page: 1 },
-      { id: "paper:fact:calc", type: "calculation", num: 2, name: "Euler 示性数计算", statement: "$\\chi(M) = 0$。", page: 2 },
-      { id: "paper:claim:euler", type: "theorem", num: 3, name: "Euler 示性数定理", statement: "$M$ 的 Euler 示性数为零。", page: 2 },
-    ],
-  };
   const fetchImpl = async (url, options) => {
     callCount += 1;
     observedAuth.push(options.headers.Authorization);
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
-    const prompt = body.messages[0].content;
-    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
-    const isIntegration = prompt.includes("整合模块");
-    let content;
-    if (isEntriesPhase) {
-      content = chunkEntries;
-    } else if (isIntegration) {
-      content = { aliases: {}, renames: [] };
-    } else {
-      assemblyCalls += 1;
-      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
-    }
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+    return respOf(JSON.stringify(callCount === 1 ? badAssembly : fixedAssembly));
   };
 
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({
+      fileName: "geometry.pdf",
+      pageCount: 3,
+      entries: [
+        { id: "paper:def:manifold", entryClass: "fact", factKind: "definition", name: "流形", statement: "设 $M$ 为光滑流形。", page: 1 },
+        { id: "paper:fact:calc", entryClass: "fact", factKind: "calculation", name: "Euler 示性数计算", statement: "$\\chi(M) = 0$。", page: 2 },
+        { id: "paper:claim:euler", entryClass: "claim", claimKind: "theorem", name: "Euler 示性数定理", statement: "$M$ 的 Euler 示性数为零。", page: 2 },
+      ],
+    }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "secret-key-123",
     model: "deepseek-chat",
-    fileName: "geometry.pdf",
-    pageCount: 3,
-    text: "[[PAGE 1]]\nDefinition 1\n[[PAGE 2]]\nTheorem 3",
     fetchImpl,
     onStage: (stage) => stageLog.push(stage),
   });
 
-  // 分段提取 + 整合 + 装配 + 装配修复各一次；问题返还模型，不走本地降级
-  assert.equal(callCount, 4);
+  // 违规输出 + 定点修复各一次；问题返还模型，不走本地降级
+  assert.equal(callCount, 2);
   assert.ok(stageLog.includes("repair"));
   assert.ok(!stageLog.includes("autofix"));
 
   // 修复调用会话式：原装配 prompt、模型的违规输出、问题清单
-  const repairMessages = observedMessages[3];
+  const repairMessages = observedMessages[1];
   assert.equal(repairMessages.length, 3);
   assert.equal(repairMessages[1].role, "assistant");
   assert.match(repairMessages[2].content, /proof 必须以 Claim 为结论/u);
@@ -473,8 +467,8 @@ test("returns proof-to-Fact violations to the model and applies the targeted fix
   assert.equal(view.inferences[1].operationKind, "proof");
   assert.equal(view.inferences[1].conclusion, "paper:claim:euler");
 
-  // Auth header contains key, no leakage in payload or returned view
-  assert.deepEqual(observedAuth, ["Bearer secret-key-123", "Bearer secret-key-123", "Bearer secret-key-123", "Bearer secret-key-123"]);
+  // Auth header contains key, no leakage in returned view
+  assert.deepEqual(observedAuth, ["Bearer secret-key-123", "Bearer secret-key-123"]);
   assert.doesNotMatch(JSON.stringify(view), /secret-key-123/u);
 });
 
@@ -496,40 +490,35 @@ test("keeps an unproved formal Claim open without requesting a proof-completion 
     projectTitle: "P Paper",
     mainTargetEntryId: "paper:theorem:t",
     b0ClaimEntryIds: [],
-    entries: [
-      { id: "paper:definition:x", entryClass: "fact", factKind: "definition", shortTitle: "X", title: "定义 X", statement: "$X$。", sourceLocator: "paper.pdf#page=1" },
-      { id: "paper:lemma:l", entryClass: "claim", claimKind: "lemma", shortTitle: "L", title: "引理 L", statement: "$L$。", sourceLocator: "paper.pdf#page=2" },
-      { id: "paper:theorem:t", entryClass: "claim", claimKind: "theorem", shortTitle: "T", title: "定理 T", statement: "$T$。", sourceLocator: "paper.pdf#page=3" },
-    ],
     inferences: [
       { id: "paper:proof:t", operationKind: "proof", premises: ["paper:lemma:l"], conclusion: "paper:theorem:t", argument: "由引理 L 得证。", sourceLocator: "paper.pdf#page=3" },
     ],
   };
-  const calls = [];
-  const fetchImpl = async (url, init) => {
-    calls.push(JSON.parse(init.body));
-    return {
-      ok: true,
-      text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(openVersion) } }] }),
-    };
+  const artifactEntries = [
+    { id: "paper:definition:x", entryClass: "fact", factKind: "definition", name: "定义 X", statement: "$X$。", page: 1 },
+    { id: "paper:lemma:l", entryClass: "claim", claimKind: "lemma", name: "引理 L", statement: "$L$。", page: 2 },
+    { id: "paper:theorem:t", entryClass: "claim", claimKind: "theorem", name: "定理 T", statement: "$T$。", page: 3 },
+  ];
+  let calls = 0;
+  const stageLog = [];
+  const fetchImpl = async () => {
+    calls += 1;
+    return respOf(JSON.stringify(openVersion));
   };
-  const stages = [];
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({ pageCount: 3, entries: artifactEntries }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test-key",
     model: "deepseek-chat",
-    fileName: "paper.pdf",
-    pageCount: 3,
-    text: "paper text",
     fetchImpl,
-    onStage: (stage) => stages.push(stage),
+    onStage: (stage) => stageLog.push(stage),
   });
-  assert.equal(calls.length, 6); // 分段提取 + 整合 + 装配 + 三轮修复（模型坚持保留开放 Claim，三轮后放行）
-  assert.ok(stages.includes("closure"));
+  // 没有专门的补证明通道：模型坚持保留开放 Claim 时按轮次上限询问后由兜底校验放行
+  assert.equal(calls, Number(process.env.INFERENCE_MAX_ROUNDS || 4));
+  assert.ok(stageLog.includes("repair"));
+  assert.ok(!stageLog.includes("autofix"));
   assert.equal(view.inferences.length, 1);
-  const closure = paperImportClient && view.entries
-    ? (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {})
-    : null;
+  const closure = (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {});
   assert.equal(closure.claimStates["paper:lemma:l"], "open");
   assert.equal(closure.claimStates["paper:theorem:t"], "open");
 });
@@ -539,30 +528,28 @@ test("places directly adopted sourced Claims in B0 and establishes downstream pr
     projectTitle: "Q Paper",
     mainTargetEntryId: "paper:theorem:t",
     b0ClaimEntryIds: ["paper:lemma:given"],
-    entries: [
-      { id: "paper:definition:x", entryClass: "fact", factKind: "definition", shortTitle: "X", title: "定义 X", statement: "$X$。", sourceLocator: "paper.pdf#page=1" },
-      { id: "paper:lemma:given", entryClass: "claim", claimKind: "lemma", shortTitle: "L", title: "作为已知结果采用的引理", statement: "$L$。", sourceLocator: "paper.pdf#page=2", sourceReference: "正文明确作为已知结果采用" },
-      { id: "paper:theorem:t", entryClass: "claim", claimKind: "theorem", shortTitle: "T", title: "定理 T", statement: "$T$。", sourceLocator: "paper.pdf#page=3" },
-    ],
     inferences: [
       { id: "paper:proof:t", operationKind: "proof", premises: ["paper:definition:x", "paper:lemma:given"], conclusion: "paper:theorem:t", argument: "由定义和已知引理得到。", sourceLocator: "paper.pdf#page=3" },
     ],
   };
+  const artifactEntries = [
+    { id: "paper:definition:x", entryClass: "fact", factKind: "definition", name: "定义 X", statement: "$X$。", page: 1 },
+    { id: "paper:lemma:given", entryClass: "claim", claimKind: "lemma", name: "作为已知结果采用的引理", statement: "$L$。", page: 2, sourceReference: "正文明确作为已知结果采用" },
+    { id: "paper:theorem:t", entryClass: "claim", claimKind: "theorem", name: "定理 T", statement: "$T$。", page: 3 },
+  ];
   let callCount = 0;
-  const fetchImpl = async (url, init) => {
+  const fetchImpl = async () => {
     callCount += 1;
-    return { ok: true, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(raw) } }] }) };
+    return respOf(JSON.stringify(raw));
   };
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({ pageCount: 2, entries: artifactEntries }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test-key",
     model: "deepseek-chat",
-    fileName: "paper.pdf",
-    pageCount: 2,
-    text: "paper text",
     fetchImpl,
   });
-  assert.equal(callCount, 3); // 分段提取 + 整合 + 装配各一次，无需修复轮
+  assert.equal(callCount, 1); // B0 分类与闭包一致，无需修复轮
   assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:lemma:given"]);
   const closure = (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {
     b0ClaimEntryIds: view.derivedResearchState.mathematicalState.b0ClaimEntryIds,
@@ -773,19 +760,12 @@ test("returns unmatched math delimiters to the model for a proper fix", async ()
   const stageLog = [];
   const observedMessages = [];
 
-  const badEntries = {
-    entries: [
-      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$。", page: 1 },
-      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "当流形维数满足  < k$ 时同伦群平凡。", page: 2 },
-    ],
-  };
-  const fixedEntries = {
-    entries: [
-      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$。", page: 1 },
-      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "当流形维数满足 $m < k$ 时同伦群平凡。", page: 2 },
-    ],
-  };
-  const assembly = {
+  // 目录中 paper:thm:hopf 的 statement 含未配对的 $；修复轮用 fixedEntries 补回修正版本
+  const artifactEntries = [
+    { id: "paper:def:deg", entryClass: "fact", factKind: "definition", name: "映射度", statement: "设 $f: M \\to S^k$。", page: 1 },
+    { id: "paper:thm:hopf", entryClass: "claim", claimKind: "theorem", name: "Hopf 度定理", statement: "当流形维数满足  < k$ 时同伦群平凡。", page: 2 },
+  ];
+  const badAssembly = {
     projectTitle: "Hopf Paper",
     mainTargetEntryId: "paper:thm:hopf",
     b0: [],
@@ -793,32 +773,33 @@ test("returns unmatched math delimiters to the model for a proper fix", async ()
       { type: "proof", premises: ["paper:def:deg"], conclusion: "paper:thm:hopf", argument: "由度为零推出。", page: 2 },
     ],
   };
+  const fixedAssembly = {
+    ...badAssembly,
+    fixedEntries: [{ id: "paper:thm:hopf", entryClass: "claim", claimKind: "theorem", name: "Hopf 度定理", statement: "当流形维数满足 $m < k$ 时同伦群平凡。", page: 2 }],
+  };
   const fetchImpl = async (url, options) => {
     callCount += 1;
     const body = JSON.parse(options.body);
     observedMessages.push(body.messages);
-    const isEntriesPhase = body.messages[0].content.includes("只提取本段中的数学对象");
-    const content = isEntriesPhase ? (callCount === 1 ? badEntries : fixedEntries) : assembly;
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+    return respOf(JSON.stringify(callCount === 1 ? badAssembly : fixedAssembly));
   };
 
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({ fileName: "hopf.pdf", pageCount: 2, entries: artifactEntries }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test-key-abc",
     model: "deepseek-chat",
-    fileName: "hopf.pdf",
-    pageCount: 2,
-    text: "[[PAGE 1]]\nDefinition\n[[PAGE 2]]\nTheorem",
     fetchImpl,
     onStage: (stage) => stageLog.push(stage),
   });
 
-  // 分段初提 + 分段修复 + 整合 + 装配；定界符问题由模型真正修好，不是本地转义
-  assert.equal(callCount, 4);
-  assert.ok(stageLog.includes("entries-repair"));
+  // 坏输出 + 定点修复各一次；定界符问题由模型真正修好，不是本地转义
+  assert.equal(callCount, 2);
+  assert.ok(stageLog.includes("repair"));
   assert.ok(!stageLog.includes("autofix"));
   assert.match(observedMessages[1][2].content, /定界符 \$ 未配对/u);
-  assert.equal(view.entries[1].statement, "当流形维数满足 $m < k$ 时同伦群平凡。");
+  const hopf = view.entries.find((entry) => entry.id === "paper:thm:hopf");
+  assert.equal(hopf.statement, "当流形维数满足 $m < k$ 时同伦群平凡。");
 });
 
 test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
@@ -858,83 +839,61 @@ test("collectRawProjectViewIssues aggregates every problem in one pass", () => {
 
 test("applies fixedEntries patches from the assembly repair round", async () => {
   let callCount = 0;
-  let assemblyCalls = 0;
-  const chunkEntries = {
-    entries: [
-      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "度定义。", page: 1 },
-      { id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true },
-      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "度相同当且仅当同伦。", page: 3 },
-    ],
-  };
+  const artifactEntries = [
+    { id: "paper:def:deg", entryClass: "fact", factKind: "definition", name: "映射度", statement: "度定义。", page: 1 },
+    { id: "paper:b0:sard", entryClass: "claim", claimKind: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true },
+    { id: "paper:thm:hopf", entryClass: "claim", claimKind: "theorem", name: "Hopf 度定理", statement: "度相同当且仅当同伦。", page: 3 },
+  ];
   const badAssembly = {
     projectTitle: "Hopf Paper",
     mainTargetEntryId: "paper:thm:hopf",
     b0: ["paper:b0:sard"],
     inferences: [{ type: "proof", premises: ["paper:def:deg", "paper:b0:sard"], conclusion: "paper:thm:hopf", argument: "取正则值。", page: 3 }],
   };
+  // 第一轮 B0 引用缺 source 的外部结果被驳回；第二轮用 fixedEntries 补齐来源
   const fixedAssembly = {
     ...badAssembly,
-    fixedEntries: [{ id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" }],
+    fixedEntries: [{ id: "paper:b0:sard", entryClass: "claim", claimKind: "theorem", name: "Sard 定理", statement: "临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" }],
   };
   const fetchImpl = async (url, options) => {
     callCount += 1;
-    const body = JSON.parse(options.body);
-    const prompt = body.messages[0].content;
-    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
-    const isIntegration = prompt.includes("整合模块");
-    let content;
-    if (isEntriesPhase) {
-      content = chunkEntries;
-    } else if (isIntegration) {
-      content = { aliases: {}, renames: [] };
-    } else {
-      assemblyCalls += 1;
-      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
-    }
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+    return respOf(JSON.stringify(callCount === 1 ? badAssembly : fixedAssembly));
   };
 
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({ fileName: "hopf.pdf", pageCount: 3, entries: artifactEntries }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "k",
     model: "deepseek-chat",
-    fileName: "hopf.pdf",
-    pageCount: 3,
-    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n引用\n[[PAGE 3]]\n定理",
     fetchImpl,
   });
 
-  // 分段提取 + 分段修复（mock 不修）+ 整合 + 装配 + 装配修复（fixedEntries 补丁生效）
-  assert.equal(callCount, 5);
+  assert.equal(callCount, 2);
   const sard = view.entries.find((entry) => entry.id === "paper:b0:sard");
   assert.equal(sard.sourceReference, "Sard, 1942");
   assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:b0:sard"]);
 });
 
 test("extracts a valid view from compact two-phase model output", async () => {
-  const prompts = [];
-  const fetchImpl = async (url, options) => {
-    const body = JSON.parse(options.body);
-    prompts.push(body.messages[0].content);
-    const isEntriesPhase = body.messages[0].content.includes("只提取本段中的数学对象");
-    const content = isEntriesPhase
-      ? {
-        entries: [
-          { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$ 为光滑映射。", page: 1 },
-          { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "$\\deg(f) = \\deg(g)$ 当且仅当 $f \\simeq g$。", page: 2 },
-          { id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "$f$ 的临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" },
-        ],
-      }
-      : {
-        projectTitle: "Hopf 映射",
-        mainTargetEntryId: "paper:thm:hopf",
-        b0: ["paper:b0:sard"],
-        inferences: [
-          { type: "proof", premises: ["paper:def:deg", "paper:b0:sard"], conclusion: "paper:thm:hopf", argument: "由 Sard 定理取正则值计算环绕数。", page: 2 },
-        ],
-      };
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+  // 单窗口冻结抽取：紧凑双通道输出由整合展开为完整目录
+  const compactExtract = dualOutputPayload({
+    foundation: [
+      { id: "paper:def:deg", type: "definition", num: 1, name: "映射度", statement: "设 $f: M \\to S^k$ 为光滑映射。", page: 1 },
+      { id: "paper:b0:sard", type: "theorem", name: "Sard 定理", statement: "$f$ 的临界值集测度为零。", page: 2, external: true, source: "Sard, 1942" },
+    ],
+    result: [
+      { id: "paper:thm:hopf", type: "theorem", num: 8, name: "Hopf 度定理", statement: "$\\deg(f) = \\deg(g)$ 当且仅当 $f \\simeq g$。", page: 2 },
+    ],
+  });
+  const assembly = {
+    projectTitle: "Hopf 映射",
+    mainTargetEntryId: "paper:thm:hopf",
+    b0: ["paper:b0:sard"],
+    inferences: [
+      { type: "proof", premises: ["paper:def:deg", "paper:b0:sard"], conclusion: "paper:thm:hopf", argument: "由 Sard 定理取正则值计算环绕数。", page: 2 },
+    ],
   };
+  const { impl, state } = makePipelineFetch({ extractPayload: compactExtract, later: [assembly] });
 
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://opencode.ai/zen/go/v1",
@@ -943,15 +902,20 @@ test("extracts a valid view from compact two-phase model output", async () => {
     fileName: "hopf.pdf",
     pageCount: 2,
     text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理",
-    fetchImpl,
+    fetchImpl: impl,
   });
 
-  assert.equal(prompts.length, 3); // 分段提取 + 整合 + 装配
-  // 紧凑输出由系统展开为完整 Entry：编号、显示标签、页码定位全部生成
-  const [def, thm, sard] = view.entries;
+  assert.equal(state.calls.length, 2); // 抽取窗口 + 装配，无独立整合调用
+  assert.match(state.calls[0].content, /Foundation Entries/u);
+  assert.doesNotMatch(state.calls[1].content, /Foundation Entries/u);
+  // 紧凑输出由系统展开为完整 Entry：显示标签、页码定位全部生成
+  const byId = new Map(view.entries.map((entry) => [entry.id, entry]));
+  const def = byId.get("paper:def:deg");
+  const thm = byId.get("paper:thm:hopf");
+  const sard = byId.get("paper:b0:sard");
   assert.equal(def.displayLabel, "定义 · 1 · 映射度");
   assert.equal(def.sourcePath, "hopf.pdf#page=1");
-  assert.equal(thm.displayLabel, "定理 · 8 · Hopf 度定理");
+  assert.match(thm.displayLabel, /^定理 · \d+ · Hopf 度定理$/u);
   assert.equal(sard.sourceReference, "Sard, 1942");
   assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:b0:sard"]);
   assert.equal(view.mainTargetEntryId, "paper:thm:hopf");
@@ -961,51 +925,53 @@ test("extracts a valid view from compact two-phase model output", async () => {
 });
 
 test("splits long papers into parallel chunks and merges duplicate entries", async () => {
-  const entryPrompts = [];
-  let entryCall = 0;
+  const windowRanges = [];
+  let extractCalls = 0;
+  // 两个窗口对重叠页上的同一对象各自提取（相同 id），第二窗另给出主定理
+  const windowPayloads = [
+    dualOutputPayload({
+      foundation: [{ id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义。", page: 1 }],
+    }),
+    dualOutputPayload({
+      foundation: [{ id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义（重申）。", page: 5 }],
+      result: [{ id: "paper:thm:b", type: "theorem", name: "主定理", statement: "主定理陈述。", page: 6 }],
+    }),
+  ];
+  const assembly = {
+    projectTitle: "Long Paper",
+    mainTargetEntryId: "paper:thm:b",
+    b0: [],
+    inferences: [{ type: "proof", premises: ["paper:def:a"], conclusion: "paper:thm:b", argument: "应用定义。", page: 6 }],
+  };
   const fetchImpl = async (url, options) => {
-    const body = JSON.parse(options.body);
-    const prompt = body.messages[0].content;
-    if (prompt.includes("只提取本段中的数学对象")) {
-      entryCall += 1;
-      entryPrompts.push(prompt);
-      // 两个分段各自返回一个不同条目 + 同一个重复条目（重复定义在两段都出现）
-      const entries = entryCall === 1
-        ? [{ id: "paper:def:a", type: "definition", name: "映射度", statement: "度定义。", page: 1 }]
-        : [
-          { id: "paper:def:a-copy", type: "definition", name: "映射度", statement: "度定义（重申）。", page: 9 },
-          { id: "paper:thm:b", type: "theorem", name: "主定理", statement: "主定理陈述。", page: 9 },
-        ];
-      return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify({ entries }) } }] }) };
+    const content = JSON.parse(options.body).messages?.[0]?.content ?? "";
+    if (content.includes("Foundation Entries")) {
+      windowRanges.push((content.match(/本块覆盖第 \d+–\d+ 页/u) ?? [])[0]);
+      const payload = windowPayloads[Math.min(extractCalls, windowPayloads.length - 1)];
+      extractCalls += 1;
+      return respOf(JSON.stringify(payload));
     }
-    const assembly = {
-      projectTitle: "Long Paper",
-      mainTargetEntryId: "paper:thm:b",
-      b0: [],
-      inferences: [{ type: "proof", premises: ["paper:def:a-copy"], conclusion: "paper:thm:b", argument: "应用定义。", page: 9 }],
-    };
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(assembly) } }] }) };
+    return respOf(JSON.stringify(assembly));
   };
 
-  // 构造超过 6 万字符、含 2 个页标记的长文本 → 2 段并行 + 1 次装配 = 3 次调用
-  const longText = `[[PAGE 1]]\n${"第一段内容。".repeat(5000)}\n\n[[PAGE 2]]\n${"第二段内容。".repeat(5000)}`;
+  // 6 页文本按 5 页窗 / 1 页重叠切成两个并行窗口
+  const longText = Array.from({ length: 6 }, (_, i) => `[[PAGE ${i + 1}]]\n第${i + 1}页内容。`).join("\n\n");
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://opencode.ai/zen/go/v1",
     apiKey: "k",
     model: "deepseek-v4-flash",
     fileName: "long.pdf",
-    pageCount: 2,
+    pageCount: 6,
     text: longText,
     fetchImpl,
   });
 
-  assert.equal(entryPrompts.length, 2);
-  // 每段 prompt 都标注了自己的页码范围；第二段含 1 页重叠（与第一段共享第 1 页）
-  assert.match(entryPrompts[0], /本段覆盖第 1–1 页/u);
-  assert.match(entryPrompts[1], /本段覆盖第 1–2 页/u);
-  // 重复条目被合并，装配阶段对重复 id 的引用被重映射到保留条目
+  assert.equal(extractCalls, 2);
+  // 每个窗口 prompt 都标注了自己的页码范围；第二窗含 1 页重叠（与第一窗共享第 5 页）
+  assert.deepEqual(windowRanges, ["本块覆盖第 1–5 页", "本块覆盖第 5–6 页"]);
+  // 重复条目被合并为一条，装配阶段对重复 id 的引用保持可用
   assert.equal(view.entries.length, 2);
-  assert.equal(view.entries[0].id, "paper:def:a");
+  assert.ok(view.entries.some((entry) => entry.id === "paper:def:a"));
   assert.equal(view.inferences[0].premises[0], "paper:def:a");
 });
 
@@ -1049,53 +1015,15 @@ test("applyIntegration merges aliases and renames conservatively", () => {
   assert.equal(merged[2].name, "另一定理");
 });
 
-test("skips the integration call when its output is unusable", async () => {
-  const stageLog = [];
-  const chunkEntries = {
-    entries: [
-      { id: "paper:def:x", type: "definition", name: "定义 X", statement: "$X$。", page: 1 },
-      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2 },
-    ],
-  };
-  const assembly = {
-    projectTitle: "P",
-    mainTargetEntryId: "paper:thm:y",
-    b0: [],
-    inferences: [{ type: "proof", premises: ["paper:def:x"], conclusion: "paper:thm:y", argument: "由定义。", page: 2 }],
-  };
-  const fetchImpl = async (url, options) => {
-    const prompt = JSON.parse(options.body).messages[0].content;
-    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
-    const isIntegration = prompt.includes("整合模块");
-    // 整合调用返回非法 JSON 文本，触发 integrate-skipped 分支
-    const content = isEntriesPhase ? JSON.stringify(chunkEntries) : isIntegration ? "{broken" : JSON.stringify(assembly);
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content } }] }) };
-  };
-  const view = await paperImportClient.requestPaperProjectView({
-    endpoint: "https://api.deepseek.com/v1",
-    apiKey: "k",
-    model: "m",
-    fileName: "p.pdf",
-    pageCount: 2,
-    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理",
-    fetchImpl,
-    onStage: (stage) => stageLog.push(stage),
-  });
-  assert.ok(stageLog.includes("integrate-skipped"));
-  assert.equal(view.entries.length, 2);
-  assert.equal(view.inferences.length, 1);
-});
+// removed: integrate stage no longer exists under Frozen Workflow (ADR-0003)
 
 test("assembly repair can supplement a missing entry via fixedEntries", async () => {
   let callCount = 0;
-  let assemblyCalls = 0;
-  const chunkEntries = {
-    entries: [
-      { id: "paper:def:x", type: "definition", name: "定义 X", statement: "$X$。", page: 1 },
-      { id: "paper:thm:y", type: "theorem", name: "定理 Y", statement: "$Y$。", page: 2, external: true, source: "某文献" },
-    ],
-  };
-  // 装配引用了目录里不存在的 paper:thm:z（提取遗漏）
+  // 目录只有 X 与外部结果 Y；装配引用了目录里不存在的 paper:thm:z（提取遗漏）
+  const artifactEntries = [
+    { id: "paper:def:x", entryClass: "fact", factKind: "definition", name: "定义 X", statement: "$X$。", page: 1 },
+    { id: "paper:thm:y", entryClass: "claim", claimKind: "theorem", name: "定理 Y", statement: "$Y$。", page: 2, external: true, sourceReference: "某文献" },
+  ];
   const badAssembly = {
     projectTitle: "P",
     mainTargetEntryId: "paper:thm:z",
@@ -1105,32 +1033,20 @@ test("assembly repair can supplement a missing entry via fixedEntries", async ()
   // 修复轮用 fixedEntries 补充该条目
   const fixedAssembly = {
     ...badAssembly,
-    fixedEntries: [{ id: "paper:thm:z", type: "theorem", name: "定理 Z", statement: "$Z$ 成立。", page: 3 }],
+    fixedEntries: [{ id: "paper:thm:z", entryClass: "claim", claimKind: "theorem", name: "定理 Z", statement: "$Z$ 成立。", page: 3 }],
   };
   const fetchImpl = async (url, options) => {
     callCount += 1;
-    const prompt = JSON.parse(options.body).messages[0].content;
-    const isEntriesPhase = prompt.includes("只提取本段中的数学对象");
-    const isIntegration = prompt.includes("整合模块");
-    let content;
-    if (isEntriesPhase) content = chunkEntries;
-    else if (isIntegration) content = { aliases: {}, renames: [] };
-    else {
-      assemblyCalls += 1;
-      content = assemblyCalls === 1 ? badAssembly : fixedAssembly;
-    }
-    return { ok: true, status: 200, text: async () => JSON.stringify({ choices: [{ message: { content: JSON.stringify(content) } }] }) };
+    return respOf(JSON.stringify(callCount === 1 ? badAssembly : fixedAssembly));
   };
-  const view = await paperImportClient.requestPaperProjectView({
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    artifact: makeEntryArtifact({ fileName: "p.pdf", pageCount: 3, entries: artifactEntries }),
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "k",
     model: "m",
-    fileName: "p.pdf",
-    pageCount: 3,
-    text: "[[PAGE 1]]\n定义\n[[PAGE 2]]\n定理\n[[PAGE 3]]\n推论",
     fetchImpl,
   });
-  assert.equal(callCount, 4);
+  assert.equal(callCount, 2);
   assert.equal(view.entries.length, 3);
   assert.equal(view.entries[2].id, "paper:thm:z");
   assert.equal(view.mainTargetEntryId, "paper:thm:z");

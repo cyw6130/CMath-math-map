@@ -759,16 +759,20 @@
       } else {
         setStep(awaitingStepId, "active");
       }
-    } else if (stage === "entries-progress") {
-      setStep("wait", "active", `分段提取对象 ${info.done ?? 0}/${info.total ?? 1}`);
-    } else if (stage === "entries-repair") {
-      setStep("wait", "active", `第 ${info.chunk ?? "?"}/${info.total ?? "?"} 段输出修复中（${info.count ?? 0} 处）`);
-    } else if (stage === "integrate") {
-      setStep("wait", "active", `整合 ${info.entries ?? "…"} 个对象（语义去重）`);
-    } else if (stage === "integrate-applied") {
-      setStep("wait", "active", `整合完成：合并 ${info.aliasCount ?? 0} 处重复 · 改名 ${info.renameCount ?? 0} 处`);
+    } else if (stage === "frozen-workflow") {
+      setStep(awaitingStepId ?? "wait", "active", `冻结工作流 ${info.label ?? ""} · Entry ${String(info.entryExtractionVersion ?? "").replace("paper-entry-parallel-extraction-", "v")}`);
+    } else if (stage === "parallel-extract-start") {
+      setStep("wait", "active", `并行窗口抽取 · ${info.blocks ?? info.chunks ?? "?"} 个窗口`);
+    } else if (stage === "parallel-extract-chunk" || stage === "entries-progress") {
+      setStep("wait", "active", `窗口抽取 ${info.done ?? (info.block ?? 0) + 1}/${info.total ?? "?"}`);
+    } else if (stage === "parallel-extract-json-repair") {
+      setStep("wait", "active", `窗口输出修复中（${info.reason ?? "JSON 异常"}）`);
+    } else if (stage === "parallel-extract-done") {
+      setStep("wait", "active", `抽取完成：${info.totalRawEntries ?? 0} 个候选对象`);
+    } else if (stage === "consolidate") {
+      setStep("wait", "active", `确定性整合 ${info.candidates ?? "…"} 个候选`);
     } else if (stage === "assemble") {
-      setStep("wait", "active", `装配 ${info.entries ?? "…"} 个对象的推理关系`);
+      setStep("wait", "active", `装配 ${info.entries ?? "…"} 个对象的推理关系${info.workflowVersion ? ` · ${info.workflowVersion}` : ""}`);
     } else if (stage === "response") {
       setStep(awaitingStepId, "done");
       setStep("validate", "active");

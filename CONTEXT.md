@@ -50,5 +50,11 @@ _Avoid_: Workflow（泛指任意编排时）
 **Benchmark**: 以固定 Gold 与 Sol 评分为准的论文导入评测体系，含 Entry/Inference 版本迭代（如 `v1.14 / v3.45`），产出 Project View。
 _Avoid_: 版本优化（泛指任意迭代时）
 
+**Frozen Workflow（冻结工作流）**: Benchmark 侧冻结发布的 Entry/Inference 组合版本，当前为 V4.1：Entry `paper-entry-parallel-extraction-v1.31` + Inference `v4`。是 Paper Import 的权威生产版本，网页与评测共用同一实现。
+_Avoid_: 新后端、最新算法、最新版本（泛称时）
+
+**V4 / V4.1**: Frozen Workflow 的组合标签。V4 = Entry `v1.14` + Inference `v3.45` 系；V4.1 = Entry `v1.31` + Inference `v4`。标签到运行时 prompt 的映射由实现层常量维护。
+_Avoid_: V4.1（指代单层模块时）、v4（与标签混写的运行时串）
+
 **Map Integration**: 将 Project View 接入数学地图的消费侧能力，含适配、闭包派生、渲染与存储。
 _Avoid_: 工作流（与 Benchmark 混称时）、接入逻辑（泛称）

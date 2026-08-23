@@ -10,6 +10,13 @@
   const SEMANTIC_MODEL = "cmath.fact-claim-operation/v0.1";
   const CHANNEL_SCHEMA = "cmath-gamma.project-channel/v0.1";
   const MAX_PDF_BYTES = 25 * 1024 * 1024;
+  // ── Frozen Workflow (V4.1, ADR-0003) ──
+  // 网页导入与 Benchmark 共用同一冻结管线；下次冻结升级只改这里。
+  const FROZEN_WORKFLOW = Object.freeze({
+    label: "V4.1",
+    entryExtractionVersion: "paper-entry-parallel-extraction-v1.31",
+    inferenceRuntimeVersion: "v3.45",
+  });
   const MAX_PAPER_TEXT_CHARS = 80_000;
   const semantics = root?.GammaMathMapSemantics
     ?? (typeof require === "function" ? require("./math-map-semantics.js") : null);
@@ -1511,196 +1518,78 @@
     const modelName = nonEmpty(model, "模型名称");
     const serviceName = nonEmpty(providerLabel, "模型服务名称");
     const targetUrl = endpointUrl(endpoint);
-    const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch { /* 进度回调不影响主流程 */ } };
+    const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
 
-    // 只负责收发：HTTP/网络错误直接抛（不重试），返回原始文本与结束原因
-    async function executeChatCall(messages, maxTokens) {
-      const response = await fetchImpl(targetUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-        body: JSON.stringify({
-          model: modelName,
-          messages,
-          response_format: { type: "json_object" },
-          // temperature is intentionally omitted: several upstream providers
-          // (e.g. OpenCode Go's Kimi models) only accept their own default (1)
-          // and reject any explicit value.
-          max_tokens: maxTokens,
-          // reasoningEffort 只在调用方显式指定时发送：部分模型（如 OpenCode Go 的
-          // deepseek-v4-flash）默认带思维链，会在大任务上烧光 max_tokens 导致空输出。
-          ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
-          stream: false,
-        }),
-        signal,
-      });
-      const responseText = await response.text();
-      if (!response.ok) {
-        let message = responseText.slice(-500);
-        try { message = JSON.parse(responseText).error?.message || message; } catch { /* use response text */ }
-        throw new Error(`${serviceName} 请求失败（HTTP ${response.status}）：${message || "没有错误详情"}`);
-      }
-      let envelope;
-      try { envelope = JSON.parse(responseText); }
-      catch { throw new Error(`${serviceName} 响应不是有效 JSON`); }
-      if (envelope.error) {
-        throw new Error(`${serviceName} 服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 300)}`);
-      }
+    // ── Frozen Workflow (ADR-0003)：网页与 Benchmark 共用 V4.1 管线 ──
+    // Entry: paper-entry-parallel-extraction-v1.31 并行窗口抽取 → 确定性整合
+    // Inference: v4（运行时 prompt 系 v3.45），失败显式抛错，无旧链路回退
+    const frozenPool = root?.CMathPaperRawEntryPoolV1
+      ?? (typeof require === "function" ? require("./paper-raw-entry-pool-v1.js") : null);
+    const frozenConsolidation = root?.CMathPaperEntryConsolidationV1
+      ?? (typeof require === "function" ? require("./src/paper-import/entry/consolidation.js") : null);
+    const frozenArtifactApi = root?.CMathPaperEntryArtifactV1
+      ?? (typeof require === "function" ? require("./paper-entry-artifact-v1.js") : null);
+    if (!frozenPool?.extractParallelRawEntryPool) {
+      throw new Error("冻结工作流模块没有加载：缺少 CMathPaperRawEntryPoolV1（检查 index.html 脚本顺序）");
+    }
+    if (!frozenConsolidation?.consolidateRawEntryPool) {
+      throw new Error("冻结工作流模块没有加载：缺少 CMathPaperEntryConsolidationV1（检查 index.html 脚本顺序）");
+    }
+    notify("frozen-workflow", {
+      label: FROZEN_WORKFLOW.label,
+      entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
+      inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+    });
+    // Pool 的 endpoint 通道按标准 Response 消费（status/ok/text/json）。
+    // 老测试与部分调用方传入轻量 mock（仅 ok/status/text），此处补齐 json 视图，
+    // 真实 fetch 不受影响。
+    const poolFetch = async (url, init) => {
+      const res = await fetchImpl(url, init);
+      if (typeof res?.json === "function") return res;
+      const text = await res.text();
+      let json;
+      try { json = JSON.parse(text); } catch { json = null; }
       return {
-        content: extractMessageText(envelope.choices?.[0]?.message),
-        finishReason: envelope.choices?.[0]?.finish_reason,
+        ok: res.ok,
+        status: res.status,
+        text: async () => text,
+        json: async () => json,
       };
+    };
+    const rawPool = await frozenPool.extractParallelRawEntryPool({
+      fileName,
+      pageCount,
+      text,
+      endpoint: targetUrl,
+      apiKey: key,
+      model: modelName,
+      providerLabel: serviceName,
+      reasoningEffort,
+      fetchImpl: poolFetch,
+      signal,
+      maxChunks,
+      onStage: notify,
+      extractionModuleVersion: FROZEN_WORKFLOW.entryExtractionVersion,
+    });
+
+    notify("consolidate", { candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? 0 });
+    const artifact = frozenConsolidation.consolidateRawEntryPool(rawPool);
+    if (frozenArtifactApi?.validatePaperEntryArtifact) {
+      frozenArtifactApi.validatePaperEntryArtifact(artifact);
     }
 
-    // 第一阶段：按页段并行提取紧凑 Entry。每段输出有问题时，把输出连同问题
-    // 清单返还给模型定点修复一次（会话式，只重出该段，输出很小）。
-    async function extractChunkEntries(chunk, index, chunks) {
-      const messages = [{
-        role: "user",
-        content: entriesPrompt({ fileName, pageCount, text: chunk, pageRange: chunks.length > 1 ? pageRangeOf(chunk) : null }),
-      }];
-      let entries = [];
-      let truncated = false;
-      for (let round = 0; round < 2; round += 1) {
-        // 上轮被截断（含思维链烧光额度）时，本轮放大输出预算
-        const { content, finishReason } = await executeChatCall(messages, truncated ? 32000 : 16000);
-        truncated = finishReason === "length";
-        let parsed = null;
-        let issues;
-        if (!content.trim()) {
-          issues = [truncated
-            ? "输出被截断：请精简每个 statement、只保留本段中明确编号或命名的数学对象"
-            : "输出为空：请输出本段的 Entry JSON"];
-        } else {
-          try {
-            parsed = parseModelJson(content);
-            entries = entriesOfChunkResponse(parsed);
-            issues = collectChunkEntryIssues(entries);
-          } catch (error) {
-            issues = [`输出不是有效 JSON：${error.message}`];
-          }
-        }
-        if (!issues.length) break;
-        if (round === 0) {
-          notify("entries-repair", { chunk: index + 1, total: chunks.length, count: issues.length });
-          messages.push({ role: "assistant", content }, { role: "user", content: chunkRepairPrompt(issues) });
-        }
-      }
-      return entries;
-    }
-
-    async function extractEntriesInParallel() {
-      // 段数按论文长度自适应：约 2.5 万字符一段，最多 maxChunks 段；相邻段重叠 1 页
-      const chunkBudget = Math.max(1, Math.min(maxChunks, Math.ceil(String(text).length / 25000)));
-      const chunks = splitTextIntoChunks(text, chunkBudget, 1);
-      notify("request", { chars: String(text).length, chunks: chunks.length });
-      const perChunk = new Array(chunks.length).fill(null);
-      let done = 0;
-      await Promise.all(chunks.map(async (chunk, index) => {
-        perChunk[index] = await extractChunkEntries(chunk, index, chunks);
-        done += 1;
-        notify("entries-progress", { done, total: chunks.length });
-      }));
-      return perChunk.flat();
-    }
-
-    // 整合：对全量 Entry 目录做一次小而快的语义整合（去重/改名）。
-    // 输出非法时整体跳过（退回本地合并），HTTP 错误与中断照常抛出。
-    async function integrateEntries(entries) {
-      if (entries.length < 2) return entries;
-      notify("integrate", { entries: entries.length });
-      let parsed;
-      try {
-        const catalog = entries.map(integrationCatalogLine).join("\n");
-        const { content } = await executeChatCall(
-          [{ role: "user", content: integrationPrompt({ fileName, catalog }) }],
-          8000,
-        );
-        parsed = parseModelJson(content);
-      } catch (error) {
-        if (signal?.aborted || error?.name === "AbortError" || String(error?.message).includes("HTTP")) throw error;
-        notify("integrate-skipped", { reason: error?.message ?? "整合输出不可用" });
-        return entries;
-      }
-      const { entries: merged, aliasCount, renameCount } = applyIntegration(entries, parsed);
-      if (aliasCount || renameCount) notify("integrate-applied", { aliasCount, renameCount });
-      return merged;
-    }
-
-    // 第二阶段：一次小调用装配 Inference / B0 / 主目标。校验问题连同输出返还
-    // 模型定点修复（最多三轮）；仍不通过才启用本地机械修复兜底。
-    async function assembleInferences(entries, { paperGuide: assemblePaperGuide = null, externalBoundaryInventory: assembleBoundary = null, workflowVersion: assembleVersion = "v1" } = {}) {
-      const catalog = entries.map(entryCatalogLine).join("\n");
-      notify("assemble", { entries: entries.length });
-      const promptWorkflowVersion = assembleVersion ?? "v1";
-      const promptPaperGuide = assemblePaperGuide;
-      const promptBoundary = assembleBoundary;
-      const messages = [{ role: "user", content: assemblyPrompt({ fileName, pageCount, text, catalog, workflowVersion: promptWorkflowVersion, paperGuide: promptPaperGuide, externalBoundaryInventory: promptBoundary }) }];
-      let lastMerged = null;
-      let lastIssues = ["装配没有产出有效输出"];
-      let truncated = false;
-      const maxRounds = Number(process.env.INFERENCE_MAX_ROUNDS || 4);
-      for (let round = 0; round < maxRounds; round += 1) {
-        const { content, finishReason } = await executeChatCall(messages, truncated ? 32000 : 16000);
-        truncated = finishReason === "length";
-        notify("response", {});
-        let issues = [];
-        if (!content.trim()) {
-          issues = [truncated ? "输出被截断：请精简 argument" : "输出为空：请输出装配 JSON"];
-        } else {
-          let assembly = null;
-          try { assembly = parseModelJson(content); } catch (error) { issues = [`装配输出不是有效 JSON：${error.message}`]; }
-          if (assembly) {
-            if (typeof assembly !== "object" || Array.isArray(assembly)) {
-              issues = ["装配输出必须是 JSON 对象"];
-            } else {
-              if (Array.isArray(assembly.fixedEntries)) applyEntryPatches(entries, assembly.fixedEntries);
-              const merged = {
-                projectTitle: assembly.projectTitle,
-                mainTargetEntryId: assembly.mainTargetEntryId,
-                b0ClaimEntryIds: assembly.b0 ?? assembly.b0ClaimEntryIds,
-                entries,
-                inferences: Array.isArray(assembly.inferences) ? assembly.inferences : [],
-              };
-              const { raw: normalized } = normalizeRawProjectView(merged, { fileName });
-              // 未建立 Claim 每轮都查（修复轮本身也可能遗漏或引入）；轮次有上限，
-              // 模型坚持保留（如猜想）时最多多问两轮即由兜底校验放行，不会死循环
-              issues = collectRawProjectViewIssues(normalized);
-              lastMerged = normalized;
-              if (!issues.length) {
-                notify("validate", {});
-                try {
-                  return paperProjectView(normalized, { fileName, requireB0Classification: true });
-                } catch (error) {
-                  issues = [`系统校验未通过：${error.message}`];
-                }
-              }
-            }
-          }
-        }
-        lastIssues = issues;
-        if (round < 3) {
-          notify("repair", { reason: `${issues.length} 处问题`, attempt: round + 1 });
-          messages.push({ role: "assistant", content }, { role: "user", content: assemblyRepairPrompt(issues) });
-        }
-      }
-      // 模型修复三轮仍未通过：本地机械修复兜底，尽量保住这次导入
-      if (lastMerged) {
-        const { raw: fixed, actions } = sanitizeRawProjectView(lastMerged, { fileName });
-        if (actions.length) notify("autofix", { count: actions.length, actions });
-        notify("validate", {});
-        try {
-          return paperProjectView(fixed, { fileName, requireB0Classification: true });
-        } catch (error) {
-          throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`);
-        }
-      }
-      throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
-    }
-
-    const entries = await extractEntriesInParallel();
-    if (!entries.length) throw new Error(`${serviceName} 论文导入失败：模型服务没有提取出任何数学 Entry`);
-    const integratedEntries = await integrateEntries(entries);
-    const view = await assembleInferences(integratedEntries, { paperGuide: null, externalBoundaryInventory: null, workflowVersion: "v1" });
+    const view = await requestPaperInferenceFromEntryArtifact({
+      artifact,
+      endpoint,
+      apiKey,
+      model: modelName,
+      providerLabel: serviceName,
+      fetchImpl,
+      signal,
+      onStage,
+      reasoningEffort,
+      workflowVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+    });
 
     notify("closure", { openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
     return view;
@@ -1709,6 +1598,7 @@
   return Object.freeze({
     PROJECT_VIEW_SCHEMA,
     SEMANTIC_MODEL,
+    FROZEN_WORKFLOW,
     MAX_PDF_BYTES,
     MAX_PAPER_TEXT_CHARS,
     endpointUrl,
