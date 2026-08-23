@@ -1511,7 +1511,7 @@
       fileName,
       pageCount,
       text,
-      endpoint: targetUrl,
+      endpoint,
       apiKey: key,
       model: modelName,
       providerLabel: serviceName,
