@@ -38,13 +38,14 @@ const endpoint = isOpenCodeGo ? "https://opencode.ai/zen/go/v1" : "https://8.220
 const providerLabel = isOpenCodeGo ? "OpenCode Go" : "Luna Gateway";
 const providerId = isOpenCodeGo ? "opencode-go" : "luna-gateway";
 const isCompact = mode === "off-compact";
+const isMedium = mode === "medium-compact";
 const isV337 = workflowVersion === "v3.37";
 const isV338 = workflowVersion === "v3.38";
 const isV339 = workflowVersion === "v3.39";
 const isV340 = workflowVersion === "v3.40";
 const isV341 = workflowVersion === "v3.41";
-if (!isCompact && mode !== "high-generous") throw new Error(`unknown mode: ${mode}`);
-const reasoningEffort = isCompact ? "none" : "high";
+if (!isCompact && !isMedium && mode !== "high-generous") throw new Error(`unknown mode: ${mode}`);
+const reasoningEffort = isCompact ? "none" : (isMedium ? "medium" : "high");
 // V3.9.2 emits compact JSON and runs with reasoning disabled. Its observed
 // completions are well below these ceilings; keep a smaller ceiling for this
 // version while leaving historical versions on their old budgets.
@@ -52,7 +53,8 @@ const tokenBudget = isCompact
   ? (["v3.9.2", "v3.9.3", "v3.9.4", "v3.9.5", "v3.9.6", "v3.9.7", "v3.9.8", "v3.9.9", "v3.10", "v3.10.1", "v3.11", "v3.12", "v3.13", "v3.14", "v3.15", "v3.16", "v3.17", "v3.18", "v3.19", "v3.20", "v3.21", "v3.22", "v3.23", "v3.24", "v3.25", "v3.26", "v3.27", "v3.28", "v3.29", "v3.30", "v3.31", "v3.32", "v3.33", "v3.34", "v3.35", "v3.36"].includes(workflowVersion) || isV337 || isV338 || isV339 || isV340 || isV341
     ? { integrate: 6000, normal: 10000, retry: 16000 }
     : { integrate: 8000, normal: 16000, retry: 32000 })
-  : { integrate: 16000, normal: 32000, retry: 64000 };
+    : isMedium ? { integrate: 8000, normal: 16000, retry: 32000 }
+    : { integrate: 16000, normal: 32000, retry: 64000 };
 const fileName = path.basename(pdfPath);
 const caseSlug = fileName.replace(/\.pdf$/iu, "").replace(/[^a-z0-9]+/giu, "-").replace(/^-+|-+$/gu, "").toLowerCase() || "paper";
 const rawText = execFileSync("pdftotext", [pdfPath, "-"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });

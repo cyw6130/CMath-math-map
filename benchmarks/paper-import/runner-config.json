@@ -4,54 +4,258 @@
   "defaultProvider": "luna-gateway",
   "defaultReasoningEffort": "off",
   "supportedSubjects": {
-    "luna": { "provider": "luna-gateway", "model": "gpt-5.6-luna", "reasoningEffort": "off" },
-    "deepseek-flash": { "provider": "opencode-go", "model": "deepseek-v4-flash", "reasoningEffort": "off" }
+    "luna": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "off"
+    },
+    "deepseek-flash": {
+      "provider": "opencode-go",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "off"
+    },
+    "spark": {
+      "provider": "opencode-go",
+      "model": "muse-spark-1.2-contributor",
+      "reasoningEffort": "off"
+    },
+    "k3-high": {
+      "provider": "opencode-go",
+      "model": "kimi-k3",
+      "reasoningEffort": "high"
+    },
+    "ox-high": {
+      "provider": "opencode-go",
+      "model": "ox-alpha-free",
+      "reasoningEffort": "high"
+    },
+    "sol-medium": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "reasoningEffort": "medium"
+    }
   },
-  "defaultTokenBudget": { "integrate": 8000, "normal": 16000, "retry": 32000 },
+  "defaultTokenBudget": {
+    "integrate": 8000,
+    "normal": 16000,
+    "retry": 32000
+  },
   "workflowTokenBudgets": {
-    "v3.9.2": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.9.7": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.9.8": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.9.9": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.10": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.10.1": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.11": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.12": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.13": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.14": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.15": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.16": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.17": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.18": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.19": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.20": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.21": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.22": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.23": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.24": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.25": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v2": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v3": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v4-assembly": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v5-repair-coverage": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v6-repair-chain": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.26-inference-v7-repair-queue": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.27": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.28": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.29": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.30": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.31": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.32": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.33": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.34": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.35": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.36": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.37": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.38": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.39": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.40": { "integrate": 6000, "normal": 10000, "retry": 16000 },
-    "v3.41": { "integrate": 6000, "normal": 10000, "retry": 16000 }
+    "v3.9.2": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.9.7": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.9.8": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.9.9": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.10": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.10.1": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.11": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.12": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.13": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.14": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.15": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.16": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.17": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.18": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.19": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.20": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.21": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.22": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.23": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.24": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.25": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v2": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v3": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v4-assembly": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v5-repair-coverage": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v6-repair-chain": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.26-inference-v7-repair-queue": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.27": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.28": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.29": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.30": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.31": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.32": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.33": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.34": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.35": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.36": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.37": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.38": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.39": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.40": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    },
+    "v3.41": {
+      "integrate": 6000,
+      "normal": 10000,
+      "retry": 16000
+    }
   },
   "requiredProvider": "subject-specific; see supportedSubjects",
   "executionSurface": "dsh-profile:math-map",
@@ -117,5 +321,9 @@
   },
   "exportRule": "model outputs are run artifacts and never become gold automatically",
   "providerInvariant": "every run must record its selected subject, provider, and model; results from different providers must not be merged even when model names match",
-  "historicalSubject": { "provider": "deepseek-official", "model": "deepseek-v4-flash", "status": "historical-incomplete-harness-run" }
+  "historicalSubject": {
+    "provider": "deepseek-official",
+    "model": "deepseek-v4-flash",
+    "status": "historical-incomplete-harness-run"
+  }
 }

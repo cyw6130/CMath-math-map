@@ -18,7 +18,7 @@ const args = process.argv.slice(2);
 const value = (flag) => { const i = args.indexOf(flag); return i >= 0 ? args[i + 1] : null; };
 const caseId = value("--case") || "cornered-skein-lasagna-theory";
 const underTest = value("--workflow") || "v3.9.3";
-const subjectAliases = { luna: "luna", "luna-gateway": "luna", deepseek: "deepseek-flash", flash: "deepseek-flash", "deepseek-flash": "deepseek-flash" };
+const subjectAliases = { luna: "luna", "luna-gateway": "luna", deepseek: "deepseek-flash", flash: "deepseek-flash", "deepseek-flash": "deepseek-flash", spark: "spark", k3: "k3-high", "kimi-k3": "k3-high", ox: "ox-high", "ox-alpha-free": "ox-high", sol: "sol-medium" };
 const requestedSubject = value("--subject") || protocol.defaultSubject;
 const subjectId = subjectAliases[requestedSubject] || requestedSubject;
 const subject = protocol.subjects?.[subjectId];

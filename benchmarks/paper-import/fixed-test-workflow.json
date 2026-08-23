@@ -1,51 +1,90 @@
 {
-  "schema": "cmath.paper-import-fixed-test-workflow/v1",
-  "workflowId": "paper-import-fixed-multi-model-benchmark",
-  "workflowVersion": "1.3",
-  "purpose": "固定评估论文导入工作流版本；测试流程本身不随被测导入版本升级",
-  "defaultSubject": "luna",
-  "subjects": {
-    "luna": {
-      "provider": "luna-gateway",
-      "model": "gpt-5.6-luna",
-      "reasoningEffort": "none",
-      "mode": "off-compact"
-    },
-    "deepseek-flash": {
-      "provider": "opencode-go",
-      "model": "deepseek-v4-flash",
-      "reasoningEffort": "none",
-      "mode": "off-compact"
-    }
+ "schema": "cmath.paper-import-fixed-test-workflow/v1",
+ "workflowId": "paper-import-fixed-multi-model-benchmark",
+ "workflowVersion": "1.3",
+ "purpose": "固定评估论文导入工作流版本；测试流程本身不随被测导入版本升级",
+ "defaultSubject": "luna",
+ "subjects": {
+  "luna": {
+   "provider": "luna-gateway",
+   "model": "gpt-5.6-luna",
+   "reasoningEffort": "none",
+   "mode": "off-compact"
   },
-  "goldRevision": "v2",
-  "scoring": {
-    "primary": "solScore",
-    "scorer": "gpt-5.6-sol",
-    "promptVersion": "sol-score-prompt-v3",
-    "method": "isolated Gold+candidate-only comparison by scripts/score-paper-import-with-sol.mjs (no original paper, spec, or conventions access)",
-    "goldMustRemainUnchanged": true
+  "deepseek-flash": {
+   "provider": "opencode-go",
+   "model": "deepseek-v4-flash",
+   "reasoningEffort": "none",
+   "mode": "off-compact"
   },
-  "executionPolicy": {
-    "oneRunPerCaseAndVersion": true,
-    "internalRepairAllowed": true,
-    "retrySameVersionAfterFailure": false,
-    "maxWallTimeMs": null,
-    "preserveFailedArtifacts": true
+  "spark": {
+   "provider": "opencode-go",
+   "model": "muse-spark-1.2-contributor",
+   "reasoningEffort": "none",
+   "mode": "off-compact"
   },
-  "cases": [
-    { "caseId": "hopf-degree-theorem", "sourcePdf": "/Users/chenyuwen/Desktop/hopf map.pdf" },
-    { "caseId": "knot-hopf-rt", "sourcePdf": "/Users/chenyuwen/Desktop/Knot_hopf_alg&quantum_invs/RT.pdf" },
-    { "caseId": "4-dim-skein-modules-handles-tangles", "sourcePdf": "/Users/chenyuwen/Desktop/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf" },
-    { "caseId": "cornered-skein-lasagna-theory", "sourcePdf": "/Users/chenyuwen/Desktop/CORNERED SKEIN LASAGNA THEORY.pdf" },
-    { "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds", "sourcePdf": "/Users/chenyuwen/Desktop/文章1.pdf" }
-  ],
-  "retiredCases": [
-    {
-      "caseId": "kirby-2018-trisections",
-      "status": "retired",
-      "reason": "用户决定停止将 Kirby 论文纳入后续固定评分；Gold、候选 JSON 与历史评分保留，仅不再进入默认 scoring 集。",
-      "sourcePdf": "/Users/chenyuwen/Desktop/kirby-2018-trisections-of-4-manifolds.pdf"
-    }
-  ]
+  "k3-high": {
+   "provider": "opencode-go",
+   "model": "kimi-k3",
+   "reasoningEffort": "high",
+   "mode": "high-generous"
+  },
+  "ox-high": {
+   "provider": "opencode-go",
+   "model": "ox-alpha-free",
+   "reasoningEffort": "high",
+   "mode": "high-generous"
+  },
+  "sol-medium": {
+   "provider": "luna-gateway",
+   "model": "gpt-5.6-sol",
+   "reasoningEffort": "medium",
+   "mode": "medium-compact"
+  }
+ },
+ "goldRevision": "v2",
+ "scoring": {
+  "primary": "solScore",
+  "scorer": "gpt-5.6-sol",
+  "promptVersion": "sol-score-prompt-v3",
+  "method": "isolated Gold+candidate-only comparison by scripts/score-paper-import-with-sol.mjs (no original paper, spec, or conventions access)",
+  "goldMustRemainUnchanged": true
+ },
+ "executionPolicy": {
+  "oneRunPerCaseAndVersion": true,
+  "internalRepairAllowed": true,
+  "retrySameVersionAfterFailure": false,
+  "maxWallTimeMs": null,
+  "preserveFailedArtifacts": true
+ },
+ "cases": [
+  {
+   "caseId": "hopf-degree-theorem",
+   "sourcePdf": "/Users/chenyuwen/Desktop/hopf map.pdf"
+  },
+  {
+   "caseId": "knot-hopf-rt",
+   "sourcePdf": "/Users/chenyuwen/Desktop/Knot_hopf_alg&quantum_invs/RT.pdf"
+  },
+  {
+   "caseId": "4-dim-skein-modules-handles-tangles",
+   "sourcePdf": "/Users/chenyuwen/Desktop/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf"
+  },
+  {
+   "caseId": "cornered-skein-lasagna-theory",
+   "sourcePdf": "/Users/chenyuwen/Desktop/CORNERED SKEIN LASAGNA THEORY.pdf"
+  },
+  {
+   "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
+   "sourcePdf": "/Users/chenyuwen/Desktop/文章1.pdf"
+  }
+ ],
+ "retiredCases": [
+  {
+   "caseId": "kirby-2018-trisections",
+   "status": "retired",
+   "reason": "用户决定停止将 Kirby 论文纳入后续固定评分；Gold、候选 JSON 与历史评分保留，仅不再进入默认 scoring 集。",
+   "sourcePdf": "/Users/chenyuwen/Desktop/kirby-2018-trisections-of-4-manifolds.pdf"
+  }
+ ]
 }

@@ -47,10 +47,13 @@ function resolveProviderConfig(providerName, explicitModel) {
 const providerConfig = resolveProviderConfig(providerOpt, model);
 const { providerId, providerLabel, endpoint, apiKey, useProxy, proxyUrl } = providerConfig;
 const isCompact = mode === "off-compact";
-if (!isCompact && mode !== "high-generous") throw new Error(`unknown mode: ${mode}`);
-const reasoningEffort = isCompact ? "none" : "high";
+const isMedium = mode === "medium-compact";
+if (!isCompact && !isMedium && mode !== "high-generous") throw new Error(`unknown mode: ${mode}`);
+const reasoningEffort = isCompact ? "none" : (isMedium ? "medium" : "high");
 const tokenBudget = isCompact
   ? { integrate: 6000, normal: 10000, retry: 16000 }
+  : isMedium
+  ? { integrate: 8000, normal: 16000, retry: 32000 }
   : { integrate: 16000, normal: 32000, retry: 64000 };
 
 const rawContent = fs.readFileSync(entryArtifactPath, "utf8");
