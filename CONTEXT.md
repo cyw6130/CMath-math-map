@@ -51,7 +51,7 @@ _Avoid_: Workflow（泛指任意编排时）
 _Avoid_: 版本优化（泛指任意迭代时）
 
 **Frozen Workflow（冻结工作流）**: Benchmark 侧冻结发布的 Entry/Inference 组合版本，当前为 V4.1：Entry `paper-entry-parallel-extraction-v1.31` + Inference `v4`。是 Paper Import 的权威生产版本，网页与评测共用同一实现。
-_Avoid_: 新后端、最新算法、最新版本（泛称时）
+_Avoid_: 新后端、最新算法、与前端工作台版本混称（如「v5 工作流」——工作台 Paper Grotesque v5 是界面 Edition，不随 Frozen Workflow 递进）
 
 **V4 / V4.1**: Frozen Workflow 的组合标签。V4 = Entry `v1.14` + Inference `v3.45` 系；V4.1 = Entry `v1.31` + Inference `v4`。标签到运行时 prompt 的映射由实现层常量维护。
 _Avoid_: V4.1（指代单层模块时）、v4（与标签混写的运行时串）
