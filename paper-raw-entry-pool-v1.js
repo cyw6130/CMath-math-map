@@ -889,8 +889,7 @@
           }
           return parsed;
         } catch (repairErr) {
-          try { require('fs').writeFileSync('/tmp/ox-block1-raw.json', candidate); } catch {}
-          try { require('fs').writeFileSync('/tmp/ox-block1-repaired.json', repaired); } catch {}
+          // debug dumps removed
           // Last resort: strip all bare control chars globally (Ox mixes)
           try {
             const stripped2 = repaired.replace(/[\x00-\x1F\x7F]/gu, " ");
