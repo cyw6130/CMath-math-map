@@ -1,0 +1,1014 @@
+{
+  "schema": "cmath.paper-import-run/v1",
+  "experimentId": "luna-gateway-paper-import-hopf-map-medium-compact-v3.9.3",
+  "condition": "medium-compact",
+  "workflowVersion": "v3.9.3",
+  "promptSetVersion": "v3.9.3",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-sol",
+  "source": {
+    "fileName": "hopf map.pdf",
+    "pageCount": 13,
+    "characters": 32011
+  },
+  "diagnostics": {
+    "durationMs": 456899,
+    "stages": [
+      {
+        "stage": "frozen-workflow",
+        "label": "V4.1",
+        "entryExtractionVersion": "paper-entry-parallel-extraction-v1.31",
+        "inferenceRuntimeVersion": "v3.45",
+        "atMs": 3
+      },
+      {
+        "stage": "parallel-extract-start",
+        "chars": 31993,
+        "blocks": 3,
+        "overlapPages": 1,
+        "lanes": [
+          "combined"
+        ],
+        "version": "paper-entry-parallel-extraction-v1.31",
+        "atMs": 4
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 1,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 15,
+        "foundationCount": 8,
+        "resultCount": 7,
+        "inferenceHintCount": 5,
+        "doneCalls": 1,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 76872
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 2,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 12,
+        "foundationCount": 8,
+        "resultCount": 4,
+        "inferenceHintCount": 3,
+        "doneCalls": 2,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 134141
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "block": 3,
+        "lane": "combined",
+        "totalBlocks": 3,
+        "extractedCount": 12,
+        "foundationCount": 8,
+        "resultCount": 4,
+        "inferenceHintCount": 3,
+        "doneCalls": 3,
+        "totalCalls": 3,
+        "repaired": false,
+        "repairCount": 0,
+        "atMs": 223562
+      },
+      {
+        "stage": "parallel-extract-done",
+        "totalRawEntries": 39,
+        "totalInferenceHints": 11,
+        "blocks": 3,
+        "version": "paper-entry-parallel-extraction-v1.31",
+        "atMs": 223563
+      },
+      {
+        "stage": "consolidate",
+        "candidates": 39,
+        "atMs": 223567
+      },
+      {
+        "stage": "assemble",
+        "entries": 37,
+        "workflowVersion": "v3.45",
+        "atMs": 223584
+      },
+      {
+        "stage": "response",
+        "round": 1,
+        "atMs": 383851
+      },
+      {
+        "stage": "repair",
+        "reason": "2 处问题",
+        "attempt": 1,
+        "atMs": 383856
+      },
+      {
+        "stage": "response",
+        "round": 2,
+        "atMs": 456892
+      },
+      {
+        "stage": "validate",
+        "atMs": 456894
+      },
+      {
+        "stage": "closure",
+        "openClaims": [],
+        "atMs": 456899
+      }
+    ],
+    "calls": [
+      {
+        "stage": "parallel-extract-start",
+        "requestedMaxTokens": null,
+        "reasoningEffort": "medium",
+        "durationMs": 76866,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10068,
+          "completion_tokens": 4095,
+          "total_tokens": 14163,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 2209
+          }
+        }
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "requestedMaxTokens": null,
+        "reasoningEffort": "medium",
+        "durationMs": 57267,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 10567,
+          "completion_tokens": 2844,
+          "total_tokens": 13411,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1330
+          }
+        }
+      },
+      {
+        "stage": "parallel-extract-lane",
+        "requestedMaxTokens": null,
+        "reasoningEffort": "medium",
+        "durationMs": 89419,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 9586,
+          "completion_tokens": 3843,
+          "total_tokens": 13429,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 2588
+          }
+        }
+      },
+      {
+        "stage": "assemble",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "medium",
+        "durationMs": 160265,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 16215,
+          "completion_tokens": 6868,
+          "total_tokens": 23083,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 3533
+          }
+        }
+      },
+      {
+        "stage": "repair",
+        "requestedMaxTokens": 16000,
+        "reasoningEffort": "medium",
+        "durationMs": 73033,
+        "status": 200,
+        "finishReason": "stop",
+        "usage": {
+          "prompt_tokens": 19795,
+          "completion_tokens": 3929,
+          "total_tokens": 23724,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 516
+          }
+        }
+      }
+    ]
+  },
+  "view": {
+    "schema": "cmath.project-view-model/v0.1",
+    "semanticModel": "cmath.fact-claim-operation/v0.1",
+    "project": {
+      "id": "cmath:project:paper:hopf-map",
+      "title": "霍普夫度定理：同伦群与向量场"
+    },
+    "mainTargetEntryId": "paper:thm:hopf-degree-theorem",
+    "channelOptions": {
+      "schema": "cmath-gamma.project-channel/v0.1",
+      "projectId": "cmath:project:paper:hopf-map",
+      "boundaryLabel": "论文导入地图 · 浏览器本地预览",
+      "adapterOptions": {}
+    },
+    "derivedResearchState": {
+      "mathematicalState": {
+        "b0ClaimEntryIds": [
+          "paper:lem:isotopy-lemma-and-corollary",
+          "paper:thm:taylor-expansion-at-regular-point",
+          "paper:lem:linear-isotopy-lemma",
+          "paper:lemma:isotopy-lemma",
+          "paper:thm:sard-theorem",
+          "paper:thm:epsilon-neighborhood-theorem",
+          "paper:thm:transversality-extension-theorem",
+          "paper:thm:poincare-hopf-index",
+          "paper:thm:transversality-homotopy"
+        ]
+      },
+      "researchOverlay": {
+        "loopTargetEntryId": "paper:thm:hopf-degree-theorem"
+      }
+    },
+    "entries": [
+      {
+        "id": "paper:def:degree",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 1 · 光滑映射的度",
+        "shortTitle": "光滑映射的度",
+        "title": "光滑映射的度",
+        "statement": "光滑映射$f$的度定义为$f$与其值域中某点$y$的交数，即$\\deg f=I(f,\\{y\\})$。",
+        "sourcePath": "hopf map.pdf#page=1"
+      },
+      {
+        "id": "paper:def:oriented-intersection-number",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 2 · 有向交数",
+        "shortTitle": "有向交数",
+        "title": "有向交数",
+        "statement": "设光滑映射$f:X\\to Y$横截于子流形$Z$，且$Z$与$X$的维数互补；$f$与$Z$的有向交数定义为$Z$的各原像点之定向数的总和。",
+        "sourcePath": "hopf map.pdf#page=1"
+      },
+      {
+        "id": "paper:thm:hopf-degree-homotopy-group",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 1 · 霍普夫度定理",
+        "shortTitle": "霍普夫度定理",
+        "title": "霍普夫度定理",
+        "statement": "对所有$k$，等维球面的同伦群满足$\\pi_k(S^k)\\cong\\mathbb Z$。",
+        "sourcePath": "hopf map.pdf#page=1"
+      },
+      {
+        "id": "paper:def:isotopic-maps",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 3 · 同痕映射",
+        "shortTitle": "同痕映射",
+        "title": "同痕映射",
+        "statement": "两个映射称为同痕，是指它们之间存在同伦，并且该同伦中的每个映射也都是微分同胚。",
+        "sourcePath": "hopf map.pdf#page=2"
+      },
+      {
+        "id": "paper:def:winding-number",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 4 · 绕点的环绕数",
+        "shortTitle": "绕点的环绕数",
+        "title": "绕点的环绕数",
+        "statement": "映射$f$关于点$z$的环绕数定义为方向映射$u:X\\to S^1$的度，其中$u(x)=\\frac{f(x)-z}{|f(x)-z|}$；记为$W(f,z)=\\deg(u)$。",
+        "sourcePath": "hopf map.pdf#page=2"
+      },
+      {
+        "id": "paper:lem:isotopy-lemma-and-corollary",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 1 · 同痕引理及其推论",
+        "shortTitle": "同痕引理及其推论",
+        "title": "同痕引理及其推论",
+        "statement": "给定连通流形$Y$中的任意两组点$\\{x_1,\\ldots,x_n\\}$与$\\{y_1,\\ldots,y_n\\}$，存在微分同胚$\\phi:Y\\to Y$，使得对每个$i$均有$\\phi(x_i)=y_i$，且$\\phi$同痕于恒等映射。",
+        "sourcePath": "hopf map.pdf#page=2",
+        "sourceReference": "原文称“Isotopy Lemma and Corollary”，未给出文献引用"
+      },
+      {
+        "id": "paper:def:euler-characteristic",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 5 · 欧拉示性数",
+        "shortTitle": "欧拉示性数",
+        "title": "欧拉示性数",
+        "statement": "空间$X$的欧拉示性数$\\chi(X)$定义为其对角集$\\Delta=\\{(x,x)\\mid x\\in X\\}$的自交数，即$\\chi(X)=I(\\Delta,\\Delta)$。",
+        "sourcePath": "hopf map.pdf#page=3"
+      },
+      {
+        "id": "paper:prop:local-winding-number-at-regular-point",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 1 · 正则点处的局部环绕数",
+        "shortTitle": "正则点处的局部环绕数",
+        "title": "正则点处的局部环绕数",
+        "statement": "设$f:U\\to\\mathbb R^k$光滑，$U\\subset\\mathbb R^k$，$x$为满足$f(x)=z$的正则点。若$B$是$x$附近充分小的闭球，则$W(\\partial f,z)=+1$当$f$在$x$保持定向，且$W(\\partial f,z)=-1$当$f$在$x$反转定向。",
+        "sourcePath": "hopf map.pdf#page=3"
+      },
+      {
+        "id": "paper:thm:taylor-expansion-at-regular-point",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 2 · 泰勒展开定理的局部形式",
+        "shortTitle": "泰勒展开定理的局部形式",
+        "title": "泰勒展开定理的局部形式",
+        "statement": "令$A=df_0$，则$f$在$0$附近可写为$f(x)=Ax+\\varepsilon(x)$，其中当$x\\to0$时，$\\frac{|\\varepsilon(x)|}{|x|}\\to0$。",
+        "sourcePath": "hopf map.pdf#page=3",
+        "sourceReference": "Taylor's Thm."
+      },
+      {
+        "id": "paper:lem:linear-isotopy-lemma",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 2 · 线性同痕引理",
+        "shortTitle": "线性同痕引理",
+        "title": "线性同痕引理",
+        "statement": "若$E$是$\\mathbb R^k$上的线性同构，则当$E$保持定向时，它同伦于恒等映射；当$E$反转定向时，它同伦于关于第一坐标的反射映射$R$。",
+        "sourcePath": "hopf map.pdf#page=4",
+        "sourceReference": "原文称“Linear Isotopy Lemma”，未给出文献引用"
+      },
+      {
+        "id": "paper:prop:boundary-winding-number-orientation-sum",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 2 · 边界环绕数与定向数之和",
+        "shortTitle": "边界环绕数与定向数之和",
+        "title": "边界环绕数与定向数之和",
+        "statement": "设$f:B\\to\\mathbb R^k$是定义在$\\mathbb R^k$中闭球$B$上的光滑映射。若$z$是$f$的正则值且在$\\partial B$上无原像，则$\\partial f:\\partial B\\to\\mathbb R^k$的环绕数等于$z$的所有原像点处定向数之和。",
+        "sourcePath": "hopf map.pdf#page=4"
+      },
+      {
+        "id": "paper:calc:winding-degree-normalization",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 1 · 绕数与归一化映射次数的恒等式",
+        "shortTitle": "绕数与归一化映射次数的恒等式",
+        "title": "绕数与归一化映射次数的恒等式",
+        "statement": "对$f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$，关于原点的绕数满足$W(f,\\{0\\})=\\deg\\left(\\frac{f(x)}{|f(x)|}\\right)=\\deg\\left(\\frac f{|f|}\\right)=\\deg(f')$，其中$f'=\\pi_s^{-1}\\circ f:S^k\\to S^k$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:cor:zero-winding-null-homotopy",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 3 · 推论：零绕数映射零伦",
+        "shortTitle": "推论：零绕数映射零伦",
+        "title": "推论：零绕数映射零伦",
+        "statement": "若$f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$关于原点的绕数为零，则$f$同伦于常值映射$c_p$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:prop:degree-zero-sphere-map-nullhomotopic",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 3 · 零度球面映射零同伦命题",
+        "shortTitle": "零度球面映射零同伦命题",
+        "title": "零度球面映射零同伦命题",
+        "statement": "若$f:S^k\\to S^k$满足$\\deg(f)=0$，则$f$同伦于常值映射$c_p$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:prop:nullhomotopic-boundary-extension",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 4 · 零同伦边界映射的延拓",
+        "shortTitle": "零同伦边界映射的延拓",
+        "title": "零同伦边界映射的延拓",
+        "statement": "设$B$为闭球，$f:\\mathbb R^k\\setminus\\operatorname{Int}(B)\\to Y$光滑。若限制映射$\\partial f:\\partial B\\to Y$同伦于常值映射，则$f$可延拓到整个$\\mathbb R^k$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:prop:zero-winding-punctured-euclidean-map-nullhomotopic",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 5 · 零环绕数的穿孔欧氏空间映射零同伦命题",
+        "shortTitle": "零环绕数的穿孔欧氏空间映射零同伦命题",
+        "title": "零环绕数的穿孔欧氏空间映射零同伦命题",
+        "statement": "若$f:S^k\\to\\mathbb R^{k+1}\\setminus\\{0\\}$关于原点的环绕数为零，则$f$同伦于常值映射$c_p$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:lemma:isotopy-lemma",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 3 · 同痕引理",
+        "shortTitle": "同痕引理",
+        "title": "同痕引理",
+        "statement": "正文调用同痕引理取得微分同胚，将落在指定开集$U$内的$f^{-1}(b)$各点移到$U$外；亦用它通过同伦修改映射，使包含零点原像的开集$U$位于$\\operatorname{Int}W$。",
+        "sourcePath": "hopf map.pdf#page=6",
+        "sourceReference": "Isotopy Lemma"
+      },
+      {
+        "id": "paper:thm:sard-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 4 · Sard定理",
+        "shortTitle": "Sard定理",
+        "title": "Sard定理",
+        "statement": "光滑映射具有正则值；正文据此为$f:S^k\\to S^k$选取两个正则值$a,b$，并为延拓映射选取正则值。",
+        "sourcePath": "hopf map.pdf#page=6",
+        "sourceReference": "Sard’s Thm."
+      },
+      {
+        "id": "paper:thm:epsilon-neighborhood-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 5 · ε邻域定理",
+        "shortTitle": "ε邻域定理",
+        "title": "ε邻域定理",
+        "statement": "设$Y$为紧致无边界流形且$\\varepsilon>0$，若$Y^\\varepsilon$是$\\mathbb R^N$中距$Y$小于$\\varepsilon$的点集，则$Y^\\varepsilon$是流形；最近点映射$\\pi:Y^\\varepsilon\\to Y$是浸没，且$\\pi|_Y=\\operatorname{id}_Y$。",
+        "sourcePath": "hopf map.pdf#page=7",
+        "sourceReference": "Epsilon Neighborhood Theorem"
+      },
+      {
+        "id": "paper:thm:extension-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 6 · 延拓定理",
+        "shortTitle": "延拓定理",
+        "title": "延拓定理",
+        "statement": "设$W$为紧致、连通、定向的$(k+1)$维带边流形，$f:\\partial W\\to S^k$为光滑映射。存在光滑映射$\\bar f:W\\to S^k$满足$\\partial\\bar f=f$，当且仅当$\\deg(f)=0$。",
+        "sourcePath": "hopf map.pdf#page=7"
+      },
+      {
+        "id": "paper:def:cylinder-boundary-map",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 6 · 同伦柱边界映射",
+        "shortTitle": "同伦柱边界映射",
+        "title": "同伦柱边界映射",
+        "statement": "给定$f,g:X\\to S^k$，定义$F:\\partial W\\to S^k$，使得$F|_{X\\times\\{0\\}}=f$且$F|_{X\\times\\{1\\}}=g$。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:def:homotopy-cylinder",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 7 · 同伦柱流形",
+        "shortTitle": "同伦柱流形",
+        "title": "同伦柱流形",
+        "statement": "对紧致、连通、定向的$k$维流形$X$，定义乘积流形$W=X\\times I$，其中$I$为单位区间，且$\\partial W=X\\times\\{0,1\\}$。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:thm:hopf-degree-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 7 · Hopf次数定理",
+        "shortTitle": "Hopf次数定理",
+        "title": "Hopf次数定理",
+        "statement": "设$X$为紧致、连通、定向的$k$维流形。两个映射$f,g:X\\to S^k$同伦，当且仅当它们具有相同次数，即$f\\simeq g\\iff\\deg f=\\deg g$。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:thm:transversality-extension-theorem",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 8 · 横截延拓定理",
+        "shortTitle": "横截延拓定理",
+        "title": "横截延拓定理",
+        "statement": "若延拓映射$\\bar f:W\\to\\mathbb R^{k+1}$的零点不是正则值，则可找到与$\\bar f$同伦且以零点为正则值的映射。",
+        "sourcePath": "hopf map.pdf#page=8",
+        "sourceReference": "Transversality Extension Theorem"
+      },
+      {
+        "id": "paper:calc:cylinder-boundary-degree",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 2 · 同伦柱边界映射的次数计算",
+        "shortTitle": "同伦柱边界映射的次数计算",
+        "title": "同伦柱边界映射的次数计算",
+        "statement": "因区间两端取相反定向，$\\deg F=0\\iff I(F,\\{p\\})=0\\iff I(f,\\{p\\})-I(g,\\{p\\})=0\\iff\\deg f=\\deg g$。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:calc:degree-boundary-intersection",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 3 · 延拓映射的度与边界映射的度",
+        "shortTitle": "延拓映射的度与边界映射的度",
+        "title": "延拓映射的度与边界映射的度",
+        "statement": "由交数及区间两端的相反定向，$\\deg F=0\\Longleftrightarrow I(f,\\{p\\})-I(g,\\{p\\})=0\\Longleftrightarrow\\deg f=\\deg g$。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:def:index-of-vector-field-zero",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 8 · 向量场零点的指标",
+        "shortTitle": "向量场零点的指标",
+        "title": "向量场零点的指标",
+        "statement": "将 $\\mathbb R^k$ 上的向量场写成 $\\vec v(x)=(x,v(x))$。零点处的指标等于方向映射 $\\vec v/|\\vec v|$ 的度，也等于 $v$ 绕零点的绕数。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:degree-classifies-homotopy",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 9 · 度对同伦类的分类定理",
+        "shortTitle": "度对同伦类的分类定理",
+        "title": "度对同伦类的分类定理",
+        "statement": "映射 $f$ 与 $g$ 同伦当且仅当 $\\deg f=\\deg g$；特别地，$\\pi_k(S^k)$ 的元素由整数度唯一确定，故 $\\pi_k(S^k)\\cong\\mathbb Z$。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:nonvanishing-vector-field",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 10 · 非消失向量场定理",
+        "shortTitle": "非消失向量场定理",
+        "title": "非消失向量场定理",
+        "statement": "设 $X$ 为紧致、连通、定向流形，则 $X$ 存在非消失向量场，当且仅当其欧拉示性数为零，即 $\\chi(X)=0$。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:thm:nonvanishing-vector-field-euler-characteristic",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 11 · 非消失向量场与Euler示性数定理",
+        "shortTitle": "非消失向量场与Euler示性数定理",
+        "title": "非消失向量场与Euler示性数定理",
+        "statement": "设$X$为紧致、连通、定向流形，则$X$存在处处非零的向量场，当且仅当其Euler示性数为零。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:def:tangent-bundle",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 9 · 切丛",
+        "shortTitle": "切丛",
+        "title": "切丛",
+        "statement": "流形 $X$ 的切丛记为 $TX=\\{(x,v)\\mid x\\in X,\\ v\\in T_x(X)\\}$；若 $\\dim X=k$，则 $\\dim TX=2k$。",
+        "sourcePath": "hopf map.pdf#page=10"
+      },
+      {
+        "id": "paper:thm:poincare-hopf-index",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 12 · 庞加莱－霍普指标定理",
+        "shortTitle": "庞加莱－霍普指标定理",
+        "title": "庞加莱－霍普指标定理",
+        "statement": "若 $\\vec v$ 是紧致定向流形 $X$ 上的光滑向量场，则 $\\vec v$ 的各零点指标之和等于 $X$ 的欧拉示性数：$\\sum\\operatorname{ind}(\\vec v)=\\chi(X)$。",
+        "sourcePath": "hopf map.pdf#page=10",
+        "sourceReference": "Poincare-Hopf Index Theorem"
+      },
+      {
+        "id": "paper:thm:transversality-homotopy",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 13 · 横截同伦定理",
+        "shortTitle": "横截同伦定理",
+        "title": "横截同伦定理",
+        "statement": "向量场 $v$ 的图像可在必要时通过同伦变为 $\\operatorname{graph}(v')$，使其与切丛中的零截面横截。",
+        "sourcePath": "hopf map.pdf#page=10",
+        "sourceReference": "Transversality Homotopy Theorem"
+      },
+      {
+        "id": "paper:calc:euler-characteristic-spheres",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 4 · 球面的欧拉示性数",
+        "shortTitle": "球面的欧拉示性数",
+        "title": "球面的欧拉示性数",
+        "statement": "$\\chi(S^k)=0$（$k$ 为奇数），且 $\\chi(S^k)=2$（$k$ 为偶数）。",
+        "sourcePath": "hopf map.pdf#page=11"
+      },
+      {
+        "id": "paper:calc:euler-characteristic-tori",
+        "entryClass": "fact",
+        "factKind": "calculation",
+        "displayLabel": "计算 · 5 · 环面的欧拉示性数",
+        "shortTitle": "环面的欧拉示性数",
+        "title": "环面的欧拉示性数",
+        "statement": "$\\chi(T^k)=-2(k-2)$。",
+        "sourcePath": "hopf map.pdf#page=11"
+      },
+      {
+        "id": "paper:thm:hairy-ball",
+        "entryClass": "claim",
+        "claimKind": "theorem",
+        "displayLabel": "定理 · 14 · 毛球定理",
+        "shortTitle": "毛球定理",
+        "title": "毛球定理",
+        "statement": "二维球面 $S^2$ 上不存在非消失的光滑向量场。",
+        "sourcePath": "hopf map.pdf#page=11"
+      },
+      {
+        "id": "paper:lem:circle-degree-classification",
+        "entryClass": "claim",
+        "claimKind": "lemma",
+        "displayLabel": "引理 · 4 · 圆周映射的度分类",
+        "shortTitle": "圆周映射的度分类",
+        "title": "圆周映射的度分类",
+        "statement": "度映射给出双射 $\\deg:[S^1,S^1]\\cong\\mathbb Z$；每个整数 $n$ 由映射 $z\\mapsto z^n$ 实现，并且 $f:S^1\\to S^1$ 零伦当且仅当 $\\deg(f)=0$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:prop:remove-zero-compactly",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 6 · 在紧集内消去零点",
+        "shortTitle": "在紧集内消去零点",
+        "title": "在紧集内消去零点",
+        "statement": "设 $f:\\mathbb R^k\\to\\mathbb R^k$ 光滑，$0$ 为正则值，$f^{-1}(0)$ 有限且各原像点的定向数之和为零。则存在 $g:\\mathbb R^k\\to\\mathbb R^k\\setminus\\{0\\}$，使得 $f$ 与 $g$ 在某个紧集之外相等。",
+        "sourcePath": "hopf map.pdf#page=6"
+      },
+      {
+        "id": "paper:prop:euclidean-target-extension",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 7 · 欧氏值边界映射的延拓",
+        "shortTitle": "欧氏值边界映射的延拓",
+        "title": "欧氏值边界映射的延拓",
+        "statement": "若 $W$ 是紧流形且 $f:\\partial W\\to\\mathbb R^{k+1}$ 光滑，则 $f$ 可光滑延拓为 $\\bar f:W\\to\\mathbb R^{k+1}$。",
+        "sourcePath": "hopf map.pdf#page=7"
+      },
+      {
+        "id": "paper:prop:finite-zero-vector-field",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 8 · 有限零点向量场的存在性",
+        "shortTitle": "有限零点向量场的存在性",
+        "title": "有限零点向量场的存在性",
+        "statement": "任意紧流形 $X$ 上都存在仅有有限个孤立零点的光滑向量场。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:prop:localized-zero-vector-field",
+        "entryClass": "claim",
+        "claimKind": "proposition",
+        "displayLabel": "命题 · 9 · 向量场零点的局部化",
+        "shortTitle": "向量场零点的局部化",
+        "title": "向量场零点的局部化",
+        "statement": "设 $X$ 是紧连通流形，$U\\subset X$ 为任意非空开集，则 $X$ 上存在仅有有限个零点且全部零点均位于 $U$ 内的光滑向量场。",
+        "sourcePath": "hopf map.pdf#page=10"
+      },
+      {
+        "id": "paper:def:null-homotopy",
+        "entryClass": "fact",
+        "factKind": "definition",
+        "displayLabel": "定义 · 10 · 零伦与常值同伦",
+        "shortTitle": "零伦与常值同伦",
+        "title": "零伦与常值同伦",
+        "statement": "映射 $f:X\\to Y$ 称为零伦，如果存在常值映射 $c_p:X\\to Y$ 以及同伦 $G:X\\times I\\to Y$，使得 $G(x,0)=c_p(x)$ 且 $G(x,1)=f(x)$。",
+        "sourcePath": "hopf map.pdf#page=5"
+      }
+    ],
+    "inferences": [
+      {
+        "id": "paper:inference:organization:1",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 1 · 绕数与归一化映射次数的恒等式",
+        "shortTitle": "组织 · 绕数与归一化映射次数的恒等式",
+        "title": "组织 绕数与归一化映射次数的恒等式",
+        "statement": "按环绕数定义，将避开点 $z$ 的映射径向归一化到 $S^{n-1}$，得到 $W(f,z)=\\deg((f-z)/|f-z|)$；该定义适用于一般维数的 $S^{n-1}\\to S^{n-1}$。",
+        "premises": [
+          "paper:def:degree",
+          "paper:def:winding-number"
+        ],
+        "conclusion": "paper:calc:winding-degree-normalization",
+        "argument": "按环绕数定义，将避开点 $z$ 的映射径向归一化到 $S^{n-1}$，得到 $W(f,z)=\\deg((f-z)/|f-z|)$；该定义适用于一般维数的 $S^{n-1}\\to S^{n-1}$。",
+        "sourcePath": "hopf map.pdf#page=2"
+      },
+      {
+        "id": "paper:inference:proof:2",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 2 · 正则点处的局部环绕数",
+        "shortTitle": "证明 · 正则点处的局部环绕数",
+        "title": "证明 正则点处的局部环绕数",
+        "statement": "在正则点平移坐标后写成 $f(x)=Ax+\\varepsilon(x)$。在充分小球面上，归一化映射同伦于线性同构 $A$；线性同痕引理将 $A$ 化为恒等或反射，故局部环绕数分别为 $+1$ 或 $-1$。",
+        "premises": [
+          "paper:def:degree",
+          "paper:def:winding-number",
+          "paper:thm:taylor-expansion-at-regular-point",
+          "paper:lem:linear-isotopy-lemma"
+        ],
+        "conclusion": "paper:prop:local-winding-number-at-regular-point",
+        "argument": "在正则点平移坐标后写成 $f(x)=Ax+\\varepsilon(x)$。在充分小球面上，归一化映射同伦于线性同构 $A$；线性同痕引理将 $A$ 化为恒等或反射，故局部环绕数分别为 $+1$ 或 $-1$。",
+        "sourcePath": "hopf map.pdf#page=3"
+      },
+      {
+        "id": "paper:inference:proof:3",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 3 · 边界环绕数与定向数之和",
+        "shortTitle": "证明 · 边界环绕数与定向数之和",
+        "title": "证明 边界环绕数与定向数之和",
+        "statement": "用互不相交的小球包围正则值 $z$ 的各原像。每个小球边界的环绕数由局部命题等于该点的定向数；其余区域上的方向映射可延拓，边界贡献为零，因此总环绕数等于所有局部定向数之和。",
+        "premises": [
+          "paper:def:oriented-intersection-number",
+          "paper:def:winding-number",
+          "paper:prop:local-winding-number-at-regular-point"
+        ],
+        "conclusion": "paper:prop:boundary-winding-number-orientation-sum",
+        "argument": "用互不相交的小球包围正则值 $z$ 的各原像。每个小球边界的环绕数由局部命题等于该点的定向数；其余区域上的方向映射可延拓，边界贡献为零，因此总环绕数等于所有局部定向数之和。",
+        "sourcePath": "hopf map.pdf#page=4"
+      },
+      {
+        "id": "paper:inference:proof:4",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 4 · 零同伦边界映射的延拓",
+        "shortTitle": "证明 · 零同伦边界映射的延拓",
+        "title": "证明 零同伦边界映射的延拓",
+        "statement": "取边界映射到常值映射的同伦 $G$，在球内沿径向令 $f(tx)=G(x,t)$。常值端保证球心定义无歧义，再以鼓包函数使同伦在两端恒定，从而与球外原映射光滑拼接。",
+        "premises": [
+          "paper:def:null-homotopy"
+        ],
+        "conclusion": "paper:prop:nullhomotopic-boundary-extension",
+        "argument": "取边界映射到常值映射的同伦 $G$，在球内沿径向令 $f(tx)=G(x,t)$。常值端保证球心定义无歧义，再以鼓包函数使同伦在两端恒定，从而与球外原映射光滑拼接。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:5",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 5 · 圆周映射的度分类",
+        "shortTitle": "证明 · 圆周映射的度分类",
+        "title": "证明 圆周映射的度分类",
+        "statement": "参数化圆周后，映射绕圆周的净圈数就是整数度；度为 $n$ 的映射可沿参数同伦到 $z\\mapsto z^n$。因此度完全分类圆周映射，特别地度为零当且仅当映射可收缩到常值映射。",
+        "premises": [
+          "paper:def:degree",
+          "paper:def:null-homotopy"
+        ],
+        "conclusion": "paper:lem:circle-degree-classification",
+        "argument": "参数化圆周后，映射绕圆周的净圈数就是整数度；度为 $n$ 的映射可沿参数同伦到 $z\\mapsto z^n$。因此度完全分类圆周映射，特别地度为零当且仅当映射可收缩到常值映射。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:6",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 6 · 在紧集内消去零点",
+        "shortTitle": "证明 · 在紧集内消去零点",
+        "title": "证明 在紧集内消去零点",
+        "statement": "取包含全部零点的球。其边界方向映射的度等于零点定向数之和，故为零；按维数归纳，边界映射零伦，再由球内延拓命题替换球内部分，得到避开原点且仅在紧集内不同于 $f$ 的映射。",
+        "premises": [
+          "paper:lem:circle-degree-classification",
+          "paper:prop:boundary-winding-number-orientation-sum",
+          "paper:prop:nullhomotopic-boundary-extension"
+        ],
+        "conclusion": "paper:prop:remove-zero-compactly",
+        "argument": "取包含全部零点的球。其边界方向映射的度等于零点定向数之和，故为零；按维数归纳，边界映射零伦，再由球内延拓命题替换球内部分，得到避开原点且仅在紧集内不同于 $f$ 的映射。",
+        "sourcePath": "hopf map.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:proof:7",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 7 · 零度球面映射零同伦命题",
+        "shortTitle": "证明 · 零度球面映射零同伦命题",
+        "title": "证明 零度球面映射零同伦命题",
+        "statement": "以圆周分类为归纳基。选取两个正则值并用同痕调整原像位置，在球面坐标与立体投影下化为 $\\mathbb R^k\\to\\mathbb R^k$。零度使原像定向数和为零，紧集内消去零点后像落入可缩的穿孔球面，因而原映射零伦。",
+        "premises": [
+          "paper:lem:circle-degree-classification",
+          "paper:thm:sard-theorem",
+          "paper:lemma:isotopy-lemma",
+          "paper:prop:remove-zero-compactly"
+        ],
+        "conclusion": "paper:prop:degree-zero-sphere-map-nullhomotopic",
+        "argument": "以圆周分类为归纳基。选取两个正则值并用同痕调整原像位置，在球面坐标与立体投影下化为 $\\mathbb R^k\\to\\mathbb R^k$。零度使原像定向数和为零，紧集内消去零点后像落入可缩的穿孔球面，因而原映射零伦。",
+        "sourcePath": "hopf map.pdf#page=6"
+      },
+      {
+        "id": "paper:inference:proof:8",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 8 · 推论：零绕数映射零伦",
+        "shortTitle": "证明 · 推论：零绕数映射零伦",
+        "title": "证明 推论：零绕数映射零伦",
+        "statement": "径向归一化给出 $\\mathbb R^n\\setminus\\{0\\}\\simeq S^{n-1}$。环绕数就是归一化映射的度；若其为零，球面零度命题给出零伦，再经径向变形收缩返回穿孔欧氏空间。",
+        "premises": [
+          "paper:calc:winding-degree-normalization",
+          "paper:prop:degree-zero-sphere-map-nullhomotopic"
+        ],
+        "conclusion": "paper:cor:zero-winding-null-homotopy",
+        "argument": "径向归一化给出 $\\mathbb R^n\\setminus\\{0\\}\\simeq S^{n-1}$。环绕数就是归一化映射的度；若其为零，球面零度命题给出零伦，再经径向变形收缩返回穿孔欧氏空间。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:9",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 9 · 零环绕数的穿孔欧氏空间映射零同伦命题",
+        "shortTitle": "证明 · 零环绕数的穿孔欧氏空间映射零同伦命题",
+        "title": "证明 零环绕数的穿孔欧氏空间映射零同伦命题",
+        "statement": "利用 $\\mathbb R^{k+1}\\setminus\\{0\\}\\simeq S^k$ 的径向变形收缩，穿孔空间中的映射零伦当且仅当其归一化球面映射零伦；零环绕数正是该球面映射度为零。",
+        "premises": [
+          "paper:cor:zero-winding-null-homotopy"
+        ],
+        "conclusion": "paper:prop:zero-winding-punctured-euclidean-map-nullhomotopic",
+        "argument": "利用 $\\mathbb R^{k+1}\\setminus\\{0\\}\\simeq S^k$ 的径向变形收缩，穿孔空间中的映射零伦当且仅当其归一化球面映射零伦；零环绕数正是该球面映射度为零。",
+        "sourcePath": "hopf map.pdf#page=5"
+      },
+      {
+        "id": "paper:inference:proof:10",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 10 · 欧氏值边界映射的延拓",
+        "shortTitle": "证明 · 欧氏值边界映射的延拓",
+        "title": "证明 欧氏值边界映射的延拓",
+        "statement": "用 $\\varepsilon$ 邻域定理将边界增厚，并以最近点投影把边界映射延至邻域；乘以支撑在该邻域内且边界上取值为 $1$ 的鼓包函数，再在邻域外置零，最后限制到 $W$。",
+        "premises": [
+          "paper:thm:epsilon-neighborhood-theorem"
+        ],
+        "conclusion": "paper:prop:euclidean-target-extension",
+        "argument": "用 $\\varepsilon$ 邻域定理将边界增厚，并以最近点投影把边界映射延至邻域；乘以支撑在该邻域内且边界上取值为 $1$ 的鼓包函数，再在邻域外置零，最后限制到 $W$。",
+        "sourcePath": "hopf map.pdf#page=7"
+      },
+      {
+        "id": "paper:inference:organization:11",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 11 · 延拓映射的度与边界映射的度",
+        "shortTitle": "组织 · 延拓映射的度与边界映射的度",
+        "title": "组织 延拓映射的度与边界映射的度",
+        "statement": "把度写为与正则点的有向交数，并按边界诱导定向分解交点贡献，得到延拓映射内部交数与边界映射次数之间的关系。",
+        "premises": [
+          "paper:def:degree",
+          "paper:def:oriented-intersection-number"
+        ],
+        "conclusion": "paper:calc:degree-boundary-intersection",
+        "argument": "把度写为与正则点的有向交数，并按边界诱导定向分解交点贡献，得到延拓映射内部交数与边界映射次数之间的关系。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:12",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 12 · 延拓定理",
+        "shortTitle": "证明 · 延拓定理",
+        "title": "证明 延拓定理",
+        "statement": "先将边界映射延拓到 $\\mathbb R^{k+1}$，再用保持边界的横截延拓使 $0$ 成为正则值。零度使包围全部零点的球面映射环绕数为零，故可在球内改成避开原点的延拓；径向归一化后得到到 $S^k$ 的延拓。反向由边界交数公式推出度为零。",
+        "premises": [
+          "paper:prop:euclidean-target-extension",
+          "paper:thm:transversality-extension-theorem",
+          "paper:lemma:isotopy-lemma",
+          "paper:prop:zero-winding-punctured-euclidean-map-nullhomotopic",
+          "paper:prop:nullhomotopic-boundary-extension",
+          "paper:calc:degree-boundary-intersection"
+        ],
+        "conclusion": "paper:thm:extension-theorem",
+        "argument": "先将边界映射延拓到 $\\mathbb R^{k+1}$，再用保持边界的横截延拓使 $0$ 成为正则值。零度使包围全部零点的球面映射环绕数为零，故可在球内改成避开原点的延拓；径向归一化后得到到 $S^k$ 的延拓。反向由边界交数公式推出度为零。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:organization:13",
+        "operationKind": "organization",
+        "displayLabel": "组织 · 13 · 同伦柱边界映射的次数计算",
+        "shortTitle": "组织 · 同伦柱边界映射的次数计算",
+        "title": "组织 同伦柱边界映射的次数计算",
+        "statement": "对 $W=X\\times I$ 采用边界诱导定向，两个端面方向相反，因此边界映射 $F$ 的次数为 $\\deg(F)=\\deg(f)-\\deg(g)$。",
+        "premises": [
+          "paper:def:cylinder-boundary-map",
+          "paper:def:homotopy-cylinder",
+          "paper:def:degree",
+          "paper:def:oriented-intersection-number"
+        ],
+        "conclusion": "paper:calc:cylinder-boundary-degree",
+        "argument": "对 $W=X\\times I$ 采用边界诱导定向，两个端面方向相反，因此边界映射 $F$ 的次数为 $\\deg(F)=\\deg(f)-\\deg(g)$。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:14",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 14 · Hopf次数定理",
+        "shortTitle": "证明 · Hopf次数定理",
+        "title": "证明 Hopf次数定理",
+        "statement": "在同伦柱 $W=X\\times I$ 的两个端面分别放置 $f$ 与 $g$。边界映射的度为 $\\deg(f)-\\deg(g)$；由延拓定理，它恰在两映射同度时延拓到整个柱体，而该延拓正是一条从 $f$ 到 $g$ 的同伦。反向由同伦不变性得到。",
+        "premises": [
+          "paper:thm:extension-theorem",
+          "paper:calc:cylinder-boundary-degree"
+        ],
+        "conclusion": "paper:thm:hopf-degree-theorem",
+        "argument": "在同伦柱 $W=X\\times I$ 的两个端面分别放置 $f$ 与 $g$。边界映射的度为 $\\deg(f)-\\deg(g)$；由延拓定理，它恰在两映射同度时延拓到整个柱体，而该延拓正是一条从 $f$ 到 $g$ 的同伦。反向由同伦不变性得到。",
+        "sourcePath": "hopf map.pdf#page=8"
+      },
+      {
+        "id": "paper:inference:proof:15",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 15 · 度对同伦类的分类定理",
+        "shortTitle": "证明 · 度对同伦类的分类定理",
+        "title": "证明 度对同伦类的分类定理",
+        "statement": "霍普夫度定理说明两个等维球面映射同伦当且仅当次数相同，故整数度在同伦类上既良定义又单射；整数次数由标准度数映射实现，因此度给出完整分类。",
+        "premises": [
+          "paper:thm:hopf-degree-theorem"
+        ],
+        "conclusion": "paper:thm:degree-classifies-homotopy",
+        "argument": "霍普夫度定理说明两个等维球面映射同伦当且仅当次数相同，故整数度在同伦类上既良定义又单射；整数次数由标准度数映射实现，因此度给出完整分类。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:16",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 16 · 霍普夫度定理",
+        "shortTitle": "证明 · 霍普夫度定理",
+        "title": "证明 霍普夫度定理",
+        "statement": "度与球面映射的同伦类运算相容，并由分类定理给出同伦类与整数的一一对应，故 $\\pi_k(S^k)\\cong\\mathbb Z$。",
+        "premises": [
+          "paper:thm:degree-classifies-homotopy"
+        ],
+        "conclusion": "paper:thm:hopf-degree-homotopy-group",
+        "argument": "度与球面映射的同伦类运算相容，并由分类定理给出同伦类与整数的一一对应，故 $\\pi_k(S^k)\\cong\\mathbb Z$。",
+        "sourcePath": "hopf map.pdf#page=12"
+      },
+      {
+        "id": "paper:inference:proof:17",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 17 · 非消失向量场定理",
+        "shortTitle": "证明 · 非消失向量场定理",
+        "title": "证明 非消失向量场定理",
+        "statement": "在 $\\mathbb R^k$ 的平凡切丛中把向量场写为 $(x,v(x))$。孤立零点指标等于方向映射的局部度；指标总和为零时，对 $v$ 应用紧集内消去零点命题，所得非零映射定义无零向量场，并在紧集外保持不变。",
+        "premises": [
+          "paper:def:index-of-vector-field-zero",
+          "paper:prop:remove-zero-compactly"
+        ],
+        "conclusion": "paper:thm:nonvanishing-vector-field",
+        "argument": "在 $\\mathbb R^k$ 的平凡切丛中把向量场写为 $(x,v(x))$。孤立零点指标等于方向映射的局部度；指标总和为零时，对 $v$ 应用紧集内消去零点命题，所得非零映射定义无零向量场，并在紧集外保持不变。",
+        "sourcePath": "hopf map.pdf#page=9"
+      },
+      {
+        "id": "paper:inference:proof:18",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 18 · 有限零点向量场的存在性",
+        "shortTitle": "证明 · 有限零点向量场的存在性",
+        "title": "证明 有限零点向量场的存在性",
+        "statement": "在切丛中考察向量场图像与零截面的交。用一般横截同伦将图像扰动为横截零截面；二者维数互补，交集为离散零维集，而底流形紧致使该交集有限，恰对应有限个孤立零点。",
+        "premises": [
+          "paper:def:tangent-bundle",
+          "paper:thm:transversality-homotopy"
+        ],
+        "conclusion": "paper:prop:finite-zero-vector-field",
+        "argument": "在切丛中考察向量场图像与零截面的交。用一般横截同伦将图像扰动为横截零截面；二者维数互补，交集为离散零维集，而底流形紧致使该交集有限，恰对应有限个孤立零点。",
+        "sourcePath": "hopf map.pdf#page=10"
+      },
+      {
+        "id": "paper:inference:proof:19",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 19 · 向量场零点的局部化",
+        "shortTitle": "证明 · 向量场零点的局部化",
+        "title": "证明 向量场零点的局部化",
+        "statement": "先取仅有有限零点的向量场，再用同痕引理构造与恒等同痕的微分同胚，将指定开集外的有限零点全部移入开集；相应推送或拉回向量场后，零点仍有限且全部位于该开集。",
+        "premises": [
+          "paper:prop:finite-zero-vector-field",
+          "paper:lemma:isotopy-lemma"
+        ],
+        "conclusion": "paper:prop:localized-zero-vector-field",
+        "argument": "先取仅有有限零点的向量场，再用同痕引理构造与恒等同痕的微分同胚，将指定开集外的有限零点全部移入开集；相应推送或拉回向量场后，零点仍有限且全部位于该开集。",
+        "sourcePath": "hopf map.pdf#page=10"
+      },
+      {
+        "id": "paper:inference:proof:20",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 20 · 非消失向量场与Euler示性数定理",
+        "shortTitle": "证明 · 非消失向量场与Euler示性数定理",
+        "title": "证明 非消失向量场与Euler示性数定理",
+        "statement": "先把有限孤立零点局部化到一个坐标邻域。庞加莱－霍普定理给出其指标和等于 $\\chi(X)$；若 $\\chi(X)=0$，在该坐标邻域内应用欧氏空间消零结果得到全局无零向量场。反之，无零向量场没有零点，指标和为零，故 $\\chi(X)=0$。",
+        "premises": [
+          "paper:prop:finite-zero-vector-field",
+          "paper:prop:localized-zero-vector-field",
+          "paper:thm:nonvanishing-vector-field",
+          "paper:thm:poincare-hopf-index"
+        ],
+        "conclusion": "paper:thm:nonvanishing-vector-field-euler-characteristic",
+        "argument": "先把有限孤立零点局部化到一个坐标邻域。庞加莱－霍普定理给出其指标和等于 $\\chi(X)$；若 $\\chi(X)=0$，在该坐标邻域内应用欧氏空间消零结果得到全局无零向量场。反之，无零向量场没有零点，指标和为零，故 $\\chi(X)=0$。",
+        "sourcePath": "hopf map.pdf#page=10"
+      },
+      {
+        "id": "paper:inference:proof:21",
+        "operationKind": "proof",
+        "displayLabel": "证明 · 21 · 毛球定理",
+        "shortTitle": "证明 · 毛球定理",
+        "title": "证明 毛球定理",
+        "statement": "由 $\\chi(S^n)=1+(-1)^n$，偶数维球面的欧拉示性数为 $2$，故不存在处处非零的光滑切向量场；奇数维球面的欧拉示性数为 $0$，因而存在非消失向量场。特别地，$S^2$ 上不存在非消失光滑切向量场。",
+        "premises": [
+          "paper:thm:nonvanishing-vector-field-euler-characteristic",
+          "paper:calc:euler-characteristic-spheres"
+        ],
+        "conclusion": "paper:thm:hairy-ball",
+        "argument": "由 $\\chi(S^n)=1+(-1)^n$，偶数维球面的欧拉示性数为 $2$，故不存在处处非零的光滑切向量场；奇数维球面的欧拉示性数为 $0$，因而存在非消失向量场。特别地，$S^2$ 上不存在非消失光滑切向量场。",
+        "sourcePath": "hopf map.pdf#page=11"
+      }
+    ],
+    "projectTitle": "霍普夫度定理：同伦群与向量场"
+  }
+}

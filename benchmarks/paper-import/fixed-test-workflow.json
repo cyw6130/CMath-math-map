@@ -60,7 +60,7 @@
  "cases": [
   {
    "caseId": "hopf-degree-theorem",
-   "sourcePdf": "/Users/chenyuwen/Desktop/hopf map.pdf"
+   "sourcePdf": "/Users/chenyuwen/Desktop/PDF/hopf map.pdf"
   },
   {
    "caseId": "knot-hopf-rt",
@@ -68,15 +68,15 @@
   },
   {
    "caseId": "4-dim-skein-modules-handles-tangles",
-   "sourcePdf": "/Users/chenyuwen/Desktop/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf"
+   "sourcePdf": "/Users/chenyuwen/Desktop/PDF/4-DIMENSIONAL SKEIN MODULES, HANDLE ATTACHMENTS, AND TANGLES.pdf"
   },
   {
    "caseId": "cornered-skein-lasagna-theory",
-   "sourcePdf": "/Users/chenyuwen/Desktop/CORNERED SKEIN LASAGNA THEORY.pdf"
+   "sourcePdf": "/Users/chenyuwen/Desktop/PDF/CORNERED SKEIN LASAGNA THEORY.pdf"
   },
   {
    "caseId": "yasui-2019-geometrically-simply-connected-4-manifolds",
-   "sourcePdf": "/Users/chenyuwen/Desktop/文章1.pdf"
+   "sourcePdf": "/Users/chenyuwen/Desktop/PDF/文章1.pdf"
   }
  ],
  "retiredCases": [

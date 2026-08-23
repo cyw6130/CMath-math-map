@@ -1,0 +1,23 @@
+{
+  "schema": "cmath.paper-import-fixed-test-run/v3",
+  "workflowId": "paper-import-fixed-multi-model-benchmark",
+  "protocolVersion": "1.3",
+  "subject": "sol-medium",
+  "caseId": "hopf-degree-theorem",
+  "workflowUnderTest": "v3.9.3",
+  "provider": "luna-gateway",
+  "model": "gpt-5.6-sol",
+  "reasoningEffort": "medium",
+  "mode": "medium-compact",
+  "goldRevision": "v2",
+  "promptVersion": "sol-score-prompt-v3",
+  "startedAt": "2026-08-23T18:56:34.644Z",
+  "generationDurationMs": 2926,
+  "scoringDurationMs": 0,
+  "status": "generation-failed",
+  "artifact": "benchmarks/model-outputs/fixed-1.3/hopf-degree-theorem-sol-medium-v3.9.3-20260823T185634Z.failed.json",
+  "solScore": null,
+  "solScoreArtifact": null,
+  "solScoreStatus": "not-applicable",
+  "scoringNote": "solScore from gpt-5.6-sol is the only official score; deterministic machine scores are not part of this workflow"
+}
