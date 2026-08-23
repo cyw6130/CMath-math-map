@@ -891,6 +891,11 @@
         } catch (repairErr) {
           try { require('fs').writeFileSync('/tmp/ox-block1-raw.json', candidate); } catch {}
           try { require('fs').writeFileSync('/tmp/ox-block1-repaired.json', repaired); } catch {}
+          // Last resort: strip all bare control chars globally (Ox mixes)
+          try {
+            const stripped2 = repaired.replace(/[\x00-\x1F\x7F]/gu, " ");
+            return JSON.parse(stripped2);
+          } catch (_) {}
           throw new Error(`JSON 修复后解析仍失败: ${repairErr.message}`);
         }
       }
