@@ -280,8 +280,10 @@
   function canonicalizeEntry(entry) {
     const cleaned = cleanEntryFields(entry);
     if (!isObject(cleaned)) return cleaned;
-    const rawKind = cleaned.factKind ?? cleaned.claimKind ?? cleaned.type ?? cleaned.kind
-      ?? (cleaned.entryClass !== "fact" && cleaned.entryClass !== "claim" ? cleaned.entryClass : null);
+    const hasCanonicalDiscriminant = cleaned.entryClass === "fact" || cleaned.entryClass === "claim"
+      || "factKind" in cleaned || "claimKind" in cleaned;
+    if (hasCanonicalDiscriminant) return cleaned;
+    const rawKind = cleaned.type ?? cleaned.kind ?? cleaned.entryClass;
     const kind = typeof rawKind === "string" ? rawKind.trim().toLowerCase() : "";
     const fact = ["definition", "algorithm", "calculation"].includes(kind);
     const claim = ["lemma", "proposition", "theorem"].includes(kind);

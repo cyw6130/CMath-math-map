@@ -299,6 +299,16 @@ describe("Regression: Proof closure, cycles, boundary invariants, and single aut
     assert.equal(grounded.claimStates["c:claim:B"], "established");
   });
 
+  it("a self-contained proof establishes its Claim", () => {
+    const entries = [
+      { id: "c:self", entryClass: "claim", claimKind: "theorem", title: "Self-contained Claim", statement: "Statement" },
+    ];
+    const closure = semantics.computeClaimClosure(entries, [
+      { id: "inf:self", operationKind: "proof", title: "Direct proof", premises: [], conclusion: "c:self", argument: "Assume the negation and derive a contradiction." },
+    ], { b0ClaimEntryIds: [] });
+    assert.equal(closure.claimStates["c:self"], "established");
+  });
+
   it("Kirby external entries are B0 and have no proof conclusions", () => {
     const kirbyGold = JSON.parse(fs.readFileSync(path.join(casesRoot, "kirby-2018-trisections", "gold-project-view.json"), "utf8"));
     const kirbySpec = JSON.parse(fs.readFileSync(path.join(casesRoot, "kirby-2018-trisections", "benchmark-spec.json"), "utf8"));

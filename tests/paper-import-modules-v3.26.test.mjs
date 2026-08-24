@@ -13,6 +13,10 @@ test("v3.26 modular artifacts are independently stamped", () => {
   assert.equal(stamped.moduleMetadata.module, "entry");
   assert.equal(stamped.moduleMetadata.backbone, "v3.26");
   assert.equal(original.moduleMetadata, undefined);
+  assert.equal(stamped.entries[0].entryClass, "claim");
+  assert.equal(stamped.entries[0].claimKind, "theorem");
+  assert.equal("type" in stamped.entries[0], false);
+  assert.equal("kind" in stamped.entries[0], false);
   const inference = modules.createInferenceModuleArtifact({ entryArtifact: stamped, caseId: "sample", inferenceResult: { workflowVersion: "v3.26", view: { schema: "cmath.project-view-model/v0.1", projectTitle: "Sample", mainTargetEntryId: "e1", entries: [{ id: "e1", entryClass: "claim", claimKind: "theorem", title: "Theorem", shortTitle: "Theorem", statement: "$x=x$", sourcePath: "sample.pdf#page=1" }], inferences: [], derivedResearchState: { mathematicalState: { b0ClaimEntryIds: [] } } } } });
   assert.equal(inference.schema, modules.INFERENCE_ARTIFACT_SCHEMA);
   assert.equal(inference.moduleMetadata.module, "inference");

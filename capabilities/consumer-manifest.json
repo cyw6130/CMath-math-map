@@ -714,8 +714,8 @@
       "version": "v2",
       "canonicalSource": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
       "target": "math-map-semantics.js",
-      "contentHash": "sha256:7fbf4121b3da2fce34944fc483f9fbdeecea40f031bec9a19703413af9f98d46",
-      "distributedHash": "sha256:0100fdd44ae70cdcd357f98cb98e5d9baeb6f89a37170c1063d217870a0ce3a6"
+      "contentHash": "sha256:1110d85785303473ab0803b1c1d5ed232bd7798904d7a25af57f181a799db023",
+      "distributedHash": "sha256:3ce0138895ddd5e53631f0f249abd7aadcba14cf6edb8612dd4899066dfab8eb"
     },
     {
       "packageId": "math-map-naming-v2",

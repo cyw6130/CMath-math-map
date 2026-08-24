@@ -26,8 +26,11 @@
 
   function createEntryModuleArtifact(artifact, { caseId = null, sourceArtifact = null } = {}) {
     if (!isObject(artifact)) throw new Error("Entry artifact must be an object");
-    if (entryContract?.validatePaperEntryArtifact) entryContract.validatePaperEntryArtifact(artifact);
-    const result = cloneJson(artifact);
+    const canonical = entryContract?.createPaperEntryArtifact
+      ? entryContract.createPaperEntryArtifact(artifact)
+      : cloneJson(artifact);
+    if (entryContract?.validatePaperEntryArtifact) entryContract.validatePaperEntryArtifact(canonical);
+    const result = cloneJson(canonical);
     result.moduleMetadata = moduleMetadata("entry", ENTRY_MODULE_VERSION, {
       ...(caseId ? { caseId } : {}), ...(sourceArtifact ? { sourceArtifact } : {}),
     });

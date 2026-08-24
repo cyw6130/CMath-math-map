@@ -219,6 +219,20 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       /claimKind.*lemma\|proposition\|theorem/u,
     );
   });
+
+    const canonicalConflict = structuredClone(validV11Artifact);
+    canonicalConflict.entries[0].factKind = "theorem";
+    assert.throws(
+      () => createPaperEntryArtifact(canonicalConflict),
+      /factKind.*definition\|algorithm\|calculation/u,
+    );
+
+    const mixedKinds = structuredClone(validV11Artifact);
+    mixedKinds.entries[0].claimKind = "theorem";
+    assert.throws(
+      () => createPaperEntryArtifact(mixedKinds),
+      /Fact.*不能包含 claimKind/u,
+    );
   });
 
 
