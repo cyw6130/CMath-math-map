@@ -6,23 +6,20 @@
 
 ### 地图模型
 
-**Entry**: 论文中明确编号或命名的清晰数学命题，具备完整假设、量词与关键依赖。不是任意说明性文字或段落拆解。
-_Avoid_: 论点、条目（泛指任意文本片段时）、随便一句话的摘录
+**Entry**: 论文中明确编号或命名的清晰数学命题，具备完整假设、量词与关键依赖。资格只看内容三要件——原文可追溯的命名（含以标准数学术语命名的原文构造）、清晰的数学内容、承重依赖——与出现的段落位置无关；背景小节里的正经定义同样入选。不是任意说明性文字或段落拆解。
+_Avoid_: 论点、条目（泛指任意文本片段时）、随便一句话的摘录、以段落位置否定条目资格
 
-**Fact**: 属于 Entry 的一种，类型仅为 `definition | algorithm | calculation`。
-_Avoid_: 公理、常识（泛称）
+**Fact**: 属于 Entry 的一种，类型仅为 `definition | algorithm | calculation`。概念、记号与操作性定义属于此类（如鼓包函数、泰勒展开），无论其在原文中是独立小节还是行内给出。
+_Avoid_: 公理、常识（泛称）、把定义性工具误判为非条目
 
-**Claim**: 属于 Entry 的一种，类型仅为 `lemma | proposition | theorem`，可为已证明或论文明确提出但未证明的正式陈述。
-_Avoid_: 猜想、草稿（作为独立类型时）
+**Claim**: 属于 Entry 的一种，类型仅为 `lemma | proposition | theorem`，可为已证明或论文明确提出但未证明的正式陈述。关于存在性或性质的命题性陈述（如"某类函数存在泰勒展开"）属于此类，而非 definition。
+_Avoid_: 猜想、草稿（作为独立类型时）、与 definition 的形态混淆
 
 **Inference**: Entry 之间的推理关系，`proof` 从若干 Fact/Claim 证一个 Claim，`organization` 仅连 Fact 到 Fact。
 _Avoid_: 推导、关系（泛指非证明/组织关系时）
 
-**Project View**: 供前端渲染与存储的规范化地图包，含 Entry、Inference、B0、主目标等完整结构；也是 Benchmark 中挑选出的满意版本的成品包，进入 Map Integration 后成为数学地图中的版本化产物。
-_Avoid_: 地图 JSON、视图对象（泛称）
-
-**B0**: 外部前提清单，论文直接调用但未自行证明的外部 Claim 集合。
-_Avoid_: 外部结果（未指明 B0 语义时）、引用列表
+**B0**: 外部前提清单，论文直接调用但未自行证明的外部 Claim 集合。仅收命题形外部结果；定义性工具按其自身立为 Fact，不入 B0。
+_Avoid_: 外部结果（未指明 B0 语义时）、引用列表、把定义性工具塞入 B0
 
 **Closure**: 依 Fact 与 B0 可用、proof 沿依赖传递建立的闭包判定，用于派生 Claim 的 established/open 状态。
 _Avoid_: 闭合检查（泛指任意校验时）
