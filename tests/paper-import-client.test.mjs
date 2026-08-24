@@ -462,6 +462,7 @@ test("returns proof-to-Fact violations to the model and applies the targeted fix
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "secret-key-123",
     model: "deepseek-chat",
+    workflowVersion: "v3.45",
     fetchImpl,
     onStage: (stage) => stageLog.push(stage),
   });
@@ -476,6 +477,9 @@ test("returns proof-to-Fact violations to the model and applies the targeted fix
   assert.equal(repairMessages.length, 3);
   assert.equal(repairMessages[1].role, "assistant");
   assert.match(repairMessages[2].content, /proof 必须以 Claim 为结论/u);
+  assert.match(repairMessages[2].content, /保留论文真实存在的 Claim 互推或等价循环 proof/u);
+  assert.match(repairMessages[2].content, /没有已建立的外部入口.*Closure 中保持 open/u);
+  assert.doesNotMatch(repairMessages[2].content, /循环证明依赖必须断开/u);
 
   // 模型修正后的结果进入地图
   assert.equal(view.entries.length, 3);

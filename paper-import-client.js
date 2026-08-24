@@ -788,7 +788,7 @@
       + `- 只输出修复后的完整 JSON：{"projectTitle","mainTargetEntryId","b0","inferences"}，形状与之前一致。\n`
       + `- 若问题出在 Entry 本体（缺少 source、statement 缺失或公式定界符未配对等），在 JSON 顶层增加 "fixedEntries" 数组，放入这些 Entry 的完整修正版本（id 不变，字段与 Entry 提取的紧凑形状一致）；若某个 premise/conclusion 指向的条目在目录中不存在，也在 fixedEntries 中补充该条目（新 id，完整字段）后再引用它。其余 Entry 不要重复输出。\n`
       + `- 不要为了消除错误而删除论文中真实存在的证明关系；优先修正 premises/conclusion 指向或补齐字段。\n`
-      + `- 循环证明依赖必须断开：删除或调整成环的 proof。`;
+      + `- 保留论文真实存在的 Claim 互推或等价循环 proof；循环本身不能自证，若没有已建立的外部入口，相关 Claim 在 Closure 中保持 open。只删除 conclusion 同时出现在自身 premises 中的直接自依赖。`;
   }
 
   function applyEntryPatches(entries, patches) {
