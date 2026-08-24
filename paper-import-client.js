@@ -1322,7 +1322,10 @@
     let lastMerged = null;
     let lastIssues = ["装配没有产出有效输出"];
     let truncated = false;
-    const maxRounds = Number(process.env.INFERENCE_MAX_ROUNDS || 4);
+    const configuredMaxRounds = typeof process === "object" && process?.env
+      ? process.env.INFERENCE_MAX_ROUNDS
+      : undefined;
+    const maxRounds = Number(configuredMaxRounds || 4);
     for (let round = 0; round < maxRounds; round += 1) {
       const maxTokens = truncated ? (tokenBudget?.retry ?? 32000) : (tokenBudget?.normal ?? 16000);
       const { content, finishReason } = await executeChatCall(messages, maxTokens);

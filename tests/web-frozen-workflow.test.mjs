@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
@@ -73,6 +74,51 @@ test("client exports frozen workflow runtime constants (V4.1)", () => {
   assert.equal(client.FROZEN_WORKFLOW.label, "V4.1");
   assert.equal(client.FROZEN_WORKFLOW.entryExtractionVersion, FROZEN_ENTRY);
   assert.equal(client.FROZEN_WORKFLOW.inferenceRuntimeVersion, FROZEN_INFERENCE_RUNTIME);
+});
+
+test("frozen web inference runs without the Node.js process global", () => {
+  const script = `
+    const nodeProcess = process;
+    const client = require(nodeProcess.argv[1]);
+    delete globalThis.process;
+    client.requestPaperInferenceFromEntryArtifact({
+      artifact: {
+        source: { fileName: "repro.pdf", sourceText: "[[PAGE 1]] theorem", pageCount: 1 },
+        entries: [{
+          id: "claim:main",
+          entryClass: "claim",
+          claimKind: "theorem",
+          name: "主定理",
+          statement: "命题成立。",
+          page: 1,
+        }],
+      },
+      chatImpl: async () => ({
+        content: JSON.stringify({
+          projectTitle: "Browser Repro",
+          mainTargetEntryId: "claim:main",
+          b0: [],
+          inferences: [{
+            operationKind: "proof",
+            premises: [],
+            conclusion: "claim:main",
+            argument: "由定义直接完成全部论证。",
+            page: 1,
+          }],
+        }),
+      }),
+      workflowVersion: "v3.45",
+    }).then(() => nodeProcess.stdout.write("OK\\n")).catch((error) => {
+      nodeProcess.stderr.write(String(error?.stack ?? error));
+      nodeProcess.exitCode = 1;
+    });
+  `;
+  const result = spawnSync(process.execPath, ["-e", script, path.join(root, "paper-import-client.js")], {
+    encoding: "utf8",
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout, "OK\n");
 });
 
 test("web import routes through frozen V4.1 pipeline (no legacy integrate stage)", async () => {
