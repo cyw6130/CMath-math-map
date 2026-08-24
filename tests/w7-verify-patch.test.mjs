@@ -51,3 +51,13 @@ test("applyPatch merges补漏 entries and corrects weakened notations", async ()
   assert.equal(result.entries.find((e) => e.id === "paper:def:existing").statement, "已有（订正后更精确）");
   assert.ok(result.entries.find((e) => e.id === "paper:def:functorial-conditions"));
 });
+
+test("applyPatch preserves the laboratory merge semantics for an unclassified model addition", async () => {
+  const { applyPatch } = await import("../scripts/verify-and-patch-with-spark.mjs");
+  const result = applyPatch({ entries: [] }, {
+    addEntries: [{ id: "paper:unknown:x", statement: "保留并交给 Artifact validator 显式拒绝。" }],
+  });
+  assert.deepEqual(result.entries, [
+    { id: "paper:unknown:x", statement: "保留并交给 Artifact validator 显式拒绝。" },
+  ]);
+});

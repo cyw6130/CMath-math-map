@@ -1374,13 +1374,138 @@
     throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, fetchImpl = globalThis.fetch, signal, onStage, maxChunks = 5, reasoningEffort } = {}) {
+  function resolveEntryVerificationModule() {
+    if (root?.CMathPaperEntryModule?.buildVerificationPrompt) return root.CMathPaperEntryModule;
+    if (root?.CMathPaperEntryVerification?.buildVerificationPrompt) return root.CMathPaperEntryVerification;
+    if (typeof require === "function") {
+      try {
+        const module = require("./src/paper-import/entry/index.js");
+        if (module?.buildVerificationPrompt) return module;
+      } catch {}
+      try {
+        const module = require("./src/paper-import/entry/verification.js");
+        if (module?.buildVerificationPrompt) return module;
+      } catch {}
+    }
+    return null;
+  }
+
+  async function ensureEntryVerificationModule() {
+    const loaded = resolveEntryVerificationModule();
+    if (loaded) return loaded;
+    // The static app historically loaded only the consolidation leaf.  Keep
+    // that page compatible without duplicating the strategy: load the UMD
+    // verification leaf lazily when the production path is first requested.
+    if (typeof document === "undefined" || typeof document.createElement !== "function") return null;
+    const scriptSrc = "src/paper-import/entry/verification.js";
+    await new Promise((resolve, reject) => {
+      const existing = Array.from(document.scripts ?? []).find((script) => String(script.src || "").includes(scriptSrc));
+      if (existing) {
+        if (resolveEntryVerificationModule()) { resolve(); return; }
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", () => reject(new Error("Entry W7/W8 校验模块加载失败")), { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = scriptSrc;
+      script.async = false;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("Entry W7/W8 校验模块加载失败"));
+      (document.head || document.documentElement).appendChild(script);
+    });
+    return resolveEntryVerificationModule();
+  }
+
+  function parsePatchJson(content, stage) {
+    let parsed;
+    try {
+      parsed = parseModelJson(content);
+    } catch (error) {
+      // Keep parity with the laboratory CLI: tolerate a short explanatory
+      // prefix/suffix around the JSON object, but never invent a patch.
+      const match = typeof content === "string" ? content.match(/\{[\s\S]*\}/u) : null;
+      if (!match) throw new Error(`${stage} 返回的内容不是有效 JSON：${error.message}`);
+      try { parsed = JSON.parse(match[0]); }
+      catch (nested) { throw new Error(`${stage} 返回的内容不是有效 JSON：${nested.message}`); }
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new Error(`${stage} 必须返回 JSON 对象`);
+    }
+    return parsed;
+  }
+
+  async function requestEntryVerificationPatch({
+    stage,
+    prompt,
+    endpoint,
+    apiKey,
+    model,
+    providerLabel,
+    reasoningEffort,
+    fetchImpl,
+    chatImpl,
+    signal,
+  } = {}) {
+    const serviceName = typeof providerLabel === "string" && providerLabel.trim() ? providerLabel.trim() : "模型服务";
+    const modelName = nonEmpty(model, "模型名称");
+    const key = nonEmpty(apiKey, "API Key");
+    const messages = [{ role: "user", content: prompt }];
+    let content = "";
+    if (typeof chatImpl === "function") {
+      const result = await chatImpl({
+        stage,
+        messages,
+        model: modelName,
+        providerLabel: serviceName,
+        reasoningEffort,
+        signal,
+      });
+      content = typeof result === "string" ? result : (result?.content ?? "");
+    } else {
+      if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
+      const url = endpointUrl(endpoint);
+      const body = {
+        model: modelName,
+        messages,
+        temperature: 0,
+        response_format: { type: "json_object" },
+        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+      };
+      const response = await fetchImpl(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+        body: JSON.stringify(body),
+        signal,
+      });
+      const responseText = await response.text();
+      if (!response.ok) {
+        throw new Error(`${serviceName} ${stage} 请求失败（HTTP ${response.status}）：${responseText.slice(0, 500)}`);
+      }
+      let envelope;
+      try { envelope = JSON.parse(responseText); }
+      catch (error) { throw new Error(`${serviceName} ${stage} 响应不是有效 JSON：${error.message}`); }
+      if (envelope?.error) throw new Error(`${serviceName} ${stage} 服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 300)}`);
+      content = extractMessageText(envelope?.choices?.[0]?.message);
+    }
+    if (typeof content !== "string" || !content.trim()) throw new Error(`${serviceName} ${stage} 没有返回 JSON 内容`);
+    return parsePatchJson(content, stage);
+  }
+
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
     const serviceName = nonEmpty(providerLabel, "模型服务名称");
     const targetUrl = endpointUrl(endpoint);
+    const extractionEndpoint = String(endpoint).replace(/\/chat\/completions\/?$/u, "");
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
+    const sourceMarkedText = [markedMarkdown, text]
+      .find((candidate) => typeof candidate === "string" && candidate.trim()) ?? "";
+    if (!sourceMarkedText.trim()) throw new Error("MinerU marked Markdown 不能为空");
+    const runVerificationStages = productionSemanticPipeline === true;
+    const resolvedPageCount = Number.isInteger(pageCount) && pageCount > 0
+      ? pageCount
+      : Math.max(1, ...[...sourceMarkedText.matchAll(/\[\[PAGE (\d+)\]\]/gu)].map((match) => Number(match[1])));
 
     // ── Frozen Workflow (ADR-0003)：网页与 Benchmark 共用 V4.1 管线 ──
     // Entry: paper-entry-parallel-extraction-v1.31 并行窗口抽取 → 确定性整合
@@ -1397,10 +1522,18 @@
     if (!frozenConsolidation?.consolidateRawEntryPool) {
       throw new Error("冻结工作流模块没有加载：缺少 CMathPaperEntryConsolidationV1（检查 index.html 脚本顺序）");
     }
+    const entryVerification = runVerificationStages ? await ensureEntryVerificationModule() : null;
+    if (runVerificationStages && (!entryVerification?.buildVerificationPrompt || !entryVerification?.buildB0BackfillPrompt || !entryVerification?.applyPatch || !entryVerification?.runVerificationPipeline)) {
+      throw new Error("生产论文导入链路没有加载 Entry W7/W8 校验模块（请先加载 src/paper-import/entry/verification.js）");
+    }
     notify("frozen-workflow", {
       label: FROZEN_WORKFLOW.label,
       entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
       inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+    });
+    notify("entry", {
+      phase: "start",
+      entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
     });
     // Pool 的 endpoint 通道按标准 Response 消费（status/ok/text/json）。
     // 老测试与部分调用方传入轻量 mock（仅 ok/status/text），此处补齐 json 视图，
@@ -1420,9 +1553,9 @@
     };
     const rawPool = await frozenPool.extractParallelRawEntryPool({
       fileName,
-      pageCount,
-      text,
-      endpoint,
+      pageCount: resolvedPageCount,
+      text: sourceMarkedText,
+      endpoint: extractionEndpoint,
       apiKey: key,
       model: modelName,
       providerLabel: serviceName,
@@ -1430,23 +1563,69 @@
       fetchImpl: poolFetch,
       signal,
       maxChunks,
-      onStage: notify,
+      chatImpl,
+      onStage: (stage, info = {}) => {
+        // The raw pool has several progress labels; production exposes them
+        // under one stable semantic stage while retaining the sub-stage.
+        if (stage === "extract" || String(stage).startsWith("parallel-extract")) {
+          notify("entry", { ...info, phase: stage });
+        } else {
+          notify(stage, info);
+        }
+      },
       extractionModuleVersion: FROZEN_WORKFLOW.entryExtractionVersion,
     });
 
-    notify("consolidate", { candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? 0 });
+    notify("entry", {
+      phase: "complete",
+      entries: rawPool?.rawEntries?.length ?? rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? 0,
+    });
+    notify("consolidate", { candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? rawPool?.rawEntries?.length ?? 0 });
     const artifact = frozenConsolidation.consolidateRawEntryPool(rawPool);
     if (frozenArtifactApi?.validatePaperEntryArtifact) {
       frozenArtifactApi.validatePaperEntryArtifact(artifact);
     }
 
+    // Production reproduction of Laboratory W7.1 → W8: no prompt changes,
+    // no model/provider substitution, and no skipped intermediate artifact.
+    const caseId = artifact.caseId || fileName || "paper";
+    const backfilledArtifact = runVerificationStages
+      ? await entryVerification.runVerificationPipeline({
+        artifact,
+        sourceText: sourceMarkedText,
+        caseId,
+        requestPatch: ({ stage, prompt }) => requestEntryVerificationPatch({
+          stage,
+          prompt,
+          endpoint,
+          apiKey: key,
+          model: modelName,
+          providerLabel: serviceName,
+          reasoningEffort,
+          fetchImpl,
+          chatImpl,
+          signal,
+        }),
+        validateArtifact: frozenArtifactApi?.validatePaperEntryArtifact,
+        onStage: notify,
+      })
+      : artifact;
+
+    if (runVerificationStages) {
+      notify("inference", {
+        phase: "start",
+        inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+        entries: backfilledArtifact.entries?.length ?? 0,
+      });
+    }
     const view = await requestPaperInferenceFromEntryArtifact({
-      artifact,
+      artifact: backfilledArtifact,
       endpoint,
       apiKey,
       model: modelName,
       providerLabel: serviceName,
       fetchImpl,
+      chatImpl,
       signal,
       onStage,
       reasoningEffort,
@@ -1455,6 +1634,18 @@
 
     notify("closure", { openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
     return view;
+  }
+
+  // Explicit production boundary.  The legacy requestPaperProjectView call
+  // remains available for existing callers; this entry point always enables
+  // the W7.1 → W8 semantic stages and accepts MinerU's marked Markdown name.
+  async function requestPaperProductionSemanticPipeline(options = {}) {
+    const markedMarkdown = nonEmpty(options.markedMarkdown, "MinerU marked Markdown");
+    return requestPaperProjectView({
+      ...options,
+      productionSemanticPipeline: true,
+      markedMarkdown,
+    });
   }
 
   return Object.freeze({
@@ -1482,5 +1673,6 @@
     requestPaperEntryArtifact,
     requestPaperInferenceFromEntryArtifact,
     requestPaperProjectView,
+    requestPaperProductionSemanticPipeline,
   });
 });
