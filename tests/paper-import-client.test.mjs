@@ -401,6 +401,21 @@ test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => 
   assert.match(assemblyPrompt, /互推 proof 可表达等价或相互蕴含.*没有已建立的外部入口.*不会建立其中任何 Claim/u);
 });
 
+test("v3.44 strategy states the canonical proof, cycle, and B0 boundaries", () => {
+  const prompt = paperImportClient.assemblyPrompt({
+    fileName: "geometry.pdf",
+    pageCount: 5,
+    text: "Theorem 1.1: Let X be smooth...",
+    catalog: "- paper:thm:1｜claim｜示例定理",
+    workflowVersion: "v3.44",
+  });
+
+  assert.match(prompt, /【V3\.44 Canonical Inference 语义】/u);
+  assert.match(prompt, /自足 proof 允许 premises=\[\].*argument.*完整数学论证.*不是 B0/u);
+  assert.match(prompt, /Claim 间的循环 proof 必须保留.*Closure.*open/u);
+  assert.match(prompt, /B0 仅包含论文直接调用、且未在正文证明的外部 Claim.*Fact 永不进入 B0/u);
+});
+
 test("returns proof-to-Fact violations to the model and applies the targeted fix", async () => {
   let callCount = 0;
   const observedMessages = [];
