@@ -47,10 +47,28 @@ _Avoid_: Workflow（泛指任意编排时）
 **Benchmark**: 以固定 Gold 与 Sol 评分为准的论文导入评测体系，含 Entry/Inference 版本迭代（如 `v1.14 / v3.45`），产出 Project View。
 _Avoid_: 版本优化（泛指任意迭代时）
 
-**Frozen Workflow（冻结工作流）**: Benchmark 侧冻结发布的 Entry/Inference 组合版本，当前为 V4.1：Entry `paper-entry-parallel-extraction-v1.31` + Inference `v4`。是 Paper Import 的权威生产版本，网页与评测共用同一实现。
+**Laboratory Workflow（实验室工作流）**: 在 Benchmark 实验中选定、以部署到公开网站为目的的完整 Paper Import 工作流；它是生产发布的来源，不是只供展示或比较的参考样例。
+_Avoid_: 实验样例、离线特例、仅指某个模型输出 JSON
+
+**Production Reproduction（生产复现）**: 网站从相同语义输入出发，执行与 Laboratory Workflow 相同的步骤、版本与运行合同，并达到实验室水平的数学覆盖、主证明链与地图连通质量；不要求随机模型输出逐字或逐 ID 相同。
+_Avoid_: 页面能跑、JSON 格式通过、与单张 Gold 自比
+
+**Production Paper Import Pipeline（生产论文导入链路）**: 公开网站执行的完整步骤链：`PDF → MinerU marked Markdown → Entry v1.31 → deterministic consolidation → W7.1 verify → W8 B0 backfill → Inference v3.45 → Project View`。MinerU 之后的模型阶段由浏览器编排，并把每个阶段产物保存为本地 checkpoint，以便刷新后从最近完成阶段继续。
+_Avoid_: 仅指网页端 PDF.js 抽取、只含 Entry/Inference 两层的简化链路
+
+**User-provided Model Access（用户自带模型访问）**: 网站不提供或补贴 Entry、W7/W8、Inference 所需的模型服务；用户沿用现有模型选择与 API 配置提交本次 Paper Import 所需的 provider、model 与凭证。网站只提供 MinerU 文档预处理能力。
+_Avoid_: 网站模型、免费推理、把 MinerU Token 与模型 API Key 混称
+
+**MinerU Token**: MinerU 精准解析 API 用于 `Authorization: Bearer <token>` 的站点凭证；它在安全角色上就是 MinerU API Key，不是解析任务返回的 `task_id`。
+_Avoid_: 模型 API Key、MinerU 任务 ID、公开配置项
+
+**MinerU Credential Gateway（MinerU 凭证网关）**: 公开网站通过轻量 Cloudflare Worker 调用 MinerU 精准解析 API；站点 MinerU Token 仅保存在 Worker Secret 中，不进入前端代码。Worker 只承担凭证保护与 MinerU 请求转发，不提供模型服务，不保存论文或工作流产物；PDF 使用 MinerU 签名上传地址从浏览器直传 MinerU。
+_Avoid_: 传统应用后端、模型代理、把站点 Token 嵌入 GitHub Pages、由用户提供 MinerU Token
+
+**Frozen Workflow（冻结工作流）**: 从 Laboratory Workflow 冻结发布的完整可复现合同，包含源文档预处理、Entry/Inference 组合、补全与校验步骤及其版本身份；完整生产复现的当前身份为 `V4.1-production-reproduction`。冻结后若改变其中任一生成行为，必须产生新的版本身份，不能继续借用原标签。
 _Avoid_: 新后端、最新算法、与前端工作台版本混称（如「v5 工作流」——工作台 Paper Grotesque v5 是界面 Edition，不随 Frozen Workflow 递进）
 
-**V4 / V4.1**: Frozen Workflow 的组合标签。V4 = Entry `v1.14` + Inference `v3.45` 系；V4.1 = Entry `v1.31` + Inference `v4`。标签到运行时 prompt 的映射由实现层常量维护。
+**V4 / V4.1**: 历史 Entry/Inference 组合标签。V4 = Entry `v1.14` + Inference `v3.45` 系；V4.1 = Entry `v1.31` + Inference `v4`。完整网站生成行为使用 `V4.1-production-reproduction`，并额外冻结 MinerU、整合、W7.1、W8 与 Project View 身份。标签到运行时实现的映射由 `FROZEN_WORKFLOW` 维护。
 _Avoid_: V4.1（指代单层模块时）、v4（与标签混写的运行时串）
 
 **Map Integration**: 将 Project View 接入数学地图的消费侧能力，含适配、闭包派生、渲染与存储。

@@ -259,12 +259,12 @@
         await markStarted("mineru");
         const mineruClient = options.mineruClient
           ?? (typeof options.createMineruClient === "function"
-            ? options.createMineruClient({ gatewayUrl: options.gatewayUrl, fetchImpl: options.fetchImpl, unzip: options.unzip, unzipAdapter: options.unzipAdapter })
+            ? options.createMineruClient({ gatewayUrl: options.gatewayUrl, fetchImpl: options.mineruFetchImpl, unzip: options.unzip, unzipAdapter: options.unzipAdapter })
             : null)
           ?? (typeof mineruModule?.createMineruClient === "function"
             ? mineruModule.createMineruClient({
               gatewayUrl: options.gatewayUrl,
-              fetchImpl: options.fetchImpl,
+              fetchImpl: options.mineruFetchImpl,
               unzip: options.unzip,
               unzipAdapter: options.unzipAdapter,
               pollIntervalMs: options.pollIntervalMs,

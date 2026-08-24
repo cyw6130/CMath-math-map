@@ -10,10 +10,11 @@
   const SEMANTIC_MODEL = "cmath.fact-claim-operation/v0.1";
   const CHANNEL_SCHEMA = "cmath-gamma.project-channel/v0.1";
   const MAX_PDF_BYTES = 25 * 1024 * 1024;
-  // ── Frozen Workflow (V4.1, ADR-0003) ──
-  // 网页导入与 Benchmark 共用同一冻结管线；下次冻结升级只改这里。
+  // ── Frozen Production Reproduction (ADR-0005) ──
+  // This identity covers preprocessing, verification and final assembly—not
+  // just the historical Entry/Inference pair.
   const FROZEN_WORKFLOW = Object.freeze({
-    label: "V4.1",
+    label: "V4.1-production-reproduction",
     productionContractVersion: "production-paper-import/v1",
     mineruInputVersion: "cmath.paper-import.mineru/v1",
     entryExtractionVersion: "paper-entry-parallel-extraction-v1.31",

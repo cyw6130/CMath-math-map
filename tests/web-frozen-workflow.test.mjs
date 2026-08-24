@@ -12,6 +12,7 @@ const client = require("../paper-import-client.js");
 
 const FROZEN_ENTRY = "paper-entry-parallel-extraction-v1.31";
 const FROZEN_INFERENCE_RUNTIME = "v3.45";
+const PRODUCTION_LABEL = "V4.1-production-reproduction";
 
 function mkFetch(options = {}) {
   const state = { calls: [], ...options };
@@ -70,10 +71,15 @@ const BASE_ARGS = {
   text: "[[PAGE 1]]\n定义了空间。\n\n[[PAGE 2]]\n定理：映射是同构。",
 };
 
-test("client exports frozen workflow runtime constants (V4.1)", () => {
-  assert.equal(client.FROZEN_WORKFLOW.label, "V4.1");
+test("client exports the complete Production Reproduction identity", () => {
+  assert.equal(client.FROZEN_WORKFLOW.label, PRODUCTION_LABEL);
+  assert.equal(client.FROZEN_WORKFLOW.mineruInputVersion, "cmath.paper-import.mineru/v1");
   assert.equal(client.FROZEN_WORKFLOW.entryExtractionVersion, FROZEN_ENTRY);
+  assert.equal(client.FROZEN_WORKFLOW.entryConsolidationVersion, "paper-entry-consolidation-v1");
+  assert.equal(client.FROZEN_WORKFLOW.entryVerificationVersion, "w7.1");
+  assert.equal(client.FROZEN_WORKFLOW.b0BackfillVersion, "w8");
   assert.equal(client.FROZEN_WORKFLOW.inferenceRuntimeVersion, FROZEN_INFERENCE_RUNTIME);
+  assert.equal(client.FROZEN_WORKFLOW.projectViewVersion, client.PROJECT_VIEW_SCHEMA);
 });
 
 test("frozen web inference runs without the Node.js process global", () => {
@@ -165,13 +171,40 @@ test("pipeline failure surfaces loudly instead of falling back to legacy path", 
   );
 });
 
-test("index.html loads UMD modules required by the frozen pipeline", () => {
-  const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-  const idxOf = (name) => html.indexOf(`src="${name}"`);
-  const clientIdx = idxOf("paper-import-client.js");
-  for (const mod of ["paper-raw-entry-pool-v1.js", "src/paper-import/entry/consolidation.js", "paper-entry-artifact-v1.js"]) {
-    const i = idxOf(mod);
-    assert.ok(i > 0, `${mod} must be referenced by index.html`);
-    assert.ok(i < clientIdx, `${mod} must load before paper-import-client.js`);
+test("both public HTML entries load the complete production pipeline before the client", () => {
+  const modules = [
+    "vendor/fflate/fflate.min.js",
+    "paper-raw-entry-pool-v1.js",
+    "src/paper-import/entry/consolidation.js",
+    "paper-entry-artifact-v1.js",
+    "src/paper-import/entry/verification.js",
+    "src/paper-import/mineru/marked-markdown.js",
+    "src/paper-import/mineru/client.js",
+    "src/paper-import/mineru/index.js",
+    "src/paper-import/workflow/checkpoint-store.js",
+    "src/paper-import/workflow/production.js",
+    "src/paper-import/workflow/index.js",
+  ];
+  for (const fileName of ["index.html", "index-v5.html"]) {
+    const html = fs.readFileSync(path.join(root, fileName), "utf8");
+    const idxOf = (name) => html.indexOf(`src="${name}"`);
+    const clientIdx = idxOf("paper-import-client.js");
+    let previous = -1;
+    for (const mod of modules) {
+      const index = idxOf(mod);
+      assert.ok(index > previous, `${mod} must keep dependency order in ${fileName}`);
+      assert.ok(index < clientIdx, `${mod} must load before paper-import-client.js in ${fileName}`);
+      previous = index;
+    }
+  }
+});
+
+test("public UI calls only the single Production Paper Import entry", () => {
+  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  assert.match(app, /GammaPaperImportClient\.requestPaperProductionImport\(/u);
+  assert.doesNotMatch(app, /GammaPaperImportClient\.(?:requestPaperProjectView|extractPdfText)\(/u);
+  assert.match(app, /mineruFetchImpl:\s*window\.fetch\.bind\(window\)/u);
+  for (const stage of ["mineru", "entry", "consolidate", "w7-verify", "w8-b0", "inference", "closure"]) {
+    assert.match(app, new RegExp(`id: ["']${stage}["']`, "u"));
   }
 });

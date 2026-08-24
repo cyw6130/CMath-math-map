@@ -1,6 +1,6 @@
 /* ============================================================================
    CMath Math Map V5 — Application Logic
-   真实后端接线版：论文 PDF 解析（pdf.js + GammaPaperImportClient）、
+   真实生产接线版：论文 PDF 经 MinerU + Frozen Workflow 生成 Project View、
    DeepSeek / Kimi / OpenAI / Gemini / 自定义端点、本地 JSON 载入、
    精选 Demo、地图运行时挂载，以及 V5 工作台氛围特效（视差 + 粒子）。
    v4 / v5 两个设计版本共用此文件（设计差异全部在 CSS 层）。
@@ -37,6 +37,9 @@
   const customModelInput = document.querySelector("#custom-model-input");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   const SESSION_IMPORTED_MAPS_KEY = "cmath.math-map.session-imported-maps-v1";
+  const MINERU_GATEWAY_URL = String(
+    window.CMATH_MINERU_GATEWAY_URL ?? document.documentElement.dataset.mineruGatewayUrl ?? "",
+  ).trim();
 
   const IDB_DATABASE_NAME = "cmath_math_map_db";
   const IDB_DATABASE_VERSION = 1;
@@ -701,14 +704,16 @@
   }
 
   const EXTRACT_STEPS = [
-    { id: "read", label: "读取 PDF 文本" },
-    { id: "send", label: "发送至模型服务" },
-    { id: "wait", label: "模型生成数学结构" },
-    { id: "validate", label: "校验并组装 JSON" },
-    { id: "closure", label: "检查证明闭包" },
+    { id: "mineru", label: "MinerU 精准解析" },
+    { id: "entry", label: "Entry v1.31 数学对象抽取" },
+    { id: "consolidate", label: "确定性整合" },
+    { id: "w7-verify", label: "W7.1 忠实性校验" },
+    { id: "w8-b0", label: "W8 外部结果补漏" },
+    { id: "inference", label: "Inference v3.45 推理装配" },
+    { id: "closure", label: "Project View 校验与闭包" },
   ];
   let stepEls = new Map();
-  let awaitingStepId = "wait";
+  let activeImportStage = "mineru";
 
   function resetExtractStatus() {
     extractStatus.hidden = true;
@@ -723,7 +728,7 @@
       EXTRACT_STEPS.map((s) => `<li data-step="${s.id}"><span class="step-dot"></span><span class="step-label">${s.label}</span><span class="step-detail"></span></li>`).join("")
     }</ol>`;
     stepEls = new Map([...extractStatus.querySelectorAll("li")].map((li) => [li.dataset.step, li]));
-    awaitingStepId = "wait";
+    activeImportStage = "mineru";
   }
 
   function setStep(id, state, detail) {
@@ -734,62 +739,46 @@
     if (detail !== undefined) li.querySelector(".step-detail").textContent = detail;
   }
 
-  function isStepDone(id) {
-    return stepEls.get(id)?.classList.contains("is-done") ?? false;
-  }
-
-  function addStepAfter(afterId, id, label) {
-    const anchor = stepEls.get(afterId);
-    if (!anchor || stepEls.has(id)) return;
-    const li = document.createElement("li");
-    li.dataset.step = id;
-    li.innerHTML = `<span class="step-dot"></span><span class="step-label"></span><span class="step-detail"></span>`;
-    li.querySelector(".step-label").textContent = label;
-    anchor.after(li);
-    stepEls.set(id, li);
-  }
-
   function handleImportStage(stage, info = {}) {
-    if (stage === "request") {
-      if (!isStepDone("send")) {
-        const chunksNote = (info.chunks ?? 1) > 1 ? ` · 分 ${info.chunks} 段并行提取` : "";
-        setStep("send", "done", `约 ${((info.chars ?? 0) / 1000).toFixed(1)}k 字符${chunksNote}`);
-        setStep("wait", "active");
-        awaitingStepId = "wait";
-      } else {
-        setStep(awaitingStepId, "active");
-      }
-    } else if (stage === "frozen-workflow") {
-      setStep(awaitingStepId ?? "wait", "active", `冻结工作流 ${info.label ?? ""} · Entry ${String(info.entryExtractionVersion ?? "").replace("paper-entry-parallel-extraction-", "v")}`);
-    } else if (stage === "parallel-extract-start") {
-      setStep("wait", "active", `并行窗口抽取 · ${info.blocks ?? info.chunks ?? "?"} 个窗口`);
-    } else if (stage === "parallel-extract-chunk" || stage === "entries-progress") {
-      setStep("wait", "active", `窗口抽取 ${info.done ?? (info.block ?? 0) + 1}/${info.total ?? "?"}`);
-    } else if (stage === "parallel-extract-json-repair") {
-      setStep("wait", "active", `窗口输出修复中（${info.reason ?? "JSON 异常"}）`);
-    } else if (stage === "parallel-extract-done") {
-      setStep("wait", "active", `抽取完成：${info.totalRawEntries ?? 0} 个候选对象`);
-    } else if (stage === "consolidate") {
-      setStep("wait", "active", `确定性整合 ${info.candidates ?? "…"} 个候选`);
-    } else if (stage === "assemble") {
-      setStep("wait", "active", `装配 ${info.entries ?? "…"} 个对象的推理关系${info.workflowVersion ? ` · ${info.workflowVersion}` : ""}`);
-    } else if (stage === "response") {
-      setStep(awaitingStepId, "done");
-      setStep("validate", "active");
-    } else if (stage === "autofix") {
-      setStep("validate", "active", `模型修复未通过，本地兜底修复 ${info.count ?? 0} 处`);
-    } else if (stage === "repair") {
-      setStep("validate", "done", `校验未通过（${info.reason ?? "结构问题"}），模型定点修复中`);
-      addStepAfter("validate", "repair-step", "模型定点修复（输出 + 问题清单返还）");
-      setStep("repair-step", "active");
-      awaitingStepId = "repair-step";
+    if (!stepEls.has(stage)) return;
+    if (info.phase === "resume") {
+      setStep(stage, "done", "已从本地 checkpoint 恢复");
+      return;
+    }
+    if (info.phase === "start") {
+      activeImportStage = stage;
+      setStep(stage, "active", stage === "mineru" ? "正在提交并解析 PDF" : "运行中…");
+      return;
+    }
+    if (info.phase === "progress") {
+      activeImportStage = stage;
+      const mineruStates = {
+        "waiting-file": "等待 PDF 上传",
+        pending: "等待 MinerU 调度",
+        running: "MinerU 正在解析",
+        converting: "正在生成 Markdown",
+        done: "解析完成",
+      };
+      setStep(stage, "active", mineruStates[info.state] ?? "处理中…");
+      return;
+    }
+    if (info.phase === "complete") {
+      const detail = stage === "mineru"
+        ? `${info.pageCount ?? "?"} 页 marked Markdown`
+        : (Number.isInteger(info.entries) ? `${info.entries} 个对象` : "完成");
+      setStep(stage, "done", detail);
+      return;
+    }
+    if (info.phase === "fail") {
+      activeImportStage = stage;
+      setStep(stage, "active", `失败：${info.message ?? "请重试"}`);
     }
   }
 
   function finishExtractSteps(view) {
     const entries = view?.entries?.length ?? 0;
     const inferences = view?.inferences?.length ?? 0;
-    setStep("validate", "done", `${entries} 个对象 · ${inferences} 条推理`);
+    setStep("inference", "done", `${entries} 个对象 · ${inferences} 条推理`);
     let closureDetail = "全部已建立";
     try {
       const sem = window.GammaMathMapSemantics;
@@ -846,9 +835,9 @@
 
   function selectPaperPdf(file) {
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith(".pdf") || file.size <= 0 || file.size > 25 * 1024 * 1024) {
+    if (!file.name.toLowerCase().endsWith(".pdf") || file.size <= 0 || file.size > 200 * 1024 * 1024) {
       clearSelectedPaperPdf();
-      showExtractError("请选择一份不超过 25 MB 的 PDF 论文。");
+      showExtractError("请选择一份不超过 200 MB 的 PDF 论文。");
       return;
     }
     selectedPaperPdf = file;
@@ -882,29 +871,30 @@
       return;
     }
     const model = modelSelect.value === "custom" ? customModelInput.value.trim() : modelSelect.value;
+    if (!MINERU_GATEWAY_URL) {
+      showExtractError("MinerU 精准解析服务尚未配置，请稍后重试。");
+      return;
+    }
+    if (!window.fflate?.unzipSync) {
+      showExtractError("MinerU ZIP 解包组件没有加载，请刷新后重试。");
+      return;
+    }
     const originalLabel = startExtractButton.textContent;
     startExtractButton.disabled = true;
     startExtractButton.textContent = "解析中…";
     showExtractSteps();
-    setStep("read", "active");
+    setStep("mineru", "active", "正在计算 PDF 指纹");
     try {
       if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
-      const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
-      const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, {
-        pdfjsLib,
-        onProgress: ({ page, pageCount }) => setStep("read", "active", `第 ${page} / ${pageCount} 页`),
-      });
-      setStep("read", "done", `共 ${paper.pageCount} 页 · ${paper.text.length.toLocaleString()} 字符${paper.truncated ? "（已截断，仅处理前部）" : ""}`);
-      setStep("send", "active");
-      const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
+      const projectView = await window.GammaPaperImportClient.requestPaperProductionImport({
+        pdf: selectedPaperPdf,
+        gatewayUrl: MINERU_GATEWAY_URL,
+        unzip: (bytes) => window.fflate.unzipSync(bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)),
+        mineruFetchImpl: window.fetch.bind(window),
         endpoint: apiEndpointInput.value,
         apiKey,
         model,
         providerLabel: PROVIDER_CONFIGS[activeProviderKey].label,
-        fileName: selectedPaperPdf.name,
-        pageCount: paper.pageCount,
-        text: paper.text,
         fetchImpl: modelFetch,
         onStage: handleImportStage,
         reasoningEffort: currentModelReasoningEffort(),
@@ -920,7 +910,9 @@
       showExtractSuccess(projectView, selectedPaperPdf.name);
     } catch (error) {
       const message = error instanceof TypeError
-        ? `浏览器无法直接连接 ${PROVIDER_CONFIGS[activeProviderKey].label}。请检查网络、API 服务地址以及服务端的跨域请求设置。`
+        ? (activeImportStage === "mineru"
+          ? "浏览器无法连接 MinerU 精准解析服务，请检查网络后重试。"
+          : `浏览器无法直接连接 ${PROVIDER_CONFIGS[activeProviderKey].label}。请检查网络、API 服务地址以及服务端的跨域请求设置。`)
         : error.message;
       showExtractError(message);
     } finally {
