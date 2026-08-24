@@ -276,25 +276,26 @@ describe("Regression: Proof closure, cycles, boundary invariants, and single aut
     assert.equal(closure.claimStates["e:claim:conclusion"], "open", "Ungrounded conclusion must remain open");
   });
 
-  it("a claim dependency cycle is caught by cycle detection", () => {
-    const viewWithCycle = {
-      projectTitle: "Cycle Test",
-      mainTargetEntryId: "c:claim:A",
-      b0ClaimEntryIds: [],
-      entries: [
-        { id: "c:claim:A", entryClass: "claim", claimKind: "theorem", title: "Claim A", statement: "Statement A", sourceLocator: "p#1" },
-        { id: "c:claim:B", entryClass: "claim", claimKind: "theorem", title: "Claim B", statement: "Statement B", sourceLocator: "p#1" },
-      ],
-      inferences: [
-        { id: "inf:A_to_B", operationKind: "proof", title: "Proof B from A", premises: ["c:claim:A"], conclusion: "c:claim:B", argument: "Arg 1", sourceLocator: "p#1" },
-        { id: "inf:B_to_A", operationKind: "proof", title: "Proof A from B", premises: ["c:claim:B"], conclusion: "c:claim:A", argument: "Arg 2", sourceLocator: "p#1" },
-      ],
-    };
-    const issues = paperImportClient.collectRawProjectViewIssues(viewWithCycle, { includeOpenClaimIssues: false });
-    assert.ok(
-      issues.some((msg) => msg.includes("循环证明依赖")),
-      `Cycle should be detected in raw issues, got: ${JSON.stringify(issues)}`
-    );
+  it("a Claim cycle needs an established external entry point", () => {
+    const entries = [
+      { id: "c:claim:A", entryClass: "claim", claimKind: "theorem", title: "Claim A", statement: "Statement A" },
+      { id: "c:claim:B", entryClass: "claim", claimKind: "theorem", title: "Claim B", statement: "Statement B" },
+    ];
+    const reciprocalProofs = [
+      { id: "inf:A_to_B", operationKind: "proof", title: "A implies B", premises: ["c:claim:A"], conclusion: "c:claim:B" },
+      { id: "inf:B_to_A", operationKind: "proof", title: "B implies A", premises: ["c:claim:B"], conclusion: "c:claim:A" },
+    ];
+
+    const ungrounded = semantics.computeClaimClosure(entries, reciprocalProofs, { b0ClaimEntryIds: [] });
+    assert.equal(ungrounded.claimStates["c:claim:A"], "open");
+    assert.equal(ungrounded.claimStates["c:claim:B"], "open");
+
+    const grounded = semantics.computeClaimClosure(entries, [
+      ...reciprocalProofs,
+      { id: "inf:direct_A", operationKind: "proof", title: "Direct proof of A", premises: [], conclusion: "c:claim:A" },
+    ], { b0ClaimEntryIds: [] });
+    assert.equal(grounded.claimStates["c:claim:A"], "established");
+    assert.equal(grounded.claimStates["c:claim:B"], "established");
   });
 
   it("Kirby external entries are B0 and have no proof conclusions", () => {

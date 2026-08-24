@@ -158,8 +158,8 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
         provenance: { def_hopf: "coverage", thm_main: "lead" },
       },
       entries: [
-        { id: "def_hopf", name: "Definition 1.1", type: "definition", entryClass: "definition", page: 1, statement: "Let $S^3 \\to S^2$ be the Hopf map." },
-        { id: "thm_main", name: "Theorem 2.1", type: "theorem", entryClass: "theorem", page: 2, statement: "The map $S^3 \\to S^2$ forms a fiber bundle." },
+        { id: "def_hopf", name: "Definition 1.1", entryClass: "fact", factKind: "definition", page: 1, statement: "Let $S^3 \\to S^2$ be the Hopf map." },
+        { id: "thm_main", name: "Theorem 2.1", entryClass: "claim", claimKind: "theorem", page: 2, statement: "The map $S^3 \\to S^2$ forms a fiber bundle." },
       ],
       aliases: {},
       reviewInputs: {
@@ -192,7 +192,35 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       },
     };
     assert.doesNotThrow(() => validatePaperEntryArtifact(validV1Artifact));
+    t.test("requires canonical Fact/Claim discriminants in artifact.entries", () => {
+    const rawEntryArtifact = structuredClone(validV11Artifact);
+    rawEntryArtifact.entries[0] = {
+      id: "def_hopf",
+      name: "Definition 1.1",
+      type: "definition",
+      statement: "Let $S^3 \\to S^2$ be the Hopf map.",
+    };
+    assert.throws(
+      () => validatePaperEntryArtifact(rawEntryArtifact),
+      /必须使用 entryClass=fact\|claim/u,
+    );
+
+    const conflictingArtifact = structuredClone(validV11Artifact);
+    conflictingArtifact.entries[0].claimKind = "theorem";
+    assert.throws(
+      () => validatePaperEntryArtifact(conflictingArtifact),
+      /Fact.*不能包含 claimKind/u,
+    );
+
+    const unsupportedKindArtifact = structuredClone(validV11Artifact);
+    unsupportedKindArtifact.entries[1].claimKind = "corollary";
+    assert.throws(
+      () => validatePaperEntryArtifact(unsupportedKindArtifact),
+      /claimKind.*lemma\|proposition\|theorem/u,
+    );
   });
+  });
+
 
   await t.test("rejects malformed entry artifacts", () => {
     assert.throws(() => validatePaperEntryArtifact(null), /必须是非空 JSON 对象/);
