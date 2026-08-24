@@ -30,3 +30,14 @@ test("v1.31 prompt enforces deep mathematical substance, necessary-and-sufficien
     assert.equal(p.includes(term), false, `v1.31 prompt leaked ${term}`);
   }
 });
+
+test("v1.31 prompt requests the canonical Fact and Claim entry format", () => {
+  const p = pool.v131DualOutputPrompt(options);
+
+  assert.match(p, /entryClass.*fact.*claim/u);
+  assert.match(p, /factKind.*definition\|algorithm\|calculation/u);
+  assert.match(p, /claimKind.*lemma\|proposition\|theorem/u);
+  assert.match(p, /"entryClass":"fact".*"factKind":"definition"/u);
+  assert.match(p, /"entryClass":"claim".*"claimKind":"theorem"/u);
+  assert.doesNotMatch(p, /"type"\s*:/u);
+});

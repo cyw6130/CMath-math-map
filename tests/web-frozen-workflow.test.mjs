@@ -103,8 +103,11 @@ test("web import routes through frozen V4.1 pipeline (no legacy integrate stage)
   assert.ok(extractCalls.length >= 1, "extraction window call must occur");
   assert.ok(assembleCalls.length >= 1, "assembly call must occur");
   for (const c of extractCalls) {
-    assert.match(c, /definition\|algorithm\|calculation\|lemma\|proposition\|theorem/u);
-    assert.ok(!c.includes("|corollary"), "frozen entry prompt must not allow corollary type");
+    assert.match(c, /entryClass 只能是 fact\|claim/u);
+    assert.match(c, /factKind 只能是 definition\|algorithm\|calculation/u);
+    assert.match(c, /claimKind 只能是 lemma\|proposition\|theorem/u);
+    assert.doesNotMatch(c, /"type"\s*:/u);
+    assert.ok(!c.includes("|corollary"), "frozen entry prompt must not allow corollary claimKind");
   }
 });
 

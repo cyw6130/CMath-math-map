@@ -559,7 +559,15 @@
   // v1.31 Autoresearch candidate over v1.20:
   // Focuses purely on deep mathematical substance, necessary-and-sufficient conditions, complete external statements, and proof-chain infrastructure.
   function v131DualOutputPrompt(options) {
-    const base = v120DualOutputPrompt(options);
+    const base = v120DualOutputPrompt(options)
+      .replace(
+        "【共同规则】type 只能是 definition|algorithm|calculation|lemma|proposition|theorem；",
+        "【共同规则】entryClass 只能是 fact|claim。Fact 使用 entryClass: \"fact\" 与 factKind，factKind 只能是 definition|algorithm|calculation，且不得包含 claimKind；Claim 使用 entryClass: \"claim\" 与 claimKind，claimKind 只能是 lemma|proposition|theorem，且不得包含 factKind；"
+      )
+      .replace(
+        '{"foundationEntries":[{"id":"paper:def:object","type":"definition","name":"数学对象","statement":"……","page":2}],"resultEntries":[{"id":"paper:thm:result","type":"theorem","name":"形式化结论","statement":"……","page":4}],"inferenceHints":[]}',
+        '{"foundationEntries":[{"id":"paper:def:object","entryClass":"fact","factKind":"definition","name":"数学对象","statement":"……","page":2}],"resultEntries":[{"id":"paper:thm:result","entryClass":"claim","claimKind":"theorem","name":"形式化结论","statement":"……","page":4}],"inferenceHints":[]}'
+      );
     const mathSubstanceRules = `【数学内涵保真与核心论证链完整性（本版本唯一实验变量）】\n`
       + `- 充要条件与代数拓扑约束零丢失：对象的全部代数与几何前提（如类的非挠性 nontorsion、流形的紧致光滑性、定向依赖性、系数环上的模作用、正标量曲率条件等），是数学断言成立的本质基础，必须在 statement 中完整保留，严禁省略任何数学限定；\n`
       + `- 经典外部定理的实质断言完整性：正文依赖的关键外部数学结论（如不变量的精确取值、非零性判据、代数分裂定理等），必须完整写出其具体的数学方程、精确取值与代数同构，严禁仅写出模糊的背景描述；\n`

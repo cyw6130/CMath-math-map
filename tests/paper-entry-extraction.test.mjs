@@ -2842,6 +2842,35 @@ test("Paper Entry Parallel Extraction v1.10 - tightens generic Entry boundaries"
   assert.doesNotThrow(() => validateRawEntryPool(pool));
 });
 
+test("Paper Entry Parallel Extraction v1.31 preserves canonical Fact and Claim fields", async () => {
+  const pool = await extractParallelRawEntryPool({
+    fileName: "canonical-entries.pdf",
+    pageCount: 1,
+    text: "[[PAGE 1]] Definition 1 introduces X. Theorem 2 proves Y.",
+    extractionModuleVersion: "paper-entry-parallel-extraction-v1.31",
+    chatImpl: async () => ({
+      content: JSON.stringify({
+        foundationEntries: [
+          { id: "paper:def:x", entryClass: "fact", factKind: "definition", name: "对象 X", statement: "定义对象 $X$。", page: 1 },
+        ],
+        resultEntries: [
+          { id: "paper:thm:y", entryClass: "claim", claimKind: "theorem", name: "定理 Y", statement: "对象 $Y$ 满足结论。", page: 1 },
+        ],
+        inferenceHints: [],
+      }),
+    }),
+  });
+
+  assert.equal(pool.extractionModuleVersion, "paper-entry-parallel-extraction-v1.31");
+  assert.deepEqual(
+    pool.rawEntries.map(({ entryClass, factKind, claimKind, type }) => ({ entryClass, factKind, claimKind, type })),
+    [
+      { entryClass: "fact", factKind: "definition", claimKind: undefined, type: undefined },
+      { entryClass: "claim", factKind: undefined, claimKind: "theorem", type: undefined },
+    ]
+  );
+});
+
 test("Paper Entry Modular Pipeline - Model-Assisted Consolidation v1.1", async (t) => {
   await t.test("exports valid model consolidation constants and functions", () => {
     assert.equal(MODEL_CONSOLIDATION_MODULE_VERSION, "paper-entry-consolidation-v1.1-model");
