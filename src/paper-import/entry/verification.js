@@ -195,17 +195,23 @@ ${String(sourceText).slice(0, 120000)}
     requestPatch,
     validateArtifact,
     onStage,
+    onArtifact,
     includeB0 = true,
+    startStage = "w7-verify",
   } = {}) {
     if (typeof requestPatch !== "function") throw new Error("W7/W8 校验链需要 requestPatch 回调");
     let current = cloneJson(artifact);
     if (!current || typeof current !== "object" || !Array.isArray(current.entries)) {
       throw new Error("W7/W8 校验链需要包含 entries 的 Entry artifact");
     }
-    const passes = [
+    const allPasses = [
       { stage: "w7-verify", pass: "w7.1", buildPrompt: buildVerificationPrompt },
       ...(includeB0 ? [{ stage: "w8-b0", pass: "w8", buildPrompt: buildB0BackfillPrompt }] : []),
     ];
+    if (!allPasses.some((pass) => pass.stage === startStage)) {
+      throw new Error(`W7/W8 校验链不支持从 ${startStage} 开始`);
+    }
+    const passes = allPasses.slice(allPasses.findIndex((pass) => pass.stage === startStage));
     for (const pass of passes) {
       const prompt = pass.buildPrompt({
         consolidatedText: JSON.stringify(current, null, 2),
@@ -224,16 +230,17 @@ ${String(sourceText).slice(0, 120000)}
       const patch = response?.patch && typeof response.patch === "object" ? response.patch : response;
       current = applyPatch(current, patch);
       if (typeof validateArtifact === "function") validateArtifact(current);
-      try {
-        onStage?.(pass.stage, {
-          phase: "complete",
-          entries: current.entries.length,
-          pass: pass.pass,
-          added: Array.isArray(patch?.addEntries) ? patch.addEntries.length : 0,
-          corrected: Array.isArray(patch?.corrections) ? patch.corrections.length : 0,
-          removed: Array.isArray(patch?.removeIds) ? patch.removeIds.length : 0,
-        });
-      } catch {}
+      const completion = {
+        entries: current.entries.length,
+        pass: pass.pass,
+        added: Array.isArray(patch?.addEntries) ? patch.addEntries.length : 0,
+        corrected: Array.isArray(patch?.corrections) ? patch.corrections.length : 0,
+        removed: Array.isArray(patch?.removeIds) ? patch.removeIds.length : 0,
+      };
+      if (typeof onArtifact === "function") await onArtifact(pass.stage, current, completion);
+      else {
+        try { onStage?.(pass.stage, { phase: "complete", ...completion }); } catch {}
+      }
     }
     return current;
   }

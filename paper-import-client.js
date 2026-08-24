@@ -14,8 +14,14 @@
   // 网页导入与 Benchmark 共用同一冻结管线；下次冻结升级只改这里。
   const FROZEN_WORKFLOW = Object.freeze({
     label: "V4.1",
+    productionContractVersion: "production-paper-import/v1",
+    mineruInputVersion: "cmath.paper-import.mineru/v1",
     entryExtractionVersion: "paper-entry-parallel-extraction-v1.31",
+    entryConsolidationVersion: "paper-entry-consolidation-v1",
+    entryVerificationVersion: "w7.1",
+    b0BackfillVersion: "w8",
     inferenceRuntimeVersion: "v3.45",
+    projectViewVersion: PROJECT_VIEW_SCHEMA,
   });
   const MAX_PAPER_TEXT_CHARS = 80_000;
   const semantics = root?.GammaMathMapSemantics
@@ -32,6 +38,8 @@
     }
     return null;
   })();
+  const productionWorkflow = root?.CMathPaperImportWorkflow
+    ?? (typeof require === "function" ? (() => { try { return require("./src/paper-import/workflow/index.js"); } catch { return null; } })() : null);
   function inferenceStrategySection(version) {
     const fromIndex = inferenceStrategyIndex?.sectionFor?.(version);
     if (typeof fromIndex === "string" && fromIndex) return fromIndex;
@@ -1416,6 +1424,12 @@
     return resolveEntryVerificationModule();
   }
 
+  function resolveProductionWorkflowModule() {
+    if (root?.CMathPaperImportWorkflow?.runProductionPaperImport) return root.CMathPaperImportWorkflow;
+    if (productionWorkflow?.runProductionPaperImport) return productionWorkflow;
+    return null;
+  }
+
   function parsePatchJson(content, stage) {
     let parsed;
     try {
@@ -1491,11 +1505,19 @@
     return parsePatchJson(content, stage);
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false } = {}) {
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, resumeArtifacts = null, onArtifact } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
     const serviceName = nonEmpty(providerLabel, "模型服务名称");
+    const effectiveChatImpl = typeof chatImpl === "function"
+      ? (request) => chatImpl({
+        ...request,
+        model: request?.model ?? modelName,
+        providerLabel: request?.providerLabel ?? serviceName,
+        reasoningEffort: request?.reasoningEffort ?? reasoningEffort,
+      })
+      : chatImpl;
     const targetUrl = endpointUrl(endpoint);
     const extractionEndpoint = String(endpoint).replace(/\/chat\/completions\/?$/u, "");
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
@@ -1531,108 +1553,141 @@
       entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
       inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
     });
-    notify("entry", {
-      phase: "start",
-      entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
-    });
-    // Pool 的 endpoint 通道按标准 Response 消费（status/ok/text/json）。
-    // 老测试与部分调用方传入轻量 mock（仅 ok/status/text），此处补齐 json 视图，
-    // 真实 fetch 不受影响。
-    const poolFetch = async (url, init) => {
-      const res = await fetchImpl(url, init);
-      if (typeof res?.json === "function") return res;
-      const text = await res.text();
-      let json;
-      try { json = JSON.parse(text); } catch { json = null; }
-      return {
-        ok: res.ok,
-        status: res.status,
-        text: async () => text,
-        json: async () => json,
+    let rawPool = resumeArtifacts?.entry ?? null;
+    if (!rawPool) {
+      notify("entry", {
+        phase: "start",
+        entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
+      });
+      // Pool 的 endpoint 通道按标准 Response 消费（status/ok/text/json）。
+      // 老测试与部分调用方传入轻量 mock（仅 ok/status/text），此处补齐 json 视图，
+      // 真实 fetch 不受影响。
+      const poolFetch = async (url, init) => {
+        const res = await fetchImpl(url, init);
+        if (typeof res?.json === "function") return res;
+        const text = await res.text();
+        let json;
+        try { json = JSON.parse(text); } catch { json = null; }
+        return {
+          ok: res.ok,
+          status: res.status,
+          text: async () => text,
+          json: async () => json,
+        };
       };
-    };
-    const rawPool = await frozenPool.extractParallelRawEntryPool({
-      fileName,
-      pageCount: resolvedPageCount,
-      text: sourceMarkedText,
-      endpoint: extractionEndpoint,
-      apiKey: key,
-      model: modelName,
-      providerLabel: serviceName,
-      reasoningEffort,
-      fetchImpl: poolFetch,
-      signal,
-      maxChunks,
-      chatImpl,
-      onStage: (stage, info = {}) => {
-        // The raw pool has several progress labels; production exposes them
-        // under one stable semantic stage while retaining the sub-stage.
-        if (stage === "extract" || String(stage).startsWith("parallel-extract")) {
-          notify("entry", { ...info, phase: stage });
-        } else {
-          notify(stage, info);
-        }
-      },
-      extractionModuleVersion: FROZEN_WORKFLOW.entryExtractionVersion,
-    });
+      rawPool = await frozenPool.extractParallelRawEntryPool({
+        fileName,
+        pageCount: resolvedPageCount,
+        text: sourceMarkedText,
+        endpoint: extractionEndpoint,
+        apiKey: key,
+        model: modelName,
+        providerLabel: serviceName,
+        reasoningEffort,
+        fetchImpl: poolFetch,
+        signal,
+        maxChunks,
+        chatImpl: effectiveChatImpl,
+        onStage: (stage, info = {}) => {
+          // The raw pool has several progress labels; production exposes them
+          // under one stable semantic stage while retaining the sub-stage.
+          if (stage === "extract" || String(stage).startsWith("parallel-extract")) {
+            notify("entry", { ...info, phase: stage });
+          } else {
+            notify(stage, info);
+          }
+        },
+        extractionModuleVersion: FROZEN_WORKFLOW.entryExtractionVersion,
+      });
+    }
 
     notify("entry", {
       phase: "complete",
       entries: rawPool?.rawEntries?.length ?? rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? 0,
     });
-    notify("consolidate", { candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? rawPool?.rawEntries?.length ?? 0 });
-    const artifact = frozenConsolidation.consolidateRawEntryPool(rawPool);
-    if (frozenArtifactApi?.validatePaperEntryArtifact) {
-      frozenArtifactApi.validatePaperEntryArtifact(artifact);
+    if (typeof onArtifact === "function" && !resumeArtifacts?.entry) {
+      await onArtifact("entry", rawPool, { entries: rawPool?.rawEntries?.length ?? 0 });
+    }
+
+    let artifact = resumeArtifacts?.consolidate ?? null;
+    if (!artifact) {
+      notify("consolidate", {
+        phase: "start",
+        candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? rawPool?.rawEntries?.length ?? 0,
+      });
+      artifact = frozenConsolidation.consolidateRawEntryPool(rawPool);
+      if (frozenArtifactApi?.validatePaperEntryArtifact) {
+        frozenArtifactApi.validatePaperEntryArtifact(artifact);
+      }
+      if (typeof onArtifact === "function") await onArtifact("consolidate", artifact);
+      else notify("consolidate", { phase: "complete", entries: artifact.entries?.length ?? 0 });
     }
 
     // Production reproduction of Laboratory W7.1 → W8: no prompt changes,
     // no model/provider substitution, and no skipped intermediate artifact.
     const caseId = artifact.caseId || fileName || "paper";
-    const backfilledArtifact = runVerificationStages
-      ? await entryVerification.runVerificationPipeline({
-        artifact,
+    let backfilledArtifact;
+    if (!runVerificationStages) {
+      backfilledArtifact = artifact;
+    } else if (resumeArtifacts?.["w8-b0"]) {
+      backfilledArtifact = resumeArtifacts["w8-b0"];
+    } else {
+      const requestPatch = ({ stage, prompt }) => requestEntryVerificationPatch({
+        stage,
+        prompt,
+        endpoint,
+        apiKey: key,
+        model: modelName,
+        providerLabel: serviceName,
+        reasoningEffort,
+        fetchImpl,
+        chatImpl: effectiveChatImpl,
+        signal,
+      });
+      backfilledArtifact = await entryVerification.runVerificationPipeline({
+        artifact: resumeArtifacts?.["w7-verify"] ?? artifact,
         sourceText: sourceMarkedText,
         caseId,
-        requestPatch: ({ stage, prompt }) => requestEntryVerificationPatch({
-          stage,
-          prompt,
-          endpoint,
-          apiKey: key,
-          model: modelName,
-          providerLabel: serviceName,
-          reasoningEffort,
-          fetchImpl,
-          chatImpl,
-          signal,
-        }),
+        requestPatch,
         validateArtifact: frozenArtifactApi?.validatePaperEntryArtifact,
         onStage: notify,
-      })
-      : artifact;
-
-    if (runVerificationStages) {
-      notify("inference", {
-        phase: "start",
-        inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
-        entries: backfilledArtifact.entries?.length ?? 0,
+        onArtifact,
+        startStage: resumeArtifacts?.["w7-verify"] ? "w8-b0" : "w7-verify",
       });
     }
-    const view = await requestPaperInferenceFromEntryArtifact({
-      artifact: backfilledArtifact,
-      endpoint,
-      apiKey,
-      model: modelName,
-      providerLabel: serviceName,
-      fetchImpl,
-      chatImpl,
-      signal,
-      onStage,
-      reasoningEffort,
-      workflowVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
-    });
 
-    notify("closure", { openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
+    let view = resumeArtifacts?.inference ?? null;
+    if (!view) {
+      if (runVerificationStages) {
+        notify("inference", {
+          phase: "start",
+          inferenceRuntimeVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+          entries: backfilledArtifact.entries?.length ?? 0,
+        });
+      }
+      view = await requestPaperInferenceFromEntryArtifact({
+        artifact: backfilledArtifact,
+        endpoint,
+        apiKey,
+        model: modelName,
+        providerLabel: serviceName,
+        fetchImpl,
+        chatImpl: effectiveChatImpl,
+        signal,
+        onStage,
+        reasoningEffort,
+        workflowVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+      });
+      if (typeof onArtifact === "function") await onArtifact("inference", view);
+    }
+
+    if (resumeArtifacts?.closure) return resumeArtifacts.closure;
+    notify("closure", { phase: "start" });
+    if (typeof onArtifact === "function") {
+      await onArtifact("closure", view, { openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
+    } else {
+      notify("closure", { phase: "complete", openClaims: findOpenClaims(view).map((entry) => entry.displayLabel) });
+    }
     return view;
   }
 
@@ -1645,6 +1700,21 @@
       ...options,
       productionSemanticPipeline: true,
       markedMarkdown,
+    });
+  }
+
+  // Single public orchestration boundary for PDF → MinerU → frozen semantic
+  // stages.  The existing semantic-only function above remains unchanged for
+  // callers that already have marked Markdown.
+  async function requestPaperProductionImport(options = {}) {
+    const workflow = resolveProductionWorkflowModule();
+    if (!workflow?.runProductionPaperImport) {
+      throw new Error("Production Paper Import workflow 没有加载");
+    }
+    return workflow.runProductionPaperImport({
+      ...options,
+      frozenWorkflow: options.frozenWorkflow ?? FROZEN_WORKFLOW,
+      semanticPipeline: options.semanticPipeline ?? requestPaperProductionSemanticPipeline,
     });
   }
 
@@ -1674,5 +1744,6 @@
     requestPaperInferenceFromEntryArtifact,
     requestPaperProjectView,
     requestPaperProductionSemanticPipeline,
+    requestPaperProductionImport,
   });
 });
