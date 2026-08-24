@@ -239,7 +239,7 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       guideLeadSet: { leads: [] },
       lanes: { coverageEntries: [], leadGuidedEntries: [] },
       aggregation: { records: [], conflicts: [] },
-      entries: [{ id: "dup", name: "E1", type: "definition", statement: "stmt1" }, { id: "dup", name: "E2", type: "definition", statement: "stmt2" }],
+      entries: [{ id: "dup", name: "E1", entryClass: "fact", factKind: "definition", statement: "stmt1" }, { id: "dup", name: "E2", entryClass: "fact", factKind: "definition", statement: "stmt2" }],
       aliases: {},
       reviewInputs: { missingExtractionCandidates: [] },
     }), /重复的 entry ID/);
@@ -251,7 +251,7 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       guideLeadSet: { leads: [] },
       lanes: { coverageEntries: [], leadGuidedEntries: [] },
       aggregation: { records: [], conflicts: [] },
-      entries: [{ id: "e1", name: "E1", type: "definition", statement: "Unbalanced $formula" }],
+      entries: [{ id: "e1", name: "E1", entryClass: "fact", factKind: "definition", statement: "Unbalanced $formula" }],
       aliases: {},
       reviewInputs: { missingExtractionCandidates: [] },
     }), /包含未配对的数学公式定界符/);
@@ -1386,13 +1386,15 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     assert.ok(dirty);
     assert.equal(dirty.name, "Dirty Name");
     assert.equal(dirty.statement, "Statement with control char.");
-    assert.equal(dirty.type, "definition");
     assert.equal(dirty.entryClass, "fact");
+    assert.equal(dirty.factKind, "definition");
+    assert.equal("type" in dirty, false);
 
     const lem = artifact.entries.find((e) => e.id === "lem:quick");
     assert.ok(lem);
-    assert.equal(lem.type, "lemma");
     assert.equal(lem.entryClass, "claim");
+    assert.equal(lem.claimKind, "lemma");
+    assert.equal("type" in lem, false);
 
     // Broken lone entry with unbalanced math was discarded under strictMath
     const broken = artifact.entries.find((e) => e.id === "thm:broken_lone");
@@ -1763,7 +1765,9 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     const hopf = artifact.entries.find((e) => e.id === "def:hopf_fibration");
     assert.ok(hopf);
     assert.equal(hopf.name, "Hopf 纤维化");
-    assert.equal(hopf.type, "definition");
+    assert.equal(hopf.entryClass, "fact");
+    assert.equal(hopf.factKind, "definition");
+    assert.equal("type" in hopf, false);
   });
 
   await t.test("consolidates raw pool with chunk.entries fallback format without dropping candidates", () => {

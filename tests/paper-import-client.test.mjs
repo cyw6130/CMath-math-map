@@ -397,6 +397,8 @@ test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => 
   // (9) compact schema: model outputs type/num/name, system generates the display label
   assert.match(entriesPrompt, /"num"/u);
   assert.match(entriesPrompt, /"name"/u);
+  assert.match(assemblyPrompt, /自足证明允许 premises=\[\].*argument 必须记录完整数学论证/u);
+  assert.match(assemblyPrompt, /互推 proof 可表达等价或相互蕴含.*没有已建立的外部入口.*不会建立其中任何 Claim/u);
 });
 
 test("returns proof-to-Fact violations to the model and applies the targeted fix", async () => {
@@ -1081,11 +1083,13 @@ test("sanitizeRawProjectView repairs mechanical defects locally", () => {
       { id: "i2", operationKind: "proof", premises: ["ghost", "c1"], conclusion: "c3", argument: "由引理。", sourceLocator: "p#3" },
       { id: "i3", operationKind: "proof", premises: [], conclusion: "c3", argument: "反设结论不成立，取极小反例并导出矛盾。", sourceLocator: "p#3" },
       { id: "i4", operationKind: "proof", premises: ["c3"], conclusion: "c1", argument: "回推。", sourceLocator: "p#3" },
+      { id: "i5", operationKind: "proof", premises: ["c1"], conclusion: "c1", argument: "循环论证。", sourceLocator: "p#1" },
+      { id: "i6", operationKind: "proof", premises: ["f1"], conclusion: "c1", argument: "", sourceLocator: "p#1" },
     ],
   };
 
   const { raw: fixed, actions } = paperImportClient.sanitizeRawProjectView(raw, { fileName: "s.pdf" });
-  assert.ok(actions.length >= 3);
+  assert.ok(actions.length >= 5);
 
   const view = paperImportClient.paperProjectView(fixed, { fileName: "s.pdf" });
   const byId = new Map(view.inferences.map((inf) => [inf.id, inf]));
@@ -1093,6 +1097,8 @@ test("sanitizeRawProjectView repairs mechanical defects locally", () => {
   assert.deepEqual(byId.get("i2").premises, ["c1"]);
   assert.deepEqual(byId.get("i3").premises, []);
   assert.ok(byId.has("i4"));
+  assert.equal(byId.has("i5"), false);
+  assert.equal(byId.has("i6"), false);
 
   assert.equal(view.entries.find((e) => e.id === "c2").sourceReference, "外部定理");
   assert.equal(view.mainTargetEntryId, "c3");

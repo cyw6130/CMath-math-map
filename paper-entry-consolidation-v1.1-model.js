@@ -479,10 +479,11 @@
           sourceRef = stripControlCharacters(raw.source.trim());
         }
 
+        const entryClass = ["definition", "algorithm", "calculation"].includes(normalizedType) ? "fact" : "claim";
         finalEntries.push({
           id,
-          type: normalizedType,
-          entryClass: normalizedType,
+          entryClass,
+          ...(entryClass === "fact" ? { factKind: normalizedType } : { claimKind: normalizedType }),
           name,
           statement,
           page: pageNum,

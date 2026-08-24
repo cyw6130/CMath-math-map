@@ -277,6 +277,23 @@
     return cleaned;
   }
 
+  function canonicalizeEntry(entry) {
+    const cleaned = cleanEntryFields(entry);
+    if (!isObject(cleaned)) return cleaned;
+    const rawKind = cleaned.factKind ?? cleaned.claimKind ?? cleaned.type ?? cleaned.kind
+      ?? (cleaned.entryClass !== "fact" && cleaned.entryClass !== "claim" ? cleaned.entryClass : null);
+    const kind = typeof rawKind === "string" ? rawKind.trim().toLowerCase() : "";
+    const fact = ["definition", "algorithm", "calculation"].includes(kind);
+    const claim = ["lemma", "proposition", "theorem"].includes(kind);
+    if (!fact && !claim) return cleaned;
+    const { type, kind: draftKind, factKind, claimKind, entryClass, ...rest } = cleaned;
+    return {
+      ...rest,
+      entryClass: fact ? "fact" : "claim",
+      ...(fact ? { factKind: kind } : { claimKind: kind }),
+    };
+  }
+
   /**
    * Normalize an input object into the canonical paper-entry-artifact/v1 shape.
    */
@@ -314,7 +331,7 @@
     const provenance = input.aggregation?.provenance || input.aggregation?.lane_provenance || null;
 
     const rawEntries = Array.isArray(input.entries) ? input.entries : records;
-    const entries = rawEntries.map(cleanEntryFields);
+    const entries = rawEntries.map(canonicalizeEntry);
     const aliases = isObject(input.aliases) ? { ...input.aliases } : {};
 
     const reviewInputs = {

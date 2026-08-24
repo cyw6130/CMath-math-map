@@ -626,12 +626,10 @@
         });
       const deduped = [...new Set(premises)];
       if (deduped.includes(inference.conclusion)) {
-        actions.push(`${label} 的 conclusion 出现在 premises 中，已移除`);
+        actions.push(`丢弃 conclusion 出现在 premises 中的 ${label}`);
+        return;
       }
-      inference.premises = deduped.filter((premise) => premise !== inference.conclusion);
-      // organization 必须有前提；proof 可为空，表示 argument 已给出自足证明。
-      // 直接自依赖已在上方删除，不能借空 proof 绕过。
-
+      inference.premises = deduped;
       let operationKind = String(inference.operationKind ?? "").trim();
       if (!OPERATION_KINDS.has(operationKind)) {
         operationKind = conclusionEntry.entryClass === "claim" ? "proof" : "organization";
@@ -665,10 +663,13 @@
         }
       }
       inference.operationKind = operationKind;
-
       if (typeof inference.argument !== "string" || !inference.argument.trim()) {
-        inference.argument = "（论证要点从略，详见原文对应页码。）";
-        actions.push(`${label} 缺少 argument，已占位`);
+        if (operationKind === "proof") {
+          actions.push(`丢弃缺少 argument 的 proof ${label}`);
+          return;
+        }
+        inference.argument = "（组织关系说明从略，详见原文对应页码。）";
+        actions.push(`${label} 缺少 argument，已补组织关系说明`);
       }
       if (typeof inference.sourceLocator !== "string" || !inference.sourceLocator.trim()) {
         const fallback = conclusionEntry.sourceLocator ?? conclusionEntry.sourcePath;
@@ -1253,7 +1254,9 @@
       reviewInputs: { missingExtractionCandidates: [], externalEvidenceIndex: null, externalBoundaryCandidates: (()=>{ try{ return JSON.parse(extraResults[0]?.content ?? "{}"); }catch{ return null; } })(), protectedClaimIds: [], canonicalIndex: {} },
       diagnostics: { durationMs: Math.round(performance.now() - startMs), stages, calls, reviewDiagnostics: { addCount: reviewPatches.filter(p=>p.action==="add").length }, moduleIdentity: { name: "paper-entry-extraction-v1.1", schema: "cmath.paper-entry-artifact/v1", backbone: "v3.26" }, modelCallMetadata: { model: typeof model === "string" ? model : "test", provider: "test" } },
     };
-    try { if (typeof paperEntryArtifact !== "undefined" && paperEntryArtifact.validatePaperEntryArtifact) paperEntryArtifact.validatePaperEntryArtifact(artifact); } catch {}
+    const artifactApi = root?.CMathPaperEntryArtifactV1
+      ?? (typeof require === "function" ? require("./paper-entry-artifact-v1.js") : null);
+    if (artifactApi?.createPaperEntryArtifact) return artifactApi.createPaperEntryArtifact(artifact);
     return artifact;
   }
 

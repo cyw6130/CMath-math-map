@@ -382,6 +382,7 @@
       }
     }
     const consolidatedEntries = [...byFinalId.values()];
+    const artifactEntries = consolidatedEntries.map(({ type, ...entry }) => entry);
 
     // Deterministic sort of consolidated entries: by page, then by num (if present), then by id
     consolidatedEntries.sort((a, b) => {
@@ -419,7 +420,7 @@
           conflicts: 0,
         },
       },
-      entries: cloneJson(consolidatedEntries),
+      entries: cloneJson(artifactEntries),
       aliases,
       reviewInputs: {
         missingExtractionCandidates: [],

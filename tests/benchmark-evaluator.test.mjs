@@ -278,6 +278,7 @@ describe("Regression: Proof closure, cycles, boundary invariants, and single aut
 
   it("a Claim cycle needs an established external entry point", () => {
     const entries = [
+      { id: "f:entry", entryClass: "fact", factKind: "definition", title: "Entry fact", statement: "Definition" },
       { id: "c:claim:A", entryClass: "claim", claimKind: "theorem", title: "Claim A", statement: "Statement A" },
       { id: "c:claim:B", entryClass: "claim", claimKind: "theorem", title: "Claim B", statement: "Statement B" },
     ];
@@ -292,7 +293,7 @@ describe("Regression: Proof closure, cycles, boundary invariants, and single aut
 
     const grounded = semantics.computeClaimClosure(entries, [
       ...reciprocalProofs,
-      { id: "inf:direct_A", operationKind: "proof", title: "Direct proof of A", premises: [], conclusion: "c:claim:A" },
+      { id: "inf:ground_A", operationKind: "proof", title: "Proof of A", premises: ["f:entry"], conclusion: "c:claim:A" },
     ], { b0ClaimEntryIds: [] });
     assert.equal(grounded.claimStates["c:claim:A"], "established");
     assert.equal(grounded.claimStates["c:claim:B"], "established");
