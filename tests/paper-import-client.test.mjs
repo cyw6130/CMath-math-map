@@ -397,6 +397,8 @@ test("prompts include explicit proof-to-Claim and Fact/Claim boundaries", () => 
   // (9) compact schema: model outputs type/num/name, system generates the display label
   assert.match(entriesPrompt, /"num"/u);
   assert.match(entriesPrompt, /"name"/u);
+  assert.match(assemblyPrompt, /自足证明允许 premises=\[\].*argument 必须记录完整数学论证/u);
+  assert.match(assemblyPrompt, /互推 proof 可表达等价或相互蕴含.*没有已建立的外部入口.*不会建立其中任何 Claim/u);
 });
 
 test("returns proof-to-Fact violations to the model and applies the targeted fix", async () => {
@@ -635,8 +637,7 @@ test("generates and normalizes canonical display labels adhering to '<type> · <
   assert.equal(view.inferences[1].displayLabel, "证明 · 2 · 紧致性");
 });
 
-test("detects and rejects cyclic proof dependencies (2-hop and 3-hop cycles)", () => {
-  // 2-hop cycle: A proves B, B proves A
+test("preserves reciprocal and multi-Claim proof cycles", () => {
   const twoHopCycle = {
     projectTitle: "Cycle Paper",
     mainTargetEntryId: "c1",
@@ -649,12 +650,8 @@ test("detects and rejects cyclic proof dependencies (2-hop and 3-hop cycles)", (
       { id: "inf2", operationKind: "proof", premises: ["c2"], conclusion: "c1", argument: "2 implies 1", sourceLocator: "p#2" },
     ],
   };
-  assert.throws(
-    () => paperImportClient.paperProjectView(twoHopCycle),
-    /数学地图存在循环证明依赖：.*c1.*c2.*c1/u,
-  );
+  assert.equal(paperImportClient.paperProjectView(twoHopCycle).inferences.length, 2);
 
-  // 3-hop cycle: A -> B -> C -> A
   const threeHopCycle = {
     projectTitle: "Cycle Paper 3",
     mainTargetEntryId: "c1",
@@ -669,10 +666,27 @@ test("detects and rejects cyclic proof dependencies (2-hop and 3-hop cycles)", (
       { id: "inf3", operationKind: "proof", premises: ["c3"], conclusion: "c1", argument: "3 implies 1", sourceLocator: "p#3" },
     ],
   };
-  assert.throws(
-    () => paperImportClient.paperProjectView(threeHopCycle),
-    /数学地图存在循环证明依赖：.*c1.*c3.*c2.*c1/u,
-  );
+  assert.equal(paperImportClient.paperProjectView(threeHopCycle).inferences.length, 3);
+});
+
+test("accepts a self-contained proof but still rejects empty organization premises", () => {
+  const selfContained = {
+    projectTitle: "Direct Proof Paper",
+    mainTargetEntryId: "c1",
+    entries: [
+      { id: "c1", entryClass: "claim", claimKind: "theorem", title: "Direct theorem", statement: "Statement", sourceLocator: "p#1" },
+    ],
+    inferences: [
+      { id: "inf1", operationKind: "proof", premises: [], conclusion: "c1", argument: "Choose a minimal counterexample and derive a contradiction.", sourceLocator: "p#1" },
+    ],
+  };
+  assert.deepEqual(paperImportClient.paperProjectView(selfContained).inferences[0].premises, []);
+
+  const emptyOrganization = structuredClone(selfContained);
+  emptyOrganization.entries[0] = { id: "f1", entryClass: "fact", factKind: "definition", title: "Definition", statement: "Statement", sourceLocator: "p#1" };
+  emptyOrganization.mainTargetEntryId = null;
+  emptyOrganization.inferences[0] = { ...emptyOrganization.inferences[0], operationKind: "organization", conclusion: "f1" };
+  assert.throws(() => paperImportClient.paperProjectView(emptyOrganization), /premises 必须是非空数组/u);
 });
 
 test("detects and rejects unmatched inline and display dollar math delimiters in mathematical fields", () => {
@@ -1065,30 +1079,27 @@ test("sanitizeRawProjectView repairs mechanical defects locally", () => {
       { id: "c3", entryClass: "claim", claimKind: "theorem", title: "主定理", statement: "$M$。", sourceLocator: "p#3" },
     ],
     inferences: [
-      // 缺 operationKind → 按结论类型推断为 proof
       { id: "i1", premises: ["f1"], conclusion: "c1", argument: "由定义。", sourceLocator: "p#1" },
-      // 悬空 premise → 移除后仍合法
       { id: "i2", operationKind: "proof", premises: ["ghost", "c1"], conclusion: "c3", argument: "由引理。", sourceLocator: "p#3" },
-      // 空 premises → 整条丢弃
-      { id: "i3", operationKind: "proof", premises: [], conclusion: "c3", argument: "空。", sourceLocator: "p#3" },
-      // 循环依赖 c1 → c4? 用 c1/c3 自环：c1 证明依赖 c3，c3 依赖 c1 → 后者成环被丢弃
+      { id: "i3", operationKind: "proof", premises: [], conclusion: "c3", argument: "反设结论不成立，取极小反例并导出矛盾。", sourceLocator: "p#3" },
       { id: "i4", operationKind: "proof", premises: ["c3"], conclusion: "c1", argument: "回推。", sourceLocator: "p#3" },
+      { id: "i5", operationKind: "proof", premises: ["c1"], conclusion: "c1", argument: "循环论证。", sourceLocator: "p#1" },
+      { id: "i6", operationKind: "proof", premises: ["f1"], conclusion: "c1", argument: "", sourceLocator: "p#1" },
     ],
   };
 
   const { raw: fixed, actions } = paperImportClient.sanitizeRawProjectView(raw, { fileName: "s.pdf" });
   assert.ok(actions.length >= 5);
 
-  // i1 推断为 proof；i2 移除悬空 premise；i3 丢弃；i4 与 i2 成环（c3→c1→? 取决于顺序）被破环
   const view = paperImportClient.paperProjectView(fixed, { fileName: "s.pdf" });
   const byId = new Map(view.inferences.map((inf) => [inf.id, inf]));
   assert.equal(byId.get("i1").operationKind, "proof");
   assert.deepEqual(byId.get("i2").premises, ["c1"]);
-  assert.ok(!byId.has("i3"));
-  // 循环被打破：i2(c1→c3) 与 i4(c3→c1) 只保留先出现的 i2
-  assert.ok(!byId.has("i4"));
+  assert.deepEqual(byId.get("i3").premises, []);
+  assert.ok(byId.has("i4"));
+  assert.equal(byId.has("i5"), false);
+  assert.equal(byId.has("i6"), false);
 
-  // B0 缺 sourceReference → 按条目名补齐；mainTarget 缺失 → 回退到被证明的非 B0 主定理
   assert.equal(view.entries.find((e) => e.id === "c2").sourceReference, "外部定理");
   assert.equal(view.mainTargetEntryId, "c3");
   assert.equal(view.derivedResearchState.researchOverlay.loopTargetEntryId, "c3");

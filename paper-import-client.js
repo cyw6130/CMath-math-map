@@ -35,7 +35,7 @@
   function inferenceStrategySection(version) {
     const fromIndex = inferenceStrategyIndex?.sectionFor?.(version);
     if (typeof fromIndex === "string" && fromIndex) return fromIndex;
-    if (version === "v3.43") return "- 【V3.43 统一覆盖：细粒度+链式+主线】在 V3 基线之上：① 细粒度：每个 Claim 的证明必须展开为独立 proof，严禁合并为 mega-proof；每个 proof 的 premises 必须是直接依赖的已有 Entry ID，空 premises、未知 ID、循环依赖、把 Fact 当 proof conclusion 均禁止；② 链式：按闭包倒推递归补齐被依赖但缺 proof 的中间 Claim，每步仅列直接 premises；必须保留从 b0 经各 key_result 到 mainTarget 的完整主线 proof 链；③ 主线覆盖：必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理，允许合法多连通分支与独立背景，不以固定推理数量为目标，但隔离率>0.2 视为缺陷，闭包未闭合视为缺陷。\n";
+    if (version === "v3.43") return "- 【V3.43 统一覆盖：细粒度+链式+主线】在 V3 基线之上：① 细粒度：每个 Claim 的证明必须展开为独立 proof，严禁合并为 mega-proof；每个 proof 的 premises 只列直接依赖的已有 Entry ID；自足证明可用空 premises，但必须在 argument 中记录完整数学论证；未知 ID、直接自依赖、把 Fact 当 proof conclusion 均禁止；互推循环可表达等价或相互蕴含，但没有已建立的外部入口时不能建立循环中的任何 Claim；② 链式：按闭包倒推递归补齐被依赖但缺 proof 的中间 Claim，每步仅列直接 premises；必须保留从 b0 经各 key_result 到 mainTarget 的完整主线 proof 链；③ 主线覆盖：必须覆盖论文中具有实质意义的各个独立证明分支与结构归属，绝不能仅输出少量局部引理，允许合法多连通分支与独立背景，不以固定推理数量为目标，但隔离率>0.2 视为缺陷，闭包未闭合视为缺陷。\n";
     if (version === "v3.44") return "- 【V3.44 精修（陈述精度+桥接+去噪）】在 V3.43 基础上：① 陈述精度：Hopf 方向严格写一般维数 winding/环绕数、χ(T^n)=0、Poincaré–Hopf 需“有限孤立零点”、S^1 基例需完整等度分类↔homotopy、穿孔空间双向判据、毛球一般维数；Yasui 的 Taubes/batch 条件需 b2^±≠1 mod4 原文、Bauer-Furuta 定义与 symplectic 结构定义不得遗漏；② 桥接：knot 的 quantum trace 需显式建立 Rep_f^d(A) categorical trace = quantum trace 的桥接、graphical calculus→colored link invariant 需独立 proof、framed-link/surgery 需 Entry；cornered 的 self-gluing HH0→capping 的 premise 必须保留、trisection 需 Gay–Kirby 背景；③ 去噪：禁止把 Rohlin 额外定理/错误纯化/neg-mod 等价等未在 Gold 的内容加入 B0 或捏造等价。\n";
     if (version === "v3.45") return "- 【V3.45 校正（陈述精度回补+去重）】在 V3.44 基础上针对 Sol 回退做最小校正：① Hopf：winding 定义必须写一般维数 S^{n-1}→S^{n-1} 不固定为 S^1；χ(S^n)=1+(-1)^n，χ(T^n)=0 严禁写 χ(T^k)=-2(k-2)；横截外部定理必须是一般版本（边界固定延拓+一般横截同伦）而非仅零截面特例；引理 base-s1 必须完整陈述任意整数度分类 deg:[S^1,S^1]≅Z 由 z↦z^n 实现且零伦当且仅当度为零；穿孔空间需显式维数归纳假设，present R^n\\{0}≃S^{n-1} 双向判据，禁止由 S^1 直接跳到任意 k 且禁止以欧氏鼓包直接充当 S^k 延拓；Poincaré–Hopf 需“有限孤立零点”条件；毛球需一般维数结论。② Yasui：Taubes b2^+>1 需补典范 spin^c 与 SW=±1（mod2=1）；2-把手邻域类是“可由邻域内2-循环代表”而非单个生成元之像；定理2.4/1.9必须为 b2^+ not≡1(mod4) 且 b2^- not≡1(mod4) 禁止替换为 b2^+≤1、b2≡1；必须补 Bauer–Furuta 不变量定义、辛结构定义、辛 Betti 奇偶性 B0；禁止重复建立 Lemma2.6/3.1/Cor2.5 等价条目。③ 去重与桥接保持 V3.44 要求，knot 的 negligible 仅“所有自同态量子迹为零”不捏造单迹等价，Rohlin/附加 Jones 等 Gold 外内容禁入 B0。\n";
     return "";
@@ -201,7 +201,7 @@
     return `你是数学论文结构化编辑器。下面给出一篇论文的 Entry 目录（已提取的数学对象）与全文文本。请通读全文，只输出推理关系与地图元信息，紧凑输出一个 JSON 对象，不要 Markdown，不要输出 Entry 本体。\n\n`
       + `【语言要求】projectTitle 与 argument 一律使用简体中文撰写；数学符号与公式保留 $...$ / $$...$$，必须成对闭合。\n\n`
       + semanticRulesText()
-      + `- 【证明依赖】论文中实际给出证明的 Claim 才输出 proof。premises 只列论文证明实际使用且已在 Entry 目录中的直接依赖 id；proof 的 conclusion 严禁同时出现在自己的 premises 中，严禁产生循环证明依赖，也不要为闭合地图而补造依赖。\n`
+      + `- 【证明依赖】论文中实际给出证明的 Claim 才输出 proof。premises 只列论文证明实际使用且已在 Entry 目录中的直接依赖 id；自足证明允许 premises=[]，但 argument 必须记录完整数学论证；proof 的 conclusion 严禁同时出现在自己的 premises 中。互推 proof 可表达等价或相互蕴含，但如果循环没有已建立的外部入口，闭包不会建立其中任何 Claim。不要为闭合地图而补造依赖。\n`
       + `- 【证明覆盖】论文中给出证明的每个 Claim 通常都应有对应 proof；不要因为证明简短或显然而省略（推论的一句话证明也算）。\n`
       + `- 【闭包一致性】地图会按「Fact 与 b0 可用、proof 沿依赖传递建立」做闭包推导。逐项检查：任何被某条 proof 的 premises 引用的 Claim，必须要么自己有 proof、要么列入 b0。若某个被依赖的 Claim 两者都不是：论文证明了它就补 proof；论文未证明但直接引用，就通过 fixedEntries 给它补 "external":true 与非空 source 并把它列入 b0；论文明确未证明的 Claim（猜想/开放问题）不得作为 premise 使用。\n`
       + `- 没有被 proof 建立的 Claim 不要改动、不要提及；地图会把它派生为 open。\n`
@@ -488,14 +488,14 @@
         issues.push(`${label} 的 conclusion ${inference.conclusion ?? "（缺失）"} 不存在于 Entry 目录`);
       }
       const premises = Array.isArray(inference.premises) ? inference.premises.filter((v) => typeof v === "string" && v.trim()) : [];
-      if (!premises.length) {
+      const operationKind = String(inference.operationKind ?? "").trim();
+      if (!Array.isArray(inference.premises) || (operationKind === "organization" && !premises.length)) {
         issues.push(`${label} 的 premises 为空或缺失`);
       } else {
         const dangling = premises.filter((id) => !entryById.has(id.trim()));
         if (dangling.length) issues.push(`${label} 引用了不存在的 premise：${dangling.join("、")}`);
         if (premises.some((id) => id.trim() === inference.conclusion?.trim())) issues.push(`${label} 的 conclusion 同时出现在 premises 中`);
       }
-      const operationKind = String(inference.operationKind ?? "").trim();
       if (!OPERATION_KINDS.has(operationKind)) {
         issues.push(`${label} 缺少 operationKind/type（只能 proof|organization）`);
       } else if (conclusionEntry) {
@@ -515,40 +515,6 @@
       }
     });
 
-    // 循环证明依赖
-    const proofDeps = new Map();
-    inferenceList
-      .filter((inf) => inf?.operationKind === "proof" && typeof inf?.conclusion === "string")
-      .forEach((inf) => {
-        const deps = proofDeps.get(inf.conclusion) ?? new Set();
-        (Array.isArray(inf.premises) ? inf.premises : []).forEach((premise) => {
-          if (typeof premise === "string") deps.add(premise.trim());
-        });
-        proofDeps.set(inf.conclusion, deps);
-      });
-    const visitState = new Map();
-    const path = [];
-    let cycleReported = false;
-    function detectCycle(node) {
-      if (cycleReported) return;
-      visitState.set(node, 1);
-      path.push(node);
-      for (const dep of proofDeps.get(node) ?? []) {
-        if (visitState.get(dep) === 1) {
-          cycleReported = true;
-          issues.push(`存在循环证明依赖：${[...path.slice(path.indexOf(dep)), dep].join(" -> ")}`);
-          return;
-        }
-        if (!visitState.get(dep)) detectCycle(dep);
-        if (cycleReported) return;
-      }
-      path.pop();
-      visitState.set(node, 2);
-    }
-    for (const node of proofDeps.keys()) {
-      if (!visitState.get(node)) detectCycle(node);
-      if (cycleReported) break;
-    }
 
     const b0List = raw.b0ClaimEntryIds ?? raw.b0 ?? raw.derivedResearchState?.mathematicalState?.b0ClaimEntryIds;
     if (!Array.isArray(b0List)) {
@@ -638,7 +604,7 @@
       }
     });
 
-    // ---- Inferences：修 operationKind、断悬空引用、破循环 ----
+    // ---- Inferences：修 operationKind、断悬空引用；Claim 互推循环保留给闭包解释 ----
     const prepared = [];
     fixed.inferences.forEach((inference, index) => {
       const label = inference.id || `第 ${index + 1} 条 Inference`;
@@ -660,18 +626,18 @@
         });
       const deduped = [...new Set(premises)];
       if (deduped.includes(inference.conclusion)) {
-        actions.push(`${label} 的 conclusion 出现在 premises 中，已移除`);
-      }
-      inference.premises = deduped.filter((premise) => premise !== inference.conclusion);
-      if (!inference.premises.length) {
-        actions.push(`丢弃 premises 为空的 ${label}`);
+        actions.push(`丢弃 conclusion 出现在 premises 中的 ${label}`);
         return;
       }
-
+      inference.premises = deduped;
       let operationKind = String(inference.operationKind ?? "").trim();
       if (!OPERATION_KINDS.has(operationKind)) {
         operationKind = conclusionEntry.entryClass === "claim" ? "proof" : "organization";
         actions.push(`${label} 缺少 operationKind，已按结论类型推断为 ${operationKind}`);
+      }
+      if (operationKind === "organization" && !inference.premises.length) {
+        actions.push(`丢弃 premises 为空的 ${label}`);
+        return;
       }
       if (operationKind === "proof" && conclusionEntry.entryClass !== "claim") {
         const allFacts = inference.premises.every((premise) => entryById.get(premise)?.entryClass === "fact");
@@ -697,10 +663,13 @@
         }
       }
       inference.operationKind = operationKind;
-
       if (typeof inference.argument !== "string" || !inference.argument.trim()) {
-        inference.argument = "（论证要点从略，详见原文对应页码。）";
-        actions.push(`${label} 缺少 argument，已占位`);
+        if (operationKind === "proof") {
+          actions.push(`丢弃缺少 argument 的 proof ${label}`);
+          return;
+        }
+        inference.argument = "（组织关系说明从略，详见原文对应页码。）";
+        actions.push(`${label} 缺少 argument，已补组织关系说明`);
       }
       if (typeof inference.sourceLocator !== "string" || !inference.sourceLocator.trim()) {
         const fallback = conclusionEntry.sourceLocator ?? conclusionEntry.sourcePath;
@@ -718,33 +687,7 @@
       prepared.push(inference);
     });
 
-    // 循环证明依赖：按出现顺序保留边，发现成环即丢弃该条 proof
-    const keptDeps = new Map();
-    const reachable = (from, target) => {
-      const stack = [from];
-      const seen = new Set([from]);
-      while (stack.length) {
-        const node = stack.pop();
-        if (node === target) return true;
-        for (const dep of keptDeps.get(node) ?? []) {
-          if (!seen.has(dep)) { seen.add(dep); stack.push(dep); }
-        }
-      }
-      return false;
-    };
-    const inferences = [];
-    prepared.forEach((inference) => {
-      if (inference.operationKind === "proof") {
-        if (inference.premises.some((premise) => reachable(premise, inference.conclusion))) {
-          actions.push(`丢弃形成循环证明依赖的 proof（结论 ${inference.conclusion}）`);
-          return;
-        }
-        const deps = keptDeps.get(inference.conclusion) ?? new Set();
-        inference.premises.forEach((premise) => deps.add(premise));
-        keptDeps.set(inference.conclusion, deps);
-      }
-      inferences.push(inference);
-    });
+    const inferences = prepared;
 
     // ---- B0 清单：缺清单时按 external 标记推导，缺来源时按条目名补齐 ----
     let b0List = fixed.b0ClaimEntryIds ?? fixed.b0 ?? fixed.derivedResearchState?.mathematicalState?.b0ClaimEntryIds;
@@ -1066,7 +1009,7 @@
       }
       ids.add(id);
       if (!OPERATION_KINDS.has(inference.operationKind)) throw new Error(`${id} 缺少 operationKind=organization|proof`);
-      if (!Array.isArray(inference.premises) || inference.premises.length === 0) throw new Error(`${id}.premises 必须是非空数组`);
+      if (!Array.isArray(inference.premises) || (inference.operationKind === "organization" && inference.premises.length === 0)) throw new Error(`${id}.premises 必须是非空数组`);
       const premises = [...new Set(inference.premises.map((value, premiseIndex) => nonEmpty(value, `${id}.premises[${premiseIndex}]`)))];
       if (premises.some((premise) => !entryById.has(premise))) throw new Error(`${id} 引用了不存在的 premise`);
       const conclusion = nonEmpty(inference.conclusion, `${id}.conclusion`);
@@ -1104,7 +1047,7 @@
         argument,
         sourcePath,
       };
-      semantics.validateInference(normalized, entryById);
+      if (premises.length || inference.operationKind !== "proof") semantics.validateInference(normalized, entryById);
       return normalized;
     });
 
@@ -1124,44 +1067,6 @@
       throw new Error(`B0 Claim ${b0MissingSourceReference.join("、")} 必须包含 sourceReference`);
     }
 
-    // Cyclic proof dependency validation
-    const proofDependencies = new Map();
-    normalizedEntries.forEach((entry) => {
-      proofDependencies.set(entry.id, new Set());
-    });
-    normalizedInferences
-      .filter((inf) => inf.operationKind === "proof")
-      .forEach((inf) => {
-        inf.premises.forEach((premiseId) => {
-          proofDependencies.get(inf.conclusion)?.add(premiseId);
-        });
-      });
-
-    const visitState = new Map();
-    const currentPath = [];
-    function detectProofCycle(nodeId) {
-      visitState.set(nodeId, 1);
-      currentPath.push(nodeId);
-      const deps = proofDependencies.get(nodeId) ?? new Set();
-      for (const depId of deps) {
-        if (visitState.get(depId) === 1) {
-          const startIndex = currentPath.indexOf(depId);
-          const cyclePath = [...currentPath.slice(startIndex), depId];
-          throw new Error(`数学地图存在循环证明依赖：${cyclePath.join(" -> ")}`);
-        }
-        if (!visitState.get(depId)) {
-          detectProofCycle(depId);
-        }
-      }
-      currentPath.pop();
-      visitState.set(nodeId, 2);
-    }
-
-    for (const entryId of entryById.keys()) {
-      if (!visitState.get(entryId)) {
-        detectProofCycle(entryId);
-      }
-    }
 
     const mainTargetEntryId = nonEmpty(
       raw.mainTargetEntryId ?? raw.derivedResearchState?.researchOverlay?.loopTargetEntryId,
@@ -1349,7 +1254,9 @@
       reviewInputs: { missingExtractionCandidates: [], externalEvidenceIndex: null, externalBoundaryCandidates: (()=>{ try{ return JSON.parse(extraResults[0]?.content ?? "{}"); }catch{ return null; } })(), protectedClaimIds: [], canonicalIndex: {} },
       diagnostics: { durationMs: Math.round(performance.now() - startMs), stages, calls, reviewDiagnostics: { addCount: reviewPatches.filter(p=>p.action==="add").length }, moduleIdentity: { name: "paper-entry-extraction-v1.1", schema: "cmath.paper-entry-artifact/v1", backbone: "v3.26" }, modelCallMetadata: { model: typeof model === "string" ? model : "test", provider: "test" } },
     };
-    try { if (typeof paperEntryArtifact !== "undefined" && paperEntryArtifact.validatePaperEntryArtifact) paperEntryArtifact.validatePaperEntryArtifact(artifact); } catch {}
+    const artifactApi = root?.CMathPaperEntryArtifactV1
+      ?? (typeof require === "function" ? require("./paper-entry-artifact-v1.js") : null);
+    if (artifactApi?.createPaperEntryArtifact) return artifactApi.createPaperEntryArtifact(artifact);
     return artifact;
   }
 

@@ -51,9 +51,22 @@
     }
     nonEmptyString(entry.id, `entries[${index}].id`);
 
-    const rawKind = entry.type || entry.kind || entry.claimKind || entry.factKind || entry.entryClass;
-    if (typeof rawKind !== "string" || !rawKind.trim()) {
-      throw new Error(`entries[${index}] (${entry.id}) 缺少有效的 entry 类型/分类 (type/kind)`);
+    if (entry.entryClass !== "fact" && entry.entryClass !== "claim") {
+      throw new Error(`entries[${index}] (${entry.id}) 必须使用 entryClass=fact|claim`);
+    }
+    if ("type" in entry || "kind" in entry) {
+      throw new Error(`entries[${index}] (${entry.id}) 正式 Entry 不能包含 type/kind 草稿别名`);
+    }
+    if (entry.entryClass === "fact") {
+      if (!["definition", "algorithm", "calculation"].includes(entry.factKind)) {
+        throw new Error(`entries[${index}] (${entry.id}) 的 factKind 必须是 definition|algorithm|calculation`);
+      }
+      if ("claimKind" in entry) throw new Error(`entries[${index}] (${entry.id}) 的 Fact 不能包含 claimKind`);
+    } else {
+      if (!["lemma", "proposition", "theorem"].includes(entry.claimKind)) {
+        throw new Error(`entries[${index}] (${entry.id}) 的 claimKind 必须是 lemma|proposition|theorem`);
+      }
+      if ("factKind" in entry) throw new Error(`entries[${index}] (${entry.id}) 的 Claim 不能包含 factKind`);
     }
 
     const statement = entry.statement ?? entry.description ?? entry.content ?? "";
@@ -264,6 +277,25 @@
     return cleaned;
   }
 
+  function canonicalizeEntry(entry) {
+    const cleaned = cleanEntryFields(entry);
+    if (!isObject(cleaned)) return cleaned;
+    const hasCanonicalDiscriminant = cleaned.entryClass === "fact" || cleaned.entryClass === "claim"
+      || "factKind" in cleaned || "claimKind" in cleaned;
+    if (hasCanonicalDiscriminant) return cleaned;
+    const rawKind = cleaned.type ?? cleaned.kind ?? cleaned.entryClass;
+    const kind = typeof rawKind === "string" ? rawKind.trim().toLowerCase() : "";
+    const fact = ["definition", "algorithm", "calculation"].includes(kind);
+    const claim = ["lemma", "proposition", "theorem"].includes(kind);
+    if (!fact && !claim) return cleaned;
+    const { type, kind: draftKind, factKind, claimKind, entryClass, ...rest } = cleaned;
+    return {
+      ...rest,
+      entryClass: fact ? "fact" : "claim",
+      ...(fact ? { factKind: kind } : { claimKind: kind }),
+    };
+  }
+
   /**
    * Normalize an input object into the canonical paper-entry-artifact/v1 shape.
    */
@@ -301,7 +333,7 @@
     const provenance = input.aggregation?.provenance || input.aggregation?.lane_provenance || null;
 
     const rawEntries = Array.isArray(input.entries) ? input.entries : records;
-    const entries = rawEntries.map(cleanEntryFields);
+    const entries = rawEntries.map(canonicalizeEntry);
     const aliases = isObject(input.aliases) ? { ...input.aliases } : {};
 
     const reviewInputs = {

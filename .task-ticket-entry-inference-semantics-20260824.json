@@ -1,0 +1,53 @@
+{
+  "schema": "agent-os.construction-ticket/v0.2",
+  "ticket_id": "ticket-20260824-entry-inference-semantics",
+  "created_at": "2026-08-24T10:34:20+08:00",
+  "authorization": {"quote": "去工作", "source": "Codex session 2026-08-24 after explicit user decisions Q1-Q12"},
+  "proposal_ref": "direct",
+  "frozen_item": {
+    "growth_kind": "implementation",
+    "serves_goals": ["goal-1", "goal-2"],
+    "why_now": "Paper Import validators and prompts contradict the accepted Entry/Inference domain model.",
+    "evidence_refs": ["CONTEXT.md"],
+    "depends_on": ["commit cb8cf3f"],
+    "responsibility": {"producer": "codex main", "evaluator": "focused and full repository tests", "acceptance_authority": "machine tests prove implementation; user retains mathematical acceptance"}
+  },
+  "target": {"level": "L3", "board_nodes": ["paper-import-entry-contract", "paper-import-inference-contract"]},
+  "source_snapshot": [
+    {"path":"paper-entry-artifact-v1.js","sha256":"63e680fd6307e6ebb63ec31e9f0eb7944bcc5b3aa68436782a81cba8187b4d82"},
+    {"path":"paper-import-client.js","sha256":"8c28c9bfd2167beb7f2df4f208e5b5f510b6165f22dfa926fec43ab33964da1c"},
+    {"path":"src/paper-import/inference/strategies/v3.43.js","sha256":"00aebb758257aa1402c19be6f59313b649a070b72729a14b526a52222524e266"},
+    {"path":"tests/paper-entry-extraction.test.mjs","sha256":"f628aa2c64b610e3101295c5c3a8a50202fe81a1fc90182707075e8d353d6489"},
+    {"path":"tests/paper-import-client.test.mjs","sha256":"1ba13bf6dd335476552b5ca54008ea03efc1aa41c0f30882354ced0bab188792"},
+    {"path":"tests/benchmark-evaluator.test.mjs","sha256":"3890b3307afde0125d8db8186fa8f59711e550f145d57dd6761e386c6046d76e"}
+  ],
+  "allowed_actions": [
+    {"action":"create","path":".task-ticket-entry-inference-semantics-20260824.json"},
+    {"action":"modify","path":"paper-entry-artifact-v1.js"},
+    {"action":"modify","path":"paper-import-client.js"},
+    {"action":"modify","path":"src/paper-import/inference/strategies/v3.43.js"},
+    {"action":"modify","path":"tests/paper-entry-extraction.test.mjs"},
+    {"action":"modify","path":"tests/paper-import-client.test.mjs"},
+    {"action":"modify","path":"tests/benchmark-evaluator.test.mjs"}
+  ],
+  "acceptance": {
+    "status":"pending",
+    "oracle_kind":"machine-test",
+    "commands":[
+      {"kind":"test","argv":["node","--test","tests/paper-entry-extraction.test.mjs","tests/paper-import-client.test.mjs","tests/benchmark-evaluator.test.mjs"]},
+      {"kind":"test","argv":["node","--test","tests/*.test.mjs"]},
+      {"kind":"secret-scan","argv":["/Users/chenyuwen/.claude/scripts/secret-scan.sh", "."]}
+    ],
+    "test_freeze":[
+      {"path":"tests/paper-entry-extraction.test.mjs","sha256":"f628aa2c64b610e3101295c5c3a8a50202fe81a1fc90182707075e8d353d6489"},
+      {"path":"tests/paper-import-client.test.mjs","sha256":"1ba13bf6dd335476552b5ca54008ea03efc1aa41c0f30882354ced0bab188792"},
+      {"path":"tests/benchmark-evaluator.test.mjs","sha256":"3890b3307afde0125d8db8186fa8f59711e550f145d57dd6761e386c6046d76e"}
+    ],
+    "red_evidence":null
+  },
+  "final_oracle":{"oracle_kind":"machine-test","description":"Tests prove strict six-kind canonical Entries, self-contained proof support, preserved equivalence cycles, and fixed-point Closure behavior."},
+  "builder":{"executor":"codex main","runtime":"codex"},
+  "execution_status":"authorized",
+  "transition_proposal":{"from":"validators reject accepted proof forms and accept draft Entry aliases","to":"Paper Import enforces the accepted domain model","authority_rule":"tests prove implementation only","evidence_refs":[]},
+  "acceptance_decision":{"status":"pending","signoff_ref":null,"decided_by":"user"}
+}

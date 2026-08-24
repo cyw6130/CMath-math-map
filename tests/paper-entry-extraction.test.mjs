@@ -158,8 +158,8 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
         provenance: { def_hopf: "coverage", thm_main: "lead" },
       },
       entries: [
-        { id: "def_hopf", name: "Definition 1.1", type: "definition", entryClass: "definition", page: 1, statement: "Let $S^3 \\to S^2$ be the Hopf map." },
-        { id: "thm_main", name: "Theorem 2.1", type: "theorem", entryClass: "theorem", page: 2, statement: "The map $S^3 \\to S^2$ forms a fiber bundle." },
+        { id: "def_hopf", name: "Definition 1.1", entryClass: "fact", factKind: "definition", page: 1, statement: "Let $S^3 \\to S^2$ be the Hopf map." },
+        { id: "thm_main", name: "Theorem 2.1", entryClass: "claim", claimKind: "theorem", page: 2, statement: "The map $S^3 \\to S^2$ forms a fiber bundle." },
       ],
       aliases: {},
       reviewInputs: {
@@ -192,7 +192,49 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       },
     };
     assert.doesNotThrow(() => validatePaperEntryArtifact(validV1Artifact));
+    t.test("requires canonical Fact/Claim discriminants in artifact.entries", () => {
+    const rawEntryArtifact = structuredClone(validV11Artifact);
+    rawEntryArtifact.entries[0] = {
+      id: "def_hopf",
+      name: "Definition 1.1",
+      type: "definition",
+      statement: "Let $S^3 \\to S^2$ be the Hopf map.",
+    };
+    assert.throws(
+      () => validatePaperEntryArtifact(rawEntryArtifact),
+      /必须使用 entryClass=fact\|claim/u,
+    );
+
+    const conflictingArtifact = structuredClone(validV11Artifact);
+    conflictingArtifact.entries[0].claimKind = "theorem";
+    assert.throws(
+      () => validatePaperEntryArtifact(conflictingArtifact),
+      /Fact.*不能包含 claimKind/u,
+    );
+
+    const unsupportedKindArtifact = structuredClone(validV11Artifact);
+    unsupportedKindArtifact.entries[1].claimKind = "corollary";
+    assert.throws(
+      () => validatePaperEntryArtifact(unsupportedKindArtifact),
+      /claimKind.*lemma\|proposition\|theorem/u,
+    );
   });
+
+    const canonicalConflict = structuredClone(validV11Artifact);
+    canonicalConflict.entries[0].factKind = "theorem";
+    assert.throws(
+      () => createPaperEntryArtifact(canonicalConflict),
+      /factKind.*definition\|algorithm\|calculation/u,
+    );
+
+    const mixedKinds = structuredClone(validV11Artifact);
+    mixedKinds.entries[0].claimKind = "theorem";
+    assert.throws(
+      () => createPaperEntryArtifact(mixedKinds),
+      /Fact.*不能包含 claimKind/u,
+    );
+  });
+
 
   await t.test("rejects malformed entry artifacts", () => {
     assert.throws(() => validatePaperEntryArtifact(null), /必须是非空 JSON 对象/);
@@ -211,7 +253,7 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       guideLeadSet: { leads: [] },
       lanes: { coverageEntries: [], leadGuidedEntries: [] },
       aggregation: { records: [], conflicts: [] },
-      entries: [{ id: "dup", name: "E1", type: "definition", statement: "stmt1" }, { id: "dup", name: "E2", type: "definition", statement: "stmt2" }],
+      entries: [{ id: "dup", name: "E1", entryClass: "fact", factKind: "definition", statement: "stmt1" }, { id: "dup", name: "E2", entryClass: "fact", factKind: "definition", statement: "stmt2" }],
       aliases: {},
       reviewInputs: { missingExtractionCandidates: [] },
     }), /重复的 entry ID/);
@@ -223,7 +265,7 @@ test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) =
       guideLeadSet: { leads: [] },
       lanes: { coverageEntries: [], leadGuidedEntries: [] },
       aggregation: { records: [], conflicts: [] },
-      entries: [{ id: "e1", name: "E1", type: "definition", statement: "Unbalanced $formula" }],
+      entries: [{ id: "e1", name: "E1", entryClass: "fact", factKind: "definition", statement: "Unbalanced $formula" }],
       aliases: {},
       reviewInputs: { missingExtractionCandidates: [] },
     }), /包含未配对的数学公式定界符/);
@@ -1358,13 +1400,15 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     assert.ok(dirty);
     assert.equal(dirty.name, "Dirty Name");
     assert.equal(dirty.statement, "Statement with control char.");
-    assert.equal(dirty.type, "definition");
     assert.equal(dirty.entryClass, "fact");
+    assert.equal(dirty.factKind, "definition");
+    assert.equal("type" in dirty, false);
 
     const lem = artifact.entries.find((e) => e.id === "lem:quick");
     assert.ok(lem);
-    assert.equal(lem.type, "lemma");
     assert.equal(lem.entryClass, "claim");
+    assert.equal(lem.claimKind, "lemma");
+    assert.equal("type" in lem, false);
 
     // Broken lone entry with unbalanced math was discarded under strictMath
     const broken = artifact.entries.find((e) => e.id === "thm:broken_lone");
@@ -1735,7 +1779,9 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     const hopf = artifact.entries.find((e) => e.id === "def:hopf_fibration");
     assert.ok(hopf);
     assert.equal(hopf.name, "Hopf 纤维化");
-    assert.equal(hopf.type, "definition");
+    assert.equal(hopf.entryClass, "fact");
+    assert.equal(hopf.factKind, "definition");
+    assert.equal("type" in hopf, false);
   });
 
   await t.test("consolidates raw pool with chunk.entries fallback format without dropping candidates", () => {
