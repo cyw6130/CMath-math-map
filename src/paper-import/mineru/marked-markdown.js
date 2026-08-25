@@ -244,13 +244,22 @@
         fail(`content block ${index} 的 page_idx ${page} 超出 pageCount ${normalizedPageCount}`);
       }
 
+      // Headers, footers and bare page numbers are not emitted as stable
+      // Markdown blocks.  Never search for their short text (for example
+      // page number "2") because it can consume an unrelated occurrence in
+      // the paper and move the monotonic cursor past the next real block.
+      if (isNonMarkdownAuxiliary(block)) continue;
+
       const location = findBlock(source, block, cursor);
       if (!location) {
         // MinerU VLM content_list may retain headers/footers/page numbers that
         // are intentionally absent from full.md.  They cannot anchor a page,
-        // so ignore only this documented auxiliary set; every substantive
-        // block still has to be located or the conversion fails closed.
-        if (isNonMarkdownAuxiliary(block)) continue;
+        // so ignore this documented auxiliary set.  It may also emit an empty
+        // text placeholder before the first real block on a page.  A block
+        // with no anchor candidate carries no content to match; defer that
+        // page to the next real block and keep the final all-pages check as
+        // the fail-closed guard.
+        if (blockAnchorCandidates(block).length === 0) continue;
         fail(`无法在 full.md 中定位第 ${index + 1} 个内容块（page_idx=${page}）；拒绝猜测页锚`);
       }
       locatedBlocks += 1;

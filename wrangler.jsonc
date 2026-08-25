@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cmath-mineru-gateway",
+  "main": "workers/mineru-gateway/worker.mjs",
+  "compatibility_date": "2026-08-25",
+  "workers_dev": true,
+  "secrets": {
+    "required": ["MINERU_TOKEN"]
+  },
+  "vars": {
+    "MINERU_ALLOWED_ORIGINS": "https://cyw6130.github.io,http://127.0.0.1:7100,http://localhost:7100"
+  }
+}

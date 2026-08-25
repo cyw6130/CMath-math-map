@@ -187,6 +187,11 @@ test("both public HTML entries load the complete production pipeline before the 
   ];
   for (const fileName of ["index.html", "index-v5.html"]) {
     const html = fs.readFileSync(path.join(root, fileName), "utf8");
+    assert.match(
+      html,
+      /data-mineru-gateway-url="https:\/\/cmath-mineru-gateway\.cmath-math-map\.workers\.dev\/api\/mineru"/u,
+      `${fileName} must use the deployed MinerU Gateway`,
+    );
     const idxOf = (name) => html.indexOf(`src="${name}"`);
     const clientIdx = idxOf("paper-import-client.js");
     let previous = -1;

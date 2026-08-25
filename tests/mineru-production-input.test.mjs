@@ -54,6 +54,49 @@ test("内容块锚点位于 Markdown 标题前缀之后时仍在整个块前插�
   );
 });
 
+test("MinerU 的空文本占位块由同页后续实体块提供页锚", () => {
+  assert.equal(
+    mineru.buildMarkedMarkdown({
+      fullMarkdown: "Page one.\n\n![](images/page-two.jpg)\n\nPage two.",
+      contentList: [
+        { type: "text", text: "Page one.", page_idx: 0 },
+        { type: "text", text: "", page_idx: 1 },
+        { type: "image", img_path: "images/page-two.jpg", page_idx: 1 },
+        { type: "text", text: "Page two.", page_idx: 1 },
+      ],
+    }),
+    "[[PAGE 1]]\nPage one.\n\n[[PAGE 2]]\n![](images/page-two.jpg)\n\nPage two.",
+  );
+
+  assert.throws(
+    () => mineru.buildMarkedMarkdown({
+      fullMarkdown: "Page one.",
+      contentList: [
+        { type: "text", text: "Page one.", page_idx: 0 },
+        { type: "text", text: "", page_idx: 1 },
+      ],
+      pageCount: 2,
+    }),
+    /无法可靠定位全部页面/u,
+  );
+});
+
+test("页码等辅助块不会用正文中的同名数字推进匹配游标", () => {
+  assert.equal(
+    mineru.buildMarkedMarkdown({
+      fullMarkdown: "Page one.\n\n![](images/page-two.jpg)\n\nSection 2.",
+      contentList: [
+        { type: "text", text: "Page one.", page_idx: 0 },
+        { type: "page_number", text: "2", page_idx: 0 },
+        { type: "text", text: "", page_idx: 1 },
+        { type: "image", img_path: "images/page-two.jpg", page_idx: 1 },
+        { type: "text", text: "Section 2.", page_idx: 1 },
+      ],
+    }),
+    "[[PAGE 1]]\nPage one.\n\n[[PAGE 2]]\n![](images/page-two.jpg)\n\nSection 2.",
+  );
+});
+
 function jsonResponse(value, status = 200) {
   return {
     ok: status >= 200 && status < 300,
