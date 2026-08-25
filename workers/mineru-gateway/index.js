@@ -5,6 +5,7 @@
  *   POST /upload                 → POST MinerU /api/v4/file-urls/batch
  *   POST /upload-file            → server-side PDF upload through the signed URL
  *   GET  /results/:batch_id      → GET  MinerU /api/v4/extract-results/batch/:id
+ *   GET  /download/:batch_id     → server-side result ZIP download
  *
  * The aliases under /api/mineru/ make it convenient to mount the Worker below
  * a path.  There is no generic URL proxy, request-body storage, or logging.
@@ -24,6 +25,7 @@
   const UPLOAD_FILE_PATHS = new Set(["/upload-file", "/api/mineru/upload-file"]);
   const MAX_PROXY_PDF_BYTES = 25 * 1024 * 1024;
   const RESULT_PREFIXES = ["/results/", "/api/mineru/results/"];
+  const DOWNLOAD_PREFIXES = ["/download/", "/api/mineru/download/"];
   const TASK_STATES = new Set(["waiting-file", "pending", "running", "converting", "done", "failed"]);
   const ALLOWED_MODELS = new Set(["pipeline", "vlm"]);
 
@@ -192,6 +194,13 @@
         return { kind: "invalid-result" };
       }
     }
+    for (const prefix of DOWNLOAD_PREFIXES) {
+      if (path.startsWith(prefix)) {
+        const batchId = path.slice(prefix.length);
+        if (safeBatchId(batchId) && !batchId.includes("/")) return { kind: "download", batchId };
+        return { kind: "invalid-download" };
+      }
+    }
     return { kind: "not-found" };
   }
 
@@ -220,15 +229,15 @@
       const url = new URL(request.url);
       const selected = route(url.pathname);
       if (request.method === "OPTIONS") {
-        if (selected.kind === "not-found" || selected.kind === "invalid-result") return emptyResponse(404, origin);
+        if (["not-found", "invalid-result", "invalid-download"].includes(selected.kind)) return emptyResponse(404, origin);
         return emptyResponse(204, origin, {
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Max-Age": "600",
         });
       }
-      if (selected.kind === "not-found" || selected.kind === "invalid-result") return jsonResponse({ error: "Not found" }, 404, origin);
-      if ((["upload", "upload-file"].includes(selected.kind) && request.method !== "POST") || (selected.kind === "result" && request.method !== "GET")) {
+      if (["not-found", "invalid-result", "invalid-download"].includes(selected.kind)) return jsonResponse({ error: "Not found" }, 404, origin);
+      if ((["upload", "upload-file"].includes(selected.kind) && request.method !== "POST") || (["result", "download"].includes(selected.kind) && request.method !== "GET")) {
         return jsonResponse({ error: "Method not allowed" }, 405, origin);
       }
       const configuredToken = env?.MINERU_TOKEN ?? env?.MINERU_API_TOKEN ?? env?.MINERU_API_KEY;
@@ -295,6 +304,31 @@
         return jsonResponse({ code: 0, msg: "ok", data: { batch_id: uploadResult.data.batch_id } }, 200, origin);
       }
 
+      if (selected.kind === "download") {
+        const forwarded = await forward(`${MINERU_API_ORIGIN}${MINERU_RESULT_PREFIX}${encodeURIComponent(selected.batchId)}`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        });
+        if (forwarded.response) return jsonResponse({ error: "MinerU result request failed" }, 502, origin);
+        const result = sanitizedResult(forwarded.body, selected.batchId, token);
+        const fullZipUrl = result.data.extract_result.full_zip_url;
+        if (!fullZipUrl) return jsonResponse({ error: "MinerU result ZIP is unavailable" }, 502, origin);
+        let zipResponse;
+        try { zipResponse = await upstreamFetch(fullZipUrl, { method: "GET" }); } catch {
+          return jsonResponse({ error: "MinerU result ZIP download failed" }, 502, origin);
+        }
+        if (!zipResponse?.ok) return jsonResponse({ error: "MinerU result ZIP download failed" }, 502, origin);
+        const headers = new Headers({
+          "Content-Type": zipResponse.headers?.get?.("Content-Type") || "application/zip",
+          "Cache-Control": "no-store",
+        });
+        if (origin) {
+          headers.set("Access-Control-Allow-Origin", origin);
+          headers.set("Vary", "Origin");
+        }
+        return new Response(zipResponse.body, { status: 200, headers });
+      }
+
       const forwarded = await forward(`${MINERU_API_ORIGIN}${MINERU_RESULT_PREFIX}${encodeURIComponent(selected.batchId)}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
@@ -302,6 +336,9 @@
       if (forwarded.response) return jsonResponse(JSON.parse(await forwarded.response.text()), 502, origin);
       const result = sanitizedResult(forwarded.body, selected.batchId, token);
       if (!result.data.extract_result.state) return jsonResponse({ error: "MinerU returned an invalid task state" }, 502, origin);
+      if (result.data.extract_result.full_zip_url) {
+        result.data.extract_result.full_zip_url = `${url.origin}/api/mineru/download/${encodeURIComponent(selected.batchId)}`;
+      }
       return jsonResponse(result, 200, origin);
     }
 

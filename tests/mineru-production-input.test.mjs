@@ -262,13 +262,41 @@ test("Credential Gateway 只使用 Worker Secret、固定代理官方批量上�
     method: "GET", headers: { Origin: "https://app.example" },
   }), env);
   assert.equal(result.status, 200);
-  assert.equal((await result.json()).data.extract_result.full_zip_url, "https://cdn.example/2.zip");
+  assert.equal((await result.json()).data.extract_result.full_zip_url, "https://gateway.example/api/mineru/download/batch-2");
 
   const blocked = await handler.fetch(new Request("https://gateway.example/api/mineru/upload", {
     method: "POST", headers: { ...validHeaders, Origin: "https://evil.example" }, body: "{}",
   }), env);
   assert.equal(blocked.status, 403);
   assert.equal(upstreamCalls.length, 2);
+});
+
+test("Credential Gateway 在服务器侧代理结果 ZIP 并补充浏览器 CORS", async () => {
+  const upstreamCalls = [];
+  const upstreamFetch = async (url, init = {}) => {
+    upstreamCalls.push({ url: String(url), init });
+    if (String(url).endsWith("/extract-results/batch/batch-3")) {
+      return jsonResponse({ code: 0, msg: "ok", data: {
+        batch_id: "batch-3", extract_result: { state: "done", full_zip_url: "https://cdn.example/3.zip" },
+      } });
+    }
+    if (String(url) === "https://cdn.example/3.zip") {
+      return new Response(new Uint8Array([80, 75, 3, 4]), { status: 200, headers: { "Content-Type": "application/zip" } });
+    }
+    throw new Error(`unexpected upstream URL ${url}`);
+  };
+  const handler = gateway.createGatewayHandler({ fetchImpl: upstreamFetch });
+  const response = await handler.fetch(new Request("https://gateway.example/api/mineru/download/batch-3", {
+    method: "GET", headers: { Origin: "https://app.example" },
+  }), { MINERU_TOKEN: "secret", MINERU_ALLOWED_ORIGINS: "https://app.example" });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://app.example");
+  assert.equal(response.headers.get("Content-Type"), "application/zip");
+  assert.deepEqual(Array.from(new Uint8Array(await response.arrayBuffer())), [80, 75, 3, 4]);
+  assert.deepEqual(upstreamCalls.map((call) => call.url), [
+    "https://mineru.net/api/v4/extract-results/batch/batch-3",
+    "https://cdn.example/3.zip",
+  ]);
 });
 
 test("Credential Gateway 在服务器侧代传 PDF，不把 OSS 签名地址暴露给浏览器", async () => {
