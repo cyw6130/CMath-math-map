@@ -222,3 +222,10 @@ test("paper workflow saves its Project View to the library instead of downloadin
   assert.match(app, /btn-map-export-json.*exportCurrentMapJson|exportCurrentMapJson[\s\S]*btn-map-export-json/u);
   assert.match(html, /id="btn-map-export-json"/u);
 });
+
+test("imported library cards use the user-import label without redundant action controls", () => {
+  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  assert.match(app, /mapDef\.isImported \? "用户导入" : "内置库"/u);
+  assert.doesNotMatch(app, /<div class="map-card-actions">/u);
+  assert.doesNotMatch(app, /<span class="demo-case-btn"/u);
+});

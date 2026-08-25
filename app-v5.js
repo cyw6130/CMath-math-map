@@ -2209,18 +2209,7 @@
     const title = mapDef.title || mapDef.id;
     const boundary = mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图");
     const sourceBadgeClass = mapDef.isImported ? "source-imported" : "source-builtin";
-    const sourceBadgeText = mapDef.isImported ? "本地导入" : "内置库";
-
-    // Build move options: original folder + all custom folders
-    const originalFolder = mapDef.isImported ? { id: "myMaps", name: "我的 JSON 地图" } : { id: "builtin", name: "内置地图库" };
-    const dests = [originalFolder, ...customFolders];
-
-    const moveOptionsHtml = dests.map((dest) => {
-      const isCurrent = dest.id === folderId;
-      return `<button type="button" class="map-menu-item btn-menu-move" data-target-folder="${escapeHtml(dest.id)}" role="menuitem"${isCurrent ? " disabled" : ""}>
-        <span>${escapeHtml(dest.name)}${isCurrent ? " (当前)" : ""}</span>
-      </button>`;
-    }).join("");
+    const sourceBadgeText = mapDef.isImported ? "用户导入" : "内置库";
 
     card.innerHTML = `
       <div class="map-drag-handle" title="拖拽调整位置或移动到其他文件夹" aria-hidden="true">
@@ -2240,31 +2229,6 @@
           ${isActive ? `<span class="map-active-pill">当前浏览中</span>` : ""}
         </div>
         <span class="map-boundary-text">${escapeHtml(boundary)}</span>
-      </div>
-      <div class="map-card-actions">
-        <span class="demo-case-btn" title="点击打开地图">打开 →</span>
-        <div class="card-menu-wrapper">
-          <button type="button" class="btn-card-menu" aria-label="操作「${escapeHtml(title)}」" aria-haspopup="menu" aria-expanded="false" title="更多操作">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="12" cy="5" r="2"></circle>
-              <circle cx="12" cy="12" r="2"></circle>
-              <circle cx="12" cy="19" r="2"></circle>
-            </svg>
-          </button>
-          <div class="map-action-menu" role="menu" hidden>
-            <button type="button" class="map-menu-item btn-menu-up" role="menuitem"${index === 0 ? " disabled" : ""}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="18 15 12 9 6 15"></polyline></svg>
-              <span>上移一行</span>
-            </button>
-            <button type="button" class="map-menu-item btn-menu-down" role="menuitem"${index === list.length - 1 ? " disabled" : ""}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              <span>下移一行</span>
-            </button>
-            <div class="map-menu-divider" role="separator"></div>
-            <div class="map-menu-heading">移动至文件夹</div>
-            ${moveOptionsHtml}
-          </div>
-        </div>
       </div>
     `;
 
