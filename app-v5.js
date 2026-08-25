@@ -20,6 +20,8 @@
   const libraryDrawer = document.querySelector("#library-drawer");
   let lastActiveTrigger = null;
   let currentActiveMapId = null;
+  let currentActiveMapData = null;
+  let currentActiveMapTitle = "";
 
   // DOM Elements for Map Topbar
   const mapActiveTitle = document.querySelector("#map-active-title");
@@ -795,6 +797,37 @@
     setStep("closure", "done", closureDetail);
   }
 
+  function workflowMapRecord(projectView, fileName) {
+    const title = (projectView?.project?.title || fileName.replace(/\.pdf$/iu, "") || "论文解析结果").trim();
+    const boundaryLabel = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
+    const rawId = projectView?.project?.id || title || fileName;
+    const slug = String(rawId)
+      .replace(/[^a-zA-Z0-9_\u4e00-\u9fa5-]/gu, "-")
+      .replace(/^-+|-+$/gu, "")
+      .toLowerCase() || "paper-map";
+    return {
+      id: `imported:${slug}`,
+      title,
+      boundaryLabel,
+      data: projectView,
+      importedAt: Date.now(),
+      isImported: true,
+    };
+  }
+
+  async function saveWorkflowMapToLibrary(projectView, fileName) {
+    const map = workflowMapRecord(projectView, fileName);
+    const saved = await persistImportedMap(map);
+    sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, [saved || map]);
+    saveSessionImportedMaps(sessionImportedMaps);
+    const currentOrder = getFolderMapOrder("myMaps");
+    if (!currentOrder.includes(map.id)) currentOrder.push(map.id);
+    saveFolderMapOrder("myMaps", currentOrder);
+    renderLibraryDrawer();
+    showLibraryToast(`已自动保存到「我的 JSON 地图」：${map.title}`);
+    return map;
+  }
+
   function showExtractError(message) {
     extractStatus.hidden = false;
     extractStatus.classList.add("is-error");
@@ -812,15 +845,20 @@
     const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
     extractStatus.innerHTML = `${stepsHtml}
       <p class="extract-success-title">✓ 解析完成</p>
-      <p class="extract-success-sub">paper-project-view.json 已下载到本地</p>
+      <p class="extract-success-sub">已自动保存到「我的 JSON 地图」</p>
       <div class="extract-success-actions">
         <button type="button" class="extract-open-map">立即在地图中打开</button>
+        <button type="button" class="extract-open-library">打开地图库</button>
         <button type="button" class="extract-dismiss">关闭</button>
       </div>`;
     extractStatus.querySelector(".extract-open-map").addEventListener("click", () => {
       const boundary = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
       const title = projectView?.project?.title || fileName.replace(/\.pdf$/i, "");
       openMapWithData(projectView, boundary, title);
+    });
+    extractStatus.querySelector(".extract-open-library").addEventListener("click", () => {
+      closeAllPanels();
+      openDrawer("library-drawer");
     });
     extractStatus.querySelector(".extract-dismiss").addEventListener("click", closeAllPanels);
   }
@@ -899,14 +937,8 @@
         onStage: handleImportStage,
         reasoningEffort: currentModelReasoningEffort(),
       });
+      await saveWorkflowMapToLibrary(projectView, selectedPaperPdf.name);
       finishExtractSteps(projectView);
-      const blob = new Blob([`${JSON.stringify(projectView, null, 2)}\n`], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "paper-project-view.json";
-      link.click();
-      URL.revokeObjectURL(url);
       showExtractSuccess(projectView, selectedPaperPdf.name);
     } catch (error) {
       const message = error instanceof TypeError
@@ -1083,6 +1115,32 @@
   document.querySelector("#btn-map-open-json")?.addEventListener("click", (e) => {
     openDrawer("import-drawer", e.currentTarget);
   });
+
+  function exportCurrentMapJson() {
+    if (!currentActiveMapData) {
+      showLibraryToast("当前没有可导出的地图");
+      return;
+    }
+    const rawName = currentActiveMapTitle || currentActiveMapData?.project?.title || "math-map";
+    const base = String(rawName)
+      .replace(/[^a-zA-Z0-9_\u4e00-\u9fa5-]+/gu, "-")
+      .replace(/^-+|-+$/gu, "") || "math-map";
+    const blob = new Blob(
+      [`${JSON.stringify(currentActiveMapData, null, 2)}\n`],
+      { type: "application/json;charset=utf-8" },
+    );
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${base}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showLibraryToast(`已导出 JSON：${link.download}`);
+  }
+
+  document.querySelector("#btn-map-export-json")?.addEventListener("click", exportCurrentMapJson);
   document.querySelector("#btn-close-import-drawer")?.addEventListener("click", closeAllPanels);
 
   btnChooseJsonFiles?.addEventListener("click", (e) => {
@@ -3072,6 +3130,8 @@
 
   async function openMapWithData(data, boundaryLabel, title, mapKey = null) {
     closeAllPanels();
+    currentActiveMapData = data;
+    currentActiveMapTitle = title || data?.project?.title || "math-map";
     currentActiveMapId = mapKey || data.project?.id || title;
 
     if (mapRuntimeMounted) {
