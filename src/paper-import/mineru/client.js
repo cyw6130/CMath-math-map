@@ -64,7 +64,7 @@
       try {
         if (typeof response.json === "function") {
           const body = await response.json();
-          detail = typeof body?.msg === "string" ? body.msg : typeof body?.message === "string" ? body.message : "";
+          detail = typeof body?.msg === "string" ? body.msg : typeof body?.message === "string" ? body.message : typeof body?.error === "string" ? body.error : "";
         } else if (typeof response.text === "function") detail = (await response.text()).slice(0, 240);
       } catch { detail = ""; }
       throw clientError(`${operation} HTTP ${response.status ?? "错误"}${detail ? `：${detail}` : ""}`, "MINERU_HTTP_ERROR");
@@ -259,6 +259,12 @@
     if (typeof request !== "function") throw clientError("当前环境不支持网络请求");
     const zipReader = unzip ?? unzipAdapter;
 
+    function shouldProxyPdfUpload(options = {}) {
+      if (typeof options.proxyUpload === "boolean") return options.proxyUpload;
+      if (!root?.location?.origin) return false;
+      try { return new URL(base).origin !== root.location.origin; } catch { return false; }
+    }
+
     async function requestUploadCapability(file, options = {}) {
       const input = uploadData(file);
       const body = {
@@ -296,6 +302,29 @@
       const response = await request(uploadUrl, { method: "PUT", body, signal: options.signal });
       if (!response?.ok) throw clientError(`直传 PDF 失败 HTTP ${response?.status ?? "错误"}`, "MINERU_UPLOAD_ERROR");
       return Object.freeze({ batchId: capability.batchId ?? capability.batch_id ?? "" });
+    }
+
+    async function uploadPdfThroughGateway(file, options = {}) {
+      const input = uploadData(file);
+      abortIfNeeded(options.signal);
+      const body = typeof input.file.arrayBuffer === "function"
+        ? await input.file.arrayBuffer()
+        : (typeof input.file.stream === "function" ? input.file.stream() : input.file);
+      const modelVersion = typeof options.modelVersion === "string" && options.modelVersion.trim()
+        ? options.modelVersion.trim()
+        : "vlm";
+      const url = `${base}/upload-file?name=${encodeURIComponent(input.name)}&model_version=${encodeURIComponent(modelVersion)}`;
+      const response = await request(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/pdf", Accept: "application/json" },
+        body,
+        signal: options.signal,
+      });
+      const payload = await responseJson(response, "通过 Gateway 上传 PDF");
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const batchId = data?.batch_id ?? data?.batchId;
+      if (typeof batchId !== "string" || !batchId.trim()) throw clientError("Gateway 没有返回 batch_id");
+      return Object.freeze({ batchId: batchId.trim() });
     }
 
     async function pollTask(batchId, options = {}) {
@@ -337,9 +366,15 @@
 
     async function importPdf(file, options = {}) {
       if (!zipReader) throw clientError("importPdf 需要注入 ZIP 解包适配器");
-      const capability = await requestUploadCapability(file, options);
-      await uploadPdf(file, capability, options);
-      const task = await pollTask(capability.batchId, options);
+      let resolvedBatchId;
+      if (shouldProxyPdfUpload(options)) {
+        resolvedBatchId = (await uploadPdfThroughGateway(file, options)).batchId;
+      } else {
+        const capability = await requestUploadCapability(file, options);
+        await uploadPdf(file, capability, options);
+        resolvedBatchId = capability.batchId;
+      }
+      const task = await pollTask(resolvedBatchId, options);
       const zipBytes = await downloadResultZip(task.fullZipUrl, options);
       const files = await readZipFiles(zipReader, zipBytes);
       const markedMarkdown = marked?.buildMarkedMarkdown?.({
@@ -349,7 +384,7 @@
       });
       if (typeof markedMarkdown !== "string" || !markedMarkdown.trim()) throw clientError("无法从 MinerU 结果生成 marked Markdown", "MINERU_RESULT_INVALID");
       return Object.freeze({
-        batchId: capability.batchId,
+        batchId: resolvedBatchId,
         task,
         fullMarkdown: files.fullMarkdown,
         contentList: files.contentList,

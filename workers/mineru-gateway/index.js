@@ -3,6 +3,7 @@
  *
  * Deliberately small allow-list proxy:
  *   POST /upload                 → POST MinerU /api/v4/file-urls/batch
+ *   POST /upload-file            → server-side PDF upload through the signed URL
  *   GET  /results/:batch_id      → GET  MinerU /api/v4/extract-results/batch/:id
  *
  * The aliases under /api/mineru/ make it convenient to mount the Worker below
@@ -20,6 +21,8 @@
   const MINERU_UPLOAD_PATH = "/api/v4/file-urls/batch";
   const MINERU_RESULT_PREFIX = "/api/v4/extract-results/batch/";
   const UPLOAD_PATHS = new Set(["/upload", "/api/mineru/upload"]);
+  const UPLOAD_FILE_PATHS = new Set(["/upload-file", "/api/mineru/upload-file"]);
+  const MAX_PROXY_PDF_BYTES = 25 * 1024 * 1024;
   const RESULT_PREFIXES = ["/results/", "/api/mineru/results/"];
   const TASK_STATES = new Set(["waiting-file", "pending", "running", "converting", "done", "failed"]);
   const ALLOWED_MODELS = new Set(["pipeline", "vlm"]);
@@ -181,6 +184,7 @@
   function route(pathname) {
     const path = pathname.replace(/\/+$/u, "") || "/";
     if (UPLOAD_PATHS.has(path)) return { kind: "upload" };
+    if (UPLOAD_FILE_PATHS.has(path)) return { kind: "upload-file" };
     for (const prefix of RESULT_PREFIXES) {
       if (path.startsWith(prefix)) {
         const batchId = path.slice(prefix.length);
@@ -224,7 +228,7 @@
         });
       }
       if (selected.kind === "not-found" || selected.kind === "invalid-result") return jsonResponse({ error: "Not found" }, 404, origin);
-      if ((selected.kind === "upload" && request.method !== "POST") || (selected.kind === "result" && request.method !== "GET")) {
+      if ((["upload", "upload-file"].includes(selected.kind) && request.method !== "POST") || (selected.kind === "result" && request.method !== "GET")) {
         return jsonResponse({ error: "Method not allowed" }, 405, origin);
       }
       const configuredToken = env?.MINERU_TOKEN ?? env?.MINERU_API_TOKEN ?? env?.MINERU_API_KEY;
@@ -246,6 +250,49 @@
           return jsonResponse({ error: "MinerU did not return upload capability" }, 502, origin);
         }
         return jsonResponse(result, 200, origin);
+      }
+
+      if (selected.kind === "upload-file") {
+        const fileName = safePdfName(url.searchParams.get("name"));
+        if (!fileName) return jsonResponse({ error: "query parameter name must be a PDF file name" }, 400, origin);
+        const modelVersion = url.searchParams.get("model_version") || "vlm";
+        if (!ALLOWED_MODELS.has(modelVersion)) return jsonResponse({ error: "unsupported model_version" }, 400, origin);
+        const contentType = request.headers.get("Content-Type") || "";
+        if (!/^application\/pdf(?:\s*;|$)/iu.test(contentType)) {
+          return jsonResponse({ error: "PDF request required" }, 400, origin);
+        }
+        const declaredLength = Number(request.headers.get("Content-Length"));
+        if (Number.isFinite(declaredLength) && declaredLength > MAX_PROXY_PDF_BYTES) {
+          return jsonResponse({ error: "PDF exceeds gateway limit" }, 413, origin);
+        }
+        let bytes;
+        try { bytes = await request.arrayBuffer(); } catch { return jsonResponse({ error: "invalid PDF body" }, 400, origin); }
+        if (!(bytes instanceof ArrayBuffer) || bytes.byteLength <= 0) return jsonResponse({ error: "PDF body is empty" }, 400, origin);
+        if (bytes.byteLength > MAX_PROXY_PDF_BYTES) return jsonResponse({ error: "PDF exceeds gateway limit" }, 413, origin);
+
+        const capability = await forward(`${MINERU_API_ORIGIN}${MINERU_UPLOAD_PATH}`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ files: [{ name: fileName }], model_version: modelVersion }),
+        });
+        if (capability.response) {
+          return jsonResponse({ error: "MinerU upload capability request failed" }, 502, origin);
+        }
+        const uploadResult = sanitizedUploadResult(capability.body, token);
+        const uploadUrl = uploadResult.data.file_urls[0];
+        if (!uploadResult.data.batch_id || !uploadUrl) {
+          return jsonResponse({ error: "MinerU did not return upload capability" }, 502, origin);
+        }
+        let uploadResponse;
+        try {
+          uploadResponse = await upstreamFetch(uploadUrl, { method: "PUT", body: bytes });
+        } catch {
+          return jsonResponse({ error: "MinerU PDF upload failed" }, 502, origin);
+        }
+        if (!uploadResponse?.ok) return jsonResponse({ error: "MinerU PDF upload failed" }, 502, origin);
+        // Never return the signed OSS URL to the browser.  The Worker owns the
+        // upload; the browser only needs the batch id for status polling.
+        return jsonResponse({ code: 0, msg: "ok", data: { batch_id: uploadResult.data.batch_id } }, 200, origin);
       }
 
       const forwarded = await forward(`${MINERU_API_ORIGIN}${MINERU_RESULT_PREFIX}${encodeURIComponent(selected.batchId)}`, {

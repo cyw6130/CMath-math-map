@@ -158,6 +158,41 @@ test("通过 Gateway 上传、轮询并以注入的 ZIP 解包适配器生成 ma
   assert.ok(calls[1].init.body instanceof ArrayBuffer, "signed upload must use raw bytes rather than a typed File body");
 });
 
+test("跨域网页通过 Gateway 代理 PDF 上传，避免 OSS 签名地址的浏览器 CORS", async () => {
+  const calls = [];
+  const zipBytes = new Uint8Array([80, 75, 3, 4]).buffer;
+  const fetchImpl = async (url, init = {}) => {
+    calls.push({ url: String(url), init });
+    if (String(url).includes("/upload-file?name=paper.pdf")) {
+      return jsonResponse({ code: 0, msg: "ok", data: { batch_id: "batch-proxy" } });
+    }
+    if (String(url).endsWith("/results/batch-proxy")) {
+      return jsonResponse({ code: 0, msg: "ok", data: { batch_id: "batch-proxy", extract_result: { state: "done", full_zip_url: "https://cdn.example/proxy.zip" } } });
+    }
+    if (String(url) === "https://cdn.example/proxy.zip") return { ok: true, status: 200, arrayBuffer: async () => zipBytes };
+    throw new Error(`unexpected URL ${url}`);
+  };
+  const client = mineru.createMineruClient({
+    gatewayUrl: "https://gateway.example/api/mineru",
+    fetchImpl,
+    unzip: async () => ({
+      "paper_full.md": "# Title",
+      "paper_content_list.json": JSON.stringify([{ type: "text", text: "# Title", page_idx: 0 }]),
+    }),
+    pollIntervalMs: 0,
+  });
+  const result = await client.importPdf(
+    { name: "paper.pdf", size: 3, type: "application/pdf", arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+    { timeoutMs: 1000, proxyUpload: true },
+  );
+  assert.equal(result.batchId, "batch-proxy");
+  assert.match(calls[0].url, /\/upload-file\?name=paper\.pdf/u);
+  assert.equal(calls[0].init.method, "POST");
+  assert.equal(calls[0].init.headers["Content-Type"], "application/pdf");
+  assert.ok(calls[0].init.body instanceof ArrayBuffer);
+  assert.equal(calls.filter((call) => call.url.includes("upload.example")).length, 0);
+});
+
 test("轮询超时会显式失败并停止等待", async () => {
   const client = mineru.createMineruClient({
     gatewayUrl: "https://gateway.example/api/mineru",
@@ -234,6 +269,32 @@ test("Credential Gateway 只使用 Worker Secret、固定代理官方批量上�
   }), env);
   assert.equal(blocked.status, 403);
   assert.equal(upstreamCalls.length, 2);
+});
+
+test("Credential Gateway 在服务器侧代传 PDF，不把 OSS 签名地址暴露给浏览器", async () => {
+  const upstreamCalls = [];
+  const upstreamFetch = async (url, init = {}) => {
+    upstreamCalls.push({ url: String(url), init });
+    if (String(url).endsWith("/file-urls/batch")) {
+      return jsonResponse({ code: 0, msg: "ok", data: { batch_id: "batch-proxy", file_urls: ["https://upload.example/proxy"] } });
+    }
+    if (String(url) === "https://upload.example/proxy") return { ok: true, status: 200, json: async () => ({}) };
+    throw new Error(`unexpected upstream URL ${url}`);
+  };
+  const handler = gateway.createGatewayHandler({ fetchImpl: upstreamFetch });
+  const response = await handler.fetch(new Request("https://gateway.example/api/mineru/upload-file?name=paper.pdf", {
+    method: "POST",
+    headers: { Origin: "https://app.example", "Content-Type": "application/pdf" },
+    body: new Uint8Array([1, 2, 3]),
+  }), { MINERU_TOKEN: "secret", MINERU_ALLOWED_ORIGINS: "https://app.example" });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://app.example");
+  const body = await response.json();
+  assert.deepEqual(body.data, { batch_id: "batch-proxy" });
+  assert.equal(upstreamCalls.length, 2);
+  assert.equal(upstreamCalls[1].url, "https://upload.example/proxy");
+  assert.ok(upstreamCalls[1].init.body instanceof ArrayBuffer);
+  assert.doesNotMatch(JSON.stringify(body), /upload\.example/u);
 });
 
 test("Credential Gateway 的 CORS 预检和任意上游 URL 路由均受限", async () => {
