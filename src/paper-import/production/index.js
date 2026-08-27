@@ -261,7 +261,7 @@
     return parsePatchJson(content, stage);
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, allowPartialSuccess = false, resumeArtifacts = null, onArtifact } = {}) {
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, allowPartialSuccess = false, allowRefinementDegradation = false, resumeArtifacts = null, onArtifact } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
@@ -387,6 +387,7 @@
         onStage: notify,
         onArtifact,
         startStage: resumeArtifacts?.["w7-verify"] ? "w8-b0" : "w7-verify",
+        allowDegraded: allowRefinementDegradation,
       });
     }
 

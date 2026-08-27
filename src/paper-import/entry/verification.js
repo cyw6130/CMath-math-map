@@ -82,6 +82,91 @@
     return result;
   }
 
+  function safeFailureMessage(error) {
+    return String(error?.message ?? error ?? "Automatic refinement failed")
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .slice(0, 500);
+  }
+
+  function normalizedSourceText(value) {
+    return String(value ?? "").replace(/\s+/gu, " ").trim();
+  }
+
+  function validatePatchShape(patch, pass, sourceText, requireSourceGrounding) {
+    if (!patch || typeof patch !== "object" || Array.isArray(patch)) {
+      throw new Error(`${pass.pass} patch 必须是对象`);
+    }
+    for (const field of ["addEntries", "corrections", "removeIds"]) {
+      if (!Array.isArray(patch[field])) throw new Error(`${pass.pass} patch.${field} 必须是数组`);
+    }
+    if (requireSourceGrounding) {
+      const source = normalizedSourceText(sourceText);
+      [...patch.addEntries, ...patch.corrections].forEach((entry, index) => {
+        const quote = normalizedSourceText(entry?.sourceQuote);
+        const statement = normalizedSourceText(entry?.statement);
+        if (!quote || !statement || !source.includes(quote) || !quote.includes(statement)) {
+          throw new Error(`${pass.pass} patch candidate[${index}] 缺少包含完整 statement 的原文 sourceQuote`);
+        }
+      });
+    }
+    if (pass.stage !== "w8-b0") return;
+    if (patch.corrections.length > 0 || patch.removeIds.length > 0) {
+      throw new Error("W8 只能补充来源明确的外部 Claim");
+    }
+    patch.addEntries.forEach((entry, index) => {
+      const canonical = canonicalizeEntry(entry);
+      if (!canonical
+        || canonical.entryClass !== "claim"
+        || canonical.external !== true
+        || typeof canonical.sourceReference !== "string"
+        || !canonical.sourceReference.trim()
+        || (requireSourceGrounding && !normalizedSourceText(sourceText).includes(normalizedSourceText(canonical.sourceReference)))) {
+        throw new Error(`W8 addEntries[${index}] 必须是带轻量引用的外部 Claim`);
+      }
+    });
+  }
+
+  function stripPatchEvidence(patch) {
+    const strip = (entry) => {
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) return entry;
+      const { sourceQuote: _sourceQuote, ...clean } = entry;
+      return clean;
+    };
+    return {
+      addEntries: patch.addEntries.map(strip),
+      corrections: patch.corrections.map(strip),
+      removeIds: cloneJson(patch.removeIds),
+    };
+  }
+
+  function appendDegradation(current, pass, error) {
+    const unresolvedId = `unresolved:${pass.stage}`;
+    const unresolvedItems = (Array.isArray(current.unresolvedItems) ? cloneJson(current.unresolvedItems) : [])
+      .filter((item) => item?.id !== unresolvedId);
+    unresolvedItems.push({
+      id: unresolvedId,
+      sourceStage: pass.stage,
+      candidateSummary: `${pass.pass} automatic refinement was skipped`,
+      failureCategory: "automatic-refinement-failed",
+      validationError: safeFailureMessage(error),
+      retryable: true,
+    });
+    return { ...cloneJson(current), unresolvedItems };
+  }
+
+  function isDegradableRefinementError(error) {
+    if (error?.name === "AbortError" || error?.retryable === false) return false;
+    if (error?.code === "CONFIGURATION_ERROR") return false;
+    if (error?.code === "HTTP_ERROR"
+      && Number.isInteger(error.status)
+      && error.status >= 400 && error.status < 500
+      && error.status !== 408 && error.status !== 429) return false;
+    return true;
+  }
+
   function promptText({ consolidatedText = "", sourceText = "", caseId = "" } = {}, b0 = false) {
     if (!b0) {
       return `你是数学论文产物校验专家。输入为初版 Entry 产物（JSON）与源文本（MinerU 提取的 Markdown，含 [[PAGE N]] 标记）。请忠实比对，不补造论文没有的内容。
@@ -92,9 +177,9 @@
 3. 严禁增补原文没有的条件：不得为定义或定理增补"平凡代数交""额外边界匹配"等源文本没有的条件；此类幻觉条目必须标记删除。
 
 输出 JSON（只输出 JSON）：
-{"addEntries":[{"id":"paper:def:...","entryClass":"fact","factKind":"definition","name":"...","statement":"...","page":2}],"corrections":[{"id":"paper:thm:...","statement":"..."}],"removeIds":["paper:def:hallucinated"]}
+{"addEntries":[{"id":"paper:def:...","entryClass":"fact","factKind":"definition","name":"...","statement":"...","page":2,"sourceQuote":"包含完整 statement 的原文短摘录"}],"corrections":[{"id":"paper:thm:...","statement":"...","sourceQuote":"包含完整订正 statement 的原文短摘录"}],"removeIds":["paper:def:hallucinated"]}
 
-规则：entryClass 只能是 fact|claim；Fact 的 factKind 只能是 definition|algorithm|calculation，Claim 的 claimKind 只能是 lemma|proposition|theorem。id 用英文小写 slug；statement 最多 300 字符并保留假设、量词和公式；page 取源文本中的整数页码；数学公式用成对的 $...$ 或 $$...$$。严禁输出 type、B0、mainTarget、Review。
+规则：entryClass 只能是 fact|claim；Fact 的 factKind 只能是 definition|algorithm|calculation，Claim 的 claimKind 只能是 lemma|proposition|theorem。id 用英文小写 slug；statement 最多 300 字符并保留假设、量词和公式；page 取源文本中的整数页码；每个 addEntries/corrections 项必须给出 sourceQuote，逐字摘自源文本并包含完整 statement；数学公式用成对的 $...$ 或 $$...$$。严禁输出 type、B0、mainTarget、Review。
 
 初版产物（待校验）：
 \`\`\`json
@@ -116,9 +201,9 @@ ${String(sourceText).slice(0, 120000)}
 4. 已存在于初版产物中的外部结果不要重复添加。
 
 输出 JSON（只输出 JSON）：
-{"addEntries":[{"id":"paper:ext:...","entryClass":"claim","claimKind":"theorem","name":"...","statement":"...","page":3,"external":true,"sourceReference":"[12]"}],"corrections":[],"removeIds":[]}
+{"addEntries":[{"id":"paper:ext:...","entryClass":"claim","claimKind":"theorem","name":"...","statement":"...","page":3,"external":true,"sourceReference":"[12]","sourceQuote":"含 [12] 且包含完整 statement 的原文短摘录"}],"corrections":[],"removeIds":[]}
 
-规则：id 使用英文小写 slug（建议 paper:ext: 前缀）；statement 最多 300 字符并保留假设、量词和公式；page 取 [[PAGE N]] 整数页码。严禁增补源文本没有的结果。
+规则：id 使用英文小写 slug（建议 paper:ext: 前缀）；statement 最多 300 字符并保留假设、量词和公式；page 取 [[PAGE N]] 整数页码；sourceQuote 必须逐字摘自源文本，包含 sourceReference 和完整 statement。严禁增补源文本没有的结果。
 
 初版产物（待比对）：
 \`\`\`json
@@ -198,12 +283,15 @@ ${String(sourceText).slice(0, 120000)}
     onArtifact,
     includeB0 = true,
     startStage = "w7-verify",
+    allowDegraded = false,
+    requireSourceGrounding = allowDegraded,
   } = {}) {
     if (typeof requestPatch !== "function") throw new Error("W7/W8 校验链需要 requestPatch 回调");
     let current = cloneJson(artifact);
     if (!current || typeof current !== "object" || !Array.isArray(current.entries)) {
       throw new Error("W7/W8 校验链需要包含 entries 的 Entry artifact");
     }
+    if (typeof validateArtifact === "function") validateArtifact(current);
     const allPasses = [
       { stage: "w7-verify", pass: "w7.1", buildPrompt: buildVerificationPrompt },
       ...(includeB0 ? [{ stage: "w8-b0", pass: "w8", buildPrompt: buildB0BackfillPrompt }] : []),
@@ -219,27 +307,47 @@ ${String(sourceText).slice(0, 120000)}
         caseId,
       });
       try { onStage?.(pass.stage, { phase: "start", entries: current.entries.length, pass: pass.pass }); } catch {}
-      const response = await requestPatch({
-        stage: pass.stage,
-        pass: pass.pass,
-        prompt,
-        artifact: current,
-        sourceText,
-        caseId,
-      });
-      const patch = response?.patch && typeof response.patch === "object" ? response.patch : response;
-      current = applyPatch(current, patch);
-      if (typeof validateArtifact === "function") validateArtifact(current);
-      const completion = {
-        entries: current.entries.length,
-        pass: pass.pass,
-        added: Array.isArray(patch?.addEntries) ? patch.addEntries.length : 0,
-        corrected: Array.isArray(patch?.corrections) ? patch.corrections.length : 0,
-        removed: Array.isArray(patch?.removeIds) ? patch.removeIds.length : 0,
-      };
+      let patch;
+      let completion;
+      try {
+        const response = await requestPatch({
+          stage: pass.stage,
+          pass: pass.pass,
+          prompt,
+          artifact: current,
+          sourceText,
+          caseId,
+        });
+        patch = response?.patch && typeof response.patch === "object" ? response.patch : response;
+        validatePatchShape(patch, pass, sourceText, requireSourceGrounding);
+        const candidate = applyPatch(current, stripPatchEvidence(patch));
+        if (typeof validateArtifact === "function") validateArtifact(candidate);
+        current = candidate;
+        completion = {
+          status: "complete",
+          entries: current.entries.length,
+          pass: pass.pass,
+          added: patch.addEntries.length,
+          corrected: patch.corrections.length,
+          removed: patch.removeIds.length,
+        };
+      } catch (error) {
+        if (!allowDegraded || !isDegradableRefinementError(error)) throw error;
+        current = appendDegradation(current, pass, error);
+        if (typeof validateArtifact === "function") validateArtifact(current);
+        completion = {
+          status: "degraded",
+          entries: current.entries.length,
+          pass: pass.pass,
+          added: 0,
+          corrected: 0,
+          removed: 0,
+          unresolvedItem: cloneJson(current.unresolvedItems.at(-1)),
+        };
+      }
       if (typeof onArtifact === "function") await onArtifact(pass.stage, current, completion);
       else {
-        try { onStage?.(pass.stage, { phase: "complete", ...completion }); } catch {}
+        try { onStage?.(pass.stage, { phase: completion.status, ...completion }); } catch {}
       }
     }
     return current;

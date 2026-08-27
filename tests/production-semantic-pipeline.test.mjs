@@ -169,3 +169,43 @@ test("production semantic seam can preserve Entry partial success for VNext inte
   assert.equal(artifacts.consolidate.unresolvedItems.length, 1);
   assert.equal(artifacts.consolidate.unresolvedItems[0].failureCategory, "window-extraction-failed");
 });
+
+test("production semantic seam can degrade W7.1 and continue W8 plus Inference", async () => {
+  const artifacts = {};
+  const infos = {};
+  const view = await client.requestPaperProductionSemanticPipeline({
+    endpoint: "https://example.invalid/v1",
+    apiKey: "secret-key",
+    model: "same-model",
+    fileName: "refinement.md",
+    pageCount: 1,
+    markedMarkdown: "[[PAGE 1]]\nDefinition and theorem.",
+    allowRefinementDegradation: true,
+    fetchImpl: async () => { throw new Error("chatImpl should own model calls"); },
+    chatImpl: async ({ stage }) => {
+      if (stage === "extract") return { content: JSON.stringify({
+        foundationEntries: [{ id: "def:space", entryClass: "fact", factKind: "definition", statement: "$X$.", page: 1 }],
+        resultEntries: [{ id: "thm:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", page: 1 }],
+        inferenceHints: [],
+      }) };
+      if (stage === "w7-verify") throw new Error("W7 unavailable Bearer secret-key");
+      if (stage === "w8-b0") return { content: JSON.stringify({ addEntries: [], corrections: [], removeIds: [] }) };
+      return { content: JSON.stringify({
+        projectTitle: "Degraded refinement",
+        mainTargetEntryId: "thm:main",
+        b0: [],
+        inferences: [{ operationKind: "proof", premises: ["def:space"], conclusion: "thm:main", argument: "By definition.", page: 1 }],
+      }) };
+    },
+    onArtifact: async (stage, artifact, info) => {
+      artifacts[stage] = artifact;
+      infos[stage] = info;
+    },
+  });
+
+  assert.equal(view.mainTargetEntryId, "thm:main");
+  assert.equal(infos["w7-verify"].status, "degraded");
+  assert.equal(infos["w8-b0"].status, "complete");
+  assert.equal(artifacts["w8-b0"].unresolvedItems[0].sourceStage, "w7-verify");
+  assert.doesNotMatch(JSON.stringify(artifacts["w8-b0"]), /secret-key/iu);
+});

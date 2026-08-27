@@ -197,7 +197,9 @@
     let message = String(error?.message ?? error ?? "生产论文导入失败");
     message = message
       .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
-      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]");
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]");
     for (const value of sensitiveValues) {
       if (typeof value === "string" && value) message = message.split(value).join("[redacted]");
     }
@@ -393,6 +395,16 @@
       await persist();
       notify(stage, "complete", info);
     }
+    async function markDegraded(stage, artifact, info = {}) {
+      checkpoint.stages[stage] = {
+        status: "degraded",
+        attempt: Number(checkpoint.stages[stage]?.attempt ?? 1),
+        artifact,
+        updatedAt: new Date().toISOString(),
+      };
+      await persist();
+      notify(stage, "degraded", info);
+    }
     async function markFailed(stage, error) {
       const safeError = errorRecord(error, [options.apiKey]);
       checkpoint.stages[stage] = {
@@ -504,7 +516,8 @@
       if (!stage || stage === "mineru") return;
       activeStage = stage;
       if (stage === "closure" && capabilityRuntime) return;
-      await markComplete(stage, artifact, info);
+      if (info.status === "degraded") await markDegraded(stage, artifact, info);
+      else await markComplete(stage, artifact, info);
       activeStage = null;
     };
 

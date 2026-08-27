@@ -426,13 +426,13 @@ test("W8 失败后刷新只续跑 W8 及其后续阶段", async () => {
     semanticPipeline: fakeSemanticPipeline({
       calls: firstCalls,
       failW8: true,
-      failureMessage: "W8 test failure model-secret https://signed.example/result.zip?token=secret",
+      failureMessage: 'W8 test failure model-secret https://signed.example/result.zip?token=secret payload={"access_token":"access-live","client_secret":"client-live"}',
     }),
     endpoint: "https://model.example/v1", apiKey: "model-secret", model: "same-model",
   }), /W8 test failure/u);
 
   const failedCheckpoint = await store.load("production-paper-import:resume-digest");
-  assert.doesNotMatch(JSON.stringify(failedCheckpoint), /model-secret|signed\.example|token=secret/iu);
+  assert.doesNotMatch(JSON.stringify(failedCheckpoint), /model-secret|signed\.example|token=secret|access-live|client-live/iu);
 
   const secondCalls = [];
   const events = [];
@@ -450,6 +450,60 @@ test("W8 失败后刷新只续跑 W8 及其后续阶段", async () => {
   assert.deepEqual(secondCalls, ["w8-b0", "inference"]);
   assert.ok(events.some((event) => event.stage === "entry" && event.phase === "resume"));
   assert.ok(events.some((event) => event.stage === "w7-verify" && event.phase === "resume"));
+});
+
+test("degraded 自动完善阶段保存最近合法 Artifact，并在刷新后从该阶段重跑", async () => {
+  const store = createMemoryCheckpointStore();
+  const pdf = { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([7, 8, 9]).buffer };
+  const calls = [];
+  const pipeline = async ({ onStage, onArtifact, resumeArtifacts }) => {
+    const entry = resumeArtifacts?.entry ?? { rawEntries: [], source: { sourceText: "[[PAGE 1]] source", pageCount: 1, fileName: "paper.pdf" } };
+    if (!resumeArtifacts?.entry) { calls.push("entry"); onStage?.("entry", { phase: "start" }); await onArtifact("entry", entry); }
+    const consolidated = resumeArtifacts?.consolidate ?? { entries: [{ id: "claim:main" }] };
+    if (!resumeArtifacts?.consolidate) { calls.push("consolidate"); onStage?.("consolidate", { phase: "start" }); await onArtifact("consolidate", consolidated); }
+    const degraded = {
+      entries: consolidated.entries,
+      unresolvedItems: [{
+        id: "unresolved:w7-verify",
+        sourceStage: "w7-verify",
+        candidateSummary: "w7.1 automatic refinement was skipped",
+        failureCategory: "automatic-refinement-failed",
+        validationError: "temporary failure",
+        retryable: true,
+      }],
+    };
+    calls.push("w7-verify");
+    onStage?.("w7-verify", { phase: "start" });
+    await onArtifact("w7-verify", degraded, { status: "degraded" });
+    calls.push("w8-b0");
+    onStage?.("w8-b0", { phase: "start" });
+    await onArtifact("w8-b0", degraded, { status: "complete" });
+    const view = { mainTargetEntryId: "claim:main", entries: consolidated.entries, inferences: [] };
+    calls.push("inference");
+    onStage?.("inference", { phase: "start" });
+    await onArtifact("inference", view);
+    onStage?.("closure", { phase: "start" });
+    await onArtifact("closure", view);
+    return view;
+  };
+
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: WORKFLOW, checkpointStore: store, hashImpl: async () => "degraded-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    semanticPipeline: pipeline, endpoint: "https://model.example/v1", apiKey: "k", model: "same-model",
+  });
+  const checkpoint = await store.load("production-paper-import:degraded-digest");
+  assert.equal(checkpoint.stages["w7-verify"].status, "degraded");
+  assert.equal(checkpoint.stages["w7-verify"].artifact.unresolvedItems.length, 1);
+  assert.equal(checkpoint.stages["w8-b0"].status, "complete");
+
+  calls.length = 0;
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: WORKFLOW, checkpointStore: store, hashImpl: async () => "degraded-digest",
+    mineruClient: { importPdf: async () => { throw new Error("MinerU should resume"); } },
+    semanticPipeline: pipeline, endpoint: "https://model.example/v1", apiKey: "k", model: "same-model",
+  });
+  assert.deepEqual(calls, ["w7-verify", "w8-b0", "inference"]);
 });
 
 test("Frozen Workflow 身份不匹配时不恢复旧 checkpoint", async () => {

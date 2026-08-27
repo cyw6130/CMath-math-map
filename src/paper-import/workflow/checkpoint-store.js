@@ -57,8 +57,8 @@
     return value
       .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
       .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
-      .replace(/(["'](?:api[_-]?key|authorization|token|secret)["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
-      .replace(/\b(api[_-]?key|authorization|token|secret)\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
       .slice(0, maxLength);
   }
 
@@ -332,8 +332,8 @@
       const record = stages[stage];
       if (!record || typeof record !== "object") continue;
       const clean = pick(record, ["status", "attempt", "updatedAt"]);
-      if (["running", "complete", "failed"].includes(clean.status)) {
-        if (clean.status === "complete") {
+      if (["running", "complete", "degraded", "failed"].includes(clean.status)) {
+        if (clean.status === "complete" || clean.status === "degraded") {
           const artifact = sanitizeStageArtifact(stage, record.artifact);
           if (artifact !== null) clean.artifact = artifact;
         }
