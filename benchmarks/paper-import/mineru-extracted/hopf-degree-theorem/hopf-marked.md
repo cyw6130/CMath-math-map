@@ -23,7 +23,6 @@ Formally, the degree of a smooth map $f$ is the intersection number of the map f
 
 Figure 1: Degree 2 Mapping $S ^ { 2 }  S ^ { 2 }$ from Wikipedia
 
-
 [[PAGE 2]]
 Essentially, degree measures how many net times the image of a map f enters and exits the submanifold $Z ,$ or wraps around it— hence it is always an integer. For example, we can imagine a degree two mapping of a 2-sphere to itself as a wrapping of the surface twice around the shape of a sphere, as shown at right. In higher dimensions, it becomes tricky to visualize, but for $S ^ { 1 }$ it is particularly easy. In the diagram below, we present the several smallest degree mappings $S ^ { 1 } \to S ^ { 1 }$ , showing how the image wraps around the circle as well as the “covering space,” which corresponds to properties of the mapping but that we’ll just use as another way to visualize. The degree zero mapping is actually homotopic to a constant map, since we can shrink any portion of the map that doesn’t reach all the way around the circle to a point—remember this, for we’ll elaborate on it in the theorem below. Note that this diagram and argument presents a surjection from the degree map to $\pi _ { k } ( S ^ { k } )$ . With the results of the theorem we’ll conclude injectivity as well.
 
@@ -49,7 +48,6 @@ $\mathbb { R } ^ { 1 }$ , an example function is
 $$
 \rho ( x ) = \left\{ { \begin{array} { l l } { e ^ { - \frac { 1 } { 1 - x ^ { 2 } } } } & { | x | < 1 } \\ { 0 } & { \mathrm { e l s e } } \end{array} } \right. .
 $$
-
 
 [[PAGE 3]]
 ## 2.4 Euler Characteristic
@@ -86,7 +84,6 @@ $$
 
 since we set $z = 0$ and used our Taylor expansion. However, we still don’t know how to calculate this. We’d like to reduce just to the linear case and apply the following lemma:
 
-
 [[PAGE 4]]
 Linear Isotopy Lemma: If E is a linear isomorphism of $\mathbb { R } ^ { k }$ that preserves (resp. reverses) orientation, then there exists a homotopy to the identity (resp. a reflection map R through the first coordinate).
 
@@ -115,7 +112,6 @@ Let’s localize these points in $f ^ { - 1 } ( z )$ inside a closed ball B. We 
 We’ve shown how the winding number contributes to the degree. But are there other contributions to worry about? Consider the behavior of $f$ outside each of these balls. We know we can extend the direction map $u ( x )$ to all of $B \setminus \bigcup B _ { i }$ because its denominator is nonzero except at the points $y _ { i }$ . And since $u ( x )$ can be extended, we know that $\deg ( u ) = 0$ on this part of the domain.
 
 Hence the winding number of f is the sum of the local orientation numbers of preimages of a regular value z. □
-
 
 [[PAGE 5]]
 ## 3.3 Boundary Maps and Extensions
@@ -160,7 +156,6 @@ For the last step recall we have a homotopy $\frac { f } { | f | ^ { t } }$ from
 
 We now have a map $S ^ { k } \to S ^ { k }$ with degree zero, so we may conclude that it’s homotopic to $c _ { p }$ . Since homotopy is transitive, we can apply the previous part to see that $f \sim c _ { p }$ , as desired. □
 
-
 [[PAGE 6]]
 ## 3.5 Adjusting the Range
 
@@ -193,7 +188,6 @@ $$
 and we call the composition map $\tilde { f } : = \beta \circ f \circ \alpha$ . Since we chose $\beta ( a ) = 0$ , we know that 0 is a regular value of $\tilde { f }$ because a is a regular value of $f .$
 
 <!-- image-->
-
 
 [[PAGE 7]]
 So we have constructed a map $\mathbb { R } ^ { k } \to \mathbb { R } ^ { k }$ with 0 as a regular value. Furthermore, $\tilde { f } ^ { - 1 } ( 0 )$ has the same properties as $f ^ { - 1 } ( a )$ (if we require our maps to be orientation-preserving) in the sense that the orientation numbers of the preimages $\tilde { f } ^ { - 1 } ( 0 )$ add to zero. This is exactly what we need to apply step 3.5 and extend the map. Doing so, we get a map $\tilde { g } : \mathbb { R } ^ { k }  \mathbb { R } ^ { k } \backslash$ {0} that agrees with $\tilde { f }$ except on some compact set $K$
@@ -228,7 +222,6 @@ $$
 
 This way, $\bar { F }$ extends to all of $\mathbb { R } ^ { N }$ . Since we really only wanted to define the map on $W$ , we can restrict $\bar { f } = \bar { F } | _ { W }$ to get the desired ${ \bar { f } } .$ . □
 
-
 [[PAGE 8]]
 ## 3.8 The Extension Theorem
 
@@ -249,7 +242,6 @@ Let $f , g : X \to S ^ { k }$ be the two maps we’re considering. Define the pr
 and if we flattened them out:
 
 <!-- image-->
-
 
 [[PAGE 9]]
 Now, if F can extend to all of W smoothly, we’ve found a homotopy between f and g. And this is precisely what occurs if $\deg ( F ) = 0$ , invoking the Extension Theorem of step 3.8. The diagram above shows that we can think of the image of W as a sort of stack of the images of each homotopic map $f _ { t }$ In two dimensions, they combine to form a smooth 3-dimensional shape. We’re arguing that if maps on either end of that 3-d shape extend to maps to $S ^ { 2 }$ , then if we consider the boundary maps separately, the volume in between smoothly connects them via homotopies.
@@ -282,7 +274,6 @@ To make this a bit more general, consider a compact manifold X.
 
 Claim: On any compact manifold X, there exists a vector field with finitely many zeros.
 
-
 [[PAGE 10]]
 Proof. For this proof, as in 3.9, we use the trick of taking a convenient larger manifold, in this case T X, the tangent bundle. Recall that $T X = \{ ( x , v ) \mid x \in X$ and $v \in T _ { x } { ( X ) } \}$ , and that if dim $X = k ,$ then dim $T X = 2 k$ We’re going to pick two transverse submanifolds of complementary dimension, then apply the codimension equation,
 
@@ -311,7 +302,6 @@ Finally, we prove the theorem, which leads to some fun results.
 Theorem: Let X be a compact, connected, oriented manifold. Then X possesses a nonvanishing vector field if and only if its Euler characteristic is zero.
 
 Proof. To complete the proof, we need to invoke another powerful result involving Hopf, the Poincar´e-Hopf Index Theorem. It states the following:
-
 
 [[PAGE 11]]
 Poincar´e-Hopf Index Theorem: If \~v is a smooth vector field on a compact, oriented manifold X, then the sum of the indices of \~v equals the Euler characteristic of X.
@@ -352,7 +342,6 @@ Klein bottle
 
 ## 5 Conclusion
 
-
 [[PAGE 12]]
 In this talk, we’ve demonstrated used the concepts of homotopy, degree, and winding number to achieve notable results about homotopy groups and vector fields. By demonstrating that elements of $\pi _ { k } ( S ^ { k } )$ are determined precisely by their (integral) degree, we’ve shown the isomorphism $\pi _ { k } ( S ^ { k } ) \cong \mathbb { Z }$ Combine that with the fact that lower dimensional spheres can only map trivially into lower ones—that is, $\pi _ { k } ( S ^ { n } ) = 0$ higher $n < k { \mathrm { - w e } } ^ { 3 } \mathrm { v } \epsilon$ solved more than half of the problems of calculating homotopy groups.
 
@@ -383,7 +372,6 @@ To end with a less mysterious example, we can invoke Hopf once more to offer a v
 8. Weisstein, Eric W. “Euler Characteristic.” Wolfram Math-World. Wolfram Research, Inc., n.d. Web. 05 May 2017.
 
 ## 7 Appendix
-
 
 [[PAGE 13]]
 In step 3.4 and onward, we used identifications between punctured spheres and Euclidean space and vice versa. Summarized, they are as follows.

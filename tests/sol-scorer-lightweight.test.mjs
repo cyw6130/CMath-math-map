@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
+import path from "node:path";
 import test from "node:test";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 const scorer = require("../scripts/score-paper-entry-extraction-with-sol.mjs");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 test("prepareSlimCandidate removes bloated source text, chunks text, and diagnostics", () => {
   assert.equal(typeof scorer.prepareSlimCandidate, "function", "prepareSlimCandidate should be exported");
@@ -51,6 +54,19 @@ test("prepareSlimCandidate removes bloated source text, chunks text, and diagnos
   assert.ok(slimSize < originalSize * 0.1, `Slim size (${slimSize}) should be < 10% of original (${originalSize})`);
 });
 
+test("fixed benchmark cache keys resolve the frozen source identity", () => {
+  const identity = scorer.resolveFrozenSourceIdentity({
+    rootDir: root,
+    caseId: "hopf-map",
+    fallbackCaseId: "hopf-degree-theorem",
+  });
+  assert.match(identity, /^[a-f0-9]{64}$/u);
+  assert.equal(scorer.resolveFrozenSourceIdentity({
+    rootDir: root,
+    caseId: "kirby-2018-trisections",
+  }), "", "retired cases are outside the fixed source cache identity set");
+});
+
 test("computeScoreCacheKey generates deterministic SHA-256 fingerprint", () => {
   assert.equal(typeof scorer.computeScoreCacheKey, "function", "computeScoreCacheKey should be exported");
   
@@ -59,13 +75,23 @@ test("computeScoreCacheKey generates deterministic SHA-256 fingerprint", () => {
   const promptText = "PROMPT TEMPLATE";
   const model = "gpt-5.6-sol";
   const reasoning = "medium";
+  const sourceIdentity = "e".repeat(64);
 
-  const key1 = scorer.computeScoreCacheKey({ goldText, candText, promptText, model, reasoning });
-  const key2 = scorer.computeScoreCacheKey({ goldText, candText, promptText, model, reasoning });
-  const keyDifferentCand = scorer.computeScoreCacheKey({ goldText, candText: '{"entries":[]}', promptText, model, reasoning });
+  const key1 = scorer.computeScoreCacheKey({ goldText, candText, promptText, model, reasoning, sourceIdentity });
+  const key2 = scorer.computeScoreCacheKey({ goldText, candText, promptText, model, reasoning, sourceIdentity });
+  const keyDifferentCand = scorer.computeScoreCacheKey({ goldText, candText: '{"entries":[]}', promptText, model, reasoning, sourceIdentity });
+  const keyDifferentSource = scorer.computeScoreCacheKey({
+    goldText,
+    candText,
+    promptText,
+    model,
+    reasoning,
+    sourceIdentity: "f".repeat(64),
+  });
 
   assert.equal(typeof key1, "string");
   assert.equal(key1.length, 64, "SHA-256 hash length is 64 hex characters");
   assert.equal(key1, key2, "Same inputs must produce exact same cache key");
   assert.notEqual(key1, keyDifferentCand, "Different candidate must produce different cache key");
+  assert.notEqual(key1, keyDifferentSource, "Different frozen source identity must invalidate the score cache");
 });

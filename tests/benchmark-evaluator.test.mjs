@@ -210,7 +210,9 @@ describe("--report command", () => {
     assert.ok(Array.isArray(output.selfCompareScores), "report has selfCompareScores array");
     assert.ok(Array.isArray(output.modelOutputScores), "report has modelOutputScores array");
     assert.ok(output.generatedAt, "report has generatedAt timestamp");
-    assert.equal(output.selfCompareScores.length, 6, "6 eligible cases for self-compare");
+    assert.equal(output.selfCompareScores.length, 5, "only 5 active cases enter default self-compare");
+    assert.equal(output.selfCompareScores.some((row) => row.caseId === "kirby-2018-trisections"), false);
+    assert.equal(Object.hasOwn(output.caseStatuses, "kirby-2018-trisections"), false);
   });
 
   it("all self-compare scores in report are 100", async () => {
@@ -231,8 +233,8 @@ describe("--report command", () => {
 
 // ─── audit integration ─────────────────────────────────────────────────────
 
-describe("Audit script: all 6 cases found and scoring-eligible", () => {
-  it("audit:benchmarks exits 0 and reports 6 scoring-eligible cases", async () => {
+describe("Audit script: historical cases are retained while only active sources score", () => {
+  it("audit:benchmarks exits 0, audits 6 cases, and reports 5 scoring-eligible cases", async () => {
     const result = await new Promise((resolve) => {
       const proc = spawn("node", ["scripts/audit-paper-benchmarks.mjs"], { cwd: root });
       let stdout = "";
@@ -244,8 +246,10 @@ describe("Audit script: all 6 cases found and scoring-eligible", () => {
     });
     assert.equal(result.code, 0, "audit script should exit 0");
     assert.equal(result.output.cases, 6, "should audit all 6 cases");
-    assert.equal(result.output.scoringEligible, 6, "should have 6 scoring-eligible cases");
+    assert.equal(result.output.scoringEligible, 5, "should have 5 active scoring-eligible cases");
     assert.equal(result.output.structuralErrors, 0, "should have 0 structural errors");
+    const kirby = result.output.reports.find((item) => item.caseId === "kirby-2018-trisections");
+    assert.equal(kirby.scoringEligible, false, "retired Kirby case should remain auditable but not score");
   });
 });
 

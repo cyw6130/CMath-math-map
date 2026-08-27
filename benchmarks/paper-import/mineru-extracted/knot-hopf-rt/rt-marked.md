@@ -17,7 +17,6 @@ Jones polynomial 的发现把 knot theory、Lie theory 与 quantum groups 联系
 
 本文按照“几何侧、代数侧、三维流形不变量”的顺序组织。几何侧解释为什么 framedlink 足以描述 closed oriented 3-manifold；代数侧解释 Hopf algebra 的结构如何对应tangle diagram 的局部构件；最后说明 modular data 如何保证由 link invariant 写出的surgery expression 对 Kirby moves 不变。
 
-
 [[PAGE 2]]
 本文采用如下约定。三维流形均为 closed oriented 3-manifold；link 默认嵌入 $S ^ { 3 }$ 中；从 Hopf algebra 出发时，表示范畴默认取有限秩表示。我们只讨论半单（或经 puri}cation后半单）的 modular category 构造，不涉及非半单的 Hennings、Lyubashenko 或 modi}edtrace 型推广。
 
@@ -54,7 +53,6 @@ $$
 定理 2.1 (Lickorish–Wallace surgery theorem). 任意 closed connected oriented 3-manifoldM 都有一个 integer surgery presentation：存在 $S ^ { 3 }$ 中的 link $L = L _ { 1 } \cup \cdot \cdot \cdot \cup L _ { m }$ 以及整
 
 [[PAGE 3]]
-
 数 framings $n _ { 1 } , \ldots , n _ { m }$ ，使得
 
 $$
@@ -91,7 +89,6 @@ Kirby calculus 描述了不同 framed links 何时给出同一个三维流形。
 为了把 framed link diagram 转化成线性代数，需要一个能够解释 crossing、cup、cap与 twist 的范畴结构。我们分几步来搭：先是 monoidal category，再加上 braiding 和duality，最后把它们合起来得到 ribbon category。
 
 [[PAGE 4]]
-
 定义 3.1 (strict monoidal category). 本节采用 strict 约定。一个 strict monoidal categoryC 带有 bifunctor
 
 $$
@@ -143,7 +140,6 @@ $$
 $$
 
 [[PAGE 5]]
-
 直观上， ${ \mathit { c } } _ { V , W }$ 是把 V -colored strand 从 W -colored strand 上方穿过去的代数解释：两条hexagon identity 保证 crossing 与张量积相容，而 Yang–Baxter 恒等式在图示上正好是三条 strand 的 Reidemeister III 同痕（见后面的 graphical calculus 一节）。
 
 定义 3.3 (duality / rigid structure). 设 C 是 strict monoidal category。这里说的 duality，是给每个对象 V 指定一个对象 V∗ 以及两个态射
@@ -183,7 +179,6 @@ $$
 $$
 
 [[PAGE 6]]
-
 也就是常写成的 $\theta _ { V ^ { * } } = ( \theta _ { V } ) ^ { * }$ 。因此，ribbon category 正是能够同时解释 crossing、cup/cap和 framing twist 的范畴结构。
 
 ## 3.2 Colored ribbon graph
@@ -205,7 +200,6 @@ Graphical calculus 指的是把 colored ribbon graph 的平面图示系统地翻
 <table><tr><td>图示局部构件</td><td>范畴解释</td></tr><tr><td>identity strand</td><td> $\operatorname { i d } _ { V }$ </td></tr><tr><td>positive/negative crossing</td><td> $c _ { V , W } \stackrel { \triangledown } { \lrcorner } \dot { \mathfrak { U } } c _ { V , W } ^ { - 1 }$ </td></tr><tr><td>cup/cap</td><td>coevaluation/evaluation</td></tr><tr><td>positive/negative twist</td><td> $\theta _ { V }$  或  $\cdot \theta _ { V } ^ { - 1 }$ </td></tr><tr><td>coupon</td><td>coupon 上标记的 morphism</td></tr></table>
 
 [[PAGE 7]]
-
 这些规则可以用下面几张图来读。一个带标签的 coupon 表示一个 morphism；多输入、多输出的 coupon 表示一般 morphism
 
 $$
@@ -247,7 +241,6 @@ $$
 $$
 
 [[PAGE 8]]
-
 这解释了为什么一个 braiding 不只是任意的交换同构，而必须满足 braid relation。
 
 <!-- image-->  
@@ -288,7 +281,6 @@ $$
 $$
 
 [[PAGE 9]]
-
 对象 V 的 categorical dimension 定义为
 
 $$
@@ -324,7 +316,6 @@ a \cdot ( v \otimes w ) = \sum a _ { ( 1 ) } v \otimes a _ { ( 2 ) } w , \qquad 
 $$
 
 [[PAGE 10]]
-
 因此 Rep(A) 是 monoidal category。
 
 antipode 的作用是构造 dual modules。设 V 是有限秩左 A-module，并记
@@ -372,7 +363,6 @@ z \longmapsto \sum _ { i } e ^ { i } ( S ( a _ { ( 2 ) } ) z ) a _ { ( 1 ) } e _
 $$
 
 [[PAGE 11]]
-
 因此 $\boldsymbol a \cdot \delta _ { V } = \varepsilon ( \boldsymbol a ) \delta _ { V }$ ，即 $b _ { V } ( a \cdot 1 ) = a \cdot b _ { V } ( 1 )$ 。
 
 需要注意，有限维向量空间的标准映射
@@ -412,7 +402,6 @@ $$
 定义 4.1 (quasitriangular Hopf algebra). 一个 quasitriangular Hopf algebra 是一个 Hopfalgebra A，配有可逆元
 
 [[PAGE 12]]
-
 $$
 R = \sum R ^ { ( 1 ) } \otimes R ^ { ( 2 ) } \in A \otimes A ,
 $$
@@ -458,7 +447,6 @@ $$
 现在可以解释几种 trace 的关系。普通 trace TrV 是有限维向量空间 V 上线性算子的矩阵 trace。quantum trace 则是先用 ribbon Hopf algebra 的 canonical element 把ordinary trace 修正一下、再取 trace：
 
 [[PAGE 13]]
-
 $$
 \mathrm { t r } _ { q } ( f ) = \mathrm { T r } _ { V } ( \rho _ { V } ( u v ) \circ f ) ,
 $$
@@ -496,7 +484,6 @@ $$
 这里必须强调“framed”。在 ribbon category 中，正负 twist 分别由 $\theta _ { V }$ 及其逆表示；因此 link component 的 framing 改变会改变 invariant。若采用 blackboard framing，则diagram 的 writhe 可以用来编码 framing；这正是 framed link 与 ribbon diagram 对应的图示基础。
 
 [[PAGE 14]]
-
 ## 6 从 link invariant 到三维流形不变量
 
 上一节得到的 $F ( L ; V _ { 1 } , \ldots , V _ { m } )$ 只是 colored framed link invariant。要由它定义 $M _ { L }$ 的不变量，必须消除 surgery presentation 的非唯一性。按照 Kirby 定理，需要构造一个表达式 τ (L)，使其在 handle slides 与 $\pm 1 \mathrm { { \ m o v e s } }$ 下不变。
@@ -546,7 +533,6 @@ $$
 这里 D 称为 rank； $\Delta$ 是由 twist anomaly 决定的常数。
 
 [[PAGE 15]]
-
 定义 6.2 (Kirby color). Kirby color 是形式线性组合
 
 $$
@@ -583,7 +569,6 @@ $$
 定理 6.3 (Reshetikhin–Turaev invariant). 设 $( \mathcal { V } , \{ V _ { i } \} _ { i \in I } )$ 是 modular category，并选定rank $D _ { \circ }$ 。由 Kirby color 加权求和和 signature 归一化得到的数量 $\tau _ { \mathcal { V } , D } ( M _ { L } )$ 在 Kirbymoves 下不变。因此它只依赖于 closed oriented 3-manifold $M _ { L }$ 的 orientation-preservinghomeomorphism class，给出三维流形不变量
 
 [[PAGE 16]]
-
 $$
 \tau _ { \mathcal { V } , D } ( M ) \in K .
 $$
@@ -621,7 +606,6 @@ $$
 这个定义是 modular category 公理在 Hopf algebra 表示论中的对应版本。单位对象、对偶闭合和 tensor product 分解对应 modular category 的前三条公理；S-matrix可逆对应 non-degeneracy。区别是：在 quantum group at roots of unity 中确实会出现negligible modules，因此 Rep(A) 的相应子范畴一般首先是 quasimodular category，而不是已经纯粹的 modular category。
 
 [[PAGE 17]]
-
 定理 7.3 (Turaev). 设 (A, {Vi}) 是 modular Hopf algebra。由 {Vi} quasidominate 的 A-modules 构成 Rep(A) 的一个 ribbon 子范畴 T 。则 $( \mathcal { T } , \{ V _ { i } \} )$ 是 quasimodular category。将 T 按 negligible morphisms 取 quotient，即 puri}cation，得到 modular category $\mathcal { T } _ { p }$ 。于是每个 modular Hopf algebra canonically gives rise to a modular category。
 
 因此，在 T94 的层级中，modular Hopf algebra 是产生 quasimodular category 的Hopf-algebraic input；puri}cation 是从这个 quasimodular category 到 modular category的一步：
@@ -669,7 +653,6 @@ $$
 这里 $V _ { n }$ 是最高权为 n 的表示，经典维数为 $n + 1 \mathrm { { \ell } } _ { \mathrm { { { o } } } }$ 因此，对 knot K，每个 $n \geq 0$ 都给出一个 framed colored link polynomial
 
 [[PAGE 18]]
-
 $$
 F ( K ; V _ { n } ) .
 $$
@@ -701,7 +684,6 @@ $$
 3. root of unity 下的有限 modular data 经过 surgery/Kirby normalization 给出 WRT3-manifold invariants。
 
 [[PAGE 19]]
-
 ## 9 结构表
 
 <table><tr><td>Hopf 代数结构</td><td>代数数据</td><td>表示范畴中的结构</td><td>拓扑解释</td></tr><tr><td>algebra</td><td>multiplication, unit</td><td>A-modules 与 A-linear maps</td><td>只有表示论，还不能自然 解释并列strands</td></tr><tr><td>bialgebra</td><td>coproduct, counit</td><td>monoidal category</td><td>解释 tensor product，即多 条线并列</td></tr><tr><td>Hopf algebra</td><td>antipode</td><td>rigid category / duality</td><td>解释cup、cap、orientation reversal</td></tr><tr><td>quasitriangular Hopf algebra</td><td>universal R-matrix</td><td>braided category</td><td>解释crossing</td></tr><tr><td>ribbon Hopf algebra</td><td>universal twist</td><td>ribbon category</td><td>解释 twist与 framing</td></tr><tr><td>modular Hopf</td><td>finite simple colors，quasimodular</td><td></td><td>通过 Kirby color 与 signa-</td></tr><tr><td>algebra</td><td>quantum</td><td>category;</td><td>ture 归一化得到三维流形</td></tr><tr><td></td><td>dimensions,</td><td>purification 后为</td><td>不变量</td></tr><tr><td></td><td>negligible</td><td>invertible S-matrix,modular category</td><td></td></tr></table>

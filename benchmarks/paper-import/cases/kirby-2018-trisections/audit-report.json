@@ -4,7 +4,7 @@
   "caseId": "kirby-2018-trisections",
   "status": "accepted-gold",
   "reviewStatus": "accepted-gold",
-  "scoringEligible": true,
+  "scoringEligible": false,
   "auditedFiles": [
     "benchmark-spec.json",
     "gold-project-view.json",

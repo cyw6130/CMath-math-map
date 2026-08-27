@@ -15,7 +15,6 @@ Problem 1.1 Is every simply connected, closed, smooth 4–manifold geometrically
 
 This problem is closely related to the existence problem of exotic (ie homeomorphic but not diffeomorphic) smooth structures on the two smallest 4–manifolds $S ^ { 4 }$ and $\mathbb { C P } ^ { 2 }$ (see [37]), and many closed 4–manifolds were shown to be geometrically simply connected (eg Harer [15], Mandelbaum [30], Akbulut and Kirby [2], Gompf [13] and Gompf and Stipsicz [14]). Furthermore, geometrically simply connected, exotic smooth structures on the small 4–manifolds $\mathbb { C P } ^ { 2 } \# n \overline { { \mathbb { C P } ^ { 2 } } } \ : \ : ( 6 \leq n \leq 9 )$ were constructed by the author [37; 39], and a long standing potential counterexample (Harer, Kas and Kirby [16]) to Problem 1.1 was disproved by Akbulut [1] and independently by the author [38], but the problem remains unsolved.
 
-
 [[PAGE 2]]
 In this paper, we study gauge-theoretical properties of geometrically simply connected, closed 4–manifolds to reveal properties that hold for all simply connected closed 4–manifolds and/or to give potential methods for constructing counterexamples to Problem 1.1. Let us recall that a positive definite 4–manifold is an oriented 4–manifold whose intersection form is positive definite. We first discuss the following question:
 
@@ -34,7 +33,6 @@ Theorem 1.4 Every geometrically simply connected, positive definite, closed, smo
 It is likely that our proof works for the $b _ { 2 } ^ { + } = 1$ case as well, but we do not pursue this point here, since this invariant requires some care in the $b _ { 2 } ^ { + } = 1$ case (see Bauer [5]). We note that our approach is very different from that of Hom and Lidman. It would be natural to ask whether this theorem holds without the condition “geometrically”. If not, there exists a counterexample to Problem 1.1.
 
 We obtain the following corollary:
-
 
 [[PAGE 3]]
 Corollary 1.5 Every geometrically simply connected, positive definite, closed, smooth 4–manifold with $b _ { 2 } ^ { + } > 1$ has a vanishing Seiberg–Witten invariant.
@@ -60,7 +58,6 @@ Question 1.8 Does there exist a simply connected, closed, oriented, smooth 4– 
 
 肯定的
 
-
 [[PAGE 4]]
 We note that the answer to this question is affirmative if either the condition “simply connected” or $^ { \mathrm { 6 6 } } b _ { 2 } ^ { + } > 1 ^ { \prime \prime }$ is removed (eg $T ^ { 4 }$ and $S ^ { 2 } \times S ^ { 2 } )$ . A similar question for complex structures was intensively studied by Beauville [8] and Kotschick [24; 25], and several results of Kotschick [24; 25] work for our question as well. For example, if a simply connected, closed, oriented 4–manifold with $b _ { 2 } ^ { + } > 1$ and $b _ { 2 } ^ { - } > 1$ admits symplectic structures for both orientations, then the 4–manifold does not contain a smoothly embedded 2–sphere representing a nontrivial second homology class, and both $b _ { 2 } ^ { + }$ and $b _ { 2 } ^ { - }$ are odd integers. Here we answer the question negatively for geometrically simply connected 4–manifolds with a mild condition on $b _ { 2 } ^ { + }$ and $b _ { 2 } ^ { - }$ giving a potential approach to Problem 1.1.
 
@@ -74,12 +71,11 @@ We introduce the following definition to prove our main results.
 
 Definition 2.1 Let X be an oriented smooth 4–manifold and let ˛ be a class of $H _ { 2 } ( X ; \mathbb { Z } )$ . We say that ˛ is represented by a 2–handle neighborhood if X has a codimension-zero submanifold W satisfying the following conditions:
 
- The submanifold W is diffeomorphic to a 4–manifold obtained from the 4–ball by attaching a single 2–handle. (This submanifold will be called a 2–handle neighborhood.)
+- The submanifold W is diffeomorphic to a 4–manifold obtained from the 4–ball by attaching a single 2–handle. (This submanifold will be called a 2–handle neighborhood.)
 
 $\alpha$ is the image of a generator of $H _ { 2 } ( W ; \mathbb { Z } ) \cong \mathbb { Z }$ by the inclusion-induced homomorphism $H _ { 2 } ( W ; \mathbb { Z } ) \to H _ { 2 } ( X ; \mathbb { Z } )$
 
 Remark 2.2 According to [29, Section 1], a second homology class ˛ of a compact, oriented, smooth 4–manifold X is represented by a 2–handle neighborhood if and only if ˛ is represented by a PL embedded 2–sphere in X.
-
 
 [[PAGE 5]]
 For an oriented 4–manifold X, let $\overline { { X } }$ denote the 4–manifold X equipped with the reverse orientation. We prove the following theorems:
@@ -98,9 +94,8 @@ We begin the proofs of these theorems with the lemma below. For a second homolog
 
 Lemma 2.6 Let X be a compact oriented smooth 4–manifold and let ˛ be a second homology class of X represented by a 2–handle neighborhood. Then the class $\alpha - \overline { { \alpha } }$ of $H _ { 2 } ( X \# { \overline { { X } } } ; \mathbb { Z } ) \cong H _ { 2 } ( X ; \mathbb { Z } ) \oplus H _ { 2 } ( { \overline { { X } } } ; \mathbb { Z } )$ is represented by a smoothly embedded 2–sphere with self-intersection number zero.
 
-
 [[PAGE 6]]
-Proof Assume that ˛ is represented by a 2–handle neighborhood W that is obtained from the 4–ball by attaching a 2–handle along an n–framed knot K . Then $X \# { \overline { { X } } }$ contains the boundary connected sum $W \models { \overline { { W } } }$ as a submanifold. Let $\bar { K }$ denote the mirror image of the knot K . Clearly $W \models { \overline { { W } } }$ is obtained from the 4–ball by attaching two 2–handles along an n–framed knot K and a . n/–framed knot $\bar { K }$ , where these two framed knots are located in two disjoint 3–balls in $S ^ { 3 }$ . By sliding the 2–handle K over $\bar { K }$ , we obtain a new 2–handle of $W \models { \overline { { W } } }$ attached along the slice knot K # $\bar { K }$ with the 0–framing. Clearly $\alpha - \overline { { \alpha } }$ is represented by this 2–handle neighborhood. Since $K \# \bar { K }$ is a slice knot and the framing is zero, the class $\alpha - \overline { { \alpha } }$ is represented by a smoothly embedded 2–sphere with self-intersection number zero. □
+Proof Assume that ˛ is represented by a 2–handle neighborhood W that is obtained from the 4–ball by attaching a 2–handle along an n–framed knot K . Then $X \# { \overline { { X } } }$ contains the boundary connected sum $W \models { \overline { { W } } }$ as a submanifold. Let $\bar { K }$ denote the mirror image of the knot K . Clearly $W \models { \overline { { W } } }$ is obtained from the 4–ball by attaching two 2–handles along an n–framed knot K and a .-n/–framed knot $\bar { K }$ , where these two framed knots are located in two disjoint 3–balls in $S ^ { 3 }$ . By sliding the 2–handle K over $\bar { K }$ , we obtain a new 2–handle of $W \models { \overline { { W } } }$ attached along the slice knot K # $\bar { K }$ with the 0–framing. Clearly $\alpha - \overline { { \alpha } }$ is represented by this 2–handle neighborhood. Since $K \# \bar { K }$ is a slice knot and the framing is zero, the class $\alpha - \overline { { \alpha } }$ is represented by a smoothly embedded 2–sphere with self-intersection number zero. □
 
 Let us recall a few basic results about the stable cohomotopy Seiberg–Witten invariant of 4–manifolds [6], also known as the Bauer–Furuta invariant. As shown in [6; 5], this invariant is a refinement of the Seiberg–Witten invariant, and moreover strictly stronger than the Seiberg–Witten invariant. Indeed, the following theorem of Bauer implies that this invariant can distinguish 4–manifolds having the same (vanishing) Seiberg–Witten invariants:
 
@@ -120,7 +115,6 @@ Furthermore, Ishida and Sasahira [19] extended the sufficient condition (2) to t
 
 As is well known to experts of Seiberg–Witten theory, the adjunction inequality holds for the stable cohomotopy Seiberg–Witten invariant as well (eg [27, page 53; 35]). In particular, the following special case holds:
 
-
 [[PAGE 7]]
 Theorem 2.8 Let X be a closed, connected, oriented, smooth 4–manifold with $b _ { 2 } ^ { + } > 1$ having a nonvanishing stable cohomotopy Seiberg–Witten invariant, and let ˛ be a nontorsion second homology class of X. If the self-intersection number of ˛ is nonnegative, then ˛ cannot be represented by a smoothly embedded 2–sphere.
 
@@ -128,16 +122,15 @@ This theorem follows, for example, from the theorem below:
 
 Theorem 2.9 (Frøyshov [11, Theorem 1.1]) Let X be a closed , connected , oriented , smooth 4–manifold with $b _ { 2 } ^ { + } > 1$ . Suppose that a closed , orientable, codimension-one submanifold Y of X satisfies the following two conditions:
 
- Y admits a Riemannian metric with positive scalar curvature.
+- Y admits a Riemannian metric with positive scalar curvature.
 
- The inclusion-induced homomorphism $H ^ { 2 } ( X ; \mathbb { Q } ) \to H ^ { 2 } ( Y ; \mathbb { Q } )$ is nonzero.
+- The inclusion-induced homomorphism $H ^ { 2 } ( X ; \mathbb { Q } ) \to H ^ { 2 } ( Y ; \mathbb { Q } )$ is nonzero.
 
 Then the stable cohomotopy Seiberg–Witten invariant of X vanishes.
 
 Although Theorem 2.8 follows from the above theorem by a standard argument, we include a proof for completeness. See also a recent preprint [22] for an alternative proof that uses relative Bauer–Furuta invariants.
 
 Proof of Theorem 2.8 Let $n \geq 0$ be the self-intersection number of $\alpha$ , and let $Z$ be the 4–manifold X # $n { \overline { { \mathbb { C P } ^ { 2 } } } }$ . We note that Z has a nonvanishing stable cohomotopy Seiberg–Witten invariant by Theorem 2.7.
-
 
 [[PAGE 8]]
 Now suppose, to the contrary, that ˛ is represented by a smoothly embedded 2– sphere in X. Then, by blowing up, one can construct a smoothly embedded 2– sphere $S$ in Z with self-intersection number zero that represents a nontorsion second homology class. Let Y denote the boundary of the tubular neighborhood $\nu ( S )$ $( \cong S ^ { 2 } \times D ^ { 2 } )$ of S in $Z$ . We note that Y is diffeomorphic to $S ^ { 2 } \times S ^ { 1 }$ , and thus admits a Riemannian metric with positive scalar curvature. Since $S$ represents a nontorsion second homology class, we see that the inclusion-induced homomorphism $H ^ { 2 } ( Z ; \mathbb { Q } ) \to H ^ { 2 } ( \nu ( S ) ; \mathbb { Q } ) \cong \mathbb { Q }$ is nonzero. Composing this map with the inclusioninduced homomorphism $H ^ { 2 } ( \nu ( S ) ; \mathbb { Q } ) \to H ^ { 2 } ( Y ; \mathbb { Q } ) \cong \mathbb { Q }$ , one can check that the inclusion-induced homomorphism $H ^ { 2 } ( Z ; \mathbb { Q } ) \to H ^ { 2 } ( Y ; \mathbb { Q } ) \cong \mathbb { Q }$ is nonzero. Therefore Theorem 2.9 shows that the stable cohomotopy Seiberg–Witten invariant of $Z$ vanishes, giving a contradiction. □
@@ -154,7 +147,6 @@ Theorems 1.4 and 1.9 easily follow from Theorems 2.3 and 2.4.
 
 Proof of Theorems 1.4 and 1.9 We note that, for any compact, 4–dimensional handlebody with $b _ { 2 } \neq 0$ and without 1–handles, the handlebody has a 2–handle representing a nontorsion second homology class, since the second homology group is generated by 2–handles. Theorem 1.4 thus follows from Theorem 2.3. For Theorem 1.9, we may assume $b _ { 2 } \neq 0$ , since any simply connected, closed 4–manifold with $b _ { 2 } = 0$ does not admit a symplectic structure. Theorem 1.9 thus follows from Theorem 2.4.
 
-
 [[PAGE 9]]
 Remark 2.10 We can prove Corollary 1.5 and, more generally, the $b _ { 1 } ( X ) = 0$ case of Corollary 2.5 (and hence also Corollaries 1.6 and 1.7) without using the stable cohomotopy Seiberg–Witten invariant. Indeed, as seen from the proof of Theorem 1.4, these corollaries can be shown by using the blow-up formula [9; 26, Proposition 2; 12, Corollary 14.1.1] and the adjunction inequality [28; 31; 9] (see also [14, Theorem 2.4.8]) for the Seiberg–Witten invariant together with Lemma 2.6. Note that the blow-up formula holds for a connected sum with an arbitrary closed, negative definite 4– manifold satisfying $b _ { 1 } = 0$ [26, Proposition 2].
 
@@ -167,7 +159,6 @@ Remark 2.11 (1) Problem 4.18 in Kirby’s problem list [23] asks not only Proble
 Finally we discuss two more questions, motivated by Problem 1.1 and our results. We note the following lemma:
 
 Lemma 3.1 If X is a geometrically simply connected, compact, oriented, smooth 4–manifold, then every second homology class of X is represented by a 2–handle neighborhood.
-
 
 [[PAGE 10]]
 Proof We fix a handle decomposition of X having no 1–handles, and consider the 2–chain group generated by 2–handles of the decomposition. Let ˛ be a second homology class of X. Then ˛ is represented by a linear combination of 2–handles. By introducing a canceling pair of 2– and 3–handles, and sliding the newly introduced 2–handle over the original 2–handles, one can construct a 2–handle that is homologous to the linear combination, showing that ˛ is represented by this 2–handle neighborhood. Note that the newly introduced 2–handle represents the zero element in the second homology group, and each handle slide corresponds to an addition or subtraction in the 2–chain group. L
@@ -187,7 +178,6 @@ In [40], we will answer the question (1) negatively for simply connected nonclos
 The author is grateful to Nobuhiro Nakamura and Hirofumi Sasahira for many helpful conversations and comments about the stable cohomotopy Seiberg–Witten invariant. The author would like to thank R ˙Inanç Baykur, Mikio Furuta and Hokuto Konno for useful comments. The author would also like to thank the referee for many helpful comments which improved the presentation of this paper. The author was partially supported by JSPS KAKENHI Grant Numbers 16K17593, 26287013 and 17K05220.
 
 ## References
-
 
 [[PAGE 11]]
 [1] S Akbulut, The Dolgachev surface: disproving the Harer–Kas–Kirby conjecture, Comment. Math. Helv. 87 (2012) 187–241 MR
@@ -224,7 +214,6 @@ The author is grateful to Nobuhiro Nakamura and Hirofumi Sasahira for many helpf
 
 [17] J Hom, T Lidman, A note on positive-definite, symplectic four-manifolds, J. Eur. Math. Soc. 21 (2019) 257–270 MR
 
-
 [[PAGE 12]]
 [18] M Ishida, C LeBrun, Curvature, connected sums, and Seiberg–Witten theory, Comm. Anal. Geom. 11 (2003) 809–836 MR
 
@@ -241,8 +230,6 @@ The author is grateful to Nobuhiro Nakamura and Hirofumi Sasahira for many helpf
 [24] D Kotschick, Orientation-reversing homeomorphisms in surface geography, Math. Ann. 292 (1992) 375–381 MR
 
 [25] D Kotschick, Orientations and geometrisations of compact complex surfaces, Bull. London Math. Soc. 29 (1997) 145–149 MR
-
-[[PAGE 14]]
 
 [26] D Kotschick, J W Morgan, C H Taubes, Four-manifolds without symplectic structures but with nontrivial Seiberg–Witten invariants, Math. Res. Lett. 2 (1995) 119–124 MR
 
@@ -261,7 +248,6 @@ The author is grateful to Nobuhiro Nakamura and Hirofumi Sasahira for many helpf
 [33] J Park, The geography of symplectic 4-manifolds with an arbitrary fundamental group, Proc. Amer. Math. Soc. 135 (2007) 2301–2307 MR
 
 [34] J Rasmussen, Perfect Morse functions and exotic $S ^ { 2 } \times S ^ { 2 } \stackrel { , } { s } ,$ , preprint (2010) arXiv
-
 
 [[PAGE 13]]
 [35] H Sasahira, Spin structures on Seiberg–Witten moduli spaces, J. Math. Sci. Univ. Tokyo 13 (2006) 347–363 MR
@@ -291,3 +277,5 @@ Seconded: Ciprian Manolescu, Peter Ozsváth
 Received: 6 August 2018
 
 Revised: 15 February 2019
+
+[[PAGE 14]]

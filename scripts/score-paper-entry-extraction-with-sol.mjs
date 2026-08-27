@@ -164,7 +164,15 @@ export function aggregateMedianScore(scoreObjs) {
   return aggregated;
 }
 
-export function computeScoreCacheKey({ goldText, candText, promptText, model, reasoning = "medium", runs = 1 }) {
+export function computeScoreCacheKey({
+  goldText,
+  candText,
+  promptText,
+  model,
+  reasoning = "medium",
+  runs = 1,
+  sourceIdentity = "",
+}) {
   const hash = crypto.createHash("sha256");
   hash.update(goldText || "");
   hash.update("||");
@@ -177,7 +185,22 @@ export function computeScoreCacheKey({ goldText, candText, promptText, model, re
   hash.update(reasoning || "medium");
   hash.update("||");
   hash.update(`runs=${runs}`);
+  hash.update("||");
+  hash.update(`source=${sourceIdentity}`);
   return hash.digest("hex");
+}
+
+export function resolveFrozenSourceIdentity({ rootDir, caseId, fallbackCaseId }) {
+  const manifestPath = path.join(rootDir, "benchmarks/paper-import/source-manifest.json");
+  if (!caseId || !fs.existsSync(manifestPath)) return "";
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    const candidateIds = new Set([caseId, fallbackCaseId].filter(Boolean));
+    const source = (manifest.activeCases ?? []).find((item) => candidateIds.has(item.caseId));
+    return typeof source?.sourceIdentitySha256 === "string" ? source.sourceIdentitySha256 : "";
+  } catch {
+    return "";
+  }
 }
 
 function resolveRegularFile(filePath, label) {
@@ -457,6 +480,11 @@ export async function scorePaperEntryExtraction({
     || goldObj.standardAnswerProfile?.revision
     || "v1";
   const candidateArtifact = path.relative(rootDir, resolvedCandidate);
+  const sourceIdentity = resolveFrozenSourceIdentity({
+    rootDir,
+    caseId,
+    fallbackCaseId: path.basename(path.dirname(resolvedGold)),
+  });
 
   const moduleDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../benchmarks/paper-import/entry-module");
   const promptTemplatePath = path.join(moduleDir, "sol-entry-score-prompt-v1.md");
@@ -477,6 +505,7 @@ export async function scorePaperEntryExtraction({
     model: scorerModel,
     reasoning: effectiveReasoning,
     runs: runCount,
+    sourceIdentity,
   });
   const cacheFilePath = path.join(cacheDir, `${cacheKey}.json`);
 
@@ -507,6 +536,7 @@ export async function scorePaperEntryExtraction({
       caseId,
       goldRevision,
       scorerModel,
+      sourceIdentitySha256: sourceIdentity || null,
       promptVersion: PROMPT_VERSION,
       schemaId: SCHEMA_ID,
       stagingPlan: { files: [], excludes: ["pdf", "spec", "conventions", "graph-metrics"], mode: "inline-single-turn" },

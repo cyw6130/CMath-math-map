@@ -37,6 +37,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const casesRoot = path.join(root, "benchmarks/paper-import/cases");
 const modelOutputsDir = path.join(root, "benchmarks/model-outputs");
+const sourceManifest = JSON.parse(fs.readFileSync(path.join(root, "benchmarks/paper-import/source-manifest.json"), "utf8"));
+const ACTIVE_CASES = sourceManifest.activeCases.map((item) => item.caseId);
 
 // ---------------------------------------------------------------------------
 // Case registry — maps output filenames to case IDs
@@ -516,16 +518,15 @@ function printResult(result) {
 
 if (args.includes("--report")) {
   // Full qualification/evaluation report
-  const ALL_CASES = ["hopf-degree-theorem", "knot-hopf-rt", "4-dim-skein-modules-handles-tangles", "cornered-skein-lasagna-theory", "kirby-2018-trisections", "yasui-2019-geometrically-simply-connected-4-manifolds"];
   const report = { generatedAt: new Date().toISOString(), caseStatuses: {}, modelOutputScores: [], selfCompareScores: [] };
 
-  for (const c of ALL_CASES) {
+  for (const c of ACTIVE_CASES) {
     const rs = loadReviewStatus(c);
     report.caseStatuses[c] = rs.status;
   }
 
   // Self-compare for scoring-eligible cases
-  for (const c of ALL_CASES) {
+  for (const c of ACTIVE_CASES) {
     const rs = loadReviewStatus(c);
     if (rs.status !== "needs-revision") {
       const r = selfCompare(c);
@@ -563,8 +564,7 @@ if (args.includes("--report")) {
   const caseId = caseIdx >= 0 ? args[caseIdx + 1] : null;
   if (!caseId) {
     // Self-compare all eligible cases
-    const ALL_CASES = ["hopf-degree-theorem", "knot-hopf-rt", "4-dim-skein-modules-handles-tangles", "cornered-skein-lasagna-theory", "yasui-2019-geometrically-simply-connected-4-manifolds"];
-    printResult(ALL_CASES.map(selfCompare));
+    printResult(ACTIVE_CASES.map(selfCompare));
   } else {
     printResult(selfCompare(caseId));
   }

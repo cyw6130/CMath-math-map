@@ -1,7 +1,6 @@
 [[PAGE 1]]
 # CORNERED SKEIN LASAGNA THEORY
 
-
 [[PAGE 2]]
 SARAH BLACKWELL, VYACHESLAV KRUSHKAL, AND YANGXIAO LUO
 
@@ -49,7 +48,6 @@ Acknowledgments. Our approach was strongly influenced by the ideas and TQFT meth
 
 We are grateful to Paul Wedrich for numerous conversations and for generously sharing his insight into the subject. We also would like to thank Chris Douglas, Robert Lipshitz, and Mike Willis for helpful conversations.
 
-
 [[PAGE 3]]
 SB was supported by the NSF Postdoctoral Research Fellowship DMS-2303143. VK was supported in part by NSF Grant DMS-2405044.
 
@@ -86,7 +84,6 @@ Then the skein lasagna module $S ( X , L )$ inherits a $\mathbb { Z } ^ { 2 } .$
 We now set up the categorical framework which we will use throughout the rest of the paper. Our work relies on TQFT methods (which apply in much greater generality) developed in [Wal06; Fre+08]. First we discuss a relatively simple gluing map that will be useful for the definition of this category. Let $X _ { 1 } , X _ { 2 }$ be oriented 4-manifolds and $L _ { 1 } , L _ { 2 }$ be framed oriented links in the boundary of $X _ { 1 } , X _ { 2 }$ respectively. Let Y be a 3-manifold with boundary, with $Y \hookrightarrow \partial X _ { 1 }$ and $- Y \hookrightarrow \partial X _ { 2 }$ , such that ∂Y has transverse intersections with $L _ { 1 }$ and $L _ { 2 }$ . Then ∂Y cuts $L _ { 1 }$ into two tangles $T _ { 2 } = L _ { 1 } \cap Y$ and $- T _ { 1 } = L _ { 1 } \cap ( \partial X _ { 1 } \setminus Y )$ , and cuts $L _ { 2 }$ into two tangles $- T _ { 2 } ^ { \prime } = L _ { 2 } \cap Y$ and $T _ { 3 } = L _ { 2 } \cap ( \partial X _ { 2 } \setminus Y )$
 
 [[PAGE 4]]
-
 Suppose that $T _ { 2 } ^ { \prime } = T _ { 2 }$ . Then we can glue $( X _ { 1 } , - T _ { 1 } \cup T _ { 2 } )$ and $( X _ { 2 } , - T _ { 2 } \cup T _ { 3 } )$ together along $( Y , T _ { 2 } )$ to obtain $( X _ { 1 } \cup X _ { 2 } , - T _ { 1 } \cup T _ { 3 } )$ . A lasagna filling of $( X _ { 1 } , - T _ { 1 } \cup T _ { 2 } )$ and a lasagna filling of $( X _ { 2 } , - T _ { 2 } \cup T _ { 3 } )$ glue to create a lasagna filling of $( X _ { 1 } \cup X _ { 2 } , - T _ { 1 } \cup T _ { 3 } )$ in a bilinear way, inducing a map
 
 $$
@@ -125,7 +122,6 @@ Remark 2.6. If the diffeomorphism $\iota \colon \Sigma \  \ \partial Y$ has no a
 In this section we define the invariant of cornered 4-manifolds and present our gluing theorems. The reader may consult [Wal16, Section 1.5] for the definition and basic properties of manifolds with corners. In Section 3.1 we consider the case of gluing two distinct, possibly cornered, oriented 4-manifolds together. Then, motivated by the theory of trisections, in Section 3.2 we consider what happens when we glue a 4-manifold to itself in a prescribed way. In Section 3.3, we discuss an application of our results to the theory of trisections.
 
 [[PAGE 5]]
-
 We construct an invariant of oriented, compact 4-manifolds X with corners, $\partial X = \left( - Y _ { 1 } \right) \cup _ { \Sigma }$ $Y _ { 2 }$ , where $Y _ { 1 }$ and $Y _ { 2 }$ are two oriented, compact 3-manifolds with $\partial Y _ { 1 } = \partial Y _ { 2 } = \Sigma$ (note that we allow the possibility of $\Sigma$ to be empty, giving the case $\partial X = ( - Y _ { 1 } ) \sqcup Y _ { 2 } )$ . Suppose that X is equipped with an orientation-preserving diffeomorphism $\phi \colon ( - Y _ { 1 } ) \cup _ { \Sigma } Y _ { 2 } \to \partial X$ If we fix a point set $P \subset \Sigma$ , then we obtain two categories $S ( Y _ { 1 } , P )$ and $S ( Y _ { 2 } , P )$ by Definition 2.4.
 
 Definition 3.1. To the 4-manifold X with boundary as described above, we associate the cornered skein lasagna bimodule, which is a bifunctor
@@ -154,7 +150,6 @@ Remark 3.4. Let $\alpha \in \mathrm { H o m } _ { \mathcal { S } ( Y _ { 1 } , P
 3.1. Gluing two pieces. Our goal now is to describe how the cornered skein lasagna bimodule behaves under gluing. Let $Y _ { 1 } , Y _ { 2 } , Y _ { 3 }$ be three oriented compact 3-manifolds with $\partial Y _ { 1 } = \partial Y _ { 2 } = \partial Y _ { 3 } = \Sigma$ Suppose that $X _ { 1 } , X _ { 2 }$ are oriented compact 4-manifolds with $\partial X _ { 1 } = ( - Y _ { 1 } ) \cup _ { \Sigma } Y _ { 2 }$ and $\partial X _ { 2 } = ( - Y _ { 2 } ) \cup _ { \Sigma } Y _ { 3 }$ . We will glue two such 4-manifolds along $Y _ { 2 }$ to get $X _ { 1 } \cup _ { Y _ { 2 } } X _ { 2 }$ , as depicted in Figure 3. Given two bimodules $F _ { X _ { 1 } , P } \colon S ( Y _ { 1 } , P ) \times S ( Y _ { 2 } , P ) ^ { o p } \to \mathcal { V }$ and $F _ { X _ { 2 } , P } \colon S ( Y _ { 2 } , P ) \times S ( Y _ { 3 } , P ) ^ { o p } \to \mathcal { V }$ , we wish to define a tensor product between $F _ { X _ { 1 } , P }$ and $F _ { X _ { 2 } , P }$ to recover the bimodule $F _ { X _ { 1 } \cup _ { Y _ { 2 } } X _ { 2 } , P } .$
 
 [[PAGE 6]]
-
 <!-- image-->  
 Figure 3. Two schematics for gluing two cornered 4-manifolds along part of their boundary. The left hand side is useful for a big picture view of what pieces are being glued, while the right hand side (in which all pieces have increased in dimension) is useful for seeing where the points, tangles, and surfaces (which will be relevant in Definition 3.1) live. Here, the gray schematically represents lasagna fillings of $( X _ { 1 } , T ^ { \prime } \cup T ^ { \prime \prime } )$ and $( X _ { 2 } , T ^ { \prime \prime } \cup T ^ { \prime \prime \prime } )$
 
@@ -185,7 +180,6 @@ $$
 $$
 
 [[PAGE 7]]
-
 On morphisms, we define $\alpha \cdot \left( a \otimes b \right) \cdot \beta = \left( \alpha \cdot a \right) \otimes \left( b \cdot \beta \right)$ , where $\alpha \in \mathrm { H o m } ( T ^ { \prime } , \widetilde { T } ^ { \prime } )$
 
 <!-- image-->  
@@ -212,7 +206,6 @@ Proof. Consider the map $\widehat { \tau }$ which has the same domain as τ but 
 bTo prove that it is an isomorphism, we will construct its inverse $\tau ^ { - 1 }$ . Denote $X : = X _ { 1 } \cup X _ { 2 }$ and let F be a skein lasagna filling in $S ( X , - T ^ { \prime } \cup T ^ { \prime \prime \prime } )$ . Let B denote the union of the input balls of F , S the union of surfaces in F , and $\mathfrak { S } : = S \cup B$ . After an isotopy we can assume that S is transverse to $Y _ { 2 }$ . Here transverse means that $B \cap Y _ { 2 } = \emptyset$ , and the surface $S$ in the lasagna filling is transverse to $Y _ { 2 }$ in the usual sense, as submanifolds of $X$ . Transversality can be achieved because B is a neighborhood in X of a finite collection points which can be moved off of $Y _ { 2 }$ , and B can be shrunk by an isotopy to be disjoint from $Y _ { 2 }$ as well. Then (∂S) $\cap Y _ { 2 } = \emptyset$ and S ⋔ $Y _ { 2 }$ is arranged as usual.
 
 [[PAGE 8]]
-
 Considering
 
 $$
@@ -243,7 +236,6 @@ There are finitely many distinct times during the isotopy H when the topology of
 The isotopy H has a corresponding vector field V on $\begin{array} { r } { X \times I , V ( x , t ) = \frac { \partial } { \partial t } H ( x , t ) } \end{array}$ whose vertical component is $\partial / \partial t$ . Rescaling the horizontal component of the vector field by a function g : $X \times I  \mathbb { R } _ { > 0 } , V ( x , t ) \mapsto g ( x , t ) V ( x , t )$ has the effect of reparametrizing the integral curves of the vector field. A singular event takes place in $U \colon = { \mathcal { B } } \times \left\lceil t _ { i } - \delta , t _ { i } + \delta \right\rceil \subset X \times I$ where $B \subset X$ is a 4-ball neighborhood of a point in $Y _ { 2 }$ , and $\delta > 0$ is small. It follows from the fragmentation lemma [Ban97] that the isotopy H can be represented as a composition of local isotopies $H _ { i }$ supported in neighborhoods as above. Since $H _ { i }$ is the identity on the complement of $U _ { : }$ , the difference between the tensor products $a \otimes c$ before and after a given singular event differ by $\sim _ { 1 }$
 
 [[PAGE 9]]
-
 Skein lasagna relations involve a collection of input balls engulfed in a single 4-ball. Since all of the input balls of a given lasagna filling in X may be isotoped into one of the pieces, say $X _ { 1 }$ , the relation in $S ( X )$ is implied by relations in $S ( X _ { 1 } )$ . □
 
 The following theorem summarizes the discussion above, stating a concise tensor product gluing formula.
@@ -277,7 +269,6 @@ $$
 $$
 
 [[PAGE 10]]
-
 where $\widetilde { T } ^ { \prime } \in \mathrm { O b j } ( S ( Y _ { 1 } , P ) ) , \widetilde { T } ^ { \prime \prime \prime } \in \mathrm { O b j } ( S ( Y _ { 3 } , P ) )$ , and α is a lasagna filling in Hom $\vartriangle { \cal { S } } ( Y _ { 1 } , P ) ^ { } ( T ^ { \prime } , \widetilde { T } ^ { \prime } )$ $\gamma$ is a lasagna filling in Hom $s _ { ( Y _ { 3 } , P ) ^ { o p } } ( T ^ { \prime \prime \prime } , \widetilde { T } ^ { \prime \prime \prime } )$
 
 Indeed, for any a $\otimes c \in F _ { X _ { 1 } , P } \otimes F _ { X _ { 2 } , P } ( T ^ { \prime } , T ^ { \prime \prime \prime } )$ , we have $\tau _ { \widetilde { T } ^ { \prime } , \widetilde { T } ^ { \prime \prime \prime } } ( \alpha \cdot ( a \otimes c ) \cdot \gamma ) = \tau _ { \widetilde { T } ^ { \prime } , \widetilde { T } ^ { \prime \prime \prime } } ( ( \alpha \cdot$ $a ) \otimes ( c \cdot \gamma ) ) = \tau _ { \widetilde { T } ^ { \prime } , \widetilde { T } ^ { \prime \prime \prime } } ( ( \alpha \cup a ) \otimes ( c \cup \gamma ) ) = \alpha \cup a \cup c \cup \gamma .$ , and $\alpha \cdot \left( \bar { \tau _ { T ^ { \prime } , T ^ { \prime \prime \prime } } } ( a \otimes c ) \right) \cdot \gamma = \alpha \cdot ( a \cup c ) \cdot \gamma =$ $\alpha \cup a \cup c \cup \gamma$
@@ -314,7 +305,6 @@ $$
 where $a \in F _ { X , P } ( T , \widetilde { T } )$ and $\beta \in \mathrm { H o m } _ { S ( Y , P ) ^ { o p } } ( \widetilde { T } , T ) = \mathrm { H o m } _ { S ( Y , P ) } ( T , \widetilde { T } )$ for some object $\widetilde { T }$ in $S ( \boldsymbol { Y } , \boldsymbol { P } )$ . See Figure 7 for a schematic depiction of this equivalence relation.
 
 [[PAGE 11]]
-
 <!-- image-->  
 Figure 7. A schematic representing the equivalence relation $a \cdot \beta \sim _ { 2 } \beta \cdot a$ . In words, this relation captures the idea that acting by a morphism on the $\mathrm { \Delta ^ { \circ } l e f t { \Sigma } } ^ { \prime }$ or “right” side of X gives the same result once the manifold is self-glued along its boundary.
 
@@ -340,7 +330,6 @@ Figure 8. A schematic representing X, X0, X¯ , and ${ \bar { X } } ^ { 0 }$ . H
 Recall from Equation 3.2 that $F _ { X , P } ( T , T ) = S ( X , \phi ( - T \cup T ) )$ ). Replacing X with $X ^ { 0 }$ amounts to removing a regular neighborhood $\nu ( \Sigma )$ of Σ in X. The inclusion $X ^ { 0 } \subset X$ induces an isomorphism of the skein lasagna modules, as follows. The boundary link $\phi ( - T \cup T )$ is modified near each point $x \in P \subset \Sigma$ by replacing the two radial segments of $\{ x \} \times { \partial { D } ^ { 2 } }$ with $\{ x \}$ times the circular arc in $\partial D _ { \gamma } ^ { 2 }$ . Denote the modified link by $\phi ( - T ^ { \prime } \cup A \cup T ^ { \prime } )$ , where $A$ are the circular arcs. The boundary of any skein lasagna filling F in $\mathcal { S } ( X , \phi ( - T \cup T ) )$ intersects Σ in $P ,$ and the relations in the skein lasagna module may be assumed to miss $\nu ( \Sigma )$ . Removing ${ \cal F } \cap ( \Sigma \times D _ { \cal Z } ^ { 2 } )$ gives a skein lasagna filling $F ^ { 0 }$ in $S ( X ^ { 0 } , \phi ( - T ^ { \prime } \cup A \cup T ^ { \prime } ) )$
 
 [[PAGE 12]]
-
 Lemma 3.13. In the notation as above, let $F _ { T ^ { \prime } } ^ { 0 }$ denote the skein lasagna filling in $S ( { \bar { X } } ^ { 0 } , P { \times } S ^ { 1 } )$ obtained by identifying the two copies of $T ^ { \prime }$ . The map
 
 $$
@@ -398,7 +387,6 @@ $$
 $$
 
 [[PAGE 13]]
-
 for any $F \in { \mathcal { S } } ( { \bar { X } } ^ { 0 } , P \times S ^ { 1 } )$ , any braid b in $\Sigma \times I$ from P to some $P ^ { \prime } \sim P$ , and any pair of points $p _ { + } , p _ { - } \in \Sigma \setminus P$ with opposite signs. See Figure 9 for a schematic depiction of this equivalence relation.
 
 Theorem 3.15. There is an isomorphism
@@ -432,7 +420,6 @@ Figure 10. On the left is a schematic depiction of a trisection $X ^ { 4 } = X _
 Theorem 3.8 allows us to glue two trisection pieces together along a genus g handlebody, so in total we can glue three pieces to get a 4-manifold $X ^ { \dag }$ with boundary $\partial X \cong - H _ { g } \cup _ { \Sigma _ { g } } H _ { g }$ where $H _ { g }$ is a genus g handlebody. The step that remains, in order to build the closed, trisected 4-manifold X, is to glue $X ^ { \prime }$ to itself by identifying $- H _ { g }$ and $H _ { g }$ . We can accomplish this with Theorem 3.14 and Theorem 3.15.
 
 [[PAGE 14]]
-
 However, to define the categories corresponding to the 3-manifolds $Y _ { i , i + 1 }$ (Definition 2.4), we need to specify the diffeomorphisms $\iota _ { i , i + 1 } \colon \Sigma _ { g }  H _ { g }$ . Similarly, to obtain the bimodules corresponding to the cornered 4-manifolds $X _ { i }$ (Definition 3.1), we need to determine the diffeomorphisms $\phi _ { i } \colon - H _ { g } \cup _ { \Sigma _ { g } } H _ { g }  Z _ { k _ { i } }$ . Next we will describe how to extract the data of these diffeomorphisms from trisection diagrams.
 
 Definition 3.18. A $( g ; k _ { 1 } , k _ { 2 } , k _ { 3 } )$ -trisection diagram is a tuple $( \Sigma _ { g } ; \alpha , \beta , \gamma )$ such that:
@@ -450,7 +437,6 @@ We know that the Heegaard diagram $( \Sigma ; \alpha , \beta )$ is equivalent to
 Corollary 3.19. Let X be a closed 4-manifold. Given a trisection $X = X _ { 1 } \cup X _ { 2 } \cup X _ { 3 }$ , and a finite set of signed points P in the central surface $\Sigma _ { g }$ , then
 
 [[PAGE 15]]
-
 $$
 \mathcal { S } ( \boldsymbol { X } \setminus \nu ( \Sigma _ { g } ) ; P \times S ^ { 1 } ) \cong \mathrm { H H } _ { 0 } ( F _ { X _ { 1 } , P } \otimes _ { S ( Y _ { 1 , 2 } ; P ) } F _ { X _ { 2 } , P } \otimes _ { S ( Y _ { 2 , 3 } ; P ) } F _ { X _ { 3 } , P } ) .
 $$
@@ -485,7 +471,6 @@ Figure 11. The 4-manifold $\Sigma \times I \times I$ with the link $L = \left( P
 Let Cat denote the bicategory of bimodules over small categories enriched in $\mathbb { Z } ^ { 2 } .$ -graded Z-modules. The objects of Cat are enriched small categories, the 1-cells between two categories C and D are $( \mathcal { C } , \mathcal { D } )$ -bimodules, i.e. bifunctors from ${ \mathcal { C } } \times { \mathcal { D } } ^ { o p }$ to V (see Definition 3.1). The identity 1-cell $i d _ { \mathcal { C } }$ from C to C is given by the hom-functor sending $( x , y )$ to Hom(x, y). Given two $( \mathcal { C } , \mathcal { D } )$ -bimodules M and $M ^ { \prime }$ , the 2-cells from M to $M ^ { \prime }$ are natural transformations from M to $M ^ { \prime }$ , sometimes called bimodule homomorphisms. (See also [Bor94, Chapter 7] for a related discussion of the bicategory of profunctors, and see [JY21, Example 2.1.26] for a related example.)
 
 [[PAGE 16]]
-
 Composition of 1-cells is the tensor product of bimodules. Vertical composition of 2- cells is composition of bimodule homomorphisms, and horizontal composition of 2-cells is tensor product of bimodule homomorphisms. Let M be a (B, C)-bimodule, N be a $( \mathcal { C } , \mathcal { D } )$ bimodule, and P be a (D, E)-bimodule. The associator is given by the natural isomorphism $( M \otimes _ { { \mathcal { C } } } N ) \otimes _ { { \mathcal { D } } } P \cong M \otimes _ { { \mathcal { C } } } ( N \otimes _ { { \mathcal { D } } } P )$ , and the left unitor and the right unitor are given by the natural isomorphisms $N \otimes _ { \mathcal { D } } i d _ { \mathcal { D } } \cong N$ and $i d _ { \mathcal { C } } \otimes _ { \mathcal { C } } N \cong N$ respectively.
 
 Definition 4.2. Let C be a bicategory. A left C-module is a pseudofunctor from C to Cat. A right C-module is a pseudofunctor from ${ \mathfrak { C } } ^ { o p }$ to Cat.
@@ -520,7 +505,6 @@ Figure 12. Left: for a tangle $b ,$ the bimodule ${ \cal { S } } _ { Y } ( b ^ {
 If $\iota \colon \Sigma  \partial Y$ is an orientation-reversing diffeomorphism, then we obtain a left $S ( \Sigma )$ -module $S _ { Y } \colon S ( \Sigma ) \to \mathfrak { C } a t$ instead. Again, if the diffeomorphism ι has no ambiguity in context, we will write $\partial Y = \Sigma$ if ι is orientation-preserving, write $\partial Y = - \Sigma { \mathrm { ~ i f ~ } } \iota$ is orientation-reversing.
 
 [[PAGE 17]]
-
 To formulate a gluing formula for 3-manifold categories, next we define the tensor product of $S ( \Sigma )$ -modules. Recall from the last item of Definition 4.3 that a 2-cell $\beta$ in $S ( \Sigma ) ^ { o p }$ from b to $b ^ { \prime }$ induces (by vertical gluing, as shown in Figure 12 (right)) maps
 
 $$
@@ -551,7 +535,6 @@ Throughout the rest of this section we will assume that the embedding $\Sigma \s
 Lemma 4.5. If L, L′ are isotopic links in Y transverse to $\Sigma _ { i }$ , the resulting pairs $( u , v ) , ( u ^ { \prime } , v ^ { \prime } )$ are isomorphic objects in ${ \cal S } _ { Y _ { 1 } } \otimes _ { { \cal S } ( \Sigma ) } { \cal S } _ { Y _ { 2 } }$
 
 [[PAGE 18]]
-
 Proof. Consider the track of an isotopy $A : = ( \sqcup S ^ { 1 } ) \times I \subset Y \times I$ . Applying an isotopy rel boundary if necessary, we may assume this collection of annuli A is transverse to the fixed embedding $\Sigma \times I \subset Y \times I$ . Let $L _ { t }$ denote the slice $( \mathsf { L } S ^ { 1 } ) \times \{ t \} , 0 \leq t \leq 1$ , where $L _ { 0 } = L$ and $L _ { 1 } = L ^ { \prime }$
 
 There is a finite collection of times $t _ { i }$ when $L _ { t }$ is tangent to Σ. Let $L _ { i } ^ { \prime }$ denote the link $L _ { t _ { i } - \varepsilon }$ and $L _ { i } ^ { \prime \prime }$ the link $L _ { t _ { i } + \varepsilon }$ The intersection of the track of the isotopy with $Y _ { 1 } \times I$ and $Y _ { 2 } \times I$ gives skein lasagna fillings $F _ { i } \subset Y _ { i } \times I , i = 1 , 2$ . The equivalence class of the tensor product $[ F _ { 1 } \otimes F _ { 2 } ]$ gives morphisms $f \colon ( u _ { i } ^ { \prime } , v _ { i } ^ { \prime } )  ( u _ { i } ^ { \prime \prime } , v _ { i } ^ { \prime \prime } ) , g \colon ( u _ { i } ^ { \prime \prime } , v _ { i } ^ { \prime \prime } )  ( u _ { i } ^ { \prime } , v _ { i } ^ { \prime } )$
@@ -586,7 +569,6 @@ $$
 The first functor α is given on objects and morphisms by gluing tangles and lasagna fillings. Now we define $\beta .$ . It sends an object (a link $L \subset Y )$ to $( u _ { 0 } , v _ { 0 } ) \in \mathrm { O b j } ( S _ { Y _ { 1 } } \otimes _ { S ( \Sigma ) } )$ . In more detail, $L _ { 0 }$ is the fixed representative in the isotopy class of L, transverse to Σ, and $( u _ { 0 } , v _ { 0 } )$ is the results of cutting $L _ { 0 }$ along $\Sigma .$ Note that we could not cut $L$ along Σ to obtain a pair of tangles, in general, because L might not be transverse to Σ. To summarize,
 
 [[PAGE 19]]
-
 $$
 \beta ( L ) = ( u _ { 0 } , v _ { 0 } ) .\tag{4.9}
 $$
@@ -614,7 +596,6 @@ g _ { u ^ { \prime } , v ^ { \prime } } \circ \widetilde { F } \circ f _ { u , v
 $$
 
 [[PAGE 20]]
-
 where the last equivalence is an isotopy. It follows that the family $\{ f _ { u , v } \}$ provides a natural isomorphism between $\beta$ ◦ α and the identity functor.
 
 The proof that $\alpha \circ \beta$ is naturally isomorphic to $\mathrm { I d } _ { { \cal { S } } _ { Y } }$ is analogous, using isomorphisms (lasagna fillings given by isotopies $H _ { L } )$ between the objects corresponding to isotopic links $L , L _ { 0 }$ □

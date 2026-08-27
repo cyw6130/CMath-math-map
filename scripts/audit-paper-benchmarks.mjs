@@ -17,6 +17,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
 import semantics from "../math-map-semantics.js";
+import { computeSourceIdentity, normalizeMarkedMarkdown } from "./freeze-benchmark-sources.mjs";
 
 const root = resolve(new URL("..", import.meta.url).pathname);
 const casesRoot = join(root, "benchmarks/paper-import/cases");
@@ -30,14 +31,8 @@ const ALL_CASES = [
   "kirby-2018-trisections",
   "yasui-2019-geometrically-simply-connected-4-manifolds",
 ];
-
-// Cases that have a source-manifest entry (the 4 original PDF-import cases)
-const SOURCE_MANIFEST_CASES = new Set([
-  "4-dim-skein-modules-handles-tangles",
-  "cornered-skein-lasagna-theory",
-  "kirby-2018-trisections",
-  "yasui-2019-geometrically-simply-connected-4-manifolds",
-]);
+const FIXED_ACTIVE_CASES = ALL_CASES.filter((caseId) => caseId !== "kirby-2018-trisections");
+const FIXED_RETIRED_CASES = ["kirby-2018-trisections"];
 
 const sha256 = (path) => createHash("sha256").update(readFileSync(path)).digest("hex");
 
@@ -60,18 +55,35 @@ const SCORING_ELIGIBLE_STATUSES = new Set([
 ]);
 
 let sourceByCase = new Map();
+let activeSourceCases = new Set();
+let retiredSourceCases = new Set();
+const manifestErrors = [];
 try {
   const sourceManifest = JSON.parse(readFileSync(join(root, "benchmarks/paper-import/source-manifest.json"), "utf8"));
-  sourceByCase = new Map(sourceManifest.files.map((item) => [item.caseId, item]));
+  const activeRecords = sourceManifest.activeCases ?? [];
+  const retiredRecords = sourceManifest.retiredCases ?? [];
+  sourceByCase = new Map(activeRecords.map((item) => [item.caseId, item]));
+  activeSourceCases = new Set(sourceByCase.keys());
+  retiredSourceCases = new Set(retiredRecords.map((item) => item.caseId));
+  if (sourceByCase.size !== activeRecords.length) manifestErrors.push("source manifest has duplicate active case IDs");
+  if (retiredSourceCases.size !== retiredRecords.length) manifestErrors.push("source manifest has duplicate retired case IDs");
+  if (FIXED_ACTIVE_CASES.some((caseId) => !activeSourceCases.has(caseId))
+    || activeSourceCases.size !== FIXED_ACTIVE_CASES.length) {
+    manifestErrors.push("source manifest active set does not match the five fixed cases");
+  }
+  if (FIXED_RETIRED_CASES.some((caseId) => !retiredSourceCases.has(caseId))
+    || retiredSourceCases.size !== FIXED_RETIRED_CASES.length) {
+    manifestErrors.push("source manifest retired set does not contain only Kirby");
+  }
 } catch {
-  // source manifest optional for new cases
+  manifestErrors.push("source manifest is missing or malformed");
 }
 
 const results = [];
 
 for (const dir of ALL_CASES) {
   const base = join(casesRoot, dir);
-  const errors = [];
+  const errors = [...manifestErrors];
   const warnings = [];
 
   // --- Required files ---
@@ -94,17 +106,48 @@ for (const dir of ALL_CASES) {
     if (!checklistText.includes("## Reviewer packet")) errors.push("review-checklist.md missing reviewer packet");
   }
 
-  // --- Source manifest checks (only for PDF-import cases) ---
-  if (SOURCE_MANIFEST_CASES.has(dir)) {
+  // --- Source manifest checks (only the fixed active promotion set) ---
+  if (activeSourceCases.has(dir)) {
     const source = sourceByCase.get(dir);
     if (!source) {
       errors.push("missing source manifest entry");
     } else {
-      if (!existsSync(source.sourcePdf)) errors.push("source PDF is unreadable");
-      else if (sha256(source.sourcePdf) !== source.sourcePdfSha256) errors.push("source PDF SHA-256 mismatch");
-      if (existsSync(source.extractedText) && sha256(source.extractedText) !== source.extractedTextSha256)
-        errors.push("extracted text SHA-256 mismatch");
+      const sourcePdfPath = source.sourcePdf?.path;
+      const markedMarkdownPath = source.markedMarkdown?.path
+        ? join(root, source.markedMarkdown.path)
+        : null;
+      if (!sourcePdfPath || !existsSync(sourcePdfPath)) {
+        warnings.push("source PDF is unavailable locally; recorded SHA-256 remains part of source identity");
+      } else if (sha256(sourcePdfPath) !== source.sourcePdf.sha256) {
+        errors.push("source PDF SHA-256 mismatch");
+      }
+      if (!markedMarkdownPath || !existsSync(markedMarkdownPath)) {
+        errors.push("marked Markdown is unreadable");
+      } else {
+        const markdown = readFileSync(markedMarkdownPath, "utf8");
+        let normalized = null;
+        try {
+          normalized = normalizeMarkedMarkdown(markdown);
+        } catch (error) {
+          errors.push(`marked Markdown normalization failed: ${error.message}`);
+        }
+        if (normalized && normalized.markdown !== markdown) errors.push("marked Markdown is not normalized");
+        if (sha256(markedMarkdownPath) !== source.markedMarkdown.sha256) errors.push("marked Markdown SHA-256 mismatch");
+        if (Buffer.byteLength(markdown, "utf8") !== source.markedMarkdown.bytes) errors.push("marked Markdown byte count mismatch");
+        if (normalized && normalized.pages.length !== source.pageCount) errors.push("marked Markdown page count mismatch");
+      }
+      const expectedIdentity = computeSourceIdentity({
+        pdfSha256: source.sourcePdf?.sha256,
+        markdownSha256: source.markedMarkdown?.sha256,
+        mineruVersion: source.mineru?.version,
+        normalizationVersion: source.normalization?.version,
+        pageBoundaries: Array.from({ length: source.pageCount ?? 0 }, (_, index) => index + 1),
+        cleaningActions: source.normalization?.cleaningActions ?? [],
+      });
+      if (expectedIdentity !== source.sourceIdentitySha256) errors.push("source identity SHA-256 mismatch");
     }
+  } else if (!retiredSourceCases.has(dir)) {
+    errors.push("canonical case is neither active nor retired in source manifest");
   }
 
   if (errors.some(e => e.startsWith("missing benchmark-spec.json") || e.startsWith("missing gold-project-view.json"))) {
@@ -353,7 +396,9 @@ for (const dir of ALL_CASES) {
 
   // --- Determine final status ---
   const effectiveStatus = errors.length > 0 ? "structural-draft" : review.status;
-  const isScoringEligible = SCORING_ELIGIBLE_STATUSES.has(review.status) && errors.length === 0;
+  const isScoringEligible = activeSourceCases.has(dir)
+    && SCORING_ELIGIBLE_STATUSES.has(review.status)
+    && errors.length === 0;
 
   const report = {
     schema: "cmath.paper-benchmark-audit/v2",
