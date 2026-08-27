@@ -7,5 +7,6 @@
  */
 "use strict";
 const validation = require("./validation.js");
+const projectView = require("./project-view.js");
 const MODULE_ID = "cmath.paper-import.core/v1";
-module.exports = Object.freeze({ MODULE_ID, ...validation });
+module.exports = Object.freeze({ MODULE_ID, ...validation, ...projectView });
