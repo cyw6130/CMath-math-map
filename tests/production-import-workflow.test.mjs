@@ -365,6 +365,55 @@ test("VNext 最终地图未通过能力校验时不产生 complete 结果", asyn
   );
 });
 
+test("VNext 拒绝未知结果合同版本且不调用 MinerU", async () => {
+  let mineruCalls = 0;
+  await assert.rejects(
+    () => runProductionPaperImport({
+      pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+      frozenWorkflow: { ...VNEXT_WORKFLOW, resultContractVersion: "cmath.paper-to-map-result/v999" },
+      capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: [] })),
+      checkpointStore: createMemoryCheckpointStore(),
+      hashImpl: async () => "unknown-result-contract-digest",
+      mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+    }),
+    (error) => error?.code === "PAPER_TO_MAP_CAPABILITY_INCOMPATIBLE",
+  );
+  assert.equal(mineruCalls, 0);
+});
+
+test("VNext 遇到旧的裸 Project View closure 时从安全阶段恢复", async () => {
+  const firstStore = createMemoryCheckpointStore();
+  const firstCalls = [];
+  const common = {
+    pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+    frozenWorkflow: VNEXT_WORKFLOW,
+    capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: firstCalls })),
+    hashImpl: async () => "interrupted-closure-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+  };
+  const first = await runProductionPaperImport({ ...common, checkpointStore: firstStore });
+  const checkpoint = await firstStore.load("production-paper-import:interrupted-closure-digest");
+  checkpoint.stages.closure.artifact = first.map;
+  const interruptedStore = createMemoryCheckpointStore({
+    "production-paper-import:interrupted-closure-digest": checkpoint,
+  });
+  let mineruCalls = 0;
+  let semanticCalls = 0;
+  const resumedPipeline = async (options) => {
+    semanticCalls += 1;
+    return fakeSemanticPipeline({ calls: [] })(options);
+  };
+  const resumed = await runProductionPaperImport({
+    ...common,
+    capabilityRuntime: capabilityRuntime(resumedPipeline),
+    checkpointStore: interruptedStore,
+    mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+  });
+  assert.equal(resumed.schema, "cmath.paper-to-map-result/v1");
+  assert.equal(mineruCalls, 0);
+  assert.equal(semanticCalls, 1);
+});
+
 test("W8 失败后刷新只续跑 W8 及其后续阶段", async () => {
   const store = createMemoryCheckpointStore();
   const firstCalls = [];

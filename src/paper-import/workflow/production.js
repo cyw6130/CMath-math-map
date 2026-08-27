@@ -69,6 +69,12 @@
         );
       }
     }
+    if (frozenWorkflow.resultContractVersion !== "cmath.paper-to-map-result/v1") {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_INCOMPATIBLE",
+        `VNext Paper-to-Map 不支持结果合同 ${frozenWorkflow.resultContractVersion}`,
+      );
+    }
     if (!runtime || typeof runtime !== "object" || Array.isArray(runtime)) {
       throw capabilityFailure(
         "PAPER_TO_MAP_CAPABILITY_MISSING",
@@ -229,6 +235,10 @@
     const stages = {};
     for (const stage of STAGES) {
       const record = checkpoint.stages?.[stage];
+      if (stage === "closure") {
+        stages.closure = { status: "complete", attempt: Number(record?.attempt ?? 1) };
+        continue;
+      }
       if (!record || typeof record !== "object") continue;
       stages[stage] = {
         status: record.status,
@@ -443,6 +453,11 @@
 
     const semanticPipeline = capabilityRuntime?.semanticPipeline ?? options.semanticPipeline;
     if (typeof semanticPipeline !== "function") throw new Error("生产编排需要 frozen semantic pipeline");
+    const staleClosure = capabilityRuntime ? completedArtifact(checkpoint, "closure") : null;
+    if (staleClosure && staleClosure.schema !== "cmath.paper-to-map-result/v1") {
+      delete checkpoint.stages.closure;
+      await persist();
+    }
     const resumeArtifacts = {};
     let contiguous = Boolean(mineruArtifact);
     for (const stage of SEMANTIC_STAGES) {
@@ -534,9 +549,10 @@
       }
       // Custom semantic seams may not expose a closure artifact; preserving the
       // returned Project View still makes the final stage resumable.
-      if (!completedArtifact(checkpoint, "closure")) await markComplete("closure", view);
+      if (!capabilityRuntime && !completedArtifact(checkpoint, "closure")) await markComplete("closure", view);
       if (frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1") {
-        if (!hasCompleteStages(checkpoint.stages)) {
+        if (!STAGES.filter((stage) => stage !== "closure")
+          .every((stage) => checkpoint.stages?.[stage]?.status === "complete")) {
           throw capabilityFailure(
             "PAPER_TO_MAP_RESULT_INVALID",
             "Paper-to-Map 完整结果缺少已完成的阶段状态",
