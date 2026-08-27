@@ -57,6 +57,8 @@
     return value
       .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
       .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:api[_-]?key|authorization|token|secret)["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(api[_-]?key|authorization|token|secret)\s*[:=]\s*\S+/giu, "$1=[redacted]")
       .slice(0, maxLength);
   }
 
@@ -95,6 +97,7 @@
       });
     }
     if (Array.isArray(pool.rawEntries)) result.rawEntries = pool.rawEntries.map(sanitizeEntry).filter(Boolean);
+    if (Array.isArray(pool.unresolvedItems)) result.unresolvedItems = sanitizeUnresolvedItems(pool.unresolvedItems);
     if (Array.isArray(result.inferenceHints)) {
       result.inferenceHints = result.inferenceHints.map((hint) => pick(hint, [
         "premiseRefs", "conclusionRef", "relationText", "page", "_provenance",
@@ -110,6 +113,7 @@
     ]);
     result.source = pick(artifact.source, ["fileName", "pageCount", "characters", "sourceText"]);
     if (Array.isArray(artifact.entries)) result.entries = artifact.entries.map(sanitizeEntry).filter(Boolean);
+    if (Array.isArray(artifact.unresolvedItems)) result.unresolvedItems = sanitizeUnresolvedItems(artifact.unresolvedItems);
     if (artifact.lanes && typeof artifact.lanes === "object") {
       result.lanes = {
         coverageEntries: Array.isArray(artifact.lanes.coverageEntries)
@@ -202,7 +206,12 @@
 
   function sanitizeUnresolvedItems(items) {
     if (!Array.isArray(items)) return [];
-    return items.map((item) => {
+    return items.filter((item) => (
+      item && typeof item === "object" && !Array.isArray(item)
+      && ["sourceStage", "candidateSummary", "failureCategory", "validationError"]
+        .every((field) => typeof item[field] === "string" && item[field].trim())
+      && typeof item.retryable === "boolean"
+    )).map((item) => {
       const clean = {};
       for (const key of [
         "id", "sourceStage", "sourceLocator", "sourcePath", "candidateSummary",

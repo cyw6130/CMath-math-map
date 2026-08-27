@@ -129,3 +129,43 @@ test("production semantic pipeline runs Entry → consolidate → W7.1 → W8 �
 test("production semantic pipeline is browser-safe at its public boundary", () => {
   assert.equal(typeof client.requestPaperProductionSemanticPipeline, "function");
 });
+
+test("production semantic seam can preserve Entry partial success for VNext integration", async () => {
+  const artifacts = {};
+  const markedMarkdown = Array.from({ length: 6 }, (_, index) => `[[PAGE ${index + 1}]]\nPage ${index + 1}`).join("\n\n");
+  const view = await client.requestPaperProductionSemanticPipeline({
+    endpoint: "https://example.invalid/v1",
+    apiKey: "secret-key",
+    model: "same-model",
+    fileName: "partial.md",
+    pageCount: 6,
+    markedMarkdown,
+    allowPartialSuccess: true,
+    fetchImpl: async () => { throw new Error("chatImpl should own model calls"); },
+    chatImpl: async ({ stage, chunkIndex }) => {
+      if (stage === "extract") {
+        if (chunkIndex === 0) throw new Error("window unavailable");
+        return { content: JSON.stringify({
+          foundationEntries: [{ id: "def:space", entryClass: "fact", factKind: "definition", statement: "$X$ is a space.", page: 6 }],
+          resultEntries: [{ id: "thm:main", entryClass: "claim", claimKind: "theorem", statement: "$T$ holds.", page: 6 }],
+          inferenceHints: [],
+        }) };
+      }
+      if (stage === "w7-verify" || stage === "w8-b0") {
+        return { content: JSON.stringify({ addEntries: [], corrections: [], removeIds: [] }) };
+      }
+      return { content: JSON.stringify({
+        projectTitle: "Partial",
+        mainTargetEntryId: "thm:main",
+        b0: [],
+        inferences: [{ operationKind: "proof", premises: ["def:space"], conclusion: "thm:main", argument: "By definition.", page: 6 }],
+      }) };
+    },
+    onArtifact: async (stage, artifact) => { artifacts[stage] = artifact; },
+  });
+
+  assert.equal(view.mainTargetEntryId, "thm:main");
+  assert.equal(artifacts.entry.unresolvedItems.length, 1);
+  assert.equal(artifacts.consolidate.unresolvedItems.length, 1);
+  assert.equal(artifacts.consolidate.unresolvedItems[0].failureCategory, "window-extraction-failed");
+});

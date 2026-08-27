@@ -34,6 +34,40 @@
     return JSON.parse(JSON.stringify(val));
   }
 
+  function safeText(value, maxLength = 500) {
+    return String(value ?? "")
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:api[_-]?key|authorization|token|secret)["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(api[_-]?key|authorization|token|secret)\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .slice(0, maxLength);
+  }
+
+  function unresolvedCandidate(rawEntry, index, failureCategory, validationError) {
+    const page = Number(rawEntry?.page);
+    return {
+      id: `unresolved:entry-candidate:${index}`,
+      sourceStage: "entry",
+      ...(Number.isInteger(page) && page > 0 ? { sourceLocator: `page ${page}`, page } : {}),
+      candidateSummary: `Entry candidate ${safeText(rawEntry?.id || index + 1, 120)} was excluded`,
+      failureCategory,
+      validationError: safeText(validationError),
+      retryable: true,
+    };
+  }
+
+  function validateCarriedUnresolvedItem(item, index) {
+    if (!isObject(item)) throw new Error(`unresolvedItems[${index}] 必须是对象`);
+    for (const key of ["id", "sourceStage", "candidateSummary", "failureCategory", "validationError"]) {
+      if (typeof item[key] !== "string" || !item[key].trim()) {
+        throw new Error(`unresolvedItems[${index}].${key} 必须是非空字符串`);
+      }
+    }
+    if (typeof item.retryable !== "boolean") {
+      throw new Error(`unresolvedItems[${index}].retryable 必须是布尔值`);
+    }
+  }
+
   /**
    * Recursively deep freeze an object to enforce immutability.
    */
@@ -266,10 +300,17 @@
     const candidatesByKey = new Map();
     let malformedCount = 0;
     let invalidPageCount = 0;
+    const unresolvedItems = options.allowPartialSuccess === true
+      ? cloneJson(Array.isArray(rawPoolInput.unresolvedItems) ? rawPoolInput.unresolvedItems : [])
+      : [];
+    unresolvedItems.forEach(validateCarriedUnresolvedItem);
 
-    for (const rawEntry of rawEntries) {
+    for (const [rawIndex, rawEntry] of rawEntries.entries()) {
       if (!isObject(rawEntry)) {
         malformedCount += 1;
+        if (options.allowPartialSuccess === true) {
+          unresolvedItems.push(unresolvedCandidate(rawEntry, rawIndex, "candidate-invalid", "candidate must be an object"));
+        }
         continue;
       }
       const pageNum = Number(rawEntry.page);
@@ -277,14 +318,21 @@
       if (!isPageValid) {
         invalidPageCount += 1;
         malformedCount += 1;
+        if (options.allowPartialSuccess === true) {
+          unresolvedItems.push(unresolvedCandidate(rawEntry, rawIndex, "candidate-invalid-page", `page must be an integer between 1 and ${pageCount}`));
+        }
         continue;
       }
 
       const candidate = normalizeRawCandidate(rawEntry, pageCount);
       if (!candidate) {
         malformedCount += 1;
+        if (options.allowPartialSuccess === true) {
+          unresolvedItems.push(unresolvedCandidate(rawEntry, rawIndex, "candidate-invalid", "candidate fields cannot be normalized by the Entry capability"));
+        }
         continue;
       }
+      candidate._meta.rawIndex = rawIndex;
       const key = extractCanonicalKey(candidate);
       if (!candidatesByKey.has(key)) {
         candidatesByKey.set(key, []);
@@ -301,6 +349,9 @@
         const single = group[0];
         if (!single._meta.isMathValid && options.strictMath) {
           discardedDamagedCount += 1;
+          if (options.allowPartialSuccess === true) {
+            unresolvedItems.push(unresolvedCandidate(single, single._meta.rawIndex, "candidate-damaged-math", "candidate contains unbalanced mathematical delimiters"));
+          }
           continue;
         }
         const { _meta, ...cleanEntry } = single;
@@ -312,6 +363,9 @@
 
         if (!best._meta.isMathValid && options.strictMath) {
           discardedDamagedCount += 1;
+          if (options.allowPartialSuccess === true) {
+            unresolvedItems.push(unresolvedCandidate(best, best._meta.rawIndex, "candidate-damaged-math", "candidate contains unbalanced mathematical delimiters"));
+          }
           continue;
         }
 
@@ -382,7 +436,13 @@
       }
     }
     const consolidatedEntries = [...byFinalId.values()];
-    const artifactEntries = consolidatedEntries.map(({ type, ...entry }) => entry);
+
+    if (options.allowPartialSuccess === true && consolidatedEntries.length === 0) {
+      const error = new Error("Entry consolidation produced no valid entries");
+      error.code = "PAPER_TO_MAP_ENTRY_EMPTY";
+      error.unresolvedItems = cloneJson(unresolvedItems);
+      throw error;
+    }
 
     // Deterministic sort of consolidated entries: by page, then by num (if present), then by id
     consolidatedEntries.sort((a, b) => {
@@ -390,6 +450,7 @@
       if (a.num !== undefined && b.num !== undefined) return a.num - b.num;
       return a.id.localeCompare(b.id);
     });
+    const artifactEntries = consolidatedEntries.map(({ type, ...entry }) => entry);
 
     const aliases = Object.fromEntries(consolidatedEntries.map((e) => [e.id, e.id]));
 
@@ -448,6 +509,7 @@
           schema: ENTRY_ARTIFACT_SCHEMA,
         },
       },
+      ...(options.allowPartialSuccess === true ? { unresolvedItems } : {}),
     };
 
     return freezePaperEntryArtifact(artifact);

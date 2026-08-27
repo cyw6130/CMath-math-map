@@ -261,7 +261,7 @@
     return parsePatchJson(content, stage);
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, resumeArtifacts = null, onArtifact } = {}) {
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, allowPartialSuccess = false, resumeArtifacts = null, onArtifact } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
@@ -318,6 +318,7 @@
         maxChunks,
         chatImpl,
         chatDefaults: { model: modelName, providerLabel: serviceName, reasoningEffort },
+        allowPartialSuccess,
         onStage: (stage, info = {}) => {
           // The raw pool has several progress labels; production exposes them
           // under one stable semantic stage while retaining the sub-stage.
@@ -345,7 +346,10 @@
         phase: "start",
         candidates: rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? rawPool?.rawEntries?.length ?? 0,
       });
-      artifact = frozenConsolidation.consolidateRawEntryPool(rawPool);
+      artifact = frozenConsolidation.consolidateRawEntryPool(rawPool, {
+        allowPartialSuccess,
+        strictMath: allowPartialSuccess,
+      });
       if (frozenArtifactApi?.validatePaperEntryArtifact) {
         frozenArtifactApi.validatePaperEntryArtifact(artifact);
       }

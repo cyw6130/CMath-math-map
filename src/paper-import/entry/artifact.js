@@ -80,6 +80,16 @@
     if (entry.shortTitle) validateMathDelimiters(entry.shortTitle, `entries[${index}] (${entry.id}).shortTitle`);
   }
 
+  function validateUnresolvedItem(item, index) {
+    if (!isObject(item)) throw new Error(`unresolvedItems[${index}] 必须是对象`);
+    for (const key of ["id", "sourceStage", "candidateSummary", "failureCategory", "validationError"]) {
+      nonEmptyString(item[key], `unresolvedItems[${index}].${key}`);
+    }
+    if (typeof item.retryable !== "boolean") {
+      throw new Error(`unresolvedItems[${index}].retryable 必须是布尔值`);
+    }
+  }
+
   /**
    * Recursively deep freeze an object to enforce immutability.
    */
@@ -213,6 +223,11 @@
       if (typeof k !== "string" || typeof v !== "string") {
         throw new Error(`artifact.aliases 键值对必须全为字符串: ${k} -> ${v}`);
       }
+    }
+
+    if (artifact.unresolvedItems !== undefined) {
+      if (!Array.isArray(artifact.unresolvedItems)) throw new Error("artifact.unresolvedItems 必须是数组");
+      artifact.unresolvedItems.forEach(validateUnresolvedItem);
     }
 
     // 8. Review Inputs
@@ -385,6 +400,7 @@
       entries: cloneJson(entries),
       aliases,
       reviewInputs: cloneJson(reviewInputs),
+      ...(Array.isArray(input.unresolvedItems) ? { unresolvedItems: cloneJson(input.unresolvedItems) } : {}),
       diagnostics: cloneJson(diagnostics),
     };
 

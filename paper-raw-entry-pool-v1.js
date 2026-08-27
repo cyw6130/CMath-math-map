@@ -892,6 +892,19 @@
       throw new Error("pool.rawEntries 必须是数组");
     }
 
+    if (pool.unresolvedItems !== undefined) {
+      if (!Array.isArray(pool.unresolvedItems)) throw new Error("pool.unresolvedItems 必须是数组");
+      pool.unresolvedItems.forEach((item, index) => {
+        if (!isObject(item)) throw new Error(`pool.unresolvedItems[${index}] 必须是对象`);
+        for (const key of ["id", "sourceStage", "candidateSummary", "failureCategory", "validationError"]) {
+          nonEmptyString(item[key], `pool.unresolvedItems[${index}].${key}`);
+        }
+        if (typeof item.retryable !== "boolean") {
+          throw new Error(`pool.unresolvedItems[${index}].retryable 必须是布尔值`);
+        }
+      });
+    }
+
     if (!isObject(pool.diagnostics)) {
       throw new Error("pool.diagnostics 必须是对象");
     }
@@ -971,6 +984,7 @@
       chunks: cloneJson(chunks),
       rawEntries: cloneJson(rawEntries),
       ...(Array.isArray(input.inferenceHints) ? { inferenceHints: cloneJson(input.inferenceHints) } : {}),
+      ...(Array.isArray(input.unresolvedItems) ? { unresolvedItems: cloneJson(input.unresolvedItems) } : {}),
       diagnostics: cloneJson(diagnostics),
     };
 
@@ -1012,6 +1026,7 @@
     onLaneComplete,
     maxParallelCalls = 1,
     chatDefaults,
+    allowPartialSuccess = false,
   } = {}) {
     const executionStartedAt = performance.now();
     const stages = [];
@@ -1023,6 +1038,13 @@
         try { onStage(stage, info); } catch (_) {}
       }
     };
+
+    const safeFailureMessage = (error) => String(error?.message ?? error ?? "Entry extraction failed")
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:api[_-]?key|authorization|token|secret)["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(api[_-]?key|authorization|token|secret)\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .slice(0, 500);
 
     const cleanFileName = stripControlCharacters(String(fileName || "paper.pdf").trim());
     const cleanText = stripControlCharacters(String(text || ""));
@@ -1122,6 +1144,7 @@
       const blocks = splitTextIntoWindows(cleanText, 5, 1);
       notify("parallel-extract-start", { chars: cleanText.length, blocks: blocks.length, overlapPages: 1, lanes: ["combined"], version: targetVersion });
       const perBlock = blocks.map(() => ({ foundation: [], result: [], inferenceHints: [] }));
+      const unresolvedItems = [];
       let completedCalls = 0;
 
       const tasks = blocks.map((blockText, blockIndex) => async () => {
@@ -1129,11 +1152,17 @@
         const cacheKey = `${blockIndex}:combined`;
         const cached = laneCache?.[cacheKey];
         if (isObject(cached) && Array.isArray(cached.foundationEntries) && Array.isArray(cached.resultEntries) && Array.isArray(cached.inferenceHints)) {
-          perBlock[blockIndex] = {
-            foundation: cloneJson(cached.foundationEntries),
-            result: cloneJson(cached.resultEntries),
-            inferenceHints: cloneJson(cached.inferenceHints),
-          };
+          try {
+            perBlock[blockIndex] = {
+              foundation: cloneJson(cached.foundationEntries),
+              result: cloneJson(cached.resultEntries),
+              inferenceHints: cloneJson(cached.inferenceHints),
+            };
+          } catch (cause) {
+            const error = new Error("Entry extraction lane cache is invalid", { cause });
+            error.code = "PAPER_TO_MAP_ENTRY_CACHE_INVALID";
+            throw error;
+          }
           completedCalls += 1;
           notify("parallel-extract-lane-cache-hit", { block: blockIndex + 1, lane: "combined", totalBlocks: blocks.length, extractedCount: cached.foundationEntries.length + cached.resultEntries.length, inferenceHintCount: cached.inferenceHints.length, doneCalls: completedCalls, totalCalls: blocks.length });
           return;
@@ -1235,8 +1264,23 @@
           throw new Error(`Block ${blockIndex + 1} combined lane response missing foundationEntries, resultEntries, or inferenceHints array`);
         }
         const addProvenance = (entry, lane) => ({ ...cleanEntryFields(entry), _provenance: { chunkIndex: blockIndex, blockIndex, pageRange, lane, version: targetVersion } });
-        const foundation = parsed.foundationEntries.filter(isObject).map((entry) => addProvenance(entry, "foundation"));
-        const result = parsed.resultEntries.filter(isObject).map((entry) => addProvenance(entry, "result"));
+        const normalizeLaneEntries = (entries, lane) => entries.flatMap((entry, entryIndex) => {
+          if (isObject(entry)) return [addProvenance(entry, lane)];
+          if (allowPartialSuccess) {
+            unresolvedItems.push({
+              id: `unresolved:entry-candidate:${blockIndex}:${lane}:${entryIndex}`,
+              sourceStage: "entry",
+              sourceLocator: pageRange ? `pages ${pageRange.first}-${pageRange.last}` : `window ${blockIndex + 1}`,
+              candidateSummary: `Entry ${lane} candidate ${entryIndex + 1} was excluded`,
+              failureCategory: "candidate-invalid",
+              validationError: "candidate must be an object",
+              retryable: true,
+            });
+          }
+          return [];
+        });
+        const foundation = normalizeLaneEntries(parsed.foundationEntries, "foundation");
+        const result = normalizeLaneEntries(parsed.resultEntries, "result");
         const inferenceHints = parsed.inferenceHints.filter(isObject).map((hint) => ({
           premiseRefs: Array.isArray(hint.premiseRefs) ? hint.premiseRefs.filter((x) => typeof x === "string" && x.trim()).map((x) => x.trim()) : [],
           conclusionRef: typeof hint.conclusionRef === "string" ? hint.conclusionRef.trim() : "",
@@ -1245,7 +1289,15 @@
           _provenance: { blockIndex, pageRange, version: targetVersion },
         }));
         perBlock[blockIndex] = { foundation, result, inferenceHints };
-        if (typeof onLaneComplete === "function") await onLaneComplete({ cacheKey, blockIndex, lane: "combined", pageRange, entries: cloneJson({ foundationEntries: foundation, resultEntries: result, inferenceHints }) });
+        if (typeof onLaneComplete === "function") {
+          try {
+            await onLaneComplete({ cacheKey, blockIndex, lane: "combined", pageRange, entries: cloneJson({ foundationEntries: foundation, resultEntries: result, inferenceHints }) });
+          } catch (cause) {
+            const error = new Error(String(cause?.message ?? "Entry extraction checkpoint failed"), { cause });
+            error.code = "PAPER_TO_MAP_ENTRY_CHECKPOINT_FAILED";
+            throw error;
+          }
+        }
         completedCalls += 1;
         notify("parallel-extract-lane", { block: blockIndex + 1, lane: "combined", totalBlocks: blocks.length, extractedCount: foundation.length + result.length, foundationCount: foundation.length, resultCount: result.length, inferenceHintCount: inferenceHints.length, doneCalls: completedCalls, totalCalls: blocks.length, repaired: parseDiagnostics.repaired, repairCount: parseDiagnostics.repairCount });
       });
@@ -1256,7 +1308,33 @@
       const workers = Array.from({ length: concurrency }, async () => {
         while (nextTask < tasks.length) {
           const taskIndex = nextTask++;
-          try { await tasks[taskIndex](); } catch (error) { taskErrors.push(error); }
+          try {
+            await tasks[taskIndex]();
+          } catch (error) {
+            const systemicTransportFailure = modelTransport.isModelTransportError(error)
+              && (error.code === modelTransport.ERROR_CODES.CONFIGURATION
+                || (error.code === modelTransport.ERROR_CODES.HTTP
+                  && error.status >= 400 && error.status < 500
+                  && error.status !== 408 && error.status !== 429));
+            if (!allowPartialSuccess
+              || error?.name === "AbortError"
+              || systemicTransportFailure
+              || ["PAPER_TO_MAP_ENTRY_CACHE_INVALID", "PAPER_TO_MAP_ENTRY_CHECKPOINT_FAILED"].includes(error?.code)) {
+              taskErrors.push(error);
+              continue;
+            }
+            const pageRange = pageRangeOf(blocks[taskIndex]);
+            unresolvedItems.push({
+              id: `unresolved:entry-window:${taskIndex}`,
+              sourceStage: "entry",
+              sourceLocator: pageRange ? `pages ${pageRange.first}-${pageRange.last}` : `window ${taskIndex + 1}`,
+              candidateSummary: `Entry extraction window ${taskIndex + 1} failed`,
+              failureCategory: "window-extraction-failed",
+              validationError: safeFailureMessage(error),
+              retryable: true,
+            });
+            notify("parallel-extract-window-failed", { block: taskIndex + 1, retryable: true });
+          }
         }
       });
       await Promise.all(workers);
@@ -1265,12 +1343,19 @@
         err.diagnostics = { durationMs: Math.round(performance.now() - executionStartedAt), stages, calls };
         throw err;
       }
+      unresolvedItems.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
       const blocksData = blocks.map((blockText, index) => ({ chunkIndex: index, pageRange: pageRangeOf(blockText), characterCount: blockText.length, text: blockText, rawEntries: [...perBlock[index].foundation, ...perBlock[index].result], inferenceHints: perBlock[index].inferenceHints }));
       const allRawEntries = blocksData.flatMap((block) => block.rawEntries);
       const allInferenceHints = blocksData.flatMap((block) => block.inferenceHints);
+      if (allowPartialSuccess && allRawEntries.length === 0) {
+        const error = new Error("Entry extraction produced no valid entries");
+        error.code = "PAPER_TO_MAP_ENTRY_EMPTY";
+        error.unresolvedItems = cloneJson(unresolvedItems);
+        throw error;
+      }
       notify("parallel-extract-done", { totalRawEntries: allRawEntries.length, totalInferenceHints: allInferenceHints.length, blocks: blocks.length, version: targetVersion });
-      return createRawEntryPool({ schema: RAW_ENTRY_POOL_SCHEMA, extractionModuleVersion: targetVersion, source: { fileName: cleanFileName, pageCount: numPages, characters: cleanText.length, sourceText: cleanText }, chunks: blocksData, rawEntries: allRawEntries, inferenceHints: allInferenceHints, diagnostics: { durationMs: Math.round(performance.now() - executionStartedAt), stages, calls, chunkCount: blocks.length, rawEntryCount: allRawEntries.length, inferenceHintCount: allInferenceHints.length, jsonRepairCount: calls.reduce((sum, call) => sum + (call.repairCount || 0), 0), modelCallMetadata: { model, provider: providerLabel, reasoningEffort }, moduleIdentity: { name: targetVersion, schema: RAW_ENTRY_POOL_SCHEMA } } });
+      return createRawEntryPool({ schema: RAW_ENTRY_POOL_SCHEMA, extractionModuleVersion: targetVersion, source: { fileName: cleanFileName, pageCount: numPages, characters: cleanText.length, sourceText: cleanText }, chunks: blocksData, rawEntries: allRawEntries, inferenceHints: allInferenceHints, unresolvedItems, diagnostics: { durationMs: Math.round(performance.now() - executionStartedAt), stages, calls, chunkCount: blocks.length, rawEntryCount: allRawEntries.length, inferenceHintCount: allInferenceHints.length, jsonRepairCount: calls.reduce((sum, call) => sum + (call.repairCount || 0), 0), modelCallMetadata: { model, provider: providerLabel, reasoningEffort }, moduleIdentity: { name: targetVersion, schema: RAW_ENTRY_POOL_SCHEMA } } });
     }
 
     if (targetVersion === EXTRACTION_MODULE_VERSION_V1_6 || targetVersion === EXTRACTION_MODULE_VERSION_V1_5_2 || targetVersion === EXTRACTION_MODULE_VERSION_V1_5_1 || targetVersion === EXTRACTION_MODULE_VERSION_V1_5 || targetVersion === EXTRACTION_MODULE_VERSION_V1_4) {
