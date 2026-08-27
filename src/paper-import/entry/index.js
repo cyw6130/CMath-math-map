@@ -12,6 +12,10 @@
   "use strict";
   const api = factory(
     root,
+    root?.CMathPaperEntryArtifact
+      ?? (typeof require === "function" ? require("./artifact.js") : null),
+    root?.CMathPaperEntryLifecycle
+      ?? (typeof require === "function" ? require("./lifecycle.js") : null),
     root?.CMathPaperEntryConsolidationV1
       ?? (typeof require === "function" ? require("./consolidation.js") : null),
     root?.CMathPaperEntryVerification
@@ -19,9 +23,15 @@
   );
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.CMathPaperEntryModule = api;
-})(typeof window !== "undefined" ? window : globalThis, function createPaperEntryModule(root, consolidation, verification) {
+})(typeof window !== "undefined" ? window : globalThis, function createPaperEntryModule(root, artifact, lifecycle, consolidation, verification) {
   "use strict";
   const MODULE_ID = "cmath.paper-import.entry/v1";
+  if (!artifact || typeof artifact.createPaperEntryArtifact !== "function") {
+    throw new Error("CMath Entry Module 缺少 artifact 能力");
+  }
+  if (!lifecycle || typeof lifecycle.requestPaperEntryArtifact !== "function") {
+    throw new Error("CMath Entry Module 缺少 lifecycle 能力");
+  }
   if (!consolidation || typeof consolidation.consolidateRawEntryPool !== "function") {
     throw new Error("CMath Entry Module 缺少 consolidation 能力");
   }
@@ -30,7 +40,31 @@
   }
   return Object.freeze({
     MODULE_ID,
-    ...consolidation,
-    ...verification,
+    ENTRY_ARTIFACT_SCHEMA: artifact.ENTRY_ARTIFACT_SCHEMA,
+    ENTRY_MODULE_VERSION: artifact.ENTRY_MODULE_VERSION,
+    VALID_ENTRY_MODULE_VERSIONS: artifact.VALID_ENTRY_MODULE_VERSIONS,
+    validatePaperEntryArtifact: artifact.validatePaperEntryArtifact,
+    normalizePaperEntryArtifact: artifact.normalizePaperEntryArtifact,
+    createPaperEntryArtifact: artifact.createPaperEntryArtifact,
+    freezePaperEntryArtifact: artifact.freezePaperEntryArtifact,
+    hasBalancedMathDelimiters: artifact.hasBalancedMathDelimiters,
+    validateMathDelimiters: artifact.validateMathDelimiters,
+    validateEntry: artifact.validateEntry,
+    stripControlCharacters: artifact.stripControlCharacters,
+    canonicalizeEntry: artifact.canonicalizeEntry,
+    ENTRY_LIFECYCLE_MODULE_ID: lifecycle.ENTRY_LIFECYCLE_MODULE_ID,
+    entryReviewPrompt: lifecycle.entryReviewPrompt,
+    applyEntryReviewPatches: lifecycle.applyEntryReviewPatches,
+    requestPaperEntryArtifact: lifecycle.requestPaperEntryArtifact,
+    CONSOLIDATION_MODULE_VERSION: consolidation.CONSOLIDATION_MODULE_VERSION,
+    RAW_ENTRY_POOL_SCHEMA: consolidation.RAW_ENTRY_POOL_SCHEMA,
+    consolidateRawEntryPool: consolidation.consolidateRawEntryPool,
+    normalizeEntryType: consolidation.normalizeEntryType,
+    FACT_KINDS: verification.FACT_KINDS,
+    CLAIM_KINDS: verification.CLAIM_KINDS,
+    buildVerificationPrompt: verification.buildVerificationPrompt,
+    buildB0BackfillPrompt: verification.buildB0BackfillPrompt,
+    applyPatch: verification.applyPatch,
+    runVerificationPipeline: verification.runVerificationPipeline,
   });
 });

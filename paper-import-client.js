@@ -94,6 +94,22 @@
     throw new Error("CMath 模型传输能力没有加载（src/paper-import/core/model-transport.js）");
   }
 
+  const entryModule = root?.CMathPaperEntryModule
+    ?? (typeof require === "function" ? (() => {
+      try { return require("./src/paper-import/entry/index.js"); } catch { return null; }
+    })() : null);
+  if (!entryModule
+    || typeof entryModule.entryReviewPrompt !== "function"
+    || typeof entryModule.applyEntryReviewPatches !== "function"
+    || typeof entryModule.requestPaperEntryArtifact !== "function"
+    || typeof entryModule.createPaperEntryArtifact !== "function"
+    || typeof entryModule.validatePaperEntryArtifact !== "function") {
+    throw new Error("CMath Entry Module 没有加载（src/paper-import/entry/index.js）");
+  }
+  const entryReviewPrompt = entryModule.entryReviewPrompt;
+  const applyEntryReviewPatches = entryModule.applyEntryReviewPatches;
+  const requestPaperEntryArtifact = entryModule.requestPaperEntryArtifact;
+
   function endpointUrl(endpoint) {
     let url;
     try { url = new URL(nonEmpty(endpoint, "API 服务地址")); }
@@ -567,171 +583,6 @@
 
 
 
-  function entryReviewPrompt({ fileName = "paper.pdf", catalog = "" } = {}) {
-    return `你是数学论文 Entry 提取评审员。请依据 source-grounded entry review：\n论文：${fileName}\n目录：\n${catalog}\n返回 {"patches":[]} 形态。`;
-  }
-  function applyEntryReviewPatches(entries, aliases, proposal, { pageCount = 999 } = {}) {
-    const diagnostics = { appliedCount: 0, rejectedCount: 0, addCount: 0, replaceCount: 0, aliasCount: 0, removeCount: 0 };
-    if (!proposal || typeof proposal !== "object") return { entries: [...entries], aliases: { ...aliases }, diagnostics };
-    const patches = Array.isArray(proposal.patches) ? proposal.patches : [];
-    let out = [...entries];
-    const outAliases = { ...aliases };
-    const VALID_TYPES = new Set(["definition","theorem","lemma","proposition","calculation","algorithm"]);
-    function hasBalanced(s) { try { return hasBalancedMathDelimiters(s); } catch { return true; } }
-    for (const patch of patches) {
-      if (!patch || typeof patch !== "object") { diagnostics.rejectedCount += 1; continue; }
-      if (patch.action === "add") {
-        const e = patch.entry;
-        if (!e || typeof e !== "object") { diagnostics.rejectedCount += 1; continue; }
-        if (!e.id || !e.type || !e.statement) { diagnostics.rejectedCount += 1; continue; }
-        if (!VALID_TYPES.has(String(e.type))) { diagnostics.rejectedCount += 1; continue; }
-        const pg = Number(e.page);
-        if (!Number.isInteger(pg) || pg < 1 || pg > pageCount) { diagnostics.rejectedCount += 1; continue; }
-        if (typeof e.statement === "string" && !hasBalanced(e.statement)) { diagnostics.rejectedCount += 1; continue; }
-        // strip downstream fields
-        const cleaned = { id: String(e.id).trim(), type: String(e.type).trim(), name: e.name ? String(e.name) : String(e.id), statement: String(e.statement), page: pg };
-        // check duplicate id
-        if (out.some(x => x.id === cleaned.id)) { diagnostics.rejectedCount += 1; continue; }
-        out.push(cleaned);
-        diagnostics.appliedCount += 1; diagnostics.addCount += 1;
-      } else if (patch.action === "replace") {
-        const targetId = typeof patch.id === "string" ? patch.id.trim() : "";
-        const e = patch.entry;
-        if (!targetId || !e || typeof e !== "object" || !e.id || !e.type || !e.statement) { diagnostics.rejectedCount += 1; continue; }
-        if (!VALID_TYPES.has(String(e.type))) { diagnostics.rejectedCount += 1; continue; }
-        if (typeof e.statement === "string" && !hasBalanced(e.statement)) { diagnostics.rejectedCount += 1; continue; }
-        const idx = out.findIndex(x => x.id === targetId);
-        if (idx < 0) { diagnostics.rejectedCount += 1; continue; }
-        const cleaned = { id: String(e.id).trim(), type: String(e.type).trim(), name: e.name ? String(e.name) : String(e.id), statement: String(e.statement), page: Number(e.page) || out[idx].page };
-        out[idx] = cleaned;
-        // alias old -> new
-        if (targetId !== cleaned.id) outAliases[targetId] = cleaned.id;
-        diagnostics.appliedCount += 1; diagnostics.replaceCount += 1;
-      } else if (patch.action === "alias") {
-        const from = typeof patch.from === "string" ? patch.from.trim() : "";
-        const to = typeof patch.to === "string" ? patch.to.trim() : "";
-        if (!from || !to || from === to) { diagnostics.rejectedCount += 1; continue; }
-        if (!out.some(x=>x.id===from) || !out.some(x=>x.id===to)) { diagnostics.rejectedCount += 1; continue; }
-        out = out.filter(x=>x.id !== from);
-        outAliases[from] = to;
-        diagnostics.appliedCount += 1; diagnostics.aliasCount += 1;
-      } else if (patch.action === "remove") {
-        const rid = typeof patch.id === "string" ? patch.id.trim() : "";
-        const idx = out.findIndex(x=>x.id===rid);
-        if (idx < 0) { diagnostics.rejectedCount += 1; continue; }
-        out.splice(idx,1);
-        diagnostics.appliedCount += 1; diagnostics.removeCount += 1;
-      } else { diagnostics.rejectedCount += 1; }
-    }
-    return { entries: out, aliases: outAliases, diagnostics };
-  }
-
-  async function requestPaperEntryArtifact({ fileName = "paper.pdf", pageCount = 1, text = "", chatImpl, fetchImpl = globalThis.fetch, endpoint, apiKey, model, providerLabel, reasoningEffort, maxChunks = 1, workflowCapabilities, onStage, signal } = {}) {
-    const resolvedReasoning = typeof reasoningEffort === "string" ? reasoningEffort : null;
-    const transport = modelTransport.createModelTransport({
-      chatImpl,
-      fetchImpl,
-      endpoint,
-      apiKey,
-      model,
-      providerLabel,
-      signal,
-      // The historical compatibility entry path intentionally has no HTTP
-      // implementation.  Keep that observable behavior at this edge while
-      // routing injected calls through the shared transport.
-      disableHttp: true,
-    });
-    const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
-    async function callChat(stage, messages) {
-      try {
-        return await transport.complete({ stage, messages, reasoningEffort: stage === "guide" ? "low" : "none" });
-      } catch (error) {
-        if (modelTransport.isModelTransportError(error)
-          && error.code === modelTransport.ERROR_CODES.CONFIGURATION) {
-          if (error.reason === "http_disabled") throw new Error("fetchImpl path not implemented for test stub");
-          throw new Error("chatImpl or fetchImpl required");
-        }
-        throw error;
-      }
-    }
-    const startMs = performance.now();
-    const calls = [];
-    const stages = [];
-    function recordStage(stage, atMs) { stages.push({ stage, atMs }); }
-    // Guide stage with repair on empty leads
-    let guideContent;
-    let guideCalls = 0;
-    for (let attempt = 0; attempt < 2; attempt += 1) {
-      const stageName = "guide";
-      recordStage(stageName, Math.round(performance.now() - startMs));
-      let result;
-      try {
-        result = await callChat(stageName, [{ content: "建立 Paper Guide" }]);
-      } catch (e) {
-        throw e;
-      }
-      calls.push({ stage: stageName, durationMs: 1, reasoningEffort: "low" });
-      guideCalls += 1;
-      let parsed;
-      try { parsed = JSON.parse(result?.content ?? ""); } catch { parsed = null; }
-      const hasLeads = parsed && Array.isArray(parsed.leads) && parsed.leads.length > 0;
-      const hasSections = parsed && Array.isArray(parsed.sections);
-      const hasSymbols = parsed && Array.isArray(parsed.symbols);
-      if (hasLeads && hasSections && hasSymbols) { guideContent = parsed; break; }
-      if (attempt === 0) continue;
-      throw new Error("Paper Guide 必须包含 sections、symbols 和非空 leads");
-    }
-    // Coverage / lead / boundary / integrate / review calls (5 more) to reach 6 total
-    const extras = [
-      { stage: "assemble", keyword: "外部依赖" },
-      { stage: "extract", keyword: "全文覆盖" },
-      { stage: "extract", keyword: "联合定向提取" },
-      { stage: "aggregate", keyword: "整合" },
-      { stage: "aggregate", keyword: "数学论文 Entry 提取评审员" },
-    ];
-    const extraResults = [];
-    for (const item of extras) {
-      recordStage(item.stage, Math.round(performance.now() - startMs));
-      const res = await callChat(item.stage, [{ content: item.keyword }]);
-      calls.push({ stage: item.stage, durationMs: 1, reasoningEffort: "none" });
-      extraResults.push(res);
-    }
-    // Parse coverage/lead/integration/review similarly
-    let coverageEntries = [];
-    let leadEntries = [];
-    let integrationEntries = [];
-    let reviewPatches = [];
-    try { const j = JSON.parse(extraResults[1]?.content ?? "{}"); coverageEntries = Array.isArray(j.entries) ? j.entries : []; } catch {}
-    try { const j = JSON.parse(extraResults[2]?.content ?? "{}"); leadEntries = Array.isArray(j.entries) ? j.entries : []; } catch {}
-    try { const j = JSON.parse(extraResults[3]?.content ?? "{}"); integrationEntries = Array.isArray(j.entries) ? j.entries : [...coverageEntries, ...leadEntries]; } catch {}
-    try { const j = JSON.parse(extraResults[4]?.content ?? "{}"); reviewPatches = Array.isArray(j.patches) ? j.patches : []; } catch {}
-    const baseEntries = integrationEntries.length ? integrationEntries : [...coverageEntries, ...leadEntries];
-    const finalEntries = [...baseEntries];
-    for (const patch of reviewPatches) {
-      if (patch?.action === "add" && patch.entry && typeof patch.entry.id === "string") {
-        // minimal add handling
-        finalEntries.push({ id: patch.entry.id, name: patch.entry.name ?? patch.entry.id, type: patch.entry.type ?? "definition", statement: patch.entry.statement ?? "", page: patch.entry.page ?? 1 });
-      }
-    }
-    const artifact = {
-      schema: "cmath.paper-entry-artifact/v1",
-      entryModuleVersion: "paper-entry-extraction-v1.1",
-      source: { fileName, pageCount, characters: String(text).length, sourceText: String(text) },
-      paperGuide: guideContent,
-      guideLeadSet: { leads: Array.isArray(guideContent?.leads) ? guideContent.leads.map((l, i) => ({ id: l.id ?? `lead-${i}`, title: l.title ?? "", pages: l.pages ?? [] })) : [] },
-      lanes: { coverageEntries, leadGuidedEntries: leadEntries },
-      aggregation: { records: integrationEntries.length ? integrationEntries : baseEntries, conflicts: [], counts: { coverage: coverageEntries.length, leadGuided: leadEntries.length, total: baseEntries.length, conflicts: 0 } },
-      entries: finalEntries,
-      aliases: {},
-      reviewInputs: { missingExtractionCandidates: [], externalEvidenceIndex: null, externalBoundaryCandidates: (()=>{ try{ return JSON.parse(extraResults[0]?.content ?? "{}"); }catch{ return null; } })(), protectedClaimIds: [], canonicalIndex: {} },
-      diagnostics: { durationMs: Math.round(performance.now() - startMs), stages, calls, reviewDiagnostics: { addCount: reviewPatches.filter(p=>p.action==="add").length }, moduleIdentity: { name: "paper-entry-extraction-v1.1", schema: "cmath.paper-entry-artifact/v1", backbone: "v3.26" }, modelCallMetadata: { model: typeof model === "string" ? model : "test", provider: "test" } },
-    };
-    const artifactApi = root?.CMathPaperEntryArtifactV1
-      ?? (typeof require === "function" ? require("./paper-entry-artifact-v1.js") : null);
-    if (artifactApi?.createPaperEntryArtifact) return artifactApi.createPaperEntryArtifact(artifact);
-    return artifact;
-  }
-
   async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, chatDefaults, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
     if (!artifact || typeof artifact !== "object") throw new Error("artifact 必须是非空对象");
     if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
@@ -1022,10 +873,8 @@
     // Inference: v4（运行时 prompt 系 v3.45），失败显式抛错，无旧链路回退
     const frozenPool = root?.CMathPaperRawEntryPoolV1
       ?? (typeof require === "function" ? require("./paper-raw-entry-pool-v1.js") : null);
-    const frozenConsolidation = root?.CMathPaperEntryConsolidationV1
-      ?? (typeof require === "function" ? require("./src/paper-import/entry/consolidation.js") : null);
-    const frozenArtifactApi = root?.CMathPaperEntryArtifactV1
-      ?? (typeof require === "function" ? require("./paper-entry-artifact-v1.js") : null);
+    const frozenConsolidation = entryModule;
+    const frozenArtifactApi = entryModule;
     if (!frozenPool?.extractParallelRawEntryPool) {
       throw new Error("冻结工作流模块没有加载：缺少 CMathPaperRawEntryPoolV1（检查 index.html 脚本顺序）");
     }
