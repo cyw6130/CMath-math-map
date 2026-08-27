@@ -52,6 +52,14 @@
     return result;
   }
 
+  function safeText(value, maxLength = 1000) {
+    if (typeof value !== "string") return undefined;
+    return value
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .slice(0, maxLength);
+  }
+
   function sanitizeEntry(entry) {
     if (!entry || typeof entry !== "object" || Array.isArray(entry)) return null;
     const result = pick(entry, [
@@ -59,6 +67,12 @@
       "shortTitle", "statement", "page", "external", "source", "sourceReference",
       "sourceLocator", "sourcePath", "displayLabel",
     ]);
+    for (const key of ["source", "sourceReference", "sourceLocator", "sourcePath"]) {
+      if (!Object.prototype.hasOwnProperty.call(result, key)) continue;
+      const value = safeText(result[key]);
+      if (value === undefined) delete result[key];
+      else result[key] = value;
+    }
     if (entry._provenance && typeof entry._provenance === "object") {
       result._provenance = pick(entry._provenance, ["chunkIndex", "blockIndex", "pageRange", "lane", "version"]);
     }
@@ -151,12 +165,84 @@
     }
     if (Array.isArray(view.entries)) result.entries = view.entries.map(sanitizeEntry).filter(Boolean);
     if (Array.isArray(view.inferences)) {
-      result.inferences = view.inferences.map((inference) => pick(inference, [
-        "id", "operationKind", "displayLabel", "shortTitle", "title", "statement",
-        "premises", "conclusion", "argument", "sourcePath", "sourceLocator",
-      ]));
+      result.inferences = view.inferences.map((inference) => {
+        const clean = pick(inference, [
+          "id", "operationKind", "displayLabel", "shortTitle", "title", "statement",
+          "premises", "conclusion", "argument", "sourcePath", "sourceLocator",
+        ]);
+        for (const key of ["sourceLocator", "sourcePath"]) {
+          if (!Object.prototype.hasOwnProperty.call(clean, key)) continue;
+          const value = safeText(clean[key]);
+          if (value === undefined) delete clean[key];
+          else clean[key] = value;
+        }
+        return clean;
+      });
     }
     return result;
+  }
+
+  function sanitizeSourceAnnotations(layer) {
+    if (!layer || typeof layer !== "object" || Array.isArray(layer)) return { items: [] };
+    const result = {};
+    if (layer.source && typeof layer.source === "object") {
+      result.source = pick(layer.source, ["fileName", "pageCount"]);
+    }
+    result.items = Array.isArray(layer.items) ? layer.items.map((item) => {
+      const clean = {};
+      for (const key of ["objectId", "entryId", "inferenceId", "sourceLocator", "sourcePath", "label"]) {
+        const value = safeText(item?.[key]);
+        if (value !== undefined) clean[key] = value;
+      }
+      if (Number.isInteger(item?.page) && item.page > 0) clean.page = item.page;
+      return clean;
+    }) : [];
+    return result;
+  }
+
+  function sanitizeUnresolvedItems(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map((item) => {
+      const clean = {};
+      for (const key of [
+        "id", "sourceStage", "sourceLocator", "sourcePath", "candidateSummary",
+        "failureCategory", "validationError",
+      ]) {
+        const value = safeText(item?.[key]);
+        if (value !== undefined) clean[key] = value;
+      }
+      if (Number.isInteger(item?.page) && item.page > 0) clean.page = item.page;
+      if (typeof item?.retryable === "boolean") clean.retryable = item.retryable;
+      return clean;
+    });
+  }
+
+  function sanitizePaperToMapResult(result) {
+    if (result?.schema !== "cmath.paper-to-map-result/v1") return null;
+    const clean = pick(result, ["schema", "status"]);
+    clean.map = sanitizeProjectView(result.map);
+    clean.sourceAnnotations = sanitizeSourceAnnotations(result.sourceAnnotations);
+    clean.unresolvedItems = sanitizeUnresolvedItems(result.unresolvedItems);
+    clean.diagnostics = pick(result.diagnostics, [
+      "mainTargetIdentified", "openClaimCount", "mainProofChainComplete", "missingStages",
+    ]);
+    clean.stages = {};
+    if (result.stages && typeof result.stages === "object") {
+      for (const stage of WORKFLOW_STAGES) {
+        if (result.stages[stage] && typeof result.stages[stage] === "object") {
+          clean.stages[stage] = pick(result.stages[stage], ["status", "attempt"]);
+        }
+      }
+    }
+    if (result.identity && typeof result.identity === "object") {
+      clean.identity = {
+        contentFingerprint: typeof result.identity.contentFingerprint === "string"
+          ? result.identity.contentFingerprint
+          : "",
+        frozenWorkflow: sanitizeWorkflowIdentity(result.identity.frozenWorkflow),
+      };
+    }
+    return clean;
   }
 
   function sanitizeStageArtifact(stage, artifact) {
@@ -165,6 +251,9 @@
     }
     if (stage === "entry") return sanitizeRawPool(artifact);
     if (stage === "consolidate" || stage === "w7-verify" || stage === "w8-b0") return sanitizeEntryArtifact(artifact);
+    if (stage === "closure" && artifact?.schema === "cmath.paper-to-map-result/v1") {
+      return sanitizePaperToMapResult(artifact);
+    }
     if (stage === "inference" || stage === "closure") return sanitizeProjectView(artifact);
     return null;
   }
@@ -178,6 +267,9 @@
     const identityKeys = [
       "label",
       "productionContractVersion",
+      "resultContractVersion",
+      "capabilityAuthority",
+      "capabilitySyncIdentity",
       "mineruInputVersion",
       "entryExtractionVersion",
       "entryConsolidationVersion",
@@ -191,6 +283,18 @@
       if (!Object.prototype.hasOwnProperty.call(workflow, key)) continue;
       const value = workflow[key];
       if (["string", "number", "boolean"].includes(typeof value) || value === null) result[key] = value;
+    }
+    if (Array.isArray(workflow.capabilityDependencies)) {
+      result.capabilityDependencies = workflow.capabilityDependencies
+        .map((dependency) => {
+          const clean = {};
+          for (const key of ["role", "capabilityId", "version", "contractVersion", "guaranteeId"]) {
+            const value = safeText(dependency?.[key], 200);
+            if (value !== undefined) clean[key] = value;
+          }
+          return clean;
+        })
+        .filter((dependency) => dependency.role && dependency.capabilityId && dependency.version && dependency.contractVersion);
     }
     return result;
   }

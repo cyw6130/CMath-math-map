@@ -47,6 +47,95 @@
     return stableValue(left ?? {}) === stableValue(right ?? {});
   }
 
+  function capabilityFailure(code, message) {
+    const error = new Error(message);
+    error.code = code;
+    return error;
+  }
+
+  function isVNextWorkflow(frozenWorkflow) {
+    return frozenWorkflow.productionContractVersion === "production-paper-import/v2"
+      || frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1"
+      || Array.isArray(frozenWorkflow.capabilityDependencies);
+  }
+
+  function validateCapabilityRuntime(frozenWorkflow, runtime) {
+    if (!isVNextWorkflow(frozenWorkflow)) return null;
+    for (const field of ["resultContractVersion", "capabilityAuthority", "capabilitySyncIdentity"]) {
+      if (typeof frozenWorkflow[field] !== "string" || !frozenWorkflow[field]) {
+        throw capabilityFailure(
+          "PAPER_TO_MAP_CAPABILITY_MISSING",
+          "VNext Paper-to-Map 缺少完整的权威能力身份",
+        );
+      }
+    }
+    if (!runtime || typeof runtime !== "object" || Array.isArray(runtime)) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_MISSING",
+        "VNext Paper-to-Map 缺少权威能力运行时",
+      );
+    }
+    if (typeof runtime.semanticPipeline !== "function" || typeof runtime.validateMap !== "function") {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_MISSING",
+        "VNext Paper-to-Map 能力运行时缺少语义执行器或地图校验器",
+      );
+    }
+    const manifest = runtime.manifest;
+    if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_MISSING",
+        "VNext Paper-to-Map 缺少能力同步清单",
+      );
+    }
+    const dependencies = Array.isArray(frozenWorkflow.capabilityDependencies)
+      ? frozenWorkflow.capabilityDependencies
+      : [];
+    const packages = Array.isArray(manifest.canonicalPackages) ? manifest.canonicalPackages : [];
+    const requiredRoles = [
+      "math-map-semantics", "entry-contract", "inference-contract", "format-normalization",
+    ];
+    if (!dependencies.length || dependencies.some((dependency) => (
+      !dependency?.role || !dependency?.capabilityId || !dependency?.version || !dependency?.contractVersion
+    )) || requiredRoles.some((role) => dependencies.filter((dependency) => dependency.role === role).length !== 1)) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_MISSING",
+        "VNext Paper-to-Map 缺少能力依赖声明",
+      );
+    }
+    const missing = dependencies.find((dependency) => !packages.some((candidate) => (
+      candidate?.capabilityId === dependency.capabilityId
+    )));
+    if (missing) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_MISSING",
+        `VNext Paper-to-Map 缺少能力 ${missing.capabilityId}@${missing.version}`,
+      );
+    }
+    const incompatible = dependencies.find((dependency) => !packages.some((candidate) => (
+      candidate?.capabilityId === dependency.capabilityId
+      && candidate?.version === dependency.version
+      && candidate?.contractVersion === dependency.contractVersion
+    )));
+    if (incompatible) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_INCOMPATIBLE",
+        `VNext Paper-to-Map 能力版本不兼容 ${incompatible.capabilityId}@${incompatible.version}`,
+      );
+    }
+    if (
+      manifest.schema !== "cmath.capability-consumer-manifest/v1"
+      || manifest.authority !== frozenWorkflow.capabilityAuthority
+      || manifest.syncIdentity !== frozenWorkflow.capabilitySyncIdentity
+    ) {
+      throw capabilityFailure(
+        "PAPER_TO_MAP_CAPABILITY_INCOMPATIBLE",
+        "VNext Paper-to-Map 能力同步身份不兼容",
+      );
+    }
+    return runtime;
+  }
+
   async function readPdfBytes(pdf) {
     if (pdf instanceof Uint8Array) return new Uint8Array(pdf);
     if (pdf instanceof ArrayBuffer) return new Uint8Array(pdf);
@@ -133,11 +222,76 @@
     };
   }
 
+  function paperToMapResult({ semanticResult, checkpoint, mineruArtifact, fingerprint, frozenWorkflow }) {
+    const structured = semanticResult?.map && typeof semanticResult.map === "object"
+      ? semanticResult
+      : { map: semanticResult };
+    const stages = {};
+    for (const stage of STAGES) {
+      const record = checkpoint.stages?.[stage];
+      if (!record || typeof record !== "object") continue;
+      stages[stage] = {
+        status: record.status,
+        attempt: Number(record.attempt ?? 0),
+      };
+    }
+    return {
+      schema: "cmath.paper-to-map-result/v1",
+      status: "complete",
+      map: structured.map,
+      sourceAnnotations: {
+        source: {
+          fileName: mineruArtifact.fileName ?? "paper.pdf",
+          pageCount: mineruArtifact.pageCount ?? 1,
+        },
+        items: Array.isArray(structured.sourceAnnotations?.items)
+          ? cloneJson(structured.sourceAnnotations.items)
+          : [],
+      },
+      unresolvedItems: Array.isArray(structured.unresolvedItems)
+        ? cloneJson(structured.unresolvedItems)
+        : [],
+      diagnostics: {
+        mainTargetIdentified: typeof structured.diagnostics?.mainTargetIdentified === "boolean"
+          ? structured.diagnostics.mainTargetIdentified
+          : Boolean(structured.map?.mainTargetEntryId),
+        openClaimCount: Number.isInteger(structured.diagnostics?.openClaimCount)
+          ? structured.diagnostics.openClaimCount
+          : 0,
+        mainProofChainComplete: typeof structured.diagnostics?.mainProofChainComplete === "boolean"
+          ? structured.diagnostics.mainProofChainComplete
+          : null,
+        missingStages: [],
+      },
+      stages,
+      identity: {
+        contentFingerprint: fingerprint,
+        frozenWorkflow,
+      },
+    };
+  }
+
+  function hasCompleteStages(stages) {
+    return STAGES.every((stage) => stages?.[stage]?.status === "complete");
+  }
+
+  function isRestorablePaperToMapResult(result, fingerprint, frozenWorkflow) {
+    return result?.schema === "cmath.paper-to-map-result/v1"
+      && result.status === "complete"
+      && result.map && Array.isArray(result.map.entries) && result.map.entries.length > 0
+      && Array.isArray(result.map.inferences)
+      && result.sourceAnnotations && Array.isArray(result.sourceAnnotations.items)
+      && Array.isArray(result.unresolvedItems)
+      && result.diagnostics && Array.isArray(result.diagnostics.missingStages)
+      && hasCompleteStages(result.stages)
+      && result.identity?.contentFingerprint === fingerprint
+      && sameIdentity(result.identity?.frozenWorkflow, frozenWorkflow);
+  }
+
   async function runProductionPaperImport(options = {}) {
     if (!checkpointStore) throw new Error("Paper Import checkpoint store 没有加载");
     const pdf = options.pdf;
     if (!pdf) throw new Error("生产论文导入需要 pdf");
-    const fingerprint = await computePdfFingerprint(pdf, { hashImpl: options.hashImpl });
     const frozenWorkflow = checkpointStore.sanitizeWorkflowIdentity
       ? checkpointStore.sanitizeWorkflowIdentity(options.frozenWorkflow ?? {})
       : cloneJson(options.frozenWorkflow ?? {});
@@ -155,6 +309,8 @@
     if (requiredIdentityFields.some((field) => !frozenWorkflow[field])) {
       throw new Error("生产论文导入需要完整的 Frozen Workflow 身份");
     }
+    const capabilityRuntime = validateCapabilityRuntime(frozenWorkflow, options.capabilityRuntime);
+    const fingerprint = await computePdfFingerprint(pdf, { hashImpl: options.hashImpl });
     const key = checkpointKey(fingerprint);
     const store = options.checkpointStore
       ?? checkpointStore.createDefaultCheckpointStore?.()
@@ -285,7 +441,7 @@
       }
     }
 
-    const semanticPipeline = options.semanticPipeline;
+    const semanticPipeline = capabilityRuntime?.semanticPipeline ?? options.semanticPipeline;
     if (typeof semanticPipeline !== "function") throw new Error("生产编排需要 frozen semantic pipeline");
     const resumeArtifacts = {};
     let contiguous = Boolean(mineruArtifact);
@@ -295,6 +451,25 @@
         resumeArtifacts[stage] = artifact;
         markResumed(stage);
       } else contiguous = false;
+    }
+    const restoredResult = completedArtifact(checkpoint, "closure");
+    if (frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1" && restoredResult) {
+      const cleanRestoredResult = checkpointStore.sanitizeStageArtifact
+        ? checkpointStore.sanitizeStageArtifact("closure", restoredResult)
+        : restoredResult;
+      if (!isRestorablePaperToMapResult(cleanRestoredResult, fingerprint, frozenWorkflow)) {
+        throw capabilityFailure(
+          "PAPER_TO_MAP_RESULT_INVALID",
+          "恢复的 Paper-to-Map 结果合同无效",
+        );
+      }
+      if (await capabilityRuntime.validateMap(cleanRestoredResult.map) !== true) {
+        throw capabilityFailure(
+          "PAPER_TO_MAP_RESULT_INVALID",
+          "恢复的 Paper-to-Map 地图未通过权威能力校验",
+        );
+      }
+      return cleanRestoredResult;
     }
     let activeStage = null;
     const semanticOnStage = (rawStage, info = {}) => {
@@ -313,6 +488,7 @@
       const stage = stageFor(rawStage);
       if (!stage || stage === "mineru") return;
       activeStage = stage;
+      if (stage === "closure" && capabilityRuntime) return;
       await markComplete(stage, artifact, info);
       activeStage = null;
     };
@@ -334,9 +510,54 @@
     };
     try {
       const view = await semanticPipeline(semanticOptions);
+      if (capabilityRuntime) {
+        const map = view?.map && typeof view.map === "object" ? view.map : view;
+        if (await capabilityRuntime.validateMap(map) !== true) {
+          throw capabilityFailure(
+            "PAPER_TO_MAP_RESULT_INVALID",
+            "Paper-to-Map 地图未通过权威能力校验",
+          );
+        }
+        const unresolvedItems = Array.isArray(view?.unresolvedItems) ? view.unresolvedItems : [];
+        const invalidUnresolved = unresolvedItems.some((item) => (
+          !item || typeof item !== "object"
+          || !["sourceStage", "candidateSummary", "failureCategory", "validationError"]
+            .every((field) => typeof item[field] === "string" && item[field].trim())
+          || typeof item.retryable !== "boolean"
+        ));
+        if (invalidUnresolved) {
+          throw capabilityFailure(
+            "PAPER_TO_MAP_RESULT_INVALID",
+            "Paper-to-Map 结果包含无效的 Unresolved Item",
+          );
+        }
+      }
       // Custom semantic seams may not expose a closure artifact; preserving the
       // returned Project View still makes the final stage resumable.
       if (!completedArtifact(checkpoint, "closure")) await markComplete("closure", view);
+      if (frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1") {
+        if (!hasCompleteStages(checkpoint.stages)) {
+          throw capabilityFailure(
+            "PAPER_TO_MAP_RESULT_INVALID",
+            "Paper-to-Map 完整结果缺少已完成的阶段状态",
+          );
+        }
+        const unsafeResult = paperToMapResult({
+          semanticResult: view,
+          checkpoint,
+          mineruArtifact,
+          fingerprint,
+          frozenWorkflow,
+        });
+        const result = checkpointStore.sanitizeStageArtifact
+          ? checkpointStore.sanitizeStageArtifact("closure", unsafeResult)
+          : unsafeResult;
+        if (!result?.map || !Array.isArray(result.map.entries) || result.map.entries.length === 0) {
+          throw capabilityFailure("PAPER_TO_MAP_RESULT_INVALID", "Paper-to-Map 结果缺少合法地图");
+        }
+        await markComplete("closure", result);
+        return result;
+      }
       return view;
     } catch (error) {
       const failedStage = activeStage

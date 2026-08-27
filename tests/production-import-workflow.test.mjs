@@ -24,6 +24,38 @@ const WORKFLOW = {
   projectViewVersion: "cmath.project-view-model/v0.1",
 };
 
+const VNEXT_WORKFLOW = {
+  ...WORKFLOW,
+  label: "paper-to-map-vnext-tracer-1",
+  productionContractVersion: "production-paper-import/v2",
+  resultContractVersion: "cmath.paper-to-map-result/v1",
+  capabilityAuthority: "../CMath-capabilities/exports/canonical.json",
+  capabilitySyncIdentity: "test-canonical-sync-v1",
+  capabilityDependencies: [
+    { role: "math-map-semantics", capabilityId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" },
+    { role: "entry-contract", capabilityId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" },
+    { role: "inference-contract", capabilityId: "inference-model-v1", version: "v1", contractVersion: "cmath.inference/v0.2" },
+    { role: "format-normalization", capabilityId: "paper-import-workflow-v2", version: "v2.1", contractVersion: "cmath.paper-import-workflow-result/v0.2", guaranteeId: "deterministic-assembly-normalization" },
+  ],
+};
+
+const CAPABILITY_MANIFEST = {
+  schema: "cmath.capability-consumer-manifest/v1",
+  authority: VNEXT_WORKFLOW.capabilityAuthority,
+  syncIdentity: VNEXT_WORKFLOW.capabilitySyncIdentity,
+  canonicalPackages: VNEXT_WORKFLOW.capabilityDependencies.map(({ capabilityId, version, contractVersion }) => ({ capabilityId, version, contractVersion })),
+};
+
+function capabilityRuntime(semanticPipeline, manifest = CAPABILITY_MANIFEST) {
+  return {
+    manifest,
+    semanticPipeline,
+    validateMap: (map) => Boolean(
+      map && Array.isArray(map.entries) && map.entries.length > 0 && Array.isArray(map.inferences)
+    ),
+  };
+}
+
 function fakeSemanticPipeline({ calls, failW8 = false, failureMessage = "W8 test failure" } = {}) {
   return async ({ onStage, onArtifact, resumeArtifacts, markedMarkdown }) => {
     const emit = (stage, phase) => onStage?.(stage, { phase });
@@ -136,6 +168,201 @@ test("生产编排按固定顺序完成并保存无秘密 checkpoint", async () 
   assert.doesNotMatch(serialized, /model-secret|Authorization|Bearer|fullZipUrl|uploadUrl|apiKey/iu);
   assert.doesNotMatch(JSON.stringify(rawSaves), /model-secret|Authorization|Bearer|fullZipUrl|uploadUrl|apiKey/iu);
   assert.equal(checkpoint.frozenWorkflow.entryExtractionVersion, WORKFLOW.entryExtractionVersion);
+});
+
+test("显式 VNext 身份通过生产 seam 返回统一 Paper-to-Map 结果", async () => {
+  const store = createMemoryCheckpointStore();
+  const calls = [];
+  const result = await runProductionPaperImport({
+    pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+    frozenWorkflow: VNEXT_WORKFLOW,
+    capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls })),
+    checkpointStore: store,
+    hashImpl: async () => "vnext-result-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    endpoint: "https://model.example/v1",
+    apiKey: "model-secret",
+    model: "same-model",
+  });
+
+  assert.equal(result.schema, "cmath.paper-to-map-result/v1");
+  assert.equal(result.status, "complete");
+  assert.equal(result.map.mainTargetEntryId, "claim:main");
+  assert.deepEqual(result.sourceAnnotations, {
+    source: { fileName: "paper.pdf", pageCount: 1 },
+    items: [],
+  });
+  assert.deepEqual(result.unresolvedItems, []);
+  assert.deepEqual(result.diagnostics, {
+    mainTargetIdentified: true,
+    openClaimCount: 0,
+    mainProofChainComplete: null,
+    missingStages: [],
+  });
+  assert.deepEqual(Object.fromEntries(Object.entries(result.stages).map(([stage, record]) => [stage, record.status])), {
+    mineru: "complete",
+    entry: "complete",
+    consolidate: "complete",
+    "w7-verify": "complete",
+    "w8-b0": "complete",
+    inference: "complete",
+    closure: "complete",
+  });
+  assert.equal(result.identity.contentFingerprint, "vnext-result-digest");
+  assert.deepEqual(result.identity.frozenWorkflow, VNEXT_WORKFLOW);
+});
+
+test("VNext 缺少能力同步清单时在 MinerU 调用前硬失败", async () => {
+  let mineruCalls = 0;
+  await assert.rejects(
+    () => runProductionPaperImport({
+      pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+      frozenWorkflow: VNEXT_WORKFLOW,
+      checkpointStore: createMemoryCheckpointStore(),
+      hashImpl: async () => "missing-capability-digest",
+      mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+      semanticPipeline: fakeSemanticPipeline({ calls: [] }),
+      endpoint: "https://model.example/v1",
+      apiKey: "model-secret",
+      model: "same-model",
+    }),
+    (error) => error?.code === "PAPER_TO_MAP_CAPABILITY_MISSING",
+  );
+  assert.equal(mineruCalls, 0);
+});
+
+test("VNext 能力版本不兼容时在 MinerU 调用前硬失败", async () => {
+  let mineruCalls = 0;
+  const incompatibleManifest = {
+    ...CAPABILITY_MANIFEST,
+    canonicalPackages: CAPABILITY_MANIFEST.canonicalPackages.map((item) => (
+      item.capabilityId === "entry-model-v1" ? { ...item, version: "v0" } : item
+    )),
+  };
+  await assert.rejects(
+    () => runProductionPaperImport({
+      pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+      frozenWorkflow: VNEXT_WORKFLOW,
+      capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: [] }), incompatibleManifest),
+      checkpointStore: createMemoryCheckpointStore(),
+      hashImpl: async () => "incompatible-capability-digest",
+      mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+      endpoint: "https://model.example/v1",
+      apiKey: "model-secret",
+      model: "same-model",
+    }),
+    (error) => error?.code === "PAPER_TO_MAP_CAPABILITY_INCOMPATIBLE",
+  );
+  assert.equal(mineruCalls, 0);
+});
+
+test("VNext 的受控未解决项通过 checkpoint 序列化并恢复", async () => {
+  const store = createMemoryCheckpointStore();
+  let mineruCalls = 0;
+  let semanticCalls = 0;
+  const map = {
+    schema: "cmath.project-view-model/v0.1",
+    mainTargetEntryId: "claim:main",
+    entries: [{ id: "claim:main", type: "Claim", statement: "Main claim" }],
+    inferences: [{
+      id: "inference:1",
+      operationKind: "proof",
+      premises: [],
+      conclusion: "claim:main",
+      argument: "source-backed",
+      sourcePath: "https://signed.example/map.json?token=secret",
+      sourceLocator: "[[PAGE 1]]",
+    }],
+  };
+  const semanticPipeline = async (options) => {
+    semanticCalls += 1;
+    const base = await fakeSemanticPipeline({ calls: [] })(options);
+    return {
+      map: { ...base, ...map },
+      sourceAnnotations: {
+        items: [{ objectId: "claim:main", sourceLocator: "[[PAGE 1]]", sourcePath: "https://signed.example/result.zip?token=secret", page: 1 }],
+      },
+      unresolvedItems: [{
+        id: "unresolved:inference:1",
+        sourceStage: "inference",
+        sourceLocator: "[[PAGE 1]]",
+        candidateSummary: "A relation with an unsupported operation kind",
+        failureCategory: "contract-invalid",
+        validationError: "operationKind is not supported at https://signed.example/result.zip?token=secret Bearer model-secret",
+        retryable: true,
+      }],
+    };
+  };
+  const common = {
+    pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+    frozenWorkflow: VNEXT_WORKFLOW,
+    capabilityRuntime: capabilityRuntime(semanticPipeline),
+    hashImpl: async () => "vnext-unresolved-digest",
+    mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+  };
+
+  const first = await runProductionPaperImport({ ...common, checkpointStore: store });
+  assert.equal(first.map.mainTargetEntryId, map.mainTargetEntryId);
+  assert.equal(first.map.inferences[0].sourcePath, "[redacted-url]");
+  assert.equal(first.sourceAnnotations.items[0].objectId, "claim:main");
+  assert.equal(first.unresolvedItems[0].failureCategory, "contract-invalid");
+  assert.doesNotMatch(JSON.stringify(first), /signed\.example|token=secret|model-secret/iu);
+
+  const serializedCheckpoint = JSON.parse(JSON.stringify(
+    await store.load("production-paper-import:vnext-unresolved-digest"),
+  ));
+  const restoredStore = createMemoryCheckpointStore({
+    "production-paper-import:vnext-unresolved-digest": serializedCheckpoint,
+  });
+  const second = await runProductionPaperImport({ ...common, checkpointStore: restoredStore });
+  assert.deepEqual(second, first);
+  assert.equal(mineruCalls, 1);
+  assert.equal(semanticCalls, 1);
+});
+
+test("VNext 缺少权威同步身份或合同版本时在 MinerU 调用前硬失败", async () => {
+  let mineruCalls = 0;
+  const missingSyncIdentity = {
+    ...VNEXT_WORKFLOW,
+    capabilitySyncIdentity: undefined,
+  };
+  const missingContractVersion = {
+    ...VNEXT_WORKFLOW,
+    capabilityDependencies: VNEXT_WORKFLOW.capabilityDependencies.map((dependency, index) => (
+      index === 0 ? { ...dependency, contractVersion: undefined } : dependency
+    )),
+  };
+  for (const [index, frozenWorkflow] of [missingSyncIdentity, missingContractVersion].entries()) {
+    await assert.rejects(
+      () => runProductionPaperImport({
+        pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+        frozenWorkflow,
+        capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: [] })),
+        checkpointStore: createMemoryCheckpointStore(),
+        hashImpl: async () => `missing-identity-digest-${index}`,
+        mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+      }),
+      (error) => error?.code === "PAPER_TO_MAP_CAPABILITY_MISSING",
+    );
+  }
+  assert.equal(mineruCalls, 0);
+});
+
+test("VNext 最终地图未通过能力校验时不产生 complete 结果", async () => {
+  const calls = [];
+  const runtime = capabilityRuntime(fakeSemanticPipeline({ calls }));
+  runtime.validateMap = () => false;
+  await assert.rejects(
+    () => runProductionPaperImport({
+      pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer },
+      frozenWorkflow: VNEXT_WORKFLOW,
+      capabilityRuntime: runtime,
+      checkpointStore: createMemoryCheckpointStore(),
+      hashImpl: async () => "invalid-map-digest",
+      mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    }),
+    (error) => error?.code === "PAPER_TO_MAP_RESULT_INVALID",
+  );
 });
 
 test("W8 失败后刷新只续跑 W8 及其后续阶段", async () => {

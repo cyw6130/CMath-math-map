@@ -45,6 +45,20 @@
     inferenceRuntimeVersion: "v3.45",
     projectViewVersion: PROJECT_VIEW_SCHEMA,
   });
+  const VNEXT_FROZEN_WORKFLOW = Object.freeze({
+    ...FROZEN_WORKFLOW,
+    label: "paper-to-map-vnext-tracer-1",
+    productionContractVersion: "production-paper-import/v2",
+    resultContractVersion: "cmath.paper-to-map-result/v1",
+    capabilityAuthority: "../CMath-capabilities/exports/canonical.json",
+    capabilitySyncIdentity: "sha256:3aae7108c3cb38ab0bc3ae85ea4d6e97055ba0733866d29493027089586b1a77",
+    capabilityDependencies: Object.freeze([
+      Object.freeze({ role: "math-map-semantics", capabilityId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" }),
+      Object.freeze({ role: "entry-contract", capabilityId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" }),
+      Object.freeze({ role: "inference-contract", capabilityId: "inference-model-v1", version: "v1", contractVersion: "cmath.inference/v0.2" }),
+      Object.freeze({ role: "format-normalization", capabilityId: "paper-import-workflow-v2", version: "v2.1", contractVersion: "cmath.paper-import-workflow-result/v0.2", guaranteeId: "deterministic-assembly-normalization" }),
+    ]),
+  });
 
   if (!entryModule
     || typeof entryModule.buildVerificationPrompt !== "function"
@@ -438,6 +452,7 @@
   return Object.freeze({
     MODULE_ID,
     FROZEN_WORKFLOW,
+    VNEXT_FROZEN_WORKFLOW,
     endpointUrl,
     requestPaperProjectView,
     requestPaperProductionSemanticPipeline,
