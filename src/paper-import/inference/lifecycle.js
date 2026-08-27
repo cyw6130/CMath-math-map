@@ -231,7 +231,7 @@
     return url.toString();
   }
 
-  function paperProjectView(raw, { fileName = "paper.pdf", requireB0Classification = false } = {}) {
+  function paperProjectView(raw, { fileName = "paper.pdf", requireB0Classification = false, requireMainTarget = true } = {}) {
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("模型服务输出必须是 JSON 对象");
     const entries = objectArray(raw.entries, "entries");
     const inferences = objectArray(raw.inferences ?? [], "inferences");
@@ -343,12 +343,11 @@
       throw new Error(`B0 Claim ${b0MissingSourceReference.join("、")} 必须包含 sourceReference`);
     }
 
-    const mainTargetEntryId = nonEmpty(
-      raw.mainTargetEntryId ?? raw.derivedResearchState?.researchOverlay?.loopTargetEntryId,
-      "mainTargetEntryId",
-    );
+    const rawMainTarget = raw.mainTargetEntryId ?? raw.derivedResearchState?.researchOverlay?.loopTargetEntryId;
+    const mainTargetEntryId = typeof rawMainTarget === "string" ? rawMainTarget.trim() : "";
     const mainTargetEntry = entryById.get(mainTargetEntryId);
-    if (!mainTargetEntry || mainTargetEntry.entryClass !== "claim") {
+    if (requireMainTarget && !mainTargetEntryId) nonEmpty(rawMainTarget, "mainTargetEntryId");
+    if (mainTargetEntryId && (!mainTargetEntry || mainTargetEntry.entryClass !== "claim")) {
       throw new Error(`mainTargetEntryId 必须指向已存在的 Claim：${mainTargetEntryId}`);
     }
 
@@ -360,7 +359,7 @@
       schema: PROJECT_VIEW_SCHEMA,
       semanticModel: SEMANTIC_MODEL,
       project: { id: projectId, title: projectTitle },
-      mainTargetEntryId,
+      ...(mainTargetEntryId ? { mainTargetEntryId } : {}),
       channelOptions: {
         schema: CHANNEL_SCHEMA,
         projectId,
@@ -369,7 +368,7 @@
       },
       derivedResearchState: {
         mathematicalState: { b0ClaimEntryIds },
-        researchOverlay: { loopTargetEntryId: mainTargetEntryId },
+        researchOverlay: mainTargetEntryId ? { loopTargetEntryId: mainTargetEntryId } : {},
       },
       entries: normalizedEntries,
       inferences: normalizedInferences,
@@ -385,7 +384,128 @@
     );
   }
 
-  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, chatDefaults, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
+  function safeFailureMessage(error) {
+    return String(error?.message ?? error ?? "Inference assembly failed")
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .slice(0, 500);
+  }
+
+  function isDegradableInferenceError(error) {
+    if (error?.name === "AbortError") return false;
+    if (error?.retryable === false || error?.code === "CONFIGURATION_ERROR") return false;
+    if (modelTransport.isModelTransportError(error)) {
+      if (error.code === modelTransport.ERROR_CODES.CONFIGURATION) return false;
+      if (error.code === modelTransport.ERROR_CODES.HTTP) {
+        const status = Number(error.status);
+        if (status >= 400 && status < 500 && status !== 408 && status !== 429) return false;
+      }
+    }
+    const status = Number(error?.status);
+    if (status === 408 || status === 429 || status >= 500) return true;
+    if (typeof error?.code === "string" && /^(?:ECONN|ENET|ETIMEDOUT|EAI_AGAIN)/u.test(error.code)) return true;
+    if (error instanceof TypeError && /fetch|network|connection/i.test(String(error.message ?? ""))) return true;
+    return false;
+  }
+
+  function assemblyFailureUnresolved(error) {
+    return {
+      id: "unresolved:inference:assembly",
+      sourceStage: "inference",
+      candidateSummary: "Inference assembly",
+      failureCategory: "inference-assembly-failed",
+      validationError: safeFailureMessage(error),
+      retryable: true,
+    };
+  }
+
+  function sanitizedUnresolvedItems(items) {
+    const counts = new Map();
+    return (Array.isArray(items) ? items : []).filter((item) => (
+      item && typeof item === "object" && !Array.isArray(item)
+      && ["sourceStage", "candidateSummary", "failureCategory", "validationError"]
+        .every((field) => typeof item[field] === "string" && item[field].trim())
+      && typeof item.retryable === "boolean"
+    )).map((item) => {
+      const baseId = safeFailureMessage(item.id || `unresolved:${item.sourceStage}:${item.failureCategory}`)
+        .replace(/\s+/gu, "-");
+      const count = (counts.get(baseId) ?? 0) + 1;
+      counts.set(baseId, count);
+      const clean = {
+        id: count === 1 ? baseId : `${baseId}:${count}`,
+        sourceStage: safeFailureMessage(item.sourceStage),
+        candidateSummary: safeFailureMessage(item.candidateSummary),
+        failureCategory: safeFailureMessage(item.failureCategory),
+        validationError: safeFailureMessage(item.validationError),
+        retryable: item.retryable,
+      };
+      for (const field of ["sourceLocator", "sourcePath"]) {
+        if (typeof item[field] === "string" && item[field].trim()) clean[field] = safeFailureMessage(item[field]);
+      }
+      if (Number.isInteger(item.page) && item.page > 0) clean.page = item.page;
+      return clean;
+    });
+  }
+
+  function inferenceDiagnostics(view, { inferenceDegraded = false, repairActions = [] } = {}) {
+    const openClaimEntryIds = findOpenClaims(view).map((entry) => entry.id);
+    const connected = new Set(view.inferences.flatMap((item) => [...item.premises, item.conclusion]));
+    return {
+      inferenceDegraded,
+      mainTargetIdentified: typeof view.mainTargetEntryId === "string" && Boolean(view.mainTargetEntryId),
+      mainProofChainComplete: Boolean(view.mainTargetEntryId) && !openClaimEntryIds.includes(view.mainTargetEntryId),
+      openClaimEntryIds,
+      isolatedEntryIds: view.entries.filter((entry) => !connected.has(entry.id)).map((entry) => entry.id),
+      repairActions: repairActions.map((action) => safeFailureMessage(action)),
+    };
+  }
+
+  function completedInferenceView(view, artifact, repairActions = []) {
+    return {
+      ...view,
+      unresolvedItems: sanitizedUnresolvedItems(artifact.unresolvedItems),
+      diagnostics: inferenceDiagnostics(view, { repairActions }),
+    };
+  }
+
+  function emptyInferenceUnresolved() {
+    return {
+      id: "unresolved:inference:empty",
+      sourceStage: "inference",
+      candidateSummary: "Inference assembly produced no legal relation",
+      failureCategory: "inference-empty",
+      validationError: "未形成任何合同合法的 Inference",
+      retryable: true,
+    };
+  }
+
+  function degradedInferenceView({ artifact, raw, fileName, extraUnresolved = [] }) {
+    const base = raw && typeof raw === "object" && !Array.isArray(raw)
+      ? { ...raw, entries: Array.isArray(artifact.entries) ? artifact.entries : [] }
+      : {
+        projectTitle: String(fileName).replace(/\.pdf$/iu, "").trim() || "论文导入地图",
+        entries: Array.isArray(artifact.entries) ? artifact.entries : [],
+        inferences: [],
+        b0ClaimEntryIds: [],
+      };
+    const { raw: fixed, actions: repairActions = [], unresolvedItems: repairUnresolved = [] } = sanitizeRawProjectView(base, { fileName });
+    const view = paperProjectView(fixed, {
+      fileName,
+      requireB0Classification: false,
+      requireMainTarget: false,
+    });
+    const carried = Array.isArray(artifact.unresolvedItems) ? artifact.unresolvedItems : [];
+    const unresolvedItems = sanitizedUnresolvedItems([...carried, ...repairUnresolved, ...extraUnresolved]);
+    return {
+      ...view,
+      unresolvedItems,
+      diagnostics: inferenceDiagnostics(view, { inferenceDegraded: true, repairActions }),
+    };
+  }
+
+  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, chatDefaults, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks, allowDegraded = false } = {}) {
     if (!artifact || typeof artifact !== "object") throw new Error("artifact 必须是非空对象");
     if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
     const fileName = artifact.source?.fileName || "paper.pdf";
@@ -460,13 +580,22 @@
     let lastMerged = null;
     let lastIssues = ["装配没有产出有效输出"];
     let truncated = false;
+    let terminalFailure = null;
     const configuredMaxRounds = typeof process === "object" && process?.env
       ? process.env.INFERENCE_MAX_ROUNDS
       : undefined;
     const maxRounds = Number(configuredMaxRounds || 4);
     for (let round = 0; round < maxRounds; round += 1) {
       const maxTokens = truncated ? (tokenBudget?.retry ?? 32000) : (tokenBudget?.normal ?? 16000);
-      const { content, finishReason } = await executeChatCall(messages, maxTokens);
+      let response;
+      try {
+        response = await executeChatCall(messages, maxTokens);
+      } catch (error) {
+        if (!allowDegraded || !isDegradableInferenceError(error)) throw error;
+        terminalFailure = error;
+        break;
+      }
+      const { content, finishReason } = response;
       truncated = finishReason === "length";
       notify("response", { round: round + 1 });
       let issues = [];
@@ -485,17 +614,30 @@
               mainTargetEntryId: assembly.mainTargetEntryId,
               b0ClaimEntryIds: assembly.b0 ?? assembly.b0ClaimEntryIds,
               entries,
-              inferences: Array.isArray(assembly.inferences) ? assembly.inferences : [],
+              inferences: assembly.inferences,
             };
             const { raw: normalized } = normalizeRawProjectView(merged, { fileName });
             issues = collectRawProjectViewIssues(normalized);
-            lastMerged = normalized;
+            if (!Array.isArray(assembly.inferences)) issues.unshift("inferences 必须是数组");
+            else if (assembly.inferences.some((item) => (
+              !item || typeof item !== "object" || Array.isArray(item)
+            ))) issues.unshift("inferences 每一项必须是对象");
+            lastMerged = merged;
             if (!issues.length) {
               notify("validate", {});
               try {
                 const view = paperProjectView(normalized, { fileName, requireB0Classification: true });
                 if (!("projectTitle" in view) && view?.project?.title) view.projectTitle = view.project.title;
-                return view;
+                if (allowDegraded && view.inferences.length === 0) {
+                  notify("inference", { phase: "degraded", reason: "no legal inference" });
+                  return degradedInferenceView({
+                    artifact,
+                    raw: merged,
+                    fileName,
+                    extraUnresolved: [emptyInferenceUnresolved()],
+                  });
+                }
+                return completedInferenceView(view, artifact);
               } catch (error) {
                 issues = [`系统校验未通过：${error.message}`];
               }
@@ -510,16 +652,43 @@
       }
     }
     if (lastMerged) {
-      const { raw: fixed, actions } = sanitizeRawProjectView(lastMerged, { fileName });
-      if (actions.length) notify("autofix", { count: actions.length, actions });
+      const { raw: fixed, actions, unresolvedItems: repairUnresolved = [] } = sanitizeRawProjectView(lastMerged, { fileName });
+      const safeActions = actions.map((action) => safeFailureMessage(action));
+      if (safeActions.length) notify("autofix", { count: safeActions.length, actions: safeActions });
       notify("validate", {});
       try {
         const view = paperProjectView(fixed, { fileName, requireB0Classification: true });
         if (!("projectTitle" in view) && view?.project?.title) view.projectTitle = view.project.title;
-        return view;
+        if (allowDegraded && (repairUnresolved.length || view.inferences.length === 0)) {
+          notify("inference", { phase: "degraded", unresolved: repairUnresolved.length });
+          return degradedInferenceView({
+            artifact,
+            raw: lastMerged,
+            fileName,
+            extraUnresolved: view.inferences.length === 0 ? [emptyInferenceUnresolved()] : [],
+          });
+        }
+        if (repairUnresolved.length) {
+          throw new Error(`${serviceName} 论文导入失败（保义修复仍有 ${repairUnresolved.length} 条非法 Inference）`);
+        }
+        return completedInferenceView(view, artifact, safeActions);
       } catch (error) {
+        if (allowDegraded) {
+          notify("inference", { phase: "degraded", reason: safeFailureMessage(error) });
+          return degradedInferenceView({ artifact, raw: lastMerged, fileName });
+        }
         throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${error.message}`);
       }
+    }
+    if (allowDegraded) {
+      const failure = terminalFailure ?? new Error(lastIssues.join("；"));
+      notify("inference", { phase: "degraded", reason: safeFailureMessage(failure) });
+      return degradedInferenceView({
+        artifact,
+        raw: null,
+        fileName,
+        extraUnresolved: [assemblyFailureUnresolved(failure)],
+      });
     }
     throw new Error(`${serviceName} 论文导入失败（模型已修复 3 次）：${lastIssues.join("；")}`);
   }

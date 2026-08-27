@@ -287,7 +287,9 @@
         const expanded = isCompactInference(inference) ? expandCompactInference(inference, { fileName }) : { ...inference };
         if (typeof expanded.conclusion === "string") expanded.conclusion = remapId(expanded.conclusion);
         if (Array.isArray(expanded.premises)) {
-          expanded.premises = [...new Set(expanded.premises.map((value) => remapId(value)).filter(Boolean))];
+          expanded.premises = [...new Set(expanded.premises.map((value) => (
+            typeof value === "string" ? remapId(value) : value
+          )))];
         }
         return expanded;
       });
@@ -440,15 +442,66 @@
     return issues;
   }
 
-  // 本地机械修复：模型修复两轮仍失败时的最后兜底（降级会丢失信息，仅在此时启用）
+  function safeDiagnosticText(value) {
+    return String(value)
+      .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
+      .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .slice(0, 500);
+  }
+
+  function inferenceUnresolved(label, failureCategory, validationError, retryable = true, candidate = null) {
+    const candidateShape = candidate && typeof candidate === "object" && !Array.isArray(candidate)
+      ? `${label}: ${candidate.operationKind ?? candidate.type ?? "?"} ${(Array.isArray(candidate.premises) ? candidate.premises : []).join(",")} -> ${candidate.conclusion ?? "?"}`
+      : label;
+    const safeLabel = safeDiagnosticText(label);
+    const result = {
+      id: `unresolved:inference:${safeLabel.replace(/[^a-z0-9]+/giu, "-").replace(/^-+|-+$/gu, "").toLowerCase() || "unknown"}`,
+      sourceStage: "inference",
+      candidateSummary: safeDiagnosticText(candidateShape),
+      failureCategory,
+      validationError: safeDiagnosticText(validationError),
+      retryable,
+    };
+    const sourceLocator = candidate?.sourceLocator ?? candidate?.sourcePath;
+    if (typeof sourceLocator === "string" && sourceLocator.trim()) result.sourceLocator = safeDiagnosticText(sourceLocator);
+    if (Number.isInteger(candidate?.page) && candidate.page > 0) result.page = candidate.page;
+    return result;
+  }
+
+  function uniqueUnresolvedIds(items) {
+    const counts = new Map();
+    return items.map((item) => {
+      const base = item.id || "unresolved:inference:unknown";
+      const count = (counts.get(base) ?? 0) + 1;
+      counts.set(base, count);
+      return count === 1 ? item : { ...item, id: `${base}:${count}` };
+    });
+  }
+
+  // 本地保义修复：只执行确定性字段规范、公式定界符转义与明确非法引用清理。
+  // 任何需要猜测关系类型、论证内容、B0 来源或主目标的对象都丢出严格地图，
+  // 并作为 Unresolved Item 返回给上层。
   function sanitizeRawProjectView(raw, { fileName = "paper.pdf" } = {}) {
     const { raw: normalized, notes } = normalizeRawProjectView(raw, { fileName });
     const actions = [...notes];
-    if (!normalized || typeof normalized !== "object" || Array.isArray(normalized)) return { raw: normalized, actions };
-    if (!Array.isArray(normalized.entries)) return { raw: normalized, actions };
+    const unresolvedItems = [];
+    if (!normalized || typeof normalized !== "object" || Array.isArray(normalized)) return { raw: normalized, actions, unresolvedItems };
+    if (!Array.isArray(normalized.entries)) return { raw: normalized, actions, unresolvedItems };
     const fixed = normalized;
     const entries = fixed.entries;
     const entryById = new Map(entries.map((entry) => [entry.id, entry]));
+    if (raw?.inferences !== undefined && !Array.isArray(raw.inferences)) {
+      unresolvedItems.push(inferenceUnresolved("Inference 装配结果", "inference-invalid", "inferences 必须是数组"));
+    }
+    if (Array.isArray(raw?.inferences)) {
+      raw.inferences.forEach((inference, index) => {
+        if (!inference || typeof inference !== "object" || Array.isArray(inference)) {
+          unresolvedItems.push(inferenceUnresolved(`第 ${index + 1} 条 Inference`, "inference-invalid", "Inference 必须是对象"));
+        }
+      });
+    }
 
     // 条目级修复：转义未配对定界符
     entries.forEach((entry) => {
@@ -460,78 +513,113 @@
       }
     });
 
-    // ---- Inferences：修 operationKind、断悬空引用；Claim 互推循环保留给闭包解释 ----
+    // ---- Inferences：保留合同合法关系；Claim 互推循环保留给闭包解释 ----
     const prepared = [];
+    const usedObjectIds = new Set(entries.map((entry) => entry.id));
+    const reservedExplicitIds = new Set(fixed.inferences
+      .filter((inference) => inference && typeof inference === "object" && !Array.isArray(inference))
+      .map((inference) => (typeof inference.id === "string" ? inference.id.trim() : ""))
+      .filter(Boolean));
+    const generatedByKind = new Map();
     fixed.inferences.forEach((inference, index) => {
+      let explicitId = typeof inference.id === "string" ? inference.id.trim() : "";
+      if (!explicitId) {
+        const kind = OPERATION_KINDS.has(String(inference.operationKind ?? "").trim())
+          ? String(inference.operationKind).trim()
+          : "op";
+        let counter = (generatedByKind.get(kind) ?? 0) + 1;
+        let candidate = `paper:inference:${kind}:${counter}`;
+        while (usedObjectIds.has(candidate) || reservedExplicitIds.has(candidate)) {
+          counter += 1;
+          candidate = `paper:inference:${kind}:${counter}`;
+        }
+        generatedByKind.set(kind, counter);
+        inference.id = candidate;
+        explicitId = candidate;
+        actions.push(`第 ${index + 1} 条 Inference 缺少 id，已生成 ${candidate}`);
+      }
       const label = inference.id || `第 ${index + 1} 条 Inference`;
+      if (explicitId && usedObjectIds.has(explicitId)) {
+        actions.push(`丢弃 id 重复的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-duplicate-id", "Inference id 与已有对象重复", true, inference));
+        return;
+      }
 
       const conclusionEntry = inference.conclusion && entryById.get(inference.conclusion);
       if (!conclusionEntry) {
         actions.push(`丢弃 conclusion 缺失或悬空的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-dangling-conclusion", "conclusion 不存在于 Entry 目录", true, inference));
         return;
       }
 
-      const premises = (Array.isArray(inference.premises) ? inference.premises : [])
-        .filter((value) => {
-          if (!value) return false;
-          if (!entryById.has(value)) {
-            actions.push(`${label} 的 premise ${value} 不存在，已移除`);
-            return false;
-          }
-          return true;
-        });
+      if (!Array.isArray(inference.premises)) {
+        actions.push(`丢弃 premises 缺失的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-premises", "premises 必须是数组", true, inference));
+        return;
+      }
+      if (inference.premises.some((value) => typeof value !== "string" || !value.trim())) {
+        actions.push(`丢弃包含无效 premise 的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-premises", "premises 每一项都必须是非空 Entry id", true, inference));
+        return;
+      }
+      const premises = inference.premises.map((value) => value.trim());
+      const dangling = premises.filter((value) => !entryById.has(value));
+      if (dangling.length) {
+        actions.push(`丢弃引用不存在 premise 的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-dangling-premise", `premise 不存在：${dangling.join("、")}`, true, inference));
+        return;
+      }
       const deduped = [...new Set(premises)];
       if (deduped.includes(inference.conclusion)) {
         actions.push(`丢弃 conclusion 出现在 premises 中的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-self-reference", "conclusion 不能同时出现在 premises 中", true, inference));
         return;
       }
       inference.premises = deduped;
-      let operationKind = String(inference.operationKind ?? "").trim();
+      const operationKind = String(inference.operationKind ?? "").trim();
       if (!OPERATION_KINDS.has(operationKind)) {
-        operationKind = conclusionEntry.entryClass === "claim" ? "proof" : "organization";
-        actions.push(`${label} 缺少 operationKind，已按结论类型推断为 ${operationKind}`);
+        actions.push(`丢弃 operationKind 缺失或非法的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-operation", "operationKind 只能是 proof 或 organization", true, inference));
+        return;
       }
       if (operationKind === "organization" && !inference.premises.length) {
         actions.push(`丢弃 premises 为空的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-premises", "organization 必须包含非空 premises", true, inference));
         return;
       }
       if (operationKind === "proof" && conclusionEntry.entryClass !== "claim") {
-        const allFacts = inference.premises.every((premise) => entryById.get(premise)?.entryClass === "fact");
-        if (allFacts) {
-          operationKind = "organization";
-          actions.push(`${label} 以 Fact 为证明结论，已降级为 organization`);
-        } else {
-          actions.push(`丢弃以 Fact 为证明结论且前提含 Claim 的 ${label}`);
-          return;
-        }
+        actions.push(`丢弃以 Fact 为结论的 proof ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-signature", "proof 必须以 Claim 为结论", true, inference));
+        return;
       }
       if (operationKind === "organization") {
         const touchesClaim = conclusionEntry.entryClass !== "fact"
           || inference.premises.some((premise) => entryById.get(premise)?.entryClass !== "fact");
         if (touchesClaim) {
-          if (conclusionEntry.entryClass === "claim") {
-            operationKind = "proof";
-            actions.push(`${label} 的 organization 涉及 Claim，已改判为 proof`);
-          } else {
-            actions.push(`丢弃跨越 Fact/Claim 的 organization ${label}`);
-            return;
-          }
+          actions.push(`丢弃跨越 Fact/Claim 的 organization ${label}`);
+          unresolvedItems.push(inferenceUnresolved(label, "inference-invalid-signature", "organization 必须是 Fact 到 Fact", true, inference));
+          return;
         }
       }
       inference.operationKind = operationKind;
       if (typeof inference.argument !== "string" || !inference.argument.trim()) {
-        if (operationKind === "proof") {
-          actions.push(`丢弃缺少 argument 的 proof ${label}`);
-          return;
-        }
-        inference.argument = "（组织关系说明从略，详见原文对应页码。）";
-        actions.push(`${label} 缺少 argument，已补组织关系说明`);
+        actions.push(`丢弃缺少 argument 的 ${label}`);
+        unresolvedItems.push(inferenceUnresolved(label, "inference-missing-argument", "Inference 必须包含非空 argument", true, inference));
+        return;
+      }
+      if ((typeof inference.sourceLocator !== "string" || !inference.sourceLocator.trim())
+        && typeof inference.sourcePath === "string" && inference.sourcePath.trim()) {
+        inference.sourceLocator = inference.sourcePath.trim();
+        actions.push(`${label} 已将 sourcePath 规范化为 sourceLocator`);
       }
       if (typeof inference.sourceLocator !== "string" || !inference.sourceLocator.trim()) {
-        const fallback = conclusionEntry.sourceLocator ?? conclusionEntry.sourcePath;
-        if (typeof fallback === "string" && fallback.trim()) {
-          inference.sourceLocator = fallback;
-          actions.push(`${label} 缺少 sourceLocator，已沿用结论条目的定位`);
+        if (Number.isInteger(inference.page) && inference.page > 0) {
+          inference.sourceLocator = `${fileName}#page=${inference.page}`;
+          actions.push(`${label} 已按明确 page 规范化 sourceLocator`);
+        } else {
+          actions.push(`丢弃缺少 sourceLocator/page 的 ${label}`);
+          unresolvedItems.push(inferenceUnresolved(label, "inference-missing-source", "Inference 缺少明确来源定位", true, inference));
+          return;
         }
       }
       for (const field of ["title", "shortTitle", "displayLabel", "statement", "argument"]) {
@@ -540,45 +628,35 @@
           actions.push(`${label} 的 ${field} 数学公式定界符未配对，已转义`);
         }
       }
+      usedObjectIds.add(explicitId);
       prepared.push(inference);
     });
 
     const inferences = prepared;
 
-    // ---- B0 清单：缺清单时按 external 标记推导，缺来源时按条目名补齐 ----
+    // ---- B0 清单：只保留模型显式给出且带来源的 Claim ----
     let b0List = fixed.b0ClaimEntryIds ?? fixed.b0 ?? fixed.derivedResearchState?.mathematicalState?.b0ClaimEntryIds;
     if (!Array.isArray(b0List)) {
-      b0List = entries.filter((entry) => entry.entryClass === "claim" && entry.external === true).map((entry) => entry.id);
-      actions.push(b0List.length ? "模型未输出 B0 清单，已按 external 标记推导" : "模型未输出 B0 清单，按空清单处理");
+      b0List = [];
+      actions.push("模型未输出 B0 清单，按空清单处理");
+      unresolvedItems.push(inferenceUnresolved("B0 清单", "inference-missing-b0", "模型未显式输出 B0 清单"));
     }
     fixed.b0ClaimEntryIds = [...new Set(b0List.filter((id) => {
-      if (id && entryById.get(id)?.entryClass === "claim") return true;
+      const entry = id && entryById.get(id);
+      if (entry?.entryClass === "claim" && typeof entry.sourceReference === "string" && entry.sourceReference.trim()) return true;
       actions.push(`B0 清单移除非 Claim 条目：${id || "（空）"}`);
+      unresolvedItems.push(inferenceUnresolved(`B0 ${id || "（空）"}`, "inference-invalid-b0", "B0 必须引用带 sourceReference 的 Claim"));
       return false;
     }))];
-    fixed.b0ClaimEntryIds.forEach((id) => {
-      const entry = entryById.get(id);
-      if (entry && !entry.sourceReference) {
-        entry.sourceReference = entry.title || entry.shortTitle || id;
-        actions.push(`B0 Claim ${id} 缺少 sourceReference，已按条目名称补齐`);
-      }
-    });
 
-    // ---- 主目标与标题兜底 ----
+    // ---- 主目标只接受显式合法 Claim；标题仍可做确定性兜底 ----
     const target = fixed.mainTargetEntryId ?? fixed.derivedResearchState?.researchOverlay?.loopTargetEntryId;
     if (target && entryById.get(target)?.entryClass === "claim") {
       fixed.mainTargetEntryId = target;
     } else {
-      const claims = entries.filter((entry) => entry.entryClass === "claim");
-      const proved = new Set(inferences.filter((inf) => inf.operationKind === "proof").map((inf) => inf.conclusion));
-      const b0Set = new Set(fixed.b0ClaimEntryIds);
-      const pick = [...claims].reverse().find((entry) => proved.has(entry.id) && !b0Set.has(entry.id))
-        ?? [...claims].reverse().find((entry) => !b0Set.has(entry.id))
-        ?? claims.at(-1);
-      if (pick) {
-        fixed.mainTargetEntryId = pick.id;
-        actions.push(`mainTargetEntryId 缺失或无效，已回退为 ${pick.id}`);
-      }
+      delete fixed.mainTargetEntryId;
+      actions.push("mainTargetEntryId 缺失或无效，未进行语义猜测");
+      unresolvedItems.push(inferenceUnresolved("mainTargetEntryId", "inference-invalid-main-target", "主目标缺失或未指向 Claim"));
     }
     if (typeof fixed.projectTitle === "string" && fixed.projectTitle.trim()) {
       const trimmed = fixed.projectTitle.trim();
@@ -594,7 +672,11 @@
       actions.push("模型未输出 projectTitle，已按文件名生成");
     }
 
-    return { raw: { ...fixed, inferences }, actions };
+    return {
+      raw: { ...fixed, inferences },
+      actions: actions.map(safeDiagnosticText),
+      unresolvedItems: uniqueUnresolvedIds(unresolvedItems),
+    };
   }
 
   return Object.freeze({

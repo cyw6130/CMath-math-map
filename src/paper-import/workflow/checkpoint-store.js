@@ -57,9 +57,88 @@
     return value
       .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
       .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
-      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
-      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]")
       .slice(0, maxLength);
+  }
+
+  function sanitizeNested(value, key = "", depth = 0) {
+    if (depth > 8) return undefined;
+    if (/authorization|api[_-]?key|token|secret/iu.test(key)) return "[redacted]";
+    if (typeof value === "string") return safeText(value);
+    if (["number", "boolean"].includes(typeof value) || value === null) return value;
+    if (Array.isArray(value)) return value.map((item) => sanitizeNested(item, "", depth + 1)).filter((item) => item !== undefined);
+    if (!value || typeof value !== "object") return undefined;
+    const result = {};
+    for (const [childKey, childValue] of Object.entries(value)) {
+      const clean = sanitizeNested(childValue, childKey, depth + 1);
+      if (clean !== undefined) result[childKey] = clean;
+    }
+    return result;
+  }
+
+  function sanitizeHint(hint) {
+    if (!hint || typeof hint !== "object" || Array.isArray(hint)) return null;
+    const clean = pick(hint, ["premiseRefs", "conclusionRef", "relationText", "page"]);
+    for (const key of ["premiseRefs", "conclusionRef", "relationText"]) {
+      if (clean[key] !== undefined) clean[key] = sanitizeNested(clean[key], key);
+    }
+    if (hint._provenance && typeof hint._provenance === "object") {
+      clean._provenance = pick(hint._provenance, ["chunkIndex", "blockIndex", "pageRange", "lane", "version"]);
+    }
+    return clean;
+  }
+
+  function sanitizeLead(lead) {
+    if (!lead || typeof lead !== "object" || Array.isArray(lead)) return null;
+    const clean = {};
+    for (const key of ["id", "title", "name", "summary"]) {
+      const value = safeText(lead[key], 500);
+      if (value !== undefined) clean[key] = value;
+    }
+    if (Array.isArray(lead.pages)) clean.pages = lead.pages.filter((page) => Number.isInteger(page) && page > 0);
+    return clean;
+  }
+
+  function sanitizePaperGuide(guide) {
+    if (!guide || typeof guide !== "object" || Array.isArray(guide)) return null;
+    const clean = {};
+    const title = safeText(guide.title, 500);
+    if (title !== undefined) clean.title = title;
+    if (guide.main_target && typeof guide.main_target === "object") clean.main_target = sanitizeLead(guide.main_target);
+    if (Array.isArray(guide.leads)) clean.leads = guide.leads.map(sanitizeLead).filter(Boolean);
+    if (Array.isArray(guide.key_results)) clean.key_results = guide.key_results.map(sanitizeLead).filter(Boolean);
+    return clean;
+  }
+
+  function sanitizeStringMap(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    const clean = {};
+    for (const [key, rawValue] of Object.entries(value)) {
+      const safeKey = safeText(key, 200);
+      const safeValue = safeText(rawValue, 500);
+      if (safeKey && safeValue !== undefined) clean[safeKey] = safeValue;
+    }
+    return clean;
+  }
+
+  function sanitizeNumericFields(value, keys) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    const clean = {};
+    for (const key of keys) {
+      if (typeof value[key] === "number" && Number.isFinite(value[key])) clean[key] = value[key];
+    }
+    return clean;
+  }
+
+  function sanitizeModuleIdentity(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    const clean = {};
+    for (const key of ["name", "schema", "backbone", "version"]) {
+      const text = safeText(value[key], 200);
+      if (text !== undefined) clean[key] = text;
+    }
+    return clean;
   }
 
   function sanitizeEntry(entry) {
@@ -83,7 +162,7 @@
 
   function sanitizeRawPool(pool) {
     if (!pool || typeof pool !== "object" || Array.isArray(pool)) return null;
-    const result = pick(pool, ["schema", "extractionModuleVersion", "inferenceHints"]);
+    const result = pick(pool, ["schema", "extractionModuleVersion"]);
     const source = own(pool, "source");
     result.source = pick(source, ["fileName", "pageCount", "characters", "sourceText"]);
     if (Array.isArray(pool.chunks)) {
@@ -92,25 +171,28 @@
         clean.rawEntries = Array.isArray(chunk?.rawEntries)
           ? chunk.rawEntries.map(sanitizeEntry).filter(Boolean)
           : [];
-        if (Array.isArray(chunk?.inferenceHints)) clean.inferenceHints = cloneJson(chunk.inferenceHints);
+        if (Array.isArray(chunk?.inferenceHints)) clean.inferenceHints = chunk.inferenceHints.map(sanitizeHint).filter(Boolean);
         return clean;
       });
     }
     if (Array.isArray(pool.rawEntries)) result.rawEntries = pool.rawEntries.map(sanitizeEntry).filter(Boolean);
     if (Array.isArray(pool.unresolvedItems)) result.unresolvedItems = sanitizeUnresolvedItems(pool.unresolvedItems);
-    if (Array.isArray(result.inferenceHints)) {
-      result.inferenceHints = result.inferenceHints.map((hint) => pick(hint, [
+    if (Array.isArray(pool.inferenceHints)) {
+      result.inferenceHints = pool.inferenceHints.map((hint) => pick(hint, [
         "premiseRefs", "conclusionRef", "relationText", "page", "_provenance",
-      ]));
+      ])).map(sanitizeHint).filter(Boolean);
     }
     return result;
   }
 
   function sanitizeEntryArtifact(artifact) {
     if (!artifact || typeof artifact !== "object" || Array.isArray(artifact)) return null;
-    const result = pick(artifact, [
-      "schema", "entryModuleVersion", "paperGuide", "guideLeadSet", "aliases", "caseId",
-    ]);
+    const result = pick(artifact, ["schema", "entryModuleVersion", "caseId"]);
+    if (artifact.paperGuide !== undefined) result.paperGuide = sanitizePaperGuide(artifact.paperGuide);
+    if (artifact.guideLeadSet && typeof artifact.guideLeadSet === "object") {
+      result.guideLeadSet = { leads: Array.isArray(artifact.guideLeadSet.leads) ? artifact.guideLeadSet.leads.map(sanitizeLead).filter(Boolean) : [] };
+    }
+    if (artifact.aliases !== undefined) result.aliases = sanitizeStringMap(artifact.aliases);
     result.source = pick(artifact.source, ["fileName", "pageCount", "characters", "sourceText"]);
     if (Array.isArray(artifact.entries)) result.entries = artifact.entries.map(sanitizeEntry).filter(Boolean);
     if (Array.isArray(artifact.unresolvedItems)) result.unresolvedItems = sanitizeUnresolvedItems(artifact.unresolvedItems);
@@ -123,25 +205,57 @@
       };
     }
     if (artifact.aggregation && typeof artifact.aggregation === "object") {
-      result.aggregation = pick(artifact.aggregation, ["records", "conflicts", "counts"]);
-      if (Array.isArray(artifact.aggregation.records)) {
-        result.aggregation.records = artifact.aggregation.records.map(sanitizeEntry).filter(Boolean);
-      }
+      result.aggregation = {
+        records: Array.isArray(artifact.aggregation.records)
+          ? artifact.aggregation.records.map(sanitizeEntry).filter(Boolean) : [],
+        // Conflict payloads are diagnostic/model output and are not needed to
+        // resume from the canonical Entry list.
+        conflicts: [],
+        counts: sanitizeNumericFields(artifact.aggregation.counts, [
+          "coverage", "leadGuided", "total", "conflicts",
+        ]),
+      };
     }
     if (artifact.reviewInputs && typeof artifact.reviewInputs === "object") {
-      result.reviewInputs = pick(artifact.reviewInputs, [
-        "missingExtractionCandidates", "externalEvidenceIndex", "externalBoundaryCandidates",
-        "protectedClaimIds", "canonicalIndex",
-      ]);
+      result.reviewInputs = {
+        missingExtractionCandidates: Array.isArray(artifact.reviewInputs.missingExtractionCandidates)
+          ? artifact.reviewInputs.missingExtractionCandidates.map(sanitizeEntry).filter(Boolean) : [],
+        protectedClaimIds: Array.isArray(artifact.reviewInputs.protectedClaimIds)
+          ? artifact.reviewInputs.protectedClaimIds.map((id) => safeText(id, 200)).filter(Boolean) : [],
+        canonicalIndex: sanitizeStringMap(artifact.reviewInputs.canonicalIndex),
+      };
+      const boundary = artifact.reviewInputs.externalBoundaryCandidates;
+      if (boundary && typeof boundary === "object" && !Array.isArray(boundary)) {
+        result.reviewInputs.externalBoundaryCandidates = {
+          b0: Array.isArray(boundary.b0) ? boundary.b0.map((id) => safeText(id, 200)).filter(Boolean) : [],
+          fixedEntries: Array.isArray(boundary.fixedEntries) ? boundary.fixedEntries.map(sanitizeEntry).filter(Boolean) : [],
+          classifications: Array.isArray(boundary.classifications)
+            ? boundary.classifications.map((item) => sanitizeNested(pick(item, ["id", "classification", "reason", "sourceReference", "page"]))).filter(Boolean)
+            : [],
+        };
+      }
     }
     // Diagnostics are useful for display but may contain transport metadata.
     // Keep only counters and module identity, never model call records.
     if (artifact.diagnostics && typeof artifact.diagnostics === "object") {
-      result.diagnostics = pick(artifact.diagnostics, [
-        "durationMs", "deduplicated", "consolidationSummary", "moduleIdentity",
-      ]);
+      result.diagnostics = sanitizeNumericFields(artifact.diagnostics, ["durationMs", "deduplicated"]);
+      result.diagnostics.consolidationSummary = {
+        ...sanitizeNumericFields(artifact.diagnostics.consolidationSummary, [
+          "rawEntryCount", "preCanonicalCount", "outputEntryCount", "modelCalls",
+          "malformedCount", "invalidPageCount", "deduplicatedCount",
+          "discardedDamagedCount", "consolidatedEntryCount",
+        ]),
+      };
+      const rawPoolSchema = safeText(artifact.diagnostics.consolidationSummary?.rawPoolSchema, 200);
+      if (rawPoolSchema !== undefined) result.diagnostics.consolidationSummary.rawPoolSchema = rawPoolSchema;
+      result.diagnostics.moduleIdentity = sanitizeModuleIdentity(artifact.diagnostics.moduleIdentity);
       result.diagnostics.stages = Array.isArray(artifact.diagnostics.stages)
-        ? artifact.diagnostics.stages.map((stage) => pick(stage, ["stage", "atMs"]))
+        ? artifact.diagnostics.stages.map((stage) => {
+          const clean = sanitizeNumericFields(stage, ["atMs"]);
+          const name = safeText(stage?.stage, 100);
+          if (name !== undefined) clean.stage = name;
+          return clean;
+        })
         : [];
       // Model/network call diagnostics are not required to resume and may
       // contain transport metadata.  Preserve the Artifact contract with a
@@ -156,7 +270,12 @@
     const result = pick(view, ["schema", "semanticModel", "mainTargetEntryId", "projectTitle"]);
     if (view.project && typeof view.project === "object") result.project = pick(view.project, ["id", "title"]);
     if (view.channelOptions && typeof view.channelOptions === "object") {
-      result.channelOptions = pick(view.channelOptions, ["schema", "projectId", "boundaryLabel", "adapterOptions"]);
+      result.channelOptions = {};
+      for (const key of ["schema", "projectId", "boundaryLabel"]) {
+        const value = safeText(view.channelOptions[key], 300);
+        if (value !== undefined) result.channelOptions[key] = value;
+      }
+      if (view.channelOptions.adapterOptions !== undefined) result.channelOptions.adapterOptions = {};
     }
     if (view.derivedResearchState && typeof view.derivedResearchState === "object") {
       result.derivedResearchState = {};
@@ -183,6 +302,19 @@
         return clean;
       });
     }
+    if (Array.isArray(view.unresolvedItems)) result.unresolvedItems = sanitizeUnresolvedItems(view.unresolvedItems);
+    if (view.diagnostics && typeof view.diagnostics === "object" && !Array.isArray(view.diagnostics)) {
+      result.diagnostics = pick(view.diagnostics, [
+        "inferenceDegraded", "mainTargetIdentified", "mainProofChainComplete", "openClaimEntryIds", "isolatedEntryIds", "repairActions",
+      ]);
+      for (const key of ["openClaimEntryIds", "isolatedEntryIds", "repairActions"]) {
+        if (Array.isArray(result.diagnostics[key])) {
+          result.diagnostics[key] = result.diagnostics[key]
+            .map((value) => safeText(value, 500))
+            .filter((value) => typeof value === "string" && value);
+        }
+      }
+    }
     return result;
   }
 
@@ -190,7 +322,10 @@
     if (!layer || typeof layer !== "object" || Array.isArray(layer)) return { items: [] };
     const result = {};
     if (layer.source && typeof layer.source === "object") {
-      result.source = pick(layer.source, ["fileName", "pageCount"]);
+      result.source = {};
+      const fileName = safeText(layer.source.fileName, 500);
+      if (fileName !== undefined) result.source.fileName = fileName;
+      if (Number.isInteger(layer.source.pageCount) && layer.source.pageCount > 0) result.source.pageCount = layer.source.pageCount;
     }
     result.items = Array.isArray(layer.items) ? layer.items.map((item) => {
       const clean = {};
@@ -206,12 +341,13 @@
 
   function sanitizeUnresolvedItems(items) {
     if (!Array.isArray(items)) return [];
+    const counts = new Map();
     return items.filter((item) => (
       item && typeof item === "object" && !Array.isArray(item)
       && ["sourceStage", "candidateSummary", "failureCategory", "validationError"]
         .every((field) => typeof item[field] === "string" && item[field].trim())
       && typeof item.retryable === "boolean"
-    )).map((item) => {
+    )).map((item, index) => {
       const clean = {};
       for (const key of [
         "id", "sourceStage", "sourceLocator", "sourcePath", "candidateSummary",
@@ -222,6 +358,11 @@
       }
       if (Number.isInteger(item?.page) && item.page > 0) clean.page = item.page;
       if (typeof item?.retryable === "boolean") clean.retryable = item.retryable;
+      if (!clean.id) clean.id = `unresolved:${clean.sourceStage}:${clean.failureCategory}:${index + 1}`;
+      const baseId = clean.id;
+      const count = (counts.get(baseId) ?? 0) + 1;
+      counts.set(baseId, count);
+      if (count > 1) clean.id = `${baseId}:${count}`;
       return clean;
     });
   }
@@ -232,9 +373,18 @@
     clean.map = sanitizeProjectView(result.map);
     clean.sourceAnnotations = sanitizeSourceAnnotations(result.sourceAnnotations);
     clean.unresolvedItems = sanitizeUnresolvedItems(result.unresolvedItems);
-    clean.diagnostics = pick(result.diagnostics, [
-      "mainTargetIdentified", "openClaimCount", "mainProofChainComplete", "missingStages",
-    ]);
+    clean.diagnostics = {};
+    for (const key of ["mainTargetIdentified", "mainProofChainComplete"]) {
+      if (typeof result.diagnostics?.[key] === "boolean" || result.diagnostics?.[key] === null) {
+        clean.diagnostics[key] = result.diagnostics[key];
+      }
+    }
+    if (Number.isInteger(result.diagnostics?.openClaimCount) && result.diagnostics.openClaimCount >= 0) {
+      clean.diagnostics.openClaimCount = result.diagnostics.openClaimCount;
+    }
+    clean.diagnostics.missingStages = Array.isArray(result.diagnostics?.missingStages)
+      ? result.diagnostics.missingStages.map((stage) => safeText(stage, 100)).filter(Boolean)
+      : [];
     clean.stages = {};
     if (result.stages && typeof result.stages === "object") {
       for (const stage of WORKFLOW_STAGES) {
@@ -246,7 +396,7 @@
     if (result.identity && typeof result.identity === "object") {
       clean.identity = {
         contentFingerprint: typeof result.identity.contentFingerprint === "string"
-          ? result.identity.contentFingerprint
+          ? safeText(result.identity.contentFingerprint, 500)
           : "",
         frozenWorkflow: sanitizeWorkflowIdentity(result.identity.frozenWorkflow),
       };
@@ -265,6 +415,75 @@
     }
     if (stage === "inference" || stage === "closure") return sanitizeProjectView(artifact);
     return null;
+  }
+
+  function isUsableStageArtifact(stage, artifact) {
+    if (!artifact || typeof artifact !== "object" || Array.isArray(artifact)) return false;
+    const validEntry = (entry, { raw = false, project = false } = {}) => {
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) return false;
+      if (typeof entry.id !== "string" || !entry.id.trim()) return false;
+      if (typeof entry.statement !== "string" || !entry.statement.trim()) return false;
+      if (raw) {
+        return Number.isInteger(entry.page) && entry.page > 0
+          && (typeof entry.type === "string" || ["fact", "claim"].includes(entry.entryClass));
+      }
+      const kindValid = entry.entryClass === "fact"
+        ? ["definition", "algorithm", "calculation"].includes(entry.factKind)
+        : entry.entryClass === "claim" && ["lemma", "proposition", "theorem"].includes(entry.claimKind);
+      if (!kindValid) return false;
+      if (project) return typeof (entry.sourcePath ?? entry.sourceLocator) === "string" && Boolean((entry.sourcePath ?? entry.sourceLocator).trim());
+      return true;
+    };
+    const validProjectMap = (map) => {
+      if (!map || typeof map !== "object" || Array.isArray(map)) return false;
+      if (!Array.isArray(map.entries) || map.entries.length === 0
+        || !map.entries.every((entry) => validEntry(entry, { project: true }))) return false;
+      if (!Array.isArray(map.inferences)) return false;
+      const entryById = new Map(map.entries.map((entry) => [entry.id.trim(), entry]));
+      const objectIds = new Set(entryById.keys());
+      return map.inferences.every((inference) => {
+        if (!inference || typeof inference !== "object" || Array.isArray(inference)) return false;
+        const id = typeof inference.id === "string" ? inference.id.trim() : "";
+        if (!id || objectIds.has(id)) return false;
+        objectIds.add(id);
+        if (!["proof", "organization"].includes(inference.operationKind)) return false;
+        if (!Array.isArray(inference.premises)
+          || (inference.operationKind === "organization" && inference.premises.length === 0)) return false;
+        const premises = inference.premises.map((premise) => (typeof premise === "string" ? premise.trim() : ""));
+        if (premises.some((premise) => !premise || !entryById.has(premise))) return false;
+        if (new Set(premises).size !== premises.length) return false;
+        const conclusion = typeof inference.conclusion === "string" ? inference.conclusion.trim() : "";
+        const conclusionEntry = entryById.get(conclusion);
+        if (!conclusionEntry || premises.includes(conclusion)) return false;
+        if (inference.operationKind === "proof" && conclusionEntry.entryClass !== "claim") return false;
+        if (inference.operationKind === "organization" && (
+          conclusionEntry.entryClass !== "fact"
+          || premises.some((premise) => entryById.get(premise)?.entryClass !== "fact")
+        )) return false;
+        if (typeof inference.argument !== "string" || !inference.argument.trim()) return false;
+        const source = inference.sourcePath ?? inference.sourceLocator;
+        return typeof source === "string" && Boolean(source.trim());
+      });
+    };
+    if (stage === "mineru") return typeof artifact.markedMarkdown === "string" && Boolean(artifact.markedMarkdown.trim());
+    if (stage === "entry") {
+      const rawEntries = [
+        ...(Array.isArray(artifact.rawEntries) ? artifact.rawEntries : []),
+        ...(Array.isArray(artifact.chunks) ? artifact.chunks.flatMap((chunk) => Array.isArray(chunk?.rawEntries) ? chunk.rawEntries : []) : []),
+      ];
+      return rawEntries.length > 0 && rawEntries.every((entry) => validEntry(entry, { raw: true }));
+    }
+    if (["consolidate", "w7-verify", "w8-b0"].includes(stage)) {
+      return Array.isArray(artifact.entries) && artifact.entries.length > 0
+        && artifact.entries.every((entry) => validEntry(entry));
+    }
+    if (stage === "closure" && artifact.schema === "cmath.paper-to-map-result/v1") {
+      return validProjectMap(artifact.map);
+    }
+    if (stage === "inference" || stage === "closure") {
+      return validProjectMap(artifact);
+    }
+    return false;
   }
 
   function sanitizeWorkflowIdentity(workflow) {
@@ -291,7 +510,8 @@
     for (const key of identityKeys) {
       if (!Object.prototype.hasOwnProperty.call(workflow, key)) continue;
       const value = workflow[key];
-      if (["string", "number", "boolean"].includes(typeof value) || value === null) result[key] = value;
+      if (typeof value === "string") result[key] = safeText(value, 500);
+      else if (["number", "boolean"].includes(typeof value) || value === null) result[key] = value;
     }
     if (Array.isArray(workflow.capabilityDependencies)) {
       result.capabilityDependencies = workflow.capabilityDependencies
@@ -317,13 +537,18 @@
     const result = {
       schema: CHECKPOINT_SCHEMA,
       key,
-      contentFingerprint: typeof checkpoint.contentFingerprint === "string" ? checkpoint.contentFingerprint : "",
+      contentFingerprint: typeof checkpoint.contentFingerprint === "string" ? safeText(checkpoint.contentFingerprint, 500) : "",
       frozenWorkflow: sanitizeWorkflowIdentity(checkpoint.frozenWorkflow),
       stages: {},
       updatedAt: typeof checkpoint.updatedAt === "string" ? checkpoint.updatedAt : new Date().toISOString(),
     };
     if (checkpoint.input && typeof checkpoint.input === "object") {
-      result.input = pick(checkpoint.input, ["fileName", "byteLength", "contentFingerprint"]);
+      result.input = {};
+      const fileName = safeText(checkpoint.input.fileName, 500);
+      const contentFingerprint = safeText(checkpoint.input.contentFingerprint, 500);
+      if (fileName !== undefined) result.input.fileName = fileName;
+      if (Number.isFinite(checkpoint.input.byteLength) && checkpoint.input.byteLength >= 0) result.input.byteLength = checkpoint.input.byteLength;
+      if (contentFingerprint !== undefined) result.input.contentFingerprint = contentFingerprint;
     } else {
       result.input = { contentFingerprint: result.contentFingerprint };
     }
@@ -335,10 +560,15 @@
       if (["running", "complete", "degraded", "failed"].includes(clean.status)) {
         if (clean.status === "complete" || clean.status === "degraded") {
           const artifact = sanitizeStageArtifact(stage, record.artifact);
-          if (artifact !== null) clean.artifact = artifact;
+          if (!isUsableStageArtifact(stage, artifact)) continue;
+          clean.artifact = artifact;
         }
         if (clean.status === "failed" && record.error && typeof record.error === "object") {
-          clean.error = pick(record.error, ["message", "code"]);
+          clean.error = {};
+          for (const key of ["message", "code"]) {
+            const value = safeText(record.error[key], key === "code" ? 80 : 500);
+            if (value !== undefined) clean.error[key] = value;
+          }
         }
         result.stages[stage] = clean;
       }
@@ -430,7 +660,7 @@
       async load(key) {
         const database = await db();
         const record = await requestTransaction(database, storeName, "readonly", (store) => store.get(String(key)));
-        return cloneJson(record?.checkpoint ?? record ?? null);
+        return cloneJson(sanitizeCheckpoint(record?.checkpoint ?? record ?? null, String(key)));
       },
       async save(keyOrCheckpoint, maybeCheckpoint) {
         const args = saveArgs(keyOrCheckpoint, maybeCheckpoint);

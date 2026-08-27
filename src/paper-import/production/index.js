@@ -261,7 +261,7 @@
     return parsePatchJson(content, stage);
   }
 
-  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, allowPartialSuccess = false, allowRefinementDegradation = false, resumeArtifacts = null, onArtifact } = {}) {
+  async function requestPaperProjectView({ endpoint, apiKey, model, providerLabel = "模型服务", fileName, pageCount, text, markedMarkdown, fetchImpl = globalThis.fetch, chatImpl, signal, onStage, maxChunks = 5, reasoningEffort, productionSemanticPipeline = false, allowPartialSuccess = false, allowRefinementDegradation = false, allowInferenceDegradation = false, resumeArtifacts = null, onArtifact } = {}) {
     if (typeof fetchImpl !== "function") throw new Error("当前浏览器不支持网络请求");
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
@@ -413,8 +413,12 @@
         reasoningEffort,
         workflowVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
         chatDefaults: { model: modelName, providerLabel: serviceName, reasoningEffort },
+        allowDegraded: allowInferenceDegradation,
       });
-      if (typeof onArtifact === "function") await onArtifact("inference", view);
+      if (typeof onArtifact === "function") {
+        const degraded = allowInferenceDegradation && view?.diagnostics?.inferenceDegraded === true;
+        await onArtifact("inference", view, degraded ? { status: "degraded" } : {});
+      }
     }
 
     if (resumeArtifacts?.closure) return resumeArtifacts.closure;

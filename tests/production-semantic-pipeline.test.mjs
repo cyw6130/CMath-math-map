@@ -209,3 +209,50 @@ test("production semantic seam can degrade W7.1 and continue W8 plus Inference",
   assert.equal(artifacts["w8-b0"].unresolvedItems[0].sourceStage, "w7-verify");
   assert.doesNotMatch(JSON.stringify(artifacts["w8-b0"]), /secret-key/iu);
 });
+
+test("production semantic seam checkpoints a legal Inference subset as degraded", async () => {
+  const artifacts = {};
+  const infos = {};
+  const view = await client.requestPaperProductionSemanticPipeline({
+    endpoint: "https://example.invalid/v1",
+    apiKey: "secret-key",
+    model: "same-model",
+    fileName: "partial-inference.md",
+    pageCount: 1,
+    markedMarkdown: "[[PAGE 1]]\nDefinition and theorem.",
+    allowInferenceDegradation: true,
+    fetchImpl: async () => { throw new Error("chatImpl should own model calls"); },
+    chatImpl: async ({ stage }) => {
+      if (stage === "extract") return { content: JSON.stringify({
+        foundationEntries: [{ id: "def:space", entryClass: "fact", factKind: "definition", statement: "$X$.", page: 1 }],
+        resultEntries: [
+          { id: "thm:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", page: 1 },
+          { id: "lem:step", entryClass: "claim", claimKind: "lemma", statement: "$L$.", page: 1 },
+        ],
+        inferenceHints: [],
+      }) };
+      if (stage === "w7-verify" || stage === "w8-b0") {
+        return { content: JSON.stringify({ addEntries: [], corrections: [], removeIds: [] }) };
+      }
+      return { content: JSON.stringify({
+        projectTitle: "Partial inference",
+        mainTargetEntryId: "thm:main",
+        b0: [],
+        inferences: [
+          { id: "proof:main", operationKind: "proof", premises: ["def:space"], conclusion: "thm:main", argument: "By definition.", page: 1 },
+          { id: "proof:bad", operationKind: "proof", premises: ["missing"], conclusion: "lem:step", argument: "Broken.", page: 1 },
+        ],
+      }) };
+    },
+    onArtifact: async (stage, artifact, info) => {
+      artifacts[stage] = artifact;
+      infos[stage] = info;
+    },
+  });
+
+  assert.deepEqual(view.inferences.map((item) => item.id), ["proof:main"]);
+  assert.equal(view.diagnostics.inferenceDegraded, true);
+  assert.equal(infos.inference.status, "degraded");
+  assert.ok(artifacts.inference.unresolvedItems.some((item) => item.candidateSummary.includes("proof:bad")));
+  assert.deepEqual(artifacts.closure.inferences.map((item) => item.id), ["proof:main"]);
+});

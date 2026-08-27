@@ -198,8 +198,8 @@
     message = message
       .replace(/Bearer\s+\S+/giu, "Bearer [redacted]")
       .replace(/https?:\/\/[^\s"'<>]+/giu, "[redacted-url]")
-      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
-      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-])?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]");
+      .replace(/(["'](?:authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))["']\s*:\s*["'])[^"']*(["'])/giu, "$1[redacted]$2")
+      .replace(/\b(authorization|(?:(?:[a-z0-9]+)[_-]?)?(?:api[_-]?key|token|secret))\s*[:=]\s*\S+/giu, "$1=[redacted]");
     for (const value of sensitiveValues) {
       if (typeof value === "string" && value) message = message.split(value).join("[redacted]");
     }

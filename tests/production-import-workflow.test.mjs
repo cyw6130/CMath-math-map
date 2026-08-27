@@ -59,19 +59,22 @@ function capabilityRuntime(semanticPipeline, manifest = CAPABILITY_MANIFEST) {
 function fakeSemanticPipeline({ calls, failW8 = false, failureMessage = "W8 test failure" } = {}) {
   return async ({ onStage, onArtifact, resumeArtifacts, markedMarkdown }) => {
     const emit = (stage, phase) => onStage?.(stage, { phase });
-    const artifact = resumeArtifacts?.entry ?? { rawEntries: [], source: { sourceText: markedMarkdown, pageCount: 1, fileName: "paper.pdf" } };
+    const artifact = resumeArtifacts?.entry ?? { rawEntries: [{ id: "claim:main", type: "theorem", statement: "$T$.", page: 1 }], source: { sourceText: markedMarkdown, pageCount: 1, fileName: "paper.pdf" } };
     if (!resumeArtifacts?.entry) {
       calls.push("entry");
       emit("entry", "start");
       await onArtifact?.("entry", artifact);
     }
-    const consolidated = resumeArtifacts?.consolidate ?? { entries: [{ id: "claim:main" }] };
+    const consolidated = resumeArtifacts?.consolidate ?? { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=1" }] };
     if (!resumeArtifacts?.consolidate) {
       calls.push("consolidate");
       emit("consolidate", "start");
       await onArtifact?.("consolidate", consolidated);
     }
-    const w7 = resumeArtifacts?.["w7-verify"] ?? { entries: [{ id: "claim:main" }, { id: "fact:x" }] };
+    const w7 = resumeArtifacts?.["w7-verify"] ?? { entries: [
+      ...consolidated.entries,
+      { id: "fact:x", entryClass: "fact", factKind: "definition", statement: "$X$.", sourcePath: "paper.pdf#page=1" },
+    ] };
     if (!resumeArtifacts?.["w7-verify"]) {
       calls.push("w7-verify");
       emit("w7-verify", "start");
@@ -82,7 +85,10 @@ function fakeSemanticPipeline({ calls, failW8 = false, failureMessage = "W8 test
       emit("w8-b0", "start");
       throw new Error(failureMessage);
     }
-    const w8 = resumeArtifacts?.["w8-b0"] ?? { entries: [{ id: "claim:main" }, { id: "fact:x" }, { id: "claim:external" }] };
+    const w8 = resumeArtifacts?.["w8-b0"] ?? { entries: [
+      ...w7.entries,
+      { id: "claim:external", entryClass: "claim", claimKind: "theorem", statement: "$E$.", sourcePath: "paper.pdf#page=1" },
+    ] };
     if (!resumeArtifacts?.["w8-b0"]) {
       calls.push("w8-b0");
       emit("w8-b0", "start");
@@ -263,7 +269,10 @@ test("VNext 的受控未解决项通过 checkpoint 序列化并恢复", async ()
   const map = {
     schema: "cmath.project-view-model/v0.1",
     mainTargetEntryId: "claim:main",
-    entries: [{ id: "claim:main", type: "Claim", statement: "Main claim" }],
+    entries: [{
+      id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main claim",
+      statement: "Main claim", sourcePath: "[[PAGE 1]]",
+    }],
     inferences: [{
       id: "inference:1",
       operationKind: "proof",
@@ -457,9 +466,9 @@ test("degraded 自动完善阶段保存最近合法 Artifact，并在刷新后�
   const pdf = { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([7, 8, 9]).buffer };
   const calls = [];
   const pipeline = async ({ onStage, onArtifact, resumeArtifacts }) => {
-    const entry = resumeArtifacts?.entry ?? { rawEntries: [], source: { sourceText: "[[PAGE 1]] source", pageCount: 1, fileName: "paper.pdf" } };
+    const entry = resumeArtifacts?.entry ?? { rawEntries: [{ id: "claim:main", type: "theorem", statement: "$T$.", page: 1 }], source: { sourceText: "[[PAGE 1]] source", pageCount: 1, fileName: "paper.pdf" } };
     if (!resumeArtifacts?.entry) { calls.push("entry"); onStage?.("entry", { phase: "start" }); await onArtifact("entry", entry); }
-    const consolidated = resumeArtifacts?.consolidate ?? { entries: [{ id: "claim:main" }] };
+    const consolidated = resumeArtifacts?.consolidate ?? { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=1" }] };
     if (!resumeArtifacts?.consolidate) { calls.push("consolidate"); onStage?.("consolidate", { phase: "start" }); await onArtifact("consolidate", consolidated); }
     const degraded = {
       entries: consolidated.entries,
@@ -504,6 +513,60 @@ test("degraded 自动完善阶段保存最近合法 Artifact，并在刷新后�
     semanticPipeline: pipeline, endpoint: "https://model.example/v1", apiKey: "k", model: "same-model",
   });
   assert.deepEqual(calls, ["w7-verify", "w8-b0", "inference"]);
+});
+
+test("degraded Inference checkpoint 保存合法关系子集并在刷新后重跑 Inference", async () => {
+  const store = createMemoryCheckpointStore();
+  const pdf = { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([9, 8, 7]).buffer };
+  const calls = [];
+  const pipeline = async ({ onStage, onArtifact, resumeArtifacts }) => {
+    const stages = ["entry", "consolidate", "w7-verify", "w8-b0"];
+    const stageArtifacts = {
+      entry: { rawEntries: [{ id: "claim:main", type: "theorem", statement: "$T$.", page: 1 }], source: { sourceText: "[[PAGE 1]] source", pageCount: 1, fileName: "paper.pdf" } },
+      consolidate: { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=1" }] },
+      "w7-verify": { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=1" }] },
+      "w8-b0": { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=1" }] },
+    };
+    for (const stage of stages) {
+      if (resumeArtifacts?.[stage]) continue;
+      calls.push(stage);
+      onStage?.(stage, { phase: "start" });
+      await onArtifact(stage, stageArtifacts[stage]);
+    }
+    const partial = {
+      schema: "cmath.project-view-model/v0.1",
+      project: { id: "project:partial", title: "Partial" },
+      entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main", statement: "$T$.", sourcePath: "paper.pdf#page=1" }],
+      inferences: [],
+      unresolvedItems: [{
+        id: "unresolved:inference:1", sourceStage: "inference", candidateSummary: "broken inference",
+        failureCategory: "inference-invalid", validationError: "dangling premise", retryable: true,
+      }],
+    };
+    calls.push("inference");
+    onStage?.("inference", { phase: "start" });
+    await onArtifact("inference", partial, { status: "degraded" });
+    onStage?.("closure", { phase: "start" });
+    await onArtifact("closure", partial);
+    return partial;
+  };
+
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: WORKFLOW, checkpointStore: store, hashImpl: async () => "inference-degraded-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    semanticPipeline: pipeline, endpoint: "https://model.example/v1", apiKey: "k", model: "same-model",
+  });
+  const checkpoint = await store.load("production-paper-import:inference-degraded-digest");
+  assert.equal(checkpoint.stages.inference.status, "degraded");
+  assert.equal(checkpoint.stages.inference.artifact.unresolvedItems.length, 1);
+
+  calls.length = 0;
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: WORKFLOW, checkpointStore: store, hashImpl: async () => "inference-degraded-digest",
+    mineruClient: { importPdf: async () => { throw new Error("MinerU should resume"); } },
+    semanticPipeline: pipeline, endpoint: "https://model.example/v1", apiKey: "k", model: "same-model",
+  });
+  assert.deepEqual(calls, ["inference"]);
 });
 
 test("Frozen Workflow 身份不匹配时不恢复旧 checkpoint", async () => {

@@ -238,7 +238,9 @@ test("rejects broken inference references", () => {
 });
 
 test("sends the key only in the authorization header and parses the model result", async () => {
-  const { impl, state } = makePipelineFetch({ later: [rawMap] });
+  const { impl, state } = makePipelineFetch({ later: [{
+    projectTitle: "A Paper", mainTargetEntryId: "thm:main", b0: [], inferences: [],
+  }] });
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://api.deepseek.com/v1",
     apiKey: "test",
@@ -403,7 +405,9 @@ test("public model seams preserve the historical missing-network errors", async 
 });
 
 test("sends Kimi K3 through the Moonshot preset without leaking the API key", async () => {
-  const { impl, state } = makePipelineFetch({ later: [rawMap] });
+  const { impl, state } = makePipelineFetch({ later: [{
+    projectTitle: "A Paper", mainTargetEntryId: "thm:main", b0: [], inferences: [],
+  }] });
   const view = await paperImportClient.requestPaperProjectView({
     endpoint: "https://api.moonshot.cn/v1",
     apiKey: "test",
@@ -1227,7 +1231,7 @@ test("assembly repair can supplement a missing entry via fixedEntries", async ()
   assert.equal(view.inferences[0].conclusion, "paper:thm:z");
 });
 
-test("sanitizeRawProjectView repairs mechanical defects locally", () => {
+test("sanitizeRawProjectView keeps only meaning-preserving mechanical repairs", () => {
   const raw = {
     projectTitle: "Sanitize Paper",
     mainTargetEntryId: "missing",
@@ -1248,19 +1252,20 @@ test("sanitizeRawProjectView repairs mechanical defects locally", () => {
     ],
   };
 
-  const { raw: fixed, actions } = paperImportClient.sanitizeRawProjectView(raw, { fileName: "s.pdf" });
+  const { raw: fixed, actions, unresolvedItems } = paperImportClient.sanitizeRawProjectView(raw, { fileName: "s.pdf" });
   assert.ok(actions.length >= 5);
+  assert.ok(unresolvedItems.length >= 5);
 
-  const view = paperImportClient.paperProjectView(fixed, { fileName: "s.pdf" });
+  const view = paperImportClient.paperProjectView(fixed, { fileName: "s.pdf", requireMainTarget: false });
   const byId = new Map(view.inferences.map((inf) => [inf.id, inf]));
-  assert.equal(byId.get("i1").operationKind, "proof");
-  assert.deepEqual(byId.get("i2").premises, ["c1"]);
+  assert.equal(byId.has("i1"), false);
+  assert.equal(byId.has("i2"), false);
   assert.deepEqual(byId.get("i3").premises, []);
   assert.ok(byId.has("i4"));
   assert.equal(byId.has("i5"), false);
   assert.equal(byId.has("i6"), false);
 
-  assert.equal(view.entries.find((e) => e.id === "c2").sourceReference, "外部定理");
-  assert.equal(view.mainTargetEntryId, "c3");
-  assert.equal(view.derivedResearchState.researchOverlay.loopTargetEntryId, "c3");
+  assert.equal(view.entries.find((e) => e.id === "c2").sourceReference, undefined);
+  assert.equal(view.mainTargetEntryId, undefined);
+  assert.equal(view.derivedResearchState.researchOverlay.loopTargetEntryId, undefined);
 });
