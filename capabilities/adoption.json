@@ -1,0 +1,105 @@
+{
+  "schema": "cmath.adoption-declaration/v1",
+  "consumerId": "cmath-math-map",
+  "adoptions": [
+    {
+      "capabilityId": "math-graph-semantics-v2",
+      "version": "v2",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
+        "consumerPath": "math-map-semantics.js"
+      }
+    },
+    {
+      "capabilityId": "math-map-naming-v2",
+      "version": "v2",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/presentation/math-map-naming-v2/src/index.js",
+        "consumerPath": "math-map-naming.js"
+      }
+    },
+    {
+      "capabilityId": "research-loop-progress-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/presentation/research-loop-progress-v1/src/index.js",
+        "consumerPath": "research-loop-progress.js"
+      }
+    },
+    {
+      "capabilityId": "math-map-visual-semantics-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js",
+        "consumerPath": "math-map-visual-semantics.js"
+      }
+    },
+    {
+      "capabilityId": "graph-core-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/graph-contract.js",
+        "consumerPath": "graph-contract.js"
+      }
+    },
+    {
+      "capabilityId": "math-map-workspace-v3",
+      "version": "v3",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/presentation/math-map-workspace-v3/src/math-map-lab.js",
+        "consumerPath": "math-map-lab.js"
+      }
+    },
+    {
+      "capabilityId": "math-rendering-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js",
+        "consumerPath": "math-text.js"
+      }
+    },
+    {
+      "capabilityId": "alpha-project-adapter-v0.2",
+      "version": "v0.2",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
+        "consumerPath": "math-map-project-adapter.js"
+      }
+    },
+    {
+      "capabilityId": "mathematical-content-admission-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/admission/mathematical-content-admission-v1/src/index.js",
+        "consumerPath": "math-content-admission.js"
+      }
+    },
+    {
+      "capabilityId": "generic-math-content-channel-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/import/generic-math-content-channel-v1/src/index.js",
+        "consumerPath": "math-map-content-loader.js"
+      }
+    },
+    {
+      "capabilityId": "generic-math-map-preview-loader-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/import/generic-math-map-preview-loader-v1/src/index.js",
+        "consumerPath": "generic-math-map-preview-loader.js"
+      }
+    }
+  ]
+}

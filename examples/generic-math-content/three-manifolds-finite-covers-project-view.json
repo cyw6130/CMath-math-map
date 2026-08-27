@@ -1,0 +1,669 @@
+{
+  "schema": "cmath.project-view-model/v0.1",
+  "semanticModel": "cmath.fact-claim-operation/v0.1",
+  "project": {
+    "id": "cmath:project:three-manifolds-finite-covers",
+    "title": "三维流形中的曲面、有限覆盖与可分性"
+  },
+  "channelOptions": {
+    "schema": "cmath-gamma.project-channel/v0.1",
+    "projectId": "cmath:project:three-manifolds-finite-covers",
+    "boundaryLabel": "以三维流形中的嵌入曲面为主线，群、图与立方复形作为有限覆盖工具",
+    "adapterOptions": {
+      "goalHierarchy": {
+        "finalGoalId": "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover",
+        "milestoneIds": [
+          "three-manifolds-finite-covers:entry:local-isometry-embeds-in-h-cover",
+          "three-manifolds-finite-covers:entry:free-groups-are-lerf",
+          "three-manifolds-finite-covers:entry:canonical-completion-and-retraction"
+        ]
+      },
+      "routeLabelsByTargetId": {
+        "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover": "从曲面子群到有限覆盖中的嵌入",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-haken": "虚 Haken 应用",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-fibered": "虚纤维化应用"
+      }
+    }
+  },
+  "derivedResearchState": {
+    "mathematicalState": {
+      "foundationEntryIds": [
+        "three-manifolds-finite-covers:entry:pi1-incompressible-surface",
+        "three-manifolds-finite-covers:entry:haken-manifold",
+        "three-manifolds-finite-covers:entry:immersion-and-embedding",
+        "three-manifolds-finite-covers:entry:h-cover-notation",
+        "three-manifolds-finite-covers:entry:subgroup-separability",
+        "three-manifolds-finite-covers:entry:lerf",
+        "three-manifolds-finite-covers:entry:stallings-folding-algorithm",
+        "three-manifolds-finite-covers:entry:core-plus-path-completion-algorithm",
+        "three-manifolds-finite-covers:entry:cubical-local-isometry",
+        "three-manifolds-finite-covers:entry:virtually-haken",
+        "three-manifolds-finite-covers:entry:virtually-fibered",
+        "three-manifolds-finite-covers:entry:mapping-torus",
+        "three-manifolds-finite-covers:entry:semidirect-product"
+      ],
+      "claimSeedEntryIds": [
+        "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+        "three-manifolds-finite-covers:entry:covering-lift-criterion",
+        "three-manifolds-finite-covers:entry:finite-intersection-finite-index",
+        "three-manifolds-finite-covers:entry:scott-compact-core-criterion",
+        "three-manifolds-finite-covers:entry:stallings-completion-correctness",
+        "three-manifolds-finite-covers:entry:npc-universal-cover-cat0",
+        "three-manifolds-finite-covers:entry:cat0-local-geodesic-global",
+        "three-manifolds-finite-covers:entry:canonical-completion-and-retraction",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-haken",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-fibered",
+        "three-manifolds-finite-covers:entry:seifert-van-kampen"
+      ]
+    },
+    "researchOverlay": {
+      "loopTargetEntryId": "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover",
+      "activeSectionIds": [
+        "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds",
+        "three-manifolds-finite-covers:chapter:covers-and-separability",
+        "three-manifolds-finite-covers:chapter:cubical-completion",
+        "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties"
+      ],
+      "routeDescription": "从三维流形中的 π₁-不可压缩曲面出发，经由曲面子群、对应覆盖和子群可分性，把 H-覆盖中的嵌入紧子集保留到有限覆盖；Stallings folding 提供自由群的一维模型，special cube complex 的 canonical completion 提供更强的高维有限覆盖与回缩工具，最后连接到虚 Haken 和虚纤维化。",
+      "nextActionDescription": "当前材料尚未给出从双曲三维流形的 cubulation、virtual specialness 到虚 Haken与虚纤维化的完整中间定理和证明链；也未把一般 π₁-单射 immersion 提升后仍可自交的反例形式化。"
+    }
+  },
+  "entries": [
+    {
+      "id": "three-manifolds-finite-covers:entry:pi1-incompressible-surface",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 1",
+      "shortTitle": "不可压缩曲面",
+      "title": "三维流形中的 π₁-不可压缩曲面",
+      "statement": "设 \\(M\\) 是连通三维流形，\\(S\\subset M\\) 是连通、适当嵌入且双侧的曲面。本地图称 \\(S\\) 为 \\(\\pi_1\\)-不可压缩曲面，如果包含映射 \\(i:S\\hookrightarrow M\\) 诱导的同态 \\(i_*:\\pi_1(S)\\to\\pi_1(M)\\) 是单射。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:haken-manifold",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 2",
+      "shortTitle": "Haken 流形",
+      "title": "Haken 三维流形的工作定义",
+      "statement": "本地图采用如下工作定义：一个紧、可定向、不可约三维流形 \\(M\\) 称为 Haken 流形，如果 \\(M\\) 含有一张连通、适当嵌入、双侧且 \\(\\pi_1\\)-不可压缩的曲面。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:immersion-and-embedding",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 3",
+      "shortTitle": "浸入与嵌入",
+      "title": "浸入映射与嵌入映射",
+      "statement": "设 \\(f:Y\\to X\\) 是拓扑或光滑范畴中的映射。浸入只要求 \\(f\\) 在每一点附近不发生局部折叠；嵌入还要求 \\(f\\) 在点集上单射，并把 \\(Y\\) 同胚到其像。因此浸入的像可以有整体自交，而嵌入的像没有这种自交。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:pi1-injective-immersion-may-not-embed-in-h-cover",
+      "entryClass": "claim",
+      "claimKind": "proposition",
+      "displayLabel": "命题 1",
+      "shortTitle": "一般浸入的限制",
+      "title": "π₁-单射浸入提升后未必嵌入",
+      "statement": "存在连通三维流形 \\(M\\)、紧曲面 \\(S\\) 以及 \\(\\pi_1\\)-单射浸入 \\(f:S\\looparrowright M\\)，使得若 \\(H=f_*(\\pi_1(S))\\le \\pi_1(M)\\)，则 \\(f\\) 到 \\(H\\) 对应覆盖 \\(M_H\\to M\\) 的提升仍不是嵌入。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds"
+      ],
+      "contentRef": "conversation:general-immersion-versus-local-isometry"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:h-cover-notation",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 4",
+      "shortTitle": "H-覆盖",
+      "title": "子群对应覆盖的记号",
+      "statement": "设 \\(X\\) 是连通、局部道路连通且半局部单连通的空间，\\(G=\\pi_1(X,x_0)\\)，\\(H\\le G\\)。在选定基点后，记 \\(p_H:X_H\\to X\\) 为与子群 \\(H\\) 对应的连通覆盖。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:subgroup-separability",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 5",
+      "shortTitle": "子群可分",
+      "title": "子群可分性的定义",
+      "statement": "设 \\(H\\le G\\)。称 \\(H\\) 在 \\(G\\) 中可分，如果对每个 \\(g\\in G\\setminus H\\)，都存在有限指数子群 \\(K\\le G\\)，满足 \\(H\\le K\\) 且 \\(g\\notin K\\)。等价地，对每个 \\(g\\notin H\\)，存在有限群 \\(Q\\) 和同态 \\(q:G\\to Q\\)，使 \\(q(g)\\notin q(H)\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ],
+      "contentRef": "uploaded-lecture:pp.17-20"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:lerf",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 6",
+      "shortTitle": "LERF",
+      "title": "LERF 群的定义",
+      "statement": "称群 \\(G\\) 是 LERF（locally extended residually finite），如果 \\(G\\) 的每个有限生成子群都在 \\(G\\) 中可分。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ],
+      "contentRef": "uploaded-lecture:p.17"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 1",
+      "shortTitle": "覆盖分类",
+      "title": "连通覆盖与子群的对应",
+      "statement": "设 \\(X\\) 是连通、局部道路连通且半局部单连通的空间。选定基点后，\\(X\\) 的连通覆盖的等价类与 \\(\\pi_1(X)\\) 的子群共轭类一一对应；带基点的连通覆盖与实际子群一一对应。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:covering-lift-criterion",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 1",
+      "shortTitle": "提升判据",
+      "title": "覆盖映射的提升判据",
+      "statement": "设 \\(p:X_H\\to X\\) 是与 \\(H\\le \\pi_1(X,x_0)\\) 对应的带基点覆盖，\\(f:(Y,y_0)\\to(X,x_0)\\) 是基点保持映射，且 \\(Y\\) 连通、局部道路连通。则 \\(f\\) 存在基点保持提升 \\(\\widetilde f:Y\\to X_H\\) 当且仅当 \\(f_*(\\pi_1(Y,y_0))\\subseteq H\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:finite-intersection-finite-index",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 2",
+      "shortTitle": "有限指数交",
+      "title": "有限多个有限指数子群的交仍为有限指数",
+      "statement": "设 \\(G\\) 是群，\\(K_1,\\dots,K_r\\le G\\) 都具有有限指数。则 \\(K_1\\cap\\cdots\\cap K_r\\) 也在 \\(G\\) 中具有有限指数。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:simultaneous-finite-separation",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 3",
+      "shortTitle": "同时分离",
+      "title": "可分子群可以同时排除有限多个外部元素",
+      "statement": "设 \\(H\\le G\\) 在 \\(G\\) 中可分，且 \\(g_1,\\dots,g_r\\in G\\setminus H\\)。则存在有限指数子群 \\(K\\le G\\)，使 \\(H\\le K\\) 且 \\(g_i\\notin K\\) 对所有 \\(1\\le i\\le r\\) 都成立。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:scott-compact-core-criterion",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 2",
+      "shortTitle": "Scott 判据",
+      "title": "子群可分性的有限覆盖判据",
+      "statement": "设 \\(X\\) 是连通有限 CW 复形，\\(G=\\pi_1(X)\\)，\\(H\\le G\\)，并令 \\(X_H\\to X\\) 为对应覆盖。则 \\(H\\) 在 \\(G\\) 中可分，当且仅当对 \\(X_H\\) 的每个紧子集 \\(C\\)，都存在有限指数子群 \\(K\\) 满足 \\(H\\le K\\le G\\)，使自然映射 \\(X_H\\to X_K\\) 在 \\(C\\) 上为嵌入。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover",
+      "entryClass": "claim",
+      "claimKind": "proposition",
+      "displayLabel": "命题 2",
+      "shortTitle": "曲面进入有限覆盖",
+      "title": "可分曲面子群的有限覆盖嵌入准则",
+      "statement": "设 \\(M\\) 是紧连通三维流形，\\(S\\) 是紧曲面，\\(f:S\\looparrowright M\\) 是 \\(\\pi_1\\)-单射浸入，\\(H=f_*(\\pi_1(S))\\le \\pi_1(M)\\)。若 \\(f\\) 到 \\(H\\) 对应覆盖 \\(M_H\\to M\\) 的提升 \\(\\widetilde f:S\\to M_H\\) 是嵌入，并且 \\(H\\) 在 \\(\\pi_1(M)\\) 中可分，则存在有限层覆盖 \\(M_K\\to M\\)，使 \\(f\\) 提升为嵌入 \\(S\\hookrightarrow M_K\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:stallings-folding-algorithm",
+      "entryClass": "fact",
+      "factKind": "algorithm",
+      "displayLabel": "算法 1",
+      "shortTitle": "Stallings 折叠",
+      "title": "有限生成自由群子群的核心图算法",
+      "statement": "设 \\(F_n=\\pi_1(R_n)\\)，其中 \\(R_n\\) 是 \\(n\\) 个圆的楔和。给定有限生成子群 \\(H\\le F_n\\) 的一组生成元，把每个生成元画成以基点为端点的带标签闭路，并反复识别从同一顶点出发且标签、方向相同的边；最后删除不属于任何约化闭路的悬挂树。所得有限带标签核心图记为 \\(\\Gamma(H)\\)，并满足 \\(\\pi_1(\\Gamma(H))\\cong H\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:stallings-model"
+      ],
+      "contentRef": "uploaded-lecture:pp.5-10"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:core-plus-path-completion-algorithm",
+      "entryClass": "fact",
+      "factKind": "algorithm",
+      "displayLabel": "算法 2",
+      "shortTitle": "核心加路径",
+      "title": "用核心图和非闭路径分离指定元素",
+      "statement": "设 \\(H\\le F_n\\) 有限生成且 \\(g\\notin H\\)。在 \\(H\\) 对应覆盖中，把代表 \\(g\\) 的闭路提升为从基点出发的非闭路径 \\(\\gamma(g)\\)；令 \\(\\Delta=\\Gamma(H)\\cup\\gamma(g)\\)。随后对有限图浸入 \\(\\Delta\\to R_n\\) 做 canonical completion，补足缺少的标签边，同时不识别 \\(\\Delta\\) 中已有的不同顶点。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:stallings-model"
+      ],
+      "contentRef": "uploaded-lecture:pp.18-20"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:stallings-completion-correctness",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 3",
+      "shortTitle": "图的补全",
+      "title": "有限图浸入可补成有限覆盖",
+      "statement": "设 \\(\\Delta\\to R_n\\) 是有限连通图到 rose 的浸入。则可以只添加带标签边而不识别 \\(\\Delta\\) 中已有的不同顶点，把它扩张为有限覆盖 \\(\\widehat\\Delta\\to R_n\\)。因此 \\(\\Delta\\) 中端点不同的路径在 \\(\\widehat\\Delta\\) 中仍不是闭路。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:stallings-model"
+      ],
+      "contentRef": "uploaded-lecture:pp.15-16,21-25"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:free-groups-are-lerf",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 4",
+      "shortTitle": "自由群 LERF",
+      "title": "有限生成自由群的有限生成子群可分",
+      "statement": "对每个有限生成自由群 \\(F_n\\)，每个有限生成子群 \\(H\\le F_n\\) 都在 \\(F_n\\) 中可分；等价地，有限生成自由群是 LERF。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:stallings-model"
+      ],
+      "contentRef": "uploaded-lecture:pp.17-20"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:cubical-local-isometry",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 7",
+      "shortTitle": "立方局部等距",
+      "title": "NPC 立方复形之间的 local isometry",
+      "statement": "设 \\(f:Y\\to X\\) 是立方复形之间的组合映射。称 \\(f\\) 是 local isometry，如果对每个顶点 \\(v\\in Y\\)，诱导的 link 映射 \\(\\mathrm{Lk}_Y(v)\\to \\mathrm{Lk}_X(f(v))\\) 是单射，且其像是满子复形；也就是说，像中的一组顶点只要在 \\(\\mathrm{Lk}_X(f(v))\\) 中张成单形，就已经在 \\(\\mathrm{Lk}_Y(v)\\) 中张成单形。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ],
+      "contentRef": "uploaded-lecture:p.32"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:npc-universal-cover-cat0",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 5",
+      "shortTitle": "NPC 的万有覆盖",
+      "title": "NPC 立方复形的万有覆盖是 CAT(0)",
+      "statement": "若 \\(X\\) 是连通非正曲率立方复形，则其万有覆盖 \\(\\widetilde X\\) 在标准分片欧氏度量下是 CAT(0) 立方复形。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:cat0-local-geodesic-global",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 4",
+      "shortTitle": "局部测地线",
+      "title": "CAT(0) 中局部测地线是全局测地线",
+      "statement": "在 CAT(0) 测地空间中，每条局部测地线都是全局测地线；任意两点之间的测地线唯一。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:local-isometry-embeds-in-h-cover",
+      "entryClass": "claim",
+      "claimKind": "proposition",
+      "displayLabel": "命题 3",
+      "shortTitle": "局部等距提升",
+      "title": "local isometry 在像子群覆盖中提升为嵌入",
+      "statement": "设 \\(X,Y\\) 是连通非正曲率立方复形，\\(Y\\) 紧，且 \\(f:Y\\to X\\) 是 local isometry。令 \\(H=f_*(\\pi_1(Y))\\le \\pi_1(X)\\)。则 \\(f_*\\) 是单射，并且 \\(f\\) 到 \\(H\\) 对应覆盖 \\(X_H\\to X\\) 的提升 \\(\\widetilde f:Y\\to X_H\\) 是嵌入。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:canonical-completion-and-retraction",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 6",
+      "shortTitle": "Canonical completion",
+      "title": "special cube complex 的有限覆盖嵌入与回缩定理",
+      "statement": "设 \\(X\\) 是紧 special 非正曲率立方复形，\\(Y\\) 是紧非正曲率立方复形，且 \\(f:Y\\to X\\) 是 local isometry。则存在有限层覆盖 \\(\\rho:C(Y\\to X)\\to X\\)、\\(f\\) 的嵌入提升 \\(\\widehat f:Y\\hookrightarrow C(Y\\to X)\\)，以及回缩 \\(r:C(Y\\to X)\\to Y\\) 满足 \\(r\\circ\\widehat f=\\mathrm{id}_Y\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ],
+      "contentRef": "uploaded-lecture:pp.61,67-81"
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:local-isometry-subgroup-virtual-retract",
+      "entryClass": "claim",
+      "claimKind": "proposition",
+      "displayLabel": "命题 4",
+      "shortTitle": "虚回缩",
+      "title": "local isometry 子群是 virtual retract",
+      "statement": "在 canonical completion and retraction 定理的条件下，令 \\(G=\\pi_1(X)\\) 且 \\(H=f_*(\\pi_1(Y))\\)。则存在有限指数子群 \\(K\\le G\\) 包含 \\(H\\)，并存在群同态 \\(r_*:K\\to H\\) 使 \\(r_*|_H=\\mathrm{id}_H\\)。因此 \\(H\\) 是 \\(G\\) 的 virtual retract。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:virtually-haken",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 8",
+      "shortTitle": "虚 Haken",
+      "title": "virtually Haken 的定义",
+      "statement": "三维流形 \\(M\\) 称为 virtually Haken，如果存在有限层覆盖 \\(\\widetilde M\\to M\\)，使 \\(\\widetilde M\\) 是 Haken 流形。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:virtually-fibered",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 9",
+      "shortTitle": "虚纤维化",
+      "title": "virtually fibered 的定义",
+      "statement": "三维流形 \\(M\\) 称为 virtually fibered，如果存在有限层覆盖 \\(\\widetilde M\\to M\\) 和紧曲面 \\(S\\)，使 \\(\\widetilde M\\) 是以 \\(S\\) 为纤维、以 \\(S^1\\) 为底空间的曲面束。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-haken",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 7",
+      "shortTitle": "虚 Haken 定理",
+      "title": "闭双曲三维流形虚 Haken",
+      "statement": "每个闭双曲三维流形都存在一个有限层覆盖，该覆盖含有嵌入的 \\(\\pi_1\\)-不可压缩曲面；因此每个闭双曲三维流形都是 virtually Haken。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-fibered",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 8",
+      "shortTitle": "虚纤维化定理",
+      "title": "闭双曲三维流形虚纤维化",
+      "statement": "每个闭双曲三维流形都存在一个有限层覆盖，该覆盖是某个紧曲面上的映射环面；因此每个闭双曲三维流形都是 virtually fibered。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:mapping-torus",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 10",
+      "shortTitle": "映射环面",
+      "title": "曲面自同胚的映射环面",
+      "statement": "设 \\(S\\) 是连通曲面，\\(\\varphi:S\\to S\\) 是自同胚。映射环面定义为\n\\[\nM_\\varphi=S\\times[0,1]/((x,1)\\sim(\\varphi(x),0)).\n\\]\n它自然投影到 \\(S^1\\)，纤维为 \\(S\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:mapping-tori"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:semidirect-product",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 11",
+      "shortTitle": "半直积",
+      "title": "由自同构作用定义的半直积",
+      "statement": "设 \\(N\\) 是群，\\(\\alpha:\\mathbb Z\\to\\mathrm{Aut}(N)\\) 是作用。半直积 \\(N\\rtimes_\\alpha\\mathbb Z\\) 的元素写作 \\((n,k)\\)，乘法为\n\\[\n(n,k)(m,\\ell)=(n\\,\\alpha(k)(m),k+\\ell).\n\\]\n若 \\(\\alpha(1)=\\psi\\)，也记为 \\(N\\rtimes_\\psi\\mathbb Z\\)。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:mapping-tori"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:seifert-van-kampen",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 9",
+      "shortTitle": "Seifert–van Kampen",
+      "title": "Seifert–van Kampen 定理",
+      "statement": "若拓扑空间 \\(X=U\\cup V\\)，其中 \\(U,V,U\\cap V\\) 道路连通且满足通常的开集条件，则 \\(\\pi_1(X)\\) 是 \\(\\pi_1(U)\\) 与 \\(\\pi_1(V)\\) 沿 \\(\\pi_1(U\\cap V)\\) 的推出；特别地，该定理可用于由粘合描述计算映射环面的基本群表示。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:mapping-tori"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:entry:mapping-torus-fundamental-group",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 10",
+      "shortTitle": "映射环面群",
+      "title": "映射环面的基本群是半直积",
+      "statement": "设 \\(S\\) 是连通曲面，\\(\\varphi:S\\to S\\) 是保基点自同胚，\\(M_\\varphi\\) 是其映射环面。则\n\\[\n\\pi_1(M_\\varphi)\\cong \\pi_1(S)\\rtimes_{\\varphi_*}\\mathbb Z.\n\\]\n若 \\(t\\) 表示沿底空间 \\(S^1\\) 绕一圈的元素，则\n\\[\nt\\gamma t^{-1}=\\varphi_*(\\gamma)\n\\]\n对所有 \\(\\gamma\\in\\pi_1(S)\\) 成立。",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:mapping-tori"
+      ]
+    }
+  ],
+  "inferences": [
+    {
+      "id": "three-manifolds-finite-covers:inference:separable-subgroup-separates-finite-set",
+      "operationKind": "proof",
+      "displayLabel": "证明 1",
+      "shortTitle": "有限集同时分离",
+      "title": "由可分性得到有限多个元素的同时分离",
+      "statement": "对每个 \\(g_i\\notin H\\) 分别选择有限指数子群，再取它们的交。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:subgroup-separability",
+        "three-manifolds-finite-covers:entry:finite-intersection-finite-index"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:simultaneous-finite-separation",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ],
+      "argument": "由 \\(H\\) 可分，对每个 \\(i\\) 存在有限指数子群 \\(K_i\\le G\\)，满足 \\(H\\le K_i\\) 且 \\(g_i\\notin K_i\\)。令 \\(K=\\bigcap_{i=1}^rK_i\\)。有限指数交引理给出 \\([G:K]<\\infty\\)，显然 \\(H\\le K\\)，且 \\(K\\subseteq K_i\\) 保证 \\(g_i\\notin K\\) 对所有 \\(i\\) 成立。"
+    },
+    {
+      "id": "three-manifolds-finite-covers:inference:local-isometry-lift-is-embedding",
+      "operationKind": "proof",
+      "displayLabel": "证明 2",
+      "shortTitle": "CAT(0) 提升",
+      "title": "local isometry 在像子群覆盖中嵌入",
+      "statement": "先在万有覆盖中证明提升为等距嵌入，再对 \\(\\pi_1(Y)\\cong H\\) 取商。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:cubical-local-isometry",
+        "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+        "three-manifolds-finite-covers:entry:npc-universal-cover-cat0",
+        "three-manifolds-finite-covers:entry:cat0-local-geodesic-global"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:local-isometry-embeds-in-h-cover",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ],
+      "argument": "由 NPC 万有覆盖定理，\\(\\widetilde Y\\) 与 \\(\\widetilde X\\) 都是 CAT(0)。local isometry 的提升 \\(\\widehat f:\\widetilde Y\\to\\widetilde X\\) 把局部测地线送到局部测地线；CAT(0) 中局部测地线是唯一的全局测地线，因此 \\(\\widehat f\\) 保持两点间距离并为单射。等变性和 \\(H=f_*(\\pi_1(Y))\\) 保证取商后不会产生新的点识别，故 \\(Y\\to X_H\\) 是嵌入，同时得到 \\(f_*\\) 单射。"
+    },
+    {
+      "id": "three-manifolds-finite-covers:inference:stallings-proves-free-groups-lerf",
+      "operationKind": "proof",
+      "displayLabel": "证明 3",
+      "shortTitle": "Stallings 可分性证明",
+      "title": "由核心图补全证明自由群 LERF",
+      "statement": "对任意有限生成 \\(H\\le F_n\\) 和 \\(g\\notin H\\)，构造包含 \\(\\Gamma(H)\\) 与非闭路径 \\(\\gamma(g)\\) 的有限图并补成有限覆盖。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:subgroup-separability",
+        "three-manifolds-finite-covers:entry:lerf",
+        "three-manifolds-finite-covers:entry:stallings-folding-algorithm",
+        "three-manifolds-finite-covers:entry:core-plus-path-completion-algorithm",
+        "three-manifolds-finite-covers:entry:stallings-completion-correctness"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:free-groups-are-lerf",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:stallings-model"
+      ],
+      "argument": "由 Stallings 折叠得到有限核心图 \\(\\Gamma(H)\\)。在 \\(H\\)-覆盖中，\\(g\\notin H\\) 等价于 \\(g\\) 的提升 \\(\\gamma(g)\\) 不闭合。令 \\(\\Delta=\\Gamma(H)\\cup\\gamma(g)\\)，再用图的补全定理把 \\(\\Delta\\) 扩张为有限覆盖 \\(\\widehat\\Delta\\to R_n\\)，且不识别 \\(\\gamma(g)\\) 的两个端点。对应有限指数子群 \\(K\\le F_n\\) 包含 \\(H\\)，而 \\(g\\) 在 \\(\\widehat\\Delta\\) 中仍不成闭路，所以 \\(g\\notin K\\)。这正是 \\(H\\) 可分；因 \\(H\\) 任意，\\(F_n\\) 是 LERF。"
+    },
+    {
+      "id": "three-manifolds-finite-covers:inference:canonical-completion-gives-virtual-retract",
+      "operationKind": "proof",
+      "displayLabel": "证明 4",
+      "shortTitle": "回缩诱导虚回缩",
+      "title": "从 canonical retraction 得到 virtual retract",
+      "statement": "对有限覆盖和回缩取基本群。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:canonical-completion-and-retraction"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:local-isometry-subgroup-virtual-retract",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:cubical-completion"
+      ],
+      "argument": "设 \\(K=\\pi_1(C(Y\\to X))\\)，则有限覆盖性给出 \\(K\\le \\pi_1(X)\\) 为有限指数子群。嵌入 \\(\\widehat f:Y\\hookrightarrow C(Y\\to X)\\) 把 \\(\\pi_1(Y)\\) 识别为 \\(H\\le K\\)，而回缩 \\(r\\) 满足 \\(r\\circ\\widehat f=\\mathrm{id}_Y\\)。取基本群得到 \\(r_*|_H=\\mathrm{id}_H\\)，故 \\(H\\) 是 virtual retract。"
+    },
+    {
+      "id": "three-manifolds-finite-covers:inference:scott-criterion-gives-finite-cover-surface",
+      "operationKind": "proof",
+      "displayLabel": "证明 5",
+      "shortTitle": "Scott 判据应用",
+      "title": "由可分性把曲面嵌入保留到有限覆盖",
+      "statement": "把 \\(H\\)-覆盖中嵌入曲面的像视为紧子集，并应用 Scott 判据。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+        "three-manifolds-finite-covers:entry:covering-lift-criterion",
+        "three-manifolds-finite-covers:entry:scott-compact-core-criterion"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:covers-and-separability"
+      ],
+      "argument": "由提升判据，\\(f\\) 提升到 \\(M_H\\)。按假设，其像 \\(C=\\widetilde f(S)\\) 是 \\(M_H\\) 中的紧嵌入子集。因为 \\(H\\) 可分，Scott 判据给出有限指数子群 \\(K\\) 满足 \\(H\\le K\\le \\pi_1(M)\\)，并使自然映射 \\(M_H\\to M_K\\) 在 \\(C\\) 上为嵌入。因此复合 \\(S\\hookrightarrow M_H\\to M_K\\) 是嵌入提升。"
+    },
+    {
+      "id": "three-manifolds-finite-covers:inference:mapping-torus-group-computation",
+      "operationKind": "proof",
+      "displayLabel": "证明 6",
+      "shortTitle": "映射环面基本群计算",
+      "title": "由粘合关系得到半直积基本群",
+      "statement": "用 Seifert–van Kampen 计算映射环面的基本群表示。",
+      "premises": [
+        "three-manifolds-finite-covers:entry:mapping-torus",
+        "three-manifolds-finite-covers:entry:semidirect-product",
+        "three-manifolds-finite-covers:entry:seifert-van-kampen"
+      ],
+      "conclusion": "three-manifolds-finite-covers:entry:mapping-torus-fundamental-group",
+      "chapterIds": [
+        "three-manifolds-finite-covers:chapter:mapping-tori"
+      ],
+      "argument": "Seifert–van Kampen 给出 \\(\\pi_1(M_\\varphi)\\) 由 \\(\\pi_1(S)\\) 和一个稳定字母 \\(t\\) 生成；顶端 \\(S\\times\\{1\\}\\) 通过 \\(\\varphi\\) 与底端 \\(S\\times\\{0\\}\\) 粘合，因此关系为 \\(t\\gamma t^{-1}=\\varphi_*(\\gamma)\\)。这正是 \\(\\pi_1(S)\\rtimes_{\\varphi_*}\\mathbb Z\\) 的群表示。"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "three-manifolds-finite-covers:chapter:surfaces-in-three-manifolds",
+      "displayLabel": "Section 1",
+      "title": "三维流形中的曲面",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:pi1-incompressible-surface",
+        "three-manifolds-finite-covers:entry:haken-manifold",
+        "three-manifolds-finite-covers:entry:immersion-and-embedding",
+        "three-manifolds-finite-covers:entry:pi1-injective-immersion-may-not-embed-in-h-cover"
+      ],
+      "inferenceIds": []
+    },
+    {
+      "id": "three-manifolds-finite-covers:chapter:covers-and-separability",
+      "displayLabel": "Section 2",
+      "title": "覆盖空间与子群可分性",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:h-cover-notation",
+        "three-manifolds-finite-covers:entry:subgroup-separability",
+        "three-manifolds-finite-covers:entry:lerf",
+        "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+        "three-manifolds-finite-covers:entry:covering-lift-criterion",
+        "three-manifolds-finite-covers:entry:finite-intersection-finite-index",
+        "three-manifolds-finite-covers:entry:simultaneous-finite-separation",
+        "three-manifolds-finite-covers:entry:scott-compact-core-criterion",
+        "three-manifolds-finite-covers:entry:surface-embedding-in-finite-cover"
+      ],
+      "inferenceIds": [
+        "three-manifolds-finite-covers:inference:separable-subgroup-separates-finite-set",
+        "three-manifolds-finite-covers:inference:scott-criterion-gives-finite-cover-surface"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:chapter:stallings-model",
+      "displayLabel": "Section 3",
+      "title": "Stallings 折叠的一维模型",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:stallings-folding-algorithm",
+        "three-manifolds-finite-covers:entry:core-plus-path-completion-algorithm",
+        "three-manifolds-finite-covers:entry:stallings-completion-correctness",
+        "three-manifolds-finite-covers:entry:free-groups-are-lerf"
+      ],
+      "inferenceIds": [
+        "three-manifolds-finite-covers:inference:stallings-proves-free-groups-lerf"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:chapter:cubical-completion",
+      "displayLabel": "Section 4",
+      "title": "非正曲率立方复形与 canonical completion",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:cubical-local-isometry",
+        "three-manifolds-finite-covers:entry:npc-universal-cover-cat0",
+        "three-manifolds-finite-covers:entry:cat0-local-geodesic-global",
+        "three-manifolds-finite-covers:entry:local-isometry-embeds-in-h-cover",
+        "three-manifolds-finite-covers:entry:canonical-completion-and-retraction",
+        "three-manifolds-finite-covers:entry:local-isometry-subgroup-virtual-retract"
+      ],
+      "inferenceIds": [
+        "three-manifolds-finite-covers:inference:local-isometry-lift-is-embedding",
+        "three-manifolds-finite-covers:inference:canonical-completion-gives-virtual-retract"
+      ]
+    },
+    {
+      "id": "three-manifolds-finite-covers:chapter:virtual-three-manifold-properties",
+      "displayLabel": "Section 5",
+      "title": "虚 Haken 与虚纤维化",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:virtually-haken",
+        "three-manifolds-finite-covers:entry:virtually-fibered",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-haken",
+        "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-fibered"
+      ],
+      "inferenceIds": []
+    },
+    {
+      "id": "three-manifolds-finite-covers:chapter:mapping-tori",
+      "displayLabel": "Section 6",
+      "title": "映射环面与半直积基本群",
+      "entryIds": [
+        "three-manifolds-finite-covers:entry:mapping-torus",
+        "three-manifolds-finite-covers:entry:semidirect-product",
+        "three-manifolds-finite-covers:entry:seifert-van-kampen",
+        "three-manifolds-finite-covers:entry:mapping-torus-fundamental-group"
+      ],
+      "inferenceIds": [
+        "three-manifolds-finite-covers:inference:mapping-torus-group-computation"
+      ]
+    }
+  ],
+  "claimSeedEntryIds": [
+    "three-manifolds-finite-covers:entry:covering-subgroup-correspondence",
+    "three-manifolds-finite-covers:entry:covering-lift-criterion",
+    "three-manifolds-finite-covers:entry:finite-intersection-finite-index",
+    "three-manifolds-finite-covers:entry:scott-compact-core-criterion",
+    "three-manifolds-finite-covers:entry:stallings-completion-correctness",
+    "three-manifolds-finite-covers:entry:npc-universal-cover-cat0",
+    "three-manifolds-finite-covers:entry:cat0-local-geodesic-global",
+    "three-manifolds-finite-covers:entry:canonical-completion-and-retraction",
+    "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-haken",
+    "three-manifolds-finite-covers:entry:closed-hyperbolic-three-manifolds-virtually-fibered",
+    "three-manifolds-finite-covers:entry:seifert-van-kampen"
+  ],
+  "loops": []
+}

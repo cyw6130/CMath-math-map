@@ -1,3 +1,12 @@
+/**
+ * @cmath-provenance
+ * @package generic-math-map-preview-loader-v1
+ * @version v1
+ * @canonicalSource packages/math-map/import/generic-math-map-preview-loader-v1/src/index.js
+ * @contentHash sha256:b5b678aa616fcae8570fd4a720bb23e1afde9c7de5ec49316c5edf2987a0735b
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
+ */
 /* Browser-local Project View preview loader.
  * Preview data is validated and projected in memory; it never writes canonical
  * content, the central manifest, or generated frontend assets.

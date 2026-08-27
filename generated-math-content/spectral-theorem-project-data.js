@@ -379,8 +379,10 @@ window.CMATH_DATA = Object.freeze({
         "spectral:entry:eigenpair",
         "spectral:entry:fta"
       ],
-      "deltaIds": [
-        "spectral:entry:eigenvalue-exists",
+      "deltaEntryIds": [
+        "spectral:entry:eigenvalue-exists"
+      ],
+      "deltaInferenceIds": [
         "spectral:inference:eigenvalue-exists"
       ],
       "resultSummary": "建立复线性算子至少有一个特征值。"
@@ -398,8 +400,10 @@ window.CMATH_DATA = Object.freeze({
         "spectral:entry:eigenpair",
         "spectral:entry:eigenvalue-exists"
       ],
-      "deltaIds": [
-        "spectral:entry:real-eigenvalues",
+      "deltaEntryIds": [
+        "spectral:entry:real-eigenvalues"
+      ],
+      "deltaInferenceIds": [
         "spectral:inference:real-eigenvalues"
       ],
       "resultSummary": "自伴性把已找到的特征值约束到实数。"
@@ -416,8 +420,10 @@ window.CMATH_DATA = Object.freeze({
         "spectral:entry:eigenpair",
         "spectral:entry:real-eigenvalues"
       ],
-      "deltaIds": [
-        "spectral:entry:orthogonal-complement-invariant",
+      "deltaEntryIds": [
+        "spectral:entry:orthogonal-complement-invariant"
+      ],
+      "deltaInferenceIds": [
         "spectral:inference:orthogonal-complement-invariant"
       ],
       "resultSummary": "得到可降低维数的不变正交补。"
@@ -433,8 +439,10 @@ window.CMATH_DATA = Object.freeze({
         "spectral:entry:self-adjoint",
         "spectral:entry:orthogonal-complement-invariant"
       ],
-      "deltaIds": [
-        "spectral:entry:restriction-self-adjoint",
+      "deltaEntryIds": [
+        "spectral:entry:restriction-self-adjoint"
+      ],
+      "deltaInferenceIds": [
         "spectral:inference:restriction-self-adjoint"
       ],
       "resultSummary": "归纳子问题仍属于同一类自伴算子。"
@@ -452,8 +460,10 @@ window.CMATH_DATA = Object.freeze({
         "spectral:entry:orthogonal-complement-invariant",
         "spectral:entry:restriction-self-adjoint"
       ],
-      "deltaIds": [
-        "spectral:entry:spectral-theorem",
+      "deltaEntryIds": [
+        "spectral:entry:spectral-theorem"
+      ],
+      "deltaInferenceIds": [
         "spectral:inference:spectral-theorem"
       ],
       "resultSummary": "建立标准正交特征基并完成谱定理。"

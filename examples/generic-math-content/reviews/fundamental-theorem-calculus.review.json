@@ -1,0 +1,45 @@
+{
+  "schema": "cmath-gamma.mathematical-content-review/v1",
+  "capability": "cmath-gamma.mathematical-content-admission/v1",
+  "profile": "mature-mathematics-lightweight-v1",
+  "mapId": "fundamental-theorem-calculus",
+  "projectId": "cmath:project:fundamental-theorem-calculus",
+  "verdict": "accepted",
+  "reviewer": "Codex main",
+  "reviewScope": "mathematical-role-standard-statement-and-explicit-dependency-review",
+  "contentFingerprint": "fnv1a32:bee65a3f",
+  "reviewedAt": "2026-08-03T15:10:00+08:00",
+  "reviewSummary": "确认示例固定闭区间上的连续实值函数，以连续可积性、积分可加性、积分估计和中值定理为 B₀，沿五个顺序 Loop 建立微积分基本定理的两个部分。",
+  "resolvedFindings": [
+    "Fact 仅承担连续、导数、Riemann 积分、积分累积函数和原函数的定义。",
+    "四个有标准来源的基础定理进入 B₀，不伪造图内证明；C₀ 仍由全部 Fact 与 B₀ 的并集派生。",
+    "局部积分平均由点态连续性与积分绝对值估计建立，且使用有向积分同时覆盖正负 h。",
+    "积分可加性把累积函数差商化为局部积分平均，从而建立微积分基本定理第一部分。",
+    "中值定理推出零导数函数为常数，随后比较积分累积函数与任一原函数，建立 Newton–Leibniz 公式。",
+    "最终 Loop 只合并已建立的两个部分；数据不定义 plan、路线切换或多路线对象。"
+  ],
+  "openIssues": [],
+  "entryReviews": [
+    {"id": "ftc:entry:continuity", "acceptedAs": "fact:definition", "verdict": "accepted"},
+    {"id": "ftc:entry:derivative", "acceptedAs": "fact:definition", "verdict": "accepted"},
+    {"id": "ftc:entry:riemann-integral", "acceptedAs": "fact:definition", "verdict": "accepted"},
+    {"id": "ftc:entry:accumulation-function", "acceptedAs": "fact:definition", "verdict": "accepted"},
+    {"id": "ftc:entry:antiderivative", "acceptedAs": "fact:definition", "verdict": "accepted"},
+    {"id": "ftc:entry:continuous-integrability", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:integral-additivity", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:integral-estimate", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:mean-value-theorem", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:local-integral-average", "acceptedAs": "claim:lemma", "verdict": "accepted"},
+    {"id": "ftc:entry:ftc-part-one", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:zero-derivative-constant", "acceptedAs": "claim:lemma", "verdict": "accepted"},
+    {"id": "ftc:entry:newton-leibniz", "acceptedAs": "claim:theorem", "verdict": "accepted"},
+    {"id": "ftc:entry:fundamental-theorem-calculus", "acceptedAs": "claim:theorem", "verdict": "accepted"}
+  ],
+  "inferenceReviews": [
+    {"id": "ftc:inference:local-integral-average", "acceptedAs": "proof", "verdict": "accepted"},
+    {"id": "ftc:inference:ftc-part-one", "acceptedAs": "proof", "verdict": "accepted"},
+    {"id": "ftc:inference:zero-derivative-constant", "acceptedAs": "proof", "verdict": "accepted"},
+    {"id": "ftc:inference:newton-leibniz", "acceptedAs": "proof", "verdict": "accepted"},
+    {"id": "ftc:inference:fundamental-theorem-calculus", "acceptedAs": "proof", "verdict": "accepted"}
+  ]
+}

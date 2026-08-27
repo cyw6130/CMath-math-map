@@ -1,0 +1,72 @@
+{
+  "schema": "cmath-gamma.math-content-manifest/v0.1",
+  "maps": [
+    {
+      "id": "group-theory",
+      "title": "群、陪集与 Lagrange 定理",
+      "projectId": "cmath:project:group-theory-content-example",
+      "workspaceViews": ["global"],
+      "mathTextFormat": "cmath-gamma.math-text/legacy-compatible-v0",
+      "contentAdmissionProfile": "legacy-unreviewed-v0",
+      "dataUrl": "/examples/generic-math-content/group-theory-project-view.json"
+    },
+    {
+      "id": "spectral-theorem",
+      "title": "从特征值到谱定理",
+      "projectId": "cmath:project:spectral-theorem",
+      "workspaceViews": ["global", "progress"],
+      "mathTextFormat": "cmath-gamma.math-text/latex-delimited-v1",
+      "contentAdmissionProfile": "mature-mathematics-lightweight-v1",
+      "reviewUrl": "/examples/generic-math-content/reviews/spectral-theorem.review.json",
+      "dataUrl": "/examples/generic-math-content/spectral-theorem-project-view.json"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "title": "从闭区间套到介值定理",
+      "projectId": "cmath:project:intermediate-value-theorem",
+      "workspaceViews": ["global", "progress"],
+      "mathTextFormat": "cmath-gamma.math-text/latex-delimited-v1",
+      "contentAdmissionProfile": "mature-mathematics-lightweight-v1",
+      "reviewUrl": "/examples/generic-math-content/reviews/intermediate-value-theorem.review.json",
+      "dataUrl": "/examples/generic-math-content/intermediate-value-theorem-project-view.json"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "title": "从积分累积函数到微积分基本定理",
+      "projectId": "cmath:project:fundamental-theorem-calculus",
+      "workspaceViews": ["global", "progress"],
+      "mathTextFormat": "cmath-gamma.math-text/latex-delimited-v1",
+      "contentAdmissionProfile": "mature-mathematics-lightweight-v1",
+      "reviewUrl": "/examples/generic-math-content/reviews/fundamental-theorem-calculus.review.json",
+      "dataUrl": "/examples/generic-math-content/fundamental-theorem-calculus-project-view.json"
+    },
+    {
+      "id": "three-manifolds-finite-covers",
+      "title": "三维流形中的曲面、有限覆盖与可分性",
+      "projectId": "cmath:project:three-manifolds-finite-covers",
+      "workspaceViews": ["global"],
+      "mathTextFormat": "cmath-gamma.math-text/legacy-compatible-v0",
+      "contentAdmissionProfile": "legacy-unreviewed-v0",
+      "dataUrl": "/examples/generic-math-content/three-manifolds-finite-covers-project-view.json"
+    },
+    {
+      "id": "three-manifolds-topological-finite-cover",
+      "title": "三维流形中的曲面与有限覆盖",
+      "projectId": "cmath:project:three-manifolds-topological-finite-cover",
+      "workspaceViews": ["global"],
+      "mathTextFormat": "cmath-gamma.math-text/legacy-compatible-v0",
+      "contentAdmissionProfile": "legacy-unreviewed-v0",
+      "dataUrl": "/examples/generic-math-content/three-manifolds-topological-finite-cover-project-view.json"
+    },
+    {
+      "id": "jsj-decomposition",
+      "title": "JSJ 分解、Seifert 块与双曲块",
+      "projectId": "cmath:project:jsj-decomposition",
+      "workspaceViews": ["global"],
+      "mathTextFormat": "cmath-gamma.math-text/latex-delimited-v1",
+      "contentAdmissionProfile": "mature-mathematics-lightweight-v1",
+      "reviewUrl": "/examples/generic-math-content/reviews/jsj-decomposition.review.json",
+      "dataUrl": "/examples/generic-math-content/jsj-decomposition-project-view.json"
+    }
+  ]
+}

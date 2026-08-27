@@ -128,7 +128,7 @@ CMath-math-map/
 - `research-loop-progress-v1`：研究 Loop 历史与切片增量。
 - `math-map-visual-semantics-v1`：数学对象视觉分类与图例映射。
 - `graph-core-v1`：力导向图画布状态与连续性交互契约。
-- `math-map-workspace-v2`：工作区视图组合与单目标聚焦透镜。
+- `math-map-workspace-v3`：工作区视图组合与单目标 Focus，不推断或切换 Route。
 - `math-rendering-v1`：KaTeX 公式渲染与降级保护。
 - `alpha-project-adapter-v0.2`：只读项目数据适配器。
 

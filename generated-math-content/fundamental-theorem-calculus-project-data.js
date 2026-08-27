@@ -465,8 +465,10 @@ window.CMATH_DATA = Object.freeze({
         "ftc:entry:riemann-integral",
         "ftc:entry:integral-estimate"
       ],
-      "deltaIds": [
-        "ftc:entry:local-integral-average",
+      "deltaEntryIds": [
+        "ftc:entry:local-integral-average"
+      ],
+      "deltaInferenceIds": [
         "ftc:inference:local-integral-average"
       ],
       "resultSummary": "连续性使短区间积分平均收敛到中心点函数值。"
@@ -490,8 +492,10 @@ window.CMATH_DATA = Object.freeze({
         "ftc:entry:accumulation-function",
         "ftc:entry:local-integral-average"
       ],
-      "deltaIds": [
-        "ftc:entry:ftc-part-one",
+      "deltaEntryIds": [
+        "ftc:entry:ftc-part-one"
+      ],
+      "deltaInferenceIds": [
         "ftc:inference:ftc-part-one"
       ],
       "resultSummary": "积分累积函数的导数等于原连续函数。"
@@ -512,8 +516,10 @@ window.CMATH_DATA = Object.freeze({
         "ftc:entry:derivative",
         "ftc:entry:mean-value-theorem"
       ],
-      "deltaIds": [
-        "ftc:entry:zero-derivative-constant",
+      "deltaEntryIds": [
+        "ftc:entry:zero-derivative-constant"
+      ],
+      "deltaInferenceIds": [
         "ftc:inference:zero-derivative-constant"
       ],
       "resultSummary": "导数恒为零的函数在整个闭区间上为常数。"
@@ -536,8 +542,10 @@ window.CMATH_DATA = Object.freeze({
         "ftc:entry:ftc-part-one",
         "ftc:entry:zero-derivative-constant"
       ],
-      "deltaIds": [
-        "ftc:entry:newton-leibniz",
+      "deltaEntryIds": [
+        "ftc:entry:newton-leibniz"
+      ],
+      "deltaInferenceIds": [
         "ftc:inference:newton-leibniz"
       ],
       "resultSummary": "积分累积函数与任一原函数只差由基点决定的常数。"
@@ -558,8 +566,10 @@ window.CMATH_DATA = Object.freeze({
         "ftc:entry:ftc-part-one",
         "ftc:entry:newton-leibniz"
       ],
-      "deltaIds": [
-        "ftc:entry:fundamental-theorem-calculus",
+      "deltaEntryIds": [
+        "ftc:entry:fundamental-theorem-calculus"
+      ],
+      "deltaInferenceIds": [
         "ftc:inference:fundamental-theorem-calculus"
       ],
       "resultSummary": "微分与积分的双向联系合并为微积分基本定理。"

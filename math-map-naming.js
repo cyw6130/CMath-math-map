@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/presentation/math-map-naming-v2/src/index.js
  * @contentHash sha256:55fbb6a7cfe141f63ef1269ca5deced2024c0895bfa2b3c2d906abf56685661a
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Stable mathematical-map identities and search aliases. */
 (function publishMathMapNaming(root, factory) {

@@ -394,8 +394,10 @@ window.CMATH_DATA = Object.freeze({
         "ivt:entry:sign-change",
         "ivt:entry:bisection"
       ],
-      "deltaIds": [
-        "ivt:entry:sign-preservation",
+      "deltaEntryIds": [
+        "ivt:entry:sign-preservation"
+      ],
+      "deltaInferenceIds": [
         "ivt:inference:sign-preservation"
       ],
       "resultSummary": "证明每次二分后仍保留一个变号闭区间。"
@@ -412,8 +414,10 @@ window.CMATH_DATA = Object.freeze({
         "ivt:entry:bisection",
         "ivt:entry:sign-preservation"
       ],
-      "deltaIds": [
-        "ivt:entry:shrinking-intervals",
+      "deltaEntryIds": [
+        "ivt:entry:shrinking-intervals"
+      ],
+      "deltaInferenceIds": [
         "ivt:inference:shrinking-intervals"
       ],
       "resultSummary": "得到嵌套且长度按二次幂趋于零的闭区间列。"
@@ -429,8 +433,10 @@ window.CMATH_DATA = Object.freeze({
         "ivt:entry:nested-interval-theorem",
         "ivt:entry:shrinking-intervals"
       ],
-      "deltaIds": [
-        "ivt:entry:common-limit",
+      "deltaEntryIds": [
+        "ivt:entry:common-limit"
+      ],
+      "deltaInferenceIds": [
         "ivt:inference:common-limit"
       ],
       "resultSummary": "由闭区间套定理得到端点共同收敛到唯一点。"
@@ -447,8 +453,10 @@ window.CMATH_DATA = Object.freeze({
         "ivt:entry:sign-preservation",
         "ivt:entry:common-limit"
       ],
-      "deltaIds": [
-        "ivt:entry:zero-form",
+      "deltaEntryIds": [
+        "ivt:entry:zero-form"
+      ],
+      "deltaInferenceIds": [
         "ivt:inference:zero-form"
       ],
       "resultSummary": "端点函数值的符号约束在公共极限点处夹出零值。"
@@ -465,8 +473,10 @@ window.CMATH_DATA = Object.freeze({
         "ivt:entry:level-shift",
         "ivt:entry:zero-form"
       ],
-      "deltaIds": [
-        "ivt:entry:intermediate-value-theorem",
+      "deltaEntryIds": [
+        "ivt:entry:intermediate-value-theorem"
+      ],
+      "deltaInferenceIds": [
         "ivt:inference:intermediate-value-theorem"
       ],
       "resultSummary": "把目标值平移到零点问题并建立一般介值定理。"

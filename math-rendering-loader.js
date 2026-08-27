@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/rendering/math-rendering-v1/browser-assets/math-rendering-loader.js
  * @contentHash sha256:efe17847852974e4722b1af571d7f1aaa4a3ba9dd56a77760b53a8b0ada47f15
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Loads the versioned Gamma Math Rendering capability on any frontend page. */
 (() => {

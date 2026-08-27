@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js
  * @contentHash sha256:cb0a77ed4ad56c57ce029541334fc67063c0cd8356371bb369140b0d4b07de04
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Gamma Math Rendering capability: one KaTeX-backed renderer for mixed mathematical text. */
 (() => {

@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/presentation/graph-core-v1/src/graph-contract.js
  * @contentHash sha256:df474b48e44e3ec0e2fc73582929d6272a9a306a7f1e094e8e326eae8b3e07a7
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Stable boundary between graph capabilities and mathematical projections. */
 (function publishGraphContract(root, factory) {

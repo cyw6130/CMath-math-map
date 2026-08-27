@@ -3,9 +3,9 @@
  * @package research-loop-progress-v1
  * @version v1
  * @canonicalSource packages/math-map/presentation/research-loop-progress-v1/src/index.js
- * @contentHash sha256:b625462b4b92a0ada38acf3c5fd66990d1b64a03055df9fc643e37250c5725cd
+ * @contentHash sha256:4a853d445f563571452d702f5a282a20d5518f56d70fc2fd40b0cb3911f4a2f0
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Research Loop history and incremental map slices. Deliberately excludes plan and route selection. */
 (function publishResearchLoopProgress(root, factory) {
@@ -20,6 +20,7 @@
   const RESULT_STATES = Object.freeze(["completed", "failed", "aborted"]);
   const resultStates = new Set(RESULT_STATES);
   const unique = (items) => [...new Set((items ?? []).filter(Boolean))];
+  const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 
   function normalizeLoop(loop, index = 0) {
     if (!loop || typeof loop !== "object") throw new TypeError(`Loop ${index + 1} must be an object`);
@@ -28,6 +29,16 @@
     if (!resultStates.has(resultState)) throw new Error(`Loop ${loop.id} has unsupported resultState: ${resultState}`);
     if ((loop.operationKind ?? loop.inferenceKind) === "plan") throw new Error(`Loop ${loop.id} must not introduce plan`);
     const completed = resultState === "completed";
+    const deltaEntryIds = unique(loop.deltaEntryIds);
+    const deltaInferenceIds = unique(loop.deltaInferenceIds);
+    const legacyDeltaIds = unique(loop.deltaIds ?? loop.mathematicalDeltaIds);
+    const previouslyExcludedDeltaEntryIds = unique(loop.excludedDeltaEntryIds);
+    const previouslyExcludedDeltaInferenceIds = unique(loop.excludedDeltaInferenceIds);
+    const previouslyExcludedDeltaIds = unique(loop.excludedDeltaIds);
+    // deltaFormat keeps normalization idempotent while allowing explicitly
+    // empty typed arrays to override a legacy mixed field.
+    const hasTypedDeltaInput = loop.deltaFormat === "typed"
+      || (loop.deltaFormat !== "legacy" && (hasOwn(loop, "deltaEntryIds") || hasOwn(loop, "deltaInferenceIds")));
     return Object.freeze({
       id: loop.id,
       displayLabel: String(loop.displayLabel ?? loop.label ?? `Loop ${index + 1}`),
@@ -36,8 +47,13 @@
       targetEntryId: loop.targetEntryId ?? null,
       focusEntryId: loop.focusEntryId ?? loop.targetEntryId ?? null,
       usedEntryIds: Object.freeze(unique(loop.usedEntryIds)),
-      deltaIds: Object.freeze(completed ? unique(loop.deltaIds ?? loop.mathematicalDeltaIds) : []),
-      excludedDeltaIds: Object.freeze(completed ? [] : unique(loop.deltaIds ?? loop.mathematicalDeltaIds)),
+      deltaFormat: hasTypedDeltaInput ? "typed" : "legacy",
+      deltaEntryIds: Object.freeze(completed ? deltaEntryIds : []),
+      deltaInferenceIds: Object.freeze(completed ? deltaInferenceIds : []),
+      deltaIds: Object.freeze(completed ? unique(hasTypedDeltaInput ? [...deltaEntryIds, ...deltaInferenceIds] : legacyDeltaIds) : []),
+      excludedDeltaEntryIds: Object.freeze(completed ? [] : unique([...deltaEntryIds, ...previouslyExcludedDeltaEntryIds])),
+      excludedDeltaInferenceIds: Object.freeze(completed ? [] : unique([...deltaInferenceIds, ...previouslyExcludedDeltaInferenceIds])),
+      excludedDeltaIds: Object.freeze(completed ? [] : unique([...legacyDeltaIds, ...previouslyExcludedDeltaIds])),
       resultSummary: String(loop.resultSummary ?? loop.summary ?? loop.result?.effect ?? ""),
       runKind: loop.runKind ?? loop.loopKind ?? "research",
     });

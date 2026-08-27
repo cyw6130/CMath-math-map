@@ -412,5 +412,6 @@
     validateMathDelimiters,
     validateEntry,
     stripControlCharacters,
+    canonicalizeEntry,
   });
 });

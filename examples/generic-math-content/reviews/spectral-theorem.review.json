@@ -1,0 +1,39 @@
+{
+  "schema": "cmath-gamma.mathematical-content-review/v1",
+  "capability": "cmath-gamma.mathematical-content-admission/v1",
+  "profile": "mature-mathematics-lightweight-v1",
+  "mapId": "spectral-theorem",
+  "projectId": "cmath:project:spectral-theorem",
+  "verdict": "accepted",
+  "reviewer": "Codex main",
+  "reviewScope": "mathematical-role-standard-statement-and-explicit-dependency-review",
+  "contentFingerprint": "fnv1a32:b92b9931",
+  "reviewedAt": "2026-08-02T01:25:00+08:00",
+  "reviewSummary": "确认示例固定有限维复内积空间与自伴算子，以四个定义、代数基本定理 seed、四个中间引理和维数归纳组织一个目标上下文中的谱定理主线。",
+  "resolvedFindings": [
+    "固定内积对第一个变量线性，避免共轭位置含混。",
+    "代数基本定理作为有来源的 Claim seed，不伪造项目内证明。",
+    "每个 Loop 的 proof 前提在本轮开始前已经存在。",
+    "数据不定义 plan、routes 或 routeLabels；只记录一个当前目标与顺序 Loop。"
+  ],
+  "openIssues": [],
+  "entryReviews": [
+    {"id":"spectral:entry:inner-product-space","acceptedAs":"fact:definition","verdict":"accepted"},
+    {"id":"spectral:entry:linear-operator","acceptedAs":"fact:definition","verdict":"accepted"},
+    {"id":"spectral:entry:self-adjoint","acceptedAs":"fact:definition","verdict":"accepted"},
+    {"id":"spectral:entry:eigenpair","acceptedAs":"fact:definition","verdict":"accepted"},
+    {"id":"spectral:entry:fta","acceptedAs":"claim:theorem","verdict":"accepted"},
+    {"id":"spectral:entry:eigenvalue-exists","acceptedAs":"claim:lemma","verdict":"accepted"},
+    {"id":"spectral:entry:real-eigenvalues","acceptedAs":"claim:lemma","verdict":"accepted"},
+    {"id":"spectral:entry:orthogonal-complement-invariant","acceptedAs":"claim:lemma","verdict":"accepted"},
+    {"id":"spectral:entry:restriction-self-adjoint","acceptedAs":"claim:lemma","verdict":"accepted"},
+    {"id":"spectral:entry:spectral-theorem","acceptedAs":"claim:theorem","verdict":"accepted"}
+  ],
+  "inferenceReviews": [
+    {"id":"spectral:inference:eigenvalue-exists","acceptedAs":"proof","verdict":"accepted"},
+    {"id":"spectral:inference:real-eigenvalues","acceptedAs":"proof","verdict":"accepted"},
+    {"id":"spectral:inference:orthogonal-complement-invariant","acceptedAs":"proof","verdict":"accepted"},
+    {"id":"spectral:inference:restriction-self-adjoint","acceptedAs":"proof","verdict":"accepted"},
+    {"id":"spectral:inference:spectral-theorem","acceptedAs":"proof","verdict":"accepted"}
+  ]
+}

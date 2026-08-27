@@ -3,9 +3,9 @@
  * @package alpha-project-adapter-v0.2
  * @version v0.2
  * @canonicalSource packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js
- * @contentHash sha256:d2fedaed7af0b932697f99b36e4c0c58bcfd97e028cbc7cf605cb8d9b3e615ec
+ * @contentHash sha256:cfb1572dc41445ea5d08e461fb03fd84e6b0492ba7142b2c8c1f8e1c04b35846
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Alpha Project View Model -> Gamma mathematical-map projection.
  * This layer is read-only: it never edits Alpha authority or graph rendering state.
@@ -29,9 +29,9 @@
     if (typeof require !== "function") return null;
     try { return require(canonicalPath); } catch { return require(legacyPath); }
   };
-  const semantics = loadDependency("GammaMathMapSemantics", "../../../module/math-graph-semantics-v2/src/index.js", "./math-map-semantics.js");
-  const naming = loadDependency("GammaMathMapNaming", "../../../view/math-map-naming-v2/src/index.js", "./math-map-naming.js");
-  const loopProgress = loadDependency("GammaResearchLoopProgress", "../../../view/research-loop-progress-v1/src/index.js", "./research-loop-progress.js");
+  const semantics = loadDependency("GammaMathMapSemantics", "../../../state/math-graph-semantics-v2/src/index.js", "./math-map-semantics.js");
+  const naming = loadDependency("GammaMathMapNaming", "../../../presentation/math-map-naming-v2/src/index.js", "./math-map-naming.js");
+  const loopProgress = loadDependency("GammaResearchLoopProgress", "../../../presentation/research-loop-progress-v1/src/index.js", "./research-loop-progress.js");
   const CAPABILITY_ID = "cmath-gamma.alpha-project-adapter/v0.2";
   const SEMANTIC_CONTRACT = Object.freeze({
     id: semantics?.SEMANTIC_MODEL_ID ?? "cmath.fact-claim-operation/v0.1",
@@ -725,13 +725,15 @@
       const delta = loop.deltaIds;
       const objectDelta = delta && typeof delta === "object" && !Array.isArray(delta) ? delta : {};
       return unique([
+        ...(loop.deltaEntryIds ?? []),
+        ...(loop.deltaInferenceIds ?? []),
         ...(Array.isArray(delta) ? delta : Array.isArray(objectDelta.ids) ? objectDelta.ids : []),
         ...(objectDelta.entryIds ?? []),
         ...(objectDelta.inferenceIds ?? []),
         ...(loop.newEntryIds ?? []),
         ...(loop.newInferenceIds ?? []),
         // Compatibility input only: this is intentionally not copied into the
-        // Gamma batch API, whose public name is deltaIds.
+        // typed batch fields.
         ...(Array.isArray(loop.candidateIds) ? loop.candidateIds : []),
       ].map(endpointId));
     };
@@ -957,25 +959,37 @@
       return unique(ids).filter((id) => available.has(id));
     }
 
-    function routeView(routeId, layout, limit = RECENT_LOOP_LIMIT) {
-      const route = routes.find((item) => item.id === routeId);
-      if (!route) throw new Error(`unknown route: ${routeId}`);
+    function focusView(layout, focusEntryId = currentGoalId, limit = RECENT_LOOP_LIMIT) {
       const available = new Set(layout.nodes.map((node) => node.id));
-      const recentLoops = loopRecords.filter((loop) => loop.targetEntryId === route.currentGoalId
+      if (!available.has(focusEntryId)) throw new Error(`unknown focus: ${focusEntryId}`);
+      const recentLoops = loopRecords.filter((loop) => loop.targetEntryId === focusEntryId
         && loop.nodes.every((node) => available.has(node.id))).slice(-Math.max(1, Number(limit) || RECENT_LOOP_LIMIT));
       const nodeIds = unique([
-        route.finalGoalId,
-        route.milestoneId,
-        route.currentGoalId,
+        finalGoalId,
+        ...milestoneIds,
+        focusEntryId,
         ...recentLoops.flatMap((loop) => [...loop.usedEntryIds, ...loop.deltaEntryIds, ...loop.deltaInferenceIds]),
       ]).filter((id) => available.has(id));
       const latest = recentLoops.at(-1);
       return {
-        ...route,
+        focusEntryId,
         loopIds: recentLoops.map((loop) => loop.id),
         nodeIds,
         latestDeltaIds: latest ? presentIds(layout, latest.deltaIds) : [],
-        summary: `当前目标「${entryById.get(route.currentGoalId)?.title ?? route.currentGoalId}」；最近 ${recentLoops.length} 次有效${temporalUnitLabel}构成路线。`,
+        summary: `当前焦点「${entryById.get(focusEntryId)?.title ?? focusEntryId}」；展示与它相关的最近 ${recentLoops.length} 次有效${temporalUnitLabel}。`,
+      };
+    }
+
+    function routeView(routeId, layout, limit = RECENT_LOOP_LIMIT) {
+      const route = routes.find((item) => item.id === routeId);
+      if (!route) throw new Error(`unknown route: ${routeId}`);
+      const focused = focusView(layout, route.currentGoalId, limit);
+      return {
+        ...route,
+        loopIds: focused.loopIds,
+        nodeIds: focused.nodeIds,
+        latestDeltaIds: focused.latestDeltaIds,
+        summary: `当前目标「${entryById.get(route.currentGoalId)?.title ?? route.currentGoalId}」；最近 ${focused.loopIds.length} 次有效${temporalUnitLabel}构成路线。`,
       };
     }
 
@@ -1044,6 +1058,7 @@
       claimStatesThrough,
       layoutThrough,
       progressLayoutThrough,
+      focusView,
       routeView,
       presentIds,
       neighborhood,

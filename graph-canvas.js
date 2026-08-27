@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/presentation/graph-core-v1/src/index.js
  * @contentHash sha256:29973f25267a0e8ec46f7ccfac5fbe633e25cd78a0a7cbf961e2b63d841b1854
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Persistent ForceGraph stage for Gamma (v3).
    One renderer instance owns the whole lifetime of the canvas. Layout changes

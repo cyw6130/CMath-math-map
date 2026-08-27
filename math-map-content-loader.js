@@ -1,4 +1,13 @@
-/* Manifest-driven loader for source-format-neutral Gamma mathematical content. */
+/**
+ * @cmath-provenance
+ * @package generic-math-content-channel-v1
+ * @version v1
+ * @canonicalSource packages/math-map/import/generic-math-content-channel-v1/src/index.js
+ * @contentHash sha256:8f6994abc94b1c2d0b9eb86bf692a2b2cf651b9795d6d5669086d526d7c5cd08
+ * @syncAuthority CMath-capabilities/exports/canonical.json
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
+ */
+/* Manifest-driven loader for source-format-neutral mathematical content. */
 (function publishMathMapContentLoader(root, factory) {
   "use strict";
   const api = factory(root);

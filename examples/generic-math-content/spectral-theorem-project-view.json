@@ -1,0 +1,129 @@
+{
+  "schema": "cmath.project-view-model/v0.1",
+  "semanticModel": "cmath.fact-claim-operation/v0.1",
+  "project": {"id": "cmath:project:spectral-theorem", "title": "从特征值到谱定理"},
+  "numberingLedger": {
+    "schema": "cmath-gamma.math-map-numbering-ledger/v1",
+    "projectId": "cmath:project:spectral-theorem",
+    "highWaterMarks": {"定义": 4, "引理": 4, "定理": 2, "证明": 5},
+    "allocations": {
+      "spectral:entry:inner-product-space": {"kind": "定义", "number": 1, "state": "active"},
+      "spectral:entry:linear-operator": {"kind": "定义", "number": 2, "state": "active"},
+      "spectral:entry:self-adjoint": {"kind": "定义", "number": 3, "state": "active"},
+      "spectral:entry:eigenpair": {"kind": "定义", "number": 4, "state": "active"},
+      "spectral:entry:fta": {"kind": "定理", "number": 1, "state": "active"},
+      "spectral:entry:eigenvalue-exists": {"kind": "引理", "number": 1, "state": "active"},
+      "spectral:entry:real-eigenvalues": {"kind": "引理", "number": 2, "state": "active"},
+      "spectral:entry:orthogonal-complement-invariant": {"kind": "引理", "number": 3, "state": "active"},
+      "spectral:entry:restriction-self-adjoint": {"kind": "引理", "number": 4, "state": "active"},
+      "spectral:entry:spectral-theorem": {"kind": "定理", "number": 2, "state": "active"},
+      "spectral:inference:eigenvalue-exists": {"kind": "证明", "number": 1, "state": "active"},
+      "spectral:inference:real-eigenvalues": {"kind": "证明", "number": 2, "state": "active"},
+      "spectral:inference:orthogonal-complement-invariant": {"kind": "证明", "number": 3, "state": "active"},
+      "spectral:inference:restriction-self-adjoint": {"kind": "证明", "number": 4, "state": "active"},
+      "spectral:inference:spectral-theorem": {"kind": "证明", "number": 5, "state": "active"}
+    }
+  },
+  "channelOptions": {
+    "schema": "cmath-gamma.project-channel/v0.1",
+    "projectId": "cmath:project:spectral-theorem",
+    "boundaryLabel": "高等代数示例 · 数学地图与 Loop 进展",
+    "adapterOptions": {
+      "temporalUnitLabel": "Loop",
+      "goalHierarchy": {"finalGoalId": "spectral:entry:spectral-theorem", "milestoneIds": []}
+    }
+  },
+  "derivedResearchState": {
+    "mathematicalState": {
+      "foundationEntryIds": ["spectral:entry:inner-product-space", "spectral:entry:linear-operator", "spectral:entry:self-adjoint", "spectral:entry:eigenpair"],
+      "b0ClaimEntryIds": ["spectral:entry:fta"]
+    },
+    "researchOverlay": {
+      "loopTargetEntryId": "spectral:entry:spectral-theorem",
+      "activeSectionIds": ["spectral:chapter:foundation", "spectral:chapter:proof"],
+      "routeDescription": "固定有限维复内积空间上的自伴算子，沿一个目标上下文逐步建立谱定理。",
+      "nextActionDescription": "五个 Loop 已闭合；进展镜头重放同一张数学图的正式增量。"
+    }
+  },
+  "entries": [
+    {
+      "id": "spectral:entry:inner-product-space", "entryClass": "fact", "factKind": "definition", "displayLabel": "定义 1", "shortTitle": "复内积空间", "title": "有限维复内积空间",
+      "statement": "设 $V$ 是有限维复向量空间，并带有内积 $\\langle\\cdot,\\cdot\\rangle$；固定内积对第一个变量线性。", "chapterIds": ["spectral:chapter:foundation"]
+    },
+    {
+      "id": "spectral:entry:linear-operator", "entryClass": "fact", "factKind": "definition", "displayLabel": "定义 2", "shortTitle": "线性算子", "title": "内积空间上的线性算子",
+      "statement": "线性算子是复线性映射 $A:V\\to V$。", "chapterIds": ["spectral:chapter:foundation"]
+    },
+    {
+      "id": "spectral:entry:self-adjoint", "entryClass": "fact", "factKind": "definition", "displayLabel": "定义 3", "shortTitle": "自伴算子", "title": "自伴算子",
+      "statement": "若对任意 $v,w\\in V$ 都有 $\\langle Av,w\\rangle=\\langle v,Aw\\rangle$，则称 $A$ 为自伴算子。", "chapterIds": ["spectral:chapter:foundation"]
+    },
+    {
+      "id": "spectral:entry:eigenpair", "entryClass": "fact", "factKind": "definition", "displayLabel": "定义 4", "shortTitle": "特征对", "title": "特征值与特征向量",
+      "statement": "若 $v\\ne0$ 且 $Av=\\lambda v$，则 $\\lambda$ 是 $A$ 的特征值，$v$ 是对应特征向量。", "chapterIds": ["spectral:chapter:foundation"]
+    },
+    {
+      "id": "spectral:entry:fta", "entryClass": "claim", "claimKind": "theorem", "displayLabel": "定理 1", "shortTitle": "代数基本定理", "title": "复多项式存在根",
+      "statement": "每个次数至少为 $1$ 的复系数多项式在 $\\mathbb C$ 中至少有一个根。", "sourceReference": "Fundamental theorem of algebra", "chapterIds": ["spectral:chapter:foundation"]
+    },
+    {
+      "id": "spectral:entry:eigenvalue-exists", "entryClass": "claim", "claimKind": "lemma", "displayLabel": "引理 1", "shortTitle": "存在特征值", "title": "复线性算子存在特征值",
+      "statement": "若 $V\\ne0$，则每个线性算子 $A:V\\to V$ 至少有一个复特征值。", "chapterIds": ["spectral:chapter:proof"]
+    },
+    {
+      "id": "spectral:entry:real-eigenvalues", "entryClass": "claim", "claimKind": "lemma", "displayLabel": "引理 2", "shortTitle": "特征值为实数", "title": "自伴算子的特征值是实数",
+      "statement": "若 $A$ 自伴且 $Av=\\lambda v$，其中 $v\\ne0$，则 $\\lambda\\in\\mathbb R$。", "chapterIds": ["spectral:chapter:proof"]
+    },
+    {
+      "id": "spectral:entry:orthogonal-complement-invariant", "entryClass": "claim", "claimKind": "lemma", "displayLabel": "引理 3", "shortTitle": "正交补不变", "title": "特征方向的正交补保持不变",
+      "statement": "若 $A$ 自伴且 $Av=\\lambda v$，令 $W=\\operatorname{span}\\{v\\}$，则 $A(W^\\perp)\\subseteq W^\\perp$。", "chapterIds": ["spectral:chapter:proof"]
+    },
+    {
+      "id": "spectral:entry:restriction-self-adjoint", "entryClass": "claim", "claimKind": "lemma", "displayLabel": "引理 4", "shortTitle": "限制仍自伴", "title": "正交补上的限制仍自伴",
+      "statement": "在上一引理的条件下，$A|_{W^\\perp}:W^\\perp\\to W^\\perp$ 关于限制内积仍是自伴算子。", "chapterIds": ["spectral:chapter:proof"]
+    },
+    {
+      "id": "spectral:entry:spectral-theorem", "entryClass": "claim", "claimKind": "theorem", "displayLabel": "定理 2", "shortTitle": "谱定理", "title": "有限维复内积空间上的谱定理",
+      "statement": "有限维复内积空间上的每个自伴算子都有一组由特征向量组成的标准正交基；等价地，它可被酉对角化，且全部特征值为实数。", "chapterIds": ["spectral:chapter:proof"]
+    }
+  ],
+  "inferences": [
+    {
+      "id": "spectral:inference:eigenvalue-exists", "operationKind": "proof", "displayLabel": "证明 1", "shortTitle": "特征多项式", "title": "由特征多项式得到特征值",
+      "statement": "$p_A(t)=\\det(tI-A)$ 是正次复多项式；代数基本定理给出根 $\\lambda$，于是 $\\lambda I-A$ 不可逆并存在非零核向量。",
+      "premises": ["spectral:entry:linear-operator", "spectral:entry:eigenpair", "spectral:entry:fta"], "conclusion": "spectral:entry:eigenvalue-exists", "argument": "复特征多项式的根等价于特征值。"
+    },
+    {
+      "id": "spectral:inference:real-eigenvalues", "operationKind": "proof", "displayLabel": "证明 2", "shortTitle": "内积比较", "title": "由自伴恒等式得到实特征值",
+      "statement": "$\\lambda\\langle v,v\\rangle=\\langle Av,v\\rangle=\\langle v,Av\\rangle=\\overline{\\lambda}\\langle v,v\\rangle$，故 $\\lambda=\\overline{\\lambda}$。",
+      "premises": ["spectral:entry:inner-product-space", "spectral:entry:self-adjoint", "spectral:entry:eigenpair", "spectral:entry:eigenvalue-exists"], "conclusion": "spectral:entry:real-eigenvalues", "argument": "用正定性消去非零的 $\\langle v,v\\rangle$。"
+    },
+    {
+      "id": "spectral:inference:orthogonal-complement-invariant", "operationKind": "proof", "displayLabel": "证明 3", "shortTitle": "正交补计算", "title": "由自伴性得到正交补不变",
+      "statement": "若 $x\\in W^\\perp$，则 $\\langle Ax,v\\rangle=\\langle x,Av\\rangle=\\langle x,\\lambda v\\rangle=0$，故 $Ax\\in W^\\perp$。",
+      "premises": ["spectral:entry:self-adjoint", "spectral:entry:eigenpair", "spectral:entry:real-eigenvalues"], "conclusion": "spectral:entry:orthogonal-complement-invariant", "argument": "把算子从内积第一个变量移到第二个变量。"
+    },
+    {
+      "id": "spectral:inference:restriction-self-adjoint", "operationKind": "proof", "displayLabel": "证明 4", "shortTitle": "限制恒等式", "title": "限制后的自伴恒等式",
+      "statement": "对 $x,y\\in W^\\perp$，不变性保证限制算子良定义，而原等式 $\\langle Ax,y\\rangle=\\langle x,Ay\\rangle$ 仍成立。",
+      "premises": ["spectral:entry:self-adjoint", "spectral:entry:orthogonal-complement-invariant"], "conclusion": "spectral:entry:restriction-self-adjoint", "argument": "把原空间的自伴恒等式限制到不变子空间。"
+    },
+    {
+      "id": "spectral:inference:spectral-theorem", "operationKind": "proof", "displayLabel": "证明 5", "shortTitle": "维数归纳", "title": "在正交补上归纳证明谱定理",
+      "statement": "对 $\\dim V$ 归纳。取单位特征向量 $v$；在 $W^\\perp$ 上限制算子仍自伴，归纳得到其标准正交特征基，与 $v$ 合并得到 $V$ 的标准正交特征基。",
+      "premises": ["spectral:entry:inner-product-space", "spectral:entry:eigenvalue-exists", "spectral:entry:real-eigenvalues", "spectral:entry:orthogonal-complement-invariant", "spectral:entry:restriction-self-adjoint"], "conclusion": "spectral:entry:spectral-theorem", "argument": "沿特征方向分解并在低一维不变正交补上归纳。"
+    }
+  ],
+  "chapters": [
+    {"id":"spectral:chapter:foundation","displayLabel":"Section 1","title":"对象与外部基础","entryIds":["spectral:entry:inner-product-space","spectral:entry:linear-operator","spectral:entry:self-adjoint","spectral:entry:eigenpair","spectral:entry:fta"],"inferenceIds":[]},
+    {"id":"spectral:chapter:proof","displayLabel":"Section 2","title":"谱定理主线","entryIds":["spectral:entry:eigenvalue-exists","spectral:entry:real-eigenvalues","spectral:entry:orthogonal-complement-invariant","spectral:entry:restriction-self-adjoint","spectral:entry:spectral-theorem"],"inferenceIds":["spectral:inference:eigenvalue-exists","spectral:inference:real-eigenvalues","spectral:inference:orthogonal-complement-invariant","spectral:inference:restriction-self-adjoint","spectral:inference:spectral-theorem"]}
+  ],
+  "b0ClaimEntryIds": ["spectral:entry:fta"],
+  "loops": [
+    {"id":"spectral:loop:01","displayLabel":"证明 1","title":"找到特征值","resultState":"completed","targetEntryId":"spectral:entry:spectral-theorem","focusEntryId":"spectral:entry:eigenvalue-exists","usedEntryIds":["spectral:entry:linear-operator","spectral:entry:eigenpair","spectral:entry:fta"],"deltaEntryIds": ["spectral:entry:eigenvalue-exists"], "deltaInferenceIds": ["spectral:inference:eigenvalue-exists"],"resultSummary":"建立复线性算子至少有一个特征值。"},
+    {"id":"spectral:loop:02","displayLabel":"证明 2","title":"证明特征值为实数","resultState":"completed","targetEntryId":"spectral:entry:spectral-theorem","focusEntryId":"spectral:entry:real-eigenvalues","usedEntryIds":["spectral:entry:inner-product-space","spectral:entry:self-adjoint","spectral:entry:eigenpair","spectral:entry:eigenvalue-exists"],"deltaEntryIds": ["spectral:entry:real-eigenvalues"], "deltaInferenceIds": ["spectral:inference:real-eigenvalues"],"resultSummary":"自伴性把已找到的特征值约束到实数。"},
+    {"id":"spectral:loop:03","displayLabel":"证明 3","title":"建立正交补不变性","resultState":"completed","targetEntryId":"spectral:entry:spectral-theorem","focusEntryId":"spectral:entry:orthogonal-complement-invariant","usedEntryIds":["spectral:entry:self-adjoint","spectral:entry:eigenpair","spectral:entry:real-eigenvalues"],"deltaEntryIds": ["spectral:entry:orthogonal-complement-invariant"], "deltaInferenceIds": ["spectral:inference:orthogonal-complement-invariant"],"resultSummary":"得到可降低维数的不变正交补。"},
+    {"id":"spectral:loop:04","displayLabel":"证明 4","title":"验证限制仍自伴","resultState":"completed","targetEntryId":"spectral:entry:spectral-theorem","focusEntryId":"spectral:entry:restriction-self-adjoint","usedEntryIds":["spectral:entry:self-adjoint","spectral:entry:orthogonal-complement-invariant"],"deltaEntryIds": ["spectral:entry:restriction-self-adjoint"], "deltaInferenceIds": ["spectral:inference:restriction-self-adjoint"],"resultSummary":"归纳子问题仍属于同一类自伴算子。"},
+    {"id":"spectral:loop:05","displayLabel":"证明 5","title":"完成维数归纳","resultState":"completed","targetEntryId":"spectral:entry:spectral-theorem","focusEntryId":"spectral:entry:spectral-theorem","usedEntryIds":["spectral:entry:eigenvalue-exists","spectral:entry:real-eigenvalues","spectral:entry:orthogonal-complement-invariant","spectral:entry:restriction-self-adjoint"],"deltaEntryIds": ["spectral:entry:spectral-theorem"], "deltaInferenceIds": ["spectral:inference:spectral-theorem"],"resultSummary":"建立标准正交特征基并完成谱定理。"}
+  ]
+}

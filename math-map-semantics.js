@@ -5,7 +5,7 @@
  * @canonicalSource packages/math-map/state/math-graph-semantics-v2/src/index.js
  * @contentHash sha256:1110d85785303473ab0803b1c1d5ed232bd7798904d7a25af57f181a799db023
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 /* Canonical implementation of cmath-gamma.math-map-semantics/v2. */
 (function publish(root, factory) {

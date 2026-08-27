@@ -1,11 +1,11 @@
 /**
  * @cmath-provenance
- * @package math-map-workspace-v2
- * @version v2
- * @canonicalSource packages/math-map/presentation/math-map-workspace-v2/src/math-map-lab.js
- * @contentHash sha256:ac507c416004093704dd43a3812d9c736fe3e38a57a7f1536f29d4289057e245
+ * @package math-map-workspace-v3
+ * @version v3
+ * @canonicalSource packages/math-map/presentation/math-map-workspace-v3/src/math-map-lab.js
+ * @contentHash sha256:8281dfe1d17fdec0e557d35c12c0215ef97c75878fdd662f19122c5fbc12077e
  * @syncAuthority CMath-capabilities/exports/canonical.json
- * @warning DO NOT EDIT DIRECTLY. Run npm run sync-capabilities.
+ * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 (() => {
   "use strict";
@@ -85,7 +85,6 @@
   const initialLens = ["global", "focus", "progress"].includes(requestedInitialLens) ? requestedInitialLens : "global";
   const state = {
     lens: initialLens,
-    activeRouteId: model.routes[0].id,
     sectionId: "all",
     q: null,
     progressIndex: 0,
@@ -93,7 +92,7 @@
   const externalReferenceTrigger = document.querySelector("#external-reference-inventory");
   const externalReferencePanel = document.querySelector("#external-reference-panel");
   if (isolateFocusLens && state.lens === "focus") {
-    const initialIds = new Set(model.routeView(state.activeRouteId, currentLayout).nodeIds);
+    const initialIds = new Set(model.focusView(currentLayout).nodeIds);
     currentLayout = {
       nodes: currentLayout.nodes.filter((node) => initialIds.has(node.id)),
       edges: currentLayout.edges.filter((edge) => initialIds.has(edge.source) && initialIds.has(edge.target)),
@@ -111,7 +110,6 @@
   function snapshot() {
     return {
       lens: state.lens,
-      activeRouteId: state.activeRouteId,
       sectionId: state.sectionId,
       q: state.q,
       progressIndex: state.progressIndex,
@@ -124,8 +122,11 @@
     if (historyStack.length > 40) historyStack.shift();
   }
 
-  function routeView(routeId = state.activeRouteId, layout = withoutExternalReferences(model.layoutThrough(finalProgress))) {
-    return model.routeView(routeId, layout);
+  function focusView(layout = withoutExternalReferences(model.layoutThrough(finalProgress))) {
+    const defaultFocusId = model.focus?.currentEntryId
+      ?? model.focus?.currentGoalId
+      ?? model.goalHierarchy?.currentGoalIds?.[0];
+    return model.focusView(layout, state.q ?? defaultFocusId);
   }
 
   function claimStatesForView() {
@@ -138,7 +139,7 @@
       ? model.progressLayoutThrough(count)
       : model.layoutThrough(count);
     if (state.lens === "focus" && isolateFocusLens) {
-      const ids = new Set(routeView(state.activeRouteId, layout).nodeIds);
+      const ids = new Set(focusView(layout).nodeIds);
       if (state.q) model.neighborhood(layout, state.q).forEach((id) => ids.add(id));
       layout = {
         nodes: layout.nodes.filter((node) => ids.has(node.id)),
@@ -213,7 +214,7 @@
   }
 
   function activeFocusEntryId() {
-    if (state.lens === "focus") return routeView().currentGoalId;
+    if (state.lens === "focus") return focusView().focusEntryId;
     if (state.lens === "progress" && state.progressIndex) {
       const batch = model.progressBatches[state.progressIndex - 1];
       return batch?.focusEntryId ?? batch?.targetEntryId ?? null;
@@ -259,20 +260,8 @@
       button.setAttribute("aria-selected", String(active));
     });
     document.querySelector("#math-map-section").value = state.sectionId;
-    document.querySelector("#route-switcher").hidden = state.lens !== "focus";
     document.querySelector("#progress-timeline").hidden = state.lens !== "progress";
     document.querySelector("#math-map-back").disabled = historyStack.length === 0;
-    const activeView = routeView();
-    setMathText("#final-goal-title", byId(activeView.finalGoalId)?.title ?? activeView.finalGoalId);
-    setMathText("#milestone-title", byId(activeView.milestoneId)?.title ?? activeView.milestoneId);
-    setMathText("#route-summary", activeView.summary);
-    document.querySelector("#route-options").innerHTML = model.routes.map((route) => {
-      const view = routeView(route.id);
-      const target = byId(view.currentGoalId);
-      const latestLoop = model.loops.find((loop) => loop.id === view.loopIds.at(-1));
-      const active = route.id === state.activeRouteId;
-      return `<button type="button" data-route="${escapeHtml(route.id)}" class="${active ? "is-active" : ""}" ${active ? 'aria-current="true"' : ""}><span>${renderMath(route.label)}</span><strong>${renderMath(target?.title ?? view.currentGoalId)}</strong><small>${renderMath(`${view.loopIds.length} 次近期${model.temporalUnitLabel ?? "Loop"}${latestLoop ? ` · ${latestLoop.title}` : ""}`)}</small></button>`;
-    }).join("");
     updateProgressChrome();
   }
 
@@ -298,7 +287,7 @@
 
   function focusIdsForState() {
     if (state.lens === "focus") {
-      const ids = new Set(routeView().nodeIds);
+      const ids = new Set(focusView().nodeIds);
       if (state.q) model.neighborhood(currentLayout, state.q).forEach((id) => ids.add(id));
       return [...ids];
     }
@@ -320,10 +309,9 @@
     updateChrome();
 
     if (state.lens === "focus") {
-      const view = routeView();
-      const target = byId(view.currentGoalId);
-      const browsing = state.q && state.q !== view.currentGoalId ? ` · 浏览焦点 q：${byId(state.q)?.title ?? state.q}` : "";
-      setContext(`${view.label} · ${target?.title ?? view.currentGoalId}`, `${view.summary}${browsing}`);
+      const view = focusView();
+      const target = byId(view.focusEntryId);
+      setContext(`当前焦点 · ${target?.title ?? view.focusEntryId}`, view.summary);
     } else if (state.lens === "progress") {
       const batch = state.progressIndex ? model.progressBatches[state.progressIndex - 1] : null;
       setContext(batch?.title ?? "进展基线", batch?.summary ?? "下一轮会把新增子图加入同一张图。");
@@ -340,19 +328,8 @@
     remember();
     state.lens = lens;
     state.sectionId = lens === "global" ? state.sectionId : "all";
-    if (lens === "focus" && !state.q) state.q = routeView().currentGoalId;
+    if (lens === "focus" && !state.q) state.q = focusView().focusEntryId;
     if (lens === "progress" && state.progressIndex === 0 && model.progressBatches.length) state.progressIndex = 1;
-    await syncLayoutForState();
-    applyLens();
-  }
-
-  async function switchRoute(routeId) {
-    if ((state.activeRouteId === routeId && state.lens === "focus") || inserting) return;
-    remember();
-    state.lens = "focus";
-    state.sectionId = "all";
-    state.activeRouteId = routeId;
-    state.q = routeView(routeId).currentGoalId;
     await syncLayoutForState();
     applyLens();
   }
@@ -497,10 +474,6 @@
 
   renderExternalReferenceInventory();
   document.querySelectorAll("[data-lens]").forEach((button) => button.addEventListener("click", () => switchLens(button.dataset.lens)));
-  document.querySelector("#route-options").addEventListener("click", (event) => {
-    const button = event.target.closest("[data-route]");
-    if (button) switchRoute(button.dataset.route);
-  });
   document.querySelector("#math-map-section").addEventListener("change", (event) => switchSection(event.target.value));
   document.querySelector("#math-map-search").addEventListener("input", applySearch);
   externalReferenceTrigger?.addEventListener("click", openExternalReferencePanel);

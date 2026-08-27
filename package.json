@@ -5,7 +5,8 @@
   "description": "CMath Math Map — v4 Proof / v5 Paper Grotesque editions (static preview)",
   "scripts": {
     "dev": "node server.js",
-    "test": "node --test tests/paper-import-client.test.mjs tests/paper-import-benchmark.test.mjs",
+    "test": "node --test tests/paper-import-client.test.mjs tests/paper-import-benchmark.test.mjs tests/canonical-capability-adoption.test.mjs tests/generic-math-content-build.test.mjs",
+    "build:generic-math-content": "node tools/build-generic-math-map-assets.mjs",
     "evaluate": "node scripts/evaluate-output.mjs"
   }
 }

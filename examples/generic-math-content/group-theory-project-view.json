@@ -1,0 +1,215 @@
+{
+  "schema": "cmath.project-view-model/v0.1",
+  "semanticModel": "cmath.fact-claim-operation/v0.1",
+  "project": {
+    "id": "cmath:project:group-theory-content-example",
+    "title": "群、陪集与 Lagrange 定理"
+  },
+  "channelOptions": {
+    "schema": "cmath-gamma.project-channel/v0.1",
+    "projectId": "cmath:project:group-theory-content-example",
+    "boundaryLabel": "一般数学内容 · Gamma-native 只读地图",
+    "adapterOptions": {
+      "goalHierarchy": {
+        "finalGoalId": "group:entry:lagrange",
+        "milestoneIds": [
+          "group:entry:coset-partition"
+        ]
+      },
+      "routeLabelsByTargetId": {
+        "group:entry:lagrange": "陪集到 Lagrange 定理"
+      }
+    }
+  },
+  "derivedResearchState": {
+    "mathematicalState": {
+      "foundationEntryIds": [
+        "group:entry:group",
+        "group:entry:subgroup",
+        "group:entry:left-coset",
+        "group:entry:order"
+      ],
+      "claimSeedEntryIds": []
+    },
+    "researchOverlay": {
+      "loopTargetEntryId": "group:entry:lagrange",
+      "activeSectionIds": [
+        "group:chapter:cosets"
+      ],
+      "routeDescription": "从群、子群与左陪集定义出发，经陪集分割和陪集等势建立 Lagrange 定理。",
+      "nextActionDescription": "静态内容地图已经闭合；本试件不伪造研究 Loop。"
+    }
+  },
+  "entries": [
+    {
+      "id": "group:entry:group",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 1",
+      "shortTitle": "群",
+      "title": "群的定义",
+      "statement": "群是一个集合 G 连同二元运算 (x,y)↦xy，满足结合律，存在单位元 e，并且每个 x∈G 都存在逆元 x⁻¹。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#group"
+    },
+    {
+      "id": "group:entry:subgroup",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 2",
+      "shortTitle": "子群",
+      "title": "子群的定义",
+      "statement": "群 G 的非空子集 H 称为子群，如果对任意 x,y∈H 都有 xy⁻¹∈H；此时 H 在 G 的运算下自身构成群。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#subgroup"
+    },
+    {
+      "id": "group:entry:left-coset",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 3",
+      "shortTitle": "左陪集",
+      "title": "左陪集的定义",
+      "statement": "若 H≤G 且 g∈G，则 H 关于 g 的左陪集定义为 gH={gh∣h∈H}。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#left-coset"
+    },
+    {
+      "id": "group:entry:order",
+      "entryClass": "fact",
+      "factKind": "definition",
+      "displayLabel": "定义 4",
+      "shortTitle": "群的阶",
+      "title": "有限群和子群的阶",
+      "statement": "有限集合 X 的基数记为 |X|；有限群 G 的阶是 |G|，有限子群 H 的阶是 |H|。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#order"
+    },
+    {
+      "id": "group:entry:coset-partition",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 1",
+      "shortTitle": "陪集分割",
+      "title": "左陪集构成群的分割",
+      "statement": "若 H≤G，则 H 的任意两个左陪集或者相等，或者不相交；所有左陪集的并等于 G。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#coset-partition"
+    },
+    {
+      "id": "group:entry:coset-cardinality",
+      "entryClass": "claim",
+      "claimKind": "lemma",
+      "displayLabel": "引理 2",
+      "shortTitle": "陪集等势",
+      "title": "每个左陪集与子群等势",
+      "statement": "若 H≤G 且 g∈G，则映射 H→gH，h↦gh 是双射；特别地，当 H 有限时，|gH|=|H|。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#coset-cardinality"
+    },
+    {
+      "id": "group:entry:lagrange",
+      "entryClass": "claim",
+      "claimKind": "theorem",
+      "displayLabel": "定理 1",
+      "shortTitle": "Lagrange 定理",
+      "title": "有限群的 Lagrange 定理",
+      "statement": "若 G 是有限群且 H≤G，则 |G|=[G:H]|H|；因此 |H| 整除 |G|。",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "sourcePath": "examples/generic-math-content/group-theory-project-view.json#lagrange"
+    }
+  ],
+  "inferences": [
+    {
+      "id": "group:inference:coset-partition",
+      "operationKind": "proof",
+      "displayLabel": "证明 1",
+      "shortTitle": "陪集分割",
+      "title": "证明左陪集构成分割",
+      "statement": "若 g₁H 与 g₂H 相交，则由公共元素可得 g₂⁻¹g₁∈H，从而 g₁H=g₂H；每个 g∈G 又属于 gH。",
+      "premises": [
+        "group:entry:group",
+        "group:entry:subgroup",
+        "group:entry:left-coset"
+      ],
+      "conclusion": "group:entry:coset-partition",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "argument": "相交推出代表元只相差一个 H 中的元素；每个群元素属于由自身代表的左陪集。"
+    },
+    {
+      "id": "group:inference:coset-cardinality",
+      "operationKind": "proof",
+      "displayLabel": "证明 2",
+      "shortTitle": "陪集等势",
+      "title": "证明每个左陪集与子群等势",
+      "statement": "左乘 g 给出 H 到 gH 的满射，左乘 g⁻¹ 给出其逆映射，因此二者双射。",
+      "premises": [
+        "group:entry:group",
+        "group:entry:subgroup",
+        "group:entry:left-coset"
+      ],
+      "conclusion": "group:entry:coset-cardinality",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "argument": "映射 h↦gh 的逆映射是 x↦g⁻¹x。"
+    },
+    {
+      "id": "group:inference:lagrange",
+      "operationKind": "proof",
+      "displayLabel": "证明 3",
+      "shortTitle": "Lagrange 定理",
+      "title": "由陪集分割和等势证明 Lagrange 定理",
+      "statement": "G 被 [G:H] 个左陪集分割，每个左陪集都有 |H| 个元素，因此 |G|=[G:H]|H|。",
+      "premises": [
+        "group:entry:order",
+        "group:entry:coset-partition",
+        "group:entry:coset-cardinality"
+      ],
+      "conclusion": "group:entry:lagrange",
+      "chapterIds": [
+        "group:chapter:cosets"
+      ],
+      "argument": "对有限分割逐块计数。"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "group:chapter:cosets",
+      "displayLabel": "Section 1",
+      "title": "群、子群、陪集与 Lagrange 定理",
+      "entryIds": [
+        "group:entry:group",
+        "group:entry:subgroup",
+        "group:entry:left-coset",
+        "group:entry:order",
+        "group:entry:coset-partition",
+        "group:entry:coset-cardinality",
+        "group:entry:lagrange"
+      ],
+      "inferenceIds": [
+        "group:inference:coset-partition",
+        "group:inference:coset-cardinality",
+        "group:inference:lagrange"
+      ]
+    }
+  ],
+  "claimSeedEntryIds": [],
+  "loops": []
+}
