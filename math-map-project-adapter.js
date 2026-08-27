@@ -3,7 +3,7 @@
  * @package alpha-project-adapter-v0.2
  * @version v0.2
  * @canonicalSource packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js
- * @contentHash sha256:cfb1572dc41445ea5d08e461fb03fd84e6b0492ba7142b2c8c1f8e1c04b35846
+ * @contentHash sha256:0b67c990fc70b98085d31c7e84e513ab3b05f73c606cef863e4a64b9826b5db1
  * @syncAuthority CMath-capabilities/exports/canonical.json
  * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
@@ -722,11 +722,18 @@
     const formalEdges = formalInferenceRecords.flatMap(inferenceEdges);
 
     const loopDeltaIds = (loop) => {
-      const delta = loop.deltaIds;
+      const hasTypedDeltaInput = loop.deltaFormat === "typed"
+        || (loop.deltaFormat !== "legacy"
+          && (Object.hasOwn(loop, "deltaEntryIds") || Object.hasOwn(loop, "deltaInferenceIds")));
+      if (hasTypedDeltaInput) {
+        return unique([
+          ...(loop.deltaEntryIds ?? []),
+          ...(loop.deltaInferenceIds ?? []),
+        ].map(endpointId));
+      }
+      const delta = loop.deltaIds ?? loop.mathematicalDeltaIds;
       const objectDelta = delta && typeof delta === "object" && !Array.isArray(delta) ? delta : {};
       return unique([
-        ...(loop.deltaEntryIds ?? []),
-        ...(loop.deltaInferenceIds ?? []),
         ...(Array.isArray(delta) ? delta : Array.isArray(objectDelta.ids) ? objectDelta.ids : []),
         ...(objectDelta.entryIds ?? []),
         ...(objectDelta.inferenceIds ?? []),

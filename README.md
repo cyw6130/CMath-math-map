@@ -97,7 +97,6 @@ CMath-math-map/
 │   └── fixtures/                # 测试基准 Golden 参考与规范
 │
 ├── scripts/                     # 运维与评测脚本
-│   ├── consume-capabilities.mjs # 上游能力同步分发脚本
 │   ├── evaluate-output.mjs      # 模型输出质量单体体检脚本
 │   ├── bench-models.mjs         # 多模型基准批量跑分脚本
 │   ├── audit-paper-benchmarks.mjs # 论文 benchmark 结构与来源完整性审计脚本

@@ -182,8 +182,8 @@
       "version": "v0.2",
       "canonicalSource": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
       "target": "math-map-project-adapter.js",
-      "contentHash": "sha256:cfb1572dc41445ea5d08e461fb03fd84e6b0492ba7142b2c8c1f8e1c04b35846",
-      "distributedHash": "sha256:5894a629dffb3319497d8e843510ad0dfad14e0d64b1aa8348c3514da74cdd79"
+      "contentHash": "sha256:0b67c990fc70b98085d31c7e84e513ab3b05f73c606cef863e4a64b9826b5db1",
+      "distributedHash": "sha256:346c4363996e5e4f45872a7c9dfee228eec5bb115de886c1878c05411d24ce1b"
     },
     {
       "packageId": "mathematical-content-admission-v1",
