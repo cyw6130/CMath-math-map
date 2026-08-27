@@ -132,6 +132,7 @@ test("production semantic pipeline is browser-safe at its public boundary", () =
 
 test("production semantic seam can preserve Entry partial success for VNext integration", async () => {
   const artifacts = {};
+  const infos = {};
   const markedMarkdown = Array.from({ length: 6 }, (_, index) => `[[PAGE ${index + 1}]]\nPage ${index + 1}`).join("\n\n");
   const view = await client.requestPaperProductionSemanticPipeline({
     endpoint: "https://example.invalid/v1",
@@ -161,13 +162,18 @@ test("production semantic seam can preserve Entry partial success for VNext inte
         inferences: [{ operationKind: "proof", premises: ["def:space"], conclusion: "thm:main", argument: "By definition.", page: 6 }],
       }) };
     },
-    onArtifact: async (stage, artifact) => { artifacts[stage] = artifact; },
+    onArtifact: async (stage, artifact, info) => {
+      artifacts[stage] = artifact;
+      infos[stage] = info;
+    },
   });
 
   assert.equal(view.mainTargetEntryId, "thm:main");
   assert.equal(artifacts.entry.unresolvedItems.length, 1);
   assert.equal(artifacts.consolidate.unresolvedItems.length, 1);
   assert.equal(artifacts.consolidate.unresolvedItems[0].failureCategory, "window-extraction-failed");
+  assert.equal(infos.entry.status, "degraded");
+  assert.equal(infos.consolidate.status, "degraded");
 });
 
 test("production semantic seam can degrade W7.1 and continue W8 plus Inference", async () => {

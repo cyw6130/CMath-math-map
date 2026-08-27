@@ -135,6 +135,23 @@ test("validateBackupPayload validates schema and filters malformed maps", () => 
   assert.equal(validated.maps[0].title, "正常地图");
 });
 
+test("backup validation retains VNext generation metadata and strict map compatibility", () => {
+  const map = createSampleProjectView("部分地图", "partial");
+  const generatedResult = {
+    schema: "cmath.paper-to-map-result/v1", status: "degraded", map,
+    sourceAnnotations: { items: [] }, unresolvedItems: [],
+    diagnostics: { missingStages: ["inference"] }, stages: {},
+    identity: { contentFingerprint: "digest", frozenWorkflow: { label: "vnext" } },
+  };
+  const validated = validateBackupPayload({
+    schema: BACKUP_SCHEMA,
+    maps: [{ id: "imported:partial", generatedResult }],
+  });
+  assert.equal(validated.maps.length, 1);
+  assert.deepEqual(validated.maps[0].data, map);
+  assert.equal(validated.maps[0].generatedResult.status, "degraded");
+});
+
 test("mergeLibraryBackup deterministically merges maps and handles ID conflicts", () => {
   const currentMaps = [
     {

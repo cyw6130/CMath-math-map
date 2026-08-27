@@ -229,7 +229,13 @@ test("public UI calls only the single Production Paper Import entry", () => {
 test("paper workflow saves its Project View to the library instead of downloading automatically", () => {
   const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-  assert.match(app, /await saveWorkflowMapToLibrary\(projectView, selectedPaperPdf\.name\);/u);
+  assert.match(app, /await saveWorkflowMapToLibrary\(generatedResult, selectedPaperPdf\.name\);/u);
+  assert.match(app, /generatedResult:\s*cleanResult/u);
+  assert.match(app, /diagnostics\?\.missingStages/u);
+  assert.match(app, /identity\?\.contentFingerprint/u);
+  assert.match(app, /identity\?\.frozenWorkflow\?\.label/u);
+  assert.match(app, /info\.phase === "degraded"/u);
+  assert.match(app, /result\?\.status === "degraded"/u);
   assert.doesNotMatch(app, /link\.download\s*=\s*["']paper-project-view\.json["']/u);
   assert.match(app, /btn-map-export-json.*exportCurrentMapJson|exportCurrentMapJson[\s\S]*btn-map-export-json/u);
   assert.match(html, /id="btn-map-export-json"/u);

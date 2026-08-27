@@ -337,7 +337,11 @@
       entries: rawPool?.rawEntries?.length ?? rawPool?.chunks?.reduce((n, c) => n + (c.rawEntries?.length ?? 0), 0) ?? 0,
     });
     if (typeof onArtifact === "function" && !resumeArtifacts?.entry) {
-      await onArtifact("entry", rawPool, { entries: rawPool?.rawEntries?.length ?? 0 });
+      const degraded = allowPartialSuccess && (rawPool?.unresolvedItems?.length ?? 0) > 0;
+      await onArtifact("entry", rawPool, {
+        entries: rawPool?.rawEntries?.length ?? 0,
+        ...(degraded ? { status: "degraded" } : {}),
+      });
     }
 
     let artifact = resumeArtifacts?.consolidate ?? null;
@@ -353,7 +357,10 @@
       if (frozenArtifactApi?.validatePaperEntryArtifact) {
         frozenArtifactApi.validatePaperEntryArtifact(artifact);
       }
-      if (typeof onArtifact === "function") await onArtifact("consolidate", artifact);
+      if (typeof onArtifact === "function") {
+        const degraded = allowPartialSuccess && (artifact?.unresolvedItems?.length ?? 0) > 0;
+        await onArtifact("consolidate", artifact, degraded ? { status: "degraded" } : {});
+      }
       else notify("consolidate", { phase: "complete", entries: artifact.entries?.length ?? 0 });
     }
 
@@ -451,10 +458,15 @@
     if (!workflow?.runProductionPaperImport) {
       throw new Error("Production Paper Import workflow 没有加载");
     }
+    const frozenWorkflow = options.frozenWorkflow ?? VNEXT_FROZEN_WORKFLOW;
+    const vnext = frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1";
     return workflow.runProductionPaperImport({
       ...options,
-      frozenWorkflow: options.frozenWorkflow ?? FROZEN_WORKFLOW,
+      frozenWorkflow,
       semanticPipeline: options.semanticPipeline ?? requestPaperProductionSemanticPipeline,
+      allowPartialSuccess: options.allowPartialSuccess ?? vnext,
+      allowRefinementDegradation: options.allowRefinementDegradation ?? vnext,
+      allowInferenceDegradation: options.allowInferenceDegradation ?? vnext,
     });
   }
 

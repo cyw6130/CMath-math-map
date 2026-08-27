@@ -56,6 +56,13 @@ function capabilityRuntime(semanticPipeline, manifest = CAPABILITY_MANIFEST) {
   };
 }
 
+async function checkpointByContract(store, productionContractVersion) {
+  const match = (await store.entries()).find(([, checkpoint]) => (
+    checkpoint.frozenWorkflow?.productionContractVersion === productionContractVersion
+  ));
+  return match ?? [null, null];
+}
+
 function fakeSemanticPipeline({ calls, failW8 = false, failureMessage = "W8 test failure" } = {}) {
   return async ({ onStage, onArtifact, resumeArtifacts, markedMarkdown }) => {
     const emit = (stage, phase) => onStage?.(stage, { phase });
@@ -194,10 +201,9 @@ test("显式 VNext 身份通过生产 seam 返回统一 Paper-to-Map 结果", as
   assert.equal(result.schema, "cmath.paper-to-map-result/v1");
   assert.equal(result.status, "complete");
   assert.equal(result.map.mainTargetEntryId, "claim:main");
-  assert.deepEqual(result.sourceAnnotations, {
-    source: { fileName: "paper.pdf", pageCount: 1 },
-    items: [],
-  });
+  assert.equal(result.sourceAnnotations.source.fileName, "paper.pdf");
+  assert.equal(result.sourceAnnotations.source.pageCount, 1);
+  assert.equal(result.sourceAnnotations.items.length, 3);
   assert.deepEqual(result.unresolvedItems, []);
   assert.deepEqual(result.diagnostics, {
     mainTargetIdentified: true,
@@ -317,16 +323,98 @@ test("VNext 的受控未解决项通过 checkpoint 序列化并恢复", async ()
   assert.equal(first.unresolvedItems[0].failureCategory, "contract-invalid");
   assert.doesNotMatch(JSON.stringify(first), /signed\.example|token=secret|model-secret/iu);
 
-  const serializedCheckpoint = JSON.parse(JSON.stringify(
-    await store.load("production-paper-import:vnext-unresolved-digest"),
-  ));
+  const [storedKey, storedCheckpoint] = await checkpointByContract(store, "production-paper-import/v2");
+  const serializedCheckpoint = JSON.parse(JSON.stringify(storedCheckpoint));
   const restoredStore = createMemoryCheckpointStore({
-    "production-paper-import:vnext-unresolved-digest": serializedCheckpoint,
+    [storedKey]: serializedCheckpoint,
   });
   const second = await runProductionPaperImport({ ...common, checkpointStore: restoredStore });
   assert.deepEqual(second, first);
   assert.equal(mineruCalls, 1);
   assert.equal(semanticCalls, 1);
+});
+
+test("VNext returns one degraded Generated Map with diagnostics and lightweight source annotations", async () => {
+  const store = createMemoryCheckpointStore();
+  const seenOptions = [];
+  const unresolved = {
+    id: "unresolved:inference:broken", sourceStage: "inference", candidateSummary: "broken relation",
+    failureCategory: "inference-invalid", validationError: "dangling premise", retryable: true,
+  };
+  const map = {
+    schema: "cmath.project-view-model/v0.1",
+    project: { id: "project:partial", title: "Partial paper" },
+    entries: [{
+      id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main",
+      statement: "$T$.", sourcePath: "paper.pdf#page=2",
+    }],
+    inferences: [],
+    unresolvedItems: [unresolved],
+    diagnostics: {
+      inferenceDegraded: true, mainTargetIdentified: false, mainProofChainComplete: false,
+      openClaimEntryIds: ["claim:main"], isolatedEntryIds: ["claim:main"], repairActions: [],
+    },
+  };
+  const semanticPipeline = async (options) => {
+    seenOptions.push(options);
+    const { onStage, onArtifact, resumeArtifacts } = options;
+    const entry = { rawEntries: [{ id: "claim:main", type: "theorem", statement: "$T$.", page: 2 }], source: { fileName: "paper.pdf", pageCount: 2, sourceText: "[[PAGE 2]] $T$." } };
+    const artifact = { entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", statement: "$T$.", sourcePath: "paper.pdf#page=2" }] };
+    for (const [stage, value, status] of [
+      ["entry", entry, undefined],
+      ["consolidate", artifact, undefined],
+      ["w7-verify", artifact, "degraded"],
+      ["w8-b0", artifact, undefined],
+      ["inference", map, "degraded"],
+    ]) {
+      if (resumeArtifacts?.[stage]) continue;
+      onStage(stage, { phase: "start" });
+      await onArtifact(stage, value, status ? { status } : {});
+    }
+    onStage("closure", { phase: "start" });
+    return map;
+  };
+
+  const result = await runProductionPaperImport({
+    pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([4, 4, 4]).buffer },
+    frozenWorkflow: VNEXT_WORKFLOW,
+    capabilityRuntime: capabilityRuntime(semanticPipeline),
+    checkpointStore: store,
+    hashImpl: async () => "vnext-degraded-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 2]] $T$." }) },
+  });
+
+  assert.equal(result.status, "degraded");
+  assert.deepEqual(result.diagnostics.missingStages, ["w7-verify", "inference"]);
+  assert.equal(result.unresolvedItems[0].id, unresolved.id);
+  assert.deepEqual(result.sourceAnnotations.items, [{ objectId: "claim:main", sourcePath: "paper.pdf#page=2", page: 2 }]);
+  assert.equal(result.stages.closure.status, "complete");
+  assert.equal(seenOptions[0].allowPartialSuccess, true);
+  assert.equal(seenOptions[0].allowRefinementDegradation, true);
+  assert.equal(seenOptions[0].allowInferenceDegradation, true);
+  const records = await store.entries();
+  assert.equal(records.length, 1);
+  assert.match(records[0][0], /:workflow:/u);
+  assert.equal(records[0][1].stages.closure.status, "degraded");
+});
+
+test("VNext checkpoint identity does not overwrite the same PDF's V4.1 checkpoint", async () => {
+  const store = createMemoryCheckpointStore();
+  const pdf = { name: "same.pdf", size: 3, arrayBuffer: async () => new Uint8Array([5, 5, 5]).buffer };
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: WORKFLOW, checkpointStore: store, hashImpl: async () => "same-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    semanticPipeline: fakeSemanticPipeline({ calls: [] }),
+  });
+  await runProductionPaperImport({
+    pdf, frozenWorkflow: VNEXT_WORKFLOW, checkpointStore: store, hashImpl: async () => "same-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: [] })),
+  });
+  const records = await store.entries();
+  assert.equal(records.length, 2);
+  assert.ok(records.some(([key, value]) => key === "production-paper-import:same-digest" && value.frozenWorkflow.productionContractVersion === "production-paper-import/v1"));
+  assert.ok(records.some(([key, value]) => key.includes(":workflow:") && value.frozenWorkflow.productionContractVersion === "production-paper-import/v2"));
 });
 
 test("VNext 缺少权威同步身份或合同版本时在 MinerU 调用前硬失败", async () => {
@@ -401,10 +489,10 @@ test("VNext 遇到旧的裸 Project View closure 时从安全阶段恢复", asyn
     mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
   };
   const first = await runProductionPaperImport({ ...common, checkpointStore: firstStore });
-  const checkpoint = await firstStore.load("production-paper-import:interrupted-closure-digest");
+  const [storedKey, checkpoint] = await checkpointByContract(firstStore, "production-paper-import/v2");
   checkpoint.stages.closure.artifact = first.map;
   const interruptedStore = createMemoryCheckpointStore({
-    "production-paper-import:interrupted-closure-digest": checkpoint,
+    [storedKey]: checkpoint,
   });
   let mineruCalls = 0;
   let semanticCalls = 0;
@@ -417,6 +505,38 @@ test("VNext 遇到旧的裸 Project View closure 时从安全阶段恢复", asyn
     capabilityRuntime: capabilityRuntime(resumedPipeline),
     checkpointStore: interruptedStore,
     mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+  });
+  assert.equal(resumed.schema, "cmath.paper-to-map-result/v1");
+  assert.equal(mineruCalls, 0);
+  assert.equal(semanticCalls, 1);
+});
+
+test("VNext 不信任缺少外层连续完成阶段的 Closure 副本", async () => {
+  const firstStore = createMemoryCheckpointStore();
+  const common = {
+    pdf: { name: "paper.pdf", size: 3, arrayBuffer: async () => new Uint8Array([2, 2, 2]).buffer },
+    frozenWorkflow: VNEXT_WORKFLOW,
+    hashImpl: async () => "tampered-outer-prefix-digest",
+    mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+  };
+  await runProductionPaperImport({
+    ...common,
+    capabilityRuntime: capabilityRuntime(fakeSemanticPipeline({ calls: [] })),
+    checkpointStore: firstStore,
+  });
+  const [storedKey, checkpoint] = await checkpointByContract(firstStore, "production-paper-import/v2");
+  delete checkpoint.stages.inference;
+  const tamperedStore = createMemoryCheckpointStore({ [storedKey]: checkpoint });
+  let semanticCalls = 0;
+  let mineruCalls = 0;
+  const resumed = await runProductionPaperImport({
+    ...common,
+    checkpointStore: tamperedStore,
+    mineruClient: { importPdf: async () => { mineruCalls += 1; return { markedMarkdown: "[[PAGE 1]] source" }; } },
+    capabilityRuntime: capabilityRuntime(async (options) => {
+      semanticCalls += 1;
+      return fakeSemanticPipeline({ calls: [] })(options);
+    }),
   });
   assert.equal(resumed.schema, "cmath.paper-to-map-result/v1");
   assert.equal(mineruCalls, 0);
@@ -598,6 +718,7 @@ test("真实语义链从 W7 checkpoint 恢复时保留合法 Entry Artifact cont
   const pdf = { name: "resume-real.pdf", size: 3, arrayBuffer: async () => new Uint8Array([7, 7, 7]).buffer };
   const baseOptions = {
     pdf,
+    frozenWorkflow: WORKFLOW,
     checkpointStore: store,
     hashImpl: async () => "resume-real-digest",
     mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
@@ -673,6 +794,7 @@ test("公开入口接通真实冻结语义链并复用同一模型配置", async
     }) };
   };
   const view = await client.requestPaperProductionImport({
+    frozenWorkflow: WORKFLOW,
     pdf: { name: "public.pdf", size: 3, arrayBuffer: async () => new Uint8Array([9, 8, 7]).buffer },
     gatewayUrl: "https://gateway.example/mineru",
     unzip: () => ({}),
@@ -698,6 +820,7 @@ test("公开入口接通真实冻结语义链并复用同一模型配置", async
 
   const resumeEvents = [];
   const resumedView = await client.requestPaperProductionImport({
+    frozenWorkflow: WORKFLOW,
     pdf: { name: "public.pdf", size: 3, arrayBuffer: async () => new Uint8Array([9, 8, 7]).buffer },
     checkpointStore: store,
     hashImpl: async () => "public-digest",

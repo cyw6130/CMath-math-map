@@ -178,7 +178,7 @@ test("formal production entrance completes the frozen semantic pipeline", async 
   );
 });
 
-test("public production entrance supports explicit VNext result without changing the V4.1 default", async () => {
+test("public production entrance defaults to the frozen VNext result contract", async () => {
   const manifest = {
     schema: "cmath.capability-consumer-manifest/v1",
     authority: facade.VNEXT_FROZEN_WORKFLOW.capabilityAuthority,
@@ -189,17 +189,19 @@ test("public production entrance supports explicit VNext result without changing
       contractVersion: dependency.contractVersion,
     })),
   };
+  let semanticOptions;
   const result = await facade.requestPaperProductionImport({
     pdf: {
       name: "vnext.pdf",
       size: 3,
       arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer,
     },
-    frozenWorkflow: facade.VNEXT_FROZEN_WORKFLOW,
     capabilityRuntime: {
       manifest,
-      semanticPipeline: async ({ onStage, onArtifact }) => {
-        const entry = { id: "claim:main", type: "Claim", statement: "Main claim" };
+      semanticPipeline: async (options) => {
+        semanticOptions = options;
+        const { onStage, onArtifact } = options;
+        const entry = { id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main", statement: "Main claim", sourcePath: "vnext.pdf#page=1" };
         const map = {
           schema: "cmath.project-view-model/v0.1",
           mainTargetEntryId: "claim:main",
@@ -230,6 +232,9 @@ test("public production entrance supports explicit VNext result without changing
   assert.equal(result.schema, "cmath.paper-to-map-result/v1");
   assert.equal(result.map.mainTargetEntryId, "claim:main");
   assert.deepEqual(result.identity.frozenWorkflow, facade.VNEXT_FROZEN_WORKFLOW);
+  assert.equal(semanticOptions.allowPartialSuccess, true);
+  assert.equal(semanticOptions.allowRefinementDegradation, true);
+  assert.equal(semanticOptions.allowInferenceDegradation, true);
 });
 
 test("facade fails explicitly when a required core dependency is absent", () => {

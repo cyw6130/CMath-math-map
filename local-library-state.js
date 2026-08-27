@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { normalizeMapRecord } = require("./local-map-store.js");
 
 const LIBRARY_STATE_SCHEMA = "cmath.local-library-state/v1";
 
@@ -141,20 +142,11 @@ function validateBackupPayload(payload) {
     if (!m || typeof m !== "object") continue;
     const id = String(m.id || "").trim();
     if (!id) continue;
-    const data = m.data;
-    if (!data || typeof data !== "object") continue;
-    if (data.schema !== "cmath.project-view-model/v0.1" || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences)) {
-      continue;
+    try {
+      validMaps.push(normalizeMapRecord({ ...m, id }));
+    } catch {
+      // Invalid maps and malformed VNext envelopes are ignored during restore.
     }
-    validMaps.push({
-      schema: "cmath.local-map-record/v1",
-      id,
-      title: String(m.title || data.project.title || id).trim(),
-      boundaryLabel: String(m.boundaryLabel || data.channelOptions?.boundaryLabel || "本地导入 · 数学地图").trim(),
-      importedAt: Number.isFinite(m.importedAt) ? m.importedAt : Date.now(),
-      isImported: true,
-      data,
-    });
   }
 
   return {
@@ -350,4 +342,3 @@ module.exports = {
   normalizeOrders,
   validateBackupPayload,
 };
-

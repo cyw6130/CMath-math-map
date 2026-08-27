@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { sanitizeStageArtifact } = require("./src/paper-import/workflow/checkpoint-store.js");
 
 const PROJECT_VIEW_SCHEMA = "cmath.project-view-model/v0.1";
 
@@ -17,7 +18,13 @@ function safeMapFileName(id) {
 }
 
 function normalizeMapRecord(record) {
-  const data = validateProjectView(record?.data);
+  const generatedResult = record?.generatedResult === undefined
+    ? null
+    : sanitizeStageArtifact("closure", record.generatedResult);
+  if (record?.generatedResult !== undefined && generatedResult?.schema !== "cmath.paper-to-map-result/v1") {
+    throw new TypeError("expected cmath.paper-to-map-result/v1 generatedResult");
+  }
+  const data = validateProjectView(generatedResult?.map ?? record?.data);
   const id = String(record?.id || "imported:" + (data.project.id || "map")).trim();
   const title = String(record?.title || data.project.title || id).trim();
   return {
@@ -28,6 +35,7 @@ function normalizeMapRecord(record) {
     importedAt: Number.isFinite(record?.importedAt) ? record.importedAt : Date.now(),
     isImported: true,
     data,
+    ...(generatedResult ? { generatedResult } : {}),
   };
 }
 

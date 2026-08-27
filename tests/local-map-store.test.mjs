@@ -46,3 +46,31 @@ test("local map store replaces the same id atomically", () => {
 test("local map store rejects non Project View payloads", () => {
   assert.throws(() => normalizeMapRecord({ id: "bad", data: {} }), /expected cmath\.project-view-model/u);
 });
+
+test("local map store preserves a sanitized VNext Generated Map envelope while reopening its strict map", () => {
+  const result = {
+    schema: "cmath.paper-to-map-result/v1",
+    status: "degraded",
+    map: projectView("paper:partial"),
+    sourceAnnotations: { source: { fileName: "paper.pdf", pageCount: 1 }, items: [] },
+    unresolvedItems: [{
+      id: "unresolved:entry:1", sourceStage: "entry", candidateSummary: "candidate",
+      failureCategory: "candidate-invalid", validationError: "invalid", retryable: true,
+    }],
+    diagnostics: { mainTargetIdentified: false, openClaimCount: 0, mainProofChainComplete: false, missingStages: ["entry"] },
+    stages: { entry: { status: "degraded", attempt: 1 }, closure: { status: "complete", attempt: 1 } },
+    identity: { contentFingerprint: "digest", frozenWorkflow: { label: "paper-to-map-vnext" } },
+  };
+  const saved = normalizeMapRecord({ id: "imported:partial", generatedResult: result });
+  assert.deepEqual(saved.data, result.map);
+  assert.equal(saved.generatedResult.status, "degraded");
+  assert.equal(saved.generatedResult.unresolvedItems.length, 1);
+  assert.deepEqual(saved.generatedResult.diagnostics.missingStages, ["entry"]);
+
+  const mismatched = normalizeMapRecord({
+    id: "imported:mismatched",
+    data: projectView("paper:stale"),
+    generatedResult: result,
+  });
+  assert.equal(mismatched.data.project.id, "paper:partial");
+});

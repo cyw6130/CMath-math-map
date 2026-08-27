@@ -771,16 +771,39 @@
       setStep(stage, "done", detail);
       return;
     }
+    if (info.phase === "degraded") {
+      setStep(stage, "done", "部分完成，可稍后重试");
+      return;
+    }
     if (info.phase === "fail") {
       activeImportStage = stage;
       setStep(stage, "active", `失败：${info.message ?? "请重试"}`);
     }
   }
 
-  function finishExtractSteps(view) {
+  function generatedMapView(value) {
+    return value?.schema === "cmath.paper-to-map-result/v1" ? value.map : value;
+  }
+
+  function sanitizeGeneratedResult(value) {
+    if (value?.schema !== "cmath.paper-to-map-result/v1") return null;
+    const clean = window.CMathPaperImportCheckpointStore?.sanitizeStageArtifact?.("closure", value);
+    if (clean?.schema !== "cmath.paper-to-map-result/v1" || clean.map?.schema !== "cmath.project-view-model/v0.1") {
+      throw new TypeError("论文解析结果不符合 Generated Map 合同");
+    }
+    return clean;
+  }
+
+  function finishExtractSteps(result) {
+    const view = generatedMapView(result);
+    const missingStages = new Set(result?.diagnostics?.missingStages ?? []);
     const entries = view?.entries?.length ?? 0;
     const inferences = view?.inferences?.length ?? 0;
-    setStep("inference", "done", `${entries} 个对象 · ${inferences} 条推理`);
+    setStep(
+      "inference",
+      "done",
+      `${entries} 个对象 · ${inferences} 条推理${missingStages.has("inference") ? " · 部分完成" : ""}`,
+    );
     let closureDetail = "全部已建立";
     try {
       const sem = window.GammaMathMapSemantics;
@@ -794,14 +817,19 @@
         closureDetail = openCount === 0 ? "全部已建立" : `${openCount} 条 Claim 保持开放`;
       }
     } catch { /* 展示信息失败不影响结果 */ }
-    setStep("closure", "done", closureDetail);
+    setStep("closure", "done", `${closureDetail}${result?.status === "degraded" ? " · 部分结果" : ""}`);
   }
 
-  function workflowMapRecord(projectView, fileName) {
+  function workflowMapRecord(result, fileName) {
+    const cleanResult = sanitizeGeneratedResult(result);
+    const projectView = cleanResult?.map ?? result;
     const title = (projectView?.project?.title || fileName.replace(/\.pdf$/iu, "") || "论文解析结果").trim();
     const boundaryLabel = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
     const rawId = projectView?.project?.id || title || fileName;
-    const slug = String(rawId)
+    const workflowIdentity = cleanResult
+      ? `${cleanResult.identity?.contentFingerprint ?? "content"}-${cleanResult.identity?.frozenWorkflow?.capabilitySyncIdentity ?? "capability"}-${cleanResult.identity?.frozenWorkflow?.productionContractVersion ?? "contract"}`
+      : "";
+    const slug = String(workflowIdentity ? `${rawId}-${workflowIdentity}` : rawId)
       .replace(/[^a-zA-Z0-9_\u4e00-\u9fa5-]/gu, "-")
       .replace(/^-+|-+$/gu, "")
       .toLowerCase() || "paper-map";
@@ -812,6 +840,7 @@
       data: projectView,
       importedAt: Date.now(),
       isImported: true,
+      ...(cleanResult ? { generatedResult: cleanResult } : {}),
     };
   }
 
@@ -838,14 +867,17 @@
     extractStatus.querySelector(".extract-error-text").textContent = message;
   }
 
-  function showExtractSuccess(projectView, fileName) {
+  function showExtractSuccess(result, fileName) {
+    const projectView = generatedMapView(result);
+    const missingCount = result?.diagnostics?.missingStages?.length ?? 0;
+    const unresolvedCount = result?.unresolvedItems?.length ?? 0;
     extractStatus.hidden = false;
     extractStatus.classList.add("is-success");
     extractStatus.classList.remove("is-error");
     const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
     extractStatus.innerHTML = `${stepsHtml}
       <p class="extract-success-title">✓ 解析完成</p>
-      <p class="extract-success-sub">已自动保存到「我的 JSON 地图」</p>
+      <p class="extract-success-sub">已自动保存到「我的 JSON 地图」${missingCount || unresolvedCount ? ` · ${missingCount} 个阶段待完善 · ${unresolvedCount} 个未解决项` : ""}</p>
       <div class="extract-success-actions">
         <button type="button" class="extract-open-map">立即在地图中打开</button>
         <button type="button" class="extract-open-library">打开地图库</button>
@@ -924,7 +956,7 @@
     setStep("mineru", "active", "正在计算 PDF 指纹");
     try {
       if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
-      const projectView = await window.GammaPaperImportClient.requestPaperProductionImport({
+      const generatedResult = await window.GammaPaperImportClient.requestPaperProductionImport({
         pdf: selectedPaperPdf,
         gatewayUrl: MINERU_GATEWAY_URL,
         unzip: (bytes) => window.fflate.unzipSync(bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)),
@@ -937,9 +969,9 @@
         onStage: handleImportStage,
         reasoningEffort: currentModelReasoningEffort(),
       });
-      await saveWorkflowMapToLibrary(projectView, selectedPaperPdf.name);
-      finishExtractSteps(projectView);
-      showExtractSuccess(projectView, selectedPaperPdf.name);
+      await saveWorkflowMapToLibrary(generatedResult, selectedPaperPdf.name);
+      finishExtractSteps(generatedResult);
+      showExtractSuccess(generatedResult, selectedPaperPdf.name);
     } catch (error) {
       const message = error instanceof TypeError
         ? (activeImportStage === "mineru"
@@ -2207,7 +2239,13 @@
     if (isActive) card.classList.add("is-active-map");
 
     const title = mapDef.title || mapDef.id;
-    const boundary = mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图");
+    const missingStages = mapDef.generatedResult?.diagnostics?.missingStages ?? [];
+    const unresolvedCount = mapDef.generatedResult?.unresolvedItems?.length ?? 0;
+    const workflowLabel = mapDef.generatedResult?.identity?.frozenWorkflow?.label ?? "VNext";
+    const generationSummary = mapDef.generatedResult
+      ? ` · ${workflowLabel} · ${mapDef.generatedResult.status === "degraded" ? "部分结果" : "完整结果"} · ${missingStages.length} 个阶段待完善 · ${unresolvedCount} 个未解决项`
+      : "";
+    const boundary = (mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图")) + generationSummary;
     const sourceBadgeClass = mapDef.isImported ? "source-imported" : "source-builtin";
     const sourceBadgeText = mapDef.isImported ? "用户导入" : "内置库";
 
@@ -2696,7 +2734,9 @@
       if (!m || typeof m !== "object") continue;
       const id = String(m.id || "").trim();
       if (!id) continue;
-      const data = m.data;
+      const cleanResult = m.generatedResult === undefined ? null : sanitizeGeneratedResult(m.generatedResult);
+      if (m.generatedResult !== undefined && !cleanResult) continue;
+      const data = cleanResult?.map ?? m.data;
       if (!data || typeof data !== "object") continue;
       if (data.schema !== "cmath.project-view-model/v0.1" || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences)) {
         continue;
@@ -2709,6 +2749,7 @@
         importedAt: Number.isFinite(m.importedAt) ? m.importedAt : Date.now(),
         isImported: true,
         data,
+        ...(cleanResult ? { generatedResult: cleanResult } : {}),
       });
     }
 
@@ -2916,6 +2957,7 @@
         importedAt: m.importedAt || Date.now(),
         isImported: true,
         data: m.data,
+        ...(m.generatedResult ? { generatedResult: m.generatedResult } : {}),
       })),
       library: {
         customFolders,

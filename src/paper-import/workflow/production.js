@@ -216,8 +216,10 @@
       : null;
   }
 
-  function checkpointKey(fingerprint) {
-    return `production-paper-import:${fingerprint}`;
+  function checkpointKey(fingerprint, frozenWorkflow = null) {
+    const base = `production-paper-import:${fingerprint}`;
+    if (!isVNextWorkflow(frozenWorkflow ?? {})) return base;
+    return `${base}:workflow:${encodeURIComponent(stableValue(frozenWorkflow))}`;
   }
 
   function getModelConfig(options) {
@@ -230,10 +232,31 @@
     };
   }
 
+  function sourceAnnotationItems(structured, map) {
+    if (Array.isArray(structured.sourceAnnotations?.items)) return cloneJson(structured.sourceAnnotations.items);
+    const items = [];
+    for (const object of [...(Array.isArray(map?.entries) ? map.entries : []), ...(Array.isArray(map?.inferences) ? map.inferences : [])]) {
+      const sourcePath = object?.sourcePath ?? object?.sourceLocator;
+      if (typeof object?.id !== "string" || typeof sourcePath !== "string" || !sourcePath.trim()) continue;
+      const item = { objectId: object.id, sourcePath: sourcePath.trim() };
+      const page = sourcePath.match(/#page=(\d+)/u) ?? sourcePath.match(/\[\[PAGE\s+(\d+)\]\]/u);
+      if (page && Number(page[1]) > 0) item.page = Number(page[1]);
+      items.push(item);
+    }
+    return items;
+  }
+
   function paperToMapResult({ semanticResult, checkpoint, mineruArtifact, fingerprint, frozenWorkflow }) {
     const structured = semanticResult?.map && typeof semanticResult.map === "object"
       ? semanticResult
       : { map: semanticResult };
+    const map = structured.map;
+    const unresolvedItems = Array.isArray(structured.unresolvedItems)
+      ? cloneJson(structured.unresolvedItems)
+      : (Array.isArray(map?.unresolvedItems) ? cloneJson(map.unresolvedItems) : []);
+    const mapDiagnostics = structured.diagnostics && typeof structured.diagnostics === "object"
+      ? structured.diagnostics
+      : (map?.diagnostics && typeof map.diagnostics === "object" ? map.diagnostics : {});
     const stages = {};
     for (const stage of STAGES) {
       const record = checkpoint.stages?.[stage];
@@ -247,33 +270,31 @@
         attempt: Number(record.attempt ?? 0),
       };
     }
+    const missingStages = STAGES.filter((stage) => stage !== "closure" && stages[stage]?.status !== "complete");
+    const status = missingStages.length ? "degraded" : "complete";
     return {
       schema: "cmath.paper-to-map-result/v1",
-      status: "complete",
-      map: structured.map,
+      status,
+      map,
       sourceAnnotations: {
         source: {
-          fileName: mineruArtifact.fileName ?? "paper.pdf",
-          pageCount: mineruArtifact.pageCount ?? 1,
+          fileName: structured.sourceAnnotations?.source?.fileName ?? mineruArtifact.fileName ?? "paper.pdf",
+          pageCount: structured.sourceAnnotations?.source?.pageCount ?? mineruArtifact.pageCount ?? 1,
         },
-        items: Array.isArray(structured.sourceAnnotations?.items)
-          ? cloneJson(structured.sourceAnnotations.items)
-          : [],
+        items: sourceAnnotationItems(structured, map),
       },
-      unresolvedItems: Array.isArray(structured.unresolvedItems)
-        ? cloneJson(structured.unresolvedItems)
-        : [],
+      unresolvedItems,
       diagnostics: {
-        mainTargetIdentified: typeof structured.diagnostics?.mainTargetIdentified === "boolean"
-          ? structured.diagnostics.mainTargetIdentified
-          : Boolean(structured.map?.mainTargetEntryId),
-        openClaimCount: Number.isInteger(structured.diagnostics?.openClaimCount)
-          ? structured.diagnostics.openClaimCount
-          : 0,
-        mainProofChainComplete: typeof structured.diagnostics?.mainProofChainComplete === "boolean"
-          ? structured.diagnostics.mainProofChainComplete
+        mainTargetIdentified: typeof mapDiagnostics.mainTargetIdentified === "boolean"
+          ? mapDiagnostics.mainTargetIdentified
+          : Boolean(map?.mainTargetEntryId),
+        openClaimCount: Number.isInteger(mapDiagnostics.openClaimCount)
+          ? mapDiagnostics.openClaimCount
+          : (Array.isArray(mapDiagnostics.openClaimEntryIds) ? mapDiagnostics.openClaimEntryIds.length : 0),
+        mainProofChainComplete: typeof mapDiagnostics.mainProofChainComplete === "boolean"
+          ? mapDiagnostics.mainProofChainComplete
           : null,
-        missingStages: [],
+        missingStages,
       },
       stages,
       identity: {
@@ -323,7 +344,7 @@
     }
     const capabilityRuntime = validateCapabilityRuntime(frozenWorkflow, options.capabilityRuntime);
     const fingerprint = await computePdfFingerprint(pdf, { hashImpl: options.hashImpl });
-    const key = checkpointKey(fingerprint);
+    const key = checkpointKey(fingerprint, frozenWorkflow);
     const store = options.checkpointStore
       ?? checkpointStore.createDefaultCheckpointStore?.()
       ?? checkpointStore.createMemoryCheckpointStore();
@@ -479,7 +500,12 @@
         markResumed(stage);
       } else contiguous = false;
     }
-    const restoredResult = completedArtifact(checkpoint, "closure");
+    let restoredResult = completedArtifact(checkpoint, "closure");
+    if (restoredResult && !hasCompleteStages(checkpoint.stages)) {
+      delete checkpoint.stages.closure;
+      restoredResult = null;
+      await persist();
+    }
     if (frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1" && restoredResult) {
       const cleanRestoredResult = checkpointStore.sanitizeStageArtifact
         ? checkpointStore.sanitizeStageArtifact("closure", restoredResult)
@@ -535,6 +561,9 @@
       onArtifact: semanticOnArtifact,
       resumeArtifacts,
       workflowVersion: frozenWorkflow.inferenceRuntimeVersion ?? "v3.45",
+      allowPartialSuccess: options.allowPartialSuccess ?? Boolean(capabilityRuntime),
+      allowRefinementDegradation: options.allowRefinementDegradation ?? Boolean(capabilityRuntime),
+      allowInferenceDegradation: options.allowInferenceDegradation ?? Boolean(capabilityRuntime),
     };
     try {
       const view = await semanticPipeline(semanticOptions);
@@ -564,13 +593,6 @@
       // returned Project View still makes the final stage resumable.
       if (!capabilityRuntime && !completedArtifact(checkpoint, "closure")) await markComplete("closure", view);
       if (frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1") {
-        if (!STAGES.filter((stage) => stage !== "closure")
-          .every((stage) => checkpoint.stages?.[stage]?.status === "complete")) {
-          throw capabilityFailure(
-            "PAPER_TO_MAP_RESULT_INVALID",
-            "Paper-to-Map 完整结果缺少已完成的阶段状态",
-          );
-        }
         const unsafeResult = paperToMapResult({
           semanticResult: view,
           checkpoint,
@@ -584,7 +606,8 @@
         if (!result?.map || !Array.isArray(result.map.entries) || result.map.entries.length === 0) {
           throw capabilityFailure("PAPER_TO_MAP_RESULT_INVALID", "Paper-to-Map 结果缺少合法地图");
         }
-        await markComplete("closure", result);
+        if (result.status === "complete") await markComplete("closure", result);
+        else await markDegraded("closure", result, { missingStages: result.diagnostics.missingStages });
         return result;
       }
       return view;
