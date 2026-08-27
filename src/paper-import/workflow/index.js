@@ -18,7 +18,18 @@
   const MODULE_ID = "cmath.paper-import.workflow/v1";
   return Object.freeze({
     MODULE_ID,
-    ...checkpointStore,
-    ...production,
+    WORKFLOW_STAGES: checkpointStore.WORKFLOW_STAGES,
+    STAGES: production.STAGES,
+    SEMANTIC_STAGES: production.SEMANTIC_STAGES,
+    CHECKPOINT_SCHEMA: checkpointStore.CHECKPOINT_SCHEMA,
+    STAGE_NAMES: checkpointStore.STAGE_NAMES,
+    sanitizeCheckpoint: checkpointStore.sanitizeCheckpoint,
+    sanitizeStageArtifact: checkpointStore.sanitizeStageArtifact,
+    sanitizeWorkflowIdentity: checkpointStore.sanitizeWorkflowIdentity,
+    createMemoryCheckpointStore: checkpointStore.createMemoryCheckpointStore,
+    createIndexedDbCheckpointStore: checkpointStore.createIndexedDbCheckpointStore,
+    createDefaultCheckpointStore: checkpointStore.createDefaultCheckpointStore,
+    computePdfFingerprint: production.computePdfFingerprint,
+    runProductionPaperImport: production.runProductionPaperImport,
   });
 });

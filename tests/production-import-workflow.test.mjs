@@ -3,8 +3,13 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { createMemoryCheckpointStore, createIndexedDbCheckpointStore } = require("../src/paper-import/workflow/checkpoint-store.js");
-const { computePdfFingerprint, runProductionPaperImport } = require("../src/paper-import/workflow/production.js");
+const Workflow = require("../src/paper-import/workflow/index.js");
+const {
+  createMemoryCheckpointStore,
+  createIndexedDbCheckpointStore,
+  computePdfFingerprint,
+  runProductionPaperImport,
+} = Workflow;
 const client = require("../paper-import-client.js");
 
 const WORKFLOW = {
@@ -62,6 +67,22 @@ function fakeSemanticPipeline({ calls, failW8 = false, failureMessage = "W8 test
     return inference;
   };
 }
+
+test("Workflow 正式接口导出冻结阶段顺序并保留兼容别名", () => {
+  const expectedStages = [
+    "mineru",
+    "entry",
+    "consolidate",
+    "w7-verify",
+    "w8-b0",
+    "inference",
+    "closure",
+  ];
+  assert.deepEqual(Workflow.WORKFLOW_STAGES, expectedStages);
+  assert.strictEqual(Workflow.STAGE_NAMES, Workflow.WORKFLOW_STAGES);
+  assert.strictEqual(Workflow.STAGES, Workflow.WORKFLOW_STAGES);
+  assert.deepEqual(Workflow.SEMANTIC_STAGES, expectedStages.slice(1));
+});
 
 test("PDF 指纹来自内容且 hash seam 可注入", async () => {
   const pdf = { name: "same-name.pdf", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer };

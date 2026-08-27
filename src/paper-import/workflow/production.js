@@ -18,15 +18,7 @@
 })(typeof window !== "undefined" ? window : globalThis, function createProductionWorkflow(root, checkpointStore, mineruModule) {
   "use strict";
 
-  const STAGES = Object.freeze([
-    "mineru",
-    "entry",
-    "consolidate",
-    "w7-verify",
-    "w8-b0",
-    "inference",
-    "closure",
-  ]);
+  const STAGES = checkpointStore?.WORKFLOW_STAGES ?? checkpointStore?.STAGE_NAMES;
   const SEMANTIC_STAGES = STAGES.slice(1);
   const CHECKPOINT_SCHEMA = checkpointStore?.CHECKPOINT_SCHEMA ?? "cmath.paper-import.checkpoint/v1";
 

@@ -16,7 +16,7 @@
   const CHECKPOINT_SCHEMA = "cmath.paper-import.checkpoint/v1";
   const DEFAULT_DB_NAME = "cmath-paper-import";
   const DEFAULT_STORE_NAME = "checkpoints";
-  const STAGE_NAMES = Object.freeze([
+  const WORKFLOW_STAGES = Object.freeze([
     "mineru",
     "entry",
     "consolidate",
@@ -25,6 +25,7 @@
     "inference",
     "closure",
   ]);
+  const STAGE_NAMES = WORKFLOW_STAGES;
 
   function cloneJson(value) {
     if (value === undefined) return undefined;
@@ -214,7 +215,7 @@
       result.input = { contentFingerprint: result.contentFingerprint };
     }
     const stages = checkpoint.stages && typeof checkpoint.stages === "object" ? checkpoint.stages : {};
-    for (const stage of STAGE_NAMES) {
+    for (const stage of WORKFLOW_STAGES) {
       const record = stages[stage];
       if (!record || typeof record !== "object") continue;
       const clean = pick(record, ["status", "attempt", "updatedAt"]);
@@ -340,6 +341,7 @@
 
   return Object.freeze({
     CHECKPOINT_SCHEMA,
+    WORKFLOW_STAGES,
     STAGE_NAMES,
     sanitizeCheckpoint,
     sanitizeStageArtifact,
