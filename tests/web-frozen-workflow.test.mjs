@@ -195,6 +195,7 @@ test("both public HTML entries load the complete production pipeline before the 
     "src/paper-import/workflow/checkpoint-store.js",
     "src/paper-import/workflow/production.js",
     "src/paper-import/workflow/index.js",
+    "src/paper-import/production/index.js",
   ];
   for (const fileName of ["index.html", "index-v5.html"]) {
     const html = fs.readFileSync(path.join(root, fileName), "utf8");
