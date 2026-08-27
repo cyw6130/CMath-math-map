@@ -109,6 +109,15 @@
   }
   const { hasBalancedMathDelimiters, validateMathDelimiters } = coreValidation;
 
+  const modelTransport = (typeof require === "function")
+    ? (() => {
+      try { return require("./src/paper-import/core/model-transport.js"); } catch { return null; }
+    })()
+    : ((typeof root !== "undefined" && root && root.CMathPaperModelTransport) || null);
+  if (!modelTransport?.createModelTransport) {
+    throw new Error("CMathPaperModelTransport not loaded");
+  }
+
   function splitTextIntoChunks(text, maxChunks, overlapPages = 2) {
     const segments = String(text).split(/(?=\[\[PAGE \d+\]\])/u).map((segment) => segment.trim()).filter(Boolean);
     if (segments.length <= 1 || maxChunks <= 1) return [String(text)];
@@ -1002,6 +1011,7 @@
     laneCache,
     onLaneComplete,
     maxParallelCalls = 1,
+    chatDefaults,
   } = {}) {
     const executionStartedAt = performance.now();
     const stages = [];
@@ -1019,6 +1029,56 @@
     const numPages = Number(pageCount || 1);
 
     if (!cleanText.trim()) throw new Error("Paper source text cannot be empty");
+
+    const transport = modelTransport.createModelTransport({
+      chatImpl,
+      fetchImpl,
+      endpoint,
+      apiKey,
+      model,
+      providerLabel,
+      signal,
+      chatDefaults,
+      requireApiKey: true,
+    });
+
+    const callModel = async (request, location) => {
+      try {
+        return await transport.complete(request);
+      } catch (error) {
+        if (!modelTransport.isModelTransportError(error)) throw error;
+        if (error.code === modelTransport.ERROR_CODES.INVALID_ENVELOPE
+          && error.reason === "invalid_json"
+          && error.cause) {
+          throw error.cause;
+        }
+        if (error.code === modelTransport.ERROR_CODES.SERVICE
+          || (error.code === modelTransport.ERROR_CODES.INVALID_ENVELOPE
+            && error.reason !== "invalid_json")) {
+          return { content: "", status: error.status ?? 200, finishReason: null, usage: null, transportError: error };
+        }
+        let message;
+        if (error.code === modelTransport.ERROR_CODES.HTTP) {
+          const detail = typeof error.body === "string" ? error.body.slice(0, 300) : error.message;
+          message = `HTTP ${error.status} ${location}: ${detail}`;
+        } else if (error.code === modelTransport.ERROR_CODES.CONFIGURATION) {
+          message = "extractParallelRawEntryPool requires either chatImpl or (endpoint and apiKey)";
+        } else {
+          message = `${location} parse failure: ${error.cause?.message || error.message}`;
+        }
+        const mapped = new modelTransport.ModelTransportError(error.code, message, {
+          ...(error.details || {}),
+          status: error.status,
+          stage: error.stage,
+          url: error.url,
+          body: error.body,
+          reason: error.reason,
+          cause: error,
+        });
+        mapped.transportError = error;
+        throw mapped;
+      }
+    };
 
     let targetVersion = EXTRACTION_MODULE_VERSION;
     const requestedVersion = extractionModuleVersion || version;
@@ -1136,35 +1196,39 @@
         let responseStatus = 200;
         let finishReason = null;
         let usage = null;
-        if (typeof chatImpl === "function") {
-          const response = await chatImpl({ stage: "extract", lane: "combined", chunkIndex: blockIndex, blockIndex, totalChunks: blocks.length, totalBlocks: blocks.length, messages: [{ role: "user", content: prompt }], reasoningEffort, signal });
-          responseContent = response.content ?? "";
-          responseStatus = response.status ?? 200;
-          finishReason = response.finishReason ?? null;
-          usage = response.usage ?? null;
-        } else if (endpoint && apiKey) {
-          const res = await fetchImpl(`${endpoint.replace(/\/+$/u, "")}/chat/completions`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-            body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], temperature: 0, ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}) }),
-            signal,
-          });
-          responseStatus = res.status;
-          if (!res.ok) throw new Error(`HTTP ${res.status} block ${blockIndex + 1} combined extraction failed: ${(await res.text()).slice(0, 300)}`);
-          const json = await res.json();
-          responseContent = json.choices?.[0]?.message?.content ?? "";
-          finishReason = json.choices?.[0]?.finish_reason ?? null;
-          usage = json.usage ?? null;
-        } else {
-          throw new Error("extractParallelRawEntryPool requires either chatImpl or (endpoint and apiKey)");
-        }
+        const response = await callModel({
+          stage: "extract",
+          lane: "combined",
+          chunkIndex: blockIndex,
+          blockIndex,
+          totalChunks: blocks.length,
+          totalBlocks: blocks.length,
+          messages: [{ role: "user", content: prompt }],
+          reasoningEffort,
+          signal,
+          body: {
+            model,
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0,
+            ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+          },
+        }, `block ${blockIndex + 1} combined extraction failed`);
+        responseContent = response.content ?? "";
+        responseStatus = response.status ?? 200;
+        finishReason = response.finishReason ?? null;
+        usage = response.usage ?? null;
 
         const callRecord = { stage: "extract", lane: "combined", chunkIndex: blockIndex, blockIndex, durationMs: Math.round(performance.now() - callStartedAt), status: responseStatus, finishReason, usage, repaired: false, repairCount: 0 };
         calls.push(callRecord);
         const parseDiagnostics = { repaired: false, repairCount: 0 };
         let parsed;
         try { parsed = parseModelJson(responseContent, { diagnostics: parseDiagnostics }); }
-        catch (err) { throw new Error(`Block ${blockIndex + 1} combined lane parse failure: ${err.message}`); }
+        catch (err) {
+          throw new Error(
+            `Block ${blockIndex + 1} combined lane parse failure: ${err.message}`,
+            { cause: response.transportError ?? err },
+          );
+        }
         callRecord.repaired = parseDiagnostics.repaired;
         callRecord.repairCount = parseDiagnostics.repairCount;
         if (!isObject(parsed) || !Array.isArray(parsed.foundationEntries) || !Array.isArray(parsed.resultEntries) || !Array.isArray(parsed.inferenceHints)) {
@@ -1267,53 +1331,30 @@
               let responseStatus = 200;
               let finishReason = null;
               let usage = null;
-
-              if (typeof chatImpl === "function") {
-                const response = await chatImpl({
-                  stage: "extract",
-                  lane,
-                  chunkIndex: blockIndex,
-                  blockIndex,
-                  totalChunks: blocks.length,
-                  totalBlocks: blocks.length,
-                  messages: [{ role: "user", content: prompt }],
-                  reasoningEffort,
-                  ...(targetVersion === EXTRACTION_MODULE_VERSION_V1_6 ? {} : { maxTokens: tokenBudget?.normal ?? 10000 }),
-                  signal: effectiveSignal,
-                });
-                responseContent = response.content ?? "";
-                responseStatus = response.status ?? 200;
-                finishReason = response.finishReason ?? null;
-                usage = response.usage ?? null;
-              } else if (endpoint && apiKey) {
-                const payload = {
-                  model,
-                  messages: [{ role: "user", content: prompt }],
-                  temperature: 0,
-                  ...(targetVersion === EXTRACTION_MODULE_VERSION_V1_6 ? {} : { max_tokens: tokenBudget?.normal ?? 10000 }),
-                  ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
-                };
-                const res = await fetchImpl(`${endpoint.replace(/\/+$/u, "")}/chat/completions`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${apiKey}`,
-                  },
-                  body: JSON.stringify(payload),
-                  signal: effectiveSignal,
-                });
-                responseStatus = res.status;
-                if (!res.ok) {
-                  const errText = await res.text();
-                  throw new Error(`HTTP ${res.status} block ${blockIndex + 1} ${lane} lane extraction failed: ${errText.slice(0, 300)}`);
-                }
-                const json = await res.json();
-                responseContent = json.choices?.[0]?.message?.content ?? "";
-                finishReason = json.choices?.[0]?.finish_reason ?? null;
-                usage = json.usage ?? null;
-              } else {
-                throw new Error("extractParallelRawEntryPool requires either chatImpl or (endpoint and apiKey)");
-              }
+              const payload = {
+                model,
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0,
+                ...(targetVersion === EXTRACTION_MODULE_VERSION_V1_6 ? {} : { max_tokens: tokenBudget?.normal ?? 10000 }),
+                ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+              };
+              const response = await callModel({
+                stage: "extract",
+                lane,
+                chunkIndex: blockIndex,
+                blockIndex,
+                totalChunks: blocks.length,
+                totalBlocks: blocks.length,
+                messages: payload.messages,
+                reasoningEffort,
+                ...(targetVersion === EXTRACTION_MODULE_VERSION_V1_6 ? {} : { maxTokens: tokenBudget?.normal ?? 10000 }),
+                signal: effectiveSignal,
+                body: payload,
+              }, `block ${blockIndex + 1} ${lane} lane extraction failed`);
+              responseContent = response.content ?? "";
+              responseStatus = response.status ?? 200;
+              finishReason = response.finishReason ?? null;
+              usage = response.usage ?? null;
 
               const callDurationMs = Math.round(performance.now() - callStartedAt);
               const callRecord = {
@@ -1335,7 +1376,10 @@
               try {
                 parsed = parseModelJson(responseContent, { diagnostics: laneDiagnostics });
               } catch (err) {
-                throw new Error(`Block ${blockIndex + 1} ${lane} lane${rangeLabel} parse failure: ${err.message}`);
+                throw new Error(
+                  `Block ${blockIndex + 1} ${lane} lane${rangeLabel} parse failure: ${err.message}`,
+                  { cause: response.transportError ?? err },
+                );
               }
 
               callRecord.repaired = laneDiagnostics.repaired;
@@ -1512,50 +1556,27 @@
       let responseStatus = 200;
       let finishReason = null;
       let usage = null;
-
-      if (typeof chatImpl === "function") {
-        const response = await chatImpl({
-          stage: "extract",
-          chunkIndex: index,
-          totalChunks: chunks.length,
-          messages: [{ role: "user", content: prompt }],
-          reasoningEffort,
-          maxTokens: tokenBudget?.normal ?? 10000,
-          signal,
-        });
-        responseContent = response.content ?? "";
-        responseStatus = response.status ?? 200;
-        finishReason = response.finishReason ?? null;
-        usage = response.usage ?? null;
-      } else if (endpoint && apiKey) {
-        const payload = {
-          model,
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0,
-          max_tokens: tokenBudget?.normal ?? 10000,
-          ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
-        };
-        const res = await fetchImpl(`${endpoint.replace(/\/+$/u, "")}/chat/completions`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify(payload),
-          signal,
-        });
-        responseStatus = res.status;
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(`HTTP ${res.status} chunk ${index + 1} extraction failed: ${errText.slice(0, 300)}`);
-        }
-        const json = await res.json();
-        responseContent = json.choices?.[0]?.message?.content ?? "";
-        finishReason = json.choices?.[0]?.finish_reason ?? null;
-        usage = json.usage ?? null;
-      } else {
-        throw new Error("extractParallelRawEntryPool requires either chatImpl or (endpoint and apiKey)");
-      }
+      const payload = {
+        model,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0,
+        max_tokens: tokenBudget?.normal ?? 10000,
+        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+      };
+      const response = await callModel({
+        stage: "extract",
+        chunkIndex: index,
+        totalChunks: chunks.length,
+        messages: payload.messages,
+        reasoningEffort,
+        maxTokens: tokenBudget?.normal ?? 10000,
+        signal,
+        body: payload,
+      }, `chunk ${index + 1} extraction failed`);
+      responseContent = response.content ?? "";
+      responseStatus = response.status ?? 200;
+      finishReason = response.finishReason ?? null;
+      usage = response.usage ?? null;
 
       const callDurationMs = Math.round(performance.now() - callStartedAt);
       const callRecord = {
@@ -1577,7 +1598,10 @@
       try {
         parsed = parseModelJson(responseContent, { diagnostics: chunkDiagnostics });
       } catch (err) {
-        throw new Error(`Chunk ${index + 1}${rangeLabel} parse failure: ${err.message}`);
+        throw new Error(
+          `Chunk ${index + 1}${rangeLabel} parse failure: ${err.message}`,
+          { cause: response.transportError ?? err },
+        );
       }
 
       callRecord.repaired = chunkDiagnostics.repaired;

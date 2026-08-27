@@ -68,6 +68,14 @@
   const hasBalancedMathDelimiters = coreValidation.hasBalancedMathDelimiters;
   const validateMathDelimiters = coreValidation.validateMathDelimiters;
 
+  const modelTransport = root?.CMathPaperModelTransport
+    ?? (typeof require === "function" ? (() => {
+      try { return require("./src/paper-import/core/model-transport.js"); } catch { return null; }
+    })() : null);
+  if (!modelTransport?.createModelTransport) {
+    throw new Error("CMath 模型传输能力没有加载（src/paper-import/core/model-transport.js）");
+  }
+
   function endpointUrl(endpoint) {
     let url;
     try { url = new URL(nonEmpty(endpoint, "API 服务地址")); }
@@ -228,22 +236,6 @@
       + `JSON 形状：\n`
       + `{"projectTitle":"……","mainTargetEntryId":"……","b0":["……"],"inferences":[{"type":"proof","premises":["……"],"conclusion":"……","argument":"……","page":5}]}\n\n`
       + `Entry 目录：\n${catalog}\n\n论文文件：${fileName}\n页数：${pageCount}\n\n论文文本：\n${text}`;
-  }
-
-  function extractMessageText(message) {
-    if (!message || typeof message !== "object") return "";
-    const content = message.content;
-    if (typeof content === "string") return content;
-    if (Array.isArray(content)) {
-      return content.map((part) => {
-        if (typeof part === "string") return part;
-        if (part && typeof part === "object") {
-          if (part.type === "text" || part.type === "output_text") return String(part.text ?? "");
-        }
-        return "";
-      }).join("");
-    }
-    return "";
   }
 
   function parseModelJson(content) {
@@ -1182,15 +1174,32 @@
   }
 
   async function requestPaperEntryArtifact({ fileName = "paper.pdf", pageCount = 1, text = "", chatImpl, fetchImpl = globalThis.fetch, endpoint, apiKey, model, providerLabel, reasoningEffort, maxChunks = 1, workflowCapabilities, onStage, signal } = {}) {
-    if (typeof chatImpl !== "function" && typeof fetchImpl !== "function") throw new Error("chatImpl or fetchImpl required");
-    const chatFn = typeof chatImpl === "function" ? chatImpl : null;
     const resolvedReasoning = typeof reasoningEffort === "string" ? reasoningEffort : null;
+    const transport = modelTransport.createModelTransport({
+      chatImpl,
+      fetchImpl,
+      endpoint,
+      apiKey,
+      model,
+      providerLabel,
+      signal,
+      // The historical compatibility entry path intentionally has no HTTP
+      // implementation.  Keep that observable behavior at this edge while
+      // routing injected calls through the shared transport.
+      disableHttp: true,
+    });
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
     async function callChat(stage, messages) {
-      if (chatFn) {
-        return await chatFn({ stage, messages, reasoningEffort: stage === "guide" ? "low" : "none" });
+      try {
+        return await transport.complete({ stage, messages, reasoningEffort: stage === "guide" ? "low" : "none" });
+      } catch (error) {
+        if (modelTransport.isModelTransportError(error)
+          && error.code === modelTransport.ERROR_CODES.CONFIGURATION) {
+          if (error.reason === "http_disabled") throw new Error("fetchImpl path not implemented for test stub");
+          throw new Error("chatImpl or fetchImpl required");
+        }
+        throw error;
       }
-      throw new Error("fetchImpl path not implemented for test stub");
     }
     const startMs = performance.now();
     const calls = [];
@@ -1270,7 +1279,7 @@
     return artifact;
   }
 
-  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
+  async function requestPaperInferenceFromEntryArtifact({ artifact, endpoint, apiKey, model, providerLabel = "Opencode", fetchImpl = globalThis.fetch, chatImpl, chatDefaults, signal, onStage, reasoningEffort, workflowVersion = "v3.43", workflowCapabilities, tokenBudget, maxChunks } = {}) {
     if (!artifact || typeof artifact !== "object") throw new Error("artifact 必须是非空对象");
     if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
     const fileName = artifact.source?.fileName || "paper.pdf";
@@ -1286,19 +1295,19 @@
     const modelName = typeof model === "string" && model.trim() ? model.trim() : "host-routed";
     const serviceName = typeof providerLabel === "string" && providerLabel.trim() ? providerLabel.trim() : "模型服务";
     const targetUrl = endpoint ? endpointUrl(endpoint) : null;
-    const chatFn = typeof chatImpl === "function" ? chatImpl : null;
+    const transport = modelTransport.createModelTransport({
+      chatImpl,
+      fetchImpl,
+      endpoint: targetUrl || endpoint,
+      apiKey: key,
+      model: modelName,
+      providerLabel: serviceName,
+      signal,
+      chatDefaults,
+    });
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
     async function executeChatCall(messages, maxTokens) {
-      if (chatFn) {
-        const inferredStage = messages.length > 1 ? "repair" : "assemble";
-        const chatResult = await chatFn({ stage: inferredStage, messages, maxTokens, model: modelName, reasoningEffort });
-        const content = typeof chatResult === "string" ? chatResult : (chatResult?.content ?? "");
-        const finishReason = chatResult?.finishReason ?? chatResult?.finish_reason ?? null;
-        return { content, finishReason };
-      }
-      if (workflowCapabilities && typeof workflowCapabilities === "object") {
-        // placeholder to keep signature parity
-      }
+      const inferredStage = messages.length > 1 ? "repair" : "assemble";
       const body = {
         model: modelName,
         messages,
@@ -1307,22 +1316,38 @@
         ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
         stream: false,
       };
-      const headers = { "Content-Type": "application/json" };
-      if (key) headers.Authorization = `Bearer ${key}`;
-      const url = targetUrl || endpoint;
-      const effectiveFetch = typeof fetchImpl === "function" ? fetchImpl : globalThis.fetch;
-      if (!url) throw new Error(`${serviceName} 未配置 endpoint`);
-      const response = await effectiveFetch(url, { method: "POST", headers, body: JSON.stringify(body), signal });
-      const responseText = await response.text();
-      if (!response.ok) {
-        let message = responseText.slice(-500);
-        try { message = JSON.parse(responseText).error?.message || message; } catch {}
-        throw new Error(`${serviceName} 请求失败（HTTP ${response.status}）：${message || "没有错误详情"}`);
+      try {
+        const result = await transport.complete({
+          stage: inferredStage,
+          messages,
+          model: modelName,
+          maxTokens,
+          reasoningEffort,
+          signal,
+          body,
+        });
+        return { content: result.content, finishReason: result.finishReason };
+      } catch (error) {
+        // Preserve the historical repair loop for a successful HTTP response
+        // that lacks its first choice message.  Malformed JSON and transport/service
+        // failures remain structured and fail immediately as before.
+        if (modelTransport.isModelTransportError(error)
+          && error.code === modelTransport.ERROR_CODES.INVALID_ENVELOPE
+          && error.reason === "missing_message") {
+          return { content: "", finishReason: null };
+        }
+        if (modelTransport.isModelTransportError(error)
+          && error.code === modelTransport.ERROR_CODES.HTTP) {
+          let message = typeof error.body === "string" ? error.body.slice(-500) : "";
+          try { message = JSON.parse(error.body).error?.message || message; } catch {}
+          throw new modelTransport.ModelTransportError(
+            error.code,
+            `${serviceName} 请求失败（HTTP ${error.status}）：${message || "没有错误详情"}`,
+            { ...(error.details || {}), cause: error },
+          );
+        }
+        throw error;
       }
-      let envelope;
-      try { envelope = JSON.parse(responseText); } catch { throw new Error(`${serviceName} 响应不是有效 JSON`); }
-      if (envelope.error) throw new Error(`${serviceName} 服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 300)}`);
-      return { content: extractMessageText(envelope.choices?.[0]?.message), finishReason: envelope.choices?.[0]?.finish_reason };
     }
     // Assembly with repair loop (simplified 4 rounds)
     notify("assemble", { entries: entries.length, workflowVersion });
@@ -1465,42 +1490,59 @@
     const modelName = nonEmpty(model, "模型名称");
     const key = nonEmpty(apiKey, "API Key");
     const messages = [{ role: "user", content: prompt }];
+    const body = {
+      model: modelName,
+      messages,
+      temperature: 0,
+      response_format: { type: "json_object" },
+      ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+    };
+    const transport = modelTransport.createModelTransport({
+      chatImpl,
+      fetchImpl,
+      endpoint: endpoint ? endpointUrl(endpoint) : endpoint,
+      apiKey: key,
+      model: modelName,
+      providerLabel: serviceName,
+      signal,
+    });
     let content = "";
-    if (typeof chatImpl === "function") {
-      const result = await chatImpl({
+    try {
+      const result = await transport.complete({
         stage,
         messages,
         model: modelName,
         providerLabel: serviceName,
         reasoningEffort,
         signal,
+        body,
       });
-      content = typeof result === "string" ? result : (result?.content ?? "");
-    } else {
-      if (typeof fetchImpl !== "function") throw new Error("当前环境不支持网络请求");
-      const url = endpointUrl(endpoint);
-      const body = {
-        model: modelName,
-        messages,
-        temperature: 0,
-        response_format: { type: "json_object" },
-        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
-      };
-      const response = await fetchImpl(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-        body: JSON.stringify(body),
-        signal,
-      });
-      const responseText = await response.text();
-      if (!response.ok) {
-        throw new Error(`${serviceName} ${stage} 请求失败（HTTP ${response.status}）：${responseText.slice(0, 500)}`);
+      content = result.content;
+    } catch (error) {
+      if (modelTransport.isModelTransportError(error)) {
+        const detail = error.code === modelTransport.ERROR_CODES.SERVICE
+          ? String(error.details?.error?.message ?? error.details?.error ?? "").slice(0, 300)
+          : error.reason === "invalid_json"
+            ? String(error.cause?.message ?? error.message)
+            : typeof error.body === "string"
+              ? error.body.slice(0, 500)
+              : error.message;
+        const label = error.code === modelTransport.ERROR_CODES.HTTP
+          ? `请求失败（HTTP ${error.status}）`
+          : error.code === modelTransport.ERROR_CODES.SERVICE
+            ? "服务端错误"
+            : error.reason === "missing_message"
+              ? "没有返回 JSON 内容"
+              : "响应不是有效 JSON";
+        const mapped = new modelTransport.ModelTransportError(
+          error.code,
+          `${serviceName} ${stage} ${label}${error.reason === "missing_message" ? "" : `：${detail}`}`,
+          { ...(error.details || {}), cause: error },
+        );
+        mapped.transportError = error;
+        throw mapped;
       }
-      let envelope;
-      try { envelope = JSON.parse(responseText); }
-      catch (error) { throw new Error(`${serviceName} ${stage} 响应不是有效 JSON：${error.message}`); }
-      if (envelope?.error) throw new Error(`${serviceName} ${stage} 服务端错误：${String(envelope.error?.message ?? envelope.error).slice(0, 300)}`);
-      content = extractMessageText(envelope?.choices?.[0]?.message);
+      throw error;
     }
     if (typeof content !== "string" || !content.trim()) throw new Error(`${serviceName} ${stage} 没有返回 JSON 内容`);
     return parsePatchJson(content, stage);
@@ -1511,14 +1553,6 @@
     const key = nonEmpty(apiKey, "API Key");
     const modelName = nonEmpty(model, "模型名称");
     const serviceName = nonEmpty(providerLabel, "模型服务名称");
-    const effectiveChatImpl = typeof chatImpl === "function"
-      ? (request) => chatImpl({
-        ...request,
-        model: request?.model ?? modelName,
-        providerLabel: request?.providerLabel ?? serviceName,
-        reasoningEffort: request?.reasoningEffort ?? reasoningEffort,
-      })
-      : chatImpl;
     const targetUrl = endpointUrl(endpoint);
     const extractionEndpoint = String(endpoint).replace(/\/chat\/completions\/?$/u, "");
     const notify = (stage, info = {}) => { try { onStage?.(stage, info); } catch {} };
@@ -1560,22 +1594,6 @@
         phase: "start",
         entryExtractionVersion: FROZEN_WORKFLOW.entryExtractionVersion,
       });
-      // Pool 的 endpoint 通道按标准 Response 消费（status/ok/text/json）。
-      // 老测试与部分调用方传入轻量 mock（仅 ok/status/text），此处补齐 json 视图，
-      // 真实 fetch 不受影响。
-      const poolFetch = async (url, init) => {
-        const res = await fetchImpl(url, init);
-        if (typeof res?.json === "function") return res;
-        const text = await res.text();
-        let json;
-        try { json = JSON.parse(text); } catch { json = null; }
-        return {
-          ok: res.ok,
-          status: res.status,
-          text: async () => text,
-          json: async () => json,
-        };
-      };
       rawPool = await frozenPool.extractParallelRawEntryPool({
         fileName,
         pageCount: resolvedPageCount,
@@ -1585,10 +1603,11 @@
         model: modelName,
         providerLabel: serviceName,
         reasoningEffort,
-        fetchImpl: poolFetch,
+        fetchImpl,
         signal,
         maxChunks,
-        chatImpl: effectiveChatImpl,
+        chatImpl,
+        chatDefaults: { model: modelName, providerLabel: serviceName, reasoningEffort },
         onStage: (stage, info = {}) => {
           // The raw pool has several progress labels; production exposes them
           // under one stable semantic stage while retaining the sub-stage.
@@ -1642,7 +1661,7 @@
         providerLabel: serviceName,
         reasoningEffort,
         fetchImpl,
-        chatImpl: effectiveChatImpl,
+        chatImpl,
         signal,
       });
       backfilledArtifact = await entryVerification.runVerificationPipeline({
@@ -1673,11 +1692,12 @@
         model: modelName,
         providerLabel: serviceName,
         fetchImpl,
-        chatImpl: effectiveChatImpl,
+        chatImpl,
         signal,
         onStage,
         reasoningEffort,
         workflowVersion: FROZEN_WORKFLOW.inferenceRuntimeVersion,
+        chatDefaults: { model: modelName, providerLabel: serviceName, reasoningEffort },
       });
       if (typeof onArtifact === "function") await onArtifact("inference", view);
     }

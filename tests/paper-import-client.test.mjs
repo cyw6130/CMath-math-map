@@ -261,6 +261,147 @@ test("sends the key only in the authorization header and parses the model result
   assert.equal(view.project.title, "A Paper");
 });
 
+test("public inference seam reports structured transport failures and prefers chatImpl", async () => {
+  const artifact = makeEntryArtifact({
+    entries: [
+      { id: "f1", entryClass: "fact", factKind: "definition", name: "定义", statement: "$X$。", page: 1 },
+      { id: "c1", entryClass: "claim", claimKind: "theorem", name: "定理", statement: "$X$ 成立。", page: 1 },
+    ],
+  });
+  const baseArgs = {
+    artifact,
+    endpoint: "https://api.deepseek.com/v1",
+    apiKey: "transport-test-key",
+    model: "deepseek-chat",
+  };
+
+  const failureCases = [
+    {
+      response: new Response("upstream unavailable", { status: 503 }),
+      code: "HTTP_ERROR",
+      status: 503,
+      message: "Opencode 请求失败（HTTP 503）：upstream unavailable",
+    },
+    {
+      response: new Response("{broken", { status: 200 }),
+      code: "INVALID_ENVELOPE",
+      message: "Opencode 响应不是有效 JSON",
+    },
+    {
+      response: new Response(JSON.stringify({ error: { message: "quota exceeded" } }), { status: 200 }),
+      code: "SERVICE_ERROR",
+      message: "Opencode 服务端错误：quota exceeded",
+    },
+  ];
+  for (const failure of failureCases) {
+    await assert.rejects(
+      () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+        ...baseArgs,
+        fetchImpl: async () => failure.response,
+      }),
+      (error) => {
+        assert.equal(error.name, "CMathModelTransportError");
+        assert.equal(error.code, failure.code);
+        assert.equal(error.message, failure.message);
+        if (failure.status) assert.equal(error.status, failure.status);
+        return true;
+      },
+    );
+  }
+
+  await assert.rejects(
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+      ...baseArgs,
+      fetchImpl: async () => new Response("", { status: 500 }),
+    }),
+    { message: "Opencode 请求失败（HTTP 500）：没有错误详情" },
+  );
+
+  await assert.rejects(
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+      ...baseArgs,
+      fetchImpl: async () => new Response(JSON.stringify({ error: { detail: "details" } }), { status: 200 }),
+    }),
+    { message: "Opencode 服务端错误：[object Object]" },
+  );
+
+  for (const [message, expected] of [[0, "0"], ["", ""]]) {
+    await assert.rejects(
+      () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+        ...baseArgs,
+        fetchImpl: async () => new Response(JSON.stringify({ error: { message } }), { status: 200 }),
+      }),
+      { message: `Opencode 服务端错误：${expected}` },
+    );
+  }
+
+  let falsyErrorCalls = 0;
+  await assert.rejects(
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+      ...baseArgs,
+      fetchImpl: async () => {
+        falsyErrorCalls += 1;
+        return new Response(JSON.stringify({ error: 0 }), { status: 200 });
+      },
+    }),
+    /论文导入失败/u,
+  );
+  assert.equal(falsyErrorCalls, Number(process.env.INFERENCE_MAX_ROUNDS || 4));
+
+  for (const envelope of [[], 7]) {
+    let calls = 0;
+    await assert.rejects(
+      () => paperImportClient.requestPaperInferenceFromEntryArtifact({
+        ...baseArgs,
+        fetchImpl: async () => {
+          calls += 1;
+          return new Response(JSON.stringify(envelope), { status: 200 });
+        },
+      }),
+      /论文导入失败/u,
+    );
+    assert.equal(calls, Number(process.env.INFERENCE_MAX_ROUNDS || 4));
+  }
+
+  let fetchCalls = 0;
+  let chatCalls = 0;
+  const view = await paperImportClient.requestPaperInferenceFromEntryArtifact({
+    ...baseArgs,
+    fetchImpl: async () => {
+      fetchCalls += 1;
+      throw new Error("fetch must not run when chatImpl is present");
+    },
+    chatImpl: async () => {
+      chatCalls += 1;
+      return {
+        content: JSON.stringify({
+          projectTitle: "Chat adapter",
+          mainTargetEntryId: "c1",
+          b0: [],
+          inferences: [{ operationKind: "proof", premises: ["f1"], conclusion: "c1", argument: "由定义得到。", page: 1, sourceLocator: "paper.pdf#page=1" }],
+        }),
+      };
+    },
+  });
+  assert.equal(view.mainTargetEntryId, "c1");
+  assert.equal(chatCalls, 1);
+  assert.equal(fetchCalls, 0);
+});
+
+test("public model seams preserve the historical missing-network errors", async () => {
+  const artifact = makeEntryArtifact({
+    entries: [{ id: "c1", entryClass: "claim", claimKind: "theorem", name: "定理", statement: "$X$。", page: 1 }],
+  });
+  await assert.rejects(
+    () => paperImportClient.requestPaperInferenceFromEntryArtifact({ artifact, fetchImpl: null, chatImpl: async () => ({ content: "{}" }) }),
+    { message: "当前环境不支持网络请求" },
+  );
+  await assert.rejects(
+    () => paperImportClient.requestPaperProjectView({ fetchImpl: null }),
+    { message: "当前浏览器不支持网络请求" },
+  );
+});
+
 test("sends Kimi K3 through the Moonshot preset without leaking the API key", async () => {
   const { impl, state } = makePipelineFetch({ later: [rawMap] });
   const view = await paperImportClient.requestPaperProjectView({

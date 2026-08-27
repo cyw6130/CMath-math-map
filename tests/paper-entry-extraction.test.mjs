@@ -1059,6 +1059,44 @@ test("Paper Entry Modular Pipeline - Parallel Chunk Extraction & Raw Entry Pool"
     );
   });
 
+  await t.test("compatibility extraction keeps its parse-failure text while retaining the shared service error", async () => {
+    await assert.rejects(
+      () => extractParallelRawEntryPool({
+        fileName: "service-error.pdf",
+        pageCount: 1,
+        text: "[[PAGE 1]]\nP1",
+        endpoint: "https://model.example/v1",
+        apiKey: "secret",
+        fetchImpl: async () => new Response(
+          JSON.stringify({ error: { message: "quota exceeded" } }),
+          { status: 200 },
+        ),
+        maxChunks: 1,
+      }),
+      (error) => {
+        assert.equal(error.message, "Chunk 1 (pages 1–1) parse failure: 模型输出为空");
+        assert.equal(error.cause?.name, "CMathModelTransportError");
+        assert.equal(error.cause?.code, "SERVICE_ERROR");
+        return true;
+      },
+    );
+  });
+
+  await t.test("compatibility extraction preserves an empty HTTP error body", async () => {
+    await assert.rejects(
+      () => extractParallelRawEntryPool({
+        fileName: "http-error.pdf",
+        pageCount: 1,
+        text: "[[PAGE 1]]\nP1",
+        endpoint: "https://model.example/v1",
+        apiKey: "secret",
+        fetchImpl: async () => new Response("", { status: 500 }),
+        maxChunks: 1,
+      }),
+      { message: "HTTP 500 chunk 1 extraction failed: " },
+    );
+  });
+
   await t.test("parallel chunk extraction strictly fails on chunk response with missing or empty entries array", async () => {
     async function mockMissingEntriesChat(req) {
       return { content: JSON.stringify({ status: "success", count: 0 }) };

@@ -174,6 +174,7 @@ test("pipeline failure surfaces loudly instead of falling back to legacy path", 
 test("both public HTML entries load the complete production pipeline before the client", () => {
   const modules = [
     "vendor/fflate/fflate.min.js",
+    "src/paper-import/core/model-transport.js",
     "paper-raw-entry-pool-v1.js",
     "src/paper-import/entry/consolidation.js",
     "paper-entry-artifact-v1.js",
