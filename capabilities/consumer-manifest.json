@@ -4,86 +4,127 @@
   "generatedBy": "CMath-capabilities/scripts/sync-runtime-consumer.mjs",
   "projectId": "cmath-math-map",
   "mode": "canonical-runtime-assets",
+  "syncIdentity": "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6",
   "canonicalPackages": [
     {
       "capabilityId": "browser-paper-import-adapter-v1",
       "packageId": "browser-paper-import-adapter-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.paper-import-result/v0.1"
     },
     {
       "capabilityId": "static-math-map-product-v1",
       "packageId": "static-math-map-product-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.math-map-product/v1"
     },
     {
       "capabilityId": "paper-dossier-extractor-v2",
       "packageId": "paper-dossier-extractor-v2",
-      "version": "v2.1"
+      "version": "v2.1",
+      "contractVersion": "cmath.paper-guide/v0.1"
     },
     {
       "capabilityId": "paper-import-workflow-v2",
       "packageId": "paper-import-workflow-v2",
-      "version": "v2.1"
+      "version": "v2.1",
+      "contractVersion": "cmath.paper-import-workflow-result/v0.2"
     },
     {
       "capabilityId": "guide-lead-contract-v1",
       "packageId": "guide-lead-contract-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.guide-lead/v0.1"
     },
     {
       "capabilityId": "lead-guided-extraction-v1",
       "packageId": "lead-guided-extraction-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.lead-guided-extraction-proposal/v0.1"
     },
     {
       "capabilityId": "dual-lane-extraction-aggregation-v1",
       "packageId": "dual-lane-extraction-aggregation-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.dual-lane-extraction-aggregation/v0.1"
     },
     {
       "capabilityId": "generic-math-content-channel-v1",
       "packageId": "generic-math-content-channel-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "contract/GENERIC_MATH_CONTENT_CHANNEL_V1.md"
     },
     {
       "capabilityId": "generic-math-map-preview-loader-v1",
       "packageId": "generic-math-map-preview-loader-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "contract/GENERIC_MATH_MAP_PREVIEW_LOADER_V1.md"
     },
     {
       "capabilityId": "math-map-workspace-v3",
       "packageId": "math-map-workspace-v3",
-      "version": "v3"
+      "version": "v3",
+      "contractVersion": "CMATH_MATH_MAP_WORKSPACE_CAPABILITY_V3"
+    },
+    {
+      "capabilityId": "math-graph-semantics-v3",
+      "packageId": "math-graph-semantics-v3",
+      "version": "v3",
+      "contractVersion": "cmath-gamma.math-map-semantics/v3"
+    },
+    {
+      "capabilityId": "entry-model-v1",
+      "packageId": "entry-model-v1",
+      "version": "v1",
+      "contractVersion": "cmath.entry/v0.2"
+    },
+    {
+      "capabilityId": "inference-model-v1",
+      "packageId": "inference-model-v1",
+      "version": "v1",
+      "contractVersion": "cmath.inference/v0.2"
+    },
+    {
+      "capabilityId": "pdf-source-snapshot-v1",
+      "packageId": "pdf-source-snapshot-v1",
+      "version": "v1",
+      "contractVersion": "cmath.pdf-source-snapshot/v0.1"
     },
     {
       "capabilityId": "math-graph-semantics-v2",
       "packageId": "math-graph-semantics-v2",
-      "version": "v2"
+      "version": "v2",
+      "contractVersion": "cmath.fact-claim-operation/v0.1"
     },
     {
       "capabilityId": "math-map-naming-v2",
       "packageId": "math-map-naming-v2",
-      "version": "v2"
+      "version": "v2",
+      "contractVersion": "cmath-gamma.math-map-naming/v2"
     },
     {
       "capabilityId": "research-loop-progress-v1",
       "packageId": "research-loop-progress-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath-gamma.research-loop-progress/v1"
     },
     {
       "capabilityId": "math-map-visual-semantics-v1",
       "packageId": "math-map-visual-semantics-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath-gamma.math-map-visual-semantics/v1"
     },
     {
       "capabilityId": "graph-core-v1",
       "packageId": "graph-core-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath.graph-channel/v1"
     },
     {
       "capabilityId": "math-rendering-v1",
       "packageId": "math-rendering-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath-gamma.math-rendering/v1"
     },
     {
       "capabilityId": "alpha-project-adapter-v0.2",
@@ -93,10 +134,67 @@
     {
       "capabilityId": "mathematical-content-admission-v1",
       "packageId": "mathematical-content-admission-v1",
-      "version": "v1"
+      "version": "v1",
+      "contractVersion": "cmath-gamma.mathematical-content-admission/v1"
     }
   ],
   "runtimeAssets": [
+    {
+      "packageId": "math-graph-semantics-v3",
+      "version": "v3",
+      "canonicalSource": "packages/math-map/state/math-graph-semantics-v3/src/index.js",
+      "target": "capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js",
+      "contentHash": "sha256:62172363acae0114d7fc58461359ecd2663650879a1fedf96e94f82b3008924d",
+      "distributedHash": "sha256:885baee31595c74d1c9c91d3a844e6e86e16ec8b8b862cc205cd58ba345d2706"
+    },
+    {
+      "packageId": "entry-model-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/state/entry-model-v1/src/index.mjs",
+      "target": "capabilities/runtime/packages/math-map/state/entry-model-v1/src/index.mjs",
+      "contentHash": "sha256:9aeee6e48f47cbd93e814d1a1ff588536a2defdab30cb7270426651f080693bf",
+      "distributedHash": "sha256:609f371101d788c205d4a71c76843c7f98395a1e34116d6542658434a2c9468f"
+    },
+    {
+      "packageId": "entry-model-v1",
+      "version": "v1",
+      "canonicalSource": "packages/core/cmath-entry-model.mjs",
+      "target": "capabilities/runtime/packages/core/cmath-entry-model.mjs",
+      "contentHash": "sha256:25bf02ae086e34a0fc638729ef945adc1bdb31192fc901de39e50e3244a9945d",
+      "distributedHash": "sha256:636576b20728c7e7438f8b589b3664d667f6729d948f1d2d1f2a48ac6cc1cb98"
+    },
+    {
+      "packageId": "inference-model-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/state/inference-model-v1/src/index.mjs",
+      "target": "capabilities/runtime/packages/math-map/state/inference-model-v1/src/index.mjs",
+      "contentHash": "sha256:db2b31a5c1c0a31e950cea480db678adf0fbebd80590d7f72d8f64b0584bacef",
+      "distributedHash": "sha256:9dc29350f38c55d73f4ee1f9b3b560a26f26fc9dfe2c23176de9e1dcd84ae8bc"
+    },
+    {
+      "packageId": "inference-model-v1",
+      "version": "v1",
+      "canonicalSource": "packages/core/cmath-inference-model.mjs",
+      "target": "capabilities/runtime/packages/core/cmath-inference-model.mjs",
+      "contentHash": "sha256:9fd87bd414ef894101ee7270a3b27e6775011f7773d52df2824be07ca6bf3b09",
+      "distributedHash": "sha256:69bfa7ad2aa7ecc6d40aa3ac2cfeaaf6e7a3a5c7db5e6568f594e69a049c601b"
+    },
+    {
+      "packageId": "paper-import-workflow-v2",
+      "version": "v2.1",
+      "canonicalSource": "packages/research-process/orchestration/paper-import-workflow-v2/src/index.mjs",
+      "target": "capabilities/runtime/packages/research-process/orchestration/paper-import-workflow-v2/src/index.mjs",
+      "contentHash": "sha256:5deb860dcdd0813a6af2040422eeac31bda0a18d5b7c2f3db1d6bdd9845015fc",
+      "distributedHash": "sha256:afd2c834b40add4eb3736e6074d98a0d2ff6fac186f432a2bd001603377f1df0"
+    },
+    {
+      "packageId": "pdf-source-snapshot-v1",
+      "version": "v1",
+      "canonicalSource": "packages/research-process/import/pdf-source-snapshot-v1/src/index.mjs",
+      "target": "capabilities/runtime/packages/research-process/import/pdf-source-snapshot-v1/src/index.mjs",
+      "contentHash": "sha256:2b99dadb150bd49c230e182ffe09f9435f2497cec9b8016f4c34f4451959d2e7",
+      "distributedHash": "sha256:ea9d7ddec0f285a8da362ce873131f73e0ec95c225e2985d04ec01bbbbb45459"
+    },
     {
       "packageId": "math-graph-semantics-v2",
       "version": "v2",

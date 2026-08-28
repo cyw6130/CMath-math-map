@@ -3,6 +3,42 @@
   "consumerId": "cmath-math-map",
   "adoptions": [
     {
+      "capabilityId": "math-graph-semantics-v3",
+      "version": "v3",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/math-graph-semantics-v3/src/index.js",
+        "consumerPath": "capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"
+      }
+    },
+    {
+      "capabilityId": "entry-model-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/entry-model-v1/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/math-map/state/entry-model-v1/src/index.mjs"
+      }
+    },
+    {
+      "capabilityId": "inference-model-v1",
+      "version": "v1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/inference-model-v1/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/math-map/state/inference-model-v1/src/index.mjs"
+      }
+    },
+    {
+      "capabilityId": "paper-import-workflow-v2",
+      "version": "v2.1",
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/research-process/orchestration/paper-import-workflow-v2/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/research-process/orchestration/paper-import-workflow-v2/src/index.mjs"
+      }
+    },
+    {
       "capabilityId": "math-graph-semantics-v2",
       "version": "v2",
       "evidence": {

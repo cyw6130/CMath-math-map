@@ -31,7 +31,7 @@ const VNEXT_FROZEN_WORKFLOW = {
   productionContractVersion: "production-paper-import/v2",
   resultContractVersion: "cmath.paper-to-map-result/v1",
   capabilityAuthority: "../CMath-capabilities/exports/canonical.json",
-  capabilitySyncIdentity: "sha256:3aae7108c3cb38ab0bc3ae85ea4d6e97055ba0733866d29493027089586b1a77",
+  capabilitySyncIdentity: "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6",
   capabilityDependencies: [
     { role: "math-map-semantics", capabilityId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" },
     { role: "entry-contract", capabilityId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" },

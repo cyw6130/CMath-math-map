@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -31,7 +32,19 @@ test("Math Map consumes the canonical CMath capability export", () => {
   const canonicalPackageIds = new Set(manifest.canonicalPackages.map((item) => item.packageId));
   assert.ok(adopted.adoptions.every((item) => canonicalPackageIds.has(item.capabilityId)));
   assert.equal(manifest.mode, "canonical-runtime-assets");
-  assert.equal(manifest.runtimeAssets.length, 14);
+  assert.match(manifest.syncIdentity, /^sha256:[a-f0-9]{64}$/u);
+  assert.equal(manifest.runtimeAssets.length, 21);
+  assert.deepEqual(
+    ["math-graph-semantics-v3", "entry-model-v1", "inference-model-v1", "paper-import-workflow-v2"]
+      .map((packageId) => manifest.canonicalPackages.find((item) => item.packageId === packageId))
+      .map(({ packageId, version, contractVersion }) => ({ packageId, version, contractVersion })),
+    [
+      { packageId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" },
+      { packageId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" },
+      { packageId: "inference-model-v1", version: "v1", contractVersion: "cmath.inference/v0.2" },
+      { packageId: "paper-import-workflow-v2", version: "v2.1", contractVersion: "cmath.paper-import-workflow-result/v0.2" },
+    ],
+  );
   for (const asset of manifest.runtimeAssets) {
     const content = readFileSync(resolve(root, asset.target));
     const distributedHash = createHash("sha256").update(content).digest("hex");
@@ -39,4 +52,16 @@ test("Math Map consumes the canonical CMath capability export", () => {
     assert.match(content.toString("utf8", 0, 700), /@cmath-provenance/);
     assert.match(content.toString("utf8", 0, 700), new RegExp(asset.contentHash));
   }
+});
+
+test("VNext canonical runtimes load with their synchronized dependency closure", async () => {
+  const runtimeRoot = resolve(root, "capabilities/runtime/packages");
+  const semantics = (await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/math-graph-semantics-v3/src/index.js")))).default;
+  const entry = await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/entry-model-v1/src/index.mjs")));
+  const inference = await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/inference-model-v1/src/index.mjs")));
+  const workflow = await import(pathToFileURL(resolve(runtimeRoot, "research-process/orchestration/paper-import-workflow-v2/src/index.mjs")));
+  assert.equal(typeof semantics.deriveMathState, "function");
+  assert.equal(typeof entry.validateEntry, "function");
+  assert.equal(typeof inference.validateInferenceRecord, "function");
+  assert.equal(typeof workflow.runPaperImportWorkflowV2, "function");
 });
