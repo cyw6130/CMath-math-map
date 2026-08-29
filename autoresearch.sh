@@ -24,7 +24,7 @@ case "${1:-}" in
     ;;
   score)
     CASE="${2:?caseId}"; CANDIDATE="${3:?candidatePath}"; OUTPUT="${4:?outputPath}"
-    node scripts/score-paper-import-with-sol.mjs --case "$CASE" --candidate "$CANDIDATE" --output "$OUTPUT" --gold-revision v2 --scorer gpt-5.6-sol
+    node scripts/score-paper-import-with-sol.mjs --case "$CASE" --candidate "$CANDIDATE" --output "$OUTPUT" --gold-revision v2 --scorer gpt-5.6-sol --codex-bin scripts/codex-chatgpt-cli.sh
     ;;
   complete)
     RUN="${2:?preparedRun}"; RESULTS="${3:?caseResults}"; OUTPUT="${4:?outputPath}"

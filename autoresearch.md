@@ -10,7 +10,7 @@ This replaces the historical Luna/Spark inference-only loop. The old loop used s
 4. A surviving candidate runs Candidate on all five regression and four cross-domain generalization papers.
 5. Only Final has promotion authority. Final reruns both suites with full-source assessment and the promotion gate.
 
-Every generation role and both scorer roles are fixed to `luna-gateway / gpt-5.6-sol / medium`. A result that lacks this binding, omits a prepared case, changes multiple stages, or loses a suite identity cannot be completed.
+Every generation role and both scorer roles are fixed to `codex-chatgpt-login / gpt-5.6-sol / medium`. A result that lacks this binding, omits a prepared case, changes multiple stages, or loses a suite identity cannot be completed.
 
 ## Commands
 
@@ -23,7 +23,7 @@ Every generation role and both scorer roles are fixed to `luna-gateway / gpt-5.6
 ./autoresearch.sh complete <run.json> <case-results.json> <completed-run.json>
 ```
 
-`generate` consumes frozen MinerU marked Markdown, verifies its digest, and executes the complete production semantic chain: Entry → consolidation → W7.1 → W8 → Inference → Closure. It requires `LUNA_API_KEY` or `LUNA_API_KEY_FILE`.
+`generate` consumes frozen MinerU marked Markdown, verifies its digest, and executes the complete production semantic chain: Entry → consolidation → W7.1 → W8 → Inference → Closure. It invokes Codex CLI with the cached ChatGPT login; run `codex login status` (or the npm-exec equivalent) before an experiment.
 
 Quick results are exploratory and cannot promote. Candidate and Final additionally require automatic source assessments for the generalization suite. No new manual Gold is introduced.
 

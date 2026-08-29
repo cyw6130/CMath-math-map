@@ -6,10 +6,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import production from "../src/paper-import/production/index.js";
+import {
+  CODEX_CHATGPT_PROVIDER,
+  createCodexChatGPTChat,
+} from "./codex-chatgpt-transport.mjs";
 import { auditGeneralizationAssets } from "./freeze-generalization-source.mjs";
 
 export const SOL_RUNNER = Object.freeze({
-  provider: "luna-gateway",
+  provider: CODEX_CHATGPT_PROVIDER,
   model: "gpt-5.6-sol",
   mode: "medium-compact",
   reasoningEffort: "medium",
@@ -38,53 +42,26 @@ export function resolveFrozenCase(caseId) {
   return { record, markedMarkdown };
 }
 
-export function resolveSolCredential() {
-  const direct = process.env.LUNA_API_KEY?.trim();
-  if (direct) return direct;
-  const file = process.env.LUNA_API_KEY_FILE?.trim();
-  if (file && fs.existsSync(file) && fs.statSync(file).isFile() && !fs.lstatSync(file).isSymbolicLink()) {
-    const value = fs.readFileSync(file, "utf8").trim();
-    if (value) return value;
-  }
-  throw new Error("Sol runner requires LUNA_API_KEY or LUNA_API_KEY_FILE");
-}
-
 async function run() {
   const caseId = option("--case");
   const output = option("--output");
   if (!caseId || !output) throw new Error("usage: run-sol-paper-import-source.mjs --case ID --output FILE");
   const { record, markedMarkdown } = resolveFrozenCase(caseId);
-  const apiKey = resolveSolCredential();
-  const endpoint = process.env.LUNA_API_ENDPOINT?.trim() || "https://8.220.199.185.sslip.io/v1";
   const stages = [];
   const calls = [];
   const startedAt = Date.now();
-  const measuredFetch = async (url, init) => {
-    const callStartedAt = Date.now();
-    const body = JSON.parse(init.body);
-    if (body.model !== SOL_RUNNER.model || body.reasoning_effort !== SOL_RUNNER.reasoningEffort) {
-      throw new Error("model request escaped the Sol-only policy");
-    }
-    const response = await fetch(url, init);
-    calls.push({
-      stage: stages.at(-1)?.stage ?? null,
-      model: body.model,
-      reasoningEffort: body.reasoning_effort,
-      durationMs: Date.now() - callStartedAt,
-      status: response.status,
-    });
-    return response;
-  };
+  const chatImpl = createCodexChatGPTChat({ onCall: (call) => calls.push(call) });
   const view = await production.requestPaperProductionSemanticPipeline({
-    endpoint,
-    apiKey,
+    endpoint: "https://codex-chatgpt-login.invalid/v1",
+    apiKey: "codex-chatgpt-login-managed",
     model: SOL_RUNNER.model,
     providerLabel: "Luna Gateway",
     fileName: `${caseId}.pdf`,
     pageCount: record.pageCount,
     markedMarkdown,
     reasoningEffort: SOL_RUNNER.reasoningEffort,
-    fetchImpl: measuredFetch,
+    fetchImpl: async () => { throw new Error("HTTP model transport is disabled for Codex ChatGPT login"); },
+    chatImpl,
     maxChunks: 4,
     allowPartialSuccess: true,
     allowRefinementDegradation: true,

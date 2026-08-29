@@ -25,7 +25,7 @@ test("optimization policy binds every generation and evaluation role to Sol", ()
   assert.equal(validated.profileId, "sol-only-v1");
   for (const [role, model] of Object.entries(validated.models)) {
     assert.equal(model.model, "gpt-5.6-sol", `${role} must use Sol`);
-    assert.equal(model.provider, "luna-gateway", `${role} must use the same provider identity`);
+    assert.equal(model.provider, "codex-chatgpt-login", `${role} must use the same provider identity`);
   }
   assert.deepEqual(validated.tiers.quick.suiteRoles, ["regression"]);
   assert.deepEqual(validated.tiers.candidate.suiteRoles, ["regression", "generalization"]);
@@ -165,8 +165,8 @@ test("run records bind one changed stage, exact suites, and Sol on both sides of
   const caseResults = prepared.caseIds.map((caseId) => ({
     caseId,
     sourceIdentitySha256: prepared.sourceIdentities[caseId],
-    generation: { provider: "luna-gateway", model: "gpt-5.6-sol" },
-    evaluation: { provider: "luna-gateway", model: "gpt-5.6-sol" },
+    generation: { provider: "codex-chatgpt-login", model: "gpt-5.6-sol" },
+    evaluation: { provider: "codex-chatgpt-login", model: "gpt-5.6-sol" },
     artifactIdentity: `sha256:${"a".repeat(64)}`,
     evaluationIdentity: `sha256:${"b".repeat(64)}`,
   }));

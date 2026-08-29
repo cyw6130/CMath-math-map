@@ -11,7 +11,7 @@ const MODEL_ROLES = Object.freeze(["Entry", "W7.1", "W8", "Inference", "sourceSc
 const STAGES = new Set(["Entry", "W7.1", "W8", "Inference"]);
 const TIERS = new Set(["quick", "candidate", "final"]);
 const SOL_MODEL = "gpt-5.6-sol";
-const SOL_PROVIDER = "luna-gateway";
+const SOL_PROVIDER = "codex-chatgpt-login";
 
 export class WorkflowOptimizationError extends Error {
   constructor(code, message, details = {}) {
