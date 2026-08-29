@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" data-mineru-gateway-url="https://cmath-mineru-gateway.cmath-math-map.workers.dev/api/mineru">
+<html lang="zh-CN" data-mineru-gateway-url="https://cmath-mineru-gateway.cmath-math-map.workers.dev/api/mineru" data-model-gateway-url="https://cmath-model-gateway.cmath-math-map.workers.dev/api/model">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -67,7 +67,7 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
           </div>
           <h2>上传数学论文 PDF</h2>
-          <p>从数学论文中整理已有内容，生成可下载的 Project View JSON。</p>
+          <p>从数学论文中整理命题与论证关系，生成地图并保存到地图库。</p>
           <div class="card-action-bar">
             <span>打开解析抽屉</span>
             <span>→</span>
@@ -118,16 +118,16 @@
           <img src="logo-manuscript.webp" alt="CMath Logo" class="map-brand-logo">
           <span class="map-brand-title"><span class="wm-glyph">C</span><span class="wm-rest">Math</span></span>
           <span class="map-brand-sub">MATH MAP</span>
-          <button id="map-active-title" class="map-active-title" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="打开数学地图库">从特征值到谱定理</button>
+          <span id="map-active-title" class="map-active-title">从特征值到谱定理</span>
         </div>
       </div>
 
-      <span id="map-boundary-tag" class="map-boundary-tag">高等代数示例 · 数学地图与 Loop 进展</span>
+      <span id="map-boundary-tag" class="map-boundary-tag">高等代数示例</span>
 
       <div class="map-topbar-right">
+        <button class="map-quick-btn" id="btn-map-export-json" type="button">导出 JSON</button>
         <button class="map-quick-btn" id="btn-map-open-json" type="button">打开 JSON</button>
         <button class="map-quick-btn" id="btn-map-open-demos" type="button">地图库</button>
-        <button class="map-quick-btn map-quick-btn-chat" id="btn-map-chat" type="button">对话</button>
       </div>
     </header>
 
@@ -135,25 +135,25 @@
       <div id="math-map-canvas" role="application" tabindex="0" aria-label="数学地图画布"></div>
 
       <section class="math-map-commandbar" aria-label="数学地图工具">
-        <div class="lens-switcher" role="tablist" aria-label="地图视图">
-          <button type="button" data-lens="global" role="tab" aria-selected="true">全图</button>
-          <button type="button" data-lens="progress" role="tab" aria-selected="false">进展</button>
-        </div>
-        <label class="section-scope">
-          <span>Section</span>
-          <select id="math-map-section"><option value="all">全部</option></select>
-        </label>
         <label class="math-map-search">
-          <input id="math-map-search" type="search" placeholder="搜索图中对象">
+          <input id="math-map-search" type="search" placeholder="搜索图中对象" aria-label="搜索图中对象">
         </label>
       </section>
 
+      <div class="legacy-map-capability-hooks" hidden aria-hidden="true">
+        <div class="lens-switcher">
+          <button type="button" data-lens="global" role="tab" aria-selected="true">全图</button>
+          <button type="button" data-lens="progress" role="tab" aria-selected="false">进展</button>
+        </div>
+        <select id="math-map-section" tabindex="-1"><option value="all">全部</option></select>
+      </div>
+
       <nav class="map-history-actions" aria-label="地图历史">
-        <button id="math-map-back" type="button" disabled aria-label="返回上一个地图位置">← <span>返回</span></button>
-        <button id="math-map-overview" type="button"><span>全图</span></button>
+        <button id="math-map-back" type="button" disabled aria-label="返回上一个地图位置">← <span>返回上一个位置</span></button>
+        <button id="math-map-overview" type="button"><span>退出聚焦</span></button>
       </nav>
 
-      <div id="math-map-context" class="math-map-context" aria-live="polite">
+      <div id="math-map-context" class="math-map-context" aria-live="polite" hidden aria-hidden="true">
         <strong>当前状态</strong><span>完整项目数学图显示当前结果与证明关系。</span>
       </div>
 
@@ -182,7 +182,7 @@
 
       <aside id="math-map-inspector" class="math-map-inspector" aria-label="数学对象详情" hidden></aside>
 
-      <section id="progress-timeline" class="progress-timeline" aria-label="Loop 进展" hidden>
+      <section id="progress-timeline" class="progress-timeline" aria-label="Loop 进展" hidden aria-hidden="true">
         <button id="progress-previous" type="button" disabled aria-label="查看上一轮">←</button>
         <div>
           <span id="progress-position">基线</span>
@@ -228,12 +228,22 @@
 
       <div class="drawer-notice">
         <strong>提示：</strong><br>
-        解析完成后<strong>不会自动打开地图</strong>，系统将生成标准 <code>Project View JSON</code> 并直接下载到您的本地。之后您只需点击工作台的<strong>「导入 JSON 地图」</strong>即可载入阅览。
+        解析完成后，地图会自动保存到<strong>「我的 JSON 地图」</strong>。系统会先展示生成结果，再由您选择立即打开地图、打开地图库或关闭。
       </div>
+
+      <section class="model-consent-card" id="model-consent-card" role="alertdialog" aria-labelledby="model-consent-title" aria-describedby="model-consent-description" hidden>
+        <span class="drawer-kicker">首次使用说明</span>
+        <h4 id="model-consent-title">使用 CMath 提供的 Muse Spark</h4>
+        <p id="model-consent-description">论文内容和模型生成结果会发送至 OpenCode Go。Muse Spark Contributor 可能使用这些内容训练未来模型。</p>
+        <div class="model-consent-actions">
+          <button type="button" class="btn-secondary-action" id="btn-use-own-model">使用自己的 API</button>
+          <button type="button" class="btn-primary-action" id="btn-accept-model-consent">同意并继续</button>
+        </div>
+      </section>
 
       <div style="margin-top:auto;">
         <button class="btn-primary-action" id="btn-start-extract" type="button">
-          生成并下载 JSON 数据包
+          生成数学地图
         </button>
       </div>
     </aside>
@@ -244,65 +254,107 @@
     <aside class="slide-drawer" id="settings-drawer" role="dialog" aria-modal="true" aria-labelledby="settings-drawer-title">
       <header class="drawer-header">
         <div>
-          <h3 id="settings-drawer-title">模型 API 配置</h3>
-          <small>MODEL CREDENTIALS &amp; ENDPOINT</small>
+          <h3 id="settings-drawer-title">设置</h3>
+          <small>MODEL SERVICE</small>
         </div>
         <button class="close-btn" id="btn-close-settings" type="button" aria-label="关闭">×</button>
       </header>
 
-      <div class="form-group">
-        <label for="api-endpoint-input">1. API 服务地址</label>
-        <div class="provider-select-row">
-          <button type="button" class="provider-btn is-active" data-provider="deepseek">DeepSeek</button>
-          <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
-          <button type="button" class="provider-btn" data-provider="opencode">OpenCode Go</button>
-          <button type="button" class="provider-btn" data-provider="custom">自定义</button>
+      <div class="settings-scroll-body">
+        <section class="settings-current-summary" aria-live="polite">
+          <span>当前配置</span>
+          <strong id="settings-current-config">CMath 提供 · Muse Spark</strong>
+          <small id="settings-current-state">无需 API Key</small>
+        </section>
+
+        <fieldset class="settings-mode-group">
+          <legend>模型使用方式</legend>
+          <div class="settings-mode-options">
+            <label class="settings-mode-option">
+              <input type="radio" name="model-access-mode" value="cmath" checked>
+              <span><strong>CMath 提供</strong><small>Muse Spark · 无需配置</small></span>
+            </label>
+            <label class="settings-mode-option">
+              <input type="radio" name="model-access-mode" value="own">
+              <span><strong>使用自己的 API</strong><small>自选供应商和模型</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <section class="settings-provided-panel" id="settings-provided-panel">
+          <div class="provided-model-card">
+            <div>
+              <span class="drawer-kicker">CMATH PROVIDED</span>
+              <h4>Muse Spark 1.2</h4>
+              <p>由 CMath 的受保护网关提供，不会把共享 API Key 发送到浏览器。</p>
+            </div>
+            <span class="service-status" id="provided-service-status" role="status"><i></i>正在检查服务</span>
+          </div>
+          <div class="settings-privacy-note">
+            <strong>数据使用说明</strong>
+            <p>论文内容与生成结果会发送至 OpenCode Go；Contributor 模型可能使用这些内容训练未来模型。首次生成前会再次征得你的同意。</p>
+          </div>
+        </section>
+
+        <form class="settings-own-panel" id="settings-own-panel" autocomplete="off" hidden>
+          <div class="form-group">
+            <label for="api-endpoint-input">API 服务地址</label>
+            <div class="provider-select-row" aria-label="模型供应商">
+              <button type="button" class="provider-btn" data-provider="deepseek">DeepSeek</button>
+              <button type="button" class="provider-btn" data-provider="kimi">Kimi</button>
+              <button type="button" class="provider-btn is-active" data-provider="opencode">OpenCode Go</button>
+              <button type="button" class="provider-btn" data-provider="custom">自定义</button>
+            </div>
+            <span class="active-provider-label" id="active-provider-label"></span>
+            <input class="form-input" type="url" id="api-endpoint-input" value="https://opencode.ai/zen/go/v1" placeholder="https://..." autocomplete="url">
+            <span class="form-hint">选择预设或输入兼容端点。只有点击“保存配置”后才会生效。</span>
+          </div>
+
+          <div class="form-group">
+            <label for="api-key-input">API Key</label>
+            <div class="secret-input-wrap">
+              <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key" autocomplete="off" spellcheck="false">
+              <button type="button" class="secret-input-action" id="btn-toggle-api-key" aria-label="显示 API Key" aria-pressed="false">显示</button>
+              <button type="button" class="secret-input-action" id="btn-clear-api-key" aria-label="清除 API Key">清除</button>
+            </div>
+            <label class="local-key-row" id="remember-key-row" hidden>
+              <input type="checkbox" id="remember-key-input" checked>
+              <span>保存在此设备（仅本机桌面版）</span>
+            </label>
+            <span class="form-hint" id="online-key-hint">在线版 Key 仅用于当前页面会话，关闭后清除。</span>
+          </div>
+
+          <div class="form-group">
+            <label for="model-select">推理模型</label>
+            <select class="form-input" id="model-select">
+              <option value="deepseek-v4-flash" selected>DeepSeek V4 Flash (推荐 · 快速)</option>
+            </select>
+            <div id="custom-model-group" class="custom-model-group" hidden>
+              <label class="sr-only" for="custom-model-input">自定义模型名称</label>
+              <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
+            </div>
+            <span class="form-hint">模型列表随供应商切换，也支持自定义模型名称。</span>
+          </div>
+
+          <span class="test-connection-result" id="test-connection-result" role="status" aria-live="polite" hidden></span>
+        </form>
+      </div>
+
+      <footer class="settings-footer">
+        <span class="settings-save-state" id="settings-save-state" aria-live="polite">已保存</span>
+        <div class="settings-footer-actions">
+          <button type="button" class="btn-test-connection" id="btn-test-connection" hidden>测试连接</button>
+          <button type="button" class="btn-save-settings" id="btn-save-settings">使用此配置</button>
         </div>
-        <span class="active-provider-label" id="active-provider-label"></span>
-        <input class="form-input" type="text" id="api-endpoint-input" value="https://opencode.ai/zen/go/v1" placeholder="https://...">
-        <span class="form-hint">选择预设或直接输入兼容的服务端点地址。当前供应商的记忆配置会随切换自动恢复。</span>
-      </div>
+      </footer>
 
-      <div class="form-group">
-        <label for="api-key-input">2. API Key</label>
-        <input class="form-input" type="password" id="api-key-input" placeholder="请输入 API Key">
-        <label class="local-key-row" id="remember-key-row" hidden>
-          <input type="checkbox" id="remember-key-input" checked>
-          <span>记住 Key 到本地（仅本机桌面版有效）</span>
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label for="model-select">3. 推理模型</label>
-        <select class="form-input" id="model-select" style="cursor:pointer;">
-          <option value="deepseek-v4-flash" selected>DeepSeek V4 Flash (推荐 · 快速)</option>
-          <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
-          <option value="kimi-k3">Kimi K3</option>
-          <option value="kimi-k2.7-code">Kimi K2.7 Code</option>
-          <option value="kimi-k2.6">Kimi K2.6</option>
-          <option value="glm-5.3">GLM-5.3</option>
-          <option value="glm-5.2">GLM-5.2</option>
-          <option value="glm-5.1">GLM-5.1</option>
-          <option value="minimax-m3">MiniMax M3</option>
-          <option value="minimax-m2.7">MiniMax M2.7</option>
-          <option value="qwen3.8-max">Qwen3.8 Max</option>
-          <option value="qwen3.7-max">Qwen3.7 Max</option>
-          <option value="qwen3.7-plus">Qwen3.7 Plus</option>
-          <option value="qwen3.6-plus">Qwen3.6 Plus</option>
-          <option value="mimo-v2.5">MiMo-V2.5</option>
-          <option value="mimo-v2.5-pro">MiMo-V2.5-Pro</option>
-          <option value="hy3">Hy3</option>
-          <option value="custom">自定义模型名称...</option>
-        </select>
-        <div id="custom-model-group" style="margin-top:8px;" hidden>
-          <input class="form-input" type="text" id="custom-model-input" placeholder="输入自定义模型名称，如 deepseek-chat">
+      <div class="settings-discard-confirm" id="settings-discard-confirm" role="alertdialog" aria-labelledby="settings-discard-title" hidden>
+        <strong id="settings-discard-title">配置尚未保存</strong>
+        <p>关闭后，本次修改将被放弃。</p>
+        <div>
+          <button type="button" class="btn-secondary-action" id="btn-keep-editing">继续编辑</button>
+          <button type="button" class="btn-danger-quiet" id="btn-discard-settings">放弃修改</button>
         </div>
-        <span class="form-hint">根据服务端点提供适配模型列表，支持自定义模型名称。</span>
-      </div>
-
-      <div class="form-group">
-        <button type="button" class="btn-test-connection" id="btn-test-connection">测试连接</button>
-        <span class="test-connection-result" id="test-connection-result" hidden></span>
       </div>
     </aside>
   </div>
@@ -400,25 +452,6 @@
               </svg>
               <span>新建文件夹</span>
             </button>
-            <div class="library-backup-actions" role="group" aria-label="地图库备份操作">
-              <button type="button" class="btn-library-action" id="btn-export-library-backup" title="导出地图库备份（包含导入地图与分类）" aria-label="导出地图库备份">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                <span>导出地图库备份</span>
-              </button>
-              <button type="button" class="btn-library-action" id="btn-import-library-backup" title="导入地图库备份并智能合并" aria-label="导入地图库备份">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                <span>导入地图库备份</span>
-              </button>
-              <input type="file" id="input-import-library-backup" accept=".json,application/json" style="display:none;" aria-hidden="true">
-            </div>
           </div>
           <div class="new-folder-form-panel" id="new-folder-form-panel" hidden>
             <div class="new-folder-input-row">

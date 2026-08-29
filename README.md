@@ -169,14 +169,18 @@ npm run test:capabilities
 Paper Guide、双通道提取的 prompt/schema 由 `CMath-capabilities/packages/research-process/import/paper-dossier-extractor-v2` 唯一维护，并通过 `npm run sync-capabilities` 同步到本项目。DSH 插件只负责阶段路由、模型调用与返回结果，不持有业务提示词。
 
 ### 2. 模型默认推荐
-- 默认推荐使用 **OpenCode Go** 的 **DeepSeek V4 Flash**。该模型兼具高推理速度与结构准确率。在进行大输出量提取任务时，默认配置 `reasoning_effort: "none"`，防止思维链过长耗尽 Token 预算导致截断。
+- 公开网站默认展示 **CMath 提供 · Muse Spark 1.2 Contributor**，无需访问者配置 API Key；该路径只有在独立模型网关完成部署后才可用。
+- 使用自己的 API 时，默认推荐 **OpenCode Go** 的 **DeepSeek V4 Flash**。该模型兼具高推理速度与结构准确率。在进行大输出量提取任务时，默认配置 `reasoning_effort: "none"`，防止思维链过长耗尽 Token 预算导致截断。
 - 亦全面支持 DeepSeek V4 Pro、Kimi K3（Moonshot 端点）、GLM、MiniMax、Qwen 等 OpenAI 兼容端点。
 
 ### 3. 隐私与数据安全
-- **纯前端内存处理**：载入本地 JSON 或分析 PDF 时，文件仅在浏览器内存中解析、校验与渲染，绝不向未授权的第三方服务器上传文件内容。
+- **明确的数据路径**：本地 JSON 只在浏览器中解析和渲染；PDF 会按已披露的生产流程提交 MinerU 解析。选择 CMath 提供的 Muse Spark 时，论文内容和模型输出会经受保护网关发送至 OpenCode Go，首次提交前必须主动同意其 Contributor 训练用途说明。
 - **API Key 隐私保护**：
+  - CMath 提供的模型：共享 Key 只存在 `cmath-model-gateway` 的 `OPENCODE_GO_API_KEY` Worker Secret 中，不进入前端、浏览器存储、日志或地图结果。
   - 在线版（GitHub Pages）：API Key 仅存于当前会话内存中发起推理请求，用完即清，不落盘、不存入 LocalStorage。
   - 本地桌面版（`node server.js`）：提供本地环回配置（`~/.gamma-math-map/keys.json`，权限 `0600`，仅限本机读写）。
+
+模型网关使用独立配置 `wrangler.model-gateway.jsonc`。部署前必须先确认 OpenCode Go 条款允许公开网站的第三方转发使用，再通过 Wrangler Secret 配置 `OPENCODE_GO_API_KEY`；部署成功后把 `index.html` 与 `index-v5.html` 的 `data-model-gateway-url` 指向 `/api/model` 公共地址。真实 Key 不得写入配置文件或仓库。
 
 ---
 

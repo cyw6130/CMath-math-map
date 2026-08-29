@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cmath-model-gateway",
+  "main": "workers/model-gateway/worker.mjs",
+  "compatibility_date": "2026-08-29",
+  "workers_dev": true,
+  "secrets": {
+    "required": ["OPENCODE_GO_API_KEY"]
+  },
+  "vars": {
+    "MODEL_ALLOWED_ORIGINS": "https://cyw6130.github.io,http://127.0.0.1:7100,http://localhost:7100",
+    "MODEL_GATEWAY_ENABLED": "true",
+    "MODEL_BURST_PER_MINUTE": "60",
+    "MODEL_MAX_CLIENT_CONCURRENCY": "2",
+    "MODEL_MAX_ISOLATE_CONCURRENCY": "8",
+    "MODEL_MAX_OUTPUT_TOKENS": "100000",
+    "MODEL_UPSTREAM_TIMEOUT_MS": "180000"
+  }
+}

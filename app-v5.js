@@ -22,6 +22,14 @@
   let currentActiveMapId = null;
   let currentActiveMapData = null;
   let currentActiveMapTitle = "";
+  let inspectorEnhancementObserver = null;
+
+  function displayBoundaryLabel(value) {
+    return String(value || "数学地图")
+      .replace(/\s*·\s*数学地图与 Loop 进展/gu, "")
+      .replace(/\s*·\s*Loop 进展/gu, "")
+      .trim();
+  }
 
   // DOM Elements for Map Topbar
   const mapActiveTitle = document.querySelector("#map-active-title");
@@ -37,11 +45,36 @@
   const modelSelect = document.querySelector("#model-select");
   const customModelGroup = document.querySelector("#custom-model-group");
   const customModelInput = document.querySelector("#custom-model-input");
+  const settingsModeInputs = document.querySelectorAll('input[name="model-access-mode"]');
+  const settingsProvidedPanel = document.querySelector("#settings-provided-panel");
+  const settingsOwnPanel = document.querySelector("#settings-own-panel");
+  const settingsCurrentConfig = document.querySelector("#settings-current-config");
+  const settingsCurrentState = document.querySelector("#settings-current-state");
+  const settingsSaveState = document.querySelector("#settings-save-state");
+  const btnSaveSettings = document.querySelector("#btn-save-settings");
+  const btnTestConnection = document.querySelector("#btn-test-connection");
+  const testConnectionResult = document.querySelector("#test-connection-result");
+  const btnToggleApiKey = document.querySelector("#btn-toggle-api-key");
+  const btnClearApiKey = document.querySelector("#btn-clear-api-key");
+  const settingsDiscardConfirm = document.querySelector("#settings-discard-confirm");
+  const providedServiceStatus = document.querySelector("#provided-service-status");
+  const onlineKeyHint = document.querySelector("#online-key-hint");
+  const modelConsentCard = document.querySelector("#model-consent-card");
+  const btnAcceptModelConsent = document.querySelector("#btn-accept-model-consent");
+  const btnUseOwnModel = document.querySelector("#btn-use-own-model");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   const SESSION_IMPORTED_MAPS_KEY = "cmath.math-map.session-imported-maps-v1";
+  const MODEL_ACCESS_PREF_KEY = "cmath.math-map.model-access-mode-v1";
+  const SAVED_MODEL_CONFIG_KEY = "cmath.math-map.saved-model-config-v1";
+  const MODEL_CONSENT_KEY = "cmath.math-map.muse-consent-v1";
+  const MODEL_CONSENT_VERSION = "muse-spark-contributor-training-v1";
+  const CMATH_PROVIDED_MODEL = "muse-spark-1.2-contributor";
   const MINERU_GATEWAY_URL = String(
     window.CMATH_MINERU_GATEWAY_URL ?? document.documentElement.dataset.mineruGatewayUrl ?? "",
   ).trim();
+  const MODEL_GATEWAY_URL = String(
+    window.CMATH_MODEL_GATEWAY_URL ?? document.documentElement.dataset.modelGatewayUrl ?? "",
+  ).trim().replace(/\/+$/u, "");
 
   const IDB_DATABASE_NAME = "cmath_math_map_db";
   const IDB_DATABASE_VERSION = 1;
@@ -182,6 +215,11 @@
   let sessionImportedMaps = readSessionImportedMaps();
   let mapRuntimeMounted = false;
   let activeProviderKey = "opencode";
+  let activeAccessMode = "cmath";
+  let savedAccessMode = "cmath";
+  let settingsBaseline = "";
+  let settingsProviderDrafts = new Map();
+  let modelConsentResolver = null;
   // Becomes true only after the initial provider bootstrap, so the first
   // updateProviderSettings() never persists the raw HTML defaults (which used
   // to be DeepSeek's) as if they were the user's OpenCode Go configuration.
@@ -441,31 +479,40 @@
     } catch { /* key persistence must never break the import flow */ }
   }
 
-  // Remember the config typed for the provider about to be left, then
-  // restore the saved config for the provider being entered.
+  // Provider edits remain drafts until the user explicitly saves settings.
   function rememberCurrentProviderSettings() {
-    const apiKey = apiKeyInput?.value.trim() ?? "";
-    const endpoint = apiEndpointInput?.value.trim() ?? "";
-    const model = currentProviderModel();
-    if (apiKey) {
-      rememberSessionKey(activeProviderKey, apiKey);
-      persistLocalConfig(activeProviderKey, { apiKey, endpoint, model });
-    }
-    if (endpoint || model) rememberProviderConfig(activeProviderKey, { endpoint, model });
+    if (!activeProviderKey) return;
+    settingsProviderDrafts.set(activeProviderKey, {
+      endpoint: apiEndpointInput?.value.trim() ?? "",
+      model: currentProviderModel(),
+      apiKey: apiKeyInput?.value.trim() ?? "",
+      rememberKey: rememberKeyInput?.checked !== false,
+    });
   }
 
   function restoreProviderConfig(provider) {
+    const config = PROVIDER_CONFIGS[provider];
     const pref = providerPref(provider);
-    if (pref.endpoint) apiEndpointInput.value = pref.endpoint;
-    const saved = pref.model;
+    const defaultModel = config?.models?.find((item) => item.default)?.value ?? config?.models?.[0]?.value ?? "custom";
+    const draft = settingsProviderDrafts.get(provider) ?? {
+      endpoint: pref.endpoint || config?.endpoint || "",
+      model: pref.model || defaultModel,
+      apiKey: sessionKeyFor(provider),
+      rememberKey: true,
+    };
+    settingsProviderDrafts.set(provider, { ...draft });
+    apiEndpointInput.value = draft.endpoint || config?.endpoint || "";
+    apiKeyInput.value = draft.apiKey || "";
+    if (rememberKeyInput) rememberKeyInput.checked = draft.rememberKey !== false;
+    const saved = draft.model;
     if (!saved) return;
-    if (saved === "custom") {
-      modelSelect.value = "custom";
-      handleModelChange();
-      return;
-    }
     const option = [...(modelSelect?.options ?? [])].find((opt) => opt.value === saved);
-    if (option) modelSelect.value = saved;
+    if (option) {
+      modelSelect.value = saved;
+    } else {
+      modelSelect.value = "custom";
+      if (customModelInput) customModelInput.value = saved === "custom" ? "" : saved;
+    }
     handleModelChange();
   }
 
@@ -534,18 +581,11 @@
     activeProviderLabel.textContent = `当前供应商：${config.label} ｜ 端点 ${endpoint} ｜ 模型 ${model}`;
   }
 
-  function updateProviderSettings(providerKey) {
-    if (providerUiBootstrapped) rememberCurrentProviderSettings();
+  function updateProviderSettings(providerKey, { captureCurrent = true, alignBaselineAfterLoad = false } = {}) {
+    if (providerUiBootstrapped && captureCurrent) rememberCurrentProviderSettings();
     activeProviderKey = PROVIDER_CONFIGS[providerKey] ? providerKey : "deepseek";
     providerBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.provider === providerKey));
     const config = PROVIDER_CONFIGS[activeProviderKey];
-
-    const savedEndpoint = providerPref(activeProviderKey).endpoint;
-    if (savedEndpoint) {
-      apiEndpointInput.value = savedEndpoint;
-    } else if (providerKey !== "custom" || !apiEndpointInput.value) {
-      apiEndpointInput.value = config.endpoint;
-    }
 
     modelSelect.innerHTML = "";
     config.models.forEach(m => {
@@ -556,15 +596,19 @@
       modelSelect.appendChild(opt);
     });
 
-    const sessionKey = sessionKeyFor(activeProviderKey);
-    if (sessionKey && apiKeyInput) apiKeyInput.value = sessionKey;
     restoreProviderConfig(activeProviderKey);
     handleModelChange();
     updateActiveProviderLabel();
     loadLocalConfigFor(activeProviderKey).then(() => {
+      rememberCurrentProviderSettings();
       updateActiveProviderLabel();
-      if (customModelInput?.value.trim()) rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput.value.trim(), model: customModelInput.value.trim() });
+      if (alignBaselineAfterLoad || settingsDrawerBackdrop?.hidden) {
+        settingsBaseline = settingsSnapshot();
+        updateSettingsDirtyState();
+      }
+      else updateSettingsDirtyState();
     });
+    updateSettingsDirtyState();
   }
 
   function handleModelChange() {
@@ -580,28 +624,268 @@
 
   modelSelect?.addEventListener("change", () => {
     handleModelChange();
-    const model = currentProviderModel();
-    if (model) {
-      rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput?.value.trim() ?? "", model });
-    }
+    rememberCurrentProviderSettings();
     updateActiveProviderLabel();
+    invalidateConnectionTest();
+    updateSettingsDirtyState();
   });
   customModelInput?.addEventListener("input", () => {
-    const model = currentProviderModel();
-    if (model) {
-      rememberProviderConfig(activeProviderKey, { endpoint: apiEndpointInput?.value.trim() ?? "", model });
-    }
+    rememberCurrentProviderSettings();
     updateActiveProviderLabel();
+    invalidateConnectionTest();
+    updateSettingsDirtyState();
   });
 
-  // Initialize with OpenCode Go (DeepSeek V4 Flash; migrating legacy model-only prefs first)
+  function readSavedAccessMode() {
+    try {
+      return localStorage.getItem(MODEL_ACCESS_PREF_KEY) === "own" ? "own" : "cmath";
+    } catch {
+      return "cmath";
+    }
+  }
+
+  function readSavedModelConfig() {
+    try {
+      const value = JSON.parse(localStorage.getItem(SAVED_MODEL_CONFIG_KEY) || "null");
+      return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function selectedAccessMode() {
+    return [...settingsModeInputs].find((input) => input.checked)?.value === "own" ? "own" : "cmath";
+  }
+
+  function settingsSnapshot() {
+    rememberCurrentProviderSettings();
+    const draft = settingsProviderDrafts.get(activeProviderKey) || {};
+    return JSON.stringify({
+      mode: selectedAccessMode(),
+      provider: activeProviderKey,
+      endpoint: draft.endpoint || "",
+      model: draft.model || "",
+      apiKey: draft.apiKey || "",
+      rememberKey: draft.rememberKey !== false,
+    });
+  }
+
+  function settingsAreDirty() {
+    return Boolean(settingsBaseline) && settingsSnapshot() !== settingsBaseline;
+  }
+
+  function invalidateConnectionTest() {
+    if (!testConnectionResult) return;
+    testConnectionResult.hidden = true;
+    testConnectionResult.textContent = "";
+    testConnectionResult.classList.remove("is-error", "is-success");
+  }
+
+  function updateSettingsDirtyState() {
+    if (!settingsSaveState || !btnSaveSettings) return;
+    const dirty = settingsAreDirty();
+    settingsSaveState.textContent = dirty ? "有未保存修改" : "已保存";
+    settingsSaveState.classList.toggle("is-dirty", dirty);
+    settingsSaveState.classList.toggle("is-saved", !dirty);
+    btnSaveSettings.disabled = !dirty;
+    btnSaveSettings.textContent = dirty
+      ? (selectedAccessMode() === "own" ? "保存配置" : "使用此配置")
+      : (selectedAccessMode() === "own" ? "配置已保存" : "当前使用中");
+  }
+
+  function updateSavedConfigSummary() {
+    if (!settingsCurrentConfig || !settingsCurrentState) return;
+    const config = readSavedModelConfig();
+    if (savedAccessMode === "own" && config) {
+      const label = PROVIDER_CONFIGS[config.provider]?.label || "自己的 API";
+      settingsCurrentConfig.textContent = `${label} · ${config.model || "未选择模型"}`;
+      settingsCurrentState.textContent = (Boolean(sessionKeyFor(config.provider)) || isLocalDesktop) ? "已配置" : "需要 API Key";
+      return;
+    }
+    settingsCurrentConfig.textContent = "CMath 提供 · Muse Spark";
+    settingsCurrentState.textContent = "无需 API Key";
+  }
+
+  async function checkProvidedModelService() {
+    if (!providedServiceStatus) return false;
+    providedServiceStatus.classList.remove("is-ready", "is-error");
+    providedServiceStatus.innerHTML = "<i></i>正在检查服务";
+    if (!MODEL_GATEWAY_URL) {
+      providedServiceStatus.classList.add("is-error");
+      providedServiceStatus.innerHTML = "<i></i>服务尚未配置";
+      return false;
+    }
+    try {
+      const response = await fetch(MODEL_GATEWAY_URL, { headers: { Accept: "application/json" } });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload.available !== true) throw new Error("unavailable");
+      providedServiceStatus.classList.add("is-ready");
+      providedServiceStatus.innerHTML = "<i></i>服务可用";
+      return true;
+    } catch {
+      providedServiceStatus.classList.add("is-error");
+      providedServiceStatus.innerHTML = "<i></i>服务暂不可用";
+      return false;
+    }
+  }
+
+  function applyAccessMode(mode, { updateDirty = true } = {}) {
+    activeAccessMode = mode === "own" ? "own" : "cmath";
+    settingsModeInputs.forEach((input) => { input.checked = input.value === activeAccessMode; });
+    if (settingsProvidedPanel) settingsProvidedPanel.hidden = activeAccessMode !== "cmath";
+    if (settingsOwnPanel) settingsOwnPanel.hidden = activeAccessMode !== "own";
+    if (btnTestConnection) btnTestConnection.hidden = activeAccessMode !== "own";
+    if (btnSaveSettings) btnSaveSettings.textContent = activeAccessMode === "own" ? "保存配置" : "使用此配置";
+    invalidateConnectionTest();
+    if (activeAccessMode === "cmath" && settingsDrawerBackdrop && !settingsDrawerBackdrop.hidden) {
+      void checkProvidedModelService();
+    }
+    if (updateDirty) updateSettingsDirtyState();
+  }
+
+  async function saveSettings() {
+    const mode = selectedAccessMode();
+    if (mode === "own") {
+      rememberCurrentProviderSettings();
+      const draft = settingsProviderDrafts.get(activeProviderKey) || {};
+      if (!draft.endpoint) {
+        showTestResult("请先填写 API 服务地址。", true);
+        apiEndpointInput?.focus();
+        return;
+      }
+      try { window.GammaPaperImportClient.endpointUrl(draft.endpoint); }
+      catch (error) {
+        showTestResult(error.message, true);
+        apiEndpointInput?.focus();
+        return;
+      }
+      if (!draft.model) {
+        showTestResult("请先选择或填写模型名称。", true);
+        modelSelect?.focus();
+        return;
+      }
+      if (!draft.apiKey) {
+        showTestResult(`请先填写 ${PROVIDER_CONFIGS[activeProviderKey].label} 的 API Key。`, true);
+        apiKeyInput?.focus();
+        return;
+      }
+      rememberProviderConfig(activeProviderKey, { endpoint: draft.endpoint, model: draft.model });
+      rememberSessionKey(activeProviderKey, draft.apiKey);
+      if (isLocalDesktop) {
+        await persistLocalConfig(activeProviderKey, {
+          apiKey: draft.rememberKey ? draft.apiKey : "",
+          endpoint: draft.endpoint,
+          model: draft.model,
+        });
+      }
+      try {
+        localStorage.setItem(SAVED_MODEL_CONFIG_KEY, JSON.stringify({
+          provider: activeProviderKey,
+          endpoint: draft.endpoint,
+          model: draft.model,
+          rememberKey: draft.rememberKey,
+        }));
+      } catch { /* settings remain usable without persistence */ }
+    }
+    savedAccessMode = mode;
+    activeAccessMode = mode;
+    try { localStorage.setItem(MODEL_ACCESS_PREF_KEY, mode); } catch { /* ignore */ }
+    settingsBaseline = settingsSnapshot();
+    updateSavedConfigSummary();
+    updateSettingsDirtyState();
+    if (settingsSaveState) settingsSaveState.textContent = "配置已保存";
+  }
+
+  function resetSettingsDraft() {
+    const saved = readSavedModelConfig();
+    settingsProviderDrafts = new Map();
+    if (saved?.provider) {
+      settingsProviderDrafts.set(saved.provider, {
+        endpoint: saved.endpoint || "",
+        model: saved.model || "custom",
+        apiKey: sessionKeyFor(saved.provider),
+        rememberKey: saved.rememberKey !== false,
+      });
+    }
+    updateProviderSettings(saved?.provider || "opencode", { captureCurrent: false, alignBaselineAfterLoad: true });
+    applyAccessMode(savedAccessMode, { updateDirty: false });
+    settingsBaseline = settingsSnapshot();
+    updateSettingsDirtyState();
+  }
+
+  settingsModeInputs.forEach((input) => {
+    input.addEventListener("change", () => applyAccessMode(input.value));
+  });
+  [apiEndpointInput, apiKeyInput].forEach((input) => {
+    input?.addEventListener("input", () => {
+      rememberCurrentProviderSettings();
+      updateActiveProviderLabel();
+      invalidateConnectionTest();
+      updateSettingsDirtyState();
+    });
+  });
+  rememberKeyInput?.addEventListener("change", () => {
+    rememberCurrentProviderSettings();
+    updateSettingsDirtyState();
+  });
+  btnToggleApiKey?.addEventListener("click", () => {
+    const reveal = apiKeyInput?.type === "password";
+    if (apiKeyInput) apiKeyInput.type = reveal ? "text" : "password";
+    btnToggleApiKey.textContent = reveal ? "隐藏" : "显示";
+    btnToggleApiKey.setAttribute("aria-label", reveal ? "隐藏 API Key" : "显示 API Key");
+    btnToggleApiKey.setAttribute("aria-pressed", String(reveal));
+  });
+  btnClearApiKey?.addEventListener("click", () => {
+    if (apiKeyInput) apiKeyInput.value = "";
+    rememberCurrentProviderSettings();
+    invalidateConnectionTest();
+    updateSettingsDirtyState();
+    apiKeyInput?.focus();
+  });
+  btnSaveSettings?.addEventListener("click", () => { void saveSettings(); });
+  settingsOwnPanel?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    void saveSettings();
+  });
+  if (onlineKeyHint) onlineKeyHint.hidden = isLocalDesktop;
+
+  // Initialize the last explicitly saved access mode and BYOK configuration.
   migrateLegacyPrefs();
   sanitizePollutedPrefs();
-  updateProviderSettings("opencode");
+  const initialSavedModelConfig = readSavedModelConfig();
+  savedAccessMode = readSavedAccessMode();
+  activeAccessMode = savedAccessMode;
+  if (initialSavedModelConfig?.provider) {
+    settingsProviderDrafts.set(initialSavedModelConfig.provider, {
+      endpoint: initialSavedModelConfig.endpoint || "",
+      model: initialSavedModelConfig.model || "custom",
+      apiKey: sessionKeyFor(initialSavedModelConfig.provider),
+      rememberKey: initialSavedModelConfig.rememberKey !== false,
+    });
+  }
+  updateProviderSettings(initialSavedModelConfig?.provider || "opencode");
   providerUiBootstrapped = true;
+  applyAccessMode(activeAccessMode, { updateDirty: false });
+  updateSavedConfigSummary();
+  settingsBaseline = settingsSnapshot();
 
   // Drawer / Backdrop Management & Coordination
-  function closeAllPanels() {
+  function showSettingsDiscardConfirm() {
+    if (!settingsDiscardConfirm) return;
+    settingsDiscardConfirm.hidden = false;
+    document.querySelector("#btn-keep-editing")?.focus();
+  }
+
+  function closeAllPanels(options = {}) {
+    const force = options?.force === true;
+    const settingsOpen = settingsDrawerBackdrop && !settingsDrawerBackdrop.hidden;
+    if (!force && settingsOpen && settingsAreDirty()) {
+      showSettingsDiscardConfirm();
+      return false;
+    }
+    if (paperDrawerBackdrop && !paperDrawerBackdrop.hidden && modelConsentResolver) {
+      finishModelConsent(false);
+    }
     [paperDrawerBackdrop, settingsDrawerBackdrop, importDrawerBackdrop, libraryDrawerBackdrop].forEach((backdrop) => {
       if (backdrop) {
         backdrop.hidden = true;
@@ -616,10 +900,12 @@
     if (lastActiveTrigger && typeof lastActiveTrigger.focus === "function" && document.body.contains(lastActiveTrigger)) {
       try { lastActiveTrigger.focus(); } catch { /* ignore focus restore error */ }
     }
+    if (settingsDiscardConfirm) settingsDiscardConfirm.hidden = true;
+    return true;
   }
 
   function openDrawer(drawerId, triggerEl = null) {
-    closeAllPanels();
+    if (closeAllPanels() === false) return;
     if (triggerEl) lastActiveTrigger = triggerEl;
     else if (document.activeElement && document.activeElement !== document.body) lastActiveTrigger = document.activeElement;
 
@@ -633,6 +919,7 @@
     } else if (drawerId === "settings-drawer") {
       backdrop = settingsDrawerBackdrop;
       drawer = settingsDrawer;
+      resetSettingsDraft();
     } else if (drawerId === "import-drawer") {
       backdrop = importDrawerBackdrop;
       drawer = importDrawer;
@@ -649,6 +936,10 @@
       backdrop.classList.add("is-open");
       drawer.classList.add("is-open");
 
+      if (drawerId === "settings-drawer" && activeAccessMode === "cmath") {
+        void checkProvidedModelService();
+      }
+
       const closeBtn = drawer.querySelector(".close-btn");
       if (closeBtn) closeBtn.focus();
     }
@@ -660,6 +951,15 @@
         closeAllPanels();
       }
     });
+  });
+
+  document.querySelector("#btn-keep-editing")?.addEventListener("click", () => {
+    if (settingsDiscardConfirm) settingsDiscardConfirm.hidden = true;
+    document.querySelector("#btn-close-settings")?.focus();
+  });
+  document.querySelector("#btn-discard-settings")?.addEventListener("click", () => {
+    resetSettingsDraft();
+    closeAllPanels({ force: true });
   });
 
   window.addEventListener("keydown", (e) => {
@@ -929,18 +1229,114 @@
     selectPaperPdf(event.dataTransfer?.files?.[0]);
   });
 
+  function hasProvidedModelConsent() {
+    try { return localStorage.getItem(MODEL_CONSENT_KEY) === MODEL_CONSENT_VERSION; }
+    catch { return false; }
+  }
+
+  function finishModelConsent(accepted) {
+    if (modelConsentCard) modelConsentCard.hidden = true;
+    if (startExtractButton) startExtractButton.disabled = false;
+    const resolve = modelConsentResolver;
+    modelConsentResolver = null;
+    resolve?.(accepted);
+  }
+
+  function requestProvidedModelConsent() {
+    if (hasProvidedModelConsent()) return Promise.resolve(true);
+    if (!modelConsentCard) return Promise.resolve(false);
+    modelConsentCard.hidden = false;
+    if (startExtractButton) startExtractButton.disabled = true;
+    btnAcceptModelConsent?.focus();
+    return new Promise((resolve) => { modelConsentResolver = resolve; });
+  }
+
+  btnAcceptModelConsent?.addEventListener("click", () => {
+    try { localStorage.setItem(MODEL_CONSENT_KEY, MODEL_CONSENT_VERSION); } catch { /* consent applies to this run */ }
+    finishModelConsent(true);
+  });
+  btnUseOwnModel?.addEventListener("click", () => {
+    finishModelConsent(false);
+    openDrawer("settings-drawer", btnUseOwnModel);
+    applyAccessMode("own");
+  });
+
+  function createCmathMuseChatImpl() {
+    return async ({ stage = "model", messages = [], maxTokens, responseFormat, reasoningEffort, signal } = {}) => {
+      if (!MODEL_GATEWAY_URL) {
+        const error = new Error("CMath 提供的模型服务尚未配置。");
+        error.code = "CMATH_MODEL_UNAVAILABLE";
+        throw error;
+      }
+      let response;
+      try {
+        response = await fetch(`${MODEL_GATEWAY_URL}/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ stage, messages, maxTokens, responseFormat, reasoningEffort }),
+          signal,
+        });
+      } catch (cause) {
+        const error = new Error("暂时无法连接 CMath 提供的模型服务。");
+        error.code = "CMATH_MODEL_UNAVAILABLE";
+        error.cause = cause;
+        throw error;
+      }
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || typeof payload.content !== "string") {
+        const messagesByStatus = {
+          403: "当前地区或来源暂时无法使用 CMath 提供的模型。",
+          429: "当前请求较多，CMath 提供的模型暂时繁忙。",
+          503: "CMath 提供的模型正在维护或已临时停用。",
+        };
+        const error = new Error(messagesByStatus[response.status] || payload.error || "CMath 提供的模型暂时不可用。");
+        error.code = "CMATH_MODEL_UNAVAILABLE";
+        error.status = response.status;
+        throw error;
+      }
+      return payload;
+    };
+  }
+
+  function showProvidedModelFailure(message) {
+    showExtractError(message);
+    const actions = document.createElement("div");
+    actions.className = "extract-error-actions";
+    actions.innerHTML = '<button type="button" class="extract-retry-provided">稍后重试</button><button type="button" class="extract-use-own">使用自己的 API</button>';
+    extractStatus.appendChild(actions);
+    actions.querySelector(".extract-retry-provided")?.addEventListener("click", () => startExtractButton?.click());
+    actions.querySelector(".extract-use-own")?.addEventListener("click", () => {
+      openDrawer("settings-drawer");
+      applyAccessMode("own");
+    });
+  }
+
   startExtractButton?.addEventListener("click", async () => {
     if (!selectedPaperPdf) {
       paperPdfInput.click();
       return;
     }
-    const apiKey = apiKeyInput?.value.trim();
-    if (!apiKey) {
-      showExtractError(`请先在『模型 API 配置』中临时输入 ${PROVIDER_CONFIGS[activeProviderKey].label} API Key。`);
-      openDrawer("settings-drawer");
+    const useProvidedModel = savedAccessMode === "cmath";
+    if (useProvidedModel && !(await requestProvidedModelConsent())) return;
+    if (useProvidedModel && !MODEL_GATEWAY_URL) {
+      showProvidedModelFailure("CMath 提供的模型服务尚未完成部署，请稍后重试或使用自己的 API。");
       return;
     }
-    const model = modelSelect.value === "custom" ? customModelInput.value.trim() : modelSelect.value;
+    const savedOwnConfig = readSavedModelConfig();
+    const importProvider = useProvidedModel ? "cmath" : (savedOwnConfig?.provider || activeProviderKey);
+    const apiKey = useProvidedModel
+      ? "server-managed-credential"
+      : (sessionKeyFor(importProvider) || apiKeyInput?.value.trim() || "");
+    if (!useProvidedModel && !apiKey) {
+      showExtractError(`请先在“设置 → 使用自己的 API”中填写 ${PROVIDER_CONFIGS[importProvider]?.label || "模型服务"} API Key。`);
+      openDrawer("settings-drawer");
+      applyAccessMode("own");
+      return;
+    }
+    const model = useProvidedModel ? CMATH_PROVIDED_MODEL : (savedOwnConfig?.model || currentProviderModel());
+    const endpoint = useProvidedModel ? MODEL_GATEWAY_URL : (savedOwnConfig?.endpoint || apiEndpointInput.value);
+    const providerLabel = useProvidedModel ? "CMath 提供 · Muse Spark" : (PROVIDER_CONFIGS[importProvider]?.label || "模型服务");
+    const chatImpl = useProvidedModel ? createCmathMuseChatImpl() : undefined;
     if (!MINERU_GATEWAY_URL) {
       showExtractError("MinerU 精准解析服务尚未配置，请稍后重试。");
       return;
@@ -961,13 +1357,14 @@
         gatewayUrl: MINERU_GATEWAY_URL,
         unzip: (bytes) => window.fflate.unzipSync(bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)),
         mineruFetchImpl: window.fetch.bind(window),
-        endpoint: apiEndpointInput.value,
+        endpoint,
         apiKey,
         model,
-        providerLabel: PROVIDER_CONFIGS[activeProviderKey].label,
+        providerLabel,
         fetchImpl: modelFetch,
+        chatImpl,
         onStage: handleImportStage,
-        reasoningEffort: currentModelReasoningEffort(),
+        reasoningEffort: useProvidedModel ? "none" : currentModelReasoningEffort(),
       });
       await saveWorkflowMapToLibrary(generatedResult, selectedPaperPdf.name);
       finishExtractSteps(generatedResult);
@@ -976,11 +1373,15 @@
       const message = error instanceof TypeError
         ? (activeImportStage === "mineru"
           ? "浏览器无法连接 MinerU 精准解析服务，请检查网络后重试。"
-          : `浏览器无法直接连接 ${PROVIDER_CONFIGS[activeProviderKey].label}。请检查网络、API 服务地址以及服务端的跨域请求设置。`)
+          : `浏览器无法直接连接 ${providerLabel}。请检查网络、API 服务地址以及服务端的跨域请求设置。`)
         : error.message;
-      showExtractError(message);
+      if (useProvidedModel && (error?.code === "CMATH_MODEL_UNAVAILABLE" || activeImportStage !== "mineru")) {
+        showProvidedModelFailure(message);
+      } else {
+        showExtractError(message);
+      }
     } finally {
-      if (apiKeyInput) {
+      if (!useProvidedModel && apiKeyInput) {
         if (isLocalDesktop) {
           if (rememberKeyInput?.checked && apiKey.trim()) {
             persistLocalConfig(activeProviderKey, {
@@ -1002,9 +1403,6 @@
   });
 
   // --- Connection Tester ---
-  const btnTestConnection = document.querySelector("#btn-test-connection");
-  const testConnectionResult = document.querySelector("#test-connection-result");
-
   function showTestResult(message, isError) {
     if (!testConnectionResult) return;
     testConnectionResult.hidden = false;
@@ -2245,7 +2643,9 @@
     const generationSummary = mapDef.generatedResult
       ? ` · ${workflowLabel} · ${mapDef.generatedResult.status === "degraded" ? "部分结果" : "完整结果"} · ${missingStages.length} 个阶段待完善 · ${unresolvedCount} 个未解决项`
       : "";
-    const boundary = (mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图")) + generationSummary;
+    const boundary = displayBoundaryLabel(
+      (mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图")) + generationSummary,
+    );
     const sourceBadgeClass = mapDef.isImported ? "source-imported" : "source-builtin";
     const sourceBadgeText = mapDef.isImported ? "用户导入" : "内置库";
 
@@ -2453,17 +2853,17 @@
         {
           id: "spectral-theorem",
           title: "从特征值到谱定理",
-          boundary: "高等代数示例 · 数学地图与 Loop 进展",
+          boundary: "高等代数示例",
         },
         {
           id: "intermediate-value-theorem",
           title: "从闭区间套到介值定理",
-          boundary: "数学分析示例 · 数学地图与 Loop 进展",
+          boundary: "数学分析示例",
         },
         {
           id: "fundamental-theorem-calculus",
           title: "从积分累积函数到微积分基本定理",
-          boundary: "微积分示例 · 数学地图与 Loop 进展",
+          boundary: "微积分示例",
         },
       ];
 
@@ -2703,16 +3103,6 @@
   document.querySelector("#btn-map-open-demos")?.addEventListener("click", (e) => {
     openLibraryDrawer(e.currentTarget);
   });
-  mapActiveTitle?.addEventListener("click", (e) => {
-    openLibraryDrawer(e.currentTarget);
-  });
-  mapActiveTitle?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openLibraryDrawer(mapActiveTitle);
-    }
-  });
-
   document.querySelector("#btn-close-library-drawer")?.addEventListener("click", closeAllPanels);
 
   // --- Backup & Restore (Export / Import Backup) ---
@@ -3065,27 +3455,6 @@
     }
   }
 
-  const btnExportBackup = document.querySelector("#btn-export-library-backup");
-  const btnImportBackup = document.querySelector("#btn-import-library-backup");
-  const inputImportBackup = document.querySelector("#input-import-library-backup");
-
-  btnExportBackup?.addEventListener("click", () => {
-    exportLibraryBackup();
-  });
-
-  btnImportBackup?.addEventListener("click", () => {
-    if (inputImportBackup) {
-      inputImportBackup.value = "";
-      inputImportBackup.click();
-    }
-  });
-
-  inputImportBackup?.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    await handleImportBackupFile(file);
-  });
-
   function loadCuratedDemo(mapKey) {
     if (isActivatingMap) return;
     isActivatingMap = true;
@@ -3094,7 +3463,7 @@
         throw new Error(`未找到指定的案例数据：${mapKey}`);
       }
       const data = window.CMATH_PORTABLE_MAPS[mapKey];
-      const boundary = data.channelOptions?.boundaryLabel || "数学地图示例 · Loop 进展";
+      const boundary = displayBoundaryLabel(data.channelOptions?.boundaryLabel || "数学地图示例");
       const title = data.project?.title || "数学地图";
       openMapWithData(data, boundary, title, mapKey);
     } catch (error) {
@@ -3126,12 +3495,246 @@
     });
   }
 
+  function installProductFocusPresentation() {
+    const canvasCapability = window.GammaGraphCanvas;
+    const forceGraphFactory = window.ForceGraph;
+    if (!canvasCapability?.create || typeof forceGraphFactory !== "function" || canvasCapability.productFocusPresentation) return;
+
+    const presentationByHost = new WeakMap();
+    const endpointId = (value) => typeof value === "object" ? value?.id : value;
+    const colorWithOpacity = (color, opacity) => {
+      const value = String(color ?? "");
+      const hex = value.match(/^#([0-9a-f]{6})$/iu)?.[1];
+      if (hex) {
+        return `rgba(${parseInt(hex.slice(0, 2), 16)},${parseInt(hex.slice(2, 4), 16)},${parseInt(hex.slice(4, 6), 16)},${opacity})`;
+      }
+      const rgb = value.match(/^rgba?\(([^)]+)\)$/iu)?.[1]?.split(",").slice(0, 3).map((part) => part.trim());
+      return rgb?.length === 3 ? `rgba(${rgb.join(",")},${opacity})` : value;
+    };
+
+    const focusRelation = (state, link) => {
+      if (!state.focusIds?.size) return "overview";
+      const source = endpointId(link.source);
+      const target = endpointId(link.target);
+      if (source === state.activeTargetId || target === state.activeTargetId) return "target";
+      return state.focusIds.has(source) || state.focusIds.has(target) ? "context" : "background";
+    };
+
+    const wrappedForceGraph = (...factoryArgs) => {
+      const mount = forceGraphFactory(...factoryArgs);
+      return (host) => {
+        const graph = mount(host);
+        const state = {
+          graph,
+          focusIds: null,
+          activeTargetId: null,
+          selectedId: null,
+        };
+        presentationByHost.set(host, state);
+
+        const originalNodeCanvasObject = graph.nodeCanvasObject.bind(graph);
+        graph.nodeCanvasObject = function productNodeCanvasObject(painter) {
+          if (!arguments.length) return originalNodeCanvasObject();
+          if (typeof painter !== "function" || painter.productFocusPainter) return originalNodeCanvasObject(painter);
+          const enhancedPainter = (node, context, scale) => {
+            if (!node.isActiveTarget) {
+              painter(node, context, scale);
+              return;
+            }
+            context.save();
+            context.translate(node.x, node.y);
+            context.scale(1.55, 1.55);
+            context.translate(-node.x, -node.y);
+            painter(node, context, scale);
+            context.restore();
+          };
+          enhancedPainter.productFocusPainter = true;
+          return originalNodeCanvasObject(enhancedPainter);
+        };
+
+        const enhanceLinkAccessor = (name, enhance) => {
+          const originalAccessor = graph[name]?.bind(graph);
+          if (!originalAccessor) return;
+          graph[name] = function productLinkAccessor(accessor) {
+            if (!arguments.length) return originalAccessor();
+            if (typeof accessor !== "function") return originalAccessor(accessor);
+            return originalAccessor((link) => enhance(accessor(link), focusRelation(state, link)));
+          };
+        };
+
+        enhanceLinkAccessor("linkColor", (color, relation) => {
+          if (relation === "target") return colorWithOpacity(color, 0.96);
+          if (relation === "context") return colorWithOpacity(color, 0.68);
+          if (relation === "background") return colorWithOpacity(color, 0.08);
+          return color;
+        });
+        enhanceLinkAccessor("linkWidth", (width, relation) => {
+          if (relation === "target") return Math.max(2.4, Number(width) * 2.2);
+          if (relation === "context") return Math.max(1.45, Number(width) * 1.45);
+          if (relation === "background") return Math.max(0.45, Number(width) * 0.55);
+          return width;
+        });
+        enhanceLinkAccessor("linkDirectionalArrowLength", (length, relation) => {
+          if (relation === "target") return Math.max(5, Number(length) * 1.35);
+          if (relation === "background") return Math.max(1, Number(length) * 0.45);
+          return length;
+        });
+        enhanceLinkAccessor("linkDirectionalArrowColor", (color, relation) => {
+          if (relation === "target") return colorWithOpacity(color, 0.96);
+          if (relation === "context") return colorWithOpacity(color, 0.68);
+          if (relation === "background") return colorWithOpacity(color, 0.08);
+          return color;
+        });
+
+        return graph;
+      };
+    };
+    Object.assign(wrappedForceGraph, forceGraphFactory);
+    window.ForceGraph = wrappedForceGraph;
+
+    window.GammaGraphCanvas = Object.freeze({
+      ...canvasCapability,
+      productFocusPresentation: true,
+      create(container, options) {
+        const canvas = canvasCapability.create(container, options);
+        const host = container.querySelector(".alpha-force-graph-host");
+        const state = presentationByHost.get(host);
+        if (!state) return canvas;
+
+        const resolveEndpoint = (value) => {
+          if (value && typeof value === "object") return value;
+          return state.graph.graphData().nodes.find((node) => node.id === value) ?? null;
+        };
+        const cssToken = (name, fallback) => {
+          if (typeof getComputedStyle !== "function" || typeof document === "undefined") return fallback;
+          return getComputedStyle(document.body).getPropertyValue(name).trim() || fallback;
+        };
+        state.graph.linkCanvasObjectMode?.(() => "replace");
+        state.graph.linkCanvasObject?.((link, context, scale) => {
+          const source = resolveEndpoint(link.source);
+          const target = resolveEndpoint(link.target);
+          if (!source || !target || !Number.isFinite(source.x) || !Number.isFinite(source.y)
+            || !Number.isFinite(target.x) || !Number.isFinite(target.y)) return;
+
+          const relation = focusRelation(state, link);
+          const opacity = relation === "target" ? 0.96 : relation === "context" ? 0.68 : relation === "overview" ? 0.48 : 0.08;
+          const width = relation === "target" ? 2.8 : relation === "context" ? 1.8 : relation === "overview" ? 1.15 : 0.55;
+          const baseColor = link.relation === "conclusion"
+            ? cssToken("--math-map-conclusion", "#0E7C66")
+            : cssToken("--math-map-premise", "rgba(27,26,21,1)");
+          const stroke = colorWithOpacity(baseColor, opacity);
+          const safeScale = Math.max(0.1, Number(scale) || 1);
+
+          context.save();
+          context.beginPath();
+          context.moveTo(source.x, source.y);
+          context.lineTo(target.x, target.y);
+          context.strokeStyle = stroke;
+          context.lineWidth = width / safeScale;
+          context.stroke();
+
+          if (relation !== "background") {
+            const dx = target.x - source.x;
+            const dy = target.y - source.y;
+            const distance = Math.hypot(dx, dy);
+            if (distance > 0.001) {
+              const position = 0.74;
+              const tipX = source.x + dx * position;
+              const tipY = source.y + dy * position;
+              const unitX = dx / distance;
+              const unitY = dy / distance;
+              const arrowLength = (relation === "target" ? 7 : 5) / safeScale;
+              const arrowWidth = arrowLength * 0.55;
+              context.beginPath();
+              context.moveTo(tipX, tipY);
+              context.lineTo(tipX - unitX * arrowLength - unitY * arrowWidth, tipY - unitY * arrowLength + unitX * arrowWidth);
+              context.lineTo(tipX - unitX * arrowLength + unitY * arrowWidth, tipY - unitY * arrowLength - unitX * arrowWidth);
+              context.closePath();
+              context.fillStyle = stroke;
+              context.fill();
+            }
+          }
+          context.restore();
+        });
+
+        return {
+          ...canvas,
+          setLayout(layout, action) {
+            state.activeTargetId = layout?.nodes?.find((node) => node.isActiveTarget)?.id ?? null;
+            return canvas.setLayout(layout, action);
+          },
+          setSelected(id) {
+            state.selectedId = id ?? null;
+            return canvas.setSelected(id);
+          },
+          focusSubgraph(ids, action = {}) {
+            state.focusIds = new Set(ids ?? []);
+            canvas.focusSubgraph(ids, { ...action, duration: 0, preserveSelection: true });
+
+            const targetId = state.activeTargetId ?? state.selectedId;
+            const target = state.graph.graphData().nodes.find((node) => node.id === targetId);
+            if (!target) return;
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const duration = reducedMotion ? 0 : (action.duration ?? 320);
+            state.graph.centerAt(target.x ?? 0, target.y ?? 0, duration);
+            state.graph.zoom(Math.max(1.95, state.graph.zoom()), duration);
+          },
+          focusNode(id, action) {
+            state.focusIds = new Set([id]);
+            state.activeTargetId = id;
+            return canvas.focusNode(id, action);
+          },
+          showOverview(duration) {
+            state.focusIds = null;
+            state.activeTargetId = null;
+            return canvas.showOverview(duration);
+          },
+          restoreOverview(duration) {
+            state.focusIds = null;
+            state.activeTargetId = null;
+            return canvas.restoreOverview(duration);
+          },
+        };
+      },
+    });
+  }
+
   function persistMapForReload(data, boundaryLabel, title, mapKey = null) {
     sessionStorage.setItem(SESSION_MAP_KEY, JSON.stringify({ data, boundaryLabel, title, mapKey }));
     const next = new URL(window.location.href);
     next.search = "";
     next.searchParams.set("session-map", "1");
     window.location.assign(next);
+  }
+
+  function installInspectorEnhancements() {
+    const panel = document.querySelector("#math-map-inspector");
+    if (!panel || typeof MutationObserver !== "function") return;
+
+    const refresh = () => {
+      const evidenceButton = panel.querySelector("[data-show-evidence]");
+      const actions = panel.querySelector(".inspector-actions");
+      if (!evidenceButton || !actions) return;
+
+      const nodeId = evidenceButton.dataset.showEvidence;
+      const model = window.GammaMathMapLabModel;
+      const finalProgress = model?.progressBatches?.length ?? 0;
+      const node = model?.layoutThrough?.(finalProgress)?.nodes?.find((item) => item.id === nodeId);
+      const hasEvidence = Boolean(String(node?.evidence ?? "").trim());
+
+      evidenceButton.hidden = !hasEvidence;
+      actions.classList.toggle("has-single-action", !hasEvidence);
+      const heading = actions.previousElementSibling;
+      const nextHeading = hasEvidence ? "证据与来源" : "阅读操作";
+      if (heading?.tagName === "H3" && heading.textContent !== nextHeading) {
+        heading.textContent = nextHeading;
+      }
+    };
+
+    inspectorEnhancementObserver?.disconnect();
+    inspectorEnhancementObserver = new MutationObserver(refresh);
+    inspectorEnhancementObserver.observe(panel, { childList: true, subtree: true });
+    refresh();
   }
 
   async function openMapWithData(data, boundaryLabel, title, mapKey = null) {
@@ -3147,7 +3750,7 @@
 
     // 1. Update titles
     mapActiveTitle.textContent = title;
-    mapBoundaryTag.textContent = boundaryLabel;
+    mapBoundaryTag.textContent = displayBoundaryLabel(boundaryLabel);
     document.title = `CMath · ${title}`;
 
     // 2. Switch app state to 'map'
@@ -3177,8 +3780,10 @@
 
     // 4. Activate the unchanged map controller only after the selected model exists.
     try {
+      installProductFocusPresentation();
       await loadScript("math-map-lab.js");
       mapRuntimeMounted = true;
+      installInspectorEnhancements();
     } catch (error) {
       console.error(error);
       alert(`数学地图加载失败：\n${error.message}`);
