@@ -216,6 +216,23 @@ http
       return;
     }
 
+    const mapDeleteMatch = urlPath.match(/^\/api\/maps\/([^/]+)$/u);
+    if (mapDeleteMatch) {
+      if (!localOnly(req, res)) return;
+      if (req.method !== "DELETE") {
+        sendJson(res, 405, { error: "method not allowed" }, req.headers.origin || "");
+        return;
+      }
+      try {
+        const id = decodeURIComponent(mapDeleteMatch[1]);
+        const removed = localMapStore.remove(id);
+        sendJson(res, 200, { schema: "cmath.local-map-delete/v1", id, removed }, req.headers.origin || "");
+      } catch (error) {
+        sendJson(res, 400, { error: error.message }, req.headers.origin || "");
+      }
+      return;
+    }
+
     if (urlPath === "/api/maps" || urlPath === "/api/maps/") {
       if (!localOnly(req, res)) return;
       if (req.method === "GET") {

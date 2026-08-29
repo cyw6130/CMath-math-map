@@ -69,7 +69,19 @@ function createLocalMapStore(directory) {
     return normalized;
   }
 
-  return { directory, list, put };
+  function remove(id) {
+    ensureDirectory();
+    const target = path.join(directory, safeMapFileName(id));
+    try {
+      fs.unlinkSync(target);
+      return true;
+    } catch (error) {
+      if (error?.code === "ENOENT") return false;
+      throw error;
+    }
+  }
+
+  return { directory, list, put, remove };
 }
 
 module.exports = { PROJECT_VIEW_SCHEMA, createLocalMapStore, normalizeMapRecord, safeMapFileName, validateProjectView };

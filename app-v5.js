@@ -161,6 +161,21 @@
     });
   }
 
+  async function idbDeleteMap(mapId) {
+    const db = await openIndexedDb();
+    if (!db || !mapId) return;
+    return new Promise((resolve, reject) => {
+      try {
+        const tx = db.transaction([IDB_STORE_MAPS], "readwrite");
+        const request = tx.objectStore(IDB_STORE_MAPS).delete(mapId);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error || new Error("删除地图失败"));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   async function idbGetLibraryState() {
     const db = await openIndexedDb();
     if (!db) return null;
@@ -314,6 +329,19 @@
       await idbPutMap(map);
       return map;
     }
+  }
+
+  async function deletePersistedMap(mapId) {
+    if (isLocalDesktop) {
+      const response = await fetch(`/api/maps/${encodeURIComponent(mapId)}`, {
+        method: "DELETE",
+        headers: { Accept: "application/json" },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "HTTP " + response.status);
+      return;
+    }
+    await idbDeleteMap(mapId);
   }
 
   // Per-provider preferences.
@@ -870,6 +898,7 @@
   settingsBaseline = settingsSnapshot();
 
   // Drawer / Backdrop Management & Coordination
+  let activeModalDrawer = null;
   function showSettingsDiscardConfirm() {
     if (!settingsDiscardConfirm) return;
     settingsDiscardConfirm.hidden = false;
@@ -897,6 +926,9 @@
         drawer.classList.remove("is-open");
       }
     });
+    const workbenchView = document.querySelector("#workbench-view");
+    if (workbenchView) workbenchView.inert = false;
+    activeModalDrawer = null;
     if (lastActiveTrigger && typeof lastActiveTrigger.focus === "function" && document.body.contains(lastActiveTrigger)) {
       try { lastActiveTrigger.focus(); } catch { /* ignore focus restore error */ }
     }
@@ -935,6 +967,9 @@
       void backdrop.offsetWidth;
       backdrop.classList.add("is-open");
       drawer.classList.add("is-open");
+      const workbenchView = document.querySelector("#workbench-view");
+      if (workbenchView) workbenchView.inert = true;
+      activeModalDrawer = drawer;
 
       if (drawerId === "settings-drawer" && activeAccessMode === "cmath") {
         void checkProvidedModelService();
@@ -944,6 +979,20 @@
       if (closeBtn) closeBtn.focus();
     }
   }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || !activeModalDrawer) return;
+    const focusable = Array.from(activeModalDrawer.querySelectorAll('button:not([disabled]):not([hidden]), input:not([disabled]):not([hidden]), select:not([disabled]):not([hidden]), [tabindex]:not([tabindex="-1"]):not([hidden])'))
+      .filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  });
 
   [paperDrawerBackdrop, settingsDrawerBackdrop, importDrawerBackdrop, libraryDrawerBackdrop].forEach((backdrop) => {
     backdrop?.addEventListener("click", (e) => {
@@ -1149,11 +1198,11 @@
     const saved = await persistImportedMap(map);
     sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, [saved || map]);
     saveSessionImportedMaps(sessionImportedMaps);
-    const currentOrder = getFolderMapOrder("myMaps");
-    if (!currentOrder.includes(map.id)) currentOrder.push(map.id);
+    const currentOrder = getFolderMapOrder("myMaps").filter((id) => id !== map.id);
+    currentOrder.unshift(map.id);
     saveFolderMapOrder("myMaps", currentOrder);
     renderLibraryDrawer();
-    showLibraryToast(`已自动保存到「我的 JSON 地图」：${map.title}`);
+    showLibraryToast(`已保存到「未分类」：${map.title}`);
     return map;
   }
 
@@ -1815,16 +1864,15 @@
     sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, importedMaps);
     saveSessionImportedMaps(sessionImportedMaps);
 
-    const currentOrder = getFolderMapOrder("myMaps");
-    importedMaps.forEach((m) => {
-      if (!currentOrder.includes(m.id)) currentOrder.push(m.id);
-    });
+    const importedIds = importedMaps.map((m) => m.id);
+    const currentOrder = getFolderMapOrder("myMaps").filter((id) => !importedIds.includes(id));
+    currentOrder.unshift(...importedIds);
     saveFolderMapOrder("myMaps", currentOrder);
 
     closeAllPanels();
-
-    const first = importedMaps[0];
-    openMapWithData(first.data, first.boundaryLabel, first.title, first.id);
+    highlightedLibraryMapIds = new Set(importedIds);
+    openDrawer("library-drawer", btnStartBatchImport);
+    showLibraryToast(`已导入 ${importedMaps.length} 张地图`);
   });
 
   // --- Workbench Entrance 3: Unified Math Map Library Drawer ---
@@ -1835,17 +1883,22 @@
   ];
   const MY_MAPS_ORDER_KEY = "cmath.math-map.my-maps-order-v1";
   const BUILTIN_MAPS_ORDER_KEY = "cmath.math-map.builtin-maps-order-v1";
-  const LIBRARY_COLLAPSED_KEY = "cmath.math-map.library-collapsed-v1";
+  const LIBRARY_COLLAPSED_KEY = "cmath.math-map.library-collapsed-v2";
+  const LIBRARY_COLLAPSED_INITIALIZED_KEY = "cmath.math-map.library-collapsed-v2-initialized";
   const CUSTOM_FOLDERS_KEY = "cmath.math-map.custom-folders-v1";
   const MAP_FOLDER_ASSIGNMENTS_KEY = "cmath.math-map.map-folder-assignments-v1";
   const FOLDER_MAP_ORDER_KEY = "cmath.math-map.folder-map-order-v1";
   let isActivatingMap = false;
 
   let currentDragMap = null;
+  let currentDragFolderId = null;
   let autoExpandTimer = null;
   let autoExpandFolderId = null;
   let pendingDeleteFolder = null;
   let toastTimeout = null;
+  let undoTimeout = null;
+  let pendingUndo = null;
+  let highlightedLibraryMapIds = new Set();
 
   function getCustomFolders() {
     try {
@@ -1978,7 +2031,7 @@
         }
       } catch { /* noop */ }
     }
-    if (state.collapsed && typeof state.collapsed === "object") {
+    if (localStorage.getItem(LIBRARY_COLLAPSED_INITIALIZED_KEY) === "true" && state.collapsed && typeof state.collapsed === "object") {
       saveCollapsedState(state.collapsed, true);
     }
   }
@@ -2014,17 +2067,7 @@
   }
 
   function getAllMovableMaps() {
-    const allMovable = [];
-    (sessionImportedMaps || []).forEach((m) => {
-      allMovable.push({ ...m, origin: "myMaps", isImported: true });
-    });
-    const registryMaps = Array.isArray(window.CMATH_GENERIC_MAP_REGISTRY?.maps)
-      ? window.CMATH_GENERIC_MAP_REGISTRY.maps.filter((m) => m && typeof m.id === "string" && !CURATED_DEMO_IDS.includes(m.id))
-      : [];
-    registryMaps.forEach((m) => {
-      allMovable.push({ ...m, origin: "builtin", isBuiltin: true, isImported: false });
-    });
-    return allMovable;
+    return (sessionImportedMaps || []).map((m) => ({ ...m, origin: "myMaps", isImported: true }));
   }
 
   function getMapAssignedFolder(mapDef, customFolders) {
@@ -2067,18 +2110,16 @@
   }
 
   function getFolderName(folderId, customFolders) {
-    if (folderId === "curated") return "精选 Demo";
-    if (folderId === "myMaps") return "我的 JSON 地图";
-    if (folderId === "builtin") return "内置地图库";
+    if (folderId === "curated") return "系统示例";
+    if (folderId === "myMaps") return "未分类";
+    if (folderId === "builtin") return "系统示例";
     const custom = (customFolders || getCustomFolders()).find((f) => f.id === folderId);
     return custom ? custom.name : "文件夹";
   }
 
   function isFolderEligibleForMap(folderId, mapDef) {
-    if (!folderId || !mapDef || folderId === "curated") return false;
-    if (folderId === "myMaps") return Boolean(mapDef.isImported);
-    if (folderId === "builtin") return !mapDef.isImported;
-    return true; // Any custom folder
+    if (!folderId || !mapDef || !mapDef.isImported || folderId === "curated" || folderId === "builtin") return false;
+    return folderId === "myMaps" || getCustomFolders().some((folder) => folder.id === folderId);
   }
 
   function focusCard(mapId) {
@@ -2089,26 +2130,47 @@
     if (card) card.focus();
   }
 
-  function showLibraryToast(message) {
+  function showLibraryToast(message, undoAction = null) {
     const toast = document.querySelector("#library-feedback-toast");
     const liveRegion = document.querySelector("#library-live-region");
     if (liveRegion) liveRegion.textContent = message;
     if (toast) {
-      toast.textContent = message;
+      toast.replaceChildren();
+      const label = document.createElement("span");
+      label.textContent = message;
+      toast.appendChild(label);
+      if (undoAction) {
+        pendingUndo = undoAction;
+        const undoButton = document.createElement("button");
+        undoButton.type = "button";
+        undoButton.className = "library-toast-undo";
+        undoButton.textContent = "撤销";
+        undoButton.addEventListener("click", async () => {
+          const action = pendingUndo;
+          pendingUndo = null;
+          if (undoTimeout) clearTimeout(undoTimeout);
+          if (action) await action();
+        }, { once: true });
+        toast.appendChild(undoButton);
+      } else {
+        pendingUndo = null;
+      }
       toast.hidden = false;
       void toast.offsetWidth;
       toast.classList.add("is-visible");
       if (toastTimeout) clearTimeout(toastTimeout);
+      const duration = undoAction ? 6000 : 2200;
+      undoTimeout = setTimeout(() => { pendingUndo = null; }, duration);
       toastTimeout = setTimeout(() => {
         toast.classList.remove("is-visible");
         setTimeout(() => {
           if (!toast.classList.contains("is-visible")) toast.hidden = true;
         }, 200);
-      }, 2200);
+      }, duration);
     }
   }
 
-  function moveMapToFolder(mapId, targetFolderId) {
+  function moveMapToFolder(mapId, targetFolderId, options = {}) {
     const customFolders = getCustomFolders();
     const assignments = getMapFolderAssignments();
     const allMovable = getAllMovableMaps();
@@ -2144,7 +2206,13 @@
     renderLibraryDrawer();
 
     const targetFolderName = getFolderName(targetFolderId, customFolders);
-    showLibraryToast(`已将「${mapDef.title || mapId}」移动到「${targetFolderName}」`);
+    if (options.suppressUndo) {
+      showLibraryToast(`已恢复「${mapDef.title || mapId}」的位置`);
+    } else {
+      showLibraryToast(`已将「${mapDef.title || mapId}」移动到「${targetFolderName}」`, async () => {
+        moveMapToFolder(mapId, prevFolderId, { suppressUndo: true });
+      });
+    }
 
     setTimeout(() => {
       focusCard(mapId);
@@ -2219,6 +2287,40 @@
     focusCard(mapId);
   }
 
+  async function deleteUserMap(mapDef, folderId) {
+    if (!mapDef?.isImported) return;
+    const assignmentsBefore = getMapFolderAssignments();
+    const ordersBefore = getAllFolderMapOrders();
+    try {
+      await deletePersistedMap(mapDef.id);
+      sessionImportedMaps = sessionImportedMaps.filter((map) => map.id !== mapDef.id);
+      saveSessionImportedMaps(sessionImportedMaps);
+      const assignments = getMapFolderAssignments();
+      delete assignments[mapDef.id];
+      saveMapFolderAssignments(assignments);
+      Object.entries(getAllFolderMapOrders()).forEach(([id, order]) => {
+        if (Array.isArray(order)) saveFolderMapOrder(id, order.filter((mapId) => mapId !== mapDef.id));
+      });
+      renderLibraryDrawer();
+      showLibraryToast(`已删除「${mapDef.title || mapDef.id}」`, async () => {
+        await persistImportedMap(mapDef);
+        sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, [mapDef]);
+        saveSessionImportedMaps(sessionImportedMaps);
+        saveMapFolderAssignments(assignmentsBefore);
+        Object.entries(ordersBefore).forEach(([id, order]) => saveFolderMapOrder(id, order));
+        renderLibraryDrawer();
+        showLibraryToast(`已恢复「${mapDef.title || mapDef.id}」`);
+      });
+      if (currentActiveMapId === mapDef.id) {
+        const next = new URL(window.location.href);
+        next.search = "";
+        window.location.assign(next);
+      }
+    } catch (error) {
+      showLibraryToast(`删除失败：${error.message}`);
+    }
+  }
+
   function getCollapsedState() {
     try {
       const raw = localStorage.getItem(LIBRARY_COLLAPSED_KEY);
@@ -2227,12 +2329,13 @@
         if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
       }
     } catch { /* noop */ }
-    return { curated: false, myMaps: false, builtin: false };
+    return { curated: true, myMaps: false, builtin: true };
   }
 
   function saveCollapsedState(state, skipPersist = false) {
     try {
       localStorage.setItem(LIBRARY_COLLAPSED_KEY, JSON.stringify(state));
+      if (!skipPersist) localStorage.setItem(LIBRARY_COLLAPSED_INITIALIZED_KEY, "true");
     } catch { /* noop */ }
     if (!skipPersist) schedulePersistLibraryOrganization();
   }
@@ -2283,6 +2386,10 @@
   const btnCancelFolder = document.querySelector("#btn-cancel-folder");
   const newFolderErrorMsg = document.querySelector("#new-folder-error-msg");
 
+  document.querySelector("#btn-library-import-json")?.addEventListener("click", (event) => {
+    openDrawer("import-drawer", event.currentTarget);
+  });
+
   function openNewFolderForm() {
     if (!newFolderFormPanel) return;
     newFolderFormPanel.hidden = false;
@@ -2330,7 +2437,7 @@
       return;
     }
 
-    const systemFolderNames = ["精选 Demo", "我的 JSON 地图", "内置地图库", "精选 demo", "精选示例"];
+    const systemFolderNames = ["系统示例", "我的地图", "未分类", "精选 Demo", "我的 JSON 地图", "内置地图库"];
     const existingFolders = getCustomFolders();
     const isDuplicate = systemFolderNames.some((sn) => sn.toLowerCase() === name.toLowerCase()) ||
       existingFolders.some((f) => f.name.toLowerCase() === name.toLowerCase());
@@ -2423,7 +2530,7 @@
       if (count === 0) {
         descEl.textContent = `确定删除空文件夹「${folder.name}」吗？此操作将移除该文件夹，不影响其他地图。`;
       } else {
-        descEl.textContent = `确定删除文件夹「${folder.name}」吗？文件夹将被删除，其中的 ${count} 张数学地图将被保留并自动移回原系统文件夹（本地导入地图返回「我的 JSON 地图」，内置地图返回「内置地图库」）。`;
+        descEl.textContent = `确定删除文件夹「${folder.name}」吗？其中的 ${count} 张地图会保留，并移到「未分类」。`;
       }
     }
 
@@ -2443,24 +2550,21 @@
     const folderId = folder.id;
 
     const customFolders = getCustomFolders();
+    const assignmentsBefore = getMapFolderAssignments();
+    const ordersBefore = getAllFolderMapOrders();
+    const collapsedBefore = getCollapsedState();
     const mapsInFolder = getOrderedMapsForFolder(folderId, customFolders);
     const assignments = getMapFolderAssignments();
 
     const myMapsOrder = getFolderMapOrder("myMaps");
-    const builtinOrder = getFolderMapOrder("builtin");
 
     mapsInFolder.forEach((m) => {
       delete assignments[m.id];
-      if (m.isImported) {
-        if (!myMapsOrder.includes(m.id)) myMapsOrder.push(m.id);
-      } else {
-        if (!builtinOrder.includes(m.id)) builtinOrder.push(m.id);
-      }
+      if (!myMapsOrder.includes(m.id)) myMapsOrder.push(m.id);
     });
 
     saveMapFolderAssignments(assignments);
     saveFolderMapOrder("myMaps", myMapsOrder);
-    saveFolderMapOrder("builtin", builtinOrder);
 
     try {
       const raw = localStorage.getItem(FOLDER_MAP_ORDER_KEY);
@@ -2485,7 +2589,14 @@
 
     closeDeleteDialog();
     renderLibraryDrawer();
-    showLibraryToast(`已删除文件夹「${folder.name}」，地图已归还到原系统文件夹`);
+    showLibraryToast(`已删除文件夹「${folder.name}」，地图已移到「未分类」`, async () => {
+      saveCustomFolders(customFolders);
+      saveMapFolderAssignments(assignmentsBefore);
+      Object.entries(ordersBefore).forEach(([id, order]) => saveFolderMapOrder(id, order));
+      saveCollapsedState(collapsedBefore);
+      renderLibraryDrawer();
+      showLibraryToast(`已恢复文件夹「${folder.name}」`);
+    });
 
     document.querySelector("#btn-create-folder")?.focus();
   }
@@ -2566,6 +2677,8 @@
 
   function setupFolderDropTargets(section, header, listEl, folderId) {
     if (!section || !header) return;
+    if (section.dataset.dropBound === "true") return;
+    section.dataset.dropBound = "true";
 
     header.addEventListener("dragover", (e) => {
       if (!currentDragMap || !isFolderEligibleForMap(folderId, currentDragMap)) return;
@@ -2631,7 +2744,7 @@
     card.dataset.folderId = folderId;
     card.setAttribute("role", "listitem");
     card.setAttribute("tabindex", "0");
-    card.setAttribute("draggable", "true");
+    card.setAttribute("draggable", "false");
 
     const isActive = currentActiveMapId === mapDef.id;
     if (isActive) card.classList.add("is-active-map");
@@ -2646,11 +2759,15 @@
     const boundary = displayBoundaryLabel(
       (mapDef.boundaryLabel || (mapDef.isImported ? "本地导入 · 数学地图" : "一般数学内容 · Gamma-native 只读地图")) + generationSummary,
     );
-    const sourceBadgeClass = mapDef.isImported ? "source-imported" : "source-builtin";
-    const sourceBadgeText = mapDef.isImported ? "用户导入" : "内置库";
+    const sourceLabel = mapDef.generatedResult ? "论文生成" : "JSON 导入";
+    const persistenceLabel = isLocalDesktop ? "保存在此电脑" : "保存在此浏览器";
+    const moveTargets = [
+      { id: "myMaps", name: "未分类" },
+      ...customFolders.map((folder) => ({ id: folder.id, name: folder.name })),
+    ].filter((folder) => folder.id !== folderId);
 
     card.innerHTML = `
-      <div class="map-drag-handle" title="拖拽调整位置或移动到其他文件夹" aria-hidden="true">
+      <div class="map-drag-handle" title="拖拽调整位置或移动到其他文件夹" draggable="true" aria-label="拖拽「${escapeHtml(title)}」">
         <svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor">
           <circle cx="2" cy="2" r="1.3"></circle>
           <circle cx="8" cy="2" r="1.3"></circle>
@@ -2663,12 +2780,23 @@
       <div class="map-card-info">
         <div class="map-card-title-row">
           <strong class="map-title-text">${escapeHtml(title)}</strong>
-          <span class="map-source-badge ${sourceBadgeClass}">${sourceBadgeText}</span>
           ${isActive ? `<span class="map-active-pill">当前浏览中</span>` : ""}
         </div>
-        <span class="map-boundary-text">${escapeHtml(boundary)}</span>
+        <span class="map-boundary-text">${escapeHtml(sourceLabel)} · ${escapeHtml(persistenceLabel)}${boundary ? ` · ${escapeHtml(boundary)}` : ""}</span>
+      </div>
+      <div class="card-menu-wrapper">
+        <button type="button" class="btn-card-menu" aria-label="更多操作：${escapeHtml(title)}" aria-haspopup="menu" aria-expanded="false">···</button>
+        <div class="map-action-menu" role="menu" hidden>
+          ${moveTargets.length ? `<span class="map-menu-heading">移动至</span>${moveTargets.map((folder) => `<button type="button" class="map-menu-item btn-menu-move" role="menuitem" data-target-folder="${escapeHtml(folder.id)}">${escapeHtml(folder.name)}</button>`).join("")}<span class="map-menu-divider"></span>` : ""}
+          <button type="button" class="map-menu-item btn-menu-up" role="menuitem" ${index === 0 ? "disabled" : ""}>上移</button>
+          <button type="button" class="map-menu-item btn-menu-down" role="menuitem" ${index === list.length - 1 ? "disabled" : ""}>下移</button>
+          <span class="map-menu-divider"></span>
+          <button type="button" class="map-menu-item map-menu-danger btn-menu-delete-map" role="menuitem">删除地图</button>
+        </div>
       </div>
     `;
+
+    if (highlightedLibraryMapIds.has(mapDef.id)) card.classList.add("is-newly-imported");
 
     // Menu toggle logic
     const menuBtn = card.querySelector(".btn-card-menu");
@@ -2732,9 +2860,15 @@
       });
     });
 
+    card.querySelector(".btn-menu-delete-map")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeAllCardMenus();
+      void deleteUserMap(mapDef, folderId);
+    });
+
     // Native Drag & Drop Handlers on Card
     card.addEventListener("dragstart", (e) => {
-      if (e.target.closest(".card-menu-wrapper") || e.target.closest(".btn-card-menu") || e.target.closest(".map-action-menu")) {
+      if (!e.target.closest(".map-drag-handle")) {
         e.preventDefault();
         return;
       }
@@ -2831,6 +2965,41 @@
   function renderLibraryDrawer() {
     const customFolders = getCustomFolders();
     applyCollapsedState();
+    const scrollBody = document.querySelector("#library-scroll-body");
+    const toolbar = document.querySelector("#library-toolbar");
+    const sectionMyMaps = document.querySelector("#section-my-maps");
+    const sectionCurated = document.querySelector("#section-curated-demos");
+    const customContainer = document.querySelector("#custom-folders-container");
+    let userRootHeading = document.querySelector("#library-user-root-heading");
+    if (!userRootHeading && scrollBody) {
+      userRootHeading = document.createElement("div");
+      userRootHeading.id = "library-user-root-heading";
+      userRootHeading.className = "library-root-heading";
+      userRootHeading.innerHTML = `<div><span class="drawer-kicker">YOUR LIBRARY</span><h4>我的地图</h4></div><span class="section-count-badge" id="count-user-total">0</span>`;
+      toolbar?.after(userRootHeading);
+    }
+    let emptyUserLibrary = document.querySelector("#empty-user-library");
+    if (!emptyUserLibrary && scrollBody) {
+      emptyUserLibrary = document.createElement("div");
+      emptyUserLibrary.id = "empty-user-library";
+      emptyUserLibrary.className = "empty-user-library";
+      emptyUserLibrary.innerHTML = `<p>还没有自己的地图。可以从上方导入 JSON，或从论文生成一张新地图。</p>`;
+    }
+    if (scrollBody && sectionMyMaps && sectionCurated && customContainer && userRootHeading) {
+      userRootHeading.after(customContainer);
+      customContainer.after(sectionMyMaps);
+      sectionMyMaps.after(emptyUserLibrary);
+      let divider = document.querySelector("#library-root-divider");
+      if (!divider) {
+        divider = document.createElement("div");
+        divider.id = "library-root-divider";
+        divider.className = "library-root-divider";
+      }
+      emptyUserLibrary.after(divider);
+      divider.after(sectionCurated);
+    }
+    document.querySelector("#heading-my-maps")?.replaceChildren("未分类");
+    document.querySelector("#heading-curated-demos")?.replaceChildren("系统示例");
 
     // 1. Curated Demos
     const countCurated = document.querySelector("#count-curated");
@@ -2898,29 +3067,21 @@
     }
 
     // 2. My JSON Maps
+    const allUserMaps = getAllMovableMaps();
     const myMaps = getOrderedMapsForFolder("myMaps", customFolders);
+    const countUserTotal = document.querySelector("#count-user-total");
+    if (countUserTotal) countUserTotal.textContent = String(allUserMaps.length);
+    if (emptyUserLibrary) emptyUserLibrary.hidden = allUserMaps.length !== 0;
     const countMyMaps = document.querySelector("#count-my-maps");
     if (countMyMaps) countMyMaps.textContent = String(myMaps.length);
     const listMyMaps = document.querySelector("#list-my-maps");
-    const sectionMyMaps = document.querySelector("#section-my-maps");
     const headerMyMaps = document.querySelector("#header-my-maps");
     setupFolderDropTargets(sectionMyMaps, headerMyMaps, listMyMaps, "myMaps");
+    if (sectionMyMaps) sectionMyMaps.hidden = myMaps.length === 0;
 
     if (listMyMaps) {
       listMyMaps.innerHTML = "";
-      if (myMaps.length === 0) {
-        const emptyBox = document.createElement("div");
-        emptyBox.className = "empty-my-maps-box";
-        emptyBox.innerHTML = `
-          <p>暂无本地导入的地图，您可以立即导入 JSON 数据包</p>
-          <button class="btn-secondary-sm" id="btn-empty-import" type="button">导入 JSON 地图</button>
-        `;
-        emptyBox.querySelector("#btn-empty-import")?.addEventListener("click", (e) => {
-          e.stopPropagation();
-          openDrawer("import-drawer");
-        });
-        listMyMaps.appendChild(emptyBox);
-      } else {
+      if (myMaps.length > 0) {
         myMaps.forEach((mapDef, index, list) => {
           listMyMaps.appendChild(createMapCardElement(mapDef, index, list, "myMaps", customFolders));
         });
@@ -2935,6 +3096,7 @@
     const sectionBuiltin = document.querySelector("#section-builtin-maps");
     const headerBuiltin = document.querySelector("#header-builtin-maps");
     setupFolderDropTargets(sectionBuiltin, headerBuiltin, listBuiltin, "builtin");
+    if (sectionBuiltin) sectionBuiltin.hidden = true;
 
     if (listBuiltin) {
       listBuiltin.innerHTML = "";
@@ -2951,7 +3113,6 @@
     }
 
     // 4. Custom User Folders
-    const customContainer = document.querySelector("#custom-folders-container");
     if (customContainer) {
       customContainer.innerHTML = "";
       const collapsedState = getCollapsedState();
@@ -2966,25 +3127,29 @@
         section.setAttribute("aria-labelledby", `heading-${folder.id}`);
 
         section.innerHTML = `
-          <div class="folder-accordion-header${isCollapsed ? " is-collapsed" : ""}" id="header-${folder.id}" data-folder="${folder.id}" role="button" tabindex="0" aria-expanded="${isCollapsed ? "false" : "true"}" aria-controls="list-${folder.id}">
-            <div class="folder-header-left">
+          <div class="folder-row-shell">
+            <div class="folder-drag-handle" draggable="true" title="拖拽调整文件夹顺序" aria-hidden="true">⋮⋮</div>
+            <button class="folder-accordion-header${isCollapsed ? " is-collapsed" : ""}" id="header-${folder.id}" data-folder="${folder.id}" type="button" aria-expanded="${isCollapsed ? "false" : "true"}" aria-controls="list-${folder.id}">
+              <span class="folder-header-left">
               <svg class="folder-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
               <svg class="folder-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
               </svg>
-              <h4 id="heading-${folder.id}" class="section-heading">${escapeHtml(folder.name)}</h4>
+              <span id="heading-${folder.id}" class="section-heading">${escapeHtml(folder.name)}</span>
               <span class="section-count-badge" id="count-${folder.id}">${mapsInFolder.length}</span>
-            </div>
-            <div class="folder-header-right">
-              <span class="section-order-hint">拖拽排序</span>
-              <button type="button" class="btn-delete-folder" aria-label="删除文件夹「${escapeHtml(folder.name)}」" title="删除文件夹「${escapeHtml(folder.name)}」">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-              </button>
+              </span>
+            </button>
+            <div class="card-menu-wrapper folder-menu-wrapper">
+              <button type="button" class="btn-card-menu btn-folder-menu" aria-label="文件夹操作：${escapeHtml(folder.name)}" aria-haspopup="menu" aria-expanded="false">···</button>
+              <div class="map-action-menu folder-action-menu" role="menu" hidden>
+                <button type="button" class="map-menu-item btn-rename-folder" role="menuitem">重命名</button>
+                <button type="button" class="map-menu-item btn-folder-up" role="menuitem" ${customFolders.indexOf(folder) === 0 ? "disabled" : ""}>上移</button>
+                <button type="button" class="map-menu-item btn-folder-down" role="menuitem" ${customFolders.indexOf(folder) === customFolders.length - 1 ? "disabled" : ""}>下移</button>
+                <span class="map-menu-divider"></span>
+                <button type="button" class="map-menu-item map-menu-danger btn-delete-folder" role="menuitem">删除文件夹</button>
+              </div>
             </div>
           </div>
           <div class="map-cards-list" id="list-${folder.id}" role="list"></div>
@@ -2992,26 +3157,47 @@
 
         const header = section.querySelector(".folder-accordion-header");
         header?.addEventListener("click", () => toggleFolder(folder.id));
-        header?.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            toggleFolder(folder.id);
-          }
+        const menuButton = section.querySelector(".btn-folder-menu");
+        const menu = section.querySelector(".folder-action-menu");
+        menuButton?.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const open = menu.hidden;
+          closeAllCardMenus();
+          if (open) { menu.hidden = false; menuButton.setAttribute("aria-expanded", "true"); }
         });
+        section.querySelector(".btn-delete-folder")?.addEventListener("click", (event) => {
+          event.stopPropagation(); closeAllCardMenus(); promptDeleteCustomFolder(folder);
+        });
+        section.querySelector(".btn-rename-folder")?.addEventListener("click", (event) => {
+          event.stopPropagation(); closeAllCardMenus();
+          const nextName = window.prompt("输入新的文件夹名称", folder.name)?.trim();
+          if (!nextName || nextName === folder.name) return;
+          if (["系统示例", "我的地图", "未分类"].includes(nextName) || getCustomFolders().some((item) => item.id !== folder.id && item.name.toLowerCase() === nextName.toLowerCase())) {
+            showLibraryToast("该文件夹名称已存在"); return;
+          }
+          saveCustomFolders(getCustomFolders().map((item) => item.id === folder.id ? { ...item, name: nextName } : item));
+          renderLibraryDrawer(); showLibraryToast(`已重命名为「${nextName}」`);
+        });
+        const moveFolder = (delta) => {
+          const folders = getCustomFolders(); const index = folders.findIndex((item) => item.id === folder.id);
+          const next = index + delta; if (index < 0 || next < 0 || next >= folders.length) return;
+          const [moved] = folders.splice(index, 1); folders.splice(next, 0, moved); saveCustomFolders(folders); renderLibraryDrawer();
+        };
+        section.querySelector(".btn-folder-up")?.addEventListener("click", (event) => { event.stopPropagation(); moveFolder(-1); });
+        section.querySelector(".btn-folder-down")?.addEventListener("click", (event) => { event.stopPropagation(); moveFolder(1); });
 
-        const deleteBtn = section.querySelector(".btn-delete-folder");
-        deleteBtn?.addEventListener("click", (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          promptDeleteCustomFolder(folder);
+        const folderHandle = section.querySelector(".folder-drag-handle");
+        folderHandle?.addEventListener("dragstart", (event) => { currentDragFolderId = folder.id; event.dataTransfer.effectAllowed = "move"; });
+        section.addEventListener("dragover", (event) => { if (!currentDragFolderId || currentDragFolderId === folder.id) return; event.preventDefault(); section.classList.add("folder-drop-target"); });
+        section.addEventListener("dragleave", () => section.classList.remove("folder-drop-target"));
+        section.addEventListener("drop", (event) => {
+          if (!currentDragFolderId || currentDragFolderId === folder.id) return;
+          event.preventDefault();
+          const folders = getCustomFolders(); const from = folders.findIndex((item) => item.id === currentDragFolderId); const to = folders.findIndex((item) => item.id === folder.id);
+          if (from >= 0 && to >= 0) { const [moved] = folders.splice(from, 1); folders.splice(to, 0, moved); saveCustomFolders(folders); }
+          currentDragFolderId = null; renderLibraryDrawer();
         });
-        deleteBtn?.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.stopPropagation();
-            e.preventDefault();
-            promptDeleteCustomFolder(folder);
-          }
-        });
+        folderHandle?.addEventListener("dragend", () => { currentDragFolderId = null; document.querySelectorAll(".folder-drop-target").forEach((item) => item.classList.remove("folder-drop-target")); });
 
         const listEl = section.querySelector(".map-cards-list");
         setupFolderDropTargets(section, header, listEl, folder.id);
@@ -3019,7 +3205,7 @@
         if (mapsInFolder.length === 0) {
           const emptyBox = document.createElement("div");
           emptyBox.className = "empty-folder-box";
-          emptyBox.innerHTML = `<p>文件夹为空，可将其他地图拖拽或「移动至」此文件夹</p>`;
+          emptyBox.innerHTML = `<p>文件夹为空。可拖入地图，也可从地图菜单选择「移动至」。</p>`;
           listEl.appendChild(emptyBox);
         } else {
           mapsInFolder.forEach((mapDef, index, list) => {

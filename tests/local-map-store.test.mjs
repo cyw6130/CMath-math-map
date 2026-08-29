@@ -43,6 +43,20 @@ test("local map store replaces the same id atomically", () => {
   }
 });
 
+test("local map store deletes one map without touching the others", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "cmath-map-store-"));
+  try {
+    const store = createLocalMapStore(directory);
+    store.put({ id: "imported:one", data: projectView("one") });
+    store.put({ id: "imported:two", data: projectView("two") });
+    assert.equal(store.remove("imported:one"), true);
+    assert.equal(store.remove("imported:one"), false);
+    assert.deepEqual(store.list().map((item) => item.id), ["imported:two"]);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("local map store rejects non Project View payloads", () => {
   assert.throws(() => normalizeMapRecord({ id: "bad", data: {} }), /expected cmath\.project-view-model/u);
 });

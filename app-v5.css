@@ -1366,10 +1366,12 @@ select:focus-visible {
 }
 
 .library-feedback-toast {
-  position: sticky;
-  top: 0;
-  z-index: 25;
-  margin: -6px 0 6px 0;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 120;
+  margin: 0;
   padding: 8px 14px;
   background: var(--teal-soft);
   border: 1px solid rgba(14, 124, 102, 0.3);
@@ -1381,7 +1383,22 @@ select:focus-visible {
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity 180ms ease, transform 180ms ease;
-  pointer-events: none;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.library-toast-undo {
+  min-width: 56px;
+  min-height: 36px;
+  border: 1px solid var(--teal);
+  border-radius: 6px;
+  background: var(--paper-raised);
+  color: var(--teal-deep);
+  font: 700 12px var(--font-sans);
+  cursor: pointer;
 }
 
 .library-feedback-toast.is-visible {
@@ -1395,6 +1412,15 @@ select:focus-visible {
   gap: 8px;
   margin-bottom: 2px;
 }
+
+#library-toolbar { order: 0; }
+#library-user-root-heading { order: 1; }
+#custom-folders-container { order: 2; }
+#section-my-maps { order: 3; }
+#empty-user-library { order: 4; }
+#library-root-divider { order: 5; }
+#section-curated-demos { order: 6; }
+#section-builtin-maps { order: 7; }
 
 .library-toolbar-row {
   display: flex;
@@ -1410,7 +1436,7 @@ select:focus-visible {
   gap: 6px;
   align-self: flex-start;
   padding: 5px 12px;
-  min-height: 30px;
+  min-height: 40px;
   background: var(--paper-raised);
   border: 1px solid var(--line-strong);
   border-radius: 6px;
@@ -1445,7 +1471,7 @@ select:focus-visible {
   align-items: center;
   gap: 5px;
   padding: 5px 10px;
-  min-height: 30px;
+  min-height: 40px;
   background: var(--paper-raised);
   border: 1px solid var(--line-strong);
   border-radius: 6px;
@@ -1549,6 +1575,37 @@ select:focus-visible {
   gap: 16px;
 }
 
+.library-root-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 6px 2px 0;
+}
+
+.library-root-heading h4 {
+  margin: 2px 0 0;
+  font: 800 16px var(--font-display);
+  color: var(--ink);
+}
+
+.library-root-divider {
+  height: 1px;
+  margin: 4px 0 2px;
+  background: var(--line);
+}
+
+.empty-user-library {
+  padding: 18px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.empty-user-library p { margin: 0; }
+
 .map-library-section {
   display: flex;
   flex-direction: column;
@@ -1565,13 +1622,42 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  min-height: 38px;
+  min-height: 44px;
+  width: 100%;
+  font: inherit;
+  text-align: left;
   background: var(--paper-sunken);
   border: 1px solid var(--line);
   border-radius: 6px;
   cursor: pointer;
   user-select: none;
   transition: all 0.15s ease;
+}
+
+.folder-row-shell {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 4px;
+}
+
+.folder-row-shell .folder-accordion-header { min-width: 0; }
+
+.folder-drag-handle {
+  opacity: 0;
+  color: var(--muted);
+  cursor: grab;
+  user-select: none;
+  transition: opacity 150ms ease, color 150ms ease;
+}
+
+.custom-folder-section:hover .folder-drag-handle,
+.custom-folder-section:focus-within .folder-drag-handle { opacity: .75; }
+
+.custom-folder-section.folder-drop-target .folder-row-shell {
+  outline: 2px dashed var(--teal);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 .folder-accordion-header:hover,
@@ -1710,11 +1796,12 @@ select:focus-visible {
   color: var(--muted);
   cursor: grab;
   flex-shrink: 0;
-  opacity: 0.6;
+  opacity: 0;
   transition: opacity 0.15s ease, color 0.15s ease;
 }
 
-.map-item-card:hover .map-drag-handle {
+.map-item-card:hover .map-drag-handle,
+.map-item-card:focus-within .map-drag-handle {
   opacity: 1;
   color: var(--teal);
 }
@@ -1825,8 +1912,8 @@ select:focus-visible {
 }
 
 .btn-card-menu {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1880,7 +1967,8 @@ select:focus-visible {
   align-items: center;
   gap: 7px;
   width: 100%;
-  padding: 6px 8px;
+  padding: 9px 10px;
+  min-height: 40px;
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -1890,6 +1978,17 @@ select:focus-visible {
   text-align: left;
   cursor: pointer;
   transition: background 0.1s ease, color 0.1s ease;
+}
+
+.map-menu-danger { color: #A83656; }
+
+.map-item-card.is-newly-imported {
+  animation: libraryCardHighlight 1.8s ease both;
+}
+
+@keyframes libraryCardHighlight {
+  0%, 35% { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14, 124, 102, .15); background: var(--teal-soft); }
+  100% { border-color: var(--line); box-shadow: none; background: var(--paper-raised); }
 }
 
 .map-menu-item:hover:not(:disabled),
@@ -2114,6 +2213,9 @@ select:focus-visible {
   .map-item-card {
     padding: 7px 10px;
   }
+  .map-drag-handle,
+  .folder-drag-handle { display: none; }
+  .folder-row-shell { grid-template-columns: minmax(0, 1fr) 44px; }
   .section-order-hint {
     display: none;
   }

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="math-map-lab.css">
   <link rel="stylesheet" href="vendor/katex/katex.min.css">
-  <link rel="stylesheet" href="app-v5.css">
+  <link rel="stylesheet" href="app-v5.css?v=20260830-library2">
 </head>
 <body data-view="workbench">
   <!-- Hidden local JSON file input for native validation & loading -->
@@ -228,7 +228,7 @@
 
       <div class="drawer-notice">
         <strong>提示：</strong><br>
-        解析完成后，地图会自动保存到<strong>「我的 JSON 地图」</strong>。系统会先展示生成结果，再由您选择立即打开地图、打开地图库或关闭。
+            解析完成后，地图会自动保存到<strong>「我的地图 / 未分类」</strong>。系统会先展示生成结果，再由您选择立即打开地图、打开地图库或关闭。
       </div>
 
       <section class="model-consent-card" id="model-consent-card" role="alertdialog" aria-labelledby="model-consent-title" aria-describedby="model-consent-description" hidden>
@@ -432,19 +432,23 @@
         <div>
           <span class="drawer-kicker">UNIFIED REPOSITORY</span>
           <h3 id="library-drawer-title">数学地图库</h3>
-          <small class="drawer-subtitle">浏览精选示例、本地导入与内置数学地图，支持分类折叠、拖拽调整与自定义文件夹</small>
+          <small class="drawer-subtitle">整理自己的数学地图，并随时浏览系统示例</small>
         </div>
         <button class="close-btn" id="btn-close-library-drawer" type="button" aria-label="关闭地图库">×</button>
       </header>
 
       <!-- In-drawer live feedback toast and sr-only live region -->
-      <div id="library-feedback-toast" class="library-feedback-toast" role="status" aria-live="polite" hidden></div>
+      <div id="library-feedback-toast" class="library-feedback-toast" hidden></div>
       <div id="library-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
       <div class="drawer-scroll-body library-scroll-body" id="library-scroll-body">
         <!-- New Folder & Backup Toolbar -->
         <div class="library-toolbar" id="library-toolbar">
           <div class="library-toolbar-row">
+            <button type="button" class="btn-library-action" id="btn-library-import-json">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+              <span>导入 JSON</span>
+            </button>
             <button type="button" class="btn-create-folder" id="btn-create-folder" aria-expanded="false" aria-controls="new-folder-form-panel">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                 <line x1="12" y1="5" x2="12" y2="19"></line>

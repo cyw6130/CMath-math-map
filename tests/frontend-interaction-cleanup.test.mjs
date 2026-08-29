@@ -124,7 +124,7 @@ test("production entry and v5 mirror expose the same reduced interaction shell",
   assert.match(production, /class="legacy-map-capability-hooks" hidden aria-hidden="true"/u);
   assert.match(production, /id="math-map-context"[^>]* hidden aria-hidden="true"/u);
   assert.match(production, />\s*生成数学地图/u);
-  assert.match(production, /自动保存到<strong>「我的 JSON 地图」<\/strong>/u);
+  assert.match(production, /自动保存到<strong>「我的地图 \/ 未分类」<\/strong>/u);
 });
 
 test("product shell keeps explicit focus exit and conditionally exposes evidence", () => {
@@ -250,6 +250,22 @@ test("folder drag movement and within-folder ordering remain available", () => {
   assert.match(app, /function moveMapToFolder\(/u);
   assert.match(app, /function insertMapAtPosition\(/u);
   assert.match(app, /card\.addEventListener\("dragstart"/u);
+});
+
+test("map library keeps imports available and gives every user map a complete action path", () => {
+  const html = read("index.html");
+  const app = read("app-v5.js");
+  const styles = read("app-v5.css");
+
+  assert.match(html, /id="btn-library-import-json"/u);
+  assert.match(app, /YOUR LIBRARY[\s\S]*我的地图/u);
+  assert.match(app, /sourceLabel = mapDef\.generatedResult \? "论文生成" : "JSON 导入"/u);
+  assert.doesNotMatch(app, /sourceBadgeText = mapDef\.isImported \? "用户导入"/u);
+  assert.match(app, /btn-menu-delete-map/u);
+  assert.match(app, /function deleteUserMap\(/u);
+  assert.match(app, /library-toast-undo/u);
+  assert.match(app, /currentOrder\.unshift\(\.\.\.importedIds\)/u);
+  assert.match(styles, /@media \(max-width: 480px\)[\s\S]*\.map-drag-handle,[\s\S]*display: none/u);
 });
 
 test("settings separate CMath-provided access from explicitly saved BYOK configuration", () => {
