@@ -1,0 +1,140 @@
+{
+  "schema": "cmath.benchmark-generalization-suite/v1",
+  "suiteId": "paper-import-cross-domain-generalization",
+  "version": "v1",
+  "role": "generalization",
+  "status": "active",
+  "sourceContract": "cmath.paper-source-manifest/v2",
+  "activeCases": [
+    {
+      "caseId": "multiplicative-functions-linear-fractional-sequences",
+      "domain": "number-theory",
+      "title": "Value distribution of multiplicative functions along linear fractional sequences",
+      "sourcePdf": {
+        "url": "https://arxiv.org/pdf/2608.27418v1",
+        "sha256": "6624fabcd21339e2cd759438dc629c6ca92453c72cf596f81d7fd6d30a1105b6"
+      },
+      "markedMarkdown": {
+        "path": "benchmarks/paper-import/mineru-extracted/generalization/multiplicative-functions-linear-fractional-sequences/multiplicative-functions-linear-fractional-sequences-marked.md",
+        "sha256": "8e3b5dbb1803f448c3416e02ba4a3cffa59d046d36583e0dba812f169fa0f27a",
+        "bytes": 34757
+      },
+      "mineru": {
+        "version": "mineru-model/vlm@gateway-contract-v1",
+        "model": "vlm"
+      },
+      "normalization": {
+        "version": "cmath.marked-markdown-normalization/v1",
+        "cleaningActions": [
+          "canonicalize-page-block-spacing"
+        ]
+      },
+      "pageCount": 12,
+      "sourceIdentitySha256": "6aa4eae149ea167f1d51b9ed56e7443fad37e2b03aded7572f0b5259bed619ce"
+    },
+    {
+      "caseId": "propagation-speed-lotka-volterra-diffusion",
+      "domain": "analysis",
+      "title": "Monotonicity of the propagation speed with respect to the diffusion in a Lotka-Volterra competition-diffusion system",
+      "sourcePdf": {
+        "url": "https://arxiv.org/pdf/2608.27431v1",
+        "sha256": "cf0f885a461bd02b1631573fda0679a3108a311607aebe34a4279b0e45f99c3b"
+      },
+      "markedMarkdown": {
+        "path": "benchmarks/paper-import/mineru-extracted/generalization/propagation-speed-lotka-volterra-diffusion/propagation-speed-lotka-volterra-diffusion-marked.md",
+        "sha256": "64f6c1345fb496550d2511c241d19be994966b81c12e195ab234fd3306169a51",
+        "bytes": 68932
+      },
+      "mineru": {
+        "version": "mineru-model/vlm@gateway-contract-v1",
+        "model": "vlm"
+      },
+      "normalization": {
+        "version": "cmath.marked-markdown-normalization/v1",
+        "cleaningActions": [
+          "canonicalize-page-block-spacing"
+        ]
+      },
+      "pageCount": 21,
+      "sourceIdentitySha256": "82593c59f78872e523b98cb699d164ae6c718aad3d9fe7e283620b5c267dab2c"
+    },
+    {
+      "caseId": "queens-at-most-one-attack",
+      "domain": "combinatorics",
+      "title": "Closing the gap and settling the problem of queens on an n x n board, each attacking at most one other",
+      "sourcePdf": {
+        "url": "https://arxiv.org/pdf/2608.27432v1",
+        "sha256": "a51ac91cea86c30c3c3c170ce2eb53ef2f360c88e76cde5bf61e3f3f4b8d1ad5"
+      },
+      "markedMarkdown": {
+        "path": "benchmarks/paper-import/mineru-extracted/generalization/queens-at-most-one-attack/queens-at-most-one-attack-marked.md",
+        "sha256": "96618cdb85d79c28cfa1d15cf958781a88c25a40e9f09f269400f5c69614cd0d",
+        "bytes": 45441
+      },
+      "mineru": {
+        "version": "mineru-model/vlm@gateway-contract-v1",
+        "model": "vlm"
+      },
+      "normalization": {
+        "version": "cmath.marked-markdown-normalization/v1",
+        "cleaningActions": [
+          "canonicalize-page-block-spacing"
+        ]
+      },
+      "pageCount": 13,
+      "sourceIdentitySha256": "3eee6b924fdf9c3ab9310eac7f557d66e18d5d3ed19ee0e8ef94ff41f162b438"
+    },
+    {
+      "caseId": "very-good-gradings-structural-matrix-rings",
+      "domain": "algebra",
+      "title": "Very good gradings on structural matrix rings",
+      "sourcePdf": {
+        "url": "https://arxiv.org/pdf/2608.27414v1",
+        "sha256": "c02d16a196514256456fd406d415f4e5c4976880efbf2b0349682769fa5c712a"
+      },
+      "markedMarkdown": {
+        "path": "benchmarks/paper-import/mineru-extracted/generalization/very-good-gradings-structural-matrix-rings/very-good-gradings-structural-matrix-rings-marked.md",
+        "sha256": "6ff895635e1cb22c3333c45413755a7a0072b400872a979b0f0687a929f1a828",
+        "bytes": 77505
+      },
+      "mineru": {
+        "version": "mineru-model/vlm@gateway-contract-v1",
+        "model": "vlm"
+      },
+      "normalization": {
+        "version": "cmath.marked-markdown-normalization/v1",
+        "cleaningActions": [
+          "canonicalize-page-block-spacing"
+        ]
+      },
+      "pageCount": 16,
+      "sourceIdentitySha256": "6929ef870f63889713e4dc8bf66576ed07b5ff3dea90d3ec2eaf5a28b2f2583e"
+    }
+  ],
+  "plannedDomains": [
+    {
+      "domain": "algebra",
+      "minimumActiveCases": 1
+    },
+    {
+      "domain": "analysis",
+      "minimumActiveCases": 1
+    },
+    {
+      "domain": "number-theory",
+      "minimumActiveCases": 1
+    },
+    {
+      "domain": "combinatorics",
+      "minimumActiveCases": 1
+    }
+  ],
+  "rotationPolicy": {
+    "immutableReleasedVersions": true,
+    "newVersionRequiredForCaseChanges": true,
+    "historicalRunsRetainSuiteIdentity": true,
+    "goldRequired": false,
+    "automaticSourceEvaluationRequired": true
+  },
+  "releasedAt": "2026-08-29T08:18:15.842Z"
+}

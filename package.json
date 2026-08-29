@@ -5,10 +5,14 @@
   "description": "CMath Math Map — v4 Proof / v5 Paper Grotesque editions (static preview)",
   "scripts": {
     "dev": "node server.js",
-    "test": "node --test tests/capabilities-consumer.test.mjs tests/canonical-capability-adoption.test.mjs tests/paper-import-client.test.mjs tests/paper-import-benchmark.test.mjs tests/generic-math-content-build.test.mjs",
+    "test": "node --test tests/capabilities-consumer.test.mjs tests/canonical-capability-adoption.test.mjs tests/paper-import-client.test.mjs tests/paper-import-benchmark.test.mjs tests/generic-math-content-build.test.mjs tests/benchmark-source-index.test.mjs tests/benchmark-source-evaluation.test.mjs tests/benchmark-promotion-gate.test.mjs tests/freeze-generalization-source.test.mjs tests/sol-paper-import-runner.test.mjs tests/workflow-optimization-policy.test.mjs",
     "sync-capabilities": "node ../CMath-capabilities/scripts/sync-runtime-consumer.mjs cmath-math-map",
     "test:capabilities": "node --test tests/capabilities-consumer.test.mjs tests/canonical-capability-adoption.test.mjs",
     "build:generic-math-content": "node tools/build-generic-math-map-assets.mjs",
-    "evaluate": "node scripts/evaluate-output.mjs"
+    "evaluate": "node scripts/evaluate-output.mjs",
+    "optimize:plan": "node scripts/workflow-optimization.mjs plan --tier quick",
+    "freeze:generalization-source": "node scripts/freeze-generalization-source.mjs",
+    "run:sol-paper-source": "node scripts/run-sol-paper-import-source.mjs",
+    "test:optimization": "node --test tests/benchmark-source-index.test.mjs tests/benchmark-source-evaluation.test.mjs tests/benchmark-promotion-gate.test.mjs tests/freeze-generalization-source.test.mjs tests/sol-paper-import-runner.test.mjs tests/workflow-optimization-policy.test.mjs"
   }
 }

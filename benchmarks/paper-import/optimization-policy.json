@@ -1,0 +1,67 @@
+{
+  "schema": "cmath.workflow-optimization-policy/v1",
+  "profileId": "sol-only-v1",
+  "benchmarkVersion": "cmath.benchmark/v3",
+  "models": {
+    "Entry": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    },
+    "W7.1": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    },
+    "W8": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    },
+    "Inference": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    },
+    "sourceScorer": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    },
+    "evaluationScorer": {
+      "provider": "luna-gateway",
+      "model": "gpt-5.6-sol",
+      "mode": "medium-compact",
+      "reasoningEffort": "medium"
+    }
+  },
+  "tiers": {
+    "quick": {
+      "suiteRoles": ["regression"],
+      "sourceTier": "quick",
+      "promotionAuthority": false
+    },
+    "candidate": {
+      "suiteRoles": ["regression", "generalization"],
+      "sourceTier": "candidate",
+      "promotionAuthority": false
+    },
+    "final": {
+      "suiteRoles": ["regression", "generalization"],
+      "sourceTier": "final",
+      "promotionAuthority": true
+    }
+  },
+  "promotion": {
+    "minimumSemanticAccuracy": 0.8,
+    "maximumPerPaperAccuracyRegression": 0.05,
+    "minimumCoverage": 0.7,
+    "minimumMainProofChainCoverage": 0.7,
+    "coverageNearTieTolerance": 0.02
+  }
+}
