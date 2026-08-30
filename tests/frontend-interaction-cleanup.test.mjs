@@ -5,13 +5,26 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
+import { inspectRenderingDeployment } from "../scripts/check-production-rendering.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (fileName) => fs.readFileSync(path.join(root, fileName), "utf8");
 
 function extractFunction(source, name) {
   const start = source.indexOf(`function ${name}(`);
   assert.notEqual(start, -1, `${name} exists`);
-  const bodyStart = source.indexOf("{", start);
+  const paramsStart = source.indexOf("(", start);
+  let paramsDepth = 0;
+  let bodyStart = -1;
+  for (let index = paramsStart; index < source.length; index += 1) {
+    if (source[index] === "(") paramsDepth += 1;
+    if (source[index] === ")") paramsDepth -= 1;
+    if (paramsDepth === 0) {
+      bodyStart = source.indexOf("{", index);
+      break;
+    }
+  }
+  assert.notEqual(bodyStart, -1, `${name} body exists`);
   let depth = 0;
   for (let index = bodyStart; index < source.length; index += 1) {
     if (source[index] === "{") depth += 1;
@@ -19,6 +32,50 @@ function extractFunction(source, name) {
     if (depth === 0) return source.slice(start, index + 1);
   }
   throw new Error(`Unable to extract ${name}`);
+}
+
+function importProgressHarness() {
+  const source = read("app-v5.js");
+  const steps = ["mineru", "generate", "validate", "repair", "save"];
+  const stepEls = new Map(steps.map((id) => {
+    const classes = new Set();
+    const detail = { textContent: "" };
+    return [id, {
+      classList: {
+        add(...names) { names.forEach((name) => classes.add(name)); },
+        remove(...names) { names.forEach((name) => classes.delete(name)); },
+        contains(name) { return classes.has(name); },
+      },
+      querySelector(selector) { return selector === ".step-detail" ? detail : null; },
+    }];
+  }));
+  const context = {
+    stepEls,
+    activeImportStage: "mineru",
+    EXTRACT_STEPS: steps.map((id) => ({ id })),
+  };
+  vm.runInNewContext(`
+    ${extractFunction(source, "setStep")};
+    ${extractFunction(source, "completePriorSteps")};
+    ${extractFunction(source, "handleImportStage")};
+    this.handleImportStage = handleImportStage;
+  `, context);
+  return { handleImportStage: context.handleImportStage, stepEls };
+}
+
+function loadMathRenderingHarness() {
+  const calls = [];
+  const browserWindow = {
+    katex: {
+      renderToString(math, options) {
+        calls.push({ math, options });
+        return `<math data-display="${options.displayMode}">${math}</math>`;
+      },
+    },
+  };
+  vm.runInNewContext(read("math-text.js"), { window: browserWindow, document: {} });
+  vm.runInNewContext(read("math-rendering-consumer.js"), { window: browserWindow, document: {} });
+  return { api: browserWindow.GammaMath, calls };
 }
 
 function focusPresentationHarness() {
@@ -123,8 +180,78 @@ test("production entry and v5 mirror expose the same reduced interaction shell",
   assert.match(production, /<span id="map-active-title"/u);
   assert.match(production, /class="legacy-map-capability-hooks" hidden aria-hidden="true"/u);
   assert.match(production, /id="math-map-context"[^>]* hidden aria-hidden="true"/u);
+  assert.ok(production.indexOf('src="math-text.js"') < production.indexOf('src="math-rendering-consumer.js'));
+  assert.match(production, /math-rendering-consumer\.js\?v=[^"\s]+/u);
   assert.match(production, />\s*生成数学地图/u);
   assert.match(production, /自动保存到<strong>「我的地图 \/ 未分类」<\/strong>/u);
+});
+
+test("paper import marks every finished stage with a solid completion state", () => {
+  const { handleImportStage, stepEls } = importProgressHarness();
+
+  handleImportStage("mineru", { phase: "complete", pageCount: 25 });
+  handleImportStage("generate", { phase: "start" });
+  handleImportStage("validate", { phase: "fail", message: "contract mismatch" });
+  handleImportStage("repair", { phase: "start" });
+
+  for (const id of ["mineru", "generate", "validate"]) {
+    assert.equal(stepEls.get(id).classList.contains("is-done"), true, `${id} is shown as completed`);
+  }
+  assert.equal(stepEls.get("repair").classList.contains("is-active"), true);
+});
+
+test("math rendering capability keeps an undelimited spaced formula intact", () => {
+  const { api, calls } = loadMathRenderingHarness();
+  const source = "定义 M_{j,k} = \\bigoplus_{r=0}^{j} S^{j-r+k/2}(u_p) \\otimes \\Lambda^r g，且 dim ker d_V - dim im d_V 可计算。";
+  const html = api.render(source);
+
+  assert.match(html, /<math data-display="(?:true|false)">M_\{j,k\} = \\bigoplus_\{r=0\}\^\{j\} S\^\{j-r\+k\/2\}\(u_p\) \\otimes \\Lambda\^r g<\/math>/u);
+  assert.match(html, /<math data-display="(?:true|false)">\\dim \\ker d_V - \\dim \\operatorname\{im\} d_V<\/math>/u);
+  assert.equal(calls.some(({ math }) => /(?:^|\s)[_^](?:\s|$)/u.test(math)), false, "never sends broken script fragments to KaTeX");
+});
+
+test("long formulas become scrollable display math while short symbols stay inline", () => {
+  const { api, calls } = loadMathRenderingHarness();
+  api.render("定义 M_{j,k} = \\bigoplus_{r=0}^{j} S^{j-r+k/2}(u_p) \\otimes \\Lambda^r g，且 d_V 非零。");
+
+  const formula = calls.find(({ math }) => math.startsWith("M_{j,k}"));
+  const symbol = calls.find(({ math }) => math === "d_V");
+  assert.equal(formula?.options.displayMode, true);
+  assert.equal(symbol?.options.displayMode, false);
+
+  const styles = read("app-v5.css");
+  assert.match(styles, /\.math-map-inspector \.katex-display[\s\S]*overflow-x:\s*auto/u);
+});
+
+test("common mathematical operators use upright KaTeX commands", () => {
+  const { api, calls } = loadMathRenderingHarness();
+  api.render("由 dim ker d_V - dim im d_V = 0 得到结论。");
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].math, "\\dim \\ker d_V - \\dim \\operatorname{im} d_V = 0");
+});
+
+test("the default test suite includes frontend regressions", () => {
+  const packageJson = JSON.parse(read("package.json"));
+  assert.match(packageJson.scripts.test, /tests\/frontend-interaction-cleanup\.test\.mjs/u);
+  assert.equal(packageJson.scripts["check:production-rendering"], "node scripts/check-production-rendering.mjs");
+});
+
+test("production rendering check rejects an old deployment and accepts the versioned adapter", () => {
+  assert.throws(
+    () => inspectRenderingDeployment('<script src="math-text.js"></script>', ""),
+    /尚未加载带版本指纹/u,
+  );
+  assert.deepEqual(
+    inspectRenderingDeployment(
+      '<script src="math-rendering-consumer.js?v=20260830-display-math-v1"></script>',
+      'consumerAdapterId: "cmath-math-map.math-rendering-consumer/v1"',
+    ),
+    {
+      assetPath: "math-rendering-consumer.js?v=20260830-display-math-v1",
+      adapterId: "cmath-math-map.math-rendering-consumer/v1",
+    },
+  );
 });
 
 test("product shell keeps explicit focus exit and conditionally exposes evidence", () => {

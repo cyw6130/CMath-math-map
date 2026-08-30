@@ -1099,13 +1099,25 @@
     if (detail !== undefined) li.querySelector(".step-detail").textContent = detail;
   }
 
+  function completePriorSteps(id) {
+    const activeIndex = EXTRACT_STEPS.findIndex((step) => step.id === id);
+    if (activeIndex <= 0) return;
+    EXTRACT_STEPS.slice(0, activeIndex).forEach((step) => {
+      const li = stepEls.get(step.id);
+      if (!li || li.classList.contains("is-done")) return;
+      setStep(step.id, "done", li.querySelector(".step-detail")?.textContent || "完成");
+    });
+  }
+
   function handleImportStage(stage, info = {}) {
     if (!stepEls.has(stage)) return;
     if (info.phase === "resume") {
+      completePriorSteps(stage);
       setStep(stage, "done", "已从本地 checkpoint 恢复");
       return;
     }
     if (info.phase === "start") {
+      completePriorSteps(stage);
       activeImportStage = stage;
       setStep(stage, "active", stage === "mineru" ? "正在提交并解析 PDF" : "运行中…");
       return;
@@ -1123,6 +1135,7 @@
       return;
     }
     if (info.phase === "complete") {
+      completePriorSteps(stage);
       const detail = stage === "mineru"
         ? `${info.pageCount ?? "?"} 页 marked Markdown`
         : (Number.isInteger(info.entries) ? `${info.entries} 个对象` : "完成");
@@ -1130,12 +1143,14 @@
       return;
     }
     if (info.phase === "degraded") {
+      completePriorSteps(stage);
       setStep(stage, "done", "部分完成，可稍后重试");
       return;
     }
     if (info.phase === "fail") {
+      completePriorSteps(stage);
       activeImportStage = stage;
-      setStep(stage, "active", `失败：${info.message ?? "请重试"}`);
+      setStep(stage, "done", `失败：${info.message ?? "请重试"}`);
     }
   }
 
