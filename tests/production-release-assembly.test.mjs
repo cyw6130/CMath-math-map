@@ -19,7 +19,7 @@ test("production entries are generated from one release manifest", () => {
   assert.equal(mirrorHtml, canonicalHtml);
   assert.equal(inspection.releaseId, PRODUCTION_RELEASE.id);
   assert.equal(inspection.scriptCount, PRODUCTION_RELEASE.scriptCount);
-  assert.equal(inspection.scriptCount, 50);
+  assert.equal(inspection.scriptCount, 51);
 });
 
 test("the default test command covers every test module", () => {

@@ -14,15 +14,23 @@
   if (typeof mapLibraryCore?.normalizeMapRecord !== "function") {
     throw new Error("CMath Map Library 核心没有加载，无法启动地图库");
   }
+  const mapLibraryLifecycle = window.CMathMapLibraryLifecycle;
+  if (typeof mapLibraryLifecycle?.createMapLibrary !== "function") {
+    throw new Error("CMath Map Library 生命周期没有加载，无法启动地图库");
+  }
   const {
     BACKUP_SCHEMA,
     generatedMapView,
     isCanonicalMathMap,
     mergeLibraryBackup,
     normalizeLibraryState,
-    normalizeMapRecord,
     sanitizeGeneratedResult,
   } = mapLibraryCore;
+  const {
+    createHttpMapLibraryAdapter,
+    createIndexedDbMapLibraryAdapter,
+    createMapLibrary,
+  } = mapLibraryLifecycle;
   const paperDrawerBackdrop = document.querySelector("#paper-drawer-backdrop");
   const paperDrawer = document.querySelector("#paper-drawer");
   const settingsDrawerBackdrop = document.querySelector("#settings-drawer-backdrop");
@@ -89,138 +97,6 @@
     window.CMATH_MODEL_GATEWAY_URL ?? document.documentElement.dataset.modelGatewayUrl ?? "",
   ).trim().replace(/\/+$/u, "");
 
-  const IDB_DATABASE_NAME = "cmath_math_map_db";
-  const IDB_DATABASE_VERSION = 1;
-  const IDB_STORE_MAPS = "maps";
-  const IDB_STORE_STATE = "library_state";
-
-  function openIndexedDb() {
-    return new Promise((resolve) => {
-      if (typeof window === "undefined" || !window.indexedDB) {
-        resolve(null);
-        return;
-      }
-      try {
-        const request = window.indexedDB.open(IDB_DATABASE_NAME, IDB_DATABASE_VERSION);
-        request.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains(IDB_STORE_MAPS)) {
-            db.createObjectStore(IDB_STORE_MAPS, { keyPath: "id" });
-          }
-          if (!db.objectStoreNames.contains(IDB_STORE_STATE)) {
-            db.createObjectStore(IDB_STORE_STATE, { keyPath: "key" });
-          }
-        };
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => {
-          console.warn("无法打开 IndexedDB:", request.error);
-          resolve(null);
-        };
-      } catch (err) {
-        console.warn("IndexedDB 初始化异常:", err);
-        resolve(null);
-      }
-    });
-  }
-
-  async function idbGetAllMaps() {
-    const db = await openIndexedDb();
-    if (!db) return [];
-    return new Promise((resolve) => {
-      try {
-        const tx = db.transaction([IDB_STORE_MAPS], "readonly");
-        const store = tx.objectStore(IDB_STORE_MAPS);
-        const request = store.getAll();
-        request.onsuccess = () => resolve(request.result || []);
-        request.onerror = () => resolve([]);
-      } catch {
-        resolve([]);
-      }
-    });
-  }
-
-  async function idbPutMap(mapRecord) {
-    const db = await openIndexedDb();
-    if (!db || !mapRecord?.id) return mapRecord;
-    return new Promise((resolve) => {
-      try {
-        const tx = db.transaction([IDB_STORE_MAPS], "readwrite");
-        const store = tx.objectStore(IDB_STORE_MAPS);
-        const request = store.put(mapRecord);
-        request.onsuccess = () => resolve(mapRecord);
-        request.onerror = () => resolve(mapRecord);
-      } catch {
-        resolve(mapRecord);
-      }
-    });
-  }
-
-  async function idbPutMaps(mapRecords) {
-    const db = await openIndexedDb();
-    if (!db || !Array.isArray(mapRecords) || !mapRecords.length) return mapRecords;
-    return new Promise((resolve) => {
-      try {
-        const tx = db.transaction([IDB_STORE_MAPS], "readwrite");
-        const store = tx.objectStore(IDB_STORE_MAPS);
-        for (const m of mapRecords) {
-          if (m?.id) store.put(m);
-        }
-        tx.oncomplete = () => resolve(mapRecords);
-        tx.onerror = () => resolve(mapRecords);
-        tx.onabort = () => resolve(mapRecords);
-      } catch {
-        resolve(mapRecords);
-      }
-    });
-  }
-
-  async function idbDeleteMap(mapId) {
-    const db = await openIndexedDb();
-    if (!db || !mapId) return;
-    return new Promise((resolve, reject) => {
-      try {
-        const tx = db.transaction([IDB_STORE_MAPS], "readwrite");
-        const request = tx.objectStore(IDB_STORE_MAPS).delete(mapId);
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error || new Error("删除地图失败"));
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  async function idbGetLibraryState() {
-    const db = await openIndexedDb();
-    if (!db) return null;
-    return new Promise((resolve) => {
-      try {
-        const tx = db.transaction([IDB_STORE_STATE], "readonly");
-        const store = tx.objectStore(IDB_STORE_STATE);
-        const request = store.get("current");
-        request.onsuccess = () => resolve(request.result?.state || null);
-        request.onerror = () => resolve(null);
-      } catch {
-        resolve(null);
-      }
-    });
-  }
-
-  async function idbSaveLibraryState(state) {
-    const db = await openIndexedDb();
-    if (!db || !state) return state;
-    return new Promise((resolve) => {
-      try {
-        const tx = db.transaction([IDB_STORE_STATE], "readwrite");
-        const store = tx.objectStore(IDB_STORE_STATE);
-        const request = store.put({ key: "current", state, updatedAt: Date.now() });
-        request.onsuccess = () => resolve(state);
-        request.onerror = () => resolve(state);
-      } catch {
-        resolve(state);
-      }
-    });
-  }
-
   function readSessionImportedMaps() {
     try {
       const raw = sessionStorage.getItem(SESSION_IMPORTED_MAPS_KEY);
@@ -257,111 +133,27 @@
   // GitHub Pages (https://cyw6130.github.io) never sees this endpoint.
   const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
   const isLocalDesktop = LOCAL_HOSTS.has(window.location.hostname);
-
-  function mergeImportedMaps(...collections) {
-    const byId = new Map();
-    collections.flat().forEach((map) => {
-      if (!map || typeof map.id !== "string" || !map.data) return;
-      try {
-        const normalized = normalizeMapRecord(map);
-        byId.set(normalized.id, normalized);
-      } catch {
-        // 损坏的持久化记录不应阻断其余地图库恢复。
-      }
-    });
-    return [...byId.values()];
-  }
+  const mapLibrary = createMapLibrary({
+    adapter: isLocalDesktop
+      ? createHttpMapLibraryAdapter()
+      : createIndexedDbMapLibraryAdapter({
+        onError: (error) => console.warn("IndexedDB 操作失败，继续使用当前会话缓存:", error),
+      }),
+    onError(stage, error) {
+      const label = stage === "load-state" ? "地图库组织状态" : "数学地图库";
+      console.warn(`无法读取${label}，继续使用当前会话缓存:`, error);
+    },
+  });
 
   async function loadPersistedMapsAndState() {
-    if (isLocalDesktop) {
-      try {
-        const response = await fetch("/api/maps", { headers: { Accept: "application/json" } });
-        if (response.ok) {
-          const payload = await response.json();
-          // The disk-backed library is authoritative when a stale tab session has
-          // an older copy of the same imported map.
-          sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, payload.maps || []);
-          saveSessionImportedMaps(sessionImportedMaps);
-        }
-      } catch (error) {
-        console.warn("无法读取后端数学地图库，继续使用当前会话地图:", error);
-      }
-
-      try {
-        const stateRes = await fetch("/api/library-state", { headers: { Accept: "application/json" } });
-        if (stateRes.ok) {
-          const diskState = await stateRes.json();
-          if (diskState && typeof diskState === "object" && Array.isArray(diskState.customFolders)) {
-            const localFolders = getCustomFolders();
-            const hasLocalData = localFolders.length > 0;
-            const hasDiskData = diskState.customFolders.length > 0 || Object.keys(diskState.assignments || {}).length > 0;
-            if (!hasDiskData && hasLocalData) {
-              await persistLibraryOrganization();
-            } else {
-              applyLibraryState(diskState);
-            }
-          }
-        }
-      } catch (error) {
-        console.warn("无法读取本地地图库组织状态:", error);
-      }
-
-      renderLibraryDrawer();
-    } else {
-      try {
-        const idbMaps = await idbGetAllMaps();
-        if (idbMaps && idbMaps.length > 0) {
-          sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, idbMaps);
-          saveSessionImportedMaps(sessionImportedMaps);
-        } else if (sessionImportedMaps.length > 0) {
-          await idbPutMaps(sessionImportedMaps);
-        }
-
-        const idbState = await idbGetLibraryState();
-        if (idbState && typeof idbState === "object") {
-          applyLibraryState(idbState);
-        } else {
-          const currentLocalState = getFullLibraryState();
-          if (currentLocalState.customFolders.length > 0 || Object.keys(currentLocalState.assignments || {}).length > 0) {
-            await idbSaveLibraryState(currentLocalState);
-          }
-        }
-      } catch (error) {
-        console.warn("IndexedDB 数据恢复失败，回退到本地缓存:", error);
-      }
-
-      renderLibraryDrawer();
-    }
-  }
-
-  async function persistImportedMap(map) {
-    const normalizedMap = normalizeMapRecord(map);
-    if (isLocalDesktop) {
-      const response = await fetch("/api/maps", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(normalizedMap),
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || "HTTP " + response.status);
-      return payload;
-    } else {
-      await idbPutMap(normalizedMap);
-      return normalizedMap;
-    }
-  }
-
-  async function deletePersistedMap(mapId) {
-    if (isLocalDesktop) {
-      const response = await fetch(`/api/maps/${encodeURIComponent(mapId)}`, {
-        method: "DELETE",
-        headers: { Accept: "application/json" },
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || "HTTP " + response.status);
-      return;
-    }
-    await idbDeleteMap(mapId);
+    const loaded = await mapLibrary.load({
+      maps: sessionImportedMaps,
+      state: getFullLibraryState(),
+    });
+    sessionImportedMaps = loaded.maps;
+    saveSessionImportedMaps(sessionImportedMaps);
+    applyLibraryState(loaded.state);
+    renderLibraryDrawer();
   }
 
   // Per-provider preferences.
@@ -1222,8 +1014,8 @@
 
   async function saveWorkflowMapToLibrary(projectView, fileName) {
     const map = workflowMapRecord(projectView, fileName);
-    const saved = await persistImportedMap(map);
-    sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, [saved || map]);
+    const saved = await mapLibrary.saveMap(map);
+    sessionImportedMaps = mapLibrary.mergeMaps(sessionImportedMaps, [saved || map]);
     saveSessionImportedMaps(sessionImportedMaps);
     const currentOrder = getFolderMapOrder("myMaps").filter((id) => id !== map.id);
     currentOrder.unshift(map.id);
@@ -1886,16 +1678,16 @@
     if (isLocalDesktop) {
       btnStartBatchImport.disabled = true;
       btnStartBatchImport.textContent = "正在保存到本地地图库…";
-      try {
-        importedMaps = await Promise.all(newMaps.map(persistImportedMap));
-      } catch (error) {
-        alert("保存到本地数学地图库失败：\n" + error.message);
-        renderBatchValidationUI();
-        return;
-      }
+    }
+    try {
+      importedMaps = await mapLibrary.saveMaps(newMaps);
+    } catch (error) {
+      alert("保存到数学地图库失败：\n" + error.message);
+      renderBatchValidationUI();
+      return;
     }
 
-    sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, importedMaps);
+    sessionImportedMaps = mapLibrary.mergeMaps(sessionImportedMaps, importedMaps);
     saveSessionImportedMaps(sessionImportedMaps);
 
     const importedIds = importedMaps.map((m) => m.id);
@@ -2081,22 +1873,10 @@
 
   async function persistLibraryOrganization() {
     const state = getFullLibraryState();
-    if (isLocalDesktop) {
-      try {
-        await fetch("/api/library-state", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(state),
-        });
-      } catch (err) {
-        console.warn("无法保存地图库组织结构到本地后端:", err);
-      }
-    } else {
-      try {
-        await idbSaveLibraryState(state);
-      } catch (err) {
-        console.warn("无法保存地图库组织结构到 IndexedDB:", err);
-      }
+    try {
+      await mapLibrary.saveState(state);
+    } catch (err) {
+      console.warn("无法保存地图库组织结构:", err);
     }
   }
 
@@ -2326,7 +2106,7 @@
     const assignmentsBefore = getMapFolderAssignments();
     const ordersBefore = getAllFolderMapOrders();
     try {
-      await deletePersistedMap(mapDef.id);
+      await mapLibrary.deleteMap(mapDef.id);
       sessionImportedMaps = sessionImportedMaps.filter((map) => map.id !== mapDef.id);
       saveSessionImportedMaps(sessionImportedMaps);
       const assignments = getMapFolderAssignments();
@@ -2337,8 +2117,8 @@
       });
       renderLibraryDrawer();
       showLibraryToast(`已删除「${mapDef.title || mapDef.id}」`, async () => {
-        await persistImportedMap(mapDef);
-        sessionImportedMaps = mergeImportedMaps(sessionImportedMaps, [mapDef]);
+        await mapLibrary.saveMap(mapDef);
+        sessionImportedMaps = mapLibrary.mergeMaps(sessionImportedMaps, [mapDef]);
         saveSessionImportedMaps(sessionImportedMaps);
         saveMapFolderAssignments(assignmentsBefore);
         Object.entries(ordersBefore).forEach(([id, order]) => saveFolderMapOrder(id, order));
@@ -3424,17 +3204,11 @@
       );
 
       // 1. Persist newly added imported maps
-      if (isLocalDesktop && mergeResult.newAddedMaps.length > 0) {
+      if (mergeResult.newAddedMaps.length > 0) {
         try {
-          await Promise.all(mergeResult.newAddedMaps.map(persistImportedMap));
+          await mapLibrary.saveMaps(mergeResult.newAddedMaps);
         } catch (err) {
-          console.warn("部分地图保存到本地磁盘失败:", err);
-        }
-      } else if (!isLocalDesktop && mergeResult.newAddedMaps.length > 0) {
-        try {
-          await idbPutMaps(mergeResult.newAddedMaps);
-        } catch (err) {
-          console.warn("保存地图到 IndexedDB 失败:", err);
+          console.warn("部分地图保存到地图库失败:", err);
         }
       }
 
