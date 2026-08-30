@@ -12,7 +12,7 @@ function freezeScript(src, { versioned = true } = {}) {
   return Object.freeze({ src, versioned });
 }
 
-const PRODUCTION_RELEASE_ID = "20260830-v51-release-4";
+const PRODUCTION_RELEASE_ID = "20260830-v51-release-5";
 const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("portable-maps-data.js"),
   freezeScript("vendor/force-graph/force-graph.min.js", { versioned: false }),
@@ -22,6 +22,7 @@ const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("math-rendering-consumer.js"),
   freezeScript("graph-contract.js"),
   freezeScript("graph-canvas.js"),
+  freezeScript("src/map-presentation/product-focus.js"),
   freezeScript("capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"),
   freezeScript("math-map-semantics-v3-bridge.js"),
   freezeScript("math-map-semantics.js"),
