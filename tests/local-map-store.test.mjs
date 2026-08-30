@@ -61,6 +61,35 @@ test("local map store rejects non Project View payloads", () => {
   assert.throws(() => normalizeMapRecord({ id: "bad", data: {} }), /expected cmath\.project-view-model/u);
 });
 
+test("local map store persists canonical Math Map v3 JSON", () => {
+  const map = {
+    entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main", statement: "Main claim" }],
+    inferences: [],
+    negationPairs: [],
+    b0ClaimEntryIds: [],
+  };
+  const saved = normalizeMapRecord({ id: "imported:canonical", title: "Canonical", data: map });
+  assert.deepEqual(saved.data, map);
+  assert.equal(saved.title, "Canonical");
+  assert.equal(saved.numberingLedger.schema, "cmath-gamma.math-map-numbering-ledger/v1");
+  assert.deepEqual(saved.numberingLedger.allocations["claim:main"], { kind: "定理", number: 1, state: "active" });
+
+  const expanded = normalizeMapRecord({
+    id: "imported:canonical",
+    title: "Canonical",
+    data: {
+      ...map,
+      entries: [
+        { id: "claim:added-earlier", entryClass: "claim", claimKind: "theorem", title: "Added", statement: "Added claim" },
+        ...map.entries,
+      ],
+    },
+    numberingLedger: saved.numberingLedger,
+  });
+  assert.deepEqual(expanded.numberingLedger.allocations["claim:main"], { kind: "定理", number: 1, state: "active" });
+  assert.deepEqual(expanded.numberingLedger.allocations["claim:added-earlier"], { kind: "定理", number: 2, state: "active" });
+});
+
 test("local map store preserves a sanitized VNext Generated Map envelope while reopening its strict map", () => {
   const result = {
     schema: "cmath.paper-to-map-result/v1",

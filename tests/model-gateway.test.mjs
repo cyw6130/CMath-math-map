@@ -60,6 +60,7 @@ test("model gateway fixes the model and Responses endpoint, then normalizes outp
   assert.equal(calls[0].body.model, "muse-spark-1.2-contributor");
   assert.equal(calls[0].body.input[0].content, "paper prompt");
   assert.equal(calls[0].body.max_output_tokens, 16000);
+  assert.equal(Object.hasOwn(calls[0].body, "reasoning"), false);
   assert.equal(calls[0].init.headers.Authorization, "Bearer upstream-secret-never-returned");
   const payload = await response.json();
   assert.equal(payload.content, "{\"entries\":[]}");

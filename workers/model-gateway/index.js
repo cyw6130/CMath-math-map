@@ -20,7 +20,7 @@
   const HEALTH_PATHS = new Set(["/", "/health", "/api/model", "/api/model/health"]);
   const ALLOWED_STAGES = new Set([
     "model", "guide", "target", "extract", "aggregate", "consolidate",
-    "assemble", "repair", "w7-verify", "w8-b0", "closure",
+    "assemble", "generate", "repair", "validate", "w7-verify", "w8-b0", "closure",
   ]);
   const ALLOWED_ROLES = new Set(["system", "user", "assistant"]);
   const MAX_BODY_BYTES = 2 * 1024 * 1024;
@@ -121,9 +121,9 @@
     const configuredMax = Math.max(1, Math.min(100_000, Number(env?.MODEL_MAX_OUTPUT_TOKENS) || DEFAULT_MAX_OUTPUT_TOKENS));
     const requestedMax = body.maxTokens === undefined ? configuredMax : Number(body.maxTokens);
     if (!Number.isInteger(requestedMax) || requestedMax < 1) throw new Error("maxTokens must be a positive integer");
-    const reasoningEffort = ["none", "low", "medium", "high"].includes(body.reasoningEffort)
+    const reasoningEffort = ["low", "medium", "high"].includes(body.reasoningEffort)
       ? body.reasoningEffort
-      : "none";
+      : null;
     return {
       stage,
       messages,
@@ -192,7 +192,7 @@
           model: MODEL_ID,
           input: parsed.messages,
           max_output_tokens: parsed.maxOutputTokens,
-          reasoning: { effort: parsed.reasoningEffort },
+          ...(parsed.reasoningEffort ? { reasoning: { effort: parsed.reasoningEffort } } : {}),
           stream: false,
           ...(parsed.wantsJson ? { text: { format: { type: "json_object" } } } : {}),
         };

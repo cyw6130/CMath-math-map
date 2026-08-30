@@ -262,6 +262,7 @@
     SEMANTIC_MODEL,
     FROZEN_WORKFLOW,
     VNEXT_FROZEN_WORKFLOW: productionFacade.VNEXT_FROZEN_WORKFLOW,
+    V5_FROZEN_WORKFLOW: productionFacade.V5_FROZEN_WORKFLOW,
     MAX_PDF_BYTES,
     MAX_PAPER_TEXT_CHARS,
     endpointUrl: productionFacade.endpointUrl,

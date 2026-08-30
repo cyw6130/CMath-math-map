@@ -76,21 +76,26 @@ test("Production Paper Import facade exposes the small public authority surface"
   assert.deepEqual(Object.keys(facade).sort(), [
     "MODULE_ID",
     "FROZEN_WORKFLOW",
+    "V5_FROZEN_WORKFLOW",
     "VNEXT_FROZEN_WORKFLOW",
     "endpointUrl",
     "requestPaperProjectView",
     "requestPaperProductionSemanticPipeline",
+    "requestCanonicalV5Import",
     "requestPaperProductionImport",
   ].sort());
   assert.deepEqual(facade.FROZEN_WORKFLOW, FROZEN_WORKFLOW);
   assert.equal(Object.isFrozen(facade.FROZEN_WORKFLOW), true);
   assert.deepEqual(facade.VNEXT_FROZEN_WORKFLOW, VNEXT_FROZEN_WORKFLOW);
   assert.equal(Object.isFrozen(facade.VNEXT_FROZEN_WORKFLOW), true);
+  assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies");
+  assert.equal(Object.isFrozen(facade.V5_FROZEN_WORKFLOW), true);
 });
 
 test("client production and compatibility entrances are aliases of the facade", () => {
   assert.strictEqual(client.FROZEN_WORKFLOW, facade.FROZEN_WORKFLOW);
   assert.strictEqual(client.VNEXT_FROZEN_WORKFLOW, facade.VNEXT_FROZEN_WORKFLOW);
+  assert.strictEqual(client.V5_FROZEN_WORKFLOW, facade.V5_FROZEN_WORKFLOW);
   assert.strictEqual(client.endpointUrl, facade.endpointUrl);
   assert.strictEqual(client.requestPaperProjectView, facade.requestPaperProjectView);
   assert.strictEqual(client.requestPaperProductionSemanticPipeline, facade.requestPaperProductionSemanticPipeline);
@@ -178,63 +183,29 @@ test("formal production entrance completes the frozen semantic pipeline", async 
   );
 });
 
-test("public production entrance defaults to the frozen VNext result contract", async () => {
-  const manifest = {
-    schema: "cmath.capability-consumer-manifest/v1",
-    authority: facade.VNEXT_FROZEN_WORKFLOW.capabilityAuthority,
-    syncIdentity: facade.VNEXT_FROZEN_WORKFLOW.capabilitySyncIdentity,
-    canonicalPackages: facade.VNEXT_FROZEN_WORKFLOW.capabilityDependencies.map((dependency) => ({
-      capabilityId: dependency.capabilityId,
-      version: dependency.version,
-      contractVersion: dependency.contractVersion,
-    })),
+test("public production entrance defaults to frozen canonical V5", async () => {
+  const canonicalMap = {
+    entries: [{ id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main", statement: "Main claim" }],
+    inferences: [],
+    negationPairs: [],
+    b0ClaimEntryIds: [],
   };
-  let semanticOptions;
   const result = await facade.requestPaperProductionImport({
     pdf: {
       name: "vnext.pdf",
       size: 3,
       arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer,
     },
-    capabilityRuntime: {
-      manifest,
-      semanticPipeline: async (options) => {
-        semanticOptions = options;
-        const { onStage, onArtifact } = options;
-        const entry = { id: "claim:main", entryClass: "claim", claimKind: "theorem", title: "Main", statement: "Main claim", sourcePath: "vnext.pdf#page=1" };
-        const map = {
-          schema: "cmath.project-view-model/v0.1",
-          mainTargetEntryId: "claim:main",
-          entries: [entry],
-          inferences: [],
-        };
-        const artifacts = {
-          entry: { source: { fileName: "vnext.pdf", pageCount: 1, sourceText: "source" }, rawEntries: [entry] },
-          consolidate: { entries: [entry] },
-          "w7-verify": { entries: [entry] },
-          "w8-b0": { entries: [entry] },
-          inference: map,
-          closure: map,
-        };
-        for (const [stage, artifact] of Object.entries(artifacts)) {
-          onStage(stage, { phase: "start" });
-          await onArtifact(stage, artifact);
-        }
-        return { map, sourceAnnotations: { items: [] }, unresolvedItems: [] };
-      },
-      validateMap: (map) => Boolean(map?.entries?.length && Array.isArray(map.inferences)),
-    },
-    checkpointStore: workflow.createMemoryCheckpointStore(),
+    chatImpl: async () => ({ content: JSON.stringify(canonicalMap) }),
     hashImpl: async () => "vnext-public-digest",
     mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
   });
 
   assert.equal(result.schema, "cmath.paper-to-map-result/v1");
-  assert.equal(result.map.mainTargetEntryId, "claim:main");
-  assert.deepEqual(result.identity.frozenWorkflow, facade.VNEXT_FROZEN_WORKFLOW);
-  assert.equal(semanticOptions.allowPartialSuccess, true);
-  assert.equal(semanticOptions.allowRefinementDegradation, true);
-  assert.equal(semanticOptions.allowInferenceDegradation, true);
+  assert.equal(result.map.entries[0].id, "claim:main");
+  assert.deepEqual(result.identity.frozenWorkflow, facade.V5_FROZEN_WORKFLOW);
+  assert.equal(result.diagnostics.runReport.generationAttempts, 1);
+  assert.equal(result.diagnostics.runReport.repairAttempts, 0);
 });
 
 test("facade fails explicitly when a required core dependency is absent", () => {

@@ -195,6 +195,7 @@ test("both public HTML entries load the complete production pipeline before the 
     "src/paper-import/workflow/checkpoint-store.js",
     "src/paper-import/workflow/production.js",
     "src/paper-import/workflow/index.js",
+    "src/paper-import/canonical/v5.js",
     "src/paper-import/production/index.js",
   ];
   for (const fileName of ["index.html", "index-v5.html"]) {
@@ -206,6 +207,9 @@ test("both public HTML entries load the complete production pipeline before the 
     );
     const idxOf = (name) => html.indexOf(`src="${name}"`);
     const clientIdx = idxOf("paper-import-client.js");
+    assert.ok(idxOf("capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js") >= 0);
+    assert.ok(idxOf("math-map-semantics-v3-bridge.js") >= 0);
+    assert.ok(idxOf("canonical-math-map-adapter.js") >= 0);
     let previous = -1;
     for (const mod of modules) {
       const index = idxOf(mod);
@@ -221,7 +225,7 @@ test("public UI calls only the single Production Paper Import entry", () => {
   assert.match(app, /GammaPaperImportClient\.requestPaperProductionImport\(/u);
   assert.doesNotMatch(app, /GammaPaperImportClient\.(?:requestPaperProjectView|extractPdfText)\(/u);
   assert.match(app, /mineruFetchImpl:\s*window\.fetch\.bind\(window\)/u);
-  for (const stage of ["mineru", "entry", "consolidate", "w7-verify", "w8-b0", "inference", "closure"]) {
+  for (const stage of ["mineru", "generate", "validate", "repair", "save"]) {
     assert.match(app, new RegExp(`id: ["']${stage}["']`, "u"));
   }
 });
@@ -241,9 +245,9 @@ test("paper workflow saves its Project View to the library instead of downloadin
   assert.match(html, /id="btn-map-export-json"/u);
 });
 
-test("imported library cards use the user-import label without redundant action controls", () => {
+test("imported library cards distinguish generated and JSON maps without redundant action controls", () => {
   const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
-  assert.match(app, /mapDef\.isImported \? "用户导入" : "内置库"/u);
+  assert.match(app, /mapDef\.generatedResult \? "论文生成" : "JSON 导入"/u);
   assert.doesNotMatch(app, /<div class="map-card-actions">/u);
   assert.doesNotMatch(app, /<span class="demo-case-btn"/u);
 });

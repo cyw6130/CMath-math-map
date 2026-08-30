@@ -80,7 +80,7 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           </div>
           <h2>导入 JSON 地图</h2>
-          <p>支持导入一个或多个本地 Project View JSON 数据包，并加入数学地图库以供浏览。</p>
+          <p>支持导入一个或多个标准数学地图 JSON，并兼容旧版 Project View 数据包。</p>
           <div class="card-action-bar">
             <span>打开导入抽屉</span>
             <span>→</span>
@@ -212,7 +212,7 @@
       <header class="drawer-header">
         <div>
           <h3 id="paper-drawer-title">论文解析工作流</h3>
-          <small>PDF → MINERU → LAB WORKFLOW → JSON</small>
+          <small>PDF → MINERU → V5 → 标准 JSON</small>
         </div>
         <button class="close-btn" id="btn-close-paper-drawer" type="button" aria-label="关闭">×</button>
       </header>
@@ -394,7 +394,7 @@
             </svg>
           </div>
           <span class="drop-main">拖拽一个或多个 <code>.json</code> 文件至此</span>
-          <span class="drop-sub">支持标准的 Project View JSON 格式</span>
+          <span class="drop-sub">优先支持标准数学地图 JSON，兼容旧版 Project View</span>
           <div class="drop-actions-row">
             <button class="btn-secondary" id="btn-choose-json-files" type="button">选择 JSON 文件（可多选）</button>
           </div>
@@ -565,6 +565,8 @@
   <script src="math-text.js"></script>
   <script src="graph-contract.js"></script>
   <script src="graph-canvas.js"></script>
+  <script src="capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"></script>
+  <script src="math-map-semantics-v3-bridge.js"></script>
   <script src="math-map-semantics.js"></script>
   <script src="math-map-naming.js"></script>
   <script src="research-loop-progress.js"></script>
@@ -572,6 +574,7 @@
   <script src="math-map-content-loader.js"></script>
   <script src="generic-math-map-preview-loader.js"></script>
   <script src="math-map-project-adapter.js"></script>
+  <script src="canonical-math-map-adapter.js"></script>
   <script src="generated-math-content/registry.js"></script>
   <script src="paper-import-v3-capability.js"></script>
   <script src="guide-lead-contract-v1.js"></script>
@@ -599,6 +602,7 @@
   <script src="src/paper-import/workflow/checkpoint-store.js"></script>
   <script src="src/paper-import/workflow/production.js"></script>
   <script src="src/paper-import/workflow/index.js"></script>
+  <script src="src/paper-import/canonical/v5.js"></script>
   <script src="src/paper-import/production/index.js"></script>
   <script src="paper-import-client.js"></script>
   <script src="app-v5.js"></script>

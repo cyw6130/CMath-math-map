@@ -253,6 +253,16 @@
     return [...byId.values()];
   }
 
+  function withCanonicalNumberingLedger(map) {
+    if (!isCanonicalMathMap(map?.data)) return map;
+    const projection = window.GammaCanonicalMathMapAdapter?.create(map.data, {
+      projectId: map.id,
+      numberingLedger: map.numberingLedger,
+    });
+    if (!projection?.numberingLedger) throw new Error("标准数学地图未能生成命名编号账本");
+    return { ...map, numberingLedger: projection.numberingLedger };
+  }
+
   async function loadPersistedMapsAndState() {
     if (isLocalDesktop) {
       try {
@@ -316,18 +326,19 @@
   }
 
   async function persistImportedMap(map) {
+    const normalizedMap = withCanonicalNumberingLedger(map);
     if (isLocalDesktop) {
       const response = await fetch("/api/maps", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(map),
+        body: JSON.stringify(normalizedMap),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || "HTTP " + response.status);
       return payload;
     } else {
-      await idbPutMap(map);
-      return map;
+      await idbPutMap(normalizedMap);
+      return normalizedMap;
     }
   }
 
@@ -1056,12 +1067,10 @@
 
   const EXTRACT_STEPS = [
     { id: "mineru", label: "MinerU 精准解析" },
-    { id: "entry", label: "Entry v1.31 数学对象抽取" },
-    { id: "consolidate", label: "确定性整合" },
-    { id: "w7-verify", label: "W7.1 忠实性校验" },
-    { id: "w8-b0", label: "W8 外部结果补漏" },
-    { id: "inference", label: "Inference v3.45 推理装配" },
-    { id: "closure", label: "Project View 校验与闭包" },
+    { id: "generate", label: "V5.1 生成中文标准数学地图" },
+    { id: "validate", label: "能力合同校验" },
+    { id: "repair", label: "按需修复（最多 2 次）" },
+    { id: "save", label: "保存标准 JSON" },
   ];
   let stepEls = new Map();
   let activeImportStage = "mineru";
@@ -1134,8 +1143,22 @@
     return value?.schema === "cmath.paper-to-map-result/v1" ? value.map : value;
   }
 
+  function isCanonicalMathMap(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    const fields = Object.keys(value).sort();
+    if (JSON.stringify(fields) !== JSON.stringify(["b0ClaimEntryIds", "entries", "inferences", "negationPairs"])) return false;
+    if (![value.entries, value.inferences, value.negationPairs, value.b0ClaimEntryIds].every(Array.isArray)) return false;
+    try {
+      (window.GammaMathMapSemanticsV3 ?? window.GammaMathMapSemantics)?.deriveMathState?.(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   function sanitizeGeneratedResult(value) {
     if (value?.schema !== "cmath.paper-to-map-result/v1") return null;
+    if (isCanonicalMathMap(value.map)) return JSON.parse(JSON.stringify(value));
     const clean = window.CMathPaperImportCheckpointStore?.sanitizeStageArtifact?.("closure", value);
     if (clean?.schema !== "cmath.paper-to-map-result/v1" || clean.map?.schema !== "cmath.project-view-model/v0.1") {
       throw new TypeError("论文解析结果不符合 Generated Map 合同");
@@ -1145,6 +1168,13 @@
 
   function finishExtractSteps(result) {
     const view = generatedMapView(result);
+    if (isCanonicalMathMap(view)) {
+      setStep("generate", "done", `${view.entries.length} 个对象 · ${view.inferences.length} 条推理`);
+      setStep("validate", "done", "标准 JSON 合法");
+      const repairs = Number(result?.diagnostics?.runReport?.repairAttempts ?? 0);
+      setStep("repair", "done", repairs ? `已修复 ${repairs} 次` : "无需修复");
+      return;
+    }
     const missingStages = new Set(result?.diagnostics?.missingStages ?? []);
     const entries = view?.entries?.length ?? 0;
     const inferences = view?.inferences?.length ?? 0;
@@ -1172,11 +1202,11 @@
   function workflowMapRecord(result, fileName) {
     const cleanResult = sanitizeGeneratedResult(result);
     const projectView = cleanResult?.map ?? result;
-    const title = (projectView?.project?.title || fileName.replace(/\.pdf$/iu, "") || "论文解析结果").trim();
+    const title = (projectView?.project?.title || cleanResult?.sourceAnnotations?.source?.fileName?.replace(/\.pdf$/iu, "") || fileName.replace(/\.pdf$/iu, "") || "论文解析结果").trim();
     const boundaryLabel = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
-    const rawId = projectView?.project?.id || title || fileName;
+    const rawId = projectView?.project?.id || cleanResult?.identity?.contentFingerprint || title || fileName;
     const workflowIdentity = cleanResult
-      ? `${cleanResult.identity?.contentFingerprint ?? "content"}-${cleanResult.identity?.frozenWorkflow?.capabilitySyncIdentity ?? "capability"}-${cleanResult.identity?.frozenWorkflow?.productionContractVersion ?? "contract"}`
+      ? `${cleanResult.identity?.contentFingerprint ?? "content"}-${cleanResult.identity?.frozenWorkflow?.promptVersion ?? cleanResult.identity?.frozenWorkflow?.capabilitySyncIdentity ?? "capability"}-${cleanResult.identity?.frozenWorkflow?.productionContractVersion ?? "contract"}`
       : "";
     const slug = String(workflowIdentity ? `${rawId}-${workflowIdentity}` : rawId)
       .replace(/[^a-zA-Z0-9_\u4e00-\u9fa5-]/gu, "-")
@@ -1234,7 +1264,7 @@
       </div>`;
     extractStatus.querySelector(".extract-open-map").addEventListener("click", () => {
       const boundary = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
-      const title = projectView?.project?.title || fileName.replace(/\.pdf$/i, "");
+      const title = projectView?.project?.title || result?.sourceAnnotations?.source?.fileName?.replace(/\.pdf$/i, "") || fileName.replace(/\.pdf$/i, "");
       openMapWithData(projectView, boundary, title);
     });
     extractStatus.querySelector(".extract-open-library").addEventListener("click", () => {
@@ -1413,9 +1443,10 @@
         fetchImpl: modelFetch,
         chatImpl,
         onStage: handleImportStage,
-        reasoningEffort: useProvidedModel ? "none" : currentModelReasoningEffort(),
+        reasoningEffort: useProvidedModel ? undefined : currentModelReasoningEffort(),
       });
       await saveWorkflowMapToLibrary(generatedResult, selectedPaperPdf.name);
+      setStep("save", "done", "已保存到我的 JSON 地图");
       finishExtractSteps(generatedResult);
       showExtractSuccess(generatedResult, selectedPaperPdf.name);
     } catch (error) {
@@ -1665,7 +1696,7 @@
   async function handleSelectedImportFiles(files) {
     if (!files.length) return;
 
-    if (!window.GammaGenericMathMapPreviewLoader || !window.GammaMathMapContentLoader || !window.GammaMathMapProjectAdapter) {
+    if (!window.GammaGenericMathMapPreviewLoader || !window.GammaMathMapContentLoader || !window.GammaMathMapProjectAdapter || !window.GammaCanonicalMathMapAdapter) {
       alert("数学地图核心能力模块尚未完全就绪，请刷新页面重试。");
       return;
     }
@@ -1679,10 +1710,16 @@
 
     for (const file of files) {
       try {
-        const result = await window.GammaGenericMathMapPreviewLoader.loadFile(file, {
-          loader: window.GammaMathMapContentLoader,
-          adapter: window.GammaMathMapProjectAdapter,
-        });
+        let result;
+        const parsed = JSON.parse(await file.text());
+        if (isCanonicalMathMap(parsed)) {
+          result = { data: parsed, definition: { title: file.name.replace(/\.json$/iu, "") } };
+        } else {
+          result = await window.GammaGenericMathMapPreviewLoader.loadFile(file, {
+            loader: window.GammaMathMapContentLoader,
+            adapter: window.GammaMathMapProjectAdapter,
+          });
+        }
 
         const rawTitle = (result.definition?.title || result.data?.project?.title || file.name.replace(/\.json$/iu, "") || "未命名地图").trim();
         const rawBoundary = (result.definition?.boundaryLabel || result.data?.channelOptions?.boundaryLabel || "本地导入 · 数学地图").trim();
@@ -1705,7 +1742,7 @@
         }
         existingIds.add(finalId);
 
-        const nodeCount = result.data?.project?.nodes?.length ?? result.data?.nodes?.length ?? 0;
+        const nodeCount = result.data?.entries?.length ?? result.data?.project?.nodes?.length ?? result.data?.nodes?.length ?? 0;
         const inferenceCount = result.data?.project?.inferences?.length ?? result.data?.inferences?.length ?? 0;
 
         if (hasConflict) {
@@ -1739,7 +1776,7 @@
           name: file.name,
           status: "error",
           badgeText: "格式无效",
-          statusText: `校验未通过：${err.message || "文件内容不符合 Project View 格式"}`,
+          statusText: `校验未通过：${err.message || "文件内容不符合标准数学地图或 Project View 格式"}`,
           title: file.name,
           boundaryLabel: "格式异常",
           data: null,
@@ -2939,7 +2976,7 @@
 
     function handleCardActivation() {
       if (mapDef.isImported) {
-        openMapWithData(mapDef.data, mapDef.boundaryLabel, mapDef.title, mapDef.id);
+        openMapWithData(mapDef.data, mapDef.boundaryLabel, mapDef.title, mapDef.id, mapDef.numberingLedger);
       } else {
         loadGenericRegistryMap(mapDef, card);
       }
@@ -3314,19 +3351,20 @@
       if (m.generatedResult !== undefined && !cleanResult) continue;
       const data = cleanResult?.map ?? m.data;
       if (!data || typeof data !== "object") continue;
-      if (data.schema !== "cmath.project-view-model/v0.1" || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences)) {
+      if (!isCanonicalMathMap(data) && (data.schema !== "cmath.project-view-model/v0.1" || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences))) {
         continue;
       }
-      validMaps.push({
+      validMaps.push(withCanonicalNumberingLedger({
         schema: "cmath.local-map-record/v1",
         id,
-        title: String(m.title || data.project.title || id).trim(),
+        title: String(m.title || data.project?.title || id).trim(),
         boundaryLabel: String(m.boundaryLabel || data.channelOptions?.boundaryLabel || "本地导入 · 数学地图").trim(),
         importedAt: Number.isFinite(m.importedAt) ? m.importedAt : Date.now(),
         isImported: true,
         data,
+        ...(m.numberingLedger ? { numberingLedger: m.numberingLedger } : {}),
         ...(cleanResult ? { generatedResult: cleanResult } : {}),
-      });
+      }));
     }
 
     return {
@@ -3533,6 +3571,7 @@
         importedAt: m.importedAt || Date.now(),
         isImported: true,
         data: m.data,
+        ...(m.numberingLedger ? { numberingLedger: m.numberingLedger } : {}),
         ...(m.generatedResult ? { generatedResult: m.generatedResult } : {}),
       })),
       library: {
@@ -3885,8 +3924,8 @@
     });
   }
 
-  function persistMapForReload(data, boundaryLabel, title, mapKey = null) {
-    sessionStorage.setItem(SESSION_MAP_KEY, JSON.stringify({ data, boundaryLabel, title, mapKey }));
+  function persistMapForReload(data, boundaryLabel, title, mapKey = null, numberingLedger = null) {
+    sessionStorage.setItem(SESSION_MAP_KEY, JSON.stringify({ data, boundaryLabel, title, mapKey, numberingLedger }));
     const next = new URL(window.location.href);
     next.search = "";
     next.searchParams.set("session-map", "1");
@@ -3923,14 +3962,14 @@
     refresh();
   }
 
-  async function openMapWithData(data, boundaryLabel, title, mapKey = null) {
+  async function openMapWithData(data, boundaryLabel, title, mapKey = null, numberingLedger = null) {
     closeAllPanels();
     currentActiveMapData = data;
     currentActiveMapTitle = title || data?.project?.title || "math-map";
     currentActiveMapId = mapKey || data.project?.id || title;
 
     if (mapRuntimeMounted) {
-      persistMapForReload(data, boundaryLabel, title, currentActiveMapId);
+      persistMapForReload(data, boundaryLabel, title, currentActiveMapId, numberingLedger);
       return;
     }
 
@@ -3947,13 +3986,17 @@
     body.setAttribute("data-view", "map");
 
     // 3. Create Model
-    const adapter = window.GammaMathMapProjectAdapter;
-    const adapterOptions = data.channelOptions?.adapterOptions ?? {};
+    const canonical = isCanonicalMathMap(data);
+    const adapter = canonical ? window.GammaCanonicalMathMapAdapter : window.GammaMathMapProjectAdapter;
+    if (!adapter?.create) throw new Error(canonical ? "标准数学地图渲染器没有加载" : "Project View 渲染器没有加载");
+    const adapterOptions = canonical
+      ? { title: title || "标准数学地图", projectId: mapKey || `canonical:${title || "map"}`, numberingLedger }
+      : (data.channelOptions?.adapterOptions ?? {});
     const model = adapter.create(data, adapterOptions);
     window.GammaMathMapLabModel = model;
     window.CMATH_PROJECT_PRESENTATION = {
-      projectId: data.project?.id,
-      channelOptions: data.channelOptions ?? {},
+      projectId: data.project?.id ?? adapterOptions.projectId,
+      channelOptions: data.channelOptions ?? { boundaryLabel },
     };
 
     const sectionSelect = document.querySelector("#math-map-section");
@@ -4093,7 +4136,7 @@
       const saved = JSON.parse(sessionStorage.getItem(SESSION_MAP_KEY));
       sessionStorage.removeItem(SESSION_MAP_KEY);
       if (!saved?.data) throw new Error("临时地图数据不存在");
-      openMapWithData(saved.data, saved.boundaryLabel, saved.title, saved.mapKey);
+      openMapWithData(saved.data, saved.boundaryLabel, saved.title, saved.mapKey, saved.numberingLedger);
     } catch (error) {
       alert(`无法恢复本地数学地图：\n${error.message}`);
     }

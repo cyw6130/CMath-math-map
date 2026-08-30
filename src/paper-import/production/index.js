@@ -19,7 +19,9 @@
   const workflowModule = load("CMathPaperImportWorkflow", "../workflow/index.js");
   const rawPoolModule = load("CMathPaperRawEntryPoolV1", "../../../paper-raw-entry-pool-v1.js");
   const modelTransport = load("CMathPaperModelTransport", "../core/model-transport.js");
-  const api = factory(root, entryModule, inferenceModule, workflowModule, rawPoolModule, modelTransport);
+  const mineruModule = load("CMathPaperImportMineru", "../mineru/index.js");
+  const canonicalV5 = load("CMathCanonicalPaperImportV5", "../canonical/v5.js");
+  const api = factory(root, entryModule, inferenceModule, workflowModule, rawPoolModule, modelTransport, mineruModule, canonicalV5);
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.CMathPaperImportProductionFacade = api;
 })(typeof window !== "undefined" ? window : globalThis, function createCMathPaperProductionFacade(
@@ -29,6 +31,8 @@
   workflowModule,
   rawPoolModule,
   modelTransport,
+  mineruModule,
+  canonicalV5,
 ) {
   "use strict";
 
@@ -59,6 +63,7 @@
       Object.freeze({ role: "format-normalization", capabilityId: "paper-import-workflow-v2", version: "v2.1", contractVersion: "cmath.paper-import-workflow-result/v0.2", guaranteeId: "deterministic-assembly-normalization" }),
     ]),
   });
+  const V5_FROZEN_WORKFLOW = canonicalV5?.FROZEN_WORKFLOW ?? null;
 
   if (!entryModule
     || typeof entryModule.buildVerificationPrompt !== "function"
@@ -450,15 +455,100 @@
     });
   }
 
+  async function requestCanonicalV5Import(options = {}) {
+    if (!canonicalV5?.run || !V5_FROZEN_WORKFLOW) throw new Error("Canonical Paper-to-Map V5 没有加载");
+    const pdf = options.pdf;
+    if (!pdf) throw new Error("生产论文导入需要 pdf");
+    const notify = (stage, info) => {
+      try { options.onStage?.(stage, info); } catch { /* observers cannot change the workflow */ }
+    };
+    const fingerprint = typeof workflowModule?.computePdfFingerprint === "function"
+      ? await workflowModule.computePdfFingerprint(pdf, { hashImpl: options.hashImpl })
+      : `local:${pdf.name ?? "paper.pdf"}:${pdf.size ?? 0}:${pdf.lastModified ?? 0}`;
+    notify("mineru", { phase: "start" });
+    const mineruClient = options.mineruClient
+      ?? (typeof options.createMineruClient === "function"
+        ? options.createMineruClient({ gatewayUrl: options.gatewayUrl, fetchImpl: options.mineruFetchImpl, unzip: options.unzip, unzipAdapter: options.unzipAdapter })
+        : null)
+      ?? mineruModule?.createMineruClient?.({
+        gatewayUrl: options.gatewayUrl,
+        fetchImpl: options.mineruFetchImpl,
+        unzip: options.unzip,
+        unzipAdapter: options.unzipAdapter,
+        pollIntervalMs: options.pollIntervalMs,
+      });
+    if (!mineruClient?.importPdf) throw new Error("生产论文导入需要 MinerU client（gatewayUrl、unzip）");
+    const parsed = await mineruClient.importPdf(pdf, {
+      signal: options.signal,
+      timeoutMs: options.mineruTimeoutMs,
+      pollIntervalMs: options.pollIntervalMs,
+      modelVersion: options.mineruModelVersion,
+      onProgress: (progress) => notify("mineru", { phase: "progress", state: progress?.state }),
+    });
+    const markedMarkdown = nonEmpty(parsed?.markedMarkdown, "MinerU marked Markdown");
+    const pageNumbers = [...markedMarkdown.matchAll(/\[\[PAGE\s+(\d+)\]\]/gu)].map((match) => Number(match[1]));
+    const pageCount = pageNumbers.length ? Math.max(...pageNumbers) : Math.max(1, Number(options.pageCount) || 1);
+    notify("mineru", { phase: "complete", pageCount });
+
+    notify("generate", { phase: "start" });
+    const outcome = await canonicalV5.run({
+      ...options,
+      markedMarkdown,
+      onStage: (stage, info) => {
+        if (stage === "generate" && info.phase === "start") return;
+        notify(stage, info);
+      },
+    });
+    notify("generate", {
+      phase: "complete",
+      entries: outcome.map.entries.length,
+      inferences: outcome.map.inferences.length,
+    });
+    const derived = (root?.GammaMathMapSemanticsV3 ?? root?.GammaMathMapSemantics)?.deriveMathState?.(outcome.map);
+    const openClaimCount = derived
+      ? Object.values(derived.claimStates).filter((state) => state === "open").length
+      : 0;
+    return {
+      schema: "cmath.paper-to-map-result/v1",
+      status: "complete",
+      map: outcome.map,
+      sourceAnnotations: {
+        source: { fileName: pdf.name ?? "paper.pdf", pageCount },
+        items: [],
+      },
+      unresolvedItems: [],
+      diagnostics: {
+        mainTargetIdentified: false,
+        openClaimCount,
+        mainProofChainComplete: null,
+        missingStages: [],
+        runReport: outcome.report,
+      },
+      stages: {
+        mineru: { status: "complete", attempt: 1 },
+        generate: { status: "complete", attempt: 1 },
+        validate: { status: "complete", attempt: 1 },
+        repair: { status: outcome.report.repairAttempts ? "complete" : "skipped", attempt: outcome.report.repairAttempts },
+      },
+      identity: {
+        contentFingerprint: fingerprint,
+        frozenWorkflow: V5_FROZEN_WORKFLOW,
+      },
+    };
+  }
+
   // Single public orchestration boundary for PDF → MinerU → frozen semantic
   // stages. The existing semantic-only function above remains unchanged for
   // callers that already have marked Markdown.
   async function requestPaperProductionImport(options = {}) {
+    const frozenWorkflow = options.frozenWorkflow ?? V5_FROZEN_WORKFLOW;
+    if (frozenWorkflow?.promptVersion === canonicalV5?.PROMPT_VERSION) {
+      return requestCanonicalV5Import({ ...options, frozenWorkflow });
+    }
     const workflow = resolveProductionWorkflowModule();
     if (!workflow?.runProductionPaperImport) {
       throw new Error("Production Paper Import workflow 没有加载");
     }
-    const frozenWorkflow = options.frozenWorkflow ?? VNEXT_FROZEN_WORKFLOW;
     const vnext = frozenWorkflow.resultContractVersion === "cmath.paper-to-map-result/v1";
     return workflow.runProductionPaperImport({
       ...options,
@@ -474,9 +564,11 @@
     MODULE_ID,
     FROZEN_WORKFLOW,
     VNEXT_FROZEN_WORKFLOW,
+    V5_FROZEN_WORKFLOW,
     endpointUrl,
     requestPaperProjectView,
     requestPaperProductionSemanticPipeline,
+    requestCanonicalV5Import,
     requestPaperProductionImport,
   });
 });

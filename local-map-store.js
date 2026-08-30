@@ -3,12 +3,35 @@ const path = require("path");
 const { sanitizeStageArtifact } = require("./src/paper-import/workflow/checkpoint-store.js");
 
 const PROJECT_VIEW_SCHEMA = "cmath.project-view-model/v0.1";
+const previousGlobalSemantics = globalThis.GammaMathMapSemantics;
+const canonicalSemantics = require("./capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js");
+if (previousGlobalSemantics === undefined) delete globalThis.GammaMathMapSemantics;
+else globalThis.GammaMathMapSemantics = previousGlobalSemantics;
+const canonicalAdapter = require("./canonical-math-map-adapter.js");
 
 function validateProjectView(data) {
   if (data?.schema !== PROJECT_VIEW_SCHEMA || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences)) {
     throw new TypeError("expected " + PROJECT_VIEW_SCHEMA + " with project, entries and inferences");
   }
   return data;
+}
+
+function validateCanonicalMathMap(data) {
+  canonicalSemantics.deriveMathState(data);
+  return data;
+}
+
+function isCanonicalMathMap(data) {
+  try {
+    validateCanonicalMathMap(data);
+    return Object.keys(data).sort().join(",") === "b0ClaimEntryIds,entries,inferences,negationPairs";
+  } catch {
+    return false;
+  }
+}
+
+function validateSupportedMap(data) {
+  return isCanonicalMathMap(data) ? validateCanonicalMathMap(data) : validateProjectView(data);
 }
 
 function safeMapFileName(id) {
@@ -18,15 +41,20 @@ function safeMapFileName(id) {
 }
 
 function normalizeMapRecord(record) {
+  const canonicalResult = record?.generatedResult?.schema === "cmath.paper-to-map-result/v1"
+    && isCanonicalMathMap(record.generatedResult.map);
   const generatedResult = record?.generatedResult === undefined
     ? null
-    : sanitizeStageArtifact("closure", record.generatedResult);
+    : canonicalResult ? JSON.parse(JSON.stringify(record.generatedResult)) : sanitizeStageArtifact("closure", record.generatedResult);
   if (record?.generatedResult !== undefined && generatedResult?.schema !== "cmath.paper-to-map-result/v1") {
     throw new TypeError("expected cmath.paper-to-map-result/v1 generatedResult");
   }
-  const data = validateProjectView(generatedResult?.map ?? record?.data);
-  const id = String(record?.id || "imported:" + (data.project.id || "map")).trim();
-  const title = String(record?.title || data.project.title || id).trim();
+  const data = validateSupportedMap(generatedResult?.map ?? record?.data);
+  const id = String(record?.id || "imported:" + (data.project?.id || "map")).trim();
+  const title = String(record?.title || data.project?.title || id).trim();
+  const numberingLedger = isCanonicalMathMap(data)
+    ? canonicalAdapter.create(data, { projectId: id, numberingLedger: record?.numberingLedger }).numberingLedger
+    : null;
   return {
     schema: "cmath.local-map-record/v1",
     id,
@@ -35,6 +63,7 @@ function normalizeMapRecord(record) {
     importedAt: Number.isFinite(record?.importedAt) ? record.importedAt : Date.now(),
     isImported: true,
     data,
+    ...(numberingLedger ? { numberingLedger } : {}),
     ...(generatedResult ? { generatedResult } : {}),
   };
 }
@@ -84,4 +113,13 @@ function createLocalMapStore(directory) {
   return { directory, list, put, remove };
 }
 
-module.exports = { PROJECT_VIEW_SCHEMA, createLocalMapStore, normalizeMapRecord, safeMapFileName, validateProjectView };
+module.exports = {
+  PROJECT_VIEW_SCHEMA,
+  createLocalMapStore,
+  isCanonicalMathMap,
+  normalizeMapRecord,
+  safeMapFileName,
+  validateCanonicalMathMap,
+  validateProjectView,
+  validateSupportedMap,
+};
