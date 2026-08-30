@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (path) => readFileSync(resolve(root, path), "utf8");
+const scriptIndex = (html, src) => html.indexOf(`<script src="${src}`);
 
 const mapPages = [
   { page: "index.html", loader: "app-v5.js" },
@@ -40,7 +41,7 @@ test("Math Map loads visual semantics before the workspace controller and inject
   for (const { page, loader } of mapPages) {
     const html = read(page);
     const visualAt = html.indexOf('<script src="math-map-visual-semantics.js"></script>');
-    const loaderAt = html.indexOf(`<script src="${loader}"></script>`);
+    const loaderAt = scriptIndex(html, loader);
     assert.ok(visualAt >= 0, `${page} loads math-map-visual-semantics.js`);
     assert.ok(loaderAt >= 0, `${page} loads ${loader}`);
     assert.ok(visualAt < loaderAt, `${page} loads visual semantics before ${loader}`);
@@ -59,7 +60,7 @@ test("Math Map loads the adopted content channel before each current map control
   for (const { page, loader } of mapPages) {
     const html = read(page);
     const channelAt = html.indexOf('<script src="math-map-content-loader.js"></script>');
-    const controllerAt = html.indexOf(`<script src="${loader}"></script>`);
+    const controllerAt = scriptIndex(html, loader);
     assert.ok(channelAt >= 0, `${page} loads math-map-content-loader.js`);
     assert.ok(controllerAt >= 0, `${page} loads ${loader}`);
     assert.ok(channelAt < controllerAt, `${page} loads the content channel before ${loader}`);
@@ -75,7 +76,7 @@ test("Math Map loads the adopted preview loader after validation and before cont
     const html = read(page);
     const contentAt = html.indexOf('<script src="math-map-content-loader.js"></script>');
     const previewAt = html.indexOf('<script src="generic-math-map-preview-loader.js"></script>');
-    const controllerAt = html.indexOf(`<script src="${loader}"></script>`);
+    const controllerAt = scriptIndex(html, loader);
     assert.ok(previewAt >= 0, `${page} loads generic-math-map-preview-loader.js`);
     assert.ok(contentAt < previewAt, `${page} loads validation before preview`);
     assert.ok(previewAt < controllerAt, `${page} loads preview before ${loader}`);
