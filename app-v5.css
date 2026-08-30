@@ -1635,20 +1635,36 @@ select:focus-visible {
 }
 
 .folder-row-shell {
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr) 44px;
+  position: relative;
+  display: block;
   align-items: center;
-  gap: 4px;
 }
 
 .folder-row-shell .folder-accordion-header { min-width: 0; }
 
 .folder-drag-handle {
+  position: absolute;
+  left: -19px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
   opacity: 0;
   color: var(--muted);
   cursor: grab;
   user-select: none;
   transition: opacity 150ms ease, color 150ms ease;
+}
+
+.folder-row-shell > .folder-menu-wrapper {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+}
+
+.folder-row-shell .folder-accordion-header {
+  padding-right: 52px;
 }
 
 .custom-folder-section:hover .folder-drag-handle,
@@ -2215,7 +2231,6 @@ select:focus-visible {
   }
   .map-drag-handle,
   .folder-drag-handle { display: none; }
-  .folder-row-shell { grid-template-columns: minmax(0, 1fr) 44px; }
   .section-order-hint {
     display: none;
   }
