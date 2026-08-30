@@ -67,6 +67,7 @@ test("Capability Runtime validates identities once and hides the host storage ad
   assert.equal(typeof localRuntime.paperImport.requestPaperProductionImport, "function");
   assert.equal(typeof localRuntime.mapLibrary.saveMap, "function");
   assert.equal(typeof localRuntime.mapRuntime.canonicalAdapter.create, "function");
+  assert.equal(typeof localRuntime.mapRuntime.projectArchiveToMathState, "function");
 
   const webRoot = runtimeRoot({ location: { hostname: "cyw6130.github.io" } });
   capabilityRuntimeModule.createCapabilityRuntime({ root: webRoot });
@@ -87,6 +88,20 @@ test("Capability Runtime validates identities once and hides the host storage ad
     /拒绝不兼容的 Math Map Semantics/u,
   );
   assert.deepEqual(incompatibleMapRuntime.calls, [], "all capabilities fail-close before host adapter setup");
+});
+
+test("Capability Runtime projects archive records only through the synchronized adapter", async () => {
+  const runtime = capabilityRuntimeModule.createCapabilityRuntime({ root: runtimeRoot() });
+  const projected = await runtime.mapRuntime.projectArchiveToMathState({
+    entries: [],
+    inferences: [],
+    negationPairs: [],
+    b0ClaimEntryIds: [],
+  });
+  assert.deepEqual(projected, {
+    mathState: { entries: [], inferences: [], negationPairs: [], b0ClaimEntryIds: [] },
+    issues: [],
+  });
 });
 
 class MemoryStorage {

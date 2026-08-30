@@ -6,6 +6,9 @@
 
 ### 产品架构
 
+**Product Runtime（产品运行时）**: 承载用户操作并消费数学地图的生产产品边界，上位包含 Workbench、Capability Runtime、Map Integration、Map Library 与 Graph。它调用 Paper Import Workflow，但不包含 Workflow 的生成规则或 Quality System 的评测证据。
+_Avoid_: Frontend（泛指整个产品运行边界时）、网页层、把 Workflow 或 Quality System 归入前端
+
 **Workbench（前端工作台）**: 用户运行 Paper Import、查看过程状态并消费数学地图的交互产品层。它呈现输入、配置、进度、错误与结果，但不定义 Workflow 的业务阶段、恢复规则或数学语义。
 _Avoid_: Frontend（泛指所有浏览器代码时）、Workflow UI、把页面状态称为工作流状态
 
@@ -29,6 +32,12 @@ _Avoid_: Capability Adoption、安装完成即视为采用
 
 **Capability Adoption（能力采用）**: 生产路径通过能力的正式 Interface 执行其行为，并把准确能力身份纳入运行合同的状态。仅在 manifest 中声明、只在 Tests 中加载或只完成 Capability Distribution 均不算采用。
 _Avoid_: Capability Distribution、版本声明、测试可加载
+
+**Capability Usage Scope（能力使用作用域）**: 每项 Capability Adoption 必须声明其真实使用位置：`production` 表示当前产品运行路径，`quality` 表示 Benchmark 或 Tests，`compatibility` 表示非默认历史路径。同一同步批次不表示同一语义合同，非 `production` 能力不得冒充当前生产依赖。
+_Avoid_: 把可分发能力全部称为生产依赖、把质量依赖与默认 Workflow 混为一谈
+
+**Archive Math State Projection（档案到数学状态投影）**: `runtime.mapRuntime.projectArchiveToMathState()` 是 v2 Entry/Inference 生命周期档案进入严格 `cmath.math-map-state/v3` 的唯一生产边界；它排除非 active 记录、返回审计问题并强制执行 V3 校验。已经是严格 V3 Math State 的 V5.1 结果直接校验，不做无意义的档案往返。
+_Avoid_: 调用方自行翻译档案、绕过 V3、把严格 Math State 反包装为档案再投影
 
 **Paper Import Result Handoff（论文导入结果交接）**: Paper Import Workbench 在成功后先通过 `runtime.mapLibrary` 保存 Project View，再以 `onMapReady` 通知外层应用打开该地图。Workbench 不直接操作地图渲染器或持久化适配器；外层应用只负责导航与展示。
 _Avoid_: Workbench 直接写 IndexedDB、Workflow 决定页面跳转、保存前先打开临时地图

@@ -5,6 +5,7 @@
     {
       "capabilityId": "math-graph-semantics-v3",
       "version": "v3",
+      "usageScopes": ["production", "quality"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/state/math-graph-semantics-v3/src/index.js",
@@ -12,8 +13,39 @@
       }
     },
     {
+      "capabilityId": "entry-model-v2",
+      "version": "v2",
+      "usageScopes": ["production"],
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/entry-model-v2/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/math-map/state/entry-model-v2/src/index.mjs"
+      }
+    },
+    {
+      "capabilityId": "inference-model-v2",
+      "version": "v2",
+      "usageScopes": ["production"],
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/state/inference-model-v2/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/math-map/state/inference-model-v2/src/index.mjs"
+      }
+    },
+    {
+      "capabilityId": "archive-math-state-adapter-v1",
+      "version": "v1",
+      "usageScopes": ["production"],
+      "evidence": {
+        "type": "runtime-asset",
+        "canonicalSource": "packages/math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs",
+        "consumerPath": "capabilities/runtime/packages/math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs"
+      }
+    },
+    {
       "capabilityId": "entry-model-v1",
       "version": "v1",
+      "usageScopes": ["quality", "compatibility"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/state/entry-model-v1/src/index.mjs",
@@ -23,6 +55,7 @@
     {
       "capabilityId": "inference-model-v1",
       "version": "v1",
+      "usageScopes": ["quality", "compatibility"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/state/inference-model-v1/src/index.mjs",
@@ -32,6 +65,7 @@
     {
       "capabilityId": "paper-import-workflow-v2",
       "version": "v2.1",
+      "usageScopes": ["quality", "compatibility"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/research-process/orchestration/paper-import-workflow-v2/src/index.mjs",
@@ -41,6 +75,7 @@
     {
       "capabilityId": "math-graph-semantics-v2",
       "version": "v2",
+      "usageScopes": ["production", "compatibility"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
@@ -50,6 +85,7 @@
     {
       "capabilityId": "math-map-naming-v2",
       "version": "v2",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/presentation/math-map-naming-v2/src/index.js",
@@ -59,6 +95,7 @@
     {
       "capabilityId": "research-loop-progress-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/presentation/research-loop-progress-v1/src/index.js",
@@ -68,6 +105,7 @@
     {
       "capabilityId": "math-map-visual-semantics-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js",
@@ -77,6 +115,7 @@
     {
       "capabilityId": "graph-core-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/graph-contract.js",
@@ -86,6 +125,7 @@
     {
       "capabilityId": "math-map-workspace-v3",
       "version": "v3",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/presentation/math-map-workspace-v3/src/math-map-lab.js",
@@ -95,6 +135,7 @@
     {
       "capabilityId": "math-rendering-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js",
@@ -104,6 +145,7 @@
     {
       "capabilityId": "alpha-project-adapter-v0.2",
       "version": "v0.2",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
@@ -113,6 +155,7 @@
     {
       "capabilityId": "mathematical-content-admission-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/admission/mathematical-content-admission-v1/src/index.js",
@@ -122,6 +165,7 @@
     {
       "capabilityId": "generic-math-content-channel-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/import/generic-math-content-channel-v1/src/index.js",
@@ -131,6 +175,7 @@
     {
       "capabilityId": "generic-math-map-preview-loader-v1",
       "version": "v1",
+      "usageScopes": ["production"],
       "evidence": {
         "type": "runtime-asset",
         "canonicalSource": "packages/math-map/import/generic-math-map-preview-loader-v1/src/index.js",

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMath 数学地图｜能力包协同图</title>
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --paper-raised: #fbfaf4;
+      --paper-sunken: #ede9dc;
+      --ink: #1b1a15;
+      --ink-soft: #4b483e;
+      --line: #ddd7c6;
+      --line-strong: #c2bba6;
+      --teal: #0e7c66;
+      --teal-deep: #0a5c4c;
+      --teal-soft: #e5f0eb;
+      --navy: #2b3a67;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--paper); }
+    body {
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    svg { display: block; width: min(1280px, 100vw); height: auto; }
+    .node { fill: var(--paper-raised); stroke: var(--line-strong); stroke-width: 2; }
+    .hub { fill: var(--teal-soft); stroke: var(--teal); stroke-width: 2; }
+    .artifact { fill: var(--paper-sunken); stroke: var(--navy); stroke-width: 2; }
+    .edge { fill: none; stroke: var(--ink-soft); stroke-width: 2; marker-end: url(#cap-arrow); }
+    .data { fill: none; stroke: var(--teal); stroke-width: 2; marker-end: url(#cap-arrow-teal); }
+    .eyebrow { font: 700 12px ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 1.6px; fill: var(--teal-deep); }
+    .title { font: 800 32px Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; fill: var(--ink); }
+    .subtitle { font-size: 14px; fill: var(--ink-soft); }
+    .node-title { font: 750 16px Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; fill: var(--ink); }
+    .node-copy { font-size: 12px; fill: var(--ink-soft); }
+    .mono { font: 700 12px ui-monospace, "SF Mono", Menlo, monospace; fill: var(--teal-deep); }
+    .badge { fill: var(--teal); }
+    .badge-text { font: 800 12px ui-monospace, "SF Mono", Menlo, monospace; fill: var(--paper-raised); }
+    .edge-label-bg { fill: var(--paper); }
+    .edge-label { font-size: 12px; font-weight: 650; fill: var(--ink-soft); }
+    .legend { font-size: 12px; fill: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1280 720" role="img" aria-labelledby="cap-title cap-desc">
+    <title id="cap-title">CMath 能力包协同依赖图</title>
+    <desc id="cap-desc">能力分发把权威能力交给能力运行时。工作台只依赖能力运行时公开的三组接口；论文导入产生 Project View，再由地图运行时解释、由地图库保存。</desc>
+    <defs>
+      <marker id="cap-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L8 4L0 8Z" fill="#4b483e"/>
+      </marker>
+      <marker id="cap-arrow-teal" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L8 4L0 8Z" fill="#0e7c66"/>
+      </marker>
+      <filter id="cap-paper" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="17" result="noise"/>
+        <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
+        <feComponentTransfer in="gray"><feFuncA type="table" tableValues="0 0.025"/></feComponentTransfer>
+      </filter>
+    </defs>
+
+    <rect width="1280" height="720" fill="#f4f1e8"/>
+    <rect width="1280" height="720" filter="url(#cap-paper)" opacity="0.5"/>
+    <text class="eyebrow" x="40" y="36">CMATH · CAPABILITY ADOPTION</text>
+    <text class="title" x="40" y="76">能力包如何协同</text>
+    <text class="subtitle" x="40" y="104">应用只认一个装配入口；能力分组保持各自职责</text>
+    <rect x="40" y="120" width="1200" height="2" fill="#0e7c66"/>
+
+    <!-- Dependency and data edges are drawn before nodes. -->
+    <g aria-label="装配依赖">
+      <path class="edge" d="M624 180V220"/>
+      <path class="edge" d="M328 304H432"/>
+      <path class="edge" d="M504 388V432H180V492"/>
+      <path class="edge" d="M624 388V492"/>
+      <path class="edge" d="M744 388V432H1052V492"/>
+    </g>
+    <g aria-label="结果流">
+      <path class="data" d="M312 546H360"/>
+      <path class="data" d="M560 546H608"/>
+      <path class="data" d="M460 588V624H1052V600"/>
+    </g>
+
+    <rect class="node" x="432" y="96" width="384" height="84" rx="8"/>
+    <text class="mono" x="456" y="128">CAPABILITY DISTRIBUTION</text>
+    <text class="node-copy" x="456" y="156">同步权威版本与身份；可用不等于已采用</text>
+
+    <rect class="node" x="48" y="232" width="280" height="144" rx="8"/>
+    <text class="node-title" x="72" y="268">Workbench / App Shell</text>
+    <text class="node-copy" x="72" y="296">发起论文导入</text>
+    <text class="node-copy" x="72" y="320">接收 onMapReady</text>
+    <text class="node-copy" x="72" y="344">不读取脚本清单或浏览器全局对象</text>
+
+    <rect class="hub" x="432" y="220" width="384" height="168" rx="8"/>
+    <rect class="badge" x="736" y="240" width="56" height="24" rx="4"/>
+    <text class="badge-text" x="764" y="256" text-anchor="middle">HUB</text>
+    <text class="node-title" x="456" y="256">Capability Runtime Interface</text>
+    <text class="mono" x="456" y="288">createCapabilityRuntime({ root })</text>
+    <text class="node-copy" x="456" y="320">身份校验 · 装配 · 兼容 · fail-close</text>
+    <text class="node-copy" x="456" y="348">唯一公开三组：paperImport · mapRuntime · mapLibrary</text>
+    <text class="node-copy" x="456" y="372">不承载业务规则、数据翻译或存储策略</text>
+
+    <rect class="node" x="48" y="492" width="264" height="108" rx="8"/>
+    <text class="mono" x="72" y="524">paperImport</text>
+    <text class="node-title" x="72" y="552">论文导入生产能力</text>
+    <text class="node-copy" x="72" y="576">MinerU · V5.1 · 校验 / 修复</text>
+
+    <rect class="artifact" x="360" y="504" width="200" height="84" rx="8"/>
+    <text class="node-title" x="460" y="536" text-anchor="middle">Project View</text>
+    <text class="node-copy" x="460" y="564" text-anchor="middle">稳定交接物</text>
+
+    <rect class="node" x="608" y="492" width="264" height="108" rx="8"/>
+    <text class="mono" x="632" y="524">mapRuntime</text>
+    <text class="node-title" x="632" y="552">地图运行能力</text>
+    <text class="node-copy" x="632" y="576">semantics · adapters · presentation</text>
+
+    <rect class="node" x="920" y="492" width="264" height="108" rx="8"/>
+    <text class="mono" x="944" y="524">mapLibrary</text>
+    <text class="node-title" x="944" y="552">地图库生命周期</text>
+    <text class="node-copy" x="944" y="576">core · lifecycle · storage adapters</text>
+
+    <rect class="edge-label-bg" x="344" y="292" width="72" height="24" rx="4"/>
+    <text class="edge-label" x="380" y="308" text-anchor="middle">唯一依赖</text>
+    <rect class="edge-label-bg" x="320" y="534" width="32" height="24" rx="4"/>
+    <text class="edge-label" x="336" y="550" text-anchor="middle">产出</text>
+    <rect class="edge-label-bg" x="568" y="534" width="32" height="24" rx="4"/>
+    <text class="edge-label" x="584" y="550" text-anchor="middle">解释</text>
+    <rect class="edge-label-bg" x="744" y="612" width="32" height="24" rx="4"/>
+    <text class="edge-label" x="760" y="628" text-anchor="middle">保存</text>
+
+    <line x1="40" y1="652" x2="1240" y2="652" stroke="#c2bba6" stroke-width="2"/>
+    <line x1="56" y1="680" x2="104" y2="680" stroke="#4b483e" stroke-width="2"/>
+    <path d="M100 676L108 680L100 684Z" fill="#4b483e"/>
+    <text class="legend" x="120" y="684">装配 / 调用依赖</text>
+    <line x1="292" y1="680" x2="340" y2="680" stroke="#0e7c66" stroke-width="2"/>
+    <path d="M336 676L344 680L336 684Z" fill="#0e7c66"/>
+    <text class="legend" x="356" y="684">Project View 结果流</text>
+    <text class="legend" x="1240" y="684" text-anchor="end">节点按公开能力面聚合，不按文件拆分</text>
+  </svg>
+</body>
+</html>

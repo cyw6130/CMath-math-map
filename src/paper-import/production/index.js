@@ -55,7 +55,7 @@
     productionContractVersion: "production-paper-import/v2",
     resultContractVersion: "cmath.paper-to-map-result/v1",
     capabilityAuthority: "../CMath-capabilities/exports/canonical.json",
-    capabilitySyncIdentity: "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6",
+    capabilitySyncIdentity: "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
     capabilityDependencies: Object.freeze([
       Object.freeze({ role: "math-map-semantics", capabilityId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" }),
       Object.freeze({ role: "entry-contract", capabilityId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" }),

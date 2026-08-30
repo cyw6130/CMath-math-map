@@ -33,13 +33,24 @@ test("Math Map consumes the canonical CMath capability export", () => {
   assert.ok(adopted.adoptions.every((item) => canonicalPackageIds.has(item.capabilityId)));
   assert.equal(manifest.mode, "canonical-runtime-assets");
   assert.match(manifest.syncIdentity, /^sha256:[a-f0-9]{64}$/u);
-  assert.equal(manifest.runtimeAssets.length, 21);
+  assert.equal(manifest.runtimeAssets.length, 24);
   assert.deepEqual(
-    ["math-graph-semantics-v3", "entry-model-v1", "inference-model-v1", "paper-import-workflow-v2"]
+    [
+      "math-graph-semantics-v3",
+      "entry-model-v2",
+      "inference-model-v2",
+      "archive-math-state-adapter-v1",
+      "entry-model-v1",
+      "inference-model-v1",
+      "paper-import-workflow-v2",
+    ]
       .map((packageId) => manifest.canonicalPackages.find((item) => item.packageId === packageId))
       .map(({ packageId, version, contractVersion }) => ({ packageId, version, contractVersion })),
     [
       { packageId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" },
+      { packageId: "entry-model-v2", version: "v2", contractVersion: "cmath.entry-archive/v2" },
+      { packageId: "inference-model-v2", version: "v2", contractVersion: "cmath.inference-archive/v2" },
+      { packageId: "archive-math-state-adapter-v1", version: "v1", contractVersion: "cmath.archive-math-state-adapter/v1" },
       { packageId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" },
       { packageId: "inference-model-v1", version: "v1", contractVersion: "cmath.inference/v0.2" },
       { packageId: "paper-import-workflow-v2", version: "v2.1", contractVersion: "cmath.paper-import-workflow-result/v0.2" },
@@ -64,4 +75,68 @@ test("VNext canonical runtimes load with their synchronized dependency closure",
   assert.equal(typeof entry.validateEntry, "function");
   assert.equal(typeof inference.validateInferenceRecord, "function");
   assert.equal(typeof workflow.runPaperImportWorkflowV2, "function");
+});
+
+test("production archive contracts project through the synchronized V3 adapter", async () => {
+  const runtimeRoot = resolve(root, "capabilities/runtime/packages");
+  const entry = await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/entry-model-v2/src/index.mjs")));
+  const inference = await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/inference-model-v2/src/index.mjs")));
+  const adapter = await import(pathToFileURL(resolve(runtimeRoot, "math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs")));
+  const calculation = entry.createEntry({
+    id: "calculation:one",
+    entryKind: "calculation",
+    title: "Calculation",
+    meaning: { text: "1 + 1 = 2", identity_claim: {}, context_refs: [] },
+    revisions: [{ id: "revision:one" }],
+    currentRevision: "revision:one",
+  });
+
+  assert.equal(entry.entryCategory(calculation), "Fact");
+  assert.deepEqual(inference.INFERENCE_KINDS, ["proof", "organization"]);
+  assert.deepEqual(adapter.projectArchiveToMathState({
+    entries: [calculation],
+    inferences: [],
+    negationPairs: [],
+    b0ClaimEntryIds: [],
+  }), {
+    mathState: {
+      entries: [{ id: "calculation:one", entryClass: "fact", factKind: "calculation", title: "Calculation", statement: "1 + 1 = 2" }],
+      inferences: [],
+      negationPairs: [],
+      b0ClaimEntryIds: [],
+    },
+    issues: [],
+  });
+});
+
+test("frozen production workflows bind the current capability sync identity", async () => {
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+  const canonicalV5 = (await import(pathToFileURL(resolve(root, "src/paper-import/canonical/v5.js")))).default;
+
+  assert.equal(canonicalV5.FROZEN_WORKFLOW.capabilitySyncIdentity, manifest.syncIdentity);
+});
+
+test("production V5.1 keeps Math State v3 separate from quality and compatibility contracts", async () => {
+  const runtimeRoot = resolve(root, "capabilities/runtime/packages");
+  const semantics = (await import(pathToFileURL(resolve(runtimeRoot, "math-map/state/math-graph-semantics-v3/src/index.js")))).default;
+  const declaration = JSON.parse(readFileSync(resolve(root, "capabilities/adoption.json"), "utf8"));
+  const scopesByCapability = new Map(declaration.adoptions.map(({ capabilityId, usageScopes }) => [capabilityId, usageScopes]));
+
+  assert.doesNotThrow(() => semantics.deriveMathState({
+    entries: [{ id: "calculation:one", entryClass: "fact", factKind: "calculation", title: "Calculation", statement: "1 + 1 = 2" }],
+    inferences: [],
+    negationPairs: [],
+    b0ClaimEntryIds: [],
+  }));
+  assert.deepEqual(scopesByCapability.get("math-graph-semantics-v3"), ["production", "quality"]);
+  for (const capabilityId of ["entry-model-v2", "inference-model-v2", "archive-math-state-adapter-v1"]) {
+    assert.deepEqual(scopesByCapability.get(capabilityId), ["production"]);
+  }
+  for (const capabilityId of ["entry-model-v1", "inference-model-v1", "paper-import-workflow-v2"]) {
+    assert.deepEqual(scopesByCapability.get(capabilityId), ["quality", "compatibility"]);
+  }
+  for (const [capabilityId, usageScopes] of scopesByCapability) {
+    assert.ok(Array.isArray(usageScopes) && usageScopes.length, `${capabilityId} declares usageScopes`);
+    assert.ok(usageScopes.every((scope) => ["production", "quality", "compatibility"].includes(scope)), `${capabilityId} uses known scopes`);
+  }
 });

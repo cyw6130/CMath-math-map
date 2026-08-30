@@ -4,7 +4,7 @@
   "generatedBy": "CMath-capabilities/scripts/sync-runtime-consumer.mjs",
   "projectId": "cmath-math-map",
   "mode": "canonical-runtime-assets",
-  "syncIdentity": "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6",
+  "syncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
   "canonicalPackages": [
     {
       "capabilityId": "browser-paper-import-adapter-v1",
@@ -61,6 +61,12 @@
       "contractVersion": "contract/GENERIC_MATH_MAP_PREVIEW_LOADER_V1.md"
     },
     {
+      "capabilityId": "archive-math-state-adapter-v1",
+      "packageId": "archive-math-state-adapter-v1",
+      "version": "v1",
+      "contractVersion": "cmath.archive-math-state-adapter/v1"
+    },
+    {
       "capabilityId": "math-map-workspace-v3",
       "packageId": "math-map-workspace-v3",
       "version": "v3",
@@ -71,6 +77,18 @@
       "packageId": "math-graph-semantics-v3",
       "version": "v3",
       "contractVersion": "cmath-gamma.math-map-semantics/v3"
+    },
+    {
+      "capabilityId": "entry-model-v2",
+      "packageId": "entry-model-v2",
+      "version": "v2",
+      "contractVersion": "cmath.entry-archive/v2"
+    },
+    {
+      "capabilityId": "inference-model-v2",
+      "packageId": "inference-model-v2",
+      "version": "v2",
+      "contractVersion": "cmath.inference-archive/v2"
     },
     {
       "capabilityId": "entry-model-v1",
@@ -144,8 +162,32 @@
       "version": "v3",
       "canonicalSource": "packages/math-map/state/math-graph-semantics-v3/src/index.js",
       "target": "capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js",
-      "contentHash": "sha256:62172363acae0114d7fc58461359ecd2663650879a1fedf96e94f82b3008924d",
-      "distributedHash": "sha256:885baee31595c74d1c9c91d3a844e6e86e16ec8b8b862cc205cd58ba345d2706"
+      "contentHash": "sha256:092174e8451893d8ab4c7a3a36acd2b097c3dd8ce3fcb78b292c78e9d1cd146a",
+      "distributedHash": "sha256:0c79896bab7a9b8d9cd774236b19770f84d6feb3dab2f4285b7ad61daecd9ef2"
+    },
+    {
+      "packageId": "entry-model-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/state/entry-model-v2/src/index.mjs",
+      "target": "capabilities/runtime/packages/math-map/state/entry-model-v2/src/index.mjs",
+      "contentHash": "sha256:00f38bcfb3b31fb6770ec9592f157149c34cabb9490f185d420290dbdbd255a0",
+      "distributedHash": "sha256:18640f0405d392255ec7b8c70f59df0068321ff94daecf78f6a44ebf39459b23"
+    },
+    {
+      "packageId": "inference-model-v2",
+      "version": "v2",
+      "canonicalSource": "packages/math-map/state/inference-model-v2/src/index.mjs",
+      "target": "capabilities/runtime/packages/math-map/state/inference-model-v2/src/index.mjs",
+      "contentHash": "sha256:cbb6a90b20cd5c29e5249c300fed1dc9a75f5b874f707aabf606595b16fa62cb",
+      "distributedHash": "sha256:023ffa26cad8c2bf2a09e218479e7669a2b3da4e2ae298cd0933706585690fb2"
+    },
+    {
+      "packageId": "archive-math-state-adapter-v1",
+      "version": "v1",
+      "canonicalSource": "packages/math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs",
+      "target": "capabilities/runtime/packages/math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs",
+      "contentHash": "sha256:6f62d7fd56764a3e2cc3d49e130d06a9c977b3608341ec96791ea83cb0974ebb",
+      "distributedHash": "sha256:b06bc0e45ffdd857ac1d89d68f7ebf8bf3ab060b294627f993d68a4173a8e73f"
     },
     {
       "packageId": "entry-model-v1",

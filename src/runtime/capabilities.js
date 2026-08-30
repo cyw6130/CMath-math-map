@@ -12,7 +12,9 @@
   const PROJECT_VIEW_SCHEMA = "cmath.project-view-model/v0.1";
   const PROJECT_ADAPTER_ID = "cmath-gamma.alpha-project-adapter/v0.2";
   const SEMANTICS_ID = "cmath-gamma.math-map-semantics/v3";
+  const MATH_STATE_CONTRACT = "cmath.math-map-state/v3";
   const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+  let archiveAdapterPromise;
 
   function requireMethod(owner, method, label) {
     if (typeof owner?.[method] !== "function") {
@@ -89,6 +91,18 @@
     const genericPreviewLoader = root.GammaGenericMathMapPreviewLoader;
     requireMethod(genericPreviewLoader, "loadFile", "mapRuntime.genericPreviewLoader");
 
+    async function projectArchiveToMathState(archive) {
+      archiveAdapterPromise ??= import("../../capabilities/runtime/packages/math-map/synchronization/archive-math-state-adapter-v1/src/index.mjs");
+      const archiveAdapter = await archiveAdapterPromise;
+      requireIdentity(
+        archiveAdapter.ARCHIVE_MATH_STATE_ADAPTER_CONTRACT?.stateContract,
+        MATH_STATE_CONTRACT,
+        "Archive Math State Adapter",
+      );
+      requireMethod(archiveAdapter, "projectArchiveToMathState", "mapRuntime.archiveAdapter");
+      return archiveAdapter.projectArchiveToMathState(archive);
+    }
+
     const hostname = String(root.location?.hostname ?? "");
     const adapter = LOCAL_HOSTS.has(hostname)
       ? lifecycle.createHttpMapLibraryAdapter()
@@ -115,6 +129,7 @@
         canonicalSemantics,
         contentLoader,
         genericPreviewLoader,
+        projectArchiveToMathState,
         productFocusPresentation,
         projectAdapter,
         semantics,

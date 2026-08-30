@@ -27,11 +27,11 @@
 })(typeof window !== "undefined" ? window : globalThis, function createCanonicalPaperImportV5(modelTransport, semantics) {
   "use strict";
 
-  const PROMPT_VERSION = "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies";
+  const PROMPT_VERSION = "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies-r2";
   const INPUT_TOKEN_LIMIT = 100_000;
   const MAX_REPAIR_ATTEMPTS = 2;
   const RESULT_SCHEMA = "cmath.paper-to-map-result/v1";
-  const CAPABILITY_SYNC_IDENTITY = "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6";
+  const CAPABILITY_SYNC_IDENTITY = "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198";
   const FROZEN_WORKFLOW = Object.freeze({
     label: "canonical-paper-to-map-v5.1-zh-default",
     productionContractVersion: "production-canonical-paper-import/v1",

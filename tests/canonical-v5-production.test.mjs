@@ -28,14 +28,14 @@ function validMap() {
 }
 
 test("frozen V5.1 Chinese-default prompt and capability contract stay byte-stable", () => {
-  assert.equal(v5.PROMPT_VERSION, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies");
+  assert.equal(v5.PROMPT_VERSION, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies-r2");
   assert.equal(
     createHash("sha256").update(v5.CONTRACT_MARKDOWN).digest("hex"),
     "839193d6d622c78716aa5fc748697bfa02a7042cca41c27f61257259d381472d",
   );
   assert.equal(
     createHash("sha256").update(v5.renderGeneratePrompt("SOURCE")).digest("hex"),
-    "180218ed61f2b9618b57f6abe2dd2de3c9d0ecb5386c2db3dda301b8f2796d77",
+    "7f7e97925f0d8b51e95b6242aaaf503df4a279e7dec7376c99578eec77a1fa11",
   );
   assert.doesNotMatch(v5.renderGeneratePrompt("SOURCE"), /反证法必须拆出/u);
 });

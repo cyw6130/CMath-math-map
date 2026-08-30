@@ -3,18 +3,23 @@
  * @package math-graph-semantics-v3
  * @version v3
  * @canonicalSource packages/math-map/state/math-graph-semantics-v3/src/index.js
- * @contentHash sha256:62172363acae0114d7fc58461359ecd2663650879a1fedf96e94f82b3008924d
+ * @contentHash sha256:092174e8451893d8ab4c7a3a36acd2b097c3dd8ce3fcb78b292c78e9d1cd146a
  * @syncAuthority CMath-capabilities/exports/canonical.json
  * @warning DO NOT EDIT DIRECTLY. Synchronize from CMath-capabilities.
  */
 "use strict";
 
 const CAPABILITY_ID = "cmath-gamma.math-map-semantics/v3";
+const STATE_CONTRACT = "cmath.math-map-state/v3";
 const STATE_FIELDS = new Set(["entries", "inferences", "negationPairs", "b0ClaimEntryIds"]);
-const ENTRY_CLASSES = new Set(["fact", "claim"]);
-const FACT_KINDS = new Set(["definition", "algorithm", "calculation"]);
-const CLAIM_KINDS = new Set(["lemma", "proposition", "theorem"]);
-const INFERENCE_KINDS = new Set(["proof", "organization"]);
+const ENTRY_CLASSES = Object.freeze(["fact", "claim"]);
+const FACT_KINDS = Object.freeze(["definition", "algorithm", "calculation"]);
+const CLAIM_KINDS = Object.freeze(["lemma", "proposition", "theorem"]);
+const INFERENCE_KINDS = Object.freeze(["proof", "organization"]);
+const entryClasses = new Set(ENTRY_CLASSES);
+const factKinds = new Set(FACT_KINDS);
+const claimKinds = new Set(CLAIM_KINDS);
+const inferenceKinds = new Set(INFERENCE_KINDS);
 const INFERENCE_FIELDS = new Set(["id", "operationKind", "premises", "conclusion", "argument"]);
 const NEGATION_PAIR_FIELDS = new Set(["claimEntryIds"]);
 
@@ -62,7 +67,7 @@ function computeProofClosure(factIds, seedClaimIds, proofs) {
 function validateEntry(entry, ids, byId) {
   if (!isPlainObject(entry)) fail("INVALID_ENTRY", "Entry must be an object");
   const role = entry.entryClass;
-  if (!ENTRY_CLASSES.has(role)) fail("INVALID_ENTRY", `Entry has unsupported entryClass: ${role}`);
+  if (!entryClasses.has(role)) fail("INVALID_ENTRY", `Entry has unsupported entryClass: ${role}`);
   const allowed = role === "fact"
     ? new Set(["id", "entryClass", "factKind", "title", "statement"])
     : new Set(["id", "entryClass", "claimKind", "title", "statement"]);
@@ -71,10 +76,10 @@ function validateEntry(entry, ids, byId) {
   if (ids.has(id)) fail("DUPLICATE_ID", `Duplicate semantic ID: ${id}`, { id });
   exactNonemptyString(entry.title, `Entry ${id}.title`, "INVALID_ENTRY");
   exactNonemptyString(entry.statement, `Entry ${id}.statement`, "INVALID_ENTRY");
-  if (role === "fact" && !FACT_KINDS.has(entry.factKind)) {
+  if (role === "fact" && !factKinds.has(entry.factKind)) {
     fail("INVALID_ENTRY", `Fact ${id} has unsupported factKind: ${entry.factKind}`);
   }
-  if (role === "claim" && !CLAIM_KINDS.has(entry.claimKind)) {
+  if (role === "claim" && !claimKinds.has(entry.claimKind)) {
     fail("INVALID_ENTRY", `Claim ${id} has unsupported claimKind: ${entry.claimKind}`);
   }
   ids.add(id);
@@ -86,7 +91,7 @@ function validateInference(inference, ids, byId) {
   rejectUnknownFields(inference, INFERENCE_FIELDS, `Inference ${inference.id ?? "<missing>"}`);
   const id = exactNonemptyString(inference.id, "Inference.id", "INVALID_INFERENCE");
   if (ids.has(id)) fail("DUPLICATE_ID", `Duplicate semantic ID: ${id}`, { id });
-  if (!INFERENCE_KINDS.has(inference.operationKind)) {
+  if (!inferenceKinds.has(inference.operationKind)) {
     fail("INVALID_INFERENCE", `Inference ${id} has unsupported operationKind: ${inference.operationKind}`);
   }
   if (!Array.isArray(inference.premises) || inference.premises.length === 0) {
@@ -270,6 +275,14 @@ function deriveMathState(model) {
   };
 }
 
-const capability = Object.freeze({ CAPABILITY_ID, deriveMathState });
+const capability = Object.freeze({
+  CAPABILITY_ID,
+  STATE_CONTRACT,
+  ENTRY_CLASSES,
+  FACT_KINDS,
+  CLAIM_KINDS,
+  INFERENCE_KINDS,
+  deriveMathState,
+});
 if (typeof module === "object" && module.exports) module.exports = capability;
 if (typeof globalThis === "object") globalThis.GammaMathMapSemantics = capability;

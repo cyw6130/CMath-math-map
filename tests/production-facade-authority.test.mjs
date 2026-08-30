@@ -31,7 +31,7 @@ const VNEXT_FROZEN_WORKFLOW = {
   productionContractVersion: "production-paper-import/v2",
   resultContractVersion: "cmath.paper-to-map-result/v1",
   capabilityAuthority: "../CMath-capabilities/exports/canonical.json",
-  capabilitySyncIdentity: "sha256:3dc071ed1d074b2296e758262ef2b41bc87ef9bb93ddddb89b3b2a376ea42db6",
+  capabilitySyncIdentity: "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
   capabilityDependencies: [
     { role: "math-map-semantics", capabilityId: "math-graph-semantics-v3", version: "v3", contractVersion: "cmath-gamma.math-map-semantics/v3" },
     { role: "entry-contract", capabilityId: "entry-model-v1", version: "v1", contractVersion: "cmath.entry/v0.2" },
@@ -88,8 +88,13 @@ test("Production Paper Import facade exposes the small public authority surface"
   assert.equal(Object.isFrozen(facade.FROZEN_WORKFLOW), true);
   assert.deepEqual(facade.VNEXT_FROZEN_WORKFLOW, VNEXT_FROZEN_WORKFLOW);
   assert.equal(Object.isFrozen(facade.VNEXT_FROZEN_WORKFLOW), true);
-  assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies");
+  assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies-r2");
   assert.equal(Object.isFrozen(facade.V5_FROZEN_WORKFLOW), true);
+  const manifest = JSON.parse(fs.readFileSync(
+    new URL("../capabilities/consumer-manifest.json", import.meta.url),
+    "utf8",
+  ));
+  assert.equal(facade.VNEXT_FROZEN_WORKFLOW.capabilitySyncIdentity, manifest.syncIdentity);
 });
 
 test("client production and compatibility entrances are aliases of the facade", () => {

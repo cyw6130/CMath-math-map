@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMath 数学地图｜系统架构图</title>
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --paper-raised: #fbfaf4;
+      --paper-sunken: #ede9dc;
+      --ink: #1b1a15;
+      --ink-soft: #4b483e;
+      --muted: #6f6a5d;
+      --line: #ddd7c6;
+      --line-strong: #c2bba6;
+      --teal: #0e7c66;
+      --teal-deep: #0a5c4c;
+      --teal-soft: #e5f0eb;
+      --violet-soft: #e7e2f7;
+      --violet: #4c3fa8;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--paper); }
+    body {
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    svg { display: block; width: min(1280px, 100vw); height: auto; }
+    .display { font-family: Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; }
+    .zone { fill: none; stroke: var(--line-strong); stroke-width: 2; }
+    .node { fill: var(--paper-raised); stroke: var(--line-strong); stroke-width: 2; }
+    .node-accent { fill: var(--teal-soft); stroke: var(--teal); stroke-width: 2; }
+    .node-quality { fill: var(--violet-soft); stroke: #b8afe0; stroke-width: 2; }
+    .edge { fill: none; stroke: var(--ink-soft); stroke-width: 2; marker-end: url(#arch-arrow); }
+    .evidence { fill: none; stroke: var(--violet); stroke-width: 2; stroke-dasharray: 8 8; marker-end: url(#arch-arrow-violet); }
+    .eyebrow { font: 700 12px ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 1.6px; fill: var(--teal-deep); }
+    .zone-title { font: 800 16px Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; fill: var(--ink); }
+    .title { font: 800 32px Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; fill: var(--ink); }
+    .subtitle { font-size: 14px; fill: var(--ink-soft); }
+    .node-title { font: 750 16px Nunito, "Helvetica Neue", Arial, "PingFang SC", sans-serif; fill: var(--ink); }
+    .node-copy { font-size: 12px; fill: var(--ink-soft); }
+    .chip { fill: var(--paper-sunken); stroke: var(--line-strong); stroke-width: 1; }
+    .chip-text { font: 700 12px ui-monospace, "SF Mono", Menlo, monospace; fill: var(--ink-soft); }
+    .edge-label-bg { fill: var(--paper); }
+    .edge-label { font-size: 12px; font-weight: 650; fill: var(--ink-soft); }
+    .legend { font-size: 12px; fill: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1280 720" role="img" aria-labelledby="arch-title arch-desc">
+    <title id="arch-title">CMath 数学地图系统架构图</title>
+    <desc id="arch-desc">系统由产品运行时、论文导入工作流和质量系统三个顶层模块组成。用户经工作台发起导入，工作流生成 Project View，产品运行时保存并呈现地图；质量系统提供独立证据而不进入生产请求路径。</desc>
+    <defs>
+      <marker id="arch-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L8 4L0 8Z" fill="#4b483e"/>
+      </marker>
+      <marker id="arch-arrow-violet" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L8 4L0 8Z" fill="#4c3fa8"/>
+      </marker>
+      <filter id="arch-paper" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="noise"/>
+        <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
+        <feComponentTransfer in="gray"><feFuncA type="table" tableValues="0 0.025"/></feComponentTransfer>
+      </filter>
+    </defs>
+
+    <rect width="1280" height="720" fill="#f4f1e8"/>
+    <rect width="1280" height="720" filter="url(#arch-paper)" opacity="0.5"/>
+
+    <text class="eyebrow" x="40" y="36">CMATH · CURRENT STATE</text>
+    <text class="title" x="40" y="76">数学地图系统架构</text>
+    <text class="subtitle" x="40" y="104">三个顶层模块；生产数据流与质量证据分离</text>
+    <rect x="40" y="120" width="1200" height="2" fill="#0e7c66"/>
+
+    <!-- Connectors are drawn before nodes. -->
+    <g aria-label="生产数据流">
+      <path class="edge" d="M160 200V232"/>
+      <path class="edge" d="M248 272V216H672V232"/>
+      <path class="edge" d="M576 296H672"/>
+      <path class="edge" d="M772 384V432"/>
+      <path class="edge" d="M672 476H528"/>
+      <path class="edge" d="M428 344V420"/>
+    </g>
+    <g aria-label="质量证据流">
+      <path class="evidence" d="M968 284H872"/>
+      <path class="evidence" d="M968 444H920V552H624V320H576"/>
+    </g>
+
+    <rect class="zone" x="40" y="148" width="568" height="424" rx="8"/>
+    <rect class="zone" x="640" y="148" width="264" height="424" rx="8"/>
+    <rect class="zone" x="936" y="148" width="304" height="424" rx="8"/>
+
+    <rect class="chip" x="72" y="160" width="176" height="40" rx="8"/>
+    <text class="chip-text" x="160" y="185" text-anchor="middle">USER · 研究者</text>
+
+    <text class="zone-title" x="280" y="180">01 · Product Runtime</text>
+    <text class="node-copy" x="280" y="204">承载操作、保存与地图消费</text>
+
+    <rect class="node" x="72" y="232" width="176" height="112" rx="8"/>
+    <text class="node-title" x="96" y="264">Workbench</text>
+    <text class="node-copy" x="96" y="292">输入 · 状态 · 反馈</text>
+    <text class="node-copy" x="96" y="316">打开生成的数学地图</text>
+
+    <rect class="node-accent" x="280" y="232" width="296" height="112" rx="8"/>
+    <text class="node-title" x="304" y="264">Capability Runtime</text>
+    <text class="node-copy" x="304" y="292">装配已验证的高层能力接口</text>
+    <text class="node-copy" x="304" y="316">paperImport · mapRuntime · mapLibrary</text>
+
+    <rect class="node" x="120" y="420" width="408" height="108" rx="8"/>
+    <text class="node-title" x="144" y="452">Map Integration</text>
+    <text class="node-copy" x="144" y="480">Project View → Map Library → Graph</text>
+    <text class="node-copy" x="144" y="504">语义适配、生命周期、存储与呈现</text>
+
+    <text class="zone-title" x="672" y="184">02 · Paper Import Workflow</text>
+    <text class="node-copy" x="672" y="204">把 PDF 转成规范地图数据</text>
+
+    <rect class="node-accent" x="672" y="232" width="200" height="152" rx="8"/>
+    <text class="node-title" x="696" y="264">V5.1 Workflow</text>
+    <text class="node-copy" x="696" y="292">MinerU 标记文本</text>
+    <text class="node-copy" x="696" y="316">生成 · 校验 · 有界修复</text>
+    <text class="node-copy" x="696" y="348">生产路径的业务规则</text>
+
+    <rect class="node" x="672" y="432" width="200" height="88" rx="8"/>
+    <text class="node-title" x="696" y="464">Project View</text>
+    <text class="node-copy" x="696" y="492">稳定的结果交接物</text>
+
+    <text class="zone-title" x="968" y="184">03 · Quality System</text>
+    <text class="node-copy" x="968" y="204">独立证据，不进入生产请求</text>
+
+    <rect class="node-quality" x="968" y="232" width="240" height="104" rx="8"/>
+    <text class="node-title" x="992" y="264">Benchmark</text>
+    <text class="node-copy" x="992" y="292">固定 Gold + Sol 评分</text>
+    <text class="node-copy" x="992" y="316">决定 Workflow 晋级</text>
+
+    <rect class="node" x="968" y="392" width="240" height="104" rx="8"/>
+    <text class="node-title" x="992" y="424">Tests</text>
+    <text class="node-copy" x="992" y="452">接口 · 确定性合同</text>
+    <text class="node-copy" x="992" y="476">生产装配回归</text>
+
+    <rect class="edge-label-bg" x="596" y="260" width="72" height="24" rx="4"/>
+    <text class="edge-label" x="632" y="276" text-anchor="middle">调用能力</text>
+    <rect class="edge-label-bg" x="580" y="464" width="80" height="24" rx="4"/>
+    <text class="edge-label" x="620" y="480" text-anchor="middle">结果交接</text>
+    <rect class="edge-label-bg" x="884" y="272" width="72" height="24" rx="4"/>
+    <text class="edge-label" x="920" y="288" text-anchor="middle">晋级证据</text>
+    <rect class="edge-label-bg" x="744" y="540" width="72" height="24" rx="4"/>
+    <text class="edge-label" x="780" y="556" text-anchor="middle">回归证据</text>
+
+    <line x1="40" y1="620" x2="1240" y2="620" stroke="#c2bba6" stroke-width="2"/>
+    <line x1="56" y1="652" x2="104" y2="652" stroke="#4b483e" stroke-width="2"/>
+    <path d="M100 648L108 652L100 656Z" fill="#4b483e"/>
+    <text class="legend" x="120" y="656">生产数据流</text>
+    <line x1="280" y1="652" x2="328" y2="652" stroke="#4c3fa8" stroke-width="2" stroke-dasharray="8 8"/>
+    <path d="M324 648L332 652L324 656Z" fill="#4c3fa8"/>
+    <text class="legend" x="344" y="656">质量证据 / Gate</text>
+    <text class="legend" x="1240" y="656" text-anchor="end">边界依据：CONTEXT.md · ADR</text>
+  </svg>
+</body>
+</html>
