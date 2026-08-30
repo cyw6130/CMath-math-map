@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 import { inspectRenderingDeployment } from "../scripts/check-production-rendering.mjs";
+import { productionAssetSource } from "../scripts/production-release.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (fileName) => fs.readFileSync(path.join(root, fileName), "utf8");
@@ -233,22 +234,30 @@ test("common mathematical operators use upright KaTeX commands", () => {
 
 test("the default test suite includes frontend regressions", () => {
   const packageJson = JSON.parse(read("package.json"));
-  assert.match(packageJson.scripts.test, /tests\/frontend-interaction-cleanup\.test\.mjs/u);
+  assert.match(packageJson.scripts.test, /tests\/\*\.mjs/u);
   assert.equal(packageJson.scripts["check:production-rendering"], "node scripts/check-production-rendering.mjs");
 });
 
-test("production rendering check rejects an old deployment and accepts the versioned adapter", () => {
+test("production rendering check rejects release drift and accepts the current entry", () => {
   assert.throws(
     () => inspectRenderingDeployment('<script src="math-text.js"></script>', ""),
     /尚未加载带版本指纹/u,
   );
-  assert.deepEqual(
-    inspectRenderingDeployment(
-      '<script src="math-rendering-consumer.js?v=20260830-display-math-v1"></script>',
+  assert.throws(
+    () => inspectRenderingDeployment(
+      '<script src="math-rendering-consumer.js?v=stale"></script>',
       'consumerAdapterId: "cmath-math-map.math-rendering-consumer/v1"',
     ),
+    /发布身份/u,
+  );
+  const assetPath = productionAssetSource("math-rendering-consumer.js");
+  assert.deepEqual(
+    inspectRenderingDeployment(
+      read("index.html"),
+      read("math-rendering-consumer.js"),
+    ),
     {
-      assetPath: "math-rendering-consumer.js?v=20260830-display-math-v1",
+      assetPath,
       adapterId: "cmath-math-map.math-rendering-consumer/v1",
     },
   );

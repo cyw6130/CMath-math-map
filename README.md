@@ -45,7 +45,8 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 项目内的代码与页面按当前用途划分（部分边界尚存歧义的实验性资产有意保留在根目录）：
 
 ### 1. 当前生产主线（Current Production）
-- `index.html` / `index-v5.html`：Paper Grotesque Edition（v5.0）工作台与全屏数学地图主入口。
+- `index.html`：Paper Grotesque Edition 工作台与全屏数学地图的唯一可编辑生产入口。
+- `index-v5.html`：由生产发布清单生成的兼容镜像，保留既有网址，不得手工编辑。
 - `app-v5.js` / `app-v5.css`：当前主线交互逻辑与界面样式，支持论文解析抽屉、模型端点配置、本地 JSON 载入及地图画布交互。
 - `paper-import-client.js`：浏览器端多阶段论文文本提取与结构化解析客户端。
 - `server.js`：本地桌面/开发环回服务（支持本地 API Key 安全存储）。
@@ -233,6 +234,10 @@ npm run test:capabilities
 
 # 2. 运行论文解析客户端与语义基准测试套件
 npm test
+
+# 2a. 修改生产页面或运行时清单后，同步并校验两个静态入口
+npm run sync:production-entry
+npm run check:production-entry
 
 # 3. 运行论文导入基准用例结构与来源完整性审计
 npm run audit:benchmarks

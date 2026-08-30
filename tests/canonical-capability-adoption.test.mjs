@@ -19,8 +19,8 @@ test("Math Map loads the graph contract before the shared canvas", () => {
   for (const { page } of mapPages) {
     assert.ok(existsSync(resolve(root, page)), `${page} exists`);
     const html = read(page);
-    const contractAt = html.indexOf('<script src="graph-contract.js"></script>');
-    const canvasAt = html.indexOf('<script src="graph-canvas.js"></script>');
+    const contractAt = scriptIndex(html, "graph-contract.js");
+    const canvasAt = scriptIndex(html, "graph-canvas.js");
     assert.ok(contractAt >= 0, `${page} loads graph-contract.js`);
     assert.ok(canvasAt >= 0, `${page} loads graph-canvas.js`);
     assert.ok(contractAt < canvasAt, `${page} loads the contract first`);
@@ -40,7 +40,7 @@ test("Math Map loads visual semantics before the workspace controller and inject
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const visualAt = html.indexOf('<script src="math-map-visual-semantics.js"></script>');
+    const visualAt = scriptIndex(html, "math-map-visual-semantics.js");
     const loaderAt = scriptIndex(html, loader);
     assert.ok(visualAt >= 0, `${page} loads math-map-visual-semantics.js`);
     assert.ok(loaderAt >= 0, `${page} loads ${loader}`);
@@ -59,7 +59,7 @@ test("Math Map loads the adopted content channel before each current map control
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const channelAt = html.indexOf('<script src="math-map-content-loader.js"></script>');
+    const channelAt = scriptIndex(html, "math-map-content-loader.js");
     const controllerAt = scriptIndex(html, loader);
     assert.ok(channelAt >= 0, `${page} loads math-map-content-loader.js`);
     assert.ok(controllerAt >= 0, `${page} loads ${loader}`);
@@ -74,8 +74,8 @@ test("Math Map loads the adopted preview loader after validation and before cont
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const contentAt = html.indexOf('<script src="math-map-content-loader.js"></script>');
-    const previewAt = html.indexOf('<script src="generic-math-map-preview-loader.js"></script>');
+    const contentAt = scriptIndex(html, "math-map-content-loader.js");
+    const previewAt = scriptIndex(html, "generic-math-map-preview-loader.js");
     const controllerAt = scriptIndex(html, loader);
     assert.ok(previewAt >= 0, `${page} loads generic-math-map-preview-loader.js`);
     assert.ok(contentAt < previewAt, `${page} loads validation before preview`);

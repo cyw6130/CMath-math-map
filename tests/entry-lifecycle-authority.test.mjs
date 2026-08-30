@@ -36,7 +36,7 @@ test("browser pages load the complete Entry Module before the client", () => {
     const html = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");
     let previous = -1;
     for (const script of orderedScripts) {
-      const current = html.indexOf(`<script src="${script}"></script>`);
+      const current = html.indexOf(`<script src="${script}`);
       assert.ok(current > previous, `${script} keeps dependency order in ${page}`);
       previous = current;
     }
