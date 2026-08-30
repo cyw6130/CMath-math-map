@@ -15,8 +15,11 @@
     throw new Error("CMath Map Library 核心没有加载，无法启动地图库");
   }
   const {
+    BACKUP_SCHEMA,
     generatedMapView,
     isCanonicalMathMap,
+    mergeLibraryBackup,
+    normalizeLibraryState,
     normalizeMapRecord,
     sanitizeGeneratedResult,
   } = mapLibraryCore;
@@ -2033,37 +2036,37 @@
   }
 
   function getFullLibraryState() {
-    return {
-      schema: "cmath.local-library-state/v1",
+    return normalizeLibraryState({
       customFolders: getCustomFolders(),
       assignments: getMapFolderAssignments(),
       orders: getAllFolderMapOrders(),
       collapsed: getCollapsedState(),
       updatedAt: Date.now(),
-    };
+    });
   }
 
   function applyLibraryState(state) {
     if (!state || typeof state !== "object") return;
+    const normalized = normalizeLibraryState(state);
     if (Array.isArray(state.customFolders)) {
-      saveCustomFolders(state.customFolders, true);
+      saveCustomFolders(normalized.customFolders, true);
     }
     if (state.assignments && typeof state.assignments === "object") {
-      saveMapFolderAssignments(state.assignments, true);
+      saveMapFolderAssignments(normalized.assignments, true);
     }
     if (state.orders && typeof state.orders === "object") {
       try {
-        localStorage.setItem(FOLDER_MAP_ORDER_KEY, JSON.stringify(state.orders));
-        if (Array.isArray(state.orders.myMaps)) {
-          localStorage.setItem(MY_MAPS_ORDER_KEY, JSON.stringify(state.orders.myMaps));
+        localStorage.setItem(FOLDER_MAP_ORDER_KEY, JSON.stringify(normalized.orders));
+        if (Array.isArray(normalized.orders.myMaps)) {
+          localStorage.setItem(MY_MAPS_ORDER_KEY, JSON.stringify(normalized.orders.myMaps));
         }
-        if (Array.isArray(state.orders.builtin)) {
-          localStorage.setItem(BUILTIN_MAPS_ORDER_KEY, JSON.stringify(state.orders.builtin));
+        if (Array.isArray(normalized.orders.builtin)) {
+          localStorage.setItem(BUILTIN_MAPS_ORDER_KEY, JSON.stringify(normalized.orders.builtin));
         }
       } catch { /* noop */ }
     }
     if (localStorage.getItem(LIBRARY_COLLAPSED_INITIALIZED_KEY) === "true" && state.collapsed && typeof state.collapsed === "object") {
-      saveCollapsedState(state.collapsed, true);
+      saveCollapsedState(normalized.collapsed, true);
     }
   }
 
@@ -3323,229 +3326,6 @@
   document.querySelector("#btn-close-library-drawer")?.addEventListener("click", closeAllPanels);
 
   // --- Backup & Restore (Export / Import Backup) ---
-  const BACKUP_SCHEMA = "cmath.math-map.library-backup/v1";
-
-  function validateBackupPayload(payload) {
-    if (!payload || typeof payload !== "object") {
-      throw new TypeError("备份文件格式无效：内容必须是 JSON 对象");
-    }
-    if (payload.schema !== BACKUP_SCHEMA && payload.schema !== "cmath.local-library-backup/v1") {
-      throw new TypeError(`未知或不受支持的备份版本：${payload.schema || "未知"}`);
-    }
-    if (!Array.isArray(payload.maps)) {
-      throw new TypeError("备份文件缺少地图数据列表 (maps)");
-    }
-
-    const validMaps = [];
-    for (const m of payload.maps) {
-      if (!m || typeof m !== "object") continue;
-      const id = String(m.id || "").trim();
-      if (!id) continue;
-      const cleanResult = m.generatedResult === undefined ? null : sanitizeGeneratedResult(m.generatedResult);
-      if (m.generatedResult !== undefined && !cleanResult) continue;
-      const data = cleanResult?.map ?? m.data;
-      if (!data || typeof data !== "object") continue;
-      if (!isCanonicalMathMap(data) && (data.schema !== "cmath.project-view-model/v0.1" || !data.project || !Array.isArray(data.entries) || !Array.isArray(data.inferences))) {
-        continue;
-      }
-      validMaps.push(withCanonicalNumberingLedger({
-        schema: "cmath.local-map-record/v1",
-        id,
-        title: String(m.title || data.project?.title || id).trim(),
-        boundaryLabel: String(m.boundaryLabel || data.channelOptions?.boundaryLabel || "本地导入 · 数学地图").trim(),
-        importedAt: Number.isFinite(m.importedAt) ? m.importedAt : Date.now(),
-        isImported: true,
-        data,
-        ...(m.numberingLedger ? { numberingLedger: m.numberingLedger } : {}),
-        ...(cleanResult ? { generatedResult: cleanResult } : {}),
-      }));
-    }
-
-    return {
-      schema: BACKUP_SCHEMA,
-      version: 1,
-      exportedAt: Number.isFinite(payload.exportedAt) ? payload.exportedAt : Date.now(),
-      maps: validMaps,
-      library: payload.library && typeof payload.library === "object" ? payload.library : {},
-    };
-  }
-
-  function mergeLibraryBackup(currentMaps = [], currentLibraryState = {}, backupPayload = {}, reservedIds = []) {
-    const validatedBackup = validateBackupPayload(backupPayload);
-
-    const existingMapById = new Map();
-    (currentMaps || []).forEach((m) => {
-      if (m && typeof m.id === "string") existingMapById.set(m.id, m);
-    });
-
-    const allUsedIds = new Set([
-      ...Array.from(existingMapById.keys()),
-      ...(Array.isArray(reservedIds) ? reservedIds : []),
-    ]);
-
-    const idRenameMap = new Map();
-    const mergedMaps = [...Array.from(existingMapById.values())];
-    const newAddedMaps = [];
-
-    for (const incMap of validatedBackup.maps) {
-      if (existingMapById.has(incMap.id)) {
-        const existing = existingMapById.get(incMap.id);
-        const isIdentical =
-          existing.title === incMap.title &&
-          JSON.stringify(existing.data) === JSON.stringify(incMap.data);
-
-        if (isIdentical) {
-          idRenameMap.set(incMap.id, incMap.id);
-        } else {
-          let candidate = `${incMap.id}-restored`;
-          let counter = 2;
-          while (allUsedIds.has(candidate)) {
-            candidate = `${incMap.id}-restored-${counter}`;
-            counter++;
-          }
-          allUsedIds.add(candidate);
-          idRenameMap.set(incMap.id, candidate);
-          const renamedMap = {
-            ...incMap,
-            id: candidate,
-            title: incMap.title ? `${incMap.title} (备份导入)` : candidate,
-          };
-          mergedMaps.push(renamedMap);
-          newAddedMaps.push(renamedMap);
-        }
-      } else {
-        if (allUsedIds.has(incMap.id)) {
-          let candidate = `${incMap.id}-restored`;
-          let counter = 2;
-          while (allUsedIds.has(candidate)) {
-            candidate = `${incMap.id}-restored-${counter}`;
-            counter++;
-          }
-          allUsedIds.add(candidate);
-          idRenameMap.set(incMap.id, candidate);
-          const renamedMap = {
-            ...incMap,
-            id: candidate,
-            title: incMap.title ? `${incMap.title} (备份导入)` : candidate,
-          };
-          mergedMaps.push(renamedMap);
-          newAddedMaps.push(renamedMap);
-        } else {
-          allUsedIds.add(incMap.id);
-          idRenameMap.set(incMap.id, incMap.id);
-          mergedMaps.push(incMap);
-          newAddedMaps.push(incMap);
-        }
-      }
-    }
-
-    // Custom Folders Merge
-    const mergedFolders = (currentLibraryState.customFolders || []).filter((f) => f && f.id && f.name);
-    const existingFolderIds = new Set(mergedFolders.map((f) => f.id));
-    const existingFolderNames = new Map(mergedFolders.map((f) => [f.name.toLowerCase().trim(), f]));
-    const folderIdMap = new Map([
-      ["myMaps", "myMaps"],
-      ["builtin", "builtin"],
-      ["curated", "curated"],
-    ]);
-
-    const incomingFolders = Array.isArray(validatedBackup.library.customFolders)
-      ? validatedBackup.library.customFolders.filter((f) => f && f.id && f.name)
-      : [];
-
-    for (const incFolder of incomingFolders) {
-      const nameKey = incFolder.name.toLowerCase().trim();
-      if (existingFolderNames.has(nameKey)) {
-        folderIdMap.set(incFolder.id, existingFolderNames.get(nameKey).id);
-      } else if (existingFolderIds.has(incFolder.id)) {
-        const newFolderId = `custom_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-        folderIdMap.set(incFolder.id, newFolderId);
-        const newFolder = { id: newFolderId, name: incFolder.name, createdAt: incFolder.createdAt || Date.now() };
-        mergedFolders.push(newFolder);
-        existingFolderIds.add(newFolderId);
-        existingFolderNames.set(nameKey, newFolder);
-      } else {
-        folderIdMap.set(incFolder.id, incFolder.id);
-        const newFolder = { id: incFolder.id, name: incFolder.name, createdAt: incFolder.createdAt || Date.now() };
-        mergedFolders.push(newFolder);
-        existingFolderIds.add(incFolder.id);
-        existingFolderNames.set(nameKey, newFolder);
-      }
-    }
-
-    // Assignments Merge
-    const mergedAssignments = { ...(currentLibraryState.assignments || {}) };
-    const incomingAssignments = validatedBackup.library.assignments;
-    if (incomingAssignments && typeof incomingAssignments === "object" && !Array.isArray(incomingAssignments)) {
-      for (const [incMapId, incFolderId] of Object.entries(incomingAssignments)) {
-        const finalMapId = idRenameMap.get(incMapId) || incMapId;
-        const finalFolderId = folderIdMap.get(incFolderId) || incFolderId;
-        if (!mergedAssignments[finalMapId]) {
-          mergedAssignments[finalMapId] = finalFolderId;
-        }
-      }
-    }
-
-    // Orders Merge
-    const mergedOrders = { ...(currentLibraryState.orders || {}) };
-    if (!Array.isArray(mergedOrders.myMaps)) mergedOrders.myMaps = [];
-    if (!Array.isArray(mergedOrders.builtin)) mergedOrders.builtin = [];
-
-    const incomingOrders = validatedBackup.library.orders;
-    if (incomingOrders && typeof incomingOrders === "object" && !Array.isArray(incomingOrders)) {
-      for (const [incFolderId, incOrderList] of Object.entries(incomingOrders)) {
-        if (!Array.isArray(incOrderList)) continue;
-        const finalFolderId = folderIdMap.get(incFolderId) || incFolderId;
-        if (!Array.isArray(mergedOrders[finalFolderId])) mergedOrders[finalFolderId] = [];
-        for (const oldMapId of incOrderList) {
-          const finalMapId = idRenameMap.get(oldMapId) || oldMapId;
-          if (!mergedOrders[finalFolderId].includes(finalMapId)) {
-            mergedOrders[finalFolderId].push(finalMapId);
-          }
-        }
-      }
-    }
-
-    // Ensure all merged maps are in folder orders
-    for (const m of mergedMaps) {
-      const assignedFolder = mergedAssignments[m.id] || "myMaps";
-      if (!Array.isArray(mergedOrders[assignedFolder])) mergedOrders[assignedFolder] = [];
-      if (!mergedOrders[assignedFolder].includes(m.id)) {
-        mergedOrders[assignedFolder].push(m.id);
-      }
-    }
-
-    // Collapsed state merge
-    const mergedCollapsed = { ...(currentLibraryState.collapsed || { curated: false, myMaps: false, builtin: false }) };
-    const incomingCollapsed = validatedBackup.library.collapsed;
-    if (incomingCollapsed && typeof incomingCollapsed === "object" && !Array.isArray(incomingCollapsed)) {
-      for (const [incFolderId, isCollapsed] of Object.entries(incomingCollapsed)) {
-        const finalFolderId = folderIdMap.get(incFolderId) || incFolderId;
-        if (mergedCollapsed[finalFolderId] === undefined) {
-          mergedCollapsed[finalFolderId] = Boolean(isCollapsed);
-        }
-      }
-    }
-
-    return {
-      mergedMaps,
-      newAddedMaps,
-      libraryState: {
-        schema: "cmath.local-library-state/v1",
-        customFolders: mergedFolders,
-        assignments: mergedAssignments,
-        orders: mergedOrders,
-        collapsed: mergedCollapsed,
-        updatedAt: Date.now(),
-      },
-      stats: {
-        totalMaps: mergedMaps.length,
-        addedMaps: newAddedMaps.length,
-        totalFolders: mergedFolders.length,
-      },
-    };
-  }
-
   function exportLibraryBackup() {
     const customFolders = getCustomFolders();
     const assignments = getMapFolderAssignments();

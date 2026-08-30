@@ -159,6 +159,8 @@ test("生产页面在应用启动前加载 Map Library 核心", () => {
 
   const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
   assert.match(app, /window\.CMathMapLibraryCore/u);
+  assert.match(app, /normalizeLibraryState/u);
+  assert.doesNotMatch(app, /function (?:validateBackupPayload|mergeLibraryBackup)\(/u);
 });
 
 test("Node Map Library 不覆盖已有的旧版数学语义全局", () => {
@@ -185,4 +187,104 @@ test("Node Map Library 不覆盖已有的旧版数学语义全局", () => {
     if (previous === undefined) delete globalThis.GammaMathMapSemantics;
     else globalThis.GammaMathMapSemantics = previous;
   }
+});
+
+test("Map Library 在浏览器与 Node 中形成相同的组织状态", () => {
+  const input = {
+    customFolders: [
+      { id: "f1", name: "代数几何", createdAt: 100 },
+      { id: "f1", name: "重复文件夹", createdAt: 200 },
+      { id: "f2", name: "微分拓扑", createdAt: 300 },
+    ],
+    assignments: {
+      "map-1": "f1",
+      "map-2": "missing",
+      "map-3": "myMaps",
+    },
+    orders: {
+      f1: ["map-1", "map-1", "map-4"],
+      myMaps: ["map-3", "map-3"],
+    },
+    collapsed: { curated: true, f1: true, f2: false },
+    updatedAt: 11,
+  };
+  const expected = {
+    schema: "cmath.local-library-state/v1",
+    customFolders: [
+      { id: "f1", name: "代数几何", createdAt: 100 },
+      { id: "f2", name: "微分拓扑", createdAt: 300 },
+    ],
+    assignments: { "map-1": "f1", "map-3": "myMaps" },
+    orders: { f1: ["map-1", "map-4"], myMaps: ["map-3"] },
+    collapsed: { curated: true, myMaps: false, builtin: false, f1: true, f2: false },
+    updatedAt: 11,
+  };
+
+  assert.deepEqual(nodeCore.normalizeLibraryState(input), expected);
+  assert.deepEqual(plain(loadBrowserCore().normalizeLibraryState(input)), expected);
+});
+
+test("Map Library 在浏览器与 Node 中以相同规则恢复备份冲突", () => {
+  const currentMaps = [
+    { id: "imported:same", title: "相同地图", data: projectView("same"), importedAt: 20 },
+    { id: "imported:conflict", title: "已有版本", data: projectView("original"), importedAt: 21 },
+  ];
+  const currentState = {
+    customFolders: [{ id: "f_algebra", name: "代数", createdAt: 30 }],
+    assignments: { "imported:same": "f_algebra" },
+    orders: { f_algebra: ["imported:same"], myMaps: ["imported:conflict"] },
+    collapsed: { f_algebra: false },
+  };
+  const backup = {
+    schema: "cmath.math-map.library-backup/v1",
+    exportedAt: 40,
+    maps: [
+      { id: "imported:same", title: "相同地图", data: projectView("same"), importedAt: 20 },
+      { id: "imported:conflict", title: "备份版本", data: projectView("changed"), importedAt: 41 },
+      { id: "imported:fresh", title: "全新地图", data: projectView("fresh"), importedAt: 42 },
+      { id: "invalid", data: {} },
+    ],
+    library: {
+      customFolders: [
+        { id: "f_old_algebra", name: "代数", createdAt: 50 },
+        { id: "f_geometry", name: "几何", createdAt: 51 },
+      ],
+      assignments: {
+        "imported:same": "f_old_algebra",
+        "imported:conflict": "f_geometry",
+        "imported:fresh": "f_geometry",
+      },
+      orders: {
+        f_old_algebra: ["imported:same"],
+        f_geometry: ["imported:conflict", "imported:fresh"],
+      },
+      collapsed: { f_geometry: true },
+    },
+  };
+
+  const nodeResult = plain(nodeCore.mergeLibraryBackup(currentMaps, currentState, backup));
+  const browserResult = plain(loadBrowserCore().mergeLibraryBackup(currentMaps, currentState, backup));
+  nodeResult.libraryState.updatedAt = 0;
+  browserResult.libraryState.updatedAt = 0;
+  assert.deepEqual(browserResult, nodeResult);
+  assert.equal(nodeResult.mergedMaps.length, 4);
+  assert.equal(nodeResult.newAddedMaps.length, 2);
+  const renamed = nodeResult.newAddedMaps.find((map) => map.id === "imported:conflict-restored");
+  assert.ok(renamed);
+  assert.equal(nodeResult.libraryState.assignments[renamed.id], "f_geometry");
+  assert.deepEqual(nodeResult.libraryState.orders.f_geometry, [renamed.id, "imported:fresh"]);
+  assert.equal(nodeResult.libraryState.collapsed.f_geometry, true);
+});
+
+test("Map Library 保留旧备份版本并避让保留地图身份", () => {
+  const restored = nodeCore.mergeLibraryBackup([], {}, {
+    schema: "cmath.local-library-backup/v1",
+    exportedAt: 60,
+    maps: [{ id: "builtin:reserved", title: "用户地图", data: projectView("reserved"), importedAt: 61 }],
+    library: {},
+  }, ["builtin:reserved"]);
+
+  assert.equal(restored.newAddedMaps.length, 1);
+  assert.equal(restored.newAddedMaps[0].id, "builtin:reserved-restored");
+  assert.equal(restored.libraryState.orders.myMaps.includes("builtin:reserved-restored"), true);
 });

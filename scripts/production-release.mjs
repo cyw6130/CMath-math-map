@@ -12,7 +12,7 @@ function freezeScript(src, { versioned = true } = {}) {
   return Object.freeze({ src, versioned });
 }
 
-const PRODUCTION_RELEASE_ID = "20260830-v51-release-2";
+const PRODUCTION_RELEASE_ID = "20260830-v51-release-3";
 const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("portable-maps-data.js"),
   freezeScript("vendor/force-graph/force-graph.min.js", { versioned: false }),
