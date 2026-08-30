@@ -221,26 +221,27 @@ test("both public HTML entries load the complete production pipeline before the 
 });
 
 test("public UI calls only the single Production Paper Import entry", () => {
-  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
-  assert.match(app, /GammaPaperImportClient\.requestPaperProductionImport\(/u);
-  assert.doesNotMatch(app, /GammaPaperImportClient\.(?:requestPaperProjectView|extractPdfText)\(/u);
-  assert.match(app, /mineruFetchImpl:\s*window\.fetch\.bind\(window\)/u);
+  const workbench = fs.readFileSync(path.join(root, "src/workbench/paper-import.js"), "utf8");
+  assert.match(workbench, /runtime\.paperImport\.requestPaperProductionImport\(/u);
+  assert.doesNotMatch(workbench, /GammaPaperImportClient\.(?:requestPaperProjectView|extractPdfText)\(/u);
+  assert.match(workbench, /mineruFetchImpl:\s*view\.fetch\.bind\(view\)/u);
   for (const stage of ["mineru", "generate", "validate", "repair", "save"]) {
-    assert.match(app, new RegExp(`id: ["']${stage}["']`, "u"));
+    assert.match(workbench, new RegExp(`id: ["']${stage}["']`, "u"));
   }
 });
 
 test("paper workflow saves its Project View to the library instead of downloading automatically", () => {
   const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  const workbench = fs.readFileSync(path.join(root, "src/workbench/paper-import.js"), "utf8");
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-  assert.match(app, /await saveWorkflowMapToLibrary\(generatedResult, selectedPaperPdf\.name\);/u);
-  assert.match(app, /generatedResult:\s*cleanResult/u);
-  assert.match(app, /diagnostics\?\.missingStages/u);
-  assert.match(app, /identity\?\.contentFingerprint/u);
-  assert.match(app, /identity\?\.frozenWorkflow\?\.label/u);
-  assert.match(app, /info\.phase === "degraded"/u);
-  assert.match(app, /result\?\.status === "degraded"/u);
-  assert.doesNotMatch(app, /link\.download\s*=\s*["']paper-project-view\.json["']/u);
+  assert.match(workbench, /await runtime\.mapLibrary\.saveMap\(record\)/u);
+  assert.match(workbench, /await onMapReady\(\{ \.\.\.ready, open: false \}\)/u);
+  assert.match(workbench, /generatedResult:\s*cleanResult/u);
+  assert.match(workbench, /diagnostics\?\.missingStages/u);
+  assert.match(workbench, /identity\?\.contentFingerprint/u);
+  assert.match(workbench, /identity\?\.frozenWorkflow\?\.capabilitySyncIdentity/u);
+  assert.match(workbench, /info\.phase === "degraded"/u);
+  assert.doesNotMatch(workbench, /link\.download\s*=\s*["']paper-project-view\.json["']/u);
   assert.match(app, /btn-map-export-json.*exportCurrentMapJson|exportCurrentMapJson[\s\S]*btn-map-export-json/u);
   assert.match(html, /id="btn-map-export-json"/u);
 });

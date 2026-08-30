@@ -10,31 +10,23 @@
   "use strict";
 
   const body = document.body;
-  const mapLibraryCore = window.CMathMapLibraryCore;
-  if (typeof mapLibraryCore?.normalizeMapRecord !== "function") {
-    throw new Error("CMath Map Library 核心没有加载，无法启动地图库");
+  const capabilityRuntimeModule = window.CMathCapabilityRuntime;
+  if (typeof capabilityRuntimeModule?.createCapabilityRuntime !== "function") {
+    throw new Error("CMath Capability Runtime 没有加载，无法启动生产工作台");
   }
-  const mapLibraryLifecycle = window.CMathMapLibraryLifecycle;
-  if (typeof mapLibraryLifecycle?.createMapLibrary !== "function") {
-    throw new Error("CMath Map Library 生命周期没有加载，无法启动地图库");
+  const paperImportWorkbenchModule = window.CMathPaperImportWorkbench;
+  if (typeof paperImportWorkbenchModule?.mountPaperImportWorkbench !== "function") {
+    throw new Error("CMath Paper Import Workbench 没有加载，无法启动论文导入");
   }
-  const productFocusPresentation = window.CMathProductFocusPresentation;
-  if (typeof productFocusPresentation?.installProductFocusPresentation !== "function") {
-    throw new Error("CMath 产品聚焦呈现模块没有加载，无法启动数学地图");
-  }
+  const capabilityRuntime = capabilityRuntimeModule.createCapabilityRuntime({ root: window });
+  const { mapLibrary, mapRuntime, paperImport } = capabilityRuntime;
+  const { productFocusPresentation } = mapRuntime;
   const {
     BACKUP_SCHEMA,
-    generatedMapView,
     isCanonicalMathMap,
     mergeLibraryBackup,
     normalizeLibraryState,
-    sanitizeGeneratedResult,
-  } = mapLibraryCore;
-  const {
-    createHttpMapLibraryAdapter,
-    createIndexedDbMapLibraryAdapter,
-    createMapLibrary,
-  } = mapLibraryLifecycle;
+  } = mapLibrary;
   const paperDrawerBackdrop = document.querySelector("#paper-drawer-backdrop");
   const paperDrawer = document.querySelector("#paper-drawer");
   const settingsDrawerBackdrop = document.querySelector("#settings-drawer-backdrop");
@@ -84,19 +76,10 @@
   const settingsDiscardConfirm = document.querySelector("#settings-discard-confirm");
   const providedServiceStatus = document.querySelector("#provided-service-status");
   const onlineKeyHint = document.querySelector("#online-key-hint");
-  const modelConsentCard = document.querySelector("#model-consent-card");
-  const btnAcceptModelConsent = document.querySelector("#btn-accept-model-consent");
-  const btnUseOwnModel = document.querySelector("#btn-use-own-model");
   const SESSION_MAP_KEY = "cmath.math-map.session-map";
   const SESSION_IMPORTED_MAPS_KEY = "cmath.math-map.session-imported-maps-v1";
   const MODEL_ACCESS_PREF_KEY = "cmath.math-map.model-access-mode-v1";
   const SAVED_MODEL_CONFIG_KEY = "cmath.math-map.saved-model-config-v1";
-  const MODEL_CONSENT_KEY = "cmath.math-map.muse-consent-v1";
-  const MODEL_CONSENT_VERSION = "muse-spark-contributor-training-v1";
-  const CMATH_PROVIDED_MODEL = "muse-spark-1.2-contributor";
-  const MINERU_GATEWAY_URL = String(
-    window.CMATH_MINERU_GATEWAY_URL ?? document.documentElement.dataset.mineruGatewayUrl ?? "",
-  ).trim();
   const MODEL_GATEWAY_URL = String(
     window.CMATH_MODEL_GATEWAY_URL ?? document.documentElement.dataset.modelGatewayUrl ?? "",
   ).trim().replace(/\/+$/u, "");
@@ -127,7 +110,7 @@
   let savedAccessMode = "cmath";
   let settingsBaseline = "";
   let settingsProviderDrafts = new Map();
-  let modelConsentResolver = null;
+  let paperImportWorkbench = null;
   // Becomes true only after the initial provider bootstrap, so the first
   // updateProviderSettings() never persists the raw HTML defaults (which used
   // to be DeepSeek's) as if they were the user's OpenCode Go configuration.
@@ -137,18 +120,6 @@
   // GitHub Pages (https://cyw6130.github.io) never sees this endpoint.
   const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
   const isLocalDesktop = LOCAL_HOSTS.has(window.location.hostname);
-  const mapLibrary = createMapLibrary({
-    adapter: isLocalDesktop
-      ? createHttpMapLibraryAdapter()
-      : createIndexedDbMapLibraryAdapter({
-        onError: (error) => console.warn("IndexedDB 操作失败，继续使用当前会话缓存:", error),
-      }),
-    onError(stage, error) {
-      const label = stage === "load-state" ? "地图库组织状态" : "数学地图库";
-      console.warn(`无法读取${label}，继续使用当前会话缓存:`, error);
-    },
-  });
-
   async function loadPersistedMapsAndState() {
     const loaded = await mapLibrary.load({
       maps: sessionImportedMaps,
@@ -167,29 +138,6 @@
   const PROVIDER_PREFS_KEY = "cmath.math-map.provider-prefs";
   const LEGACY_MODEL_PREFS_KEY = "cmath.math-map.provider-model-prefs";
   const SESSION_KEYS_KEY = "cmath.math-map.session-keys";
-
-  // Desktop builds route model traffic through the loopback server
-  // (/api/model-proxy) so endpoints that reject browser CORS preflights
-  // (e.g. a local Sub2API instance) still work. Online builds fetch directly.
-  async function modelFetch(targetUrl, init) {
-    if (!isLocalDesktop) return fetch(targetUrl, init);
-    let apiKey = "";
-    const auth = init?.headers?.Authorization;
-    if (typeof auth === "string") apiKey = auth.replace(/^Bearer\s+/i, "").trim();
-    let body = null;
-    if (typeof init?.body === "string") {
-      try { body = JSON.parse(init.body); } catch { /* forward raw below */ }
-    }
-    const response = await fetch("/api/model-proxy", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ targetUrl: String(targetUrl), apiKey, body: body ?? init?.body ?? null }),
-    });
-    return new Response(await response.text(), {
-      status: response.status,
-      headers: { "Content-Type": response.headers.get("content-type") || "application/json; charset=utf-8" },
-    });
-  }
 
   function readProviderPrefs() {
     try { return JSON.parse(localStorage.getItem(PROVIDER_PREFS_KEY) || "{}"); }
@@ -270,13 +218,6 @@
   }
   function currentProviderModel() {
     return modelSelect.value === "custom" ? customModelInput?.value.trim() : modelSelect.value;
-  }
-
-  // 当前选中模型的思维链档位（如 OpenCode Go 的 deepseek-v4-flash 默认带思维链，
-  // 在论文提取这种大输出任务上会烧光 max_tokens 导致空输出，默认关掉）。
-  function currentModelReasoningEffort() {
-    const value = modelSelect?.value === "custom" ? customModelInput?.value.trim() : modelSelect?.value;
-    return PROVIDER_CONFIGS[activeProviderKey]?.models.find((m) => m.value === value)?.reasoningEffort;
   }
 
   async function loadLocalConfigFor(provider) {
@@ -597,7 +538,7 @@
         apiEndpointInput?.focus();
         return;
       }
-      try { window.GammaPaperImportClient.endpointUrl(draft.endpoint); }
+      try { paperImport.endpointUrl(draft.endpoint); }
       catch (error) {
         showTestResult(error.message, true);
         apiEndpointInput?.focus();
@@ -728,9 +669,7 @@
       showSettingsDiscardConfirm();
       return false;
     }
-    if (paperDrawerBackdrop && !paperDrawerBackdrop.hidden && modelConsentResolver) {
-      finishModelConsent(false);
-    }
+    if (paperDrawerBackdrop && !paperDrawerBackdrop.hidden) paperImportWorkbench?.cancelConsent();
     [paperDrawerBackdrop, settingsDrawerBackdrop, importDrawerBackdrop, libraryDrawerBackdrop].forEach((backdrop) => {
       if (backdrop) {
         backdrop.hidden = true;
@@ -763,7 +702,7 @@
     if (drawerId === "paper-drawer") {
       backdrop = paperDrawerBackdrop;
       drawer = paperDrawer;
-      if (typeof resetExtractStatus === "function") resetExtractStatus();
+      paperImportWorkbench?.reset();
     } else if (drawerId === "settings-drawer") {
       backdrop = settingsDrawerBackdrop;
       drawer = settingsDrawer;
@@ -849,432 +788,25 @@
     }
   });
   document.querySelector("#btn-close-paper-drawer")?.addEventListener("click", closeAllPanels);
-  const pdfDropZone = paperDrawer?.querySelector(".pdf-drop-zone");
-  const dropMain = pdfDropZone?.querySelector(".drop-main");
-  const dropSub = pdfDropZone?.querySelector(".drop-sub");
-  const DROP_MAIN_DEFAULT = dropMain?.textContent ?? "";
-  const DROP_SUB_DEFAULT = dropSub?.textContent ?? "";
-  const startExtractButton = document.querySelector("#btn-start-extract");
-  const paperPdfInput = document.createElement("input");
-  paperPdfInput.type = "file";
-  paperPdfInput.accept = ".pdf,application/pdf";
-  paperPdfInput.hidden = true;
-  paperDrawer?.appendChild(paperPdfInput);
-  let selectedPaperPdf = null;
-
-  // --- Extraction status block: step list (busy) / success / error ---
-  const extractStatus = document.createElement("div");
-  extractStatus.className = "extract-status";
-  extractStatus.hidden = true;
-  if (startExtractButton?.parentElement) {
-    startExtractButton.parentElement.before(extractStatus);
-  }
-
-  const EXTRACT_STEPS = [
-    { id: "mineru", label: "MinerU 精准解析" },
-    { id: "generate", label: "V5.1 生成中文标准数学地图" },
-    { id: "validate", label: "能力合同校验" },
-    { id: "repair", label: "按需修复（最多 2 次）" },
-    { id: "save", label: "保存标准 JSON" },
-  ];
-  let stepEls = new Map();
-  let activeImportStage = "mineru";
-
-  function resetExtractStatus() {
-    extractStatus.hidden = true;
-    extractStatus.innerHTML = "";
-    extractStatus.classList.remove("is-error", "is-success");
-  }
-
-  function showExtractSteps() {
-    extractStatus.hidden = false;
-    extractStatus.classList.remove("is-error", "is-success");
-    extractStatus.innerHTML = `<ol class="extract-steps">${
-      EXTRACT_STEPS.map((s) => `<li data-step="${s.id}"><span class="step-dot"></span><span class="step-label">${s.label}</span><span class="step-detail"></span></li>`).join("")
-    }</ol>`;
-    stepEls = new Map([...extractStatus.querySelectorAll("li")].map((li) => [li.dataset.step, li]));
-    activeImportStage = "mineru";
-  }
-
-  function setStep(id, state, detail) {
-    const li = stepEls.get(id);
-    if (!li) return;
-    li.classList.remove("is-active", "is-done");
-    if (state) li.classList.add(state === "active" ? "is-active" : "is-done");
-    if (detail !== undefined) li.querySelector(".step-detail").textContent = detail;
-  }
-
-  function completePriorSteps(id) {
-    const activeIndex = EXTRACT_STEPS.findIndex((step) => step.id === id);
-    if (activeIndex <= 0) return;
-    EXTRACT_STEPS.slice(0, activeIndex).forEach((step) => {
-      const li = stepEls.get(step.id);
-      if (!li || li.classList.contains("is-done")) return;
-      setStep(step.id, "done", li.querySelector(".step-detail")?.textContent || "完成");
-    });
-  }
-
-  function handleImportStage(stage, info = {}) {
-    if (!stepEls.has(stage)) return;
-    if (info.phase === "resume") {
-      completePriorSteps(stage);
-      setStep(stage, "done", "已从本地 checkpoint 恢复");
+  function handlePaperMapReady({ record, projectView, open }) {
+    if (!open) {
+      sessionImportedMaps = mapLibrary.mergeMaps(sessionImportedMaps, [record]);
+      saveSessionImportedMaps(sessionImportedMaps);
+      const currentOrder = getFolderMapOrder("myMaps").filter((id) => id !== record.id);
+      currentOrder.unshift(record.id);
+      saveFolderMapOrder("myMaps", currentOrder);
+      renderLibraryDrawer();
+      showLibraryToast(`已保存到「未分类」：${record.title}`);
       return;
     }
-    if (info.phase === "start") {
-      completePriorSteps(stage);
-      activeImportStage = stage;
-      setStep(stage, "active", stage === "mineru" ? "正在提交并解析 PDF" : "运行中…");
-      return;
-    }
-    if (info.phase === "progress") {
-      activeImportStage = stage;
-      const mineruStates = {
-        "waiting-file": "等待 PDF 上传",
-        pending: "等待 MinerU 调度",
-        running: "MinerU 正在解析",
-        converting: "正在生成 Markdown",
-        done: "解析完成",
-      };
-      setStep(stage, "active", mineruStates[info.state] ?? "处理中…");
-      return;
-    }
-    if (info.phase === "complete") {
-      completePriorSteps(stage);
-      const detail = stage === "mineru"
-        ? `${info.pageCount ?? "?"} 页 marked Markdown`
-        : (Number.isInteger(info.entries) ? `${info.entries} 个对象` : "完成");
-      setStep(stage, "done", detail);
-      return;
-    }
-    if (info.phase === "degraded") {
-      completePriorSteps(stage);
-      setStep(stage, "done", "部分完成，可稍后重试");
-      return;
-    }
-    if (info.phase === "fail") {
-      completePriorSteps(stage);
-      activeImportStage = stage;
-      setStep(stage, "done", `失败：${info.message ?? "请重试"}`);
-    }
+    openMapWithData(projectView, record.boundaryLabel, record.title, record.id, record.numberingLedger);
   }
 
-  function finishExtractSteps(result) {
-    const view = generatedMapView(result);
-    if (isCanonicalMathMap(view)) {
-      setStep("generate", "done", `${view.entries.length} 个对象 · ${view.inferences.length} 条推理`);
-      setStep("validate", "done", "标准 JSON 合法");
-      const repairs = Number(result?.diagnostics?.runReport?.repairAttempts ?? 0);
-      setStep("repair", "done", repairs ? `已修复 ${repairs} 次` : "无需修复");
-      return;
-    }
-    const missingStages = new Set(result?.diagnostics?.missingStages ?? []);
-    const entries = view?.entries?.length ?? 0;
-    const inferences = view?.inferences?.length ?? 0;
-    setStep(
-      "inference",
-      "done",
-      `${entries} 个对象 · ${inferences} 条推理${missingStages.has("inference") ? " · 部分完成" : ""}`,
-    );
-    let closureDetail = "全部已建立";
-    try {
-      const sem = window.GammaMathMapSemantics;
-      if (sem?.computeClaimClosure) {
-        const states = sem.computeClaimClosure(view.entries, view.inferences, {
-          b0ClaimEntryIds: view.derivedResearchState?.mathematicalState?.b0ClaimEntryIds ?? [],
-        }).claimStates;
-        const openCount = view.entries.filter(
-          (e) => e.entryClass === "claim" && states[e.id] !== "established",
-        ).length;
-        closureDetail = openCount === 0 ? "全部已建立" : `${openCount} 条 Claim 保持开放`;
-      }
-    } catch { /* 展示信息失败不影响结果 */ }
-    setStep("closure", "done", `${closureDetail}${result?.status === "degraded" ? " · 部分结果" : ""}`);
-  }
-
-  function workflowMapRecord(result, fileName) {
-    const cleanResult = sanitizeGeneratedResult(result);
-    const projectView = cleanResult?.map ?? result;
-    const title = (projectView?.project?.title || cleanResult?.sourceAnnotations?.source?.fileName?.replace(/\.pdf$/iu, "") || fileName.replace(/\.pdf$/iu, "") || "论文解析结果").trim();
-    const boundaryLabel = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
-    const rawId = projectView?.project?.id || cleanResult?.identity?.contentFingerprint || title || fileName;
-    const workflowIdentity = cleanResult
-      ? `${cleanResult.identity?.contentFingerprint ?? "content"}-${cleanResult.identity?.frozenWorkflow?.promptVersion ?? cleanResult.identity?.frozenWorkflow?.capabilitySyncIdentity ?? "capability"}-${cleanResult.identity?.frozenWorkflow?.productionContractVersion ?? "contract"}`
-      : "";
-    const slug = String(workflowIdentity ? `${rawId}-${workflowIdentity}` : rawId)
-      .replace(/[^a-zA-Z0-9_\u4e00-\u9fa5-]/gu, "-")
-      .replace(/^-+|-+$/gu, "")
-      .toLowerCase() || "paper-map";
-    return {
-      id: `imported:${slug}`,
-      title,
-      boundaryLabel,
-      data: projectView,
-      importedAt: Date.now(),
-      isImported: true,
-      ...(cleanResult ? { generatedResult: cleanResult } : {}),
-    };
-  }
-
-  async function saveWorkflowMapToLibrary(projectView, fileName) {
-    const map = workflowMapRecord(projectView, fileName);
-    const saved = await mapLibrary.saveMap(map);
-    sessionImportedMaps = mapLibrary.mergeMaps(sessionImportedMaps, [saved || map]);
-    saveSessionImportedMaps(sessionImportedMaps);
-    const currentOrder = getFolderMapOrder("myMaps").filter((id) => id !== map.id);
-    currentOrder.unshift(map.id);
-    saveFolderMapOrder("myMaps", currentOrder);
-    renderLibraryDrawer();
-    showLibraryToast(`已保存到「未分类」：${map.title}`);
-    return map;
-  }
-
-  function showExtractError(message) {
-    extractStatus.hidden = false;
-    extractStatus.classList.add("is-error");
-    extractStatus.classList.remove("is-success");
-    // 保留步骤列表，把错误附在下方，便于看到卡在哪一步
-    const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
-    extractStatus.innerHTML = `${stepsHtml}<p class="extract-error-text"></p>`;
-    extractStatus.querySelector(".extract-error-text").textContent = message;
-  }
-
-  function showExtractSuccess(result, fileName) {
-    const projectView = generatedMapView(result);
-    const missingCount = result?.diagnostics?.missingStages?.length ?? 0;
-    const unresolvedCount = result?.unresolvedItems?.length ?? 0;
-    extractStatus.hidden = false;
-    extractStatus.classList.add("is-success");
-    extractStatus.classList.remove("is-error");
-    const stepsHtml = extractStatus.querySelector(".extract-steps")?.outerHTML ?? "";
-    extractStatus.innerHTML = `${stepsHtml}
-      <p class="extract-success-title">✓ 解析完成</p>
-      <p class="extract-success-sub">已自动保存到「我的 JSON 地图」${missingCount || unresolvedCount ? ` · ${missingCount} 个阶段待完善 · ${unresolvedCount} 个未解决项` : ""}</p>
-      <div class="extract-success-actions">
-        <button type="button" class="extract-open-map">立即在地图中打开</button>
-        <button type="button" class="extract-open-library">打开地图库</button>
-        <button type="button" class="extract-dismiss">关闭</button>
-      </div>`;
-    extractStatus.querySelector(".extract-open-map").addEventListener("click", () => {
-      const boundary = projectView?.channelOptions?.boundaryLabel || `论文解析结果 · ${fileName}`;
-      const title = projectView?.project?.title || result?.sourceAnnotations?.source?.fileName?.replace(/\.pdf$/i, "") || fileName.replace(/\.pdf$/i, "");
-      openMapWithData(projectView, boundary, title);
-    });
-    extractStatus.querySelector(".extract-open-library").addEventListener("click", () => {
-      closeAllPanels();
-      openDrawer("library-drawer");
-    });
-    extractStatus.querySelector(".extract-dismiss").addEventListener("click", closeAllPanels);
-  }
-
-  function clearSelectedPaperPdf() {
-    selectedPaperPdf = null;
-    paperPdfInput.value = "";
-    pdfDropZone?.classList.remove("has-file");
-    if (dropMain) dropMain.textContent = DROP_MAIN_DEFAULT;
-    if (dropSub) dropSub.textContent = DROP_SUB_DEFAULT;
-  }
-
-  function selectPaperPdf(file) {
-    if (!file) return;
-    if (!file.name.toLowerCase().endsWith(".pdf") || file.size <= 0 || file.size > 200 * 1024 * 1024) {
-      clearSelectedPaperPdf();
-      showExtractError("请选择一份不超过 200 MB 的 PDF 论文。");
-      return;
-    }
-    selectedPaperPdf = file;
-    resetExtractStatus();
-    pdfDropZone.classList.add("has-file");
-    pdfDropZone.setAttribute("aria-label", `已选择 ${file.name}`);
-    if (dropMain) dropMain.textContent = file.name;
-    if (dropSub) {
-      const mb = file.size / 1048576;
-      dropSub.textContent = `${mb >= 0.1 ? mb.toFixed(1) : "<0.1"} MB · 点击或拖拽可重新选择`;
-    }
-  }
-
-  pdfDropZone?.addEventListener("click", () => paperPdfInput.click());
-  paperPdfInput?.addEventListener("change", (event) => selectPaperPdf(event.target.files?.[0]));
-  pdfDropZone?.addEventListener("dragover", (event) => event.preventDefault());
-  pdfDropZone?.addEventListener("drop", (event) => {
-    event.preventDefault();
-    selectPaperPdf(event.dataTransfer?.files?.[0]);
+  paperImportWorkbench = paperImportWorkbenchModule.mountPaperImportWorkbench({
+    root: document,
+    runtime: capabilityRuntime,
+    onMapReady: handlePaperMapReady,
   });
-
-  function hasProvidedModelConsent() {
-    try { return localStorage.getItem(MODEL_CONSENT_KEY) === MODEL_CONSENT_VERSION; }
-    catch { return false; }
-  }
-
-  function finishModelConsent(accepted) {
-    if (modelConsentCard) modelConsentCard.hidden = true;
-    if (startExtractButton) startExtractButton.disabled = false;
-    const resolve = modelConsentResolver;
-    modelConsentResolver = null;
-    resolve?.(accepted);
-  }
-
-  function requestProvidedModelConsent() {
-    if (hasProvidedModelConsent()) return Promise.resolve(true);
-    if (!modelConsentCard) return Promise.resolve(false);
-    modelConsentCard.hidden = false;
-    if (startExtractButton) startExtractButton.disabled = true;
-    btnAcceptModelConsent?.focus();
-    return new Promise((resolve) => { modelConsentResolver = resolve; });
-  }
-
-  btnAcceptModelConsent?.addEventListener("click", () => {
-    try { localStorage.setItem(MODEL_CONSENT_KEY, MODEL_CONSENT_VERSION); } catch { /* consent applies to this run */ }
-    finishModelConsent(true);
-  });
-  btnUseOwnModel?.addEventListener("click", () => {
-    finishModelConsent(false);
-    openDrawer("settings-drawer", btnUseOwnModel);
-    applyAccessMode("own");
-  });
-
-  function createCmathMuseChatImpl() {
-    return async ({ stage = "model", messages = [], maxTokens, responseFormat, reasoningEffort, signal } = {}) => {
-      if (!MODEL_GATEWAY_URL) {
-        const error = new Error("CMath 提供的模型服务尚未配置。");
-        error.code = "CMATH_MODEL_UNAVAILABLE";
-        throw error;
-      }
-      let response;
-      try {
-        response = await fetch(`${MODEL_GATEWAY_URL}/complete`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ stage, messages, maxTokens, responseFormat, reasoningEffort }),
-          signal,
-        });
-      } catch (cause) {
-        const error = new Error("暂时无法连接 CMath 提供的模型服务。");
-        error.code = "CMATH_MODEL_UNAVAILABLE";
-        error.cause = cause;
-        throw error;
-      }
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || typeof payload.content !== "string") {
-        const messagesByStatus = {
-          403: "当前地区或来源暂时无法使用 CMath 提供的模型。",
-          429: "当前请求较多，CMath 提供的模型暂时繁忙。",
-          503: "CMath 提供的模型正在维护或已临时停用。",
-        };
-        const error = new Error(messagesByStatus[response.status] || payload.error || "CMath 提供的模型暂时不可用。");
-        error.code = "CMATH_MODEL_UNAVAILABLE";
-        error.status = response.status;
-        throw error;
-      }
-      return payload;
-    };
-  }
-
-  function showProvidedModelFailure(message) {
-    showExtractError(message);
-    const actions = document.createElement("div");
-    actions.className = "extract-error-actions";
-    actions.innerHTML = '<button type="button" class="extract-retry-provided">稍后重试</button><button type="button" class="extract-use-own">使用自己的 API</button>';
-    extractStatus.appendChild(actions);
-    actions.querySelector(".extract-retry-provided")?.addEventListener("click", () => startExtractButton?.click());
-    actions.querySelector(".extract-use-own")?.addEventListener("click", () => {
-      openDrawer("settings-drawer");
-      applyAccessMode("own");
-    });
-  }
-
-  startExtractButton?.addEventListener("click", async () => {
-    if (!selectedPaperPdf) {
-      paperPdfInput.click();
-      return;
-    }
-    const useProvidedModel = savedAccessMode === "cmath";
-    if (useProvidedModel && !(await requestProvidedModelConsent())) return;
-    if (useProvidedModel && !MODEL_GATEWAY_URL) {
-      showProvidedModelFailure("CMath 提供的模型服务尚未完成部署，请稍后重试或使用自己的 API。");
-      return;
-    }
-    const savedOwnConfig = readSavedModelConfig();
-    const importProvider = useProvidedModel ? "cmath" : (savedOwnConfig?.provider || activeProviderKey);
-    const apiKey = useProvidedModel
-      ? "server-managed-credential"
-      : (sessionKeyFor(importProvider) || apiKeyInput?.value.trim() || "");
-    if (!useProvidedModel && !apiKey) {
-      showExtractError(`请先在“设置 → 使用自己的 API”中填写 ${PROVIDER_CONFIGS[importProvider]?.label || "模型服务"} API Key。`);
-      openDrawer("settings-drawer");
-      applyAccessMode("own");
-      return;
-    }
-    const model = useProvidedModel ? CMATH_PROVIDED_MODEL : (savedOwnConfig?.model || currentProviderModel());
-    const endpoint = useProvidedModel ? MODEL_GATEWAY_URL : (savedOwnConfig?.endpoint || apiEndpointInput.value);
-    const providerLabel = useProvidedModel ? "CMath 提供 · Muse Spark" : (PROVIDER_CONFIGS[importProvider]?.label || "模型服务");
-    const chatImpl = useProvidedModel ? createCmathMuseChatImpl() : undefined;
-    if (!MINERU_GATEWAY_URL) {
-      showExtractError("MinerU 精准解析服务尚未配置，请稍后重试。");
-      return;
-    }
-    if (!window.fflate?.unzipSync) {
-      showExtractError("MinerU ZIP 解包组件没有加载，请刷新后重试。");
-      return;
-    }
-    const originalLabel = startExtractButton.textContent;
-    startExtractButton.disabled = true;
-    startExtractButton.textContent = "解析中…";
-    showExtractSteps();
-    setStep("mineru", "active", "正在计算 PDF 指纹");
-    try {
-      if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
-      const generatedResult = await window.GammaPaperImportClient.requestPaperProductionImport({
-        pdf: selectedPaperPdf,
-        gatewayUrl: MINERU_GATEWAY_URL,
-        unzip: (bytes) => window.fflate.unzipSync(bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)),
-        mineruFetchImpl: window.fetch.bind(window),
-        endpoint,
-        apiKey,
-        model,
-        providerLabel,
-        fetchImpl: modelFetch,
-        chatImpl,
-        onStage: handleImportStage,
-        reasoningEffort: useProvidedModel ? undefined : currentModelReasoningEffort(),
-      });
-      await saveWorkflowMapToLibrary(generatedResult, selectedPaperPdf.name);
-      setStep("save", "done", "已保存到我的 JSON 地图");
-      finishExtractSteps(generatedResult);
-      showExtractSuccess(generatedResult, selectedPaperPdf.name);
-    } catch (error) {
-      const message = error instanceof TypeError
-        ? (activeImportStage === "mineru"
-          ? "浏览器无法连接 MinerU 精准解析服务，请检查网络后重试。"
-          : `浏览器无法直接连接 ${providerLabel}。请检查网络、API 服务地址以及服务端的跨域请求设置。`)
-        : error.message;
-      if (useProvidedModel && (error?.code === "CMATH_MODEL_UNAVAILABLE" || activeImportStage !== "mineru")) {
-        showProvidedModelFailure(message);
-      } else {
-        showExtractError(message);
-      }
-    } finally {
-      if (!useProvidedModel && apiKeyInput) {
-        if (isLocalDesktop) {
-          if (rememberKeyInput?.checked && apiKey.trim()) {
-            persistLocalConfig(activeProviderKey, {
-              apiKey,
-              endpoint: apiEndpointInput?.value.trim() ?? "",
-              model: currentProviderModel() ?? "",
-            });
-          } else if (!rememberKeyInput?.checked) {
-            apiKeyInput.value = "";
-          }
-        } else {
-          if (apiKey.trim()) rememberSessionKey(activeProviderKey, apiKey);
-          apiKeyInput.value = "";
-        }
-      }
-      startExtractButton.disabled = false;
-      startExtractButton.textContent = originalLabel;
-    }
-  });
-
   // --- Connection Tester ---
   function showTestResult(message, isError) {
     if (!testConnectionResult) return;
@@ -1297,12 +829,12 @@
       btnTestConnection.textContent = "测试中…";
     }
     try {
-      const targetUrl = window.GammaPaperImportClient.endpointUrl(endpoint);
+      const targetUrl = paperImport.endpointUrl(endpoint);
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 60000);
       let response;
       try {
-        response = await modelFetch(targetUrl, {
+        response = await paperImport.fetch(targetUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
           body: JSON.stringify({
@@ -1489,11 +1021,6 @@
   async function handleSelectedImportFiles(files) {
     if (!files.length) return;
 
-    if (!window.GammaGenericMathMapPreviewLoader || !window.GammaMathMapContentLoader || !window.GammaMathMapProjectAdapter || !window.GammaCanonicalMathMapAdapter) {
-      alert("数学地图核心能力模块尚未完全就绪，请刷新页面重试。");
-      return;
-    }
-
     const existingIds = new Set([
       ...CURATED_DEMO_IDS,
       ...(window.CMATH_GENERIC_MAP_REGISTRY?.maps || []).map((m) => m.id),
@@ -1508,9 +1035,9 @@
         if (isCanonicalMathMap(parsed)) {
           result = { data: parsed, definition: { title: file.name.replace(/\.json$/iu, "") } };
         } else {
-          result = await window.GammaGenericMathMapPreviewLoader.loadFile(file, {
-            loader: window.GammaMathMapContentLoader,
-            adapter: window.GammaMathMapProjectAdapter,
+          result = await mapRuntime.genericPreviewLoader.loadFile(file, {
+            loader: mapRuntime.contentLoader,
+            adapter: mapRuntime.projectAdapter,
           });
         }
 
@@ -3063,14 +2590,12 @@
         throw new Error(`地图「${mapDef?.title || mapDef?.id}」未指定数据文件 (dataFile) 或数据脚本 (dataScript)`);
       }
 
-      const loader = window.GammaMathMapContentLoader;
-      if (loader) {
-        if (typeof loader.validateProjectView === "function") {
-          loader.validateProjectView(data, mapDef.projectId);
-        }
-        if (typeof loader.validateMathTextContent === "function" && mapDef.mathTextFormat) {
-          loader.validateMathTextContent(data, mapDef.mathTextFormat);
-        }
+      const loader = mapRuntime.contentLoader;
+      if (typeof loader.validateProjectView === "function") {
+        loader.validateProjectView(data, mapDef.projectId);
+      }
+      if (typeof loader.validateMathTextContent === "function" && mapDef.mathTextFormat) {
+        loader.validateMathTextContent(data, mapDef.mathTextFormat);
       }
 
       const boundary = mapDef.boundaryLabel || data.channelOptions?.boundaryLabel || "一般数学内容 · Gamma-native 只读地图";
@@ -3335,8 +2860,7 @@
 
     // 3. Create Model
     const canonical = isCanonicalMathMap(data);
-    const adapter = canonical ? window.GammaCanonicalMathMapAdapter : window.GammaMathMapProjectAdapter;
-    if (!adapter?.create) throw new Error(canonical ? "标准数学地图渲染器没有加载" : "Project View 渲染器没有加载");
+    const adapter = canonical ? mapRuntime.canonicalAdapter : mapRuntime.projectAdapter;
     const adapterOptions = canonical
       ? { title: title || "标准数学地图", projectId: mapKey || `canonical:${title || "map"}`, numberingLedger }
       : (data.channelOptions?.adapterOptions ?? {});

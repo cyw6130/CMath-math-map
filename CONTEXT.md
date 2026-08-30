@@ -4,6 +4,38 @@
 
 ## Language
 
+### 产品架构
+
+**Workbench（前端工作台）**: 用户运行 Paper Import、查看过程状态并消费数学地图的交互产品层。它呈现输入、配置、进度、错误与结果，但不定义 Workflow 的业务阶段、恢复规则或数学语义。
+_Avoid_: Frontend（泛指所有浏览器代码时）、Workflow UI、把页面状态称为工作流状态
+
+**Paper Import Workbench（论文导入工作台）**: Workbench 中覆盖论文导入完整用户旅程的产品切片，包含 PDF 选择、模型访问配置与授权、阶段进度、失败或成功反馈，以及将生成地图交给 Map Library。它不重新实现 Paper Import 或决定 Workflow 阶段。
+_Avoid_: Paper Import、导入按钮、Workflow 实现
+
+**Quality System（质量系统）**: 对 Paper Import 与 Workbench 提供独立质量证据的体系，上位包含 Benchmark 与 Tests，但不进入生产运行路径。
+_Avoid_: Benchmark（泛指全部质量检查时）、测试系统（混称 Benchmark 与 Tests 时）
+
+**Tests**: 对模块 Interface、确定性业务合同和生产装配行为执行的自动化回归检查。Tests 不使用 Gold 判断模型生成内容的数学质量，也不决定 Frozen Workflow 晋级。
+_Avoid_: Benchmark、模型评测、Gold 评分
+
+**Capability Runtime（能力运行时）**: 生产环境中已验证身份并完成装配的能力集合，向 Workbench 与 Workflow 提供稳定的高层 Interface，同时隐藏运行时资产名称、加载顺序与宿主差异。
+_Avoid_: 浏览器全局对象集合、脚本清单、能力包副本
+
+**Capability Runtime Interface（能力运行时接口）**: `createCapabilityRuntime({ root })` 是生产装配的唯一入口，向调用方提供 `paperImport`、`mapRuntime` 与 `mapLibrary` 三组高层能力。它只负责身份校验、装配、兼容与生产环境 fail-close，不承载 Workflow 业务规则、数据翻译或存储策略。
+_Avoid_: 新业务层、通用依赖注入框架、把兼容装配写回各调用方
+
+**Capability Distribution（能力分发）**: 将权威能力的指定版本与身份同步为当前项目可加载资产的状态。分发只说明能力可用，不表示生产路径已经使用它。
+_Avoid_: Capability Adoption、安装完成即视为采用
+
+**Capability Adoption（能力采用）**: 生产路径通过能力的正式 Interface 执行其行为，并把准确能力身份纳入运行合同的状态。仅在 manifest 中声明、只在 Tests 中加载或只完成 Capability Distribution 均不算采用。
+_Avoid_: Capability Distribution、版本声明、测试可加载
+
+**Paper Import Result Handoff（论文导入结果交接）**: Paper Import Workbench 在成功后先通过 `runtime.mapLibrary` 保存 Project View，再以 `onMapReady` 通知外层应用打开该地图。Workbench 不直接操作地图渲染器或持久化适配器；外层应用只负责导航与展示。
+_Avoid_: Workbench 直接写 IndexedDB、Workflow 决定页面跳转、保存前先打开临时地图
+
+**Workbench Mount（工作台挂载）**: `mountPaperImportWorkbench({ root, runtime, onMapReady })` 将行为附着到页面已有 HTML 宿主，不引入模板系统或前端框架。每个 `root` 同时只有一个实例；重复挂载返回同一 controller，controller 通过 `dispose()` 释放监听与实例关联。
+_Avoid_: 模块生成整页 HTML、重复绑定事件、无生命周期的全局单例
+
 ### 地图模型
 
 **Entry**: 论文中最小且语义自足的数学单元，仅分为 Fact 与 Claim。资格只看内容三要件——原文可追溯的命名（含以标准数学术语命名的原文构造）、清晰的数学内容、在论文的定义、论证、结论或数学应用中承担明确角色——与出现位置和图中是否有后继无关。Entry 忠实记录论文表达的数学内容，即使原文存在数学错误也不静默改写；不是任意说明性文字或段落拆解。

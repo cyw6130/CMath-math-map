@@ -80,7 +80,13 @@ test("Math Map loads the adopted preview loader after validation and before cont
     assert.ok(previewAt >= 0, `${page} loads generic-math-map-preview-loader.js`);
     assert.ok(contentAt < previewAt, `${page} loads validation before preview`);
     assert.ok(previewAt < controllerAt, `${page} loads preview before ${loader}`);
-    assert.match(read(loader), /GammaGenericMathMapPreviewLoader/);
+    const source = read(loader);
+    assert.match(
+      source,
+      loader === "app-v5.js"
+        ? /mapRuntime\.genericPreviewLoader/
+        : /GammaGenericMathMapPreviewLoader/,
+    );
   }
 });
 

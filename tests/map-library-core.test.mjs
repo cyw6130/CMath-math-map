@@ -158,7 +158,10 @@ test("生产页面在应用启动前加载 Map Library 核心", () => {
   }
 
   const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
-  assert.match(app, /window\.CMathMapLibraryCore/u);
+  const runtime = fs.readFileSync(path.join(root, "src/runtime/capabilities.js"), "utf8");
+  assert.match(runtime, /root\.CMathMapLibraryCore/u);
+  assert.match(app, /createCapabilityRuntime\(\{ root: window \}\)/u);
+  assert.doesNotMatch(app, /window\.CMathMapLibraryCore/u);
   assert.match(app, /normalizeLibraryState/u);
   assert.doesNotMatch(app, /function (?:validateBackupPayload|mergeLibraryBackup)\(/u);
 });

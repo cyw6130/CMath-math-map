@@ -36,7 +36,7 @@ function extractFunction(source, name) {
 }
 
 function importProgressHarness() {
-  const source = read("app-v5.js");
+  const source = read("src/workbench/paper-import.js");
   const steps = ["mineru", "generate", "validate", "repair", "save"];
   const stepEls = new Map(steps.map((id) => {
     const classes = new Set();
@@ -224,13 +224,13 @@ test("settings separate CMath-provided access from explicitly saved BYOK configu
 
 test("provided Muse access requires versioned consent and uses the model gateway", () => {
   const html = read("index.html");
-  const app = read("app-v5.js");
+  const workbench = read("src/workbench/paper-import.js");
 
   assert.match(html, /data-model-gateway-url=/u);
   assert.match(html, /id="model-consent-card"[^>]*role="alertdialog"/u);
-  assert.match(app, /MODEL_CONSENT_VERSION/u);
-  assert.match(app, /requestProvidedModelConsent\(\)/u);
-  assert.match(app, /createCmathMuseChatImpl\(\)/u);
-  assert.match(app, /CMATH_PROVIDED_MODEL = "muse-spark-1\.2-contributor"/u);
-  assert.match(app, /showProvidedModelFailure\(message\)/u);
+  assert.match(workbench, /MODEL_CONSENT_VERSION/u);
+  assert.match(workbench, /requestConsent\(\)/u);
+  assert.match(workbench, /createProvidedChat\(urls\.model\)/u);
+  assert.match(workbench, /CMATH_PROVIDED_MODEL = "muse-spark-1\.2-contributor"/u);
+  assert.match(workbench, /showProvidedFailure\(message\)/u);
 });

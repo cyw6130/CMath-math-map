@@ -19,7 +19,7 @@ test("production entries are generated from one release manifest", () => {
   assert.equal(mirrorHtml, canonicalHtml);
   assert.equal(inspection.releaseId, PRODUCTION_RELEASE.id);
   assert.equal(inspection.scriptCount, PRODUCTION_RELEASE.scriptCount);
-  assert.equal(inspection.scriptCount, 52);
+  assert.equal(inspection.scriptCount, 54);
 });
 
 test("the default test command covers every test module", () => {
@@ -37,6 +37,14 @@ test("first-party assets share the release identity while vendored assets remain
   assert.equal(
     productionAssetSource("math-rendering-consumer.js"),
     `math-rendering-consumer.js?v=${PRODUCTION_RELEASE.id}`,
+  );
+  assert.equal(
+    productionAssetSource("src/runtime/capabilities.js"),
+    `src/runtime/capabilities.js?v=${PRODUCTION_RELEASE.id}`,
+  );
+  assert.equal(
+    productionAssetSource("src/workbench/paper-import.js"),
+    `src/workbench/paper-import.js?v=${PRODUCTION_RELEASE.id}`,
   );
   assert.equal(productionAssetSource("vendor/katex/katex.min.js"), "vendor/katex/katex.min.js");
 });
