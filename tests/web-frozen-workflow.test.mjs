@@ -205,7 +205,7 @@ test("both public HTML entries load the complete production pipeline before the 
       /data-mineru-gateway-url="https:\/\/cmath-mineru-gateway\.cmath-math-map\.workers\.dev\/api\/mineru"/u,
       `${fileName} must use the deployed MinerU Gateway`,
     );
-    const idxOf = (name) => html.indexOf(`src="${name}"`);
+    const idxOf = (name) => html.indexOf(`src="${name}`);
     const clientIdx = idxOf("paper-import-client.js");
     assert.ok(idxOf("capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js") >= 0);
     assert.ok(idxOf("math-map-semantics-v3-bridge.js") >= 0);
