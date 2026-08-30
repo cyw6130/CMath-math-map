@@ -12,7 +12,7 @@ function freezeScript(src, { versioned = true } = {}) {
   return Object.freeze({ src, versioned });
 }
 
-const PRODUCTION_RELEASE_ID = "20260830-v51-release-1";
+const PRODUCTION_RELEASE_ID = "20260830-v51-release-2";
 const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("portable-maps-data.js"),
   freezeScript("vendor/force-graph/force-graph.min.js", { versioned: false }),
@@ -57,12 +57,13 @@ const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("src/paper-import/mineru/client.js"),
   freezeScript("src/paper-import/mineru/index.js"),
   freezeScript("src/paper-import/workflow/checkpoint-store.js"),
+  freezeScript("src/map-library/core.js"),
   freezeScript("src/paper-import/workflow/production.js"),
   freezeScript("src/paper-import/workflow/index.js"),
   freezeScript("src/paper-import/canonical/v5.js"),
   freezeScript("src/paper-import/production/index.js"),
   freezeScript("paper-import-client.js"),
-    freezeScript("app-v5.js"),
+  freezeScript("app-v5.js"),
 ]);
 
 export const PRODUCTION_RELEASE = Object.freeze({

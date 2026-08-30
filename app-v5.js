@@ -10,6 +10,16 @@
   "use strict";
 
   const body = document.body;
+  const mapLibraryCore = window.CMathMapLibraryCore;
+  if (typeof mapLibraryCore?.normalizeMapRecord !== "function") {
+    throw new Error("CMath Map Library 核心没有加载，无法启动地图库");
+  }
+  const {
+    generatedMapView,
+    isCanonicalMathMap,
+    normalizeMapRecord,
+    sanitizeGeneratedResult,
+  } = mapLibraryCore;
   const paperDrawerBackdrop = document.querySelector("#paper-drawer-backdrop");
   const paperDrawer = document.querySelector("#paper-drawer");
   const settingsDrawerBackdrop = document.querySelector("#settings-drawer-backdrop");
@@ -248,19 +258,15 @@
   function mergeImportedMaps(...collections) {
     const byId = new Map();
     collections.flat().forEach((map) => {
-      if (map && typeof map.id === "string" && map.data) byId.set(map.id, { ...map, isImported: true });
+      if (!map || typeof map.id !== "string" || !map.data) return;
+      try {
+        const normalized = normalizeMapRecord(map);
+        byId.set(normalized.id, normalized);
+      } catch {
+        // 损坏的持久化记录不应阻断其余地图库恢复。
+      }
     });
     return [...byId.values()];
-  }
-
-  function withCanonicalNumberingLedger(map) {
-    if (!isCanonicalMathMap(map?.data)) return map;
-    const projection = window.GammaCanonicalMathMapAdapter?.create(map.data, {
-      projectId: map.id,
-      numberingLedger: map.numberingLedger,
-    });
-    if (!projection?.numberingLedger) throw new Error("标准数学地图未能生成命名编号账本");
-    return { ...map, numberingLedger: projection.numberingLedger };
   }
 
   async function loadPersistedMapsAndState() {
@@ -326,7 +332,7 @@
   }
 
   async function persistImportedMap(map) {
-    const normalizedMap = withCanonicalNumberingLedger(map);
+    const normalizedMap = normalizeMapRecord(map);
     if (isLocalDesktop) {
       const response = await fetch("/api/maps", {
         method: "POST",
@@ -1152,33 +1158,6 @@
       activeImportStage = stage;
       setStep(stage, "done", `失败：${info.message ?? "请重试"}`);
     }
-  }
-
-  function generatedMapView(value) {
-    return value?.schema === "cmath.paper-to-map-result/v1" ? value.map : value;
-  }
-
-  function isCanonicalMathMap(value) {
-    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-    const fields = Object.keys(value).sort();
-    if (JSON.stringify(fields) !== JSON.stringify(["b0ClaimEntryIds", "entries", "inferences", "negationPairs"])) return false;
-    if (![value.entries, value.inferences, value.negationPairs, value.b0ClaimEntryIds].every(Array.isArray)) return false;
-    try {
-      (window.GammaMathMapSemanticsV3 ?? window.GammaMathMapSemantics)?.deriveMathState?.(value);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  function sanitizeGeneratedResult(value) {
-    if (value?.schema !== "cmath.paper-to-map-result/v1") return null;
-    if (isCanonicalMathMap(value.map)) return JSON.parse(JSON.stringify(value));
-    const clean = window.CMathPaperImportCheckpointStore?.sanitizeStageArtifact?.("closure", value);
-    if (clean?.schema !== "cmath.paper-to-map-result/v1" || clean.map?.schema !== "cmath.project-view-model/v0.1") {
-      throw new TypeError("论文解析结果不符合 Generated Map 合同");
-    }
-    return clean;
   }
 
   function finishExtractSteps(result) {
