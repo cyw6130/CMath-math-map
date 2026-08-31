@@ -515,6 +515,32 @@ a {
   display: block;
 }
 
+.gamma-graph-label-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gamma-graph-node-label {
+  position: absolute;
+  max-width: 220px;
+  overflow: hidden;
+  color: var(--board-node-ink);
+  font-family: "Avenir Next", "PingFang SC", system-ui, sans-serif;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  transform: translate(-50%, 12px);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.gamma-graph-node-label .katex {
+  font-size: inherit;
+}
+
 .graph-load-error {
   display: grid;
   min-height: 100%;

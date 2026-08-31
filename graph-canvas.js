@@ -246,6 +246,11 @@
     host.className = "alpha-force-graph-host";
     host.setAttribute("aria-hidden", "true");
     container.appendChild(host);
+    const labelLayer = document.createElement("div");
+    labelLayer.className = "gamma-graph-label-layer";
+    labelLayer.setAttribute("aria-hidden", "true");
+    container.appendChild(labelLayer);
+    const labelElements = new Map();
 
     const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const motionDuration = (duration) => reduceMotion() ? 0 : duration;
@@ -267,15 +272,75 @@
       return alpha * (node.enterProgress ?? 1);
     };
 
-    const shortLabel = (value, limit = 18) => {
-      const chars = Array.from(String(value ?? "").trim());
-      return chars.length > limit ? `${chars.slice(0, limit).join("")}…` : chars.join("");
+    const nodeLabelColor = (node) => node.nodeKind === "inference"
+      ? palette.inferenceTitle
+      : node.isClaim ? (claimEstablishedProgress(node) >= 0.5 ? palette.claimEstablishedTitle : palette.claimOpenTitle)
+        : palette.entryTitle;
+
+    const ensureLabelElement = (node) => {
+      let label = labelElements.get(node.id);
+      if (label) return label;
+      label = document.createElement("div");
+      label.className = "gamma-graph-node-label";
+      label.dataset.nodeId = node.id;
+      labelLayer.appendChild(label);
+      labelElements.set(node.id, label);
+      return label;
+    };
+
+    const renderLabelContent = (label, value) => {
+      const renderer = window.GammaMath?.render;
+      if (typeof renderer === "function") {
+        try {
+          label.innerHTML = renderer(value);
+          return "math";
+        } catch {
+          // Fall through to textContent when the optional math renderer is unavailable.
+        }
+      }
+      label.textContent = value;
+      return "text";
+    };
+
+    const syncNodeLabels = (_context, scale = graph?.zoom?.() ?? 1) => {
+      if (!graph || destroyed) return;
+      const safeScale = Math.max(Number.isFinite(scale) ? scale : 1, 0.1);
+      const activeIds = new Set();
+      graph.graphData().nodes.forEach((node) => {
+        activeIds.add(node.id);
+        const label = ensureLabelElement(node);
+        const visibleName = node.displayName ?? node.title ?? "";
+        const source = String(visibleName);
+        const rendererMode = typeof window.GammaMath?.render === "function" ? "math" : "text";
+        if (label.dataset.gammaMathSource !== source || label.dataset.gammaMathMode !== rendererMode) {
+          label.dataset.gammaMathMode = renderLabelContent(label, visibleName);
+          label.dataset.gammaMathSource = source;
+        }
+        const screen = graph.graph2ScreenCoords(node.x ?? 0, node.y ?? 0);
+        const selected = node.id === selectedId;
+        const progress = node.enterProgress ?? 1;
+        const visible = (safeScale >= labelMinScale || selected || node.isUnderstandingHub) && progress > 0.72;
+        label.style.left = `${screen.x}px`;
+        label.style.top = `${screen.y}px`;
+        label.style.visibility = visible ? "visible" : "hidden";
+        label.style.opacity = String(visibleAlpha(node));
+        label.style.color = nodeLabelColor(node);
+        label.style.fontSize = `${clamp(11 * Math.sqrt(safeScale), 8, 22)}px`;
+        label.style.fontWeight = node.nodeKind === "inference" ? "700" : "600";
+      });
+      labelElements.forEach((label, id) => {
+        if (!activeIds.has(id)) {
+          label.remove();
+          labelElements.delete(id);
+        }
+      });
     };
 
     const repaint = () => {
       if (!graph) return;
       if (typeof graph.refresh === "function") graph.refresh();
       else graph.nodeCanvasObject(graph.nodeCanvasObject());
+      syncNodeLabels();
     };
 
     const paintNode = (node, context, scale) => {
@@ -365,23 +430,6 @@
         context.fillText("当前聚焦", node.x, node.y - (radiusPx + 9) / safeScale);
       }
 
-      if ((scale >= labelMinScale || selected) && progress > 0.72) {
-        const visibleName = node.displayName ?? node.title;
-        const text = shortLabel(window.GammaMath?.toPlainText(visibleName) ?? visibleName);
-        const fontSize = clamp(11 / Math.sqrt(scale), 8, 13);
-        context.font = `${node.nodeKind === "inference" ? 700 : 600} ${fontSize}px "Avenir Next","PingFang SC",system-ui,sans-serif`;
-        context.textAlign = "center";
-        context.textBaseline = "top";
-        context.lineJoin = "round";
-        context.lineWidth = 4 / safeScale;
-        context.strokeStyle = palette.background;
-        context.strokeText(text, node.x, node.y + (radiusPx + 5) / safeScale);
-        context.fillStyle = node.nodeKind === "inference"
-          ? palette.inferenceTitle
-          : node.isClaim ? (claimEstablishedProgress(node) >= 0.5 ? palette.claimEstablishedTitle : palette.claimOpenTitle)
-            : palette.entryTitle;
-        context.fillText(text, node.x, node.y + (radiusPx + 5) / safeScale);
-      }
       context.restore();
     };
 
@@ -522,6 +570,7 @@
         .onNodeDragEnd(endDragRelaxation)
         .onNodeClick((node) => onNodeClick(node.id))
         .onBackgroundClick(onBackgroundClick)
+        .onRenderFramePost(syncNodeLabels)
         .onEngineStop(() => {
           if (dragRelaxing) {
             dragRelaxing = false;
@@ -887,6 +936,8 @@
         resizeObserver?.disconnect();
         graph?.pauseAnimation?.();
         container.removeEventListener("keydown", keyboardSelect);
+        labelElements.clear();
+        labelLayer.remove();
         host.remove();
       },
     };
