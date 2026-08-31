@@ -28,7 +28,7 @@
 
   function scriptText(value, table, open, close) {
     const chars = Array.from(value);
-    return chars.every((char) => table[char]) ? chars.map((char) => table[char]).join("") : `${open}${value}${close}`;
+    return chars.map((char) => table[char] ?? char).join("");
   }
 
   function latexToPlain(value = "") {
