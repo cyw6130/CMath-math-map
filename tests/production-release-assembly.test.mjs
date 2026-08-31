@@ -20,6 +20,7 @@ test("production entries are generated from one release manifest", () => {
   assert.equal(inspection.releaseId, PRODUCTION_RELEASE.id);
   assert.equal(inspection.scriptCount, PRODUCTION_RELEASE.scriptCount);
   assert.equal(inspection.scriptCount, 54);
+  assert.match(canonicalHtml, new RegExp(`href="styles\\.css\\?v=${PRODUCTION_RELEASE.id}"`, "u"));
 });
 
 test("the default test command covers every test module", () => {
