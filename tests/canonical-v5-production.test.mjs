@@ -27,15 +27,46 @@ function validMap() {
   };
 }
 
-test("frozen V5.1 Chinese-default prompt and capability contract stay byte-stable", () => {
-  assert.equal(v5.PROMPT_VERSION, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies-r2");
+function auditBundle(map, { findings = [], operations = [] } = {}) {
+  return {
+    schema: "cmath.audited-patch-repair/v0.3",
+    reviewedObjects: [
+      ...map.entries.map(({ id }) => ({
+        objectKind: "entry",
+        targetId: id,
+        disposition: findings.some((finding) => finding.targetIds.includes(id)) ? "finding" : "clean",
+        findingId: findings.find((finding) => finding.targetIds.includes(id))?.id ?? null,
+      })),
+      ...map.inferences.map(({ id }) => ({
+        objectKind: "inference",
+        targetId: id,
+        disposition: findings.some((finding) => finding.targetIds.includes(id)) ? "finding" : "clean",
+        findingId: findings.find((finding) => finding.targetIds.includes(id))?.id ?? null,
+      })),
+    ],
+    findings,
+    operations,
+  };
+}
+
+test("frozen V5.2 default-atomic prompt and capability contract stay byte-stable", () => {
+  assert.equal(v5.PROMPT_VERSION, "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt");
   assert.equal(
     createHash("sha256").update(v5.CONTRACT_MARKDOWN).digest("hex"),
     "839193d6d622c78716aa5fc748697bfa02a7042cca41c27f61257259d381472d",
   );
   assert.equal(
     createHash("sha256").update(v5.renderGeneratePrompt("SOURCE")).digest("hex"),
-    "7f7e97925f0d8b51e95b6242aaaf503df4a279e7dec7376c99578eec77a1fa11",
+    "79f9efcebfacbfaeccd7d09360cdbc3b7aa57bac699dbaa6d38d5b645ae64c98",
+  );
+  const emptyMap = { entries: [], inferences: [], negationPairs: [], b0ClaimEntryIds: [] };
+  assert.equal(
+    createHash("sha256").update(v5.renderRepairPrompt("SOURCE", emptyMap, { valid: true, error: null, formatIssues: [] })).digest("hex"),
+    "a2ee339ca37e22bde9cd7008c0dcfdb75ff95d6ba000d35c9a0f486f6867c3f8",
+  );
+  assert.equal(
+    createHash("sha256").update(v5.renderRecoveryPrompt("SOURCE", "BROKEN", "parse failed")).digest("hex"),
+    "6c9c4cab98bbc5c24550b8bd8b74051c34385585d20f448ccbaebd82509cae32",
   );
   assert.doesNotMatch(v5.renderGeneratePrompt("SOURCE"), /反证法必须拆出/u);
 });
@@ -50,28 +81,10 @@ test("website workflow defaults mathematical map content to Simplified Chinese",
   }
 });
 
-test("V5 makes one generation call when the canonical map is valid", async () => {
+test("V5 audits a valid canonical map in exactly two calls", async () => {
   const calls = [];
-  const result = await v5.run({
-    markedMarkdown: "[[PAGE 1]] source",
-    chatImpl: async (request) => {
-      calls.push(request.stage);
-      return { content: JSON.stringify(validMap()) };
-    },
-  });
-  assert.deepEqual(calls, ["assemble"]);
-  assert.equal(result.report.generationAttempts, 1);
-  assert.equal(result.report.repairAttempts, 0);
-  assert.deepEqual(result.map, validMap());
-});
-
-test("V5 repairs an invalid canonical shape at most twice", async () => {
-  const calls = [];
-  const outputs = [
-    { ...validMap(), extra: true },
-    { ...validMap(), extra: true },
-    validMap(),
-  ];
+  const map = validMap();
+  const outputs = [map, auditBundle(map)];
   const result = await v5.run({
     markedMarkdown: "[[PAGE 1]] source",
     chatImpl: async (request) => {
@@ -79,24 +92,100 @@ test("V5 repairs an invalid canonical shape at most twice", async () => {
       return { content: JSON.stringify(outputs.shift()) };
     },
   });
-  assert.deepEqual(calls, ["assemble", "repair", "repair"]);
-  assert.equal(result.report.repairAttempts, 2);
+  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.equal(result.report.generationAttempts, 1);
+  assert.equal(result.report.repairAttempts, 1);
+  assert.equal(result.report.repair.reason, "audit-clean");
+  assert.deepEqual(result.map, validMap());
 });
 
-test("V5 preserves malformed generation text for targeted JSON repair", async () => {
+test("new frozen workflow always uses the second call for one atomic semantic repair", async () => {
+  const generated = validMap();
+  const finding = {
+    id: "F1",
+    category: "distortion",
+    objectKind: "entry",
+    targetIds: ["claim:premise"],
+    sourceRefs: ["PAGE 1"],
+    sourceSpan: { startLine: 1, endLine: 1 },
+    diagnosis: "The statement dropped a source condition.",
+    repairRequirement: "Restore the source condition only.",
+  };
+  const repairedStatement = "P under the source condition";
+  const outputs = [
+    generated,
+    auditBundle(generated, {
+      findings: [finding],
+      operations: [{
+        findingId: "F1",
+        op: "replaceFields",
+        objectKind: "entry",
+        targetId: "claim:premise",
+        changes: [{ field: "statement", before: "P", after: repairedStatement }],
+      }],
+    }),
+  ];
+  const calls = [];
+  const result = await v5.run({
+    markedMarkdown: "[[PAGE 1]] source condition",
+    chatImpl: async (request) => {
+      calls.push(request.stage);
+      return { content: JSON.stringify(outputs.shift()) };
+    },
+  });
+
+  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.equal(result.map.entries[0].statement, repairedStatement);
+  assert.equal(result.report.repairAttempts, 1);
+  assert.equal(result.report.repair.selection, "patched");
+});
+
+test("V5 repairs an addressable contract error atomically in the second call", async () => {
+  const calls = [];
+  const generated = validMap();
+  generated.inferences[0].conclusion = "missing:entry";
+  const finding = {
+    id: "F1",
+    category: "contract",
+    objectKind: "inference",
+    targetIds: ["inference:organize"],
+    sourceRefs: [],
+    diagnosis: "The conclusion references a missing Entry.",
+    repairRequirement: "Remove the unsupported inference.",
+  };
+  const outputs = [generated, auditBundle(generated, {
+    findings: [finding],
+    operations: [{ findingId: "F1", op: "remove", objectKind: "inference", targetId: "inference:organize" }],
+  })];
+  const result = await v5.run({
+    markedMarkdown: "[[PAGE 1]] source",
+    chatImpl: async (request) => {
+      calls.push(request.stage);
+      return { content: JSON.stringify(outputs.shift()) };
+    },
+  });
+  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.equal(result.report.repairAttempts, 1);
+  assert.equal(result.map.inferences.length, 0);
+});
+
+test("V5 recovers malformed generation and applies its atomic bundle in the second call", async () => {
   const malformed = '{"entries":[{"id":"claim:premise" BROKEN]';
   let repairPrompt = "";
+  const recovered = validMap();
   const result = await v5.run({
     markedMarkdown: "[[PAGE 1]] source",
     chatImpl: async (request) => {
       if (request.stage === "assemble") return { content: malformed };
       repairPrompt = request.messages[0].content;
-      return { content: JSON.stringify(validMap()) };
+      return { content: JSON.stringify({ recoveredMap: recovered, ...auditBundle(recovered) }) };
     },
   });
   assert.match(repairPrompt, /claim:premise/u);
   assert.match(repairPrompt, /BROKEN/u);
+  assert.match(repairPrompt, /第二次也是最后一次调用/u);
   assert.equal(result.report.repairAttempts, 1);
+  assert.equal(result.report.repair.selection, "recovered-original");
 });
 
 test("canonical adapter accepts v3 organization with a Claim premise", () => {

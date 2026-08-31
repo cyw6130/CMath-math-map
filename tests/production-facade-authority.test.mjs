@@ -88,7 +88,7 @@ test("Production Paper Import facade exposes the small public authority surface"
   assert.equal(Object.isFrozen(facade.FROZEN_WORKFLOW), true);
   assert.deepEqual(facade.VNEXT_FROZEN_WORKFLOW, VNEXT_FROZEN_WORKFLOW);
   assert.equal(Object.isFrozen(facade.VNEXT_FROZEN_WORKFLOW), true);
-  assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.1-zh-default-fidelity-with-complete-dependencies-r2");
+  assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt");
   assert.equal(Object.isFrozen(facade.V5_FROZEN_WORKFLOW), true);
   const manifest = JSON.parse(fs.readFileSync(
     new URL("../capabilities/consumer-manifest.json", import.meta.url),
@@ -201,7 +201,12 @@ test("public production entrance defaults to frozen canonical V5", async () => {
       size: 3,
       arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer,
     },
-    chatImpl: async () => ({ content: JSON.stringify(canonicalMap) }),
+    chatImpl: async ({ stage }) => ({ content: JSON.stringify(stage === "assemble" ? canonicalMap : {
+      schema: "cmath.audited-patch-repair/v0.3",
+      reviewedObjects: [{ objectKind: "entry", targetId: "claim:main", disposition: "clean", findingId: null }],
+      findings: [],
+      operations: [],
+    }) }),
     hashImpl: async () => "vnext-public-digest",
     mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
   });
@@ -210,7 +215,8 @@ test("public production entrance defaults to frozen canonical V5", async () => {
   assert.equal(result.map.entries[0].id, "claim:main");
   assert.deepEqual(result.identity.frozenWorkflow, facade.V5_FROZEN_WORKFLOW);
   assert.equal(result.diagnostics.runReport.generationAttempts, 1);
-  assert.equal(result.diagnostics.runReport.repairAttempts, 0);
+  assert.equal(result.diagnostics.runReport.repairAttempts, 1);
+  assert.equal(result.diagnostics.runReport.repair.reason, "audit-clean");
 });
 
 test("facade fails explicitly when a required core dependency is absent", () => {
