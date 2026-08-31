@@ -37,7 +37,7 @@ function extractFunction(source, name) {
 
 function importProgressHarness() {
   const source = read("src/workbench/paper-import.js");
-  const steps = ["mineru", "generate", "validate", "repair", "save"];
+  const steps = ["mineru", "generate", "repair", "validate", "save"];
   const stepEls = new Map(steps.map((id) => {
     const classes = new Set();
     const detail = { textContent: "" };
@@ -52,8 +52,9 @@ function importProgressHarness() {
   }));
   const context = {
     stepEls,
-    activeImportStage: "mineru",
-    EXTRACT_STEPS: steps.map((id) => ({ id })),
+    activeStage: "mineru",
+    stageContractError: null,
+    extractSteps: steps.map((id) => ({ id })),
   };
   vm.runInNewContext(`
     ${extractFunction(source, "setStep")};
@@ -61,7 +62,11 @@ function importProgressHarness() {
     ${extractFunction(source, "handleImportStage")};
     this.handleImportStage = handleImportStage;
   `, context);
-  return { handleImportStage: context.handleImportStage, stepEls };
+  return {
+    handleImportStage: context.handleImportStage,
+    stepEls,
+    stageContractError: () => context.stageContractError,
+  };
 }
 
 function loadMathRenderingHarness() {
@@ -100,13 +105,25 @@ test("paper import marks every finished stage with a solid completion state", ()
 
   handleImportStage("mineru", { phase: "complete", pageCount: 25 });
   handleImportStage("generate", { phase: "start" });
-  handleImportStage("validate", { phase: "fail", message: "contract mismatch" });
   handleImportStage("repair", { phase: "start" });
+  handleImportStage("validate", { phase: "fail", message: "contract mismatch" });
 
-  for (const id of ["mineru", "generate", "validate"]) {
+  for (const id of ["mineru", "generate", "repair", "validate"]) {
     assert.equal(stepEls.get(id).classList.contains("is-done"), true, `${id} is shown as completed`);
   }
-  assert.equal(stepEls.get("repair").classList.contains("is-active"), true);
+  assert.match(stepEls.get("validate").querySelector(".step-detail").textContent, /contract mismatch/u);
+});
+
+test("paper import records an incompatible workflow stage instead of ignoring it", () => {
+  const { handleImportStage, stageContractError } = importProgressHarness();
+  handleImportStage("audited-patch-repair", { phase: "start" });
+  assert.match(stageContractError().message, /网站工作流阶段不兼容：audited-patch-repair/u);
+});
+
+test("paper import presents recovery as the same bounded repair stage", () => {
+  const { handleImportStage, stepEls } = importProgressHarness();
+  handleImportStage("repair", { phase: "start", operation: "recovery-and-audited-patch" });
+  assert.equal(stepEls.get("repair").querySelector(".step-detail").textContent, "正在恢复格式并统一审修");
 });
 
 test("math rendering capability keeps an undelimited spaced formula intact", () => {

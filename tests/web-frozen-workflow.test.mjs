@@ -222,12 +222,17 @@ test("both public HTML entries load the complete production pipeline before the 
 
 test("public UI calls only the single Production Paper Import entry", () => {
   const workbench = fs.readFileSync(path.join(root, "src/workbench/paper-import.js"), "utf8");
+  const facade = fs.readFileSync(path.join(root, "src/paper-import/production/index.js"), "utf8");
   assert.match(workbench, /runtime\.paperImport\.requestPaperProductionImport\(/u);
   assert.doesNotMatch(workbench, /GammaPaperImportClient\.(?:requestPaperProjectView|extractPdfText)\(/u);
   assert.match(workbench, /mineruFetchImpl:\s*view\.fetch\.bind\(view\)/u);
-  for (const stage of ["mineru", "generate", "validate", "repair", "save"]) {
-    assert.match(workbench, new RegExp(`id: ["']${stage}["']`, "u"));
+  assert.match(workbench, /runtime\.paperImport\.V5_PROGRESS_STAGES/u);
+  for (const stage of ["mineru", "generate", "repair", "validate"]) {
+    assert.match(facade, new RegExp(`id: ["']${stage}["']`, "u"));
   }
+  assert.ok(facade.indexOf('id: "repair"') < facade.indexOf('id: "validate"'));
+  assert.match(facade, /V5_FROZEN_WORKFLOW\?\.displayVersion/u);
+  assert.match(facade, /统一审查与原子修复（1 次）/u);
 });
 
 test("paper workflow saves its Project View to the library instead of downloading automatically", () => {

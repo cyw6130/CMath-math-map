@@ -149,7 +149,7 @@ class FakeElement {
     if (this._innerHTML.includes("extract-steps")) {
       const list = new FakeElement("ol");
       list.className = "extract-steps";
-      for (const id of ["mineru", "generate", "validate", "repair", "save"]) {
+      for (const id of ["mineru", "generate", "repair", "validate", "save"]) {
         const item = new FakeElement("li");
         item.dataset.step = id;
         const detail = new FakeElement("span");
@@ -318,6 +318,12 @@ test("Paper Import Workbench mounts once, saves before handoff, and disposes cle
     paperImport: {
       endpointUrl: (value) => value,
       fetch: globalThis.fetch,
+      V5_PROGRESS_STAGES: [
+        { id: "mineru", label: "MinerU 精准解析" },
+        { id: "generate", label: "V5.2.1 生成中文标准数学地图" },
+        { id: "repair", label: "统一审查与原子修复（1 次）" },
+        { id: "validate", label: "最终能力合同校验" },
+      ],
       async requestPaperProductionImport() { events.push("import"); return result; },
     },
     mapLibrary: {

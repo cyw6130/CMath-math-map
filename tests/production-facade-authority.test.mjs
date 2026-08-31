@@ -77,6 +77,7 @@ test("Production Paper Import facade exposes the small public authority surface"
     "MODULE_ID",
     "FROZEN_WORKFLOW",
     "V5_FROZEN_WORKFLOW",
+    "V5_PROGRESS_STAGES",
     "VNEXT_FROZEN_WORKFLOW",
     "endpointUrl",
     "requestPaperProjectView",
@@ -89,7 +90,16 @@ test("Production Paper Import facade exposes the small public authority surface"
   assert.deepEqual(facade.VNEXT_FROZEN_WORKFLOW, VNEXT_FROZEN_WORKFLOW);
   assert.equal(Object.isFrozen(facade.VNEXT_FROZEN_WORKFLOW), true);
   assert.equal(facade.V5_FROZEN_WORKFLOW.promptVersion, "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt");
+  assert.equal(facade.V5_FROZEN_WORKFLOW.displayVersion, "V5.2.1");
+  assert.equal(facade.V5_FROZEN_WORKFLOW.productionContractVersion, "production-canonical-paper-import/v1.1");
   assert.equal(Object.isFrozen(facade.V5_FROZEN_WORKFLOW), true);
+  assert.deepEqual(facade.V5_PROGRESS_STAGES.map(({ id, label }) => [id, label]), [
+    ["mineru", "MinerU 精准解析"],
+    ["generate", "V5.2.1 生成中文标准数学地图"],
+    ["repair", "统一审查与原子修复（1 次）"],
+    ["validate", "最终能力合同校验"],
+  ]);
+  assert.equal(Object.isFrozen(facade.V5_PROGRESS_STAGES), true);
   const manifest = JSON.parse(fs.readFileSync(
     new URL("../capabilities/consumer-manifest.json", import.meta.url),
     "utf8",
@@ -195,6 +205,7 @@ test("public production entrance defaults to frozen canonical V5", async () => {
     negationPairs: [],
     b0ClaimEntryIds: [],
   };
+  const progress = [];
   const result = await facade.requestPaperProductionImport({
     pdf: {
       name: "vnext.pdf",
@@ -209,6 +220,7 @@ test("public production entrance defaults to frozen canonical V5", async () => {
     }) }),
     hashImpl: async () => "vnext-public-digest",
     mineruClient: { importPdf: async () => ({ markedMarkdown: "[[PAGE 1]] source" }) },
+    onStage: (stage, info) => progress.push([stage, info.phase]),
   });
 
   assert.equal(result.schema, "cmath.paper-to-map-result/v1");
@@ -217,6 +229,13 @@ test("public production entrance defaults to frozen canonical V5", async () => {
   assert.equal(result.diagnostics.runReport.generationAttempts, 1);
   assert.equal(result.diagnostics.runReport.repairAttempts, 1);
   assert.equal(result.diagnostics.runReport.repair.reason, "audit-clean");
+  assert.deepEqual(progress, [
+    ["mineru", "start"],
+    ["mineru", "complete"],
+    ["generate", "start"],
+    ["repair", "start"],
+    ["validate", "complete"],
+  ]);
 });
 
 test("facade fails explicitly when a required core dependency is absent", () => {

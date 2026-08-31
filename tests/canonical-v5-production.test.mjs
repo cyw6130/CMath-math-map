@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const v5 = require("../src/paper-import/canonical/v5.js");
+const gateway = require("../workers/model-gateway/index.js");
 const semantics = require("../capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js");
 globalThis.GammaMathMapSemanticsV3 = semantics;
 const adapter = require("../canonical-math-map-adapter.js");
@@ -46,6 +47,30 @@ function auditBundle(map, { findings = [], operations = [] } = {}) {
     ],
     findings,
     operations,
+  };
+}
+
+function providedGatewayChat(outputs, stages) {
+  const handler = gateway.createGatewayHandler({
+    fetchImpl: async () => new Response(JSON.stringify({
+      status: "completed",
+      output: [{ content: [{ type: "output_text", text: outputs.shift() }] }],
+    }), { status: 200, headers: { "Content-Type": "application/json" } }),
+  });
+  return async (request) => {
+    stages.push(request.stage);
+    const response = await handler.fetch(new Request("https://gateway.example/api/model/complete", {
+      method: "POST",
+      headers: { Origin: "https://app.example", "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    }), {
+      OPENCODE_GO_API_KEY: "test-secret",
+      MODEL_ALLOWED_ORIGINS: "https://app.example",
+      MODEL_GATEWAY_ENABLED: "true",
+    });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.error);
+    return body;
   };
 }
 
@@ -92,7 +117,7 @@ test("V5 audits a valid canonical map in exactly two calls", async () => {
       return { content: JSON.stringify(outputs.shift()) };
     },
   });
-  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.deepEqual(calls, ["assemble", "repair"]);
   assert.equal(result.report.generationAttempts, 1);
   assert.equal(result.report.repairAttempts, 1);
   assert.equal(result.report.repair.reason, "audit-clean");
@@ -134,7 +159,7 @@ test("new frozen workflow always uses the second call for one atomic semantic re
     },
   });
 
-  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.deepEqual(calls, ["assemble", "repair"]);
   assert.equal(result.map.entries[0].statement, repairedStatement);
   assert.equal(result.report.repairAttempts, 1);
   assert.equal(result.report.repair.selection, "patched");
@@ -164,7 +189,7 @@ test("V5 repairs an addressable contract error atomically in the second call", a
       return { content: JSON.stringify(outputs.shift()) };
     },
   });
-  assert.deepEqual(calls, ["assemble", "audited-patch-repair"]);
+  assert.deepEqual(calls, ["assemble", "repair"]);
   assert.equal(result.report.repairAttempts, 1);
   assert.equal(result.map.inferences.length, 0);
 });
@@ -185,6 +210,52 @@ test("V5 recovers malformed generation and applies its atomic bundle in the seco
   assert.match(repairPrompt, /BROKEN/u);
   assert.match(repairPrompt, /第二次也是最后一次调用/u);
   assert.equal(result.report.repairAttempts, 1);
+  assert.equal(result.report.repair.selection, "recovered-original");
+});
+
+test("CMath-provided gateway accepts both V5.2 calls on the normal audit path", async () => {
+  const map = validMap();
+  const stages = [];
+  const progress = [];
+  const result = await v5.run({
+    markedMarkdown: "[[PAGE 1]] source",
+    chatImpl: providedGatewayChat([JSON.stringify(map), JSON.stringify(auditBundle(map))], stages),
+    onStage: (stage, info) => progress.push([stage, info.operation ?? info.phase]),
+  });
+
+  assert.deepEqual(stages, ["assemble", "repair"]);
+  assert.deepEqual(progress, [
+    ["generate", "generate"],
+    ["repair", "audited-patch-repair"],
+    ["validate", "complete"],
+  ]);
+  assert.deepEqual(result.report.calls.map(({ operation, publicStage, transportStage }) => (
+    [operation, publicStage, transportStage]
+  )), [
+    ["generate", "generate", "assemble"],
+    ["audited-patch-repair", "repair", "repair"],
+  ]);
+});
+
+test("CMath-provided gateway accepts the V5.2 recovery and audit call as repair", async () => {
+  const map = validMap();
+  const stages = [];
+  const progress = [];
+  const result = await v5.run({
+    markedMarkdown: "[[PAGE 1]] source",
+    chatImpl: providedGatewayChat([
+      '{"entries":[BROKEN',
+      JSON.stringify({ recoveredMap: map, ...auditBundle(map) }),
+    ], stages),
+    onStage: (stage, info) => progress.push([stage, info.operation ?? info.phase]),
+  });
+
+  assert.deepEqual(stages, ["assemble", "repair"]);
+  assert.deepEqual(progress, [
+    ["generate", "generate"],
+    ["repair", "recovery-and-audited-patch"],
+    ["validate", "complete"],
+  ]);
   assert.equal(result.report.repair.selection, "recovered-original");
 });
 

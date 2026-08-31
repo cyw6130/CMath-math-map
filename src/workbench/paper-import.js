@@ -21,14 +21,6 @@
     kimi: "Kimi",
     opencode: "OpenCode Go",
   });
-  const EXTRACT_STEPS = Object.freeze([
-    Object.freeze({ id: "mineru", label: "MinerU 精准解析" }),
-    Object.freeze({ id: "generate", label: "V5.1 生成中文标准数学地图" }),
-    Object.freeze({ id: "validate", label: "能力合同校验" }),
-    Object.freeze({ id: "repair", label: "按需修复（最多 2 次）" }),
-    Object.freeze({ id: "save", label: "保存标准 JSON" }),
-  ]);
-
   function mountPaperImportWorkbench({ root, runtime, onMapReady } = {}) {
     if (!root || typeof root.querySelector !== "function") throw new TypeError("Paper Import Workbench 需要 DOM root");
     if (instances.has(root)) return instances.get(root);
@@ -44,6 +36,14 @@
       throw new Error("Paper Import Workbench 缺少 runtime.mapLibrary");
     }
     if (typeof onMapReady !== "function") throw new TypeError("Paper Import Workbench 需要 onMapReady");
+    if (!Array.isArray(runtime.paperImport.V5_PROGRESS_STAGES)
+      || runtime.paperImport.V5_PROGRESS_STAGES.some((step) => !step?.id || !step?.label)) {
+      throw new Error("Paper Import Workbench 缺少 V5.2 公共阶段契约");
+    }
+    const extractSteps = Object.freeze([
+      ...runtime.paperImport.V5_PROGRESS_STAGES,
+      Object.freeze({ id: "save", label: "保存标准 JSON" }),
+    ]);
 
     const view = root.defaultView ?? globalThis;
     const storage = view.localStorage;
@@ -74,6 +74,7 @@
     let activeStage = "mineru";
     let consentResolver = null;
     let activeAbortController = null;
+    let stageContractError = null;
     let disposed = false;
 
     function listen(target, type, handler, options) {
@@ -154,7 +155,8 @@
     function showSteps() {
       status.hidden = false;
       status.classList.remove("is-error", "is-success");
-      status.innerHTML = `<ol class="extract-steps">${EXTRACT_STEPS.map((step) => (
+      stageContractError = null;
+      status.innerHTML = `<ol class="extract-steps">${extractSteps.map((step) => (
         `<li data-step="${step.id}"><span class="step-dot"></span><span class="step-label">${step.label}</span><span class="step-detail"></span></li>`
       )).join("")}</ol>`;
       stepEls = new Map([...status.querySelectorAll("li")].map((item) => [item.dataset.step, item]));
@@ -170,9 +172,9 @@
     }
 
     function completePriorSteps(id) {
-      const activeIndex = EXTRACT_STEPS.findIndex((step) => step.id === id);
+      const activeIndex = extractSteps.findIndex((step) => step.id === id);
       if (activeIndex <= 0) return;
-      EXTRACT_STEPS.slice(0, activeIndex).forEach((step) => {
+      extractSteps.slice(0, activeIndex).forEach((step) => {
         const item = stepEls.get(step.id);
         if (!item || item.classList.contains("is-done")) return;
         setStep(step.id, "done", item.querySelector(".step-detail")?.textContent || "完成");
@@ -180,14 +182,22 @@
     }
 
     function handleImportStage(stage, info = {}) {
-      if (!stepEls.has(stage)) return;
+      if (!stepEls.has(stage)) {
+        stageContractError ??= new Error(`网站工作流阶段不兼容：${stage}`);
+        return;
+      }
       if (info.phase === "resume") {
         completePriorSteps(stage);
         setStep(stage, "done", "已从本地 checkpoint 恢复");
       } else if (info.phase === "start") {
         completePriorSteps(stage);
         activeStage = stage;
-        setStep(stage, "active", stage === "mineru" ? "正在提交并解析 PDF" : "运行中…");
+        const detail = stage === "mineru"
+          ? "正在提交并解析 PDF"
+          : (info.operation === "recovery-and-audited-patch"
+            ? "正在恢复格式并统一审修"
+            : (stage === "repair" ? "正在统一审查与原子修复" : "运行中…"));
+        setStep(stage, "active", detail);
       } else if (info.phase === "progress") {
         activeStage = stage;
         const states = {
@@ -217,16 +227,17 @@
       const map = runtime.mapLibrary.generatedMapView(result);
       if (runtime.mapLibrary.isCanonicalMathMap(map)) {
         setStep("generate", "done", `${map.entries.length} 个对象 · ${map.inferences.length} 条推理`);
+        const repair = result?.diagnostics?.runReport?.repair;
+        const patched = String(repair?.selection ?? "").includes("patched");
+        setStep("repair", "done", patched ? "已完成 1 次原子修复" : "已审查，无需修改");
         setStep("validate", "done", "标准 JSON 合法");
-        const repairs = Number(result?.diagnostics?.runReport?.repairAttempts ?? 0);
-        setStep("repair", "done", repairs ? `已修复 ${repairs} 次` : "无需修复");
         return;
       }
       const entries = map?.entries?.length ?? 0;
       const inferences = map?.inferences?.length ?? 0;
       setStep("generate", "done", `${entries} 个对象 · ${inferences} 条推理 · 部分完成`);
-      setStep("validate", "done", "合法部分结果");
       setStep("repair", "done", "未猜测缺失语义");
+      setStep("validate", "done", "合法部分结果");
     }
 
     function mapRecord(result, fileName) {
@@ -434,6 +445,7 @@
           reasoningEffort: !useProvidedModel && model === "deepseek-v4-flash" ? "none" : undefined,
           signal: activeAbortController.signal,
         });
+        if (stageContractError) throw stageContractError;
         const record = mapRecord(result, selectedPdf.name);
         const savedRecord = await runtime.mapLibrary.saveMap(record) ?? record;
         setStep("save", "done", "已保存到我的 JSON 地图");

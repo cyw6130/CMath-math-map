@@ -33,9 +33,15 @@
   const MAX_REPAIR_ATTEMPTS = 1;
   const RESULT_SCHEMA = "cmath.paper-to-map-result/v1";
   const CAPABILITY_SYNC_IDENTITY = "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198";
+  const MODEL_OPERATIONS = Object.freeze({
+    generate: Object.freeze({ operation: "generate", publicStage: "generate", transportStage: "assemble" }),
+    auditRepair: Object.freeze({ operation: "audited-patch-repair", publicStage: "repair", transportStage: "repair" }),
+    recoveryRepair: Object.freeze({ operation: "recovery-and-audited-patch", publicStage: "repair", transportStage: "repair" }),
+  });
   const FROZEN_WORKFLOW = Object.freeze({
-    label: "canonical-paper-to-map-v5.2-default-atomic-repair",
-    productionContractVersion: "production-canonical-paper-import/v1",
+    label: "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+    displayVersion: "V5.2.1",
+    productionContractVersion: "production-canonical-paper-import/v1.1",
     resultContractVersion: RESULT_SCHEMA,
     mineruInputVersion: "cmath.paper-import.mineru/v1",
     promptVersion: PROMPT_VERSION,
@@ -666,23 +672,27 @@ P ∈ Closure, ¬P ∈ Closure    → M 非法
     }
     const transport = modelTransport.createModelTransport({ chatImpl, endpoint, apiKey, model, providerLabel, fetchImpl, signal });
     const calls = [];
-    const complete = async (stage, prompt) => {
+    const complete = async (call, prompt) => {
       const startedAt = Date.now();
-      onStage?.(stage, { phase: "start" });
-      const transportStage = stage === "generate" ? "assemble" : stage;
+      onStage?.(call.publicStage, { phase: "start", operation: call.operation });
       const response = await transport.complete({
-        stage: transportStage,
+        stage: call.transportStage,
         messages: [{ role: "user", content: prompt }],
         maxTokens: 100_000,
         responseFormat: { type: "json_object" },
         reasoningEffort,
         signal,
       });
-      calls.push({ stage, transportStage, durationMs: Date.now() - startedAt });
+      calls.push({
+        operation: call.operation,
+        publicStage: call.publicStage,
+        transportStage: call.transportStage,
+        durationMs: Date.now() - startedAt,
+      });
       return response.content;
     };
 
-    const generatedContent = await complete("generate", generatePrompt);
+    const generatedContent = await complete(MODEL_OPERATIONS.generate, generatePrompt);
     let map;
     let routeError = null;
     try {
@@ -695,7 +705,7 @@ P ∈ Closure, ¬P ∈ Closure    → M 非法
     let repair;
     if (!routeError) {
       const initialValidation = validationSnapshot(map);
-      const repairedContent = await complete("audited-patch-repair", renderRepairPrompt(markedMarkdown, map, initialValidation));
+      const repairedContent = await complete(MODEL_OPERATIONS.auditRepair, renderRepairPrompt(markedMarkdown, map, initialValidation));
       const audited = applyAuditBundle(parseMap(repairedContent), map, markedMarkdown);
       const finalValidation = validationSnapshot(audited.map);
       const beforeFormat = new Set(initialValidation.formatIssues.map(formatIssueKey));
@@ -727,7 +737,7 @@ P ∈ Closure, ¬P ∈ Closure    → M 非法
       }
     } else {
       const recoveredContent = await complete(
-        "recovery-and-audited-patch",
+        MODEL_OPERATIONS.recoveryRepair,
         renderRecoveryPrompt(markedMarkdown, generatedContent, routeError.message),
       );
       const envelope = parseMap(recoveredContent);
@@ -766,6 +776,7 @@ P ∈ Closure, ¬P ∈ Closure    → M 非法
     INPUT_TOKEN_LIMIT,
     MAX_REPAIR_ATTEMPTS,
     RESULT_SCHEMA,
+    MODEL_OPERATIONS,
     FROZEN_WORKFLOW,
     CONTRACT_MARKDOWN,
     renderGeneratePrompt,
