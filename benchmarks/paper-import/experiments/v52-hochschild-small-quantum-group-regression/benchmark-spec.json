@@ -1,0 +1,110 @@
+{
+  "schema": "cmath.paper-import-diagnostic-regression/v0.1",
+  "caseId": "hochschild-small-quantum-group",
+  "status": "diagnostic-regression",
+  "scoringEligible": false,
+  "goldStatus": "not-authored",
+  "targetPaper": {
+    "title": "On certain Hochschild cohomology groups for the small quantum group",
+    "authors": ["Nicolas Hemelsoet", "Rik Voorhaar"],
+    "year": 2021,
+    "arxivId": "2104.05113",
+    "sourceUrl": "https://arxiv.org/abs/2104.05113",
+    "pdfPages": 25,
+    "pdfSha256": "fbc1c276346ebc329004bf67577800cb95704bdac8a9165e32f7cd6e693abe7f"
+  },
+  "baseline": {
+    "artifact": "baseline-import-result.json",
+    "artifactSha256": "7880be1dbd1530934379b7ab6537201bef3d1c352eca7ea08f87f9bcace89432",
+    "workflowReleaseId": "paper-import-v5.2.1-stage-contract-repair",
+    "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+    "entryCount": 53,
+    "claimCount": 48,
+    "inferenceCount": 25,
+    "openClaimCount": 35,
+    "openClaimRatio": 0.7291666666666666,
+    "isolatedEntryCount": 15,
+    "isolatedEntryRatio": 0.2830188679245283
+  },
+  "expectedSourceState": {
+    "legitimateOpenClaimIds": [
+      "C08-conj-DC",
+      "C09-conj-DC-W",
+      "C10-conj-sl-inv",
+      "C11-conj-dimdiv"
+    ],
+    "maximumOpenClaimCount": 4,
+    "maximumOpenClaimRatio": 0.1,
+    "exactCandidateIdsRequired": false,
+    "equivalentSemanticRepresentationAllowed": true
+  },
+  "sourceSupportedMissingProvenance": [
+    {
+      "baselineClaimId": "C06-eq-decomp",
+      "paperLocator": "Equation (1), PDF page 3",
+      "expectedProvenance": "external-b0-or-equivalent-cited-result",
+      "downstreamBlockedClaimCount": 10
+    },
+    {
+      "baselineClaimId": "C14-cor-BGGop",
+      "paperLocator": "Corollary 2.13, PDF page 6",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 0
+    },
+    {
+      "baselineClaimId": "C18-cor-wedgepsi",
+      "paperLocator": "Corollary 2.17, PDF page 7",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 1
+    },
+    {
+      "baselineClaimId": "C20-lem-pstruct",
+      "paperLocator": "Lemma 2.19, PDF page 7",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 13
+    },
+    {
+      "baselineClaimId": "C22-rem-split",
+      "paperLocator": "Remark 2.21, PDF page 9",
+      "expectedProvenance": "local-proof-or-equivalent-established-remark",
+      "downstreamBlockedClaimCount": 0
+    },
+    {
+      "baselineClaimId": "C23-lem-rootweight",
+      "paperLocator": "Lemma 3.1, PDF page 9",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 11
+    },
+    {
+      "baselineClaimId": "C46-cor-subalg",
+      "paperLocator": "Corollary 6.3, PDF page 22",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 0
+    },
+    {
+      "baselineClaimId": "C48-prop-Pn136",
+      "paperLocator": "Proposition 6.5, PDF page 23",
+      "expectedProvenance": "algorithmic-calculation",
+      "downstreamBlockedClaimCount": 0
+    },
+    {
+      "baselineClaimId": "C49-lem-Symwedge",
+      "paperLocator": "Lemma 6.6, PDF page 23",
+      "expectedProvenance": "local-proof",
+      "downstreamBlockedClaimCount": 1
+    },
+    {
+      "baselineClaimId": "C51-prop-P3P4",
+      "paperLocator": "Proposition 6.8, PDF page 24",
+      "expectedProvenance": "algorithmic-calculation",
+      "downstreamBlockedClaimCount": 0
+    }
+  ],
+  "promotionRequirements": {
+    "curatedGoldRequired": true,
+    "independentAuditPassesRequired": 2,
+    "sourceSnapshotRequired": true,
+    "allNonConjectureOpenClaimsReviewed": true,
+    "allIsolatedEntriesReviewed": true
+  }
+}

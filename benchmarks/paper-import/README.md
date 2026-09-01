@@ -5,6 +5,8 @@ The fixed benchmark supports two named subjects with reasoning disabled: `luna` 
 The six cases under `cases/` are fixed benchmark fixtures for importing a paper into a project view. Each standard answer was authored by `gpt-5.6-sol`, audited twice, and fixed as `accepted-gold`. A model export is evidence to inspect and never becomes mathematical gold automatically. Each case has a separate `review-status.json`, two audit records, and a `review-checklist.md`.
 Kirby is a normal scoring and promotion case under fixed protocol `1.2` / Gold revision `v2`; its Gold directly maps the mathematical content of the four-page article and is not held out.
 
+Diagnostic regression packets under `experiments/` preserve real production failures before a curated Gold exists. They are red-capable development evidence, not scoring authority, and must declare `scoringEligible: false`. Promotion into `cases/` requires a frozen source identity, a separately authored reference, two independent audits, and the normal human acceptance gate. The first such packet is [`v52-hochschild-small-quantum-group-regression`](experiments/v52-hochschild-small-quantum-group-regression/README.md), which captures cascading Open Claims caused by missing B0, proof, and calculation provenance.
+
 Status progression is intentionally coarse:
 
 `structural-draft` → `semantic-reviewed` → `mathematically-reviewed` → `accepted-gold`
