@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import gateway from "../workers/model-gateway/index.js";
+
+const modelGatewayConfig = JSON.parse(readFileSync(new URL("../wrangler.model-gateway.jsonc", import.meta.url), "utf8"));
 
 function upstreamResponse(payload, status = 200) {
   return new Response(JSON.stringify(payload), {
@@ -15,6 +18,10 @@ const env = {
   MODEL_ALLOWED_ORIGINS: "https://app.example",
   MODEL_GATEWAY_ENABLED: "true",
 };
+
+test("model gateway deployment allows five-minute upstream timeout", () => {
+  assert.equal(modelGatewayConfig.vars.MODEL_UPSTREAM_TIMEOUT_MS, "300000");
+});
 
 test("model gateway health reports configuration without exposing the credential", async () => {
   const handler = gateway.createGatewayHandler({ fetchImpl: async () => { throw new Error("unused"); } });
