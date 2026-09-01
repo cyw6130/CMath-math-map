@@ -30,6 +30,33 @@ test("local map store persists and lists a Project View record", () => {
   }
 });
 
+test("local map store roundtrips a map with a long id", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "cmath-map-store-"));
+  const id = "m".repeat(245);
+  try {
+    const store = createLocalMapStore(directory);
+    const saved = store.put({ id, data: projectView(id), importedAt: 8 });
+    assert.equal(saved.id, id);
+    assert.deepEqual(store.list().map((item) => item.id), [id]);
+    assert.equal(store.remove(id), true);
+    assert.deepEqual(store.list(), []);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("local map store preserves base64url filenames for short ids", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "cmath-map-store-"));
+  const id = "imported:short";
+  try {
+    const store = createLocalMapStore(directory);
+    store.put({ id, data: projectView(id) });
+    assert.deepEqual(fs.readdirSync(directory), [Buffer.from(id).toString("base64url") + ".json"]);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("local map store replaces the same id atomically", () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "cmath-map-store-"));
   try {

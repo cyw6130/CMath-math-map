@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { createHash } = require("crypto");
 const {
   PROJECT_VIEW_SCHEMA,
   isCanonicalMathMap,
@@ -12,7 +13,9 @@ const {
 function safeMapFileName(id) {
   const value = String(id || "").trim();
   if (!value) throw new TypeError("map id is required");
-  return Buffer.from(value).toString("base64url") + ".json";
+  const legacyName = Buffer.from(value).toString("base64url") + ".json";
+  if (Buffer.byteLength(legacyName) <= 240) return legacyName;
+  return createHash("sha256").update(value).digest("hex") + ".json";
 }
 
 function createLocalMapStore(directory) {
