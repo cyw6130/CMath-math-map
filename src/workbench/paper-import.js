@@ -276,6 +276,20 @@
       status.querySelector(".extract-error-text").textContent = message;
     }
 
+    function showStopped() {
+      status.hidden = false;
+      status.classList.remove("is-error", "is-success");
+      const stepsHtml = status.querySelector(".extract-steps")?.outerHTML ?? "";
+      status.innerHTML = `${stepsHtml}<p class="extract-stopped-text">解析已停止，可以重新开始。</p>`;
+    }
+
+    function assertImportActive() {
+      if (!activeAbortController?.signal.aborted) return;
+      const error = new Error("解析已停止");
+      error.name = "AbortError";
+      throw error;
+    }
+
     function showSuccess(ready) {
       const missingCount = ready.result?.diagnostics?.missingStages?.length ?? 0;
       const unresolvedCount = ready.result?.unresolvedItems?.length ?? 0;
@@ -341,6 +355,7 @@
             signal,
           });
         } catch (cause) {
+          if (cause?.name === "AbortError") throw cause;
           const error = new Error("暂时无法连接 CMath 提供的模型服务。");
           error.code = "CMATH_MODEL_UNAVAILABLE";
           error.cause = cause;
@@ -424,8 +439,9 @@
       }
 
       const originalLabel = startButton.textContent;
-      startButton.disabled = true;
-      startButton.textContent = "解析中…";
+      startButton.disabled = false;
+      startButton.textContent = "停止解析";
+      startButton.classList.add("is-stop-action");
       showSteps();
       setStep("mineru", "active", "正在计算 PDF 指纹");
       activeAbortController = new (view.AbortController ?? globalThis.AbortController)();
@@ -445,8 +461,13 @@
           reasoningEffort: !useProvidedModel && model === "deepseek-v4-flash" ? "none" : undefined,
           signal: activeAbortController.signal,
         });
+        assertImportActive();
         if (stageContractError) throw stageContractError;
         const record = mapRecord(result, selectedPdf.name);
+        activeAbortController = null;
+        startButton.disabled = true;
+        startButton.textContent = "正在保存…";
+        startButton.classList.remove("is-stop-action");
         const savedRecord = await runtime.mapLibrary.saveMap(record) ?? record;
         setStep("save", "done", "已保存到我的 JSON 地图");
         finishSteps(result);
@@ -459,7 +480,10 @@
         await onMapReady({ ...ready, open: false });
         showSuccess(ready);
       } catch (error) {
-        if (error?.name === "AbortError" && disposed) return;
+        if (error?.name === "AbortError" || error?.code === "MINERU_ABORTED") {
+          if (!disposed) showStopped();
+          return;
+        }
         const message = error instanceof TypeError
           ? (activeStage === "mineru"
             ? "浏览器无法连接 MinerU 精准解析服务，请检查网络后重试。"
@@ -492,6 +516,7 @@
         if (!disposed) {
           startButton.disabled = false;
           startButton.textContent = originalLabel;
+          startButton.classList.remove("is-stop-action");
         }
       }
     }
@@ -503,7 +528,15 @@
       event.preventDefault();
       selectPdf(event.dataTransfer?.files?.[0]);
     });
-    listen(startButton, "click", () => { void startImport(); });
+    listen(startButton, "click", () => {
+      if (activeAbortController) {
+        startButton.disabled = true;
+        startButton.textContent = "正在停止…";
+        activeAbortController.abort();
+        return;
+      }
+      void startImport();
+    });
     listen(root.querySelector("#btn-accept-model-consent"), "click", () => {
       try { storage?.setItem(MODEL_CONSENT_KEY, MODEL_CONSENT_VERSION); } catch { /* consent applies to this run */ }
       finishConsent(true);

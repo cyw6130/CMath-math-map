@@ -383,6 +383,103 @@ test("Paper Import Workbench mounts once, saves before handoff, and disposes cle
   remounted.dispose();
 });
 
+test("Paper Import Workbench turns the active action into a stop control", async () => {
+  const harness = workbenchHarness();
+  let importSignal;
+  let saved = false;
+  const runtime = {
+    paperImport: {
+      endpointUrl: (value) => value,
+      fetch: globalThis.fetch,
+      V5_PROGRESS_STAGES: [
+        { id: "mineru", label: "MinerU 精准解析" },
+        { id: "generate", label: "生成" },
+        { id: "repair", label: "修复" },
+        { id: "validate", label: "校验" },
+      ],
+      requestPaperProductionImport({ signal }) {
+        importSignal = signal;
+        return new Promise((resolve) => {
+          signal.addEventListener("abort", () => resolve({ ignoredAbort: true }), { once: true });
+        });
+      },
+    },
+    mapLibrary: {
+      generatedMapView: (value) => value,
+      isCanonicalMathMap: () => true,
+      sanitizeGeneratedResult: (value) => value,
+      async saveMap(value) { saved = true; return value; },
+    },
+  };
+  const mounted = paperImportWorkbenchModule.mountPaperImportWorkbench({
+    root: harness.root,
+    runtime,
+    onMapReady() {},
+  });
+  const pdfInput = harness.paperDrawer.children.find((child) => child.type === "file");
+  pdfInput.files = [{ name: "paper.pdf", size: 1024 }];
+  pdfInput.dispatchEvent({ type: "change", preventDefault() {} });
+
+  harness.startButton.click();
+  assert.equal(harness.startButton.textContent, "停止解析");
+  assert.equal(harness.startButton.disabled, false);
+
+  harness.startButton.click();
+  assert.equal(importSignal.aborted, true);
+  assert.equal(harness.startButton.textContent, "正在停止…");
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(saved, false);
+  assert.equal(harness.startButton.textContent, "生成数学地图");
+  assert.equal(harness.startButton.disabled, false);
+  assert.equal(harness.startButton.classList.contains("is-stop-action"), false);
+  const status = harness.paperDrawer.children.find((child) => child.classList.contains("extract-status"));
+  assert.match(status.innerHTML, /解析已停止/u);
+  mounted.dispose();
+});
+
+test("Paper Import Workbench treats MinerU cancellation as a stopped import", async () => {
+  const harness = workbenchHarness();
+  const runtime = {
+    paperImport: {
+      endpointUrl: (value) => value,
+      fetch: globalThis.fetch,
+      V5_PROGRESS_STAGES: [{ id: "mineru", label: "MinerU 精准解析" }],
+      requestPaperProductionImport({ signal }) {
+        return new Promise((resolve, reject) => {
+          signal.addEventListener("abort", () => {
+            const error = new Error("操作已取消");
+            error.code = "MINERU_ABORTED";
+            reject(error);
+          }, { once: true });
+        });
+      },
+    },
+    mapLibrary: {
+      generatedMapView: (value) => value,
+      isCanonicalMathMap: () => true,
+      sanitizeGeneratedResult: (value) => value,
+      async saveMap(value) { return value; },
+    },
+  };
+  const mounted = paperImportWorkbenchModule.mountPaperImportWorkbench({
+    root: harness.root,
+    runtime,
+    onMapReady() {},
+  });
+  const pdfInput = harness.paperDrawer.children.find((child) => child.type === "file");
+  pdfInput.files = [{ name: "paper.pdf", size: 1024 }];
+  pdfInput.dispatchEvent({ type: "change", preventDefault() {} });
+
+  harness.startButton.click();
+  harness.startButton.click();
+  await new Promise((resolve) => setImmediate(resolve));
+
+  const status = harness.paperDrawer.children.find((child) => child.classList.contains("extract-status"));
+  assert.match(status.innerHTML, /解析已停止/u);
+  mounted.dispose();
+});
+
 test("production entry loads Runtime and Workbench before the application shell", () => {
   const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const runtimeAt = html.indexOf('src="src/runtime/capabilities.js');

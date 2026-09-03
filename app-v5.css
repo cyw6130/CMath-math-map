@@ -549,6 +549,8 @@ body[data-view="map"] #math-map-view { display: block !important; }
   box-shadow: 0 8px 20px rgba(14, 124, 102, 0.28);
 }
 .btn-primary-action:active { transform: translateY(0); box-shadow: none; }
+.btn-primary-action.is-stop-action { background: #B4432F; }
+.btn-primary-action.is-stop-action:hover { background: #963724; box-shadow: 0 8px 20px rgba(180, 67, 47, 0.24); }
 
 .btn-test-connection {
   width: 100%;
@@ -2533,6 +2535,7 @@ body[data-lens-state="focus"] #math-map-view .map-history-actions {
 }
 .extract-stage { margin: 8px 0 0; color: var(--ink-soft); letter-spacing: 0.04em; }
 .extract-error-text { color: #B4432F; font-weight: 700; line-height: 1.6; }
+.extract-stopped-text { color: var(--muted); font-weight: 700; line-height: 1.6; }
 .extract-success-title { margin: 0 0 4px; color: var(--teal-deep); font-weight: 700; font-size: 13px; }
 .extract-success-sub { margin: 0 0 10px; color: var(--muted); }
 .extract-success-actions { display: flex; gap: 8px; }
