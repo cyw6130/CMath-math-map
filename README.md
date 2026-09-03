@@ -170,7 +170,7 @@ npm run test:capabilities
 Paper Guide、双通道提取的 prompt/schema 由 `CMath-capabilities/packages/research-process/import/paper-dossier-extractor-v2` 唯一维护，并通过 `npm run sync-capabilities` 同步到本项目。DSH 插件只负责阶段路由、模型调用与返回结果，不持有业务提示词。
 
 ### 2. 模型默认推荐
-- 公开网站默认展示 **CMath 提供 · Muse Spark 1.2 Contributor**，无需访问者配置 API Key；该路径只有在独立模型网关完成部署后才可用。
+- 公开网站默认展示 **CMath 提供 · Muse Spark 1.3 Contributor**，无需访问者配置 API Key；该路径只有在独立模型网关完成部署后才可用。
 - 使用自己的 API 时，默认推荐 **OpenCode Go** 的 **DeepSeek V4 Flash**。该模型兼具高推理速度与结构准确率。在进行大输出量提取任务时，默认配置 `reasoning_effort: "none"`，防止思维链过长耗尽 Token 预算导致截断。
 - 亦全面支持 DeepSeek V4 Pro、Kimi K3（Moonshot 端点）、GLM、MiniMax、Qwen 等 OpenAI 兼容端点。
 

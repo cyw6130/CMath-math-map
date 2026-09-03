@@ -14,7 +14,7 @@
   const MODEL_CONSENT_KEY = "cmath.math-map.muse-consent-v1";
   const MODEL_CONSENT_VERSION = "muse-spark-contributor-training-v1";
   const SESSION_KEYS_KEY = "cmath.math-map.session-keys";
-  const CMATH_PROVIDED_MODEL = "muse-spark-1.2-contributor";
+  const CMATH_PROVIDED_MODEL = "muse-spark-1.3-contributor";
   const PROVIDER_LABELS = Object.freeze({
     custom: "自定义模型服务",
     deepseek: "DeepSeek",

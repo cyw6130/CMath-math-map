@@ -15,7 +15,7 @@
   "use strict";
 
   const UPSTREAM_URL = "https://opencode.ai/zen/go/v1/responses";
-  const MODEL_ID = "muse-spark-1.2-contributor";
+  const MODEL_ID = "muse-spark-1.3-contributor";
   const COMPLETE_PATHS = new Set(["/complete", "/api/model/complete"]);
   const HEALTH_PATHS = new Set(["/", "/health", "/api/model", "/api/model/health"]);
   const ALLOWED_STAGES = new Set([

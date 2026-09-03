@@ -26,7 +26,7 @@ test("model gateway deployment allows five-minute upstream timeout", () => {
 test("model gateway health reports configuration without exposing the credential", async () => {
   const handler = gateway.createGatewayHandler({ fetchImpl: async () => { throw new Error("unused"); } });
   const unavailable = await handler.fetch(new Request("https://gateway.example/api/model"), {});
-  assert.deepEqual(await unavailable.json(), { available: false, model: "muse-spark-1.2-contributor" });
+  assert.deepEqual(await unavailable.json(), { available: false, model: "muse-spark-1.3-contributor" });
 
   const ready = await handler.fetch(new Request("https://gateway.example/api/model", {
     headers: { Origin: "https://app.example" },
@@ -64,14 +64,14 @@ test("model gateway fixes the model and Responses endpoint, then normalizes outp
   assert.equal(response.status, 200);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, "https://opencode.ai/zen/go/v1/responses");
-  assert.equal(calls[0].body.model, "muse-spark-1.2-contributor");
+  assert.equal(calls[0].body.model, "muse-spark-1.3-contributor");
   assert.equal(calls[0].body.input[0].content, "paper prompt");
   assert.equal(calls[0].body.max_output_tokens, 16000);
   assert.equal(Object.hasOwn(calls[0].body, "reasoning"), false);
   assert.equal(calls[0].init.headers.Authorization, "Bearer upstream-secret-never-returned");
   const payload = await response.json();
   assert.equal(payload.content, "{\"entries\":[]}");
-  assert.equal(payload.model, "muse-spark-1.2-contributor");
+  assert.equal(payload.model, "muse-spark-1.3-contributor");
   assert.doesNotMatch(JSON.stringify(payload), /upstream-secret/u);
 });
 

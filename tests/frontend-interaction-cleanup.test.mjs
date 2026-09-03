@@ -248,6 +248,6 @@ test("provided Muse access requires versioned consent and uses the model gateway
   assert.match(workbench, /MODEL_CONSENT_VERSION/u);
   assert.match(workbench, /requestConsent\(\)/u);
   assert.match(workbench, /createProvidedChat\(urls\.model\)/u);
-  assert.match(workbench, /CMATH_PROVIDED_MODEL = "muse-spark-1\.2-contributor"/u);
+  assert.match(workbench, /CMATH_PROVIDED_MODEL = "muse-spark-1\.3-contributor"/u);
   assert.match(workbench, /showProvidedFailure\(message\)/u);
 });
