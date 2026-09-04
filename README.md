@@ -82,22 +82,12 @@ CMath-math-map/
 │   ├── intermediate-value-*.js  # 介值定理案例
 │   └── fundamental-theorem-*.js # 微积分基本定理案例等
 │
-├── benchmarks/                  # 论文转化质量基准与评测集
-│   ├── README.md                # 基准说明与评测标准
-│   ├── model-outputs/           # 真实模型生成记录与阶段日志
-│   └── paper-import/            # 论文导入基准用例单一权威（6 个固定 Gold 与来源清单）
-│       ├── source-manifest.json # 源 PDF 与提取文本 SHA-256 指纹清单
-│       ├── runner-config.json   # 评测运行器配置
-│       └── cases/               # 具体论文基准用例目录
-│
 ├── tests/                       # 自动化测试套件
 │   ├── capabilities-consumer.test.mjs # 能力消费完整性与哈希一致性测试
 │   ├── paper-import-client.test.mjs   # 论文解析客户端单元测试
-│   ├── paper-import-benchmark.test.mjs# Hopf 论文语义基准测试
-│   ├── knot-hopf-rt-benchmark.test.mjs# Knot-Hopf-RT 论文语义基准测试
 │   └── fixtures/                # 测试基准 Golden 参考与规范
 │
-├── scripts/                     # 运维与评测脚本
+├── scripts/                     # 运维脚本
 │   ├── evaluate-output.mjs      # 模型输出质量单体体检脚本
 │   ├── bench-models.mjs         # 多模型基准批量跑分脚本
 │   ├── audit-paper-benchmarks.mjs # 论文 benchmark 结构与来源完整性审计脚本
@@ -187,30 +177,8 @@ Paper Guide、双通道提取的 prompt/schema 由 `CMath-capabilities/packages/
 
 ## 基准测试与模型评估
 
-为了客观衡量不同大模型将数学论文转化为数学地图的质量，本项目建立了基准评测体系与轻量元数据规范：
-
-### 1. 论文导入基准用例单一权威（`benchmarks/paper-import/cases/`）
-本项目（`CMath-math-map`）是以下 6 个论文导入固定标准答案（Accepted Gold）的**唯一权威归属（Sole Authority）**（上游 `CMath-capabilities` 仅保留可复用能力与合同定义，不再维护具体论文用例）：
-1. **`4-dim-skein-modules-handles-tangles`**（4 维 Skein 模、Handle Attachment 与 Tangles）
-2. **`cornered-skein-lasagna-theory`**（角化 Skein Lasagna 理论）
-3. **`kirby-2018-trisections`**（Kirby 4-流形三截面）
-4. **`yasui-2019-geometrically-simply-connected-4-manifolds`**（Yasui 几何单连通 4-流形）
-5. **`hopf-degree-theorem`**（Hopf 度定理）
-6. **`knot-hopf-rt`**（Knot–Hopf–Reshetikhin–Turaev 推导链）
-
-> [!IMPORTANT]
-> **固定标准答案**：六个用例均由 `gpt-5.6-sol` 编写或优化，并完成两轮独立审计；当前统一为 **`accepted-gold`**。模型运行产物只用于评测，不会自动覆盖或晋升为 Gold。可通过 `npm run audit:benchmarks` 验证结构、来源与审核状态。
-
-### 2. 既有 Golden 参考的纳入
-- **Hopf 度定理（Hopf Map Gold）**（`benchmarks/paper-import/cases/hopf-degree-theorem/`）：29 entries / 16 inferences / 7 个 $B_0$ 外部定理，闭包验证通过。
-- **Knot-Hopf-RT 基准**（`benchmarks/paper-import/cases/knot-hopf-rt/`）：37 entries / 19 inferences / 4 个 $B_0$ 外部定理，验证 Reshetikhin–Turaev 不变量主推导链。
-
-这两个既有用例已与四篇论文用例合并为同一套六案例 Benchmark，不再作为另一套标准维护。
-
-### 3. 轻量评测元数据策略（Benchmark Metadata Policy）
-- **测试模型**：固定基准支持 `luna`（`luna-gateway / gpt-5.6-luna`）与 `deepseek-flash`（`opencode-go / deepseek-v4-flash`），均使用 `reasoningEffort=none`、`off-compact`，由 `gpt-5.6-sol` 按 `sol-score-prompt-v3` 评分。
-- **固定协议版本**：当前为 `workflowVersion: "1.3"`、`goldRevision: "v2"`；运行产物同时记录 subject、provider、model、被测工作流版本与评分 prompt 版本。
-- **Gold 晋升机制**：`benchmarks/model-outputs/` 下的模型输出均为实验记录，绝不自动晋升为 Gold；只有经过人工数学审查确认语义与逻辑完备的用例，方可晋升为 Accepted Gold。
+论文导入 Gold、冻结来源、模型输出、评分器和回归测试统一归属同级
+[`CMath-Benchmark`](../CMath-Benchmark/) 项目。本项目只保留生产流水线、能力合同和不依赖大样本的单元测试。
 
 ---
 
@@ -239,11 +207,10 @@ npm test
 npm run sync:production-entry
 npm run check:production-entry
 
-# 3. 运行论文导入基准用例结构与来源完整性审计
-npm run audit:benchmarks
-
-# 4. 执行单份模型输出质量体检
-npm run evaluate benchmarks/model-outputs/output-hopf\ map-deepseek-v4-flash.json
+# 3. 运行论文导入 benchmark
+cd ../CMath-Benchmark
+npm run test:paper-import
+npm run audit:paper-import
 ```
 
 ---

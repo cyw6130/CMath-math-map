@@ -77,15 +77,6 @@ const {
   applyEntryReviewPatches,
 } = paperImportClient;
 
-import {
-  PROMPT_VERSION as SOL_ENTRY_PROMPT_VERSION,
-  SCHEMA_ID as SOL_ENTRY_SCHEMA_ID,
-  SCORER_MODEL as SOL_ENTRY_SCORER_MODEL,
-  validateSolEntryScore,
-  renderPromptTemplate,
-  scorePaperEntryExtraction,
-} from "../scripts/score-paper-entry-extraction-with-sol.mjs";
-
 test("Paper Entry Extraction Module - Schema & Artifact Validation", async (t) => {
   await t.test("exports valid constants and functions", () => {
     assert.equal(ENTRY_ARTIFACT_SCHEMA, "cmath.paper-entry-artifact/v1");
@@ -715,115 +706,6 @@ Proposition 2 (Invariance). The linking number is a topological invariant.
 
     // Immutability: original entryArtifact.entries was NOT mutated
     assert.equal(JSON.stringify(entryArtifactV11.entries), initialEntriesSnapshot);
-  });
-});
-
-test("Paper Entry Extraction Module - Development Sol Entry Scorer", async (t) => {
-  await t.test("prompt template substitution renders correctly without leakage", () => {
-    const template = fs.readFileSync(
-      path.join(process.cwd(), "benchmarks/paper-import/entry-module/sol-entry-score-prompt-v1.md"),
-      "utf8"
-    );
-
-    const rendered = renderPromptTemplate(template, {
-      GOLD_PATH: "./gold.json",
-      CANDIDATE_PATH: "./candidate.json",
-      SOL_ENTRY_SCORE_SCHEMA_PATH: "./sol-entry-score-schema.json",
-      CASE_ID: "knot-hopf-rt",
-      GOLD_REVISION: "gold-v2-objective-conventions",
-      CANDIDATE_ARTIFACT: "benchmarks/model-outputs/entry-module/knot.json",
-    });
-
-    assert.ok(rendered.includes("./gold.json"));
-    assert.ok(rendered.includes("./candidate.json"));
-    assert.ok(rendered.includes("./sol-entry-score-schema.json"));
-    assert.ok(!rendered.includes("__GOLD_PATH__"));
-    assert.ok(!rendered.includes("__CANDIDATE_PATH__"));
-    assert.ok(!rendered.includes("__SOL_ENTRY_SCORE_SCHEMA_PATH__"));
-
-    // Fails closed on undeclared placeholder
-    assert.throws(
-      () => renderPromptTemplate(template + "\n__UNAUTHORIZED_PLACEHOLDER__", {
-        GOLD_PATH: "g", CANDIDATE_PATH: "c", SOL_ENTRY_SCORE_SCHEMA_PATH: "s",
-        CASE_ID: "case", GOLD_REVISION: "revision", CANDIDATE_ARTIFACT: "candidate",
-      }),
-      /Undeclared placeholders found/
-    );
-  });
-
-  await t.test("validates Sol entry score schema and arithmetic", () => {
-    const validScore = {
-      schema: SOL_ENTRY_SCHEMA_ID,
-      scorerModel: SOL_ENTRY_SCORER_MODEL,
-      promptVersion: SOL_ENTRY_PROMPT_VERSION,
-      candidateArtifact: "candidate.json",
-      goldRevision: "v1",
-      caseId: "knot-paper",
-      correctness: 24,
-      completeness: 18,
-      solEntryScore: 42,
-      verdict: "flawless",
-      summary: "High quality faithful extraction of all mathematical definitions and claims.",
-      strengths: ["Proper delimiter balance", "Accurate claim classifications"],
-      issues: [],
-    };
-
-    assert.doesNotThrow(() => validateSolEntryScore(validScore, {
-      caseId: "knot-paper",
-      goldRevision: "v1",
-      candidatePath: "candidate.json",
-    }));
-
-    // Arithmetic mismatch
-    const badArithmetic = { ...validScore, solEntryScore: 40 };
-    assert.throws(() => validateSolEntryScore(badArithmetic), /solEntryScore arithmetic error/);
-
-    // Out of bounds
-    const badCorrectness = { ...validScore, correctness: 26, solEntryScore: 44 };
-    assert.throws(() => validateSolEntryScore(badCorrectness), /Invalid correctness/);
-
-    // Wrong verdict bracket
-    const badVerdict = { ...validScore, solEntryScore: 42, verdict: "usable" };
-    assert.throws(() => validateSolEntryScore(badVerdict), /Verdict mismatch/);
-
-    // Schema ID mismatch
-    const badSchema = { ...validScore, schema: "wrong-schema" };
-    assert.throws(() => validateSolEntryScore(badSchema), /Invalid score schema/);
-  });
-
-  await t.test("dry-run produces auditable plan with strict staging isolation", async () => {
-    const tempDir = fs.mkdtempSync(path.join(process.cwd(), "scratch-test-dry-run-"));
-    const goldPath = path.join(tempDir, "gold.json");
-    const candidatePath = path.join(tempDir, "candidate.json");
-
-    fs.writeFileSync(goldPath, JSON.stringify({ caseId: "test-case", revision: "v1", entries: [] }));
-    fs.writeFileSync(candidatePath, JSON.stringify({
-      schema: ENTRY_ARTIFACT_SCHEMA,
-      entryModuleVersion: ENTRY_MODULE_VERSION,
-      source: { fileName: "test.pdf", pageCount: 1, characters: 10, sourceText: "text" },
-      entries: [],
-    }));
-
-    try {
-      const plan = await scorePaperEntryExtraction({
-        goldPath,
-        candidatePath,
-        dryRun: true,
-      });
-
-      assert.equal(plan.dryRun, true);
-      assert.equal(plan.caseId, "test-case");
-      assert.equal(plan.goldRevision, "v1");
-      assert.equal(plan.schemaId, SOL_ENTRY_SCHEMA_ID);
-      assert.equal(plan.promptVersion, SOL_ENTRY_PROMPT_VERSION);
-      assert.deepEqual(plan.stagingPlan.files, [], "inline-single-turn mode stages no files");
-      assert.equal(plan.stagingPlan.mode, "inline-single-turn");
-      assert.ok(plan.renderedPrompt.includes("Gold Reference Artifact (inlined below)"), "inline prompt inlines gold artifact");
-      assert.ok(plan.renderedPrompt.includes("Candidate Entry Extraction Artifact (inlined below)"), "inline prompt inlines candidate artifact");
-      assert.ok(!plan.renderedPrompt.includes("__GOLD_PATH__"), "placeholder must be replaced");
-    } finally {
-      fs.rmSync(tempDir, { recursive: true, force: true });
-    }
   });
 });
 
@@ -1566,7 +1448,7 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     assert.equal(artifact.diagnostics.consolidationSummary.invalidPageCount, 1);
   });
 
-  await t.test("new consolidated artifact can be consumed by existing Sol Entry scorer and inference-resume path structurally", async () => {
+  await t.test("new consolidated artifact can be consumed by the inference-resume path structurally", async () => {
     const artifact = consolidateRawEntryPool(sampleRawPool);
     assert.doesNotThrow(() => validatePaperEntryArtifact(artifact));
 
@@ -1611,33 +1493,6 @@ test("Paper Entry Modular Pipeline - Deterministic Entry Consolidation", async (
     assert.ok(!inferenceStages.includes("guide"));
     assert.ok(!inferenceStages.includes("extract"));
 
-    // Sol Entry Scorer compatibility test with consolidated artifact
-    const tempDir = fs.mkdtempSync(path.join(process.cwd(), "scratch-test-consolidation-sol-"));
-    const goldPath = path.join(tempDir, "gold.json");
-    const candidatePath = path.join(tempDir, "candidate.json");
-
-    fs.writeFileSync(goldPath, JSON.stringify({
-      caseId: "sample-case",
-      revision: "v1",
-      entries: [
-        { id: "thm:main", type: "theorem", name: "Main Theorem", statement: "The map $\\phi: X \\to Y$ is an isomorphism.", page: 2 },
-      ],
-    }));
-    fs.writeFileSync(candidatePath, JSON.stringify(artifact));
-
-    try {
-      const plan = await scorePaperEntryExtraction({
-        goldPath,
-        candidatePath,
-        dryRun: true,
-      });
-      assert.equal(plan.dryRun, true);
-      assert.equal(plan.caseId, "sample-case");
-      assert.equal(plan.goldRevision, "v1");
-      assert.ok(plan.renderedPrompt.includes("Candidate Entry Extraction Artifact (inlined below)"), "inline prompt inlines candidate artifact");
-    } finally {
-      fs.rmSync(tempDir, { recursive: true, force: true });
-    }
   });
 
   await t.test("consolidateRawEntryPool produces recursively deep-frozen artifact ensuring immutability across all nested objects and entries", () => {

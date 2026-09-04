@@ -4,7 +4,7 @@ V3.26 现在按三个可独立冻结、替换和测试的模块组织。这里�
 
 ## Luna V3.26 Entry 历史基线
 
-`benchmarks/paper-import/entry-module/luna-v3.26-entry-baseline.json` 登记了六个已有的 Luna V3.26 完整工作流结果，并只取其 `view.entries` 做 Entry 对比。评分来自既有 Sol Entry 评分 artifact；不重新读取 PDF，不修改 Gold，也不把 Inference 计入 Entry 分数。
+`../CMath-Benchmark/benchmarks/paper-import/entry-module/luna-v3.26-entry-baseline.json` 登记了六个已有的 Luna V3.26 完整工作流结果，并只取其 `view.entries` 做 Entry 对比。评分来自既有 Sol Entry 评分 artifact；不重新读取 PDF，不修改 Gold，也不把 Inference 计入 Entry 分数。
 
 | 案例 | Entry 数 | Sol Entry Score |
 |---|---:|---:|

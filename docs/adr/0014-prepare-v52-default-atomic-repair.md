@@ -18,6 +18,6 @@
 
 ## 上线前固定集结果
 
-补齐此前未测的七篇后，十篇合并证据为：10/10 合同合法、10/10 格式干净、0 fabrication、未检出提示词泄露，但只有 2/10 source-clean，共 24 个失真对象，平均语义准确率 0.9446741097971。Keevash 单篇有 8 个失真；Frick–Wellner 成功实测了同次恢复与原子修复分支。完整摘要见 `benchmarks/paper-import/experiments/v52-predeploy-ten-case-summary.json`。
+补齐此前未测的七篇后，十篇合并证据为：10/10 合同合法、10/10 格式干净、0 fabrication、未检出提示词泄露，但只有 2/10 source-clean，共 24 个失真对象，平均语义准确率 0.9446741097971。Keevash 单篇有 8 个失真；Frick–Wellner 成功实测了同次恢复与原子修复分支。完整摘要现归档于 `../CMath-Benchmark/benchmarks/paper-import/experiments/v52-predeploy-ten-case-summary.json`。
 
 因此该候选没有通过原定内容门槛。用户随后在本地 Product Runtime 中逐张查看了七篇真正由 V5.2 端到端生成的地图；预览卡片明确标记为 `V5.2`，七张均通过前端结构校验。用户在知悉上述内容风险后，于 2026-08-31 明确授权将该候选作为例外版本上线。该授权不把 V5.2 追认为 Benchmark Winner，也不改变 Keevash 等已记录问题；上线后仍按 ADR-0009 的回退规则处理可复现的硬故障、fabrication、distortion 或主证明链破坏。
