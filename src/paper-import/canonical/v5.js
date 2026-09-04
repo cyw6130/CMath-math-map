@@ -29,7 +29,7 @@
   "use strict";
 
   const PROMPT_VERSION = "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt";
-  const INPUT_TOKEN_LIMIT = 100_000;
+  const INPUT_TOKEN_LIMIT = 300_000;
   const MAX_REPAIR_ATTEMPTS = 1;
   const RESULT_SCHEMA = "cmath.paper-to-map-result/v1";
   const CAPABILITY_SYNC_IDENTITY = "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198";

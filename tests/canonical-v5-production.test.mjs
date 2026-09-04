@@ -124,6 +124,23 @@ test("V5 audits a valid canonical map in exactly two calls", async () => {
   assert.deepEqual(result.map, validMap());
 });
 
+test("V5 accepts a 50-page marked Markdown document above the former 100k-token ceiling", async () => {
+  const markedMarkdown = Array.from(
+    { length: 50 },
+    (_, index) => `[[PAGE ${index + 1}]]\n${"Definition theorem proof. ".repeat(220)}`,
+  ).join("\n");
+  const map = validMap();
+  const outputs = [map, auditBundle(map)];
+
+  const result = await v5.run({
+    markedMarkdown,
+    chatImpl: async () => ({ content: JSON.stringify(outputs.shift()) }),
+  });
+
+  assert.ok(result.report.inputTokens > 100_000);
+  assert.equal(result.report.calls.length, 2);
+});
+
 test("new frozen workflow always uses the second call for one atomic semantic repair", async () => {
   const generated = validMap();
   const finding = {
