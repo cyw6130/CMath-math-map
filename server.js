@@ -19,6 +19,7 @@ function argValue(name, fallback) {
 }
 const port = Number(argValue("port", process.env.PORT || 7100));
 const host = argValue("host", "127.0.0.1");
+const graphInput = argValue("graph", "");
 
 const KEY_STORE_PATH = path.join(os.homedir(), ".gamma-math-map", "keys.json");
 const KEY_STORE_SCHEMA = "cmath-gamma.local-key-store/v0.1";
@@ -148,9 +149,39 @@ function forwardToUpstream(targetUrl, apiKey, body) {
 }
 
 const root = __dirname;
+const graphInputPath = graphInput ? path.resolve(graphInput) : "";
 http
   .createServer((req, res) => {
     const urlPath = decodeURIComponent(req.url.split("?")[0]);
+
+    if (urlPath === "/api/pure-graph-input" || urlPath === "/api/pure-graph-input/") {
+      if (!localOnly(req, res)) return;
+      if (req.method !== "GET") {
+        sendJson(res, 405, { error: "method not allowed" }, req.headers.origin || "");
+        return;
+      }
+      if (!graphInputPath) {
+        sendJson(res, 404, { error: "no graph JSON was supplied" }, req.headers.origin || "");
+        return;
+      }
+      fs.readFile(graphInputPath, "utf8", (error, raw) => {
+        if (error) {
+          sendJson(res, 404, { error: `failed to read graph JSON: ${error.message}` }, req.headers.origin || "");
+          return;
+        }
+        try {
+          sendJson(res, 200, JSON.parse(raw), req.headers.origin || "");
+        } catch (parseError) {
+          sendJson(res, 400, { error: `graph JSON is invalid: ${parseError.message}` }, req.headers.origin || "");
+        }
+      });
+      return;
+    }
+
+    if (graphInputPath && urlPath.startsWith("/api/")) {
+      sendJson(res, 404, { error: "not available in graph reader mode" }, req.headers.origin || "");
+      return;
+    }
 
     if (urlPath === "/api/local-key" || urlPath === "/api/local-key/") {
       if (req.method === "GET") {
@@ -354,8 +385,10 @@ http
       fs.createReadStream(filePath).pipe(res);
     });
   })
-  .listen(port, host, () => {
-    console.log(`Gamma Math Map (local) → http://${host}:${port}/`);
+  .listen(port, host, function () {
+    const boundPort = this.address()?.port ?? port;
+    if (graphInputPath) console.log(`Pure Graph View → http://${host}:${boundPort}/pure-graph-view.html`);
+    console.log(`Gamma Math Map (local) → http://${host}:${boundPort}/`);
     console.log(`API Key store: ${KEY_STORE_PATH}`);
     console.log(`Local map store: ${MAP_STORE_PATH}`);
     console.log(`Local library state store: ${LIBRARY_STATE_PATH}`);

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMath · Pure Graph View</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="math-map-lab.css">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="pure-graph-view.css">
+</head>
+<body class="math-map-lab-body">
+  <main id="pure-graph-reader" aria-label="数学地图 JSON 阅读器">
+    <section id="pure-graph-canvas" tabindex="0" aria-label="交互式数学地图"></section>
+
+    <button id="pure-graph-refresh" type="button" aria-label="重新读取 JSON" disabled>↻</button>
+
+    <aside id="pure-graph-legend" aria-label="图例">
+      <span><i class="legend-fact"></i>Fact</span>
+      <span><i class="legend-claim-open"></i>开放 Claim</span>
+      <span><i class="legend-claim-established"></i>已建立 Claim</span>
+      <span><i class="legend-inference"></i>Inference</span>
+      <span><i class="legend-foundation"></i>B₀</span>
+    </aside>
+
+    <section id="pure-graph-empty" aria-live="polite">
+      <p>拖入一份数学地图 JSON</p>
+      <button id="pure-graph-choose" type="button">选择 JSON</button>
+    </section>
+
+    <section id="pure-graph-error" role="alert" hidden>
+      <p id="pure-graph-error-message"></p>
+      <button type="button" data-choose-json>重新选择 JSON</button>
+    </section>
+
+    <aside id="pure-graph-inspector" aria-label="对象详情" hidden></aside>
+    <input id="pure-graph-file" type="file" accept=".json,application/json" hidden>
+  </main>
+
+  <script src="vendor/force-graph/force-graph.min.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="math-text.js"></script>
+  <script src="math-rendering-consumer.js"></script>
+  <script src="graph-contract.js"></script>
+  <script src="graph-canvas.js"></script>
+  <script src="capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"></script>
+  <script src="math-map-semantics-v3-bridge.js"></script>
+  <script src="math-map-semantics.js"></script>
+  <script src="math-map-naming.js"></script>
+  <script src="research-loop-progress.js"></script>
+  <script src="math-map-visual-semantics.js"></script>
+  <script src="math-map-project-adapter.js"></script>
+  <script src="canonical-math-map-adapter.js"></script>
+  <script src="src/map-library/core.js"></script>
+  <script src="pure-graph-view.js"></script>
+</body>
+</html>
