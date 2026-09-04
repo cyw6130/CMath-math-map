@@ -327,7 +327,8 @@
       label: "OpenCode Go",
       endpoint: "https://opencode.ai/zen/go/v1",
       models: [
-        { value: "deepseek-v4-flash", label: "DeepSeek V4 Flash (推荐 · 快速)", default: true, reasoningEffort: "none" },
+        ...(isLocalDesktop ? [{ value: "muse-spark-1.3-contributor", label: "Muse Spark 1.3 Contributor (推荐)", default: true }] : []),
+        { value: "deepseek-v4-flash", label: `DeepSeek V4 Flash (${isLocalDesktop ? "快速" : "推荐 · 快速"})`, default: !isLocalDesktop, reasoningEffort: "none" },
         { value: "deepseek-v4-pro", label: "DeepSeek V4 Pro" },
         { value: "kimi-k3", label: "Kimi K3" },
         { value: "kimi-k2.7-code", label: "Kimi K2.7 Code" },
@@ -423,9 +424,10 @@
 
   function readSavedAccessMode() {
     try {
-      return localStorage.getItem(MODEL_ACCESS_PREF_KEY) === "own" ? "own" : "cmath";
+      const saved = localStorage.getItem(MODEL_ACCESS_PREF_KEY);
+      return saved === "own" || (!saved && isLocalDesktop) ? "own" : "cmath";
     } catch {
-      return "cmath";
+      return isLocalDesktop ? "own" : "cmath";
     }
   }
 
@@ -829,6 +831,29 @@
       btnTestConnection.textContent = "测试中…";
     }
     try {
+      if (activeProviderKey === "opencode" && model === "muse-spark-1.3-contributor") {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 60000);
+        try {
+          const result = await window.CMathPaperModelTransport.createModelTransport({
+            endpoint,
+            apiKey,
+            model,
+            providerLabel: "OpenCode Go",
+            fetchImpl: paperImport.fetch,
+            signal: controller.signal,
+          }).complete({
+            messages: [{ role: "user", content: "请只回复 OK 两个字。" }],
+            maxTokens: 512,
+            stream: false,
+          });
+          const reply = String(result.content || "").slice(0, 80).replace(/\s+/gu, " ").trim();
+          showTestResult(`连接成功（${model}）。${reply ? `模型回应：${reply}` : "模型已响应。"}`, false);
+          return;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
       const targetUrl = paperImport.endpointUrl(endpoint);
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 60000);

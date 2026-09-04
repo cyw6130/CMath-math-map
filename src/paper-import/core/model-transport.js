@@ -25,6 +25,7 @@
     INVALID_ENVELOPE: "INVALID_ENVELOPE",
     SERVICE: "SERVICE_ERROR",
   });
+  const MUSE_SPARK_MODEL = "muse-spark-1.3-contributor";
 
   class ModelTransportError extends Error {
     constructor(code, message, details = {}) {
@@ -111,7 +112,7 @@
     );
   }
 
-  function parseEnvelope(text, { status = 200, stage, url, serviceName = "模型服务" } = {}) {
+  function parseEnvelope(text, { status = 200, stage, url, serviceName = "模型服务", api = "chat" } = {}) {
     let envelope;
     try {
       envelope = JSON.parse(typeof text === "string" ? text : String(text ?? ""));
@@ -132,6 +133,9 @@
       );
     }
 
+    if (api === "responses") {
+      return normalizeResponsesEnvelope(envelope, { status, stage, url, serviceName });
+    }
     return normalizeChoiceEnvelope(envelope, { status, stage, url, serviceName });
   }
 
@@ -150,6 +154,38 @@
       content: messageText(message),
       status,
       finishReason: choice.finish_reason ?? choice.finishReason ?? null,
+      usage: envelope?.usage ?? null,
+    };
+  }
+
+  function responsesText(envelope) {
+    if (typeof envelope?.output_text === "string" && envelope.output_text) return envelope.output_text;
+    if (!Array.isArray(envelope?.output)) return "";
+    return envelope.output.flatMap((item) => {
+      if (typeof item?.text === "string") return [item.text];
+      return Array.isArray(item?.content) ? item.content : [];
+    }).map((part) => {
+      if (typeof part === "string") return part;
+      if (!isObject(part)) return "";
+      if (typeof part.text === "string") return part.text;
+      return isObject(part.text) && typeof part.text.value === "string" ? part.text.value : "";
+    }).join("");
+  }
+
+  function normalizeResponsesEnvelope(envelope, { status = 200, stage, url, serviceName = "模型服务" } = {}) {
+    if (!Array.isArray(envelope?.output) && typeof envelope?.output_text !== "string") {
+      throw new ModelTransportError(
+        ERROR_CODES.INVALID_ENVELOPE,
+        `${serviceName} 响应缺少 output text`,
+        { status, stage, url, reason: "missing_output" },
+      );
+    }
+    return {
+      content: responsesText(envelope),
+      status,
+      finishReason: envelope.status === "incomplete"
+        ? "length"
+        : envelope.finish_reason ?? envelope.finishReason ?? (envelope.status ? "stop" : null),
       usage: envelope?.usage ?? null,
     };
   }
@@ -176,10 +212,32 @@
     };
   }
 
-  function normalizeUrl(value) {
+  function isOpenCodeGoEndpoint(value) {
+    try {
+      const url = new URL(value);
+      const path = url.pathname.replace(/\/+$/u, "");
+      return url.protocol === "https:"
+        && url.hostname === "opencode.ai"
+        && [
+          "/zen/go",
+          "/zen/go/v1",
+          "/zen/go/chat/completions",
+          "/zen/go/v1/chat/completions",
+          "/zen/go/responses",
+          "/zen/go/v1/responses",
+        ].includes(path);
+    } catch {
+      return false;
+    }
+  }
+
+  function resolveRoute(value, { model } = {}) {
     if (typeof value !== "string" || !value.trim()) return "";
     const url = value.trim().replace(/\/+$/u, "");
-    return /\/chat\/completions$/u.test(url) ? url : `${url}/chat/completions`;
+    if (/\/responses$/u.test(url) || (model === MUSE_SPARK_MODEL && isOpenCodeGoEndpoint(url))) {
+      return { url: /\/responses$/u.test(url) ? url : url.replace(/\/chat\/completions$/u, "") + "/responses", api: "responses" };
+    }
+    return { url: /\/chat\/completions$/u.test(url) ? url : `${url}/chat/completions`, api: "chat" };
   }
 
   function buildDefaultBody(request, config) {
@@ -195,6 +253,42 @@
     if (request.reasoningEffort) body.reasoning_effort = request.reasoningEffort;
     if (request.reasoning_effort) body.reasoning_effort = request.reasoning_effort;
     if (request.stream !== undefined) body.stream = request.stream;
+    return body;
+  }
+
+  function buildResponsesBody(request, config, providedBody) {
+    const source = isObject(providedBody) ? providedBody : {};
+    const body = { ...source };
+    const model = source.model ?? request.model ?? config.model;
+    const messages = source.input ?? source.messages ?? request.messages;
+    const maxTokens = source.max_output_tokens
+      ?? source.max_tokens
+      ?? source.maxTokens
+      ?? request.max_tokens
+      ?? request.maxTokens;
+    const responseFormat = source.response_format ?? source.responseFormat
+      ?? request.response_format
+      ?? request.responseFormat;
+    const reasoning = source.reasoning;
+    const reasoningEffort = source.reasoning_effort
+      ?? request.reasoning_effort
+      ?? request.reasoningEffort;
+
+    delete body.messages;
+    delete body.max_tokens;
+    delete body.maxTokens;
+    delete body.response_format;
+    delete body.responseFormat;
+    delete body.reasoning_effort;
+    if (model !== undefined) body.model = model;
+    if (messages !== undefined) body.input = messages;
+    if (maxTokens !== undefined) body.max_output_tokens = maxTokens;
+    if (body.text === undefined && responseFormat?.type === "json_object") {
+      body.text = { format: { type: "json_object" } };
+    }
+    if (reasoning === undefined && reasoningEffort) body.reasoning = { effort: reasoningEffort };
+    if (request.temperature !== undefined && body.temperature === undefined) body.temperature = request.temperature;
+    if (request.stream !== undefined && body.stream === undefined) body.stream = request.stream;
     return body;
   }
 
@@ -262,15 +356,19 @@
         );
       }
 
-      const url = normalizeUrl(request.url ?? request.endpoint ?? endpoint);
-      if (!url) {
+      const requestedModel = request.model ?? model ?? (isObject(request.body) ? request.body.model : undefined);
+      const route = resolveRoute(request.url ?? request.endpoint ?? endpoint, { model: requestedModel });
+      if (!route) {
         throw new ModelTransportError(
           ERROR_CODES.CONFIGURATION,
           `${serviceName} 未配置 endpoint`,
           { stage, reason: "missing_endpoint" },
         );
       }
-      const body = request.body !== undefined ? request.body : buildDefaultBody(request, { model });
+      const url = route.url;
+      const body = route.api === "responses"
+        ? buildResponsesBody(request, { model }, request.body)
+        : (request.body !== undefined ? request.body : buildDefaultBody(request, { model }));
       let response;
       try {
         response = await fetchFn(url, {
@@ -291,7 +389,7 @@
           { status, stage, url, body: text, reason: "http_error" },
         );
       }
-      return parseEnvelope(text, { status, stage, url, serviceName });
+      return parseEnvelope(text, { status, stage, url, serviceName, api: route.api });
     }
 
     return Object.freeze({ complete });
