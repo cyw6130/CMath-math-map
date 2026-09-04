@@ -94,11 +94,14 @@ _Avoid_: 实验样例、离线特例、仅指某个模型输出 JSON
 **Production Reproduction（生产复现）**: 网站从相同语义输入出发，执行与 Laboratory Workflow 相同的步骤、版本与运行合同，并达到实验室水平的数学覆盖、主证明链与地图连通质量；不要求随机模型输出逐字或逐 ID 相同。
 _Avoid_: 页面能跑、JSON 格式通过、与单张 Gold 自比
 
-**Production Paper Import Pipeline（生产论文导入链路）**: 公开网站执行的完整步骤链：`PDF → MinerU marked Markdown → Entry v1.31 → deterministic consolidation → W7.1 verify → W8 B0 backfill → Inference v3.45 → Project View`。MinerU 之后的模型阶段由浏览器编排，并把每个阶段产物保存为本地 checkpoint，以便刷新后从最近完成阶段继续。
-_Avoid_: 仅指网页端 PDF.js 抽取、只含 Entry/Inference 两层的简化链路
+**Production Paper Import Pipeline（生产论文导入链路）**: 当前公开网站默认执行 Canonical V5.2.1：`PDF → MinerU marked Markdown → 完整 Canonical Math Map 生成（assemble）→ 统一审查与原子修复（repair）→ Math State v3 最终校验 → Paper-to-Map Result → Map Library 保存`。MinerU 后固定使用同一模型恰好调用两次；首轮不可寻址时，第二次调用先恢复 `recoveredMap` 再完成审修，不增加第三次调用。Workbench 只呈现 `MinerU → 生成 → 统一审修 → 最终校验 → 保存` 公共阶段。
+_Avoid_: 把历史 V4.1 Entry/W7.1/W8/Inference 链称为当前默认路径、把内部 operation 当成网关阶段、仅指网页端 PDF.js 抽取
 
-**User-provided Model Access（用户自带模型访问）**: 网站不提供或补贴 Entry、W7/W8、Inference 所需的模型服务；用户沿用现有模型选择与 API 配置提交本次 Paper Import 所需的 provider、model 与凭证。网站只提供 MinerU 文档预处理能力。
-_Avoid_: 网站模型、免费推理、把 MinerU Token 与模型 API Key 混称
+**CMath-provided Model Access（CMath 提供的模型访问）**: 公开网站默认通过受保护模型网关固定使用 `muse-spark-1.3-contributor`；共享凭证只存在 Worker Secret 中，不进入前端、浏览器存储、日志或地图结果。首次提交前必须披露 Contributor 训练用途并取得主动同意；该路径不提供共享凭证下的模型选择器。
+_Avoid_: OpenCode Go 通用代理、共享 API Key、静默模型切换、把用户同意视为 API 配置
+
+**User-provided Model Access（用户自带模型访问）**: 用户选择自己的 provider、model、endpoint 与 API Key，直接承担 Canonical V5.2.1 两次模型调用；其凭证、配置、额度与 CMath-provided Model Access 完全分离。在线站点只在当前会话使用 Key，本地环回服务可按显式选择保存本机配置。
+_Avoid_: CMath 提供的模型、共享凭证、把 MinerU Token 与模型 API Key 混称
 
 **MinerU Token**: MinerU 精准解析 API 用于 `Authorization: Bearer <token>` 的站点凭证；它在安全角色上就是 MinerU API Key，不是解析任务返回的 `task_id`。
 _Avoid_: 模型 API Key、MinerU 任务 ID、公开配置项
@@ -106,11 +109,14 @@ _Avoid_: 模型 API Key、MinerU 任务 ID、公开配置项
 **MinerU Credential Gateway（MinerU 凭证网关）**: 公开网站通过轻量 Cloudflare Worker 调用 MinerU 精准解析 API；站点 MinerU Token 仅保存在 Worker Secret 中，不进入前端代码。Worker 只承担凭证保护与 MinerU 请求转发，不提供模型服务，不保存论文或工作流产物；PDF 使用 MinerU 签名上传地址从浏览器直传 MinerU。
 _Avoid_: 传统应用后端、模型代理、把站点 Token 嵌入 GitHub Pages、由用户提供 MinerU Token
 
-**Frozen Workflow（冻结工作流）**: 从 Laboratory Workflow 冻结发布的完整可复现合同，包含源文档预处理、Entry/Inference 组合、补全与校验步骤及其版本身份；完整生产复现的当前身份为 `V4.1-production-reproduction`。冻结后若改变其中任一生成行为，必须产生新的版本身份，不能继续借用原标签。
-_Avoid_: 新后端、最新算法、与前端工作台版本混称（如「v5 工作流」——工作台 Paper Grotesque v5 是界面 Edition，不随 Frozen Workflow 递进）
+**Frozen Workflow（冻结工作流）**: 从 Laboratory Workflow 冻结发布的完整可复现合同，包含输入、模型调用、提示词、审修、校验、输出合同与精确版本身份。当前默认生产身份为 `canonical-paper-to-map-v5.2.1-stage-contract-repair`，提示词身份为 `canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt`，生产合同为 `production-canonical-paper-import/v1.1`。冻结后若改变任一生成行为，必须产生新的精确身份，不能继续借用原标签。
+_Avoid_: 最新算法（未冻结时）、仅用界面 Edition 指代生成合同、把兼容路径冒充当前默认生产路径
 
-**V4 / V4.1**: 历史 Entry/Inference 组合标签。V4 = Entry `v1.14` + Inference `v3.45` 系；V4.1 = Entry `v1.31` + Inference `v4`。完整网站生成行为使用 `V4.1-production-reproduction`，并额外冻结 MinerU、整合、W7.1、W8 与 Project View 身份。标签到运行时实现的映射由 `FROZEN_WORKFLOW` 维护。
-_Avoid_: V4.1（指代单层模块时）、v4（与标签混写的运行时串）
+**V5.2 / V5.2.1**: V5.2 冻结“完整生成 + 统一审查与原子修复”的两次同模型调用；V5.2.1 不改变提示词或调用次数，只把内部 operation、Workbench 公共阶段和网关 transport stage 分离，网站传输稳定为 `assemble → repair`。V5.2.1 是当前默认生产路径。
+_Avoid_: 第三次修复调用、整图重写、把 `audited-patch-repair` 直接作为网关 stage
+
+**V4 / V4.1**: 历史 Entry/Inference 组合与兼容路径。完整的 `V4.1-production-reproduction` 执行 `MinerU → Entry v1.31 → deterministic consolidation → W7.1 → W8 → Inference v3.45 → Project View/Closure`，保留用于兼容与紧急回退，但不是当前默认生产路径。
+_Avoid_: 把 V4.1 称为当前默认路径、v4（与标签混写的运行时串）
 
 **Map Integration**: 将 Project View 接入数学地图的消费侧能力，含适配、闭包派生、渲染与存储。
 _Avoid_: 工作流（与 Benchmark 混称时）、接入逻辑（泛称）
