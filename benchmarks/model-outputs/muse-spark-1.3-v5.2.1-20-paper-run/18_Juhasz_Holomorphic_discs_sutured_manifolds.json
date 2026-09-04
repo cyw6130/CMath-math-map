@@ -1,0 +1,2241 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "18_Juhasz_Holomorphic_discs_sutured_manifolds.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F-sutured-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "缝合流形的定义",
+          "statement": "缝合流形 \\((M,\\gamma)\\) 由紧定向三维流形 \\(M\\) 及边界中互不相交的环带集 \\(A(\\gamma)\\) 与环面集 \\(T(\\gamma)\\) 构成，每个环带内部含同调非平凡的有向单闭曲线作为缝合线，其并记为 \\(s(\\gamma)\\)，余下部分 \\(R(\\gamma)\\) 的每个分支带有定向，分为法向量向外的正侧 \\(R_{+}(\\gamma)\\) 与向内的负侧 \\(R_{-}(\\gamma)\\)，且定向与缝合线相容。"
+        },
+        {
+          "id": "F-balanced-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "平衡缝合流形的定义",
+          "statement": "平衡缝合流形是满足如下条件的缝合流形 \\((M,\\gamma)\\)：\\(M\\) 无闭分支，正负侧欧拉示性数相等，即 \\(\\chi(R_{+}(\\gamma))=\\chi(R_{-}(\\gamma))\\)，且从环带分支集 \\(\\pi_{0}(A(\\gamma))\\) 到边界分支集 \\(\\pi_{0}(\\partial M)\\) 的映射满，此时无环面缝合 \\(T(\\gamma)=\\emptyset\\)，流形完全由 \\(M\\) 与缝合线 \\(s(\\gamma)\\) 决定。"
+        },
+        {
+          "id": "F-Yk-constr",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "删球构造的平衡缝合流形示例",
+          "statement": "设 \\(Y\\) 为闭连通定向三维流形，删去互不交的闭球 \\(B_{i}\\) 的内部得 \\(M\\)，在每个球面边界上取有向单闭曲线 \\(s_{i}\\) 及其正则邻域为缝合，则所得 \\((M,\\gamma)\\) 为平衡缝合流形，仅依赖于 \\(Y\\) 与球数 \\(k\\)，记为 \\(Y(k)\\)，且可由 \\(Y(k)\\) 唯一恢复 \\(Y\\)，连通平衡流形与 \\(S^{3}(k)\\) 的连通和仍平衡。"
+        },
+        {
+          "id": "F-YL-constr",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "链环余集的平衡缝合流形构造",
+          "statement": "设 \\(L\\) 为闭连通定向三维流形 \\(Y\\) 中有 \\(k\\) 个分支的链环，取其闭正则邻域 \\(N(L)\\) 的余集为 \\(M\\)，在每个环面边界上取两条反向子午线作为缝合线，则得平衡缝合流形，记为 \\(Y(L)\\)，它唯一决定链环 \\(L\\)，通过把实心环体沿缝合线作德恩填充可重构 \\(L\\)，区分两条缝合线则定出 \\(L\\) 的定向。"
+        },
+        {
+          "id": "F-product-ex",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "乘积缝合流形示例",
+          "statement": "设 \\(R\\) 为无闭分支的紧定向曲面，令 \\(M=R\\times I\\)，缝合取为 \\(\\partial R\\times I\\)，缝合线取为 \\(\\partial R\\times\\{1/2\\}\\)，则所得 \\((M,\\gamma)\\) 为平衡缝合流形，称为乘积缝合流形。"
+        },
+        {
+          "id": "F-YR-constr",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "曲面余集的平衡缝合流形构造",
+          "statement": "设 \\(R\\) 为闭连通定向三维流形 \\(Y\\) 中无闭分支的紧定向曲面，令 \\(M\\) 为删去 \\(R\\times I\\) 内部的余集，缝合取为 \\(\\partial R\\times I\\)，缝合线取为 \\(\\partial R\\times\\{1/2\\}\\)，则所得 \\(Y(R)=(M,\\gamma)\\) 为平衡缝合流形。"
+        },
+        {
+          "id": "F-sutured-diagram-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "缝合希戈图的定义",
+          "statement": "缝合希戈图是三元组 \\((\\Sigma,\\boldsymbol{\\alpha},\\boldsymbol{\\beta})\\)，其中 \\(\\Sigma\\) 为带边的紧定向曲面，\\(\\boldsymbol{\\alpha}\\) 与 \\(\\boldsymbol{\\beta}\\) 为其内部互不相交的单闭曲线集。"
+        },
+        {
+          "id": "F-diagram-to-manifold",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "由希戈图构造缝合流形",
+          "statement": "由 \\((\\Sigma,\\boldsymbol{\\alpha},\\boldsymbol{\\beta})\\) 出发，在 \\(\\Sigma\\times I\\) 上沿 \\(\\alpha_{i}\\times\\{0\\}\\) 与 \\(\\beta_{j}\\times\\{1\\}\\) 粘上三维二柄得 \\(M\\)，缝合取为边界柱面，缝合线取为中部截面，由此唯一决定缝合流形 \\((M,\\gamma)\\)。"
+        },
+        {
+          "id": "F-balanced-diagram-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "平衡希戈图的定义",
+          "statement": "若缝合希戈图满足曲线数相等 \\(|\\boldsymbol{\\alpha}|=|\\boldsymbol{\\beta}|\\)，且边界分支到删去曲线后曲面分支的映射 \\(\\pi_{0}(\\partial\\Sigma)\\to\\pi_{0}(\\Sigma\\setminus\\cup\\alpha)\\) 与 \\(\\beta\\) 的相应映射满，则称为平衡图，等价于 \\(\\Sigma\\) 无闭分支且两组曲线在有理同调 \\(H_{1}(\\Sigma;\\mathbb{Q})\\) 中各自线性无关。"
+        },
+        {
+          "id": "F-surgery-notation",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "沿曲线作手术的记号",
+          "statement": "若 \\(\\gamma\\) 为曲面 \\(\\Sigma\\) 内部互不交单闭曲线集，则 \\(\\Sigma[\\gamma]\\) 表示沿 \\(\\gamma\\) 作手术所得曲面，即把每条曲线换成补上圆盘的零球面，用于描述粘柄后的正负侧曲面。"
+        },
+        {
+          "id": "F-T-tori-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "对称积中的拉格朗日环面",
+          "statement": "设平衡图有 \\(d\\) 条曲线，令 \\(\\mathbb{T}_{\\alpha}\\) 与 \\(\\mathbb{T}_{\\beta}\\) 为对称积 \\(\\mathrm{Sym}^{d}(\\Sigma)\\) 中由各曲线乘积模置换所得的 \\(d\\) 维环面，当曲线横截相交时两环面横截相交。"
+        },
+        {
+          "id": "F-Whitney-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "惠特尼圆盘与同伦类",
+          "statement": "连接交点 \\(\\mathbf{x}\\) 到 \\(\\mathbf{y}\\) 的惠特尼圆盘是把单位圆盘映到 \\(\\mathrm{Sym}^{d}(\\Sigma)\\) 的连续映射，把虚轴两端点分别映到两交点，把右左半圆弧分别映到 \\(\\mathbb{T}_{\\alpha}\\) 与 \\(\\mathbb{T}_{\\beta}\\)，其同伦类集记为 \\(\\pi_{2}(\\mathbf{x},\\mathbf{y})\\)。"
+        },
+        {
+          "id": "F-nz-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "相交重数与边界区域为零",
+          "statement": "对不交曲线的点 \\(z\\) 与惠特尼圆盘 \\(u\\)，取同伦且与超曲面 \\(\\{z\\}\\times\\mathrm{Sym}^{d-1}(\\Sigma)\\) 横截的代表，定义代数交数 \\(n_{z}(u)\\)，它只依赖 \\(z\\) 所在分支与同伦类，若分支含 \\(\\Sigma\\) 的边界分支则重数为零，可把圆盘同伦到避开边界对称积。"
+        },
+        {
+          "id": "F-domain-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "区域与周期区域的定义",
+          "statement": "把与边界不交的补分支闭包记为 \\(\\mathcal{D}_{i}\\)，以它们为基的自由阿贝尔群称为区域群，其非负元称为正区域，若二维链的边界为曲线线性组合则称为周期区域。"
+        },
+        {
+          "id": "F-domain-disc-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "惠特尼圆盘的区域",
+          "statement": "在每个内部区域取点 \\(z_{i}\\)，惠特尼圆盘 \\(u\\) 的区域定义为以重数 \\(n_{z_{i}}(u)\\) 为系数的线性组合，同伦类的区域同样定义，全纯圆盘的区域必非负，同基点的圆盘区域必为周期区域。"
+        },
+        {
+          "id": "F-HP-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "周期区域的同调类",
+          "statement": "若周期区域边界写成曲线线性组合，把各系数乘以相应二柄的核圆盘再加上原二维链，所得闭链在 \\(H_{2}(M;\\mathbb{Z})\\) 中的类记为 \\(H(\\mathcal{P})\\)。"
+        },
+        {
+          "id": "F-admissible-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "容许性图的定义",
+          "statement": "若每个非零周期区域同时具有正负系数，则平衡图称为容许的，该条件保证正连接区域有限，从而微分求和有限。"
+        },
+        {
+          "id": "F-Dxy-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "连接两交点的区域",
+          "statement": "若区域沿每条曲线的边界恰为两交点在该曲线上交集之差，则称它连接 \\(\\mathbf{x}\\) 到 \\(\\mathbf{y}\\)，记集为 \\(D(\\mathbf{x},\\mathbf{y})\\)，同伦类的区域必属于此集。"
+        },
+        {
+          "id": "F-nu0-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "边界标准向量场",
+          "statement": "边界上的非零向量场 \\(\\nu_{0}\\) 在负侧指向内，在正侧指向外，在缝合柱面上为高度函数的梯度，此类向量场空间可缩，其正交平面场的陈类记为边界上同调类。"
+        },
+        {
+          "id": "F-spinc-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "相对自旋结构的定义",
+          "statement": "在边界上等于 \\(\\nu_{0}\\) 的非零向量场，若在去掉一个内球后相对边界同伦则称为同调，由此同调类集称为 \\(\\mathrm{Spin}^{c}(M,\\gamma)\\)，它非空且为 \\(H^{2}(M,\\partial M;\\mathbb{Z})\\) 上的仿射空间。"
+        },
+        {
+          "id": "F-c1-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "自旋结构陈类的定义",
+          "statement": "对由向量场定义的自旋结构，其正交有向平面场的陈类属于边界陈类在限制映射下的原像，记为 \\(c_{1}(\\mathfrak{s})\\)。"
+        },
+        {
+          "id": "F-sx-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "交点决定的自旋结构",
+          "statement": "取与平衡图相容的莫尔斯函数，交点对应连接指标一与指标二临界点的多重轨线，在其邻域修改梯度场为处处非零且边界为标准场的向量场，其同调类记为 \\(\\mathfrak{s}(\\mathbf{x})\\)。"
+        },
+        {
+          "id": "F-eps-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "两交点差的同调类",
+          "statement": "两交点对应的多重轨线之差视为 \\(M\\) 中的一链，其同调类记为 \\(\\epsilon(\\mathbf{x},\\mathbf{y})\\)，也可经由分别在两环面中连接两点的道路之差在曲面中的同调类来定义，与道路选取无关。"
+        },
+        {
+          "id": "F-moduli-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "模空间与马斯洛夫指标",
+          "statement": "对同伦类 \\(\\phi\\)，记伪全纯代表的模空间为 \\(\\mathcal{M}(\\phi)\\)，其除以实数平移的商为 \\(\\widehat{\\mathcal{M}}(\\phi)\\)，期望维数称为马斯洛夫指标 \\(\\mu(\\phi)\\)。"
+        },
+        {
+          "id": "F-domain-Maslov-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "区域的马斯洛夫指标",
+          "statement": "若区域可实现为某惠特尼同伦类的区域，则其马斯洛夫指标定义为该同伦类的指标，否则定义为负无穷，同样记实现该区域的全纯圆盘模空间及其商。"
+        },
+        {
+          "id": "F-energy-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "映射能量的定义",
+          "statement": "平面区域到黎曼流形的光滑映射的能量定义为其微分模平方积分的一半。"
+        },
+        {
+          "id": "F-area-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "区域面积的定义",
+          "statement": "区域的面积定义为各分支凯勒面积以相同系数作线性组合，分支面积为凯勒形式在该分支上的积分。"
+        },
+        {
+          "id": "F-CF-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "链群与微分的定义",
+          "statement": "链群是由两环面交点生成的自由阿贝尔群，微分把生成元映到对所有终点与所有指标为一的连接区域求和，每项系数为零维紧定向约化模空间的带号计数，容许性保证求和有限。"
+        },
+        {
+          "id": "F-CF-split-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "按自旋结构分解子复形",
+          "statement": "固定自旋结构，由具有该自旋结构的交点生成的子群为子复形，全复形是它们沿所有自旋结构的直和。"
+        },
+        {
+          "id": "F-SFH-diagram-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "图的缝合弗洛尔同调",
+          "statement": "图的缝合弗洛尔同调定义为上述链复形的同调，对每个自旋结构同样取子复形的同调为其分量。"
+        },
+        {
+          "id": "F-SFH-manifold-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "缝合流形的不变量定义",
+          "statement": "平衡缝合流形的缝合弗洛尔同调定义为任取定义它的容许平衡图的图同调，不变量定理保证它与图的选取无关，对每个自旋结构同样定义分量。"
+        },
+        {
+          "id": "F-grading-d-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "整除数的定义",
+          "statement": "对自旋结构，记其陈类与所有二维同调类配对的最大公约数为整除数，用于相对分次的模数。"
+        },
+        {
+          "id": "F-grading-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "相对分次的定义",
+          "statement": "在曲线数大于一的容许平衡图中，同属一自旋结构的两交点的相对分次定义为任取连接它们的同伦类的马斯洛夫指标模整除数的余数，它与同伦类选取无关并下降到同调上，且与图选取无关。"
+        },
+        {
+          "id": "F-decomp-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "缝合流形分解的定义",
+          "statement": "若定向真嵌入曲面与缝合的交满足非分离弧、同调于缝合的闭曲线或环面上同调相同的三类条件之一，则沿其邻域切开并按法向量内外把曲面两侧分别并入正负侧，再加厚交线为新环带，即得缝合流形分解。"
+        },
+        {
+          "id": "F-product-decomp-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "乘积分解的定义",
+          "statement": "若分解曲面为与缝合线恰交于两点的真嵌入圆盘，则称为乘积分解，平衡流形经乘积分解所得仍平衡。"
+        },
+        {
+          "id": "F-taut-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "紧缝合流形的定义",
+          "statement": "若三维流形不可约且正负侧曲面不可压缩并在其相对同调类中瑟斯顿范数最小，则缝合流形称为紧的。"
+        },
+        {
+          "id": "F-poincare-example",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "庞加莱球面的计算示例",
+          "statement": "庞加莱球面删一球所得平衡缝合流形不是乘积，但其缝合弗洛尔同调同构于整数群，与闭流形帽型同调一致，说明同调为整数不能反推为乘积。"
+        },
+        {
+          "id": "C-prop29",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "平衡的图论刻画",
+          "statement": "由缝合希戈图定义的缝合流形平衡当且仅当两组曲线数相等且边界到删曲线后分支的映射满，后者等价于曲面无闭分支且两组曲线各自有理线性无关，正负侧欧拉示性数各为曲面示性数加两倍曲线数。"
+        },
+        {
+          "id": "C-lemma210",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "分支单射的同调判据",
+          "statement": "带边紧定向曲面中一维子流形的余集使边界分支映射单当且仅当曲面无闭分支且分支在有理一维同调中线性无关，该判据经由对的长正合列与切除计算二阶相对同调是否为零得到。"
+        },
+        {
+          "id": "C-prop213",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "缝合流形的图存在性",
+          "statement": "若缝合流形的正负侧分支到流形分支的映射满，则存在定义它的缝合希戈图，可取边界高度固定、自指标化且无零三指标临界点的莫尔斯函数，以中层为曲面，以一二指标临界点的升降流形交线为曲线。"
+        },
+        {
+          "id": "C-prop214",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "平衡流形的平衡图存在性",
+          "statement": "每个平衡缝合流形都存在定义它的平衡图，它是图存在性与平衡图论刻画的直接推论。"
+        },
+        {
+          "id": "C-prop215",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "同流形的图经希戈移动等价",
+          "statement": "定义同一平衡缝合流形的两平衡图经有限次同痕、柄滑与稳定化后微分同胚，证明经由连接莫尔斯函数的单参数族，在余维一处只出现柄滑、稳定化与指标零一或二三对的产生消去，并用极大线性无关子集约化。"
+        },
+        {
+          "id": "C-lemma217",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "贴盘曲线的柄滑表示",
+          "statement": "若两条不交曲线在沿多条曲线手术后的曲面中都围盘，且其中一条不同调于零，则它可由其中一条曲线经其余曲线的柄滑得到，且被滑的曲线与另一条曲线在把前者换成后者再手术的曲面中都围盘。"
+        },
+        {
+          "id": "C-lemma218",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "线性无关子集的柄滑连通性",
+          "statement": "若两组线性无关曲线都含于同一不交曲线大集中，且大集减去第一组后每条在沿第一组手术后都围盘，则第二组可由第一组经同痕与柄滑得到，且大集减去第二组后同样在沿第二组手术后围盘，证明对曲线数作归纳并分相交与不交情形。"
+        },
+        {
+          "id": "C-lemma32",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "环面为全实子流形",
+          "statement": "对平衡图与曲面上任取复结构，两环面在对称积的诱导复结构下为全实子流形，因乘积在对角线外为全纯局部微分同胚且原乘积全实并避开对角线。"
+        },
+        {
+          "id": "C-lemma310",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "零同调周期区域为零",
+          "statement": "若周期区域的闭链同调类为零则区域本身为零，因曲面无闭分支使二阶同调为零，非零区域边界非零必与某柄的余核非零相交。"
+        },
+        {
+          "id": "C-cor312",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "二阶同调消失则自动容许",
+          "statement": "若平衡缝合流形的整二阶同调为零，则定义它的任一平衡图无非零周期区域，从而自动容许。"
+        },
+        {
+          "id": "C-lemma314",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "容许则正区域有限",
+          "statement": "容许平衡图中连接任意两交点的非负区域只有有限多个，固定一连接区域后余者差为周期区域，低于固定下界的周期格点若无限将给出非零非负实周期向量，通分得整数反例。"
+        },
+        {
+          "id": "C-prop315",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "经同痕达到容许性",
+          "statement": "每个平衡图都同痕于容许图，方法是取生成相对同调的真嵌入弧系，在其邻域作指移使曲线交点被分离点隔开，周期边界的线性组合若与某弧代数相交非零则在两平行拷贝上取相反重数，若全零则组合在曲面中零调从而系数全零。"
+        },
+        {
+          "id": "C-lemma47",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "自旋结构差为对偶",
+          "statement": "两交点的自旋结构之差等于其多重轨线差类的庞加莱对偶，因两向量场只在该差的邻域不同，局部计算即得。"
+        },
+        {
+          "id": "C-cor48",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "自旋不同则无区域",
+          "statement": "若两交点自旋结构不同则无连接区域特别无惠特尼圆盘，若对称积基本群等于一阶同调则逆亦成立，即同自旋蕴含同伦类非空。"
+        },
+        {
+          "id": "C-prop49",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "高对称积的基本群",
+          "statement": "当曲线数大于一时对称积的基本群等于其一阶整同调，零调且避开对角线的圈可经带边曲面与分支覆盖延拓为圆盘给出零伦。"
+        },
+        {
+          "id": "C-thm52",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "同基点类的指标公式",
+          "statement": "对同基点惠特尼类，其马斯洛夫指标等于该交点自旋结构陈类与相应区域同调类的配对。"
+        },
+        {
+          "id": "C-cor53",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "同区域则同指标",
+          "statement": "若两连接同两点的同伦类具有相同区域，则其马斯洛夫指标相等，因其差为区域为零的同基点类，配对为零。"
+        },
+        {
+          "id": "C-thm55",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "周期区域的指标公式",
+          "statement": "对交点处的周期区域，若其指标非负无穷，则指标等于该点自旋结构陈类与区域同调类的配对，这是同基点公式的区域表述。"
+        },
+        {
+          "id": "C-thm63",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "能量被面积控制",
+          "statement": "存在仅依赖平衡图与凯勒形式的常数，使任一以两环面并为边界条件的光滑惠特尼圆盘的能量不超过该常数乘以其区域面积，证明利用曲面紧性，类比闭流形情形。"
+        },
+        {
+          "id": "C-cor64",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "指标一模空间紧零维",
+          "statement": "对指标为一的区域，其约化全纯模空间为紧零维流形，由能量界与格罗莫夫紧性得到。"
+        },
+        {
+          "id": "C-lemma65",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "无边界退化与球泡",
+          "statement": "以单侧环面为边界条件的伪全纯圆盘必常值，伪全纯球面必常值，因边界为单侧曲线线性组合而曲线线性无关迫使区域为零，能量界给出能量为零，二维链在无闭分支曲面上亦为零。"
+        },
+        {
+          "id": "C-thm72",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "微分平方为零",
+          "statement": "上述链群与微分构成链复形，即微分平方为零，边界退化与球泡被排除，其余论证同闭流形帽型理论。"
+        },
+        {
+          "id": "C-thm75",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "缝合弗洛尔同调不变性",
+          "statement": "定义同一缝合流形的容许平衡图给出同构的缝合弗洛尔同调，且每个自旋结构分量对应同构，故流形不变量良定，证明由希戈移动等价性按闭流形方式得到。"
+        },
+        {
+          "id": "C-prop91",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "闭流形帽型同调的实现",
+          "statement": "闭连通定向三维流形的帽型同调同构于删一球所得平衡缝合流形的缝合弗洛尔同调，方法是把弱容许图挖去基点邻域得平衡图，两链复形同构。"
+        },
+        {
+          "id": "C-prop92",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "链环弗洛尔同调的实现",
+          "statement": "闭流形中链环的链环弗洛尔同调在二元系数下同构于其余集缝合流形的缝合弗洛尔同调张量二元域，单分支时结弗洛尔同调在整数下直接同构，方法是把多点图挖去基点邻域，两链复形同构。"
+        },
+        {
+          "id": "C-prop94",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "乘积流形的同调",
+          "statement": "乘积缝合流形的缝合弗洛尔同调同构于整数群，可用空曲线图只有一个交点直接计算，其二阶同调消失故自动容许，稳定化得同样结果。"
+        },
+        {
+          "id": "C-lemma913",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "乘积分解下不变",
+          "statement": "平衡缝合流形经乘积分解所得流形具有相同缝合弗洛尔同调，证明取在乘积盘邻域无临界点的莫尔斯函数，使盘交线为避开曲线的边界弧，沿弧切开得分解流形的图，周期区域对应保持正负系数，链复形同构。"
+        },
+        {
+          "id": "C-prop914",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "多球缝合流形的公式",
+          "statement": "闭连通定向三维流形删 \\(n\\) 球的缝合弗洛尔同调同构于其帽型同调的 \\(2^{n-1}\\) 个拷贝，即张量 \\(n-1\\) 个二秩自由群，对 \\(n\\) 作归纳并用与 \\(S^{1}\\times S^{2}\\) 连通和的乘积盘把归纳假设传递。"
+        },
+        {
+          "id": "C-prop915",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "连通和公式",
+          "statement": "两平衡缝合流形的连通和的同调为两者同调张量后再张量二秩自由群，流形与闭流形连通和的同调为前者张量后者的帽型同调，证明经由把连通和管作指移得到的乘积分解化为不交并，再用单球情形与三维球面双球情形的计算。"
+        },
+        {
+          "id": "C-cor916",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "加球稳定化公式",
+          "statement": "连通平衡缝合流形再作 \\(n\\) 次加球稳定化，其同调为原同调张量 \\(2^{n}\\) 秩自由群，由连通和公式对 \\(n\\) 归纳并用三维球面单球同调为整数得到。"
+        },
+        {
+          "id": "C-prop918",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "非紧则同调为零",
+          "statement": "若不可约平衡缝合流形非紧，则其缝合弗洛尔同调为零，证明取使正侧示性数更大的同调曲面作分解层面， rearranged 自指标莫尔斯函数给出正侧曲线多于可交曲线的图，经特殊 winding 弧保持容许性后交点为空。"
+        },
+        {
+          "id": "C-thm101-Gabai",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "纤维链环的乘积刻画",
+          "statement": "三维球面中定向曲面的边界为纤维链环且以该曲面为纤维当且仅当相应曲面余集缝合流形为乘积缝合流形，这是加拜的外部定理，作为本项目可靠前提。"
+        },
+        {
+          "id": "C-conj102",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "亏格顶层猜想",
+          "statement": "三维球面中结的亏格为 \\(g\\) 的赛弗特曲面余集的缝合弗洛尔同调同构于该结在亏格层的结弗洛尔同调，这是未证明的核心猜想，保持开放。"
+        },
+        {
+          "id": "C-conj103",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "纤维结的同调刻画猜想",
+          "statement": "三维球面中结为纤维结当且仅当其在三维亏格层的结弗洛尔同调同构于整数群，这是未证明的核心猜想，保持开放。"
+        },
+        {
+          "id": "C-q97",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "乘积检测逆问题",
+          "statement": "在不可约且二阶整同调为零的假设下，同调为整数是否蕴含为乘积缝合流形，这是作者提出的未决问题，保持开放。"
+        },
+        {
+          "id": "C-q919",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "紧性检测逆问题",
+          "statement": "同调为零是否蕴含缝合流形非紧，这是作者提出的未决问题，保持开放。"
+        },
+        {
+          "id": "C-prop104-Hedden",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "怀特黑德双的同调公式",
+          "statement": "结的正扭怀特黑德双在亏格一层的结弗洛尔同调同构于相应 surgery 流形中子午线的结弗洛尔同调，这是赫登的外部结果，作为可靠前提。"
+        },
+        {
+          "id": "C-thm105",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "怀特黑德双曲面的验证",
+          "statement": "怀特黑德双的特定赛弗特曲面余集的缝合弗洛尔同调同构于其在亏格一层的结弗洛尔同调，证明用怀特黑德公式把问题化为曲面余集，再经乘积分解化为线缆链环曲面并用环面边界的德恩填充计算为 surgery 中子午线的同调。"
+        },
+        {
+          "id": "C-prop106",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "扭结曲面的计算",
+          "statement": "标准扭结的赛弗特算法曲面余集的缝合弗洛尔同调同构于其顶层结弗洛尔同调且秩为相应整数的上取整半数，证明经乘积分解化为环面链环曲面，再化为透镜空间中子午线的同调并用交错结亚历山大多项式首系数计算。"
+        },
+        {
+          "id": "C-prop107",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "小交叉数结的验证",
+          "statement": "至多七交叉且不为特定八面体结的结有唯一最小亏格赛弗特曲面，且其顶层结弗洛尔同调同构于相应曲面余集的缝合弗洛尔同调，纤维情形已知，非纤维中扭结已算，余下交错情形经乘积分解化为透镜空间计算并由亚历山大多项式定秩。"
+        },
+        {
+          "id": "C-remark-Murasugi",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "村杉和公式注记",
+          "statement": "若球面中定向曲面为两曲面的村杉和，则在任意域系数下其余集的缝合弗洛尔同调为两者同调的张量积，该公式类比已知村杉和公式，来源仅提及思路而未给出完整证明，保持开放。"
+        },
+        {
+          "id": "C-b0-HF-analysis",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "闭理论分析工具的适用性",
+          "statement": "闭流形帽型理论中的横截性、紧性、粘合、相干定向与无边界干扰的论证可直接适用于平衡图，这是引自外部文献的可靠分析前提。"
+        },
+        {
+          "id": "C-b0-Morse",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "自指标化与消去的莫尔斯前提",
+          "statement": "边界高度固定的函数可延拓为自指标化莫尔斯函数，在正负侧到流形分支满的同调条件下指标零一与二三临界点对可经唯一梯度线消去而不改变边界函数，这是引自米尔诺的可靠前提。"
+        },
+        {
+          "id": "C-b0-connected-sum",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "帽型连通和与基本计算",
+          "statement": "帽型同调满足连通和张量公式，且 \\(S^{1}\\times S^{2}\\) 的帽型同调为二秩自由群，三维球面的帽型同调为整数群，这是引自外部文献的可靠计算前提。"
+        },
+        {
+          "id": "C-b0-lens-alex",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "透镜空间与交错结的计算前提",
+          "statement": "透镜空间中子午线的结弗洛尔同调秩等于 surgery 系数，且交错结顶层结弗洛尔同调秩等于其亚历山大多项式首系数的绝对值，这是引自外部文献的可靠计算前提。"
+        },
+        {
+          "id": "C-b0-Kobayashi",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "小交叉数唯一曲面前提",
+          "statement": "至多七交叉且不为特定结的结具有唯一最小亏格赛弗特曲面，这是引自小林的可靠外部前提。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I-lemma210",
+          "operationKind": "proof",
+          "premises": [
+            "F-surgery-notation"
+          ],
+          "conclusion": "C-lemma210",
+          "argument": "用对的长正合列把线性无关化为单射，与二阶相对同调直和分解比较，经切除把相对同调化为删邻域后分支的相对群，恰在每分支交边界时为零，即得边界分支映射单的等价性。"
+        },
+        {
+          "id": "I-prop29",
+          "operationKind": "proof",
+          "premises": [
+            "F-diagram-to-manifold",
+            "F-balanced-def",
+            "F-balanced-diagram-def",
+            "C-lemma210"
+          ],
+          "conclusion": "C-prop29",
+          "argument": "粘二柄使边界欧拉示性数各加两倍曲线数，故正负侧示性数相等当且仅当曲线数相等， surgery 对应给出正负侧分支与删曲线后分支对应，无闭分支当且仅当边界映射满，最后陈述由引理判据得到。"
+        },
+        {
+          "id": "I-prop213",
+          "operationKind": "proof",
+          "premises": [
+            "F-sutured-diagram-def",
+            "F-diagram-to-manifold",
+            "C-b0-Morse"
+          ],
+          "conclusion": "C-prop213",
+          "argument": "在边界上固定高度函数并作一般延拓为莫尔斯函数，用自指标化与同调满条件消去零三指标临界点，取中层为曲面并以一二指标临界点的升降交线为曲线，即得定义该流形的图。"
+        },
+        {
+          "id": "I-prop214",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop29",
+            "C-prop213"
+          ],
+          "conclusion": "C-prop214",
+          "argument": "平衡流形满足正负侧分支满条件故由图存在性得某图定义它，再由平衡图论刻画知该图必平衡。"
+        },
+        {
+          "id": "I-lemma217",
+          "operationKind": "proof",
+          "premises": [
+            "F-surgery-notation"
+          ],
+          "conclusion": "C-lemma217",
+          "argument": "取两条曲线在手术后围的圆盘，非零调条件给出某对零球面点被其中一盘分离，把绕该点小圆在盘内同痕到该曲线即实现为柄滑，分类讨论另一圆盘含该两点与否逐情形构造其在新手术曲面中围的圆盘。"
+        },
+        {
+          "id": "I-lemma218",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma217",
+            "F-surgery-notation"
+          ],
+          "conclusion": "C-lemma218",
+          "argument": "对曲线数归纳，生成子空间相同，若两组相交则沿公共曲线手术化为低维情形并把过标记点的同痕提升为 across 该曲线的柄滑，若不交则任取第二组一条用前一引理化为第一组某条的柄滑从而化为相交情形，同时保持余下曲线围盘性质。"
+        },
+        {
+          "id": "I-prop215",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma217",
+            "C-lemma218",
+            "F-surgery-notation",
+            "C-b0-Morse"
+          ],
+          "conclusion": "C-prop215",
+          "argument": "连接两莫尔斯函数的一般单参数族固定边界邻域，非临界时刻给出图，临界时刻只出现单侧柄滑、稳定化与指标对产生消去，取极大线性无关子集并用前两引理证明多余曲线围盘且两子集经柄滑同痕相连，稳定化处同样处理。"
+        },
+        {
+          "id": "I-lemma32",
+          "operationKind": "proof",
+          "premises": [
+            "F-T-tori-def"
+          ],
+          "conclusion": "C-lemma32",
+          "argument": "原乘积在对角线外全实且避开对角线，投影在对角线外为全纯局部微分同胚，故商环面全实。"
+        },
+        {
+          "id": "I-lemma310",
+          "operationKind": "proof",
+          "premises": [
+            "F-HP-def",
+            "F-balanced-diagram-def"
+          ],
+          "conclusion": "C-lemma310",
+          "argument": "曲面无闭分支故二阶同调为零，非零区域边界非零，若某系数非零则闭链与相应柄余核代数相交非零，而余核在相对同调中非零，故同调类非零。"
+        },
+        {
+          "id": "I-cor312",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma310",
+            "F-admissible-def"
+          ],
+          "conclusion": "C-cor312",
+          "argument": "若有非零周期区域其同调类由前一引理非零，与二阶同调为零矛盾，故无非零周期区域，容许性定义直接满足。"
+        },
+        {
+          "id": "I-lemma314",
+          "operationKind": "proof",
+          "premises": [
+            "F-domain-def",
+            "F-Dxy-def",
+            "F-admissible-def"
+          ],
+          "conclusion": "C-lemma314",
+          "argument": "固定一连接区域后余者差为周期区域，低于固定下界的格点无限将经归一化收敛到非负非零实周期向量，有理逼近通分得非负非零整数周期区域，与容许性矛盾。"
+        },
+        {
+          "id": "I-prop315",
+          "operationKind": "proof",
+          "premises": [
+            "F-domain-def",
+            "F-admissible-def",
+            "F-Dxy-def",
+            "F-balanced-diagram-def"
+          ],
+          "conclusion": "C-prop315",
+          "argument": "取生成相对同调的弧系使余集为圆盘，在其邻域作指移使交点被分离点隔开，若周期边界在某弧上代数相交非零则在两平行拷贝上取相反重数得正负系数，若全零则边界在曲面中零调由线性无关得系数全零从而区域为零。"
+        },
+        {
+          "id": "I-lemma47",
+          "operationKind": "proof",
+          "premises": [
+            "F-sx-def",
+            "F-eps-def"
+          ],
+          "conclusion": "C-lemma47",
+          "argument": "两向量场只在两多重轨线差的邻域不同，局部计算给出差为该一维类的庞加莱对偶。"
+        },
+        {
+          "id": "I-cor48",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma47",
+            "F-Dxy-def",
+            "F-Whitney-def"
+          ],
+          "conclusion": "C-cor48",
+          "argument": "自旋不同则差类非零故无连接区域特别无惠特尼圆盘，若基本群等于一阶同调则同自旋蕴含同伦类非空。"
+        },
+        {
+          "id": "I-prop49",
+          "operationKind": "proof",
+          "premises": [
+            "F-Whitney-def"
+          ],
+          "conclusion": "C-prop49",
+          "argument": "零调且避开对角线的圈可表为带边曲面到曲面的映射边界的覆盖，增大亏格后延拓为分支覆盖到圆盘，复合给出零伦。"
+        },
+        {
+          "id": "I-thm52",
+          "operationKind": "proof",
+          "premises": [
+            "F-moduli-def",
+            "F-HP-def",
+            "F-sx-def",
+            "C-b0-HF-analysis"
+          ],
+          "conclusion": "C-thm52",
+          "argument": "同基点类的马斯洛夫指标公式由闭流形相应定理直接移植，配对中的同调类取自区域的闭化。"
+        },
+        {
+          "id": "I-cor53",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm52"
+          ],
+          "conclusion": "C-cor53",
+          "argument": "两同伦类之差为区域为零的同基点类，指标差等于陈类与零类的配对故为零。"
+        },
+        {
+          "id": "I-thm55",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm52",
+            "F-domain-Maslov-def"
+          ],
+          "conclusion": "C-thm55",
+          "argument": "把同基点公式改写为周期区域语言，若区域可实现则指标已有定义，公式直接成立。"
+        },
+        {
+          "id": "I-thm63",
+          "operationKind": "proof",
+          "premises": [
+            "F-energy-def",
+            "F-area-def",
+            "C-b0-HF-analysis"
+          ],
+          "conclusion": "C-thm63",
+          "argument": "利用曲面紧性把闭流形能量估计移植到平衡图，得到能量被区域面积线性控制。"
+        },
+        {
+          "id": "I-cor64",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm63",
+            "F-domain-Maslov-def",
+            "C-b0-HF-analysis"
+          ],
+          "conclusion": "C-cor64",
+          "argument": "能量界给出固定区域的先验界，结合格罗莫夫紧性使指标一的约化模空间紧零维。"
+        },
+        {
+          "id": "I-lemma65",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm63",
+            "F-T-tori-def",
+            "F-balanced-diagram-def"
+          ],
+          "conclusion": "C-lemma65",
+          "argument": "单侧边界的区域边界为单侧曲线组合，由线性无关迫使区域为零，能量界给出能量为零故映射常值，球面的二维链在无闭分支曲面上亦为零故同样常值。"
+        },
+        {
+          "id": "I-thm72",
+          "operationKind": "proof",
+          "premises": [
+            "F-CF-def",
+            "C-lemma314",
+            "C-cor64",
+            "C-lemma65",
+            "C-b0-HF-analysis"
+          ],
+          "conclusion": "C-thm72",
+          "argument": "容许性保证微分有限，指标一模空间紧零维使计数良定，单侧退化与球泡被排除后平方为零的论证同闭流形。"
+        },
+        {
+          "id": "I-thm75",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop215",
+            "C-thm72",
+            "C-b0-HF-analysis"
+          ],
+          "conclusion": "C-thm75",
+          "argument": "同痕柄滑稳定化下的不变性论证同闭流形，由图的移动等价性得到同调与自旋分量与图选取无关。"
+        },
+        {
+          "id": "I-prop91",
+          "operationKind": "proof",
+          "premises": [
+            "F-Yk-constr",
+            "F-CF-def",
+            "F-SFH-manifold-def"
+          ],
+          "conclusion": "C-prop91",
+          "argument": "把弱容许闭图挖去基点邻域得定义删一球流形的容许平衡图，区域在边界重数为零使两链复形同构。"
+        },
+        {
+          "id": "I-prop92",
+          "operationKind": "proof",
+          "premises": [
+            "F-YL-constr",
+            "F-CF-def"
+          ],
+          "conclusion": "C-prop92",
+          "argument": "把多点链环图挖去基点邻域得定义链环余集的平衡图，两链复形同构，多分支时以二元系数计算，单分支时整数下即为结不变量。"
+        },
+        {
+          "id": "I-prop94",
+          "operationKind": "proof",
+          "premises": [
+            "F-product-ex",
+            "F-CF-def",
+            "C-cor312"
+          ],
+          "conclusion": "C-prop94",
+          "argument": "乘积流形可用空曲线图定义，二阶同调消失故自动容许，对称积为一点使交点唯一，同调为整数，稳定化不改变结果。"
+        },
+        {
+          "id": "I-lemma913",
+          "operationKind": "proof",
+          "premises": [
+            "F-product-decomp-def",
+            "C-prop315",
+            "F-CF-def"
+          ],
+          "conclusion": "C-lemma913",
+          "argument": "取在乘积盘邻域无临界点的莫尔斯函数使盘交线为避开曲线的边界弧，沿弧切开得分解流形的图，含该弧的分支重数恒零使周期区域对应保持正负系数，容许化后两链复形同构。"
+        },
+        {
+          "id": "I-prop914",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop91",
+            "C-lemma913",
+            "C-b0-connected-sum"
+          ],
+          "conclusion": "C-prop914",
+          "argument": "对球数归纳，单球由闭流形实现定理成立，归纳步把目标写成与一次 suspension 连通和的删球流形，用乘积盘把连通和化简并用帽型连通和公式与基本群面计算得到张量因子。"
+        },
+        {
+          "id": "I-prop915",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma913",
+            "C-prop91",
+            "C-b0-connected-sum"
+          ],
+          "conclusion": "C-prop915",
+          "argument": "把连通和管作指移得到化为不交并的乘积分解，故同调化为张量积，再用单球实现把因子化为帽型同调，并用双球球面经乘积分解化为 suspension 的计算得到额外的二秩因子。"
+        },
+        {
+          "id": "I-cor916",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop915",
+            "C-prop91",
+            "C-b0-connected-sum"
+          ],
+          "conclusion": "C-cor916",
+          "argument": "把加球写成与球面单球的连通和迭代应用连通和公式，并用球面单球同调为整数消去多余因子，对次数归纳即得张量幂。"
+        },
+        {
+          "id": "I-prop918",
+          "operationKind": "proof",
+          "premises": [
+            "F-taut-def",
+            "C-prop315",
+            "C-b0-Morse"
+          ],
+          "conclusion": "C-prop918",
+          "argument": "非紧不可约则某侧可压缩或非范数最小，给出同调而示性数更大的曲面作分解层面， rearranged 莫尔斯函数使正侧曲线数多于可交曲线数，取与负侧曲线不交正侧曲线的特殊 winding 弧保持该不交性与容许性，此时交点为空故同调为零。"
+        },
+        {
+          "id": "I-thm105",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop104-Hedden",
+            "C-lemma913",
+            "F-YR-constr",
+            "F-YL-constr"
+          ],
+          "conclusion": "C-thm105",
+          "argument": "由怀特黑德公式只需算曲面余集的缝合同调，该曲面经乘积分解化为线缆链环的自然曲面，环面边界的德恩填充把缝合同调化为 surgery 流形中子午线的结同调，与左端一致。"
+        },
+        {
+          "id": "I-prop106",
+          "operationKind": "proof",
+          "premises": [
+            "C-lemma913",
+            "F-YR-constr",
+            "C-b0-lens-alex"
+          ],
+          "conclusion": "C-prop106",
+          "argument": "扭结曲面经乘积分解化为环面链环曲面，缝合同调化为透镜空间中子午线的结同调，秩为 surgery 系数，交错性使顶层结同调秩等于亚历山大多项式首系数绝对值，两者一致。"
+        },
+        {
+          "id": "I-prop107",
+          "operationKind": "proof",
+          "premises": [
+            "C-prop106",
+            "C-b0-Kobayashi",
+            "C-b0-lens-alex",
+            "C-lemma913"
+          ],
+          "conclusion": "C-prop107",
+          "argument": "小交叉数目的唯一最小亏格曲面前提把问题化为具体曲面，纤维情形已知，扭结情形已算，余下交错结经乘积分解化为透镜空间计算并由亚历山大多项式定秩，得到两端同构。"
+        },
+        {
+          "id": "O-balanced-def",
+          "operationKind": "organization",
+          "premises": [
+            "C-prop29"
+          ],
+          "conclusion": "F-balanced-diagram-def",
+          "argument": "平衡图论刻画表明曲线数相等与边界满射恰为流形平衡的图论对应，因而以此作为平衡图的组织性定义。"
+        },
+        {
+          "id": "O-maslov-def",
+          "operationKind": "organization",
+          "premises": [
+            "C-cor53"
+          ],
+          "conclusion": "F-domain-Maslov-def",
+          "argument": "同区域蕴含同指标说明指标只依赖区域，因而可把同伦类的指标组织为区域的指标，未实现区域记为负无穷。"
+        },
+        {
+          "id": "O-split-def",
+          "operationKind": "organization",
+          "premises": [
+            "C-cor48"
+          ],
+          "conclusion": "F-CF-split-def",
+          "argument": "自旋不同则无连接区域说明微分保持自旋结构，因而链复形按自旋结构分裂为子复形的组织关系成立。"
+        },
+        {
+          "id": "O-SFH-def",
+          "operationKind": "organization",
+          "premises": [
+            "C-thm75"
+          ],
+          "conclusion": "F-SFH-manifold-def",
+          "argument": "图同调的不变性说明可把图的同调提升为流形的不变量，因而流形缝合弗洛尔同调的定义在组织上良定。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C-thm101-Gabai",
+        "C-prop104-Hedden",
+        "C-b0-HF-analysis",
+        "C-b0-Morse",
+        "C-b0-connected-sum",
+        "C-b0-lens-alex",
+        "C-b0-Kobayashi"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "18_Juhasz_Holomorphic_discs_sutured_manifolds.pdf",
+        "pageCount": 29
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 49803,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-sutured-def",
+                "F-balanced-def",
+                "F-Yk-constr",
+                "F-YL-constr",
+                "F-product-ex",
+                "F-YR-constr",
+                "F-sutured-diagram-def",
+                "F-diagram-to-manifold",
+                "F-balanced-diagram-def",
+                "F-surgery-notation",
+                "F-T-tori-def",
+                "F-Whitney-def",
+                "F-nz-def",
+                "F-domain-def",
+                "F-domain-disc-def",
+                "F-HP-def",
+                "F-admissible-def",
+                "F-Dxy-def",
+                "F-nu0-def",
+                "F-spinc-def",
+                "F-c1-def",
+                "F-sx-def",
+                "F-eps-def",
+                "F-moduli-def",
+                "F-domain-Maslov-def",
+                "F-energy-def",
+                "F-area-def",
+                "F-CF-def",
+                "F-CF-split-def",
+                "F-SFH-diagram-def",
+                "F-SFH-manifold-def",
+                "F-grading-d-def",
+                "F-grading-def",
+                "F-decomp-def",
+                "F-product-decomp-def",
+                "F-taut-def",
+                "F-poincare-example"
+              ],
+              "b0ClaimEntryIds": [
+                "C-thm101-Gabai",
+                "C-prop104-Hedden",
+                "C-b0-HF-analysis",
+                "C-b0-Morse",
+                "C-b0-connected-sum",
+                "C-b0-lens-alex",
+                "C-b0-Kobayashi"
+              ],
+              "closureClaimEntryIds": [
+                "C-prop29",
+                "C-lemma210",
+                "C-prop213",
+                "C-prop214",
+                "C-prop215",
+                "C-lemma217",
+                "C-lemma218",
+                "C-lemma32",
+                "C-lemma310",
+                "C-cor312",
+                "C-lemma314",
+                "C-prop315",
+                "C-lemma47",
+                "C-cor48",
+                "C-prop49",
+                "C-thm52",
+                "C-cor53",
+                "C-thm55",
+                "C-thm63",
+                "C-cor64",
+                "C-lemma65",
+                "C-thm72",
+                "C-thm75",
+                "C-prop91",
+                "C-prop92",
+                "C-prop94",
+                "C-lemma913",
+                "C-prop914",
+                "C-prop915",
+                "C-cor916",
+                "C-prop918",
+                "C-thm101-Gabai",
+                "C-prop104-Hedden",
+                "C-thm105",
+                "C-prop106",
+                "C-prop107",
+                "C-b0-HF-analysis",
+                "C-b0-Morse",
+                "C-b0-connected-sum",
+                "C-b0-lens-alex",
+                "C-b0-Kobayashi"
+              ],
+              "claimStates": {
+                "C-prop29": "established",
+                "C-lemma210": "established",
+                "C-prop213": "established",
+                "C-prop214": "established",
+                "C-prop215": "established",
+                "C-lemma217": "established",
+                "C-lemma218": "established",
+                "C-lemma32": "established",
+                "C-lemma310": "established",
+                "C-cor312": "established",
+                "C-lemma314": "established",
+                "C-prop315": "established",
+                "C-lemma47": "established",
+                "C-cor48": "established",
+                "C-prop49": "established",
+                "C-thm52": "established",
+                "C-cor53": "established",
+                "C-thm55": "established",
+                "C-thm63": "established",
+                "C-cor64": "established",
+                "C-lemma65": "established",
+                "C-thm72": "established",
+                "C-thm75": "established",
+                "C-prop91": "established",
+                "C-prop92": "established",
+                "C-prop94": "established",
+                "C-lemma913": "established",
+                "C-prop914": "established",
+                "C-prop915": "established",
+                "C-cor916": "established",
+                "C-prop918": "established",
+                "C-thm101-Gabai": "established",
+                "C-conj102": "open",
+                "C-conj103": "open",
+                "C-q97": "open",
+                "C-q919": "open",
+                "C-prop104-Hedden": "established",
+                "C-thm105": "established",
+                "C-prop106": "established",
+                "C-prop107": "established",
+                "C-remark-Murasugi": "open",
+                "C-b0-HF-analysis": "established",
+                "C-b0-Morse": "established",
+                "C-b0-connected-sum": "established",
+                "C-b0-lens-alex": "established",
+                "C-b0-Kobayashi": "established"
+              },
+              "claimDerivations": {
+                "C-prop29": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop29"
+                  ]
+                },
+                "C-lemma210": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma210"
+                  ]
+                },
+                "C-prop213": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop213"
+                  ]
+                },
+                "C-prop214": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop214"
+                  ]
+                },
+                "C-prop215": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop215"
+                  ]
+                },
+                "C-lemma217": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma217"
+                  ]
+                },
+                "C-lemma218": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma218"
+                  ]
+                },
+                "C-lemma32": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma32"
+                  ]
+                },
+                "C-lemma310": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma310"
+                  ]
+                },
+                "C-cor312": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor312"
+                  ]
+                },
+                "C-lemma314": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma314"
+                  ]
+                },
+                "C-prop315": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop315"
+                  ]
+                },
+                "C-lemma47": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma47"
+                  ]
+                },
+                "C-cor48": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor48"
+                  ]
+                },
+                "C-prop49": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop49"
+                  ]
+                },
+                "C-thm52": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm52"
+                  ]
+                },
+                "C-cor53": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor53"
+                  ]
+                },
+                "C-thm55": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm55"
+                  ]
+                },
+                "C-thm63": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm63"
+                  ]
+                },
+                "C-cor64": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor64"
+                  ]
+                },
+                "C-lemma65": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma65"
+                  ]
+                },
+                "C-thm72": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm72"
+                  ]
+                },
+                "C-thm75": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm75"
+                  ]
+                },
+                "C-prop91": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop91"
+                  ]
+                },
+                "C-prop92": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop92"
+                  ]
+                },
+                "C-prop94": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop94"
+                  ]
+                },
+                "C-lemma913": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma913"
+                  ]
+                },
+                "C-prop914": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop914"
+                  ]
+                },
+                "C-prop915": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop915"
+                  ]
+                },
+                "C-cor916": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor916"
+                  ]
+                },
+                "C-prop918": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop918"
+                  ]
+                },
+                "C-thm101-Gabai": {
+                  "basis": "b0"
+                },
+                "C-conj102": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-conj103": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-q97": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-q919": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-prop104-Hedden": {
+                  "basis": "b0"
+                },
+                "C-thm105": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm105"
+                  ]
+                },
+                "C-prop106": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop106"
+                  ]
+                },
+                "C-prop107": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop107"
+                  ]
+                },
+                "C-remark-Murasugi": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-b0-HF-analysis": {
+                  "basis": "b0"
+                },
+                "C-b0-Morse": {
+                  "basis": "b0"
+                },
+                "C-b0-connected-sum": {
+                  "basis": "b0"
+                },
+                "C-b0-lens-alex": {
+                  "basis": "b0"
+                },
+                "C-b0-Kobayashi": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-sutured-def",
+                "F-balanced-def",
+                "F-Yk-constr",
+                "F-YL-constr",
+                "F-product-ex",
+                "F-YR-constr",
+                "F-sutured-diagram-def",
+                "F-diagram-to-manifold",
+                "F-balanced-diagram-def",
+                "F-surgery-notation",
+                "F-T-tori-def",
+                "F-Whitney-def",
+                "F-nz-def",
+                "F-domain-def",
+                "F-domain-disc-def",
+                "F-HP-def",
+                "F-admissible-def",
+                "F-Dxy-def",
+                "F-nu0-def",
+                "F-spinc-def",
+                "F-c1-def",
+                "F-sx-def",
+                "F-eps-def",
+                "F-moduli-def",
+                "F-domain-Maslov-def",
+                "F-energy-def",
+                "F-area-def",
+                "F-CF-def",
+                "F-CF-split-def",
+                "F-SFH-diagram-def",
+                "F-SFH-manifold-def",
+                "F-grading-d-def",
+                "F-grading-def",
+                "F-decomp-def",
+                "F-product-decomp-def",
+                "F-taut-def",
+                "F-poincare-example"
+              ],
+              "b0ClaimEntryIds": [
+                "C-thm101-Gabai",
+                "C-prop104-Hedden",
+                "C-b0-HF-analysis",
+                "C-b0-Morse",
+                "C-b0-connected-sum",
+                "C-b0-lens-alex",
+                "C-b0-Kobayashi"
+              ],
+              "closureClaimEntryIds": [
+                "C-prop29",
+                "C-lemma210",
+                "C-prop213",
+                "C-prop214",
+                "C-prop215",
+                "C-lemma217",
+                "C-lemma218",
+                "C-lemma32",
+                "C-lemma310",
+                "C-cor312",
+                "C-lemma314",
+                "C-prop315",
+                "C-lemma47",
+                "C-cor48",
+                "C-prop49",
+                "C-thm52",
+                "C-cor53",
+                "C-thm55",
+                "C-thm63",
+                "C-cor64",
+                "C-lemma65",
+                "C-thm72",
+                "C-thm75",
+                "C-prop91",
+                "C-prop92",
+                "C-prop94",
+                "C-lemma913",
+                "C-prop914",
+                "C-prop915",
+                "C-cor916",
+                "C-prop918",
+                "C-thm101-Gabai",
+                "C-prop104-Hedden",
+                "C-thm105",
+                "C-prop106",
+                "C-prop107",
+                "C-b0-HF-analysis",
+                "C-b0-Morse",
+                "C-b0-connected-sum",
+                "C-b0-lens-alex",
+                "C-b0-Kobayashi"
+              ],
+              "claimStates": {
+                "C-prop29": "established",
+                "C-lemma210": "established",
+                "C-prop213": "established",
+                "C-prop214": "established",
+                "C-prop215": "established",
+                "C-lemma217": "established",
+                "C-lemma218": "established",
+                "C-lemma32": "established",
+                "C-lemma310": "established",
+                "C-cor312": "established",
+                "C-lemma314": "established",
+                "C-prop315": "established",
+                "C-lemma47": "established",
+                "C-cor48": "established",
+                "C-prop49": "established",
+                "C-thm52": "established",
+                "C-cor53": "established",
+                "C-thm55": "established",
+                "C-thm63": "established",
+                "C-cor64": "established",
+                "C-lemma65": "established",
+                "C-thm72": "established",
+                "C-thm75": "established",
+                "C-prop91": "established",
+                "C-prop92": "established",
+                "C-prop94": "established",
+                "C-lemma913": "established",
+                "C-prop914": "established",
+                "C-prop915": "established",
+                "C-cor916": "established",
+                "C-prop918": "established",
+                "C-thm101-Gabai": "established",
+                "C-conj102": "open",
+                "C-conj103": "open",
+                "C-q97": "open",
+                "C-q919": "open",
+                "C-prop104-Hedden": "established",
+                "C-thm105": "established",
+                "C-prop106": "established",
+                "C-prop107": "established",
+                "C-remark-Murasugi": "open",
+                "C-b0-HF-analysis": "established",
+                "C-b0-Morse": "established",
+                "C-b0-connected-sum": "established",
+                "C-b0-lens-alex": "established",
+                "C-b0-Kobayashi": "established"
+              },
+              "claimDerivations": {
+                "C-prop29": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop29"
+                  ]
+                },
+                "C-lemma210": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma210"
+                  ]
+                },
+                "C-prop213": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop213"
+                  ]
+                },
+                "C-prop214": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop214"
+                  ]
+                },
+                "C-prop215": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop215"
+                  ]
+                },
+                "C-lemma217": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma217"
+                  ]
+                },
+                "C-lemma218": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma218"
+                  ]
+                },
+                "C-lemma32": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma32"
+                  ]
+                },
+                "C-lemma310": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma310"
+                  ]
+                },
+                "C-cor312": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor312"
+                  ]
+                },
+                "C-lemma314": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma314"
+                  ]
+                },
+                "C-prop315": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop315"
+                  ]
+                },
+                "C-lemma47": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma47"
+                  ]
+                },
+                "C-cor48": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor48"
+                  ]
+                },
+                "C-prop49": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop49"
+                  ]
+                },
+                "C-thm52": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm52"
+                  ]
+                },
+                "C-cor53": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor53"
+                  ]
+                },
+                "C-thm55": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm55"
+                  ]
+                },
+                "C-thm63": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm63"
+                  ]
+                },
+                "C-cor64": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor64"
+                  ]
+                },
+                "C-lemma65": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma65"
+                  ]
+                },
+                "C-thm72": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm72"
+                  ]
+                },
+                "C-thm75": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm75"
+                  ]
+                },
+                "C-prop91": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop91"
+                  ]
+                },
+                "C-prop92": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop92"
+                  ]
+                },
+                "C-prop94": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop94"
+                  ]
+                },
+                "C-lemma913": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lemma913"
+                  ]
+                },
+                "C-prop914": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop914"
+                  ]
+                },
+                "C-prop915": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop915"
+                  ]
+                },
+                "C-cor916": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor916"
+                  ]
+                },
+                "C-prop918": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop918"
+                  ]
+                },
+                "C-thm101-Gabai": {
+                  "basis": "b0"
+                },
+                "C-conj102": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-conj103": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-q97": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-q919": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-prop104-Hedden": {
+                  "basis": "b0"
+                },
+                "C-thm105": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm105"
+                  ]
+                },
+                "C-prop106": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop106"
+                  ]
+                },
+                "C-prop107": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop107"
+                  ]
+                },
+                "C-remark-Murasugi": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-b0-HF-analysis": {
+                  "basis": "b0"
+                },
+                "C-b0-Morse": {
+                  "basis": "b0"
+                },
+                "C-b0-connected-sum": {
+                  "basis": "b0"
+                },
+                "C-b0-lens-alex": {
+                  "basis": "b0"
+                },
+                "C-b0-Kobayashi": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C-lemma210"
+                ],
+                "sourceRefs": [
+                  "PAGE 5, Lemma 2.10"
+                ],
+                "sourceSpan": {
+                  "startLine": 71,
+                  "endLine": 74
+                },
+                "diagnosis": "当前标题为“分支满射的同调判据”，但陈述为边界分支映射单且来源明确陈述为 injective，标题与陈述及来源的量词方向不一致。",
+                "repairRequirement": "标题必须与来源的 injective 及陈述的“单”一致，不得改为满射。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-cor48"
+                ],
+                "sourceRefs": [
+                  "PAGE 14, Corollary 4.8 and Proposition 4.9"
+                ],
+                "sourceSpan": {
+                  "startLine": 274,
+                  "endLine": 282
+                },
+                "diagnosis": "当前 premises 包含在来源中位于该推论之后才证明的 C-prop49，且 argument 把来源的条件“若基本群等于一阶同调则逆成立”窄化为“曲线数大于一时”；来源推论本身只以基本群等于同调为条件，不直接依赖后一命题。",
+                "repairRequirement": "premises 必须删除对后一命题的直接依赖，argument 必须忠实表达来源的条件式逆命题，不得把 d>1 作为该推论的直接前提。"
+              },
+              {
+                "id": "F3",
+                "category": "missing-content",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-cor64"
+                ],
+                "sourceRefs": [
+                  "PAGE 16, Corollary 6.4"
+                ],
+                "sourceSpan": {
+                  "startLine": 354,
+                  "endLine": 356
+                },
+                "diagnosis": "当前 premises 只有能量界与区域指标定义，遗漏来源明确给出的直接依赖“使用格罗莫夫紧性”，该工具属于闭理论分析前提。",
+                "repairRequirement": "premises 必须补上来源明确使用的紧性分析前提，覆盖能量界之外的直接依赖。"
+              },
+              {
+                "id": "F4",
+                "category": "missing-content",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-prop315"
+                ],
+                "sourceRefs": [
+                  "PAGE 12-13, Proposition 3.15 proof"
+                ],
+                "sourceSpan": {
+                  "startLine": 232,
+                  "endLine": 243
+                },
+                "diagnosis": "当前 premises 未包含来源证明末段明确使用的曲线线性无关，而 argument 却称“由线性无关得系数全零”，直接依赖缺失。",
+                "repairRequirement": "premises 必须补上表达平衡图曲线线性无关的事实，覆盖来源末段为得系数全零而使用的直接依赖。"
+              },
+              {
+                "id": "F5",
+                "category": "missing-content",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-prop918"
+                ],
+                "sourceRefs": [
+                  "PAGE 24, Proposition 9.18 proof"
+                ],
+                "sourceSpan": {
+                  "startLine": 631,
+                  "endLine": 633
+                },
+                "diagnosis": "当前 premises 只有紧定义与容许化，遗漏来源明确引用的重排为自指标莫尔斯函数的米尔诺前提，而 argument 已提及重排步骤。",
+                "repairRequirement": "premises 必须补上来源明确引用的自指标化与重排莫尔斯前提，覆盖该重排步骤的直接依赖。"
+              },
+              {
+                "id": "F6",
+                "category": "missing-content",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-prop107"
+                ],
+                "sourceRefs": [
+                  "PAGE 28, Proposition 10.7 proof"
+                ],
+                "sourceSpan": {
+                  "startLine": 737,
+                  "endLine": 743
+                },
+                "diagnosis": "当前 premises 未包含来源对余下交错情形明确使用的“经乘积分解化为透镜空间计算”，而 argument 已提及该乘积分解步骤，直接依赖缺失。",
+                "repairRequirement": "premises 必须补上乘积分解下不变的引理，覆盖来源为处理余下情形而使用的直接依赖。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "C-lemma210",
+                "changes": [
+                  {
+                    "field": "title",
+                    "before": "分支满射的同调判据",
+                    "after": "分支单射的同调判据"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-cor48",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-lemma47",
+                      "C-prop49",
+                      "F-Dxy-def",
+                      "F-Whitney-def"
+                    ],
+                    "after": [
+                      "C-lemma47",
+                      "F-Dxy-def",
+                      "F-Whitney-def"
+                    ]
+                  },
+                  {
+                    "field": "argument",
+                    "before": "自旋不同则差类非零故无连接区域特别无圆盘，曲线数大于一时对称积基本群等于同调保证同自旋时同伦类非空。",
+                    "after": "自旋不同则差类非零故无连接区域特别无惠特尼圆盘，若基本群等于一阶同调则同自旋蕴含同伦类非空。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-cor64",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-thm63",
+                      "F-domain-Maslov-def"
+                    ],
+                    "after": [
+                      "C-thm63",
+                      "F-domain-Maslov-def",
+                      "C-b0-HF-analysis"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F4",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-prop315",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "F-domain-def",
+                      "F-admissible-def",
+                      "F-Dxy-def"
+                    ],
+                    "after": [
+                      "F-domain-def",
+                      "F-admissible-def",
+                      "F-Dxy-def",
+                      "F-balanced-diagram-def"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F5",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-prop918",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "F-taut-def",
+                      "C-prop315"
+                    ],
+                    "after": [
+                      "F-taut-def",
+                      "C-prop315",
+                      "C-b0-Morse"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F6",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-prop107",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-prop106",
+                      "C-b0-Kobayashi",
+                      "C-b0-lens-alex"
+                    ],
+                    "after": [
+                      "C-prop106",
+                      "C-b0-Kobayashi",
+                      "C-b0-lens-alex",
+                      "C-lemma913"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 121,
+            "cleanCount": 115
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 109769
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 91965
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "332852244a4fc48be894e26d11e6e7a4ca0dc2e2851220b59ccb89190d0596e1",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 232920,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 2,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2049,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4471,
+        "phase": "progress",
+        "state": "pending"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 6890,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9359,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 11809,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14233,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16690,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19105,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21552,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 23949,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26353,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 28817,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 31175,
+        "phase": "complete",
+        "pageCount": 29
+      },
+      {
+        "stage": "generate",
+        "atMs": 31175,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 140948,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 232920,
+        "phase": "complete",
+        "entries": 83,
+        "inferences": 38
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 109320,
+        "usage": {
+          "input_tokens": 30906,
+          "output_tokens": 21495,
+          "total_tokens": 52401
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 91459,
+        "usage": {
+          "input_tokens": 51099,
+          "output_tokens": 22648,
+          "total_tokens": 73747
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

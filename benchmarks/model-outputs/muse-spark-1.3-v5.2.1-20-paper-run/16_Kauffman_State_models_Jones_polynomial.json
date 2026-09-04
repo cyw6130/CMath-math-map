@@ -1,0 +1,1110 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "16_Kauffman_State_models_Jones_polynomial.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F_equivalence",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "等价与两种同痕的定义",
+          "statement": "两个图等价指其底平面图经保向平面同胚等价；经 $I$ 型、$II$ 型、$III$ 型 Reidemeister 移动加等价可互化称为环绕同痕；不使用 $I$ 型移动的环绕同痕称为正则同痕。"
+        },
+        {
+          "id": "F_bracketRules",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "括号多项式的定义规则",
+          "statement": "对无向纽结或链环图 $K$，括号 $\\langle K\\rangle$ 取值于 $Z[A,B,d]$，由 $\\langle O\\rangle=1$，其中 $O$ 为单个平凡圆图，由 $\\langle O\\cup K\\rangle=d\\langle K\\rangle$，其中 $K$ 非空而 $O$ 为不交圆分支，以及由 $\\langle X\\rangle=A\\langle H\\rangle+B\\langle V\\rangle$，其中 $X$ 为单个交叉而 $H$ 与 $V$ 为其两种局部拆分，唯一确定；反复展开至不交圆集再求值。"
+        },
+        {
+          "id": "F_stateDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "宇宙状态与状态贡献的定义",
+          "statement": "设 $U$ 为图 $K$ 的底平面图称为宇宙，$U$ 的状态 $S$ 指对每个顶点选定拆分标记；记 $\\langle K|S\\rangle=A^{i}B^{j}$，其中 $i$ 为触及 $A$ 标记的数目，$j$ 为触及 $B$ 标记的数目，记 $|S|$ 为拆分后不交圆分支数，则 $S$ 对括号的贡献为 $\\langle K|S\\rangle d^{|S|-1}$，其中 $d$ 为圆分支参数。"
+        },
+        {
+          "id": "F_writheDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "扭数的定义",
+          "statement": "对有向图 $K$，按通常符号约定对每个交叉赋予 $+1$ 或 $-1$，其总和记为 $w(K)$ 称为扭数，是有向图正则同痕的最简单不变量。"
+        },
+        {
+          "id": "F_fDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "规范化多项式的定义",
+          "statement": "对有向链环图 $K$，忘掉定向取括号 $\\langle K\\rangle$，定义 $f[K]=(-A)^{-3w(K)}\\langle K\\rangle$，其中 $w(K)$ 为扭数，$A$ 为变量；$f[K]$ 取值于 $Z[A,A^{-1}]$。"
+        },
+        {
+          "id": "F_jonesDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "琼斯多项式的skein关系定义",
+          "statement": "按 Jones 的定义，未定向链环的琼斯多项式 $V$ 满足 $V_{O}=1$，其中 $O$ 为平凡圆，以及 $t^{-1}V_{P}-tV_{M}=(t^{1/2}-t^{-1/2})V_{0}$，其中 $P$ 与 $M$ 为一处交叉取两种定向交叉的图，$0$ 为该处取定向光滑的图，$t$ 为变量。"
+        },
+        {
+          "id": "F_mirrorDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "镜像图的定义",
+          "statement": "图 $K$ 的镜像 $K!$ 指将 $K$ 的所有交叉全部反转所得的图。"
+        },
+        {
+          "id": "F_altDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "交错既约与简单图的定义",
+          "statement": "若图的每个交叉处四个局部区域中有两个属于整体同一区域则该交叉为细腰；不含细腰的图称为既约图；连通的交错图经黑白棋盘染色后所有交叉具相同染色类型，适当选取染色可设 $A$ 标记区域被染色；同时连通且既约的交错图称为简单图；记 $V$ 为交叉数，$W$ 为白区域数，$B$ 为黑区域数。"
+        },
+        {
+          "id": "F_euler",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "连通图的区域数关系",
+          "statement": "对连通宇宙 $U$，若交叉数为 $V$，总区域数为 $R$，黑白区域数分别为 $B$ 与 $W$，则 $R=W+B=V+2$。"
+        },
+        {
+          "id": "F_sampleCalc",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "Hopf环与三叶结的括号计算示例",
+          "statement": "直接展开计算得 Hopf 环与三叶结的括号多项式显式；特别三叶结的括号在 $A$ 与 $A^{-1}$ 互换下不对称，该计算与镜像公式结合给出三叶结与其镜像的初等区分。"
+        },
+        {
+          "id": "F_example104",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "满足等式但手性的交错结示例",
+          "statement": "图 $7$ 的交错结满足 $w=-2$，$W=3$，$B=9$，因而 $3w=W-B$ 成立，但由符号差计算知该结为手性结，在 Rolfsen 表中记为 $10_{4}$；去掉顶部两交叉可得零扭数素交错手性结示例。"
+        },
+        {
+          "id": "F_diagramAlg",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "图代数与辫群生成元的定义",
+          "statement": "记 $D[n]$ 为由图 $h_{i}$ 生成的图幺半群，乘法为辫式拼接，闭圈记为 $\\delta$ 表不交并，加法形式；其乘法关系为 $h_{i}^{2}=\\delta h_{i}=h_{i}\\delta$，$h_{i}h_{i+1}h_{i}=h_{i}$，$h_{i+1}h_{i}h_{i+1}=h_{i+1}$，以及 $|i-j|>1$ 时 $h_{i}h_{j}=h_{j}h_{i}$；记 $B[n]$ 为 $n$ 股辫群，由 $\\sigma_{i}^{\\pm1}$ 生成，其中 $1\\le i\\le n-1$，$\\sigma_{i}$ 为第 $i$ 个辫生成元。"
+        },
+        {
+          "id": "F_braidRep",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "辫表示模式与闭包求值的定义",
+          "statement": "取圈变量特殊化 $\\delta=d=-A^{2}-A^{-2}$，定义 $\\rho(\\sigma_{i})=Ah_{i}+A^{-1}1$，其中 $1$ 为单位元；对辫 $b$ 记 $\\langle b\\rangle$ 为其闭包的括号值；辫生成元的水平拆分对应图幺半群生成元 $h_{i}$，垂直拆分对应单位辫；辫字的乘积展开为 $2$ 的幂次项，每项为 $A$ 的幂乘图代数生成元之积，与括号展开的状态一一对应。"
+        },
+        {
+          "id": "F_graphDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "黑白区域图的定义",
+          "statement": "对交错图的黑白染色，记 $B(K)$ 为黑图，其顶点对应黑区域，边对应黑区域共享的交叉；记 $W(K)$ 为白图，其顶点对应白区域，边对应白区域共享的交叉；$W(K)$ 为 $B(K)$ 的平面对偶图。"
+        },
+        {
+          "id": "C_stateSum",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "括号的状态求和公式",
+          "statement": "对任意图 $K$，有 $\\langle K\\rangle=\\sum_{S}\\langle K|S\\rangle d^{|S|-1}$，其中求和取遍 $K$ 的底宇宙的所有状态 $S$，$|S|$ 为状态 $S$ 拆分后的分支数。"
+        },
+        {
+          "id": "C_typeII",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "第二型移动的展开条件",
+          "statement": "局部图满足 $\\langle T2\\rangle=AB\\langle H0\\rangle+(ABd+A^{2}+B^{2})\\langle H\\rangle$，其中 $T2$ 为 $II$ 型双交叉局部，$H0$ 与 $H$ 为其两种光滑；特别若 $AB=1$ 且 $d=-A^{2}-A^{-2}$，则对一切图有 $II$ 型移动前后括号相等。"
+        },
+        {
+          "id": "C_typeIIIImp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "第二型不变性蕴含第三型不变性",
+          "statement": "若括号在参数特殊化下对 $II$ 型移动不变，则其对 $III$ 型移动亦不变。"
+        },
+        {
+          "id": "C_regular",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "括号的正则同痕不变性",
+          "statement": "取 $B=A^{-1}$ 且 $d=-A^{2}-A^{-2}$，则括号 $\\langle K\\rangle$ 为 $A$ 的 Laurent 多项式，且在 $II$ 型与 $III$ 型 Reidemeister 移动下不变，因而为无向纽结与链环的正则同痕不变量。"
+        },
+        {
+          "id": "C_curl",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "第一型卷曲的括号行为",
+          "statement": "在 $B=A^{-1}$ 且 $d=-A^{2}-A^{-2}$ 下，单卷曲满足 $\\langle C+\\rangle=(-A^{3})\\langle L\\rangle$ 且 $\\langle C-\\rangle=(-A^{-3})\\langle L\\rangle$，其中 $C+$ 与 $C-$ 为两种单卷曲局部，$L$ 为展直弧。"
+        },
+        {
+          "id": "C_fAmbient",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "规范化多项式的环绕同痕不变性",
+          "statement": "多项式 $f[K]\\in Z[A,A^{-1}]$ 为有向链环 $K$ 的环绕同痕不变量。"
+        },
+        {
+          "id": "C_mirror",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "镜像的括号与规范化多项式公式",
+          "statement": "设 $K!$ 为 $K$ 的镜像，则 $\\langle K!\\rangle(A)=\\langle K\\rangle(A^{-1})$ 且 $f[K!](A)=f[K](A^{-1})$。"
+        },
+        {
+          "id": "C_jonesExist",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "琼斯多项式的存在唯一性",
+          "statement": "存在唯一的环绕同痕不变量 $V$ 满足 $V_{O}=1$ 与 $t^{-1}V_{P}-tV_{M}=(t^{1/2}-t^{-1/2})V_{0}$，其中记号如琼斯 skein 定义。"
+        },
+        {
+          "id": "C_identify",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "括号规范化给出琼斯多项式",
+          "statement": "对有向链环 $K$，有 $V_{K}(t)=f[K](t^{-1/4})$，其中 $V_{K}$ 为琼斯多项式，$f[K]$ 为上述规范化括号，$t^{-1/4}$ 代入 $A$。"
+        },
+        {
+          "id": "C_extremeDeg",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "简单交错图的括号首末项",
+          "statement": "设 $K$ 为连通既约交错简单图，染色使所有交叉为染色 $A$ 型，记 $V$ 为交叉数，$W$ 为白区域数，$B$ 为黑区域数；则 $\\langle K\\rangle$ 的最高 $A$ 次数为 $V+2W-2$，系数为 $(-1)^{W-1}$，最低 $A$ 次数为 $-V-2B+2$，系数为 $(-1)^{B-1}$；即 $\\max\\deg\\langle K\\rangle=V+2W-2$ 且 $\\min\\deg\\langle K\\rangle=-V-2B+2$。"
+        },
+        {
+          "id": "C_crossInv",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "简单交错投影交叉数的拓扑不变性",
+          "statement": "若 $L$ 为链环，则其任一连通既约交错简单投影的交叉数 $V$ 相同，为 $L$ 的拓扑不变量；事实上 $\\operatorname{span}(K)=\\max\\deg\\langle K\\rangle-\\min\\deg\\langle K\\rangle=4V$，其中 $K$ 为其简单交错投影。"
+        },
+        {
+          "id": "C_dualLemma",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "对偶状态引理",
+          "statement": "设 $S$ 为连通宇宙 $U$ 的状态，$\\hat{S}$ 为将 $S$ 所有标记反转所得的对偶状态，记 $|S|$ 与 $|\\hat{S}|$ 为各自拆分分支数，$R$ 为 $U$ 的区域数，则 $|S|+|\\hat{S}|\\le R$。"
+        },
+        {
+          "id": "C_spanIneq",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "任意连通图的跨度上界",
+          "statement": "对任意连通图 $K$，若 $V$ 为其交叉数，则 $\\operatorname{span}(K)\\le4V$，其中 $\\operatorname{span}(K)=\\max\\deg\\langle K\\rangle-\\min\\deg\\langle K\\rangle$。"
+        },
+        {
+          "id": "C_strictIneq",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "非交错连通图的严格跨度上界",
+          "statement": "若 $K$ 为连通非交错图，交叉数为 $V$，则 $\\operatorname{span}(K)<4V$。"
+        },
+        {
+          "id": "C_chiralNec",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "交错链环手性消失的必要条件",
+          "statement": "设 $K$ 为如上染色的简单交错图，$W$ 与 $B$ 为白黑区域数，$w(K)$ 为扭数，$V$ 为交叉数；若 $K$ 与其镜像 $K!$ 环绕同痕，则 $3w(K)=W-B$，且 $W=(1/2)(V+3w(K))+1$，$B=(1/2)(V-3w(K))+1$。"
+        },
+        {
+          "id": "C_twistChiral",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "大扭数的交错图必手性",
+          "statement": "设 $K$ 为简单交错图且非平凡圆图，记 $T=|w(K)|$，$V$ 为交叉数；若 $T\\ge V/3$ 则 $K$ 为手性结，即不与镜像环绕同痕；特别特殊交错简单链环为手性。"
+        },
+        {
+          "id": "C_notSufficient",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "手性必要条件非充分",
+          "statement": "定理 $3.1$ 的等式 $3w(K)=W-B$ 为手性消失的必要而非充分条件，存在满足该等式的手性交错结。"
+        },
+        {
+          "id": "C_trefoilDiff",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "三叶结与其镜像的区分",
+          "statement": "三叶结与其镜像 $K!$ 不环绕同痕，其括号与规范化多项式在 $A\\leftrightarrow A^{-1}$ 下不对称，琼斯多项式亦不同。"
+        },
+        {
+          "id": "C_braidRepThm",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "辫群到图代数的表示",
+          "statement": "公式 $\\rho(\\sigma_{i})=Ah_{i}+A^{-1}1$ 连同 $\\delta=d=-A^{2}-A^{-2}$ 给出辫群 $B[n]$ 到图代数 $D[n]$ 自由加性代数的表示；辫字的乘积展开项与括号状态一一对应，图幺半群关系可代数确定闭包分支数从而求得 $\\langle h\\rangle$，其中 $h$ 为 $D[n]$ 中之积。"
+        },
+        {
+          "id": "C_twistConj",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "关于扭数拓扑不变性的提问",
+          "statement": "问题：既约交错图的扭数 $w(K)$ 是否为拓扑不变量；若成立则除零扭数情形外推广手性必要条件，零扭数手性要求 $B=W$。"
+        },
+        {
+          "id": "C_graphConj",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "关于零扭数手性图的猜想",
+          "statement": "猜想：设 $K$ 为素既约交错图，若 $K$ 手性消失且扭数为零，则黑图 $B(K)$ 与白图 $W(K)$ 作为抽象图同构。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I_stateSum",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules",
+            "F_stateDef"
+          ],
+          "conclusion": "C_stateSum",
+          "argument": "将规则反复用于每个交叉直至化为不交圆集，再用单圆与不交圆规则求值；状态与终构一一对应，$A$ 标记贡献 $A$，$B$ 标记贡献 $B$，多余圆各贡献 $d$，分支数记为 $|S|$，求和即得 $\\langle K\\rangle=\\sum_{S}\\langle K|S\\rangle d^{|S|-1}$。"
+        },
+        {
+          "id": "I_typeII",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules"
+          ],
+          "conclusion": "C_typeII",
+          "argument": "对 $II$ 型双交叉两次使用 $\\langle X\\rangle=A\\langle H\\rangle+B\\langle V\\rangle$ 与 $\\langle O\\cup K\\rangle=d\\langle K\\rangle$ 直接展开，合并得 $\\langle T2\\rangle=AB\\langle H0\\rangle+(ABd+A^{2}+B^{2})\\langle H\\rangle$；当 $AB=1$ 且 $d=-A^{2}-A^{-2}$ 时括号内系数为零而另一系数为 $1$，故 $II$ 型移动前后括号相等。"
+        },
+        {
+          "id": "I_typeIII",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules"
+          ],
+          "conclusion": "C_typeIIIImp",
+          "argument": "将 $III$ 型三交叉中的一交叉按 $\\langle X\\rangle=A\\langle H\\rangle+B\\langle V\\rangle$ 展开，所得两项各含 $II$ 型子图；设已具 $II$ 型不变性，则可替换该子图，再重新组合即得 $III$ 型两侧括号相等，故 $II$ 型不变性蕴含 $III$ 型不变性。"
+        },
+        {
+          "id": "I_regular",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules",
+            "C_typeII",
+            "C_typeIIIImp"
+          ],
+          "conclusion": "C_regular",
+          "argument": "取 $B=A^{-1}$ 与 $d=-A^{2}-A^{-2}$，则 $AB=1$ 成立，由第二型展开条件得 $II$ 型不变性，再由上述蕴含得 $III$ 型不变性；此时 $\\langle K\\rangle$ 化为 $A$ 的 Laurent 多项式，故为正则同痕不变量。"
+        },
+        {
+          "id": "I_curl",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules"
+          ],
+          "conclusion": "C_curl",
+          "argument": "在 $B=A^{-1}$ 与 $d=-A^{2}-A^{-2}$ 下对单卷曲直接计算，卷曲多余一圈贡献 $d$，合并 $A$ 与 $B$ 系数得 $\\langle C+\\rangle=(-A^{3})\\langle L\\rangle$ 与 $\\langle C-\\rangle=(-A^{-3})\\langle L\\rangle$。"
+        },
+        {
+          "id": "I_fAmbient",
+          "operationKind": "proof",
+          "premises": [
+            "C_regular",
+            "C_curl",
+            "F_writheDef",
+            "F_fDef"
+          ],
+          "conclusion": "C_fAmbient",
+          "argument": "扭数 $w(K)$ 在 $I$ 型移动下增减 $1$，而括号按 $(-A^{3})^{\\pm1}$ 变化；定义 $f[K]=(-A)^{-3w(K)}\\langle K\\rangle$ 恰抵消该因子，故 $f[K]$ 在 $I$ 型下不变；结合已具的 $II$ 型与 $III$ 型不变性，$f[K]$ 在全部三型移动下不变，为环绕同痕不变量。"
+        },
+        {
+          "id": "I_mirror",
+          "operationKind": "proof",
+          "premises": [
+            "C_stateSum",
+            "F_stateDef",
+            "F_mirrorDef",
+            "F_writheDef",
+            "F_fDef"
+          ],
+          "conclusion": "C_mirror",
+          "argument": "反转所有交叉即交换展开式中每次出现的 $A$ 与 $A^{-1}$，由状态求和 $\\langle K\\rangle=\\sum_{S}\\langle K|S\\rangle d^{|S|-1}$ 得 $\\langle K!\\rangle(A)=\\langle K\\rangle(A^{-1})$；镜像扭数满足 $w(K!)=-w(K)$，则 $f[K!](A)=f[K](A^{-1})$ 亦成立。"
+        },
+        {
+          "id": "I_identify",
+          "operationKind": "proof",
+          "premises": [
+            "F_bracketRules",
+            "F_writheDef",
+            "F_fDef",
+            "F_jonesDef",
+            "C_jonesExist"
+          ],
+          "conclusion": "C_identify",
+          "argument": "由 $\\langle X+\\rangle=A\\langle H\\rangle+A^{-1}\\langle V\\rangle$ 与 $\\langle X-\\rangle=A^{-1}\\langle H\\rangle+A\\langle V\\rangle$ 相减得 $A\\langle X+\\rangle-A^{-1}\\langle X-\\rangle=(A^{2}-A^{-2})\\langle H\\rangle$；乘入 $w$ 的规范化因子得 $A^{4}f[P]-A^{-4}f[M]=(A^{-2}-A^{2})f[0]$，其中 $P$、$M$、$0$ 为 skein 三元组；将 $A=t^{-1/4}$ 代入即得琼斯 skein 关系，由存在唯一性得 $V_{K}(t)=f[K](t^{-1/4})$。"
+        },
+        {
+          "id": "I_extreme",
+          "operationKind": "proof",
+          "premises": [
+            "C_stateSum",
+            "F_stateDef",
+            "F_altDef",
+            "F_euler"
+          ],
+          "conclusion": "C_extremeDeg",
+          "argument": "取全 $A$ 拆分状态 $S$，则 $\\langle K|S\\rangle=A^{V}$ 且 $|S|=W$，贡献 $A^{V}d^{W-1}$，其最高项为 $V+2(W-1)$；任一他状态 $S'$ 可由 $S$ 逐个翻转标记得到，每翻转一处 $\\langle K|\\cdot\\rangle$ 乘 $A^{-2}$ 而分支数至多增 $1$，故最高次数不增；简单性保证首次翻转必使分支数减 $1$，因而最高次数严格下降，不被抵消，系数由 $d=-A^{2}-A^{-2}$ 得 $(-1)^{W-1}$；对偶地全 $B$ 状态给出最低项 $-V-2B+2$ 与系数 $(-1)^{B-1}$。"
+        },
+        {
+          "id": "I_crossInv",
+          "operationKind": "proof",
+          "premises": [
+            "C_extremeDeg",
+            "C_regular",
+            "C_curl",
+            "F_euler"
+          ],
+          "conclusion": "C_crossInv",
+          "argument": "定义 $\\operatorname{span}(K)=\\max\\deg\\langle K\\rangle-\\min\\deg\\langle K\\rangle$，由首末项公式与 $W+B=V+2$ 得 $\\operatorname{span}(K)=[V+2W-2]-[-V-2B+2]=2V+2(W+B)-4=4V$；$\\operatorname{span}(K)$ 在 $II$ 型与 $III$ 型下不变，在 $I$ 型下首末次数同移 $(-A^{\\pm3})$ 故差不变，因而为环绕同痕不变量，故 $V=\\operatorname{span}(K)/4$ 为拓扑不变量。"
+        },
+        {
+          "id": "I_dual",
+          "operationKind": "proof",
+          "premises": [
+            "F_stateDef",
+            "F_euler"
+          ],
+          "conclusion": "C_dualLemma",
+          "argument": "对顶点数 $V$ 作归纳，$V=0,1,2$ 直接验算；设结论对少于 $V$ 顶点的连通宇宙成立，在顶点 $P$ 处将 $U$ 按两种拆分得 $U'$ 与 $U''$，连通性保证其一连通，不妨 $U'$ 连通；状态 $S$ 或其对偶 $\\hat{S}$ 必有一与 $U'$ 同向，视为 $U'$ 的状态 $S'$，归纳得 $|S'|+|\\hat{S}'|\\le R'$，其中 $R'=R-1$，而 $|S|=|S'|$ 且 $|\\hat{S}|\\le|\\hat{S}'|+1$，相加即得 $|S|+|\\hat{S}|\\le R$。"
+        },
+        {
+          "id": "I_spanIneq",
+          "operationKind": "proof",
+          "premises": [
+            "C_stateSum",
+            "F_stateDef",
+            "C_dualLemma"
+          ],
+          "conclusion": "C_spanIneq",
+          "argument": "取全 $A$ 状态 $S$，重复首末项证明但不设染色，在连通假设下得 $\\max\\deg\\langle K\\rangle\\le V+2(|S|-1)$ 与 $\\min\\deg\\langle K\\rangle\\ge-V-2(|\\hat{S}|-1)$，其中 $\\hat{S}$ 为全 $B$ 对偶状态；由对偶引理 $|S|+|\\hat{S}|\\le R=V+2$ 相减即得 $\\operatorname{span}(K)\\le4V$。"
+        },
+        {
+          "id": "I_chiralNec",
+          "operationKind": "proof",
+          "premises": [
+            "C_extremeDeg",
+            "F_writheDef",
+            "F_fDef",
+            "C_mirror",
+            "F_euler",
+            "C_fAmbient"
+          ],
+          "conclusion": "C_chiralNec",
+          "argument": "由首末项与 $f[K]=(-A)^{-3w}\\langle K\\rangle$ 得 $\\max(f)=-3w+V+2(W-1)$ 与 $\\min(f)=-3w-V-2(B-1)$，其中 $w=w(K)$；若 $K$ 与 $K!$ 环绕同痕，则镜像公式 $f[K!](A)=f[K](A^{-1})$ 蕴含 $-\\min(f)=\\max(f)$，即 $3w+V+2(B-1)=-3w+V+2(W-1)$，化简得 $3w(K)=W-B$；再用 $W+B=V+2$ 解得 $W=(1/2)(V+3w(K))+1$ 与 $B=(1/2)(V-3w(K))+1$。"
+        },
+        {
+          "id": "I_twistChiral",
+          "operationKind": "proof",
+          "premises": [
+            "C_chiralNec",
+            "F_euler"
+          ],
+          "conclusion": "C_twistChiral",
+          "argument": "由 $W=(1/2)(V+3w(K))+1$ 与 $B=(1/2)(V-3w(K))+1$ 及 $W+B=V+2$，若 $|w(K)|\\ge V/3$ 且 $K$ 非平凡，则 $W$ 与 $B$ 中其一非正或等式 $3w(K)=W-B$ 不可能成立，与手性消失必要条件矛盾，故 $K$ 必手性。"
+        },
+        {
+          "id": "I_notSuff",
+          "operationKind": "proof",
+          "premises": [
+            "F_example104",
+            "C_chiralNec"
+          ],
+          "conclusion": "C_notSufficient",
+          "argument": "示例满足 $w=-2$，$W=3$，$B=9$ 从而 $3w=W-B$，却由符号差知手性，故等式成立不蕴含手性消失，即必要而非充分。"
+        },
+        {
+          "id": "I_trefoil",
+          "operationKind": "proof",
+          "premises": [
+            "F_sampleCalc",
+            "C_mirror",
+            "C_identify"
+          ],
+          "conclusion": "C_trefoilDiff",
+          "argument": "示例计算给出三叶结的 $\\langle K\\rangle$ 与 $f[K]$ 显式，其在 $A\\leftrightarrow A^{-1}$ 下不对称；若三叶结与其镜像环绕同痕，则由 $\\langle K!\\rangle(A)=\\langle K\\rangle(A^{-1})$ 与 $f[K!](A)=f[K](A^{-1})$ 及 $V_{K}(t)=f[K](t^{-1/4})$ 必对称，矛盾，故二者可区分。"
+        },
+        {
+          "id": "I_braidRep",
+          "operationKind": "proof",
+          "premises": [
+            "F_diagramAlg",
+            "F_braidRep"
+          ],
+          "conclusion": "C_braidRepThm",
+          "argument": "将辫生成元写成 $Ah_{i}+A^{-1}1$ 之和，则辫字的乘积展开为 $A$ 的幂乘图代数生成元之积，每项对应一括号状态；图幺半群关系 $h_{i}^{2}=\\delta h_{i}$ 等允许代数化简闭包分支数，从而求得 $\\langle h\\rangle$，给出到取 $\\delta=d$ 的自由加性代数的表示。"
+        },
+        {
+          "id": "O_braidForm",
+          "operationKind": "organization",
+          "premises": [
+            "F_bracketRules",
+            "F_diagramAlg"
+          ],
+          "conclusion": "F_braidRep",
+          "argument": "括号交叉展开 $\\langle X\\rangle=A\\langle H\\rangle+A^{-1}\\langle V\\rangle$ 为辫生成元提供分解模式，图幺半群 $D[n]$ 提供几何载体与乘法关系，二者结合形成表示定义 $\\rho(\\sigma_{i})=Ah_{i}+A^{-1}1$ 与闭包求值概念的组织关系，而非单步演绎证明。"
+        },
+        {
+          "id": "O_graphForm",
+          "operationKind": "organization",
+          "premises": [
+            "F_altDef"
+          ],
+          "conclusion": "F_graphDef",
+          "argument": "由交错图的黑白棋盘染色组织出组合不变量，将黑区域与白区域分别压缩为顶点、交叉压缩为边，形成 $B(K)$ 与 $W(K)$ 互为平面对偶的图概念，此为概念形成而非演绎证明。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C_jonesExist",
+        "C_strictIneq"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "16_Kauffman_State_models_Jones_polynomial.pdf",
+        "pageCount": 13
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 20509,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_equivalence",
+                "F_bracketRules",
+                "F_stateDef",
+                "F_writheDef",
+                "F_fDef",
+                "F_jonesDef",
+                "F_mirrorDef",
+                "F_altDef",
+                "F_euler",
+                "F_sampleCalc",
+                "F_example104",
+                "F_diagramAlg",
+                "F_braidRep",
+                "F_graphDef"
+              ],
+              "b0ClaimEntryIds": [
+                "C_jonesExist",
+                "C_strictIneq"
+              ],
+              "closureClaimEntryIds": [
+                "C_stateSum",
+                "C_typeII",
+                "C_typeIIIImp",
+                "C_regular",
+                "C_curl",
+                "C_fAmbient",
+                "C_mirror",
+                "C_jonesExist",
+                "C_identify",
+                "C_extremeDeg",
+                "C_crossInv",
+                "C_dualLemma",
+                "C_spanIneq",
+                "C_strictIneq",
+                "C_chiralNec",
+                "C_twistChiral",
+                "C_notSufficient",
+                "C_trefoilDiff",
+                "C_braidRepThm"
+              ],
+              "claimStates": {
+                "C_stateSum": "established",
+                "C_typeII": "established",
+                "C_typeIIIImp": "established",
+                "C_regular": "established",
+                "C_curl": "established",
+                "C_fAmbient": "established",
+                "C_mirror": "established",
+                "C_jonesExist": "established",
+                "C_identify": "established",
+                "C_extremeDeg": "established",
+                "C_crossInv": "established",
+                "C_dualLemma": "established",
+                "C_spanIneq": "established",
+                "C_strictIneq": "established",
+                "C_chiralNec": "established",
+                "C_twistChiral": "established",
+                "C_notSufficient": "established",
+                "C_trefoilDiff": "established",
+                "C_braidRepThm": "established",
+                "C_twistConj": "open",
+                "C_graphConj": "open"
+              },
+              "claimDerivations": {
+                "C_stateSum": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_stateSum"
+                  ]
+                },
+                "C_typeII": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_typeII"
+                  ]
+                },
+                "C_typeIIIImp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_typeIII"
+                  ]
+                },
+                "C_regular": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_regular"
+                  ]
+                },
+                "C_curl": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_curl"
+                  ]
+                },
+                "C_fAmbient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_fAmbient"
+                  ]
+                },
+                "C_mirror": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_mirror"
+                  ]
+                },
+                "C_jonesExist": {
+                  "basis": "b0"
+                },
+                "C_identify": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_identify"
+                  ]
+                },
+                "C_extremeDeg": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_extreme"
+                  ]
+                },
+                "C_crossInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_crossInv"
+                  ]
+                },
+                "C_dualLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_dual"
+                  ]
+                },
+                "C_spanIneq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_spanIneq"
+                  ]
+                },
+                "C_strictIneq": {
+                  "basis": "b0"
+                },
+                "C_chiralNec": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_chiralNec"
+                  ]
+                },
+                "C_twistChiral": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_twistChiral"
+                  ]
+                },
+                "C_notSufficient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_notSuff"
+                  ]
+                },
+                "C_trefoilDiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_trefoil"
+                  ]
+                },
+                "C_braidRepThm": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_braidRep"
+                  ]
+                },
+                "C_twistConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C_graphConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_equivalence",
+                "F_bracketRules",
+                "F_stateDef",
+                "F_writheDef",
+                "F_fDef",
+                "F_jonesDef",
+                "F_mirrorDef",
+                "F_altDef",
+                "F_euler",
+                "F_sampleCalc",
+                "F_example104",
+                "F_diagramAlg",
+                "F_braidRep",
+                "F_graphDef"
+              ],
+              "b0ClaimEntryIds": [
+                "C_jonesExist",
+                "C_strictIneq"
+              ],
+              "closureClaimEntryIds": [
+                "C_stateSum",
+                "C_typeII",
+                "C_typeIIIImp",
+                "C_regular",
+                "C_curl",
+                "C_fAmbient",
+                "C_mirror",
+                "C_jonesExist",
+                "C_identify",
+                "C_extremeDeg",
+                "C_crossInv",
+                "C_dualLemma",
+                "C_spanIneq",
+                "C_strictIneq",
+                "C_chiralNec",
+                "C_twistChiral",
+                "C_notSufficient",
+                "C_trefoilDiff",
+                "C_braidRepThm"
+              ],
+              "claimStates": {
+                "C_stateSum": "established",
+                "C_typeII": "established",
+                "C_typeIIIImp": "established",
+                "C_regular": "established",
+                "C_curl": "established",
+                "C_fAmbient": "established",
+                "C_mirror": "established",
+                "C_jonesExist": "established",
+                "C_identify": "established",
+                "C_extremeDeg": "established",
+                "C_crossInv": "established",
+                "C_dualLemma": "established",
+                "C_spanIneq": "established",
+                "C_strictIneq": "established",
+                "C_chiralNec": "established",
+                "C_twistChiral": "established",
+                "C_notSufficient": "established",
+                "C_trefoilDiff": "established",
+                "C_braidRepThm": "established",
+                "C_twistConj": "open",
+                "C_graphConj": "open"
+              },
+              "claimDerivations": {
+                "C_stateSum": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_stateSum"
+                  ]
+                },
+                "C_typeII": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_typeII"
+                  ]
+                },
+                "C_typeIIIImp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_typeIII"
+                  ]
+                },
+                "C_regular": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_regular"
+                  ]
+                },
+                "C_curl": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_curl"
+                  ]
+                },
+                "C_fAmbient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_fAmbient"
+                  ]
+                },
+                "C_mirror": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_mirror"
+                  ]
+                },
+                "C_jonesExist": {
+                  "basis": "b0"
+                },
+                "C_identify": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_identify"
+                  ]
+                },
+                "C_extremeDeg": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_extreme"
+                  ]
+                },
+                "C_crossInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_crossInv"
+                  ]
+                },
+                "C_dualLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_dual"
+                  ]
+                },
+                "C_spanIneq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_spanIneq"
+                  ]
+                },
+                "C_strictIneq": {
+                  "basis": "b0"
+                },
+                "C_chiralNec": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_chiralNec"
+                  ]
+                },
+                "C_twistChiral": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_twistChiral"
+                  ]
+                },
+                "C_notSufficient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_notSuff"
+                  ]
+                },
+                "C_trefoilDiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_trefoil"
+                  ]
+                },
+                "C_braidRepThm": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_braidRep"
+                  ]
+                },
+                "C_twistConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C_graphConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I_spanIneq"
+                ],
+                "sourceRefs": [
+                  "PAGE 9"
+                ],
+                "sourceSpan": {
+                  "startLine": 350,
+                  "endLine": 360
+                },
+                "diagnosis": "I_spanIneq 的 premises 包含 F_altDef，但来源明确说任意连通图跨度上界的证明重复 2.9 证明、使用全 A 状态，不需要棋盘染色关系、除连通性外无需其他假设，直接依赖仅为状态求和与对偶引理，多余前提与来源矛盾。",
+                "repairRequirement": "I_spanIneq 的 premises 必须删除 F_altDef，仅保留 C_stateSum、F_stateDef、C_dualLemma，以忠实表达全 A 状态上下界加对偶引理得到 span 不等式的直接论证。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I_chiralNec"
+                ],
+                "sourceRefs": [
+                  "PAGE 10"
+                ],
+                "sourceSpan": {
+                  "startLine": 387,
+                  "endLine": 411
+                },
+                "diagnosis": "I_chiralNec 的 premises 缺少 f 的环绕同痕不变性直接依赖，来源证明明确以环绕同痕不变量形式的 f[K] 为前提，结合首末项公式与镜像公式，由 K 与 K! 环绕同痕推出 -min(f)=max(f)，仅有镜像公式不足以建立该步。",
+                "repairRequirement": "I_chiralNec 的 premises 必须在保留 C_extremeDeg、F_writheDef、F_fDef、C_mirror、F_euler 的基础上增加 C_fAmbient，以覆盖 f 环绕同痕不变性的来源明确直接依赖。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I_spanIneq",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C_stateSum",
+                      "F_stateDef",
+                      "C_dualLemma",
+                      "F_altDef"
+                    ],
+                    "after": [
+                      "C_stateSum",
+                      "F_stateDef",
+                      "C_dualLemma"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I_chiralNec",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C_extremeDeg",
+                      "F_writheDef",
+                      "F_fDef",
+                      "C_mirror",
+                      "F_euler"
+                    ],
+                    "after": [
+                      "C_extremeDeg",
+                      "F_writheDef",
+                      "F_fDef",
+                      "C_mirror",
+                      "F_euler",
+                      "C_fAmbient"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 54,
+            "cleanCount": 52
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 127768
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 79268
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "dfbbafce008a5368967849b82609ccfa8eaa610db9b9ee3822dbb5da8e12aa77",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 219916,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 3,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 1732,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4111,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 6675,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9052,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 11445,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12873,
+        "phase": "complete",
+        "pageCount": 13
+      },
+      {
+        "stage": "generate",
+        "atMs": 12874,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 140644,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 219916,
+        "phase": "complete",
+        "entries": 35,
+        "inferences": 19
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 127235,
+        "usage": {
+          "input_tokens": 10811,
+          "output_tokens": 30969,
+          "total_tokens": 41780
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 79125,
+        "usage": {
+          "input_tokens": 22700,
+          "output_tokens": 16973,
+          "total_tokens": 39673
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

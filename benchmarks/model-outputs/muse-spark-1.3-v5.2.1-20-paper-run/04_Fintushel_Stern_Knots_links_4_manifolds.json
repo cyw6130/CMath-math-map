@@ -1,0 +1,2043 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "04_Fintushel_Stern_Knots_links_4_manifolds.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F_SWDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "塞伯格威滕不变量的多变量对称形式",
+          "statement": "设 $X$ 为满足 $b^{+}_{X}>1$ 的单连通光滑闭定向 $4$-流形且 $H_{1}(X,\\mathbf{Z})$ 无 $2$-挠，则 $\\mathrm{SW}_{X}$ 视为定义在示性类上的整数值函数，有限个基本类成对出现且满足 $\\mathrm{SW}_{X}(-\\beta)=(-1)^{(e+\\mathrm{sign})(X)/4}\\mathrm{SW}_{X}(\\beta)$，并记为对称形式 $\\mathrm{SW}_{X}=b_{0}+\\sum_{j=1}^{n}b_{j}(\\exp(\\beta_{j})+(-1)^{(e+\\mathrm{sign})(X)/4}\\exp(-\\beta_{j}))$，其中 $t_{j}=\\exp(\\beta_{j})$，$H_{2}(X)$ 与 $H^{2}(X)$ 经庞加莱对偶自由互换。"
+        },
+        {
+          "id": "F_APolyDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "阿多项式与首一条件",
+          "statement": "称单变量对称洛朗多项式 $P(t)=a_{0}+\\sum_{j=1}^{n}a_{j}(t^{j}+t^{-j})$ 为 $A$-多项式，若系数和满足 $a_{0}+2\\sum_{j=1}^{n}a_{j}=\\pm 1$，若进一步 $a_{n}=\\pm 1$ 则称为首一 $A$-多项式。"
+        },
+        {
+          "id": "F_CuspDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "尖点邻域与余嵌入环面",
+          "statement": "$X$ 中尖点为自交数为 $0$ 的分段线性嵌入 $2$-球面，仅有一个非局部平坦点，其邻域为右手三叶结上的锥，正则邻域 $N$ 为 $4$-球边界上对三叶结作 $0$-框架手术所得，光滑纤维环面称为尖点邻域的光滑纤维，若光滑嵌入环面 $T$ 表非零同调类且为某尖点邻域的光滑纤维则称 $T$ 为余嵌入的，此时 $[T]^{2}=0$ 且 $T$ 有两条消没圈。"
+        },
+        {
+          "id": "F_KnotSurgeryDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "结手术流形的纤维和构造",
+          "statement": "对 $S^{3}$ 中结 $K$ 设 $m$ 为子午圈，$M_{K}$ 为 $0$-框架手术所得 $3$-流形，$T_{m}=m\\times S^{1}\\subset M_{K}\\times S^{1}$ 自交为 $0$ 且有典范 framing $T_{m}\\times D^{2}$，对含环面 $T$ 的 $X$ 定义纤维和 $X_{K}=X\\#_{T=T_{m}}(M_{K}\\times S^{1})=[X\\setminus(T\\times D^{2})]\\cup[(M_{K}\\times S^{1})\\setminus(T_{m}\\times D^{2})]$，粘合保持 $[pt\\times\\partial D^{2}]$ 类，$X_{K}$ 与 $X$ 同调与交配对相同，若 $\\pi_{1}(X)=1$ 且 $\\pi_{1}(X\\setminus T)=1$ 则 $X_{K}$ 单连通且同伦等价于 $X$，记 $t=\\exp(2[T])$，定向与 $H^{2}_{+}$ 定向由 $X$ 继承。"
+        },
+        {
+          "id": "F_LinkSurgeryDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "链手术的多重纤维和构造",
+          "statement": "对 $n\\ge 2$ 元有序链 $L=\\{K_{1},\\dots,K_{n}\\}$ 设 $(\\ell_{j},m_{j})$ 为经纬对，$\\alpha_{L}:\\pi_{1}(S^{3}\\setminus L)\\to\\mathbf{Z}$ 满足 $\\alpha_{L}(m_{j})=1$，$M_{L}$ 为对每分支作 $\\alpha_{L}(\\ell_{j})$ 手术所得，$T_{m_{j}}=m_{j}\\times S^{1}$，定义 $n$ 重纤维和 $X(X_{1},\\dots,X_{n};L)=(M_{L}\\times S^{1})\\#_{T_{j}=T_{m_{j}}}\\prod_{j=1}^{n}X_{j}$，粘合保持 $[pt\\times\\partial D^{2}]$，所得流形单连通，其符号差与欧拉示性数仅依赖于各 $X_{j}$ 的有理同伦型与分支数，若各 $X_{j}$ 相同记为 $X_{L}$，$E(1)_{L}$ 为以 $n$ 个 $E(1)$ 沿椭圆纤维 $F$ 作同样纤维和所得。"
+        },
+        {
+          "id": "F_RelSWDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "相对不变量与内部纤维和",
+          "statement": "对自交为 $0$ 的非零类环面 $T$ 定义相对不变量 $\\mathrm{SW}_{(X;T)}=\\mathrm{SW}_{X\\#_{T=F}E(1)}$，其中 $E(1)$ 为有理椭圆曲面而 $F$ 为光滑椭圆纤维，对一对余嵌入环面 $T_{1},T_{2}$ 定义 $\\mathrm{SW}_{(X;T_{1},T_{2})}=\\mathrm{SW}_{X}\\cdot(\\tau_{1}-\\tau_{1}^{-1})\\cdot(\\tau_{2}-\\tau_{2}^{-1})$ 其中 $\\tau_{j}=\\exp([T_{j}])$，内部纤维和 $X_{T_{1},T_{2}}$ 为等同 $T_{i}$ 管状邻域边界并保持 $[pt\\times\\partial D^{2}]$ 所得。"
+        },
+        {
+          "id": "F_LogDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "广义对数变换",
+          "statement": "对自交为 $0$ 的嵌入环面 $T$ 具管状邻域 $N=T\\times D^{2}=S^{1}\\times S^{1}\\times D^{2}$ 及互素非零整数 $p,q$ 或 $(1,0)$ 或 $(0,1)$，经由 $\\varphi_{p,q}(x,y,z)=(x,y^{s}z^{q},y^{r}z^{p})$ 其中 $\\det\\begin{pmatrix}p&q\\\\r&s\\end{pmatrix}=-1$ 粘合 $S^{1}\\times S^{1}\\times D^{2}$ 得到 $(p/q)$ 对数变换 $Y(p/q)=(Y\\setminus N)\\cup_{\\varphi}(S^{1}\\times S^{1}\\times D^{2})$，若 $T$ 零同调则 $Y(0/1)$ 中新生类 $\\tau$ 由 $T_{0}=S^{1}\\times S^{1}\\times pt$ 表出，而 $H_{2}(Y)$ 中类可视为各 $Y(p/q)$ 中类，变换恒用 $S^{1}\\times S^{1}\\times D^{2}$ 坐标下的 $\\varphi_{p,q}$。"
+        },
+        {
+          "id": "F_SewnUpDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "缝合链外部与带和",
+          "statement": "对二分支定向链 $L=C_{1}\\cup C_{2}$ 取管状邻域 $N_{i}$，对 $A\\in GL(2,\\mathbf{Z})$ 且 $\\det A=-1$ 沿诱导 $A$ 的微分同胚等同 $\\partial N_{1}$ 与 $\\partial N_{2}$ 得缝合外部 $s(L;A)$，记 $A_{n}=\\begin{pmatrix}-1&0\\\\-n&1\\end{pmatrix}$，则 $H_{1}(s(L;A_{n});\\mathbf{Z})=\\mathbf{Z}\\oplus\\mathbf{Z}_{n-2\\ell}$ 其中 $\\ell$ 为分支 linking 数，带 $B=I^{2}$ 将反向两股作带和得结 $K$ 及无关结 $U_{\\nu},U_{o}$，$U_{o}$ 以几何两次代数零次 linking $L$，$Z_{0}$ 为对 $Z=s(L;A_{n})$ 中 $\\bar U_{o}$ 作 $0$-手术所得。"
+        },
+        {
+          "id": "F_ResolveAlgo",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "斯凯因三元组与消解树算法",
+          "statement": "对定向结或链投影取每分支基点并排序，定义坏交叉数与总交叉数，复杂度为 $(c,b)$ 按字典序比较，skein 移动 $K_{+},K_{-},K_{0}$ 如交叉变号与消解图所示，结的坏交叉变号仍为结而消解为二分支链，二分支链的分支间坏交叉变号仍为链而消解为结，且 $(c(A_{-}),b(A_{-}))$ 与 $(c(A_{0}),b(A_{0}))$ 皆小于 $(c(A_{+}),b(A_{+}))$，故重复对首个坏交叉作分支可得消解树，其底顶点仅为平凡结或分裂链。"
+        },
+        {
+          "id": "F_TuraevDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "链亚历山大多项式的图拉耶夫公理",
+          "statement": "映射 $\\nabla$ 对 $n$ 分支有序链取值于 $\\mathbf{Q}(t_{1},\\dots,t_{n})$，满足同痕不变，平凡结时 $\\nabla(L)=1/(t-t^{-1})$，$n\\ge 2$ 时取值于 $\\mathbf{Z}[t_{1},t_{1}^{-1},\\dots,t_{n},t_{n}^{-1}]$，$\\tilde\\nabla(L)(t)=\\nabla(L)(t,\\dots,t)$ 在重编号下不变，Conway 公理 $\\tilde\\nabla(L_{+})=\\tilde\\nabla(L_{-})+(t-t^{-1})\\cdot\\tilde\\nabla(L_{0})$，加倍公理若 $L^{\\prime}$ 由 $K_{j}$ 换为其 $(2,1)$ 缆则 $\\nabla(L^{\\prime})(t_{1},\\dots,t_{n})=(T+T^{-1})\\cdot\\nabla(L)(t_{1},\\dots,t_{j-1},t_{j}^{2},t_{j+1},\\dots,t_{n})$ 其中 $T=t_{j}\\prod_{i\\ne j}t_{i}^{\\ell k(K_{j},K_{i})}$，而 $\\Delta_{L}(t_{1}^{2},\\dots,t_{n}^{2})\\doteq\\nabla(L)(t_{1},\\dots,t_{n})$ 表至多差符号与变量幂次的相等。"
+        },
+        {
+          "id": "F_ChamberDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "单正情形的腔与限制不变量",
+          "statement": "设 $b^{+}_{X}=1$，扰动方程为 $D_{A}\\psi=0$ 与 $F^{+}_{A}=q(\\psi)+i\\eta^{+}$，壁由 $(2\\pi k+\\eta^{+})\\cdot\\omega_{g}=0$ 给出，$\\mathcal{C}_{X}=\\{\\alpha\\mid\\alpha\\cdot\\alpha>0\\}$ 的分支决定 $\\mathrm{SW}^{\\pm}_{X}$，本质自交零环面 $T$ 按 $\\alpha\\cdot[T]>0$ 定出 $\\mathcal{C}^{+}_{X}$ 与 $\\mathcal{C}^{-}_{X}$，限制不变量为 $\\mathrm{SW}^{\\pm}_{X,T}=\\sum_{k\\cdot[T]=0}\\mathrm{SW}^{\\pm}_{X}(k)\\exp(k)$ 及双环面版本，壁穿越公式为 $\\mathrm{SW}_{X,g_{1},\\eta^{+}_{1}}(k)-\\mathrm{SW}_{X,g_{0},\\eta^{+}_{0}}(k)=(-1)^{\\delta(k)/2+1}$ 其中 $\\delta(k)=(k^{2}-(3\\mathrm{sign}+2e)(X))/4$，对 $E(1)$ 有 $\\mathrm{SW}^{-}_{E(1),F}=\\sum_{n=0}^{\\infty}t^{(2n+1)/2}$ 与 $\\mathrm{SW}^{+}_{E(1),F}=-\\sum_{n=0}^{\\infty}t^{-(2n+1)/2}$ 其中 $t=\\exp(2[F])$，且乘以 $(t^{1/2}-t^{-1/2})$ 后正负腔给出同一值 $-1$。"
+        },
+        {
+          "id": "F_SpecialCalc",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "怀特海德链与扭结的特殊计算",
+          "statement": "$k$ 扭怀特海德二分支链 $W(k)$ 的亚历山大多项式为 $k(t_{1}^{1/2}-t_{1}^{-1/2})(t_{2}^{1/2}-t_{2}^{-1/2})$，$k$ 扭结 $T(k)$ 的为 $kt-(2k+1)+kt^{-1}$，对应 $\\mathrm{SW}_{X(k)}=k(t_{1}^{1/2}-t_{1}^{-1/2})(t_{2}^{1/2}-t_{2}^{-1/2})$ 与 $\\mathrm{SW}_{Y(k)}=kt-(2k+1)+kt^{-1}$，$K3$ 含三个互不交余嵌入环面 $T_{1},T_{2},T_{3}$ 表不同同调类，对数变换 $p_{j}$ 重数给出 $\\mathrm{SW}_{X^{\\prime}}(1,\\dots,1)=\\pm p_{1}\\cdots p_{n}$ 而 $\\mathrm{SW}_{K3_{P_{1}P_{2}P_{3}}}(1,1,1)=P_{1}(1)P_{2}(1)P_{3}(1)=\\pm 1$，故后者不能由此对数变换得到。"
+        },
+        {
+          "id": "C_Thm21",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "余嵌入环面的相对不变量公式",
+          "statement": "设 $X$ 满足 $b^{+}_{X}>1$ 且环面 $T$ 余嵌入，则相对不变量 $\\mathrm{SW}_{(X;T)}=\\mathrm{SW}_{X}\\cdot(t^{1/2}-t^{-1/2})$，其中 $t=\\exp(2[T])$。"
+        },
+        {
+          "id": "B_FiberGluing",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "一般纤维和粘合公式",
+          "statement": "沿自交零环面作纤维和时 $\\mathrm{SW}_{X_{1}\\#_{T_{1}=T_{2}}X_{2}}=\\mathrm{SW}_{(X_{1};T_{1})}\\cdot\\mathrm{SW}_{(X_{2};T_{2})}$。"
+        },
+        {
+          "id": "B_InternalGluing",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "内部纤维和粘合公式",
+          "statement": "内部纤维和满足 $\\mathrm{SW}_{X_{T_{1},T_{2}}}=\\mathrm{SW}_{(X;T_{1},T_{2})}|_{\\tau_{1}=\\tau_{2}}$，其中 $\\tau_{i}=\\exp([T_{i}])$。"
+        },
+        {
+          "id": "B_LogFormula",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "零同调环面对数变换公式",
+          "statement": "设 $b^{+}\\ge 3$ 含零同调环面 $T$，$\\tau$ 为 $Y(0/1)$ 新生类，则 $\\mathrm{SW}_{Y(p/q)}(\\alpha)=p\\,\\mathrm{SW}_{Y}(\\alpha)+q\\sum_{i=-\\infty}^{\\infty}\\mathrm{SW}_{Y(0/1)}(\\alpha+2i\\tau)$。"
+        },
+        {
+          "id": "C_Lemma25",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "对数公式的简化条件",
+          "statement": "在定理2.4情形若有与 $T$ 不交的自交零环面表类 $\\sigma$ 使 $\\sigma\\cdot\\tau=1$ 且对一切 $\\alpha\\in H_{2}(Y)$ 有 $\\sigma\\cdot\\alpha=0$，则 $\\mathrm{SW}_{Y(p/q)}=p\\,\\mathrm{SW}_{Y}+q\\,\\mathrm{SW}_{Y(0/1)}$。"
+        },
+        {
+          "id": "B_Hoste",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "缝合外部的手术描述",
+          "statement": "带和 $C_{1},C_{2}$ 得结 $K$ 时 $s(L;A_{n})$ 由 $K\\cup U_{\\nu}$ 经 $U_{\\nu}$ 上 $0$ 系数及 $K$ 上 $n-2\\ell$ 系数手术得到，其中 $\\ell$ 为分支 linking 数。"
+        },
+        {
+          "id": "C_Prop27",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "缝合流形的乘积公式",
+          "statement": "设 $T$ 余嵌入，$Z_{0}$ 为对 $\\bar U_{o}$ 作 $0$-手术所得，$K$ 为带和结，则 $\\mathrm{SW}_{X\\#_{T}(Z_{0}\\times S^{1})}=(t^{1/2}-t^{-1/2})^{2}\\cdot\\mathrm{SW}_{X_{K}}$，其中 $t=\\exp(2[T])$。"
+        },
+        {
+          "id": "C_ThetaSkein",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "不变量的斯凯因关系",
+          "statement": "对结定义 $\\Theta_{K}=\\mathrm{SW}_{X_{K}}/\\mathrm{SW}_{X}$，对二分支链定义 $\\Theta_{L}=(t^{1/2}-t^{-1/2})^{-1}\\cdot\\mathrm{SW}_{X(s(L;A_{2\\ell}))}/\\mathrm{SW}_{X}$，其中 $t=\\exp(2[T])$，则 $\\Theta_{K_{+}}=\\Theta_{K_{-}}+(t^{1/2}-t^{-1/2})\\cdot\\Theta_{K_{0}}$。"
+        },
+        {
+          "id": "C_Thm15",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "结手术乘积公式",
+          "statement": "若 $T$ 余嵌入，则 $\\mathrm{SW}_{X_{K}}=\\mathrm{SW}_{X}\\cdot\\Delta_{K}(t)$，其中 $t=\\exp(2[T])$，$\\Delta_{K}$ 为对称亚历山大多项式。"
+        },
+        {
+          "id": "B_SkeinInit",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "斯凯因初值",
+          "statement": "平凡结满足 $\\Delta_{U}=1$ 且 $\\Theta_{U}=1$，分裂链满足 $\\Delta_{S}=0$ 且 $\\Theta_{L}=0$。"
+        },
+        {
+          "id": "C_Thm11",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "A-多项式的实现定理",
+          "statement": "设 $X$ 单连通 $b^{+}>1$ 含余嵌入环面 $T$ 使 $\\pi_{1}(X\\setminus T)=1$，则对任一 $A$-多项式 $P(t)$ 有同胚于 $X$ 的 $X_{P}$ 使 $\\mathrm{SW}_{X_{P}}=\\mathrm{SW}_{X}\\cdot P(t)$，其中 $t=\\exp(2[T])$。"
+        },
+        {
+          "id": "B_AlexRealize",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "A-多项式的结实现",
+          "statement": "任一 $A$-多项式为某结的 $\\Delta_{K}$，反之亦然；首一 $A$-多项式可实现为纤维化结，反之纤维化结多项式首一。"
+        },
+        {
+          "id": "C_Cor16",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "相对结手术公式",
+          "statement": "设 $X$ 含自交零嵌入环面 $T$ 表非零类且 $\\pi_{1}(X\\setminus T)=1$，则 $\\mathrm{SW}_{E(1)\\#_{F=T}X_{K}}=\\mathrm{SW}_{E(1)\\#_{F=T}X}\\cdot\\Delta_{K}(t)$。"
+        },
+        {
+          "id": "C_Cor17",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "纤维化结手术的辛结构",
+          "statement": "设 $X$ 辛含辛余嵌入环面 $T$，$K$ 纤维化，则 $X_{K}$ 辛且 $\\mathrm{Gr}_{X_{K}}=\\mathrm{Gr}_{X}\\cdot A_{K}(\\tau)$，其中 $\\tau=\\exp([T])$。"
+        },
+        {
+          "id": "C_Cor18",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "非首一结手术的非辛性",
+          "statement": "若 $\\Delta_{K}$ 非首一则 $X_{K}$ 无辛结构；若有与 $T$ 不交的非零曲面 $\\Sigma_{g}$ 使 $g>0$ 时 $[\\Sigma_{g}]^{2}<2-2g$ 或 $g=0$ 时 $[\\Sigma_{g}]^{2}<0$，则反向亦无辛结构。"
+        },
+        {
+          "id": "C_Cor12",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "首一情形的辛实现",
+          "statement": "若 $X$ 辛且 $T$ 辛嵌入，$P(t)$ 首一，则 $X_{P}$ 可构造为辛流形。"
+        },
+        {
+          "id": "C_Cor13",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "非首一情形的非辛性",
+          "statement": "若 $P(t)$ 非首一则 $X_{P}$ 无辛结构；在曲面 $\\Sigma_{g}$ 条件下反向亦无辛结构。"
+        },
+        {
+          "id": "C_Cor14",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "同伦K3曲面的实现",
+          "statement": "任一 $A$-多项式可作为不可约同伦 $K3$ 的 $\\mathrm{SW}$ 出现；非首一时双向无辛结构，首一时可实现为辛同伦 $K3$。"
+        },
+        {
+          "id": "C_Thm19",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "链手术的亚历山大公式",
+          "statement": "$E(1)_{L}$ 的不变量为 $\\mathrm{SW}_{E(1)_{L}}=\\Delta_{L}(t_{1},\\dots,t_{n})$，其中 $t_{j}=\\exp(2[T_{j}])$。"
+        },
+        {
+          "id": "C_Cor110",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "多重链手术乘积公式",
+          "statement": "$\\mathrm{SW}_{X(X_{1},\\dots,X_{n};L)}=\\Delta_{L}(t_{1},\\dots,t_{n})\\cdot\\prod_{j=1}^{n}\\mathrm{SW}_{E(1)\\#_{F=T_{j}}X_{j}}$，其中 $t_{j}=\\exp(2[T_{j}])$。"
+        },
+        {
+          "id": "C_Lemma52",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "单正限制不变量的腔无关性",
+          "statement": "设 $b^{+}_{X}=1$ 含自交零环面 $T$，$t=\\exp(2[T])$，则 $(t^{1/2}-t^{-1/2})\\cdot\\mathrm{SW}^{+}_{X,T}=(t^{1/2}-t^{-1/2})\\cdot\\mathrm{SW}^{-}_{X,T}$。"
+        },
+        {
+          "id": "C_Thm53",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "单正情形的结手术公式",
+          "statement": "设 $b^{+}_{X}=1$ 含余嵌入环面 $T$ 使 $\\pi_{1}(X\\setminus T)=1$，则 $\\mathrm{SW}^{\\pm}_{X_{K},T}=\\mathrm{SW}^{\\pm}_{X,T}\\cdot\\Delta_{K}(t)$，其中 $t=\\exp(2[T])$。"
+        },
+        {
+          "id": "C_Lemma55",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "单正限制不变量的结构",
+          "statement": "若 $\\mathrm{SW}_{X\\#_{T=F}E(1)}\\ne 0$，则有洛朗多项式 $S_{X}$ 使 $\\mathrm{SW}^{\\pm}_{X,T}$ 为 $S_{X}$ 乘以上半或下半无穷级数之一。"
+        },
+        {
+          "id": "C_Lemma56",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "大扰动下的正负类对称性",
+          "statement": "设 $b^{+}_{X}=1$，则 $|\\mathrm{SW}_{X,g,r\\eta^{+}}(\\alpha)\\pm\\mathrm{SW}_{X,g,r\\eta^{+}}(-\\alpha)|=1$ 当 $|r|$ 充分大时成立。"
+        },
+        {
+          "id": "C_Cor57",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "单正非首一的非辛性",
+          "statement": "设 $X$ 辛 $b^{+}=1$ 含辛余嵌入环面 $T$ 且 $\\mathrm{SW}_{X\\#_{T=F}E(1)}\\ne 0$，若 $\\Delta_{K}$ 非首一则 $X_{K}$ 无辛结构。"
+        },
+        {
+          "id": "C_Cor58",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "爆破后仍无辛结构",
+          "statement": "若 $\\Delta_{K}$ 非首一，则 $E(1)_{K}$ 经任意多次爆破后双向仍无辛结构。"
+        },
+        {
+          "id": "B_ThurstonGompf",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "纤维化结的辛纤维和",
+          "statement": "纤维化结使 $M_{K}\\times S^{1}$ 具辛结构且 $T_{m}$ 为辛截面，辛流形沿辛环面的辛纤维和仍辛。"
+        },
+        {
+          "id": "B_TaubesSymp",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "辛流形的陶布斯约束",
+          "statement": "辛流形典范类满足 $\\mathrm{SW}(\\kappa)=\\pm 1$，其余基本类满足 $|k\\cdot\\omega|<\\kappa\\cdot\\omega$，基本类与自交零环面正交。"
+        },
+        {
+          "id": "B_TuraevUnique",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "图拉耶夫公理的唯一性",
+          "statement": "有唯一映射 $\\nabla$ 对有序链满足同痕不变、平凡结值、多项式性、重编号不变、Conway公理与加倍公理。"
+        },
+        {
+          "id": "B_B1Gluing",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "单正粘合与对数公式",
+          "statement": "单正纤维和、内部纤维和与对数变换有相应的限制不变量版本并多出 $(t^{1/2}-t^{-1/2})^{2}$ 因子。"
+        },
+        {
+          "id": "B_ConeIneq",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "正锥引理",
+          "statement": "若非零 $\\alpha,\\beta$ 位于 $\\mathcal{C}_{X}$ 同分支闭包，则 $\\alpha\\cdot\\beta\\ge 0$，等号仅当 $\\alpha=\\lambda\\beta$。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I_Thm21",
+          "operationKind": "proof",
+          "premises": [
+            "F_RelSWDef",
+            "F_CuspDef",
+            "B_FiberGluing"
+          ],
+          "conclusion": "C_Thm21",
+          "argument": "由一般纤维和粘合公式应用于 $X\\#_{T=F}E(1)$，其中 $E(1)$ 具正数量曲率度量，相对不变量定义直接给出 $T$ 余嵌入时多出因子 $(t^{1/2}-t^{-1/2})$，其中 $t=\\exp(2[T])$，即得相对公式。"
+        },
+        {
+          "id": "I_Lemma25",
+          "operationKind": "proof",
+          "premises": [
+            "B_LogFormula",
+            "F_LogDef",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Lemma25",
+          "argument": "在 $Y(0/1)$ 中有 $H_{2}(Y(0/1))=H_{2}(Y)\\oplus H(\\sigma,\\tau)$，若 $\\mathrm{SW}_{Y(0/1)}(\\alpha+2i\\tau)\\ne 0$ 则对自交零环面 $\\sigma$ 用邻接不等式得 $0\\ge\\sigma^{2}+|(\\alpha+2i\\tau)\\cdot\\sigma|=|2i|$，故仅 $i=0$ 有贡献，一般对数公式的无穷和退化为单项 $p\\mathrm{SW}_{Y}+q\\mathrm{SW}_{Y(0/1)}$。"
+        },
+        {
+          "id": "I_Prop27",
+          "operationKind": "proof",
+          "premises": [
+            "B_InternalGluing",
+            "F_SewnUpDef",
+            "F_KnotSurgeryDef"
+          ],
+          "conclusion": "C_Prop27",
+          "argument": "将 $X\\#_{T}(Z_{0}\\times S^{1})$ 视为 $W(L)$ 沿 $T_{1}=C^{\\prime}_{1}\\times S^{1}$ 与 $T_{2}=C^{\\prime}_{2}\\times S^{1}$ 的内部纤维和，$B_{\\ell}$ 把 $C^{\\prime}_{i}$ 纵线等同于 $S^{3}\\setminus L$ 中 $C_{i}$ 子午线，内部纤维和公式给出因子 $(\\tau-\\tau^{-1})^{2}$，经由 $C_{1}$ 越过 $C_{2}$ 的柄滑动 $W(L)$ 等同于 $X_{K}$ 且子午线对应，令 $t=\\exp(2[T])=\\tau^{2}$ 即得公式。"
+        },
+        {
+          "id": "I_ThetaSkein",
+          "operationKind": "proof",
+          "premises": [
+            "C_Lemma25",
+            "C_Prop27",
+            "B_Hoste",
+            "F_ResolveAlgo",
+            "F_KnotSurgeryDef"
+          ],
+          "conclusion": "C_ThetaSkein",
+          "argument": "对结交叉 $K_{+}$ 由 $K_{-}$ 沿零同调环面 $S^{1}\\times U$ 作 $(1/1)$ 对数变换得到，简化对数公式给出 $\\mathrm{SW}_{X_{K_{+}}}=\\mathrm{SW}_{X_{K_{-}}}+\\mathrm{SW}_{X(s(K_{0};A_{2\\ell}))}$，对二分支链坏交叉同样沿 $S^{1}\\times U_{o}$ 作 $(1/1)$ 变换并用前一命题得 $\\mathrm{SW}_{X(s(L_{+};A_{2\\ell}))}=\\mathrm{SW}_{X(s(L_{-};A_{2\\ell_{-}}))}+(t^{1/2}-t^{-1/2})^{2}\\mathrm{SW}_{X_{L_{0}}}$，除以 $\\mathrm{SW}_{X}$ 并按定义归一化即得 $\\Theta$ 的斯凯因关系。"
+        },
+        {
+          "id": "I_Thm15",
+          "operationKind": "proof",
+          "premises": [
+            "C_ThetaSkein",
+            "B_SkeinInit",
+            "F_ResolveAlgo"
+          ],
+          "conclusion": "C_Thm15",
+          "argument": "对分裂二分支链 $s(L;A_{2\\ell})$ 含本质自交零 $2$-球面故 $\\mathrm{SW}=0$ 得 $\\Theta_{L}=0$，对平凡结 $X_{U}=X$ 得 $\\Theta_{U}=1$，与亚历山大多项式满足相同斯凯因关系与初值，而消解树经有限步归约到这些初值，故 $\\Theta_{K}$ 为单变量洛朗多项式且等于 $\\Delta_{K}(t)$，即 $\\mathrm{SW}_{X_{K}}=\\mathrm{SW}_{X}\\cdot\\Delta_{K}(t)$。"
+        },
+        {
+          "id": "I_Thm11",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm15",
+            "B_AlexRealize",
+            "F_APolyDef"
+          ],
+          "conclusion": "C_Thm11",
+          "argument": "任一 $A$-多项式皆可实现为某结 $K$ 的亚历山大多项式，取 $X_{P}=X_{K}$，由结手术公式 $\\mathrm{SW}_{X_{K}}=\\mathrm{SW}_{X}\\cdot\\Delta_{K}(t)$ 即得 $\\mathrm{SW}_{X_{P}}=\\mathrm{SW}_{X}\\cdot P(t)$，其中 $t=\\exp(2[T])$，且 $X_{P}$ 与 $X$ 同胚。"
+        },
+        {
+          "id": "I_Cor16",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm15",
+            "F_KnotSurgeryDef",
+            "F_RelSWDef"
+          ],
+          "conclusion": "C_Cor16",
+          "argument": "在 $E(1)\\#_{F=T}X$ 中环面 $T=F$ 为余嵌入，对具自交零嵌入环面的 $X$ 有结合律 $E(1)\\#_{F=T}X_{K}=(E(1)\\#_{F=T}X)\\#_{T=T_{m}}(M_{K}\\times S^{1})$，应用结手术公式即得相对流形的乘积公式。"
+        },
+        {
+          "id": "I_Cor17",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm15",
+            "B_ThurstonGompf",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Cor17",
+          "argument": "若 $K$ 纤维化则 $M_{K}$ 以闭曲面 $\\Sigma_{g}$ 为纤维，$M_{K}\\times S^{1}$ 以 $T_{m}$ 为辛截面具辛结构，辛纤维和使 $X_{K}$ 辛，由邻接公式得 $\\kappa_{M_{K}\\times S^{1}}=(2d-2)[T_{m}]$ 其中 $d$ 为 $\\Delta_{K}$ 次数，故 $\\kappa_{X_{K}}=\\kappa_{X}+2d[T]$，陶布斯定理给出 $\\mathrm{Gr}_{X_{K}}(\\alpha)$ 按系数展开恰为 $\\mathrm{Gr}_{X}\\cdot A_{K}(\\tau)$ 的系数，其中 $\\tau=\\exp([T])$。"
+        },
+        {
+          "id": "I_Cor18",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm15",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Cor18",
+          "argument": "设 $X_{K}$ 辛而典范类为 $\\kappa=\\alpha+2n[T]$ 且 $|n|\\le d$，取 $m$ 为使 $\\mathrm{SW}_{X}(\\alpha+m[T])\\ne 0$ 的最大整数并置 $\\beta=\\alpha+m[T]$，则 $\\mathrm{SW}_{X_{K}}(\\beta+2d[T])=a_{d}\\mathrm{SW}_{X}(\\beta)\\ne 0$，比较与 $\\omega$ 的配对，利用陶布斯不等式 $|k\\cdot\\omega|<\\kappa\\cdot\\omega$ 在 $[T]\\cdot\\omega>0$ 或 $=0$ 时皆迫使 $m=0,n=d$ 且 $\\kappa=\\beta+2d[T]$，故 $\\pm 1=a_{d}\\mathrm{SW}_{X}(\\beta)$ 得 $a_{d}=\\pm 1$ 即首一，否则无辛结构，含超曲面 $\\Sigma_{g}$ 时邻接不等式使反向亦无辛结构。"
+        },
+        {
+          "id": "I_Cor12",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm11",
+            "B_ThurstonGompf"
+          ],
+          "conclusion": "C_Cor12",
+          "argument": "首一 $A$-多项式可实现为纤维化结的亚历山大多项式，此时 $M_{K}\\times S^{1}$ 纤维化具辛结构，若 $X$ 辛且 $T$ 辛嵌入则辛纤维和给出辛的 $X_{P}$。"
+        },
+        {
+          "id": "I_Cor13",
+          "operationKind": "proof",
+          "premises": [
+            "C_Cor18",
+            "C_Thm11"
+          ],
+          "conclusion": "C_Cor13",
+          "argument": "将非首一多项式情形的结手术非辛结论应用于 $X_{P}=X_{K}$，直接得到 $X_{P}$ 无辛结构，具曲面 $\\Sigma_{g}$ 条件时反向亦无辛结构。"
+        },
+        {
+          "id": "I_Cor14",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm11",
+            "C_Cor12",
+            "C_Cor13"
+          ],
+          "conclusion": "C_Cor14",
+          "argument": "因 $\\mathrm{SW}_{K3}=1$，任一 $A$-多项式给出不可约同伦 $K3$ 曲面的 $\\mathrm{SW}$，非首一时由前一推论双向皆无辛结构，首一时可作辛的，$K3$ 中三 disjoint 余嵌入环面给出三变量乘积 $P_{1}(t_{1})P_{2}(t_{2})P_{3}(t_{3})$ 的同样二分。"
+        },
+        {
+          "id": "I_Thm19",
+          "operationKind": "proof",
+          "premises": [
+            "F_LinkSurgeryDef",
+            "F_TuraevDef",
+            "B_TuraevUnique",
+            "B_LogFormula",
+            "B_InternalGluing",
+            "C_Lemma25",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Thm19",
+          "argument": "定义 $\\nabla(L)=\\mathrm{SW}_{E(2,1)_{L}}(t_{1}^{2},\\dots,t_{n}^{2})/(t_{1}-t_{1}^{-1})$ 以避开单分支 $b^{+}=1$ 困难，同痕不变与平凡结 $K3$ 值显然，Mayer-Vietoris 与 $E_{8}$ 正数量曲率粘合及对 $F_{i},V_{j},\\Sigma_{\\ell}$ 的邻接论证迫使基本类仅为 $T_{m_{i}}$ 组合故多项式性成立，作 $n-1$ 次内部纤维和得 $\\bar E(1)_{L}$ 使 $\\widetilde{\\mathrm{SW}}$ 满足 Conway 关系，分异分支与同分支两种情形分别经柄滑动与 Hoste 定理给出额外因子 $(t^{1/2}-t^{-1/2})^{3}$ 与 $(t^{1/2}-t^{-1/2})^{-1}$ 的计数，恰化为所需斯凯因，二阶对数变换给出加倍公理，故由唯一性得 $\\mathrm{SW}_{E(1)_{L}}=\\Delta_{L}$。"
+        },
+        {
+          "id": "I_Cor110",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm19",
+            "B_FiberGluing",
+            "C_Thm21"
+          ],
+          "conclusion": "C_Cor110",
+          "argument": "将 $X(X_{1},\\dots,X_{n};L)$ 视为 $X(X_{2},\\dots,X_{n};L)\\#_{T_{m_{1}}=T_{1}}X_{1}$ 逐次应用一般纤维和公式，每步以 $E(1)$ 替换 $X_{1}$ 比较，由相对公式 $\\mathrm{SW}_{X_{1}\\#_{T_{1}=F}E(1)}$ 提取因子，归纳即得乘积 $\\Delta_{L}(t_{1},\\dots,t_{n})\\cdot\\prod_{j}\\mathrm{SW}_{E(1)\\#_{F=T_{j}}X_{j}}$，纤维化链时同样得 Gromov 不变量乘积。"
+        },
+        {
+          "id": "I_Lemma52",
+          "operationKind": "proof",
+          "premises": [
+            "F_ChamberDef",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Lemma52",
+          "argument": "$(t^{1/2}-t^{-1/2})\\mathrm{SW}^{+}_{X,T}$ 中 $\\exp(k)$ 系数为 $\\mathrm{SW}^{+}_{X}(k-[T])-\\mathrm{SW}^{+}_{X}(k+[T])$，当 $k\\cdot[T]=0$ 时两类平方相等，壁穿越公式给出差值与负腔相同，故乘上因子后正负腔相等。"
+        },
+        {
+          "id": "I_Thm53",
+          "operationKind": "proof",
+          "premises": [
+            "F_ChamberDef",
+            "B_B1Gluing",
+            "C_Lemma25",
+            "C_Prop27"
+          ],
+          "conclusion": "C_Thm53",
+          "argument": "单正情形的纤维和、内部纤维和与对数变换公式皆为限制不变量版本并多出 $(t^{1/2}-t^{-1/2})^{2}$ 因子，引理的简化条件同样经邻接不等式验证，故第三节沿消解树的论证逐字给出 $\\mathrm{SW}^{\\pm}_{X_{K},T}=\\mathrm{SW}^{\\pm}_{X,T}\\cdot\\Delta_{K}(t)$。"
+        },
+        {
+          "id": "I_Lemma55",
+          "operationKind": "proof",
+          "premises": [
+            "F_ChamberDef",
+            "B_B1Gluing"
+          ],
+          "conclusion": "C_Lemma55",
+          "argument": "粘合公式给出 $\\mathrm{SW}_{X\\#_{T=F}E(1)}=\\mathrm{SW}^{\\pm}_{X,T}\\cdot\\mathrm{SW}^{\\pm}_{E(1),F}\\cdot(t^{1/2}-t^{-1/2})^{2}=\\mathrm{SW}^{\\pm}_{X,T}\\cdot(t^{1/2}-t^{-1/2})$，左端 $b^{+}=3$ 故为非零洛朗多项式 $S_{X}$，结合 $E(1)$ 限制级数即得 $\\mathrm{SW}^{\\pm}_{X,T}$ 必为 $S_{X}$ 乘以上半或下半无穷等比级数二者之一。"
+        },
+        {
+          "id": "I_Lemma56",
+          "operationKind": "proof",
+          "premises": [
+            "F_ChamberDef",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Lemma56",
+          "argument": "若 $(A,\\psi)$ 为 $\\alpha$ 对 $(g,r\\eta^{+})$ 的解则共轭 $(\\bar A,\\bar\\psi)$ 为 $-\\alpha$ 对 $(g,-r\\eta^{+})$ 的解，故 $\\mathrm{SW}_{X,g,-r\\eta^{+}}(-\\alpha)$ 差一符号等于 $\\mathrm{SW}_{X,g,r\\eta^{+}}(\\alpha)$，当 $|r|$ 充分大时两组参数分居壁两侧，壁穿越公式给出与 $\\mathrm{SW}_{X,g,r\\eta^{+}}(-\\alpha)$ 之差绝对值为 $1$。"
+        },
+        {
+          "id": "I_Cor57",
+          "operationKind": "proof",
+          "premises": [
+            "C_Thm53",
+            "C_Lemma55",
+            "B_TaubesSymp",
+            "B_ConeIneq"
+          ],
+          "conclusion": "C_Cor57",
+          "argument": "设 $X_{K}$ 辛且 $[T]\\cdot\\omega>0$，由 $S_{X}$ 展开取极端指标 $m_{1}<\\cdots<m_{r}$ 得非零类 $\\alpha+(m_{1}-2d+1)[T]$ 或 $\\alpha+(m_{r}+2d-1)[T]$ 的 $\\mathrm{SW}^{-}$ 非零，若 $\\kappa\\cdot\\omega<0$ 则爆破有理直纹面的壁穿越迫使 $a_{d}=\\pm 1$，若 $\\kappa\\cdot\\omega>0$ 则锥引理与邻接给出 $\\kappa\\cdot[T]=0$，大 $m$ 时 $-\\kappa-2m[T]$ 无贡献而 $\\kappa+2m[T]$ 取值 $\\pm 1$ 迫使取上半级数，再由极小性得 $m_{1}=-1,n=d$ 故 $a_{d}=\\pm 1$，非首一时无辛结构。"
+        },
+        {
+          "id": "I_Cor58",
+          "operationKind": "proof",
+          "premises": [
+            "C_Cor57",
+            "C_Thm53",
+            "B_TaubesSymp"
+          ],
+          "conclusion": "C_Cor58",
+          "argument": "对 $E(1)_{K}$ 应用单正乘积公式得 $\\mathrm{SW}^{\\mp}_{E(1)_{K_{k}},T}$ 为 $(kt-(2k+1)+kt^{-1})$ 乘以相应半无穷级数，小扰动不变量为 $kt^{-1/2}-kt^{1/2}$，非首一时前一推论与爆破公式及反向曲面条件给出双向爆破后仍无辛结构。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "B_FiberGluing",
+        "B_InternalGluing",
+        "B_LogFormula",
+        "B_Hoste",
+        "B_SkeinInit",
+        "B_AlexRealize",
+        "B_ThurstonGompf",
+        "B_TaubesSymp",
+        "B_TuraevUnique",
+        "B_B1Gluing",
+        "B_ConeIneq"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "04_Fintushel_Stern_Knots_links_4_manifolds.pdf",
+        "pageCount": 31
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 56179,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "recovered-patched",
+          "reason": "生成地图不能进行对象级原子修复",
+          "initialValidation": {
+            "valid": false,
+            "derivedState": null,
+            "formatIssues": [],
+            "error": "Inference I_Thm21 has unknown premise: B_FiberGluing"
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_SWDef",
+                "F_APolyDef",
+                "F_CuspDef",
+                "F_KnotSurgeryDef",
+                "F_LinkSurgeryDef",
+                "F_RelSWDef",
+                "F_LogDef",
+                "F_SewnUpDef",
+                "F_ResolveAlgo",
+                "F_TuraevDef",
+                "F_ChamberDef",
+                "F_SpecialCalc"
+              ],
+              "b0ClaimEntryIds": [
+                "B_FiberGluing",
+                "B_InternalGluing",
+                "B_LogFormula",
+                "B_Hoste",
+                "B_SkeinInit",
+                "B_AlexRealize",
+                "B_ThurstonGompf",
+                "B_TaubesSymp",
+                "B_TuraevUnique",
+                "B_B1Gluing",
+                "B_ConeIneq"
+              ],
+              "closureClaimEntryIds": [
+                "C_Thm21",
+                "B_FiberGluing",
+                "B_InternalGluing",
+                "B_LogFormula",
+                "C_Lemma25",
+                "B_Hoste",
+                "C_Prop27",
+                "C_ThetaSkein",
+                "C_Thm15",
+                "B_SkeinInit",
+                "C_Thm11",
+                "B_AlexRealize",
+                "C_Cor16",
+                "C_Cor17",
+                "C_Cor18",
+                "C_Cor12",
+                "C_Cor13",
+                "C_Cor14",
+                "C_Thm19",
+                "C_Cor110",
+                "C_Lemma52",
+                "C_Thm53",
+                "C_Lemma55",
+                "C_Lemma56",
+                "C_Cor57",
+                "C_Cor58",
+                "B_ThurstonGompf",
+                "B_TaubesSymp",
+                "B_TuraevUnique",
+                "B_B1Gluing",
+                "B_ConeIneq"
+              ],
+              "claimStates": {
+                "C_Thm21": "established",
+                "B_FiberGluing": "established",
+                "B_InternalGluing": "established",
+                "B_LogFormula": "established",
+                "C_Lemma25": "established",
+                "B_Hoste": "established",
+                "C_Prop27": "established",
+                "C_ThetaSkein": "established",
+                "C_Thm15": "established",
+                "B_SkeinInit": "established",
+                "C_Thm11": "established",
+                "B_AlexRealize": "established",
+                "C_Cor16": "established",
+                "C_Cor17": "established",
+                "C_Cor18": "established",
+                "C_Cor12": "established",
+                "C_Cor13": "established",
+                "C_Cor14": "established",
+                "C_Thm19": "established",
+                "C_Cor110": "established",
+                "C_Lemma52": "established",
+                "C_Thm53": "established",
+                "C_Lemma55": "established",
+                "C_Lemma56": "established",
+                "C_Cor57": "established",
+                "C_Cor58": "established",
+                "B_ThurstonGompf": "established",
+                "B_TaubesSymp": "established",
+                "B_TuraevUnique": "established",
+                "B_B1Gluing": "established",
+                "B_ConeIneq": "established"
+              },
+              "claimDerivations": {
+                "C_Thm21": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Thm21"
+                  ]
+                },
+                "B_FiberGluing": {
+                  "basis": "b0"
+                },
+                "B_InternalGluing": {
+                  "basis": "b0"
+                },
+                "B_LogFormula": {
+                  "basis": "b0"
+                },
+                "C_Lemma25": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Lemma25"
+                  ]
+                },
+                "B_Hoste": {
+                  "basis": "b0"
+                },
+                "C_Prop27": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Prop27"
+                  ]
+                },
+                "C_ThetaSkein": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ThetaSkein"
+                  ]
+                },
+                "C_Thm15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Thm15"
+                  ]
+                },
+                "B_SkeinInit": {
+                  "basis": "b0"
+                },
+                "C_Thm11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Thm11"
+                  ]
+                },
+                "B_AlexRealize": {
+                  "basis": "b0"
+                },
+                "C_Cor16": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor16"
+                  ]
+                },
+                "C_Cor17": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor17"
+                  ]
+                },
+                "C_Cor18": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor18"
+                  ]
+                },
+                "C_Cor12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor12"
+                  ]
+                },
+                "C_Cor13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor13"
+                  ]
+                },
+                "C_Cor14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor14"
+                  ]
+                },
+                "C_Thm19": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Thm19"
+                  ]
+                },
+                "C_Cor110": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor110"
+                  ]
+                },
+                "C_Lemma52": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Lemma52"
+                  ]
+                },
+                "C_Thm53": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Thm53"
+                  ]
+                },
+                "C_Lemma55": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Lemma55"
+                  ]
+                },
+                "C_Lemma56": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Lemma56"
+                  ]
+                },
+                "C_Cor57": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor57"
+                  ]
+                },
+                "C_Cor58": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor58"
+                  ]
+                },
+                "B_ThurstonGompf": {
+                  "basis": "b0"
+                },
+                "B_TaubesSymp": {
+                  "basis": "b0"
+                },
+                "B_TuraevUnique": {
+                  "basis": "b0"
+                },
+                "B_B1Gluing": {
+                  "basis": "b0"
+                },
+                "B_ConeIneq": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Thm21"
+                ],
+                "sourceRefs": [
+                  "PAGE 9"
+                ],
+                "sourceSpan": {
+                  "startLine": 235,
+                  "endLine": 243
+                },
+                "diagnosis": "缺失定理2.1的Claim，I_Thm21结论不可寻址",
+                "repairRequirement": "补入与来源一致的相对不变量公式Claim"
+              },
+              {
+                "id": "F2",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_FiberGluing"
+                ],
+                "sourceRefs": [
+                  "PAGE 10"
+                ],
+                "sourceSpan": {
+                  "startLine": 248,
+                  "endLine": 252
+                },
+                "diagnosis": "缺失一般纤维和粘合定理2.2的外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记b0ClaimEntryIds"
+              },
+              {
+                "id": "F3",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_InternalGluing"
+                ],
+                "sourceRefs": [
+                  "PAGE 10"
+                ],
+                "sourceSpan": {
+                  "startLine": 274,
+                  "endLine": 278
+                },
+                "diagnosis": "缺失内部纤维和定理2.3的外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F4",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_LogFormula"
+                ],
+                "sourceRefs": [
+                  "PAGE 11"
+                ],
+                "sourceSpan": {
+                  "startLine": 309,
+                  "endLine": 313
+                },
+                "diagnosis": "缺失对数变换定理2.4的外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F5",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Lemma25"
+                ],
+                "sourceRefs": [
+                  "PAGE 11"
+                ],
+                "sourceSpan": {
+                  "startLine": 317,
+                  "endLine": 329
+                },
+                "diagnosis": "缺失引理2.5简化对数公式的Claim",
+                "repairRequirement": "补入与来源一致的简化条件Claim"
+              },
+              {
+                "id": "F6",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_Hoste"
+                ],
+                "sourceRefs": [
+                  "PAGE 12"
+                ],
+                "sourceSpan": {
+                  "startLine": 340,
+                  "endLine": 345
+                },
+                "diagnosis": "缺失Hoste命题2.6的外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F7",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Prop27"
+                ],
+                "sourceRefs": [
+                  "PAGE 13"
+                ],
+                "sourceSpan": {
+                  "startLine": 356,
+                  "endLine": 362
+                },
+                "diagnosis": "缺失命题2.7的Claim",
+                "repairRequirement": "补入缝合流形乘积公式Claim"
+              },
+              {
+                "id": "F8",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_ThetaSkein"
+                ],
+                "sourceRefs": [
+                  "PAGE 17"
+                ],
+                "sourceSpan": {
+                  "startLine": 443,
+                  "endLine": 447
+                },
+                "diagnosis": "缺失Theta斯凯因关系的中间Claim",
+                "repairRequirement": "补入Theta定义与斯凯因关系Claim"
+              },
+              {
+                "id": "F9",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Thm15"
+                ],
+                "sourceRefs": [
+                  "PAGE 4"
+                ],
+                "sourceSpan": {
+                  "startLine": 81,
+                  "endLine": 87
+                },
+                "diagnosis": "缺失定理1.5结手术公式的Claim",
+                "repairRequirement": "补入SW乘Delta公式Claim"
+              },
+              {
+                "id": "F10",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_SkeinInit"
+                ],
+                "sourceRefs": [
+                  "PAGE 18"
+                ],
+                "sourceSpan": {
+                  "startLine": 449,
+                  "endLine": 452
+                },
+                "diagnosis": "缺失平凡结与分裂链初值的外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F11",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Thm11"
+                ],
+                "sourceRefs": [
+                  "PAGE 2"
+                ],
+                "sourceSpan": {
+                  "startLine": 43,
+                  "endLine": 49
+                },
+                "diagnosis": "缺失定理1.1的Claim",
+                "repairRequirement": "补入A-多项式实现定理Claim"
+              },
+              {
+                "id": "F12",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_AlexRealize"
+                ],
+                "sourceRefs": [
+                  "PAGE 3"
+                ],
+                "sourceSpan": {
+                  "startLine": 70,
+                  "endLine": 70
+                },
+                "diagnosis": "缺失A-多项式结实现外部知识的B0 Claim",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F13",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor16"
+                ],
+                "sourceRefs": [
+                  "PAGE 4"
+                ],
+                "sourceSpan": {
+                  "startLine": 91,
+                  "endLine": 95
+                },
+                "diagnosis": "缺失推论1.6的Claim",
+                "repairRequirement": "补入相对结手术公式Claim"
+              },
+              {
+                "id": "F14",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor17"
+                ],
+                "sourceRefs": [
+                  "PAGE 5"
+                ],
+                "sourceSpan": {
+                  "startLine": 100,
+                  "endLine": 106
+                },
+                "diagnosis": "缺失推论1.7的Claim",
+                "repairRequirement": "补入辛纤维化Gromov公式Claim"
+              },
+              {
+                "id": "F15",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor18"
+                ],
+                "sourceRefs": [
+                  "PAGE 5"
+                ],
+                "sourceSpan": {
+                  "startLine": 118,
+                  "endLine": 122
+                },
+                "diagnosis": "缺失推论1.8的Claim",
+                "repairRequirement": "补入非首一非辛性Claim"
+              },
+              {
+                "id": "F16",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor12"
+                ],
+                "sourceRefs": [
+                  "PAGE 3"
+                ],
+                "sourceSpan": {
+                  "startLine": 55,
+                  "endLine": 55
+                },
+                "diagnosis": "缺失推论1.2的Claim",
+                "repairRequirement": "补入首一辛实现Claim"
+              },
+              {
+                "id": "F17",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor13"
+                ],
+                "sourceRefs": [
+                  "PAGE 3"
+                ],
+                "sourceSpan": {
+                  "startLine": 60,
+                  "endLine": 60
+                },
+                "diagnosis": "缺失推论1.3的Claim",
+                "repairRequirement": "补入非首一非辛性Claim"
+              },
+              {
+                "id": "F18",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor14"
+                ],
+                "sourceRefs": [
+                  "PAGE 3"
+                ],
+                "sourceSpan": {
+                  "startLine": 62,
+                  "endLine": 66
+                },
+                "diagnosis": "缺失推论1.4同伦K3的Claim",
+                "repairRequirement": "补入同伦K3实现Claim"
+              },
+              {
+                "id": "F19",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Thm19"
+                ],
+                "sourceRefs": [
+                  "PAGE 7"
+                ],
+                "sourceSpan": {
+                  "startLine": 164,
+                  "endLine": 170
+                },
+                "diagnosis": "缺失定理1.9链手术公式的Claim",
+                "repairRequirement": "补入多变量Alexander公式Claim"
+              },
+              {
+                "id": "F20",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor110"
+                ],
+                "sourceRefs": [
+                  "PAGE 7"
+                ],
+                "sourceSpan": {
+                  "startLine": 174,
+                  "endLine": 180
+                },
+                "diagnosis": "缺失推论1.10的Claim",
+                "repairRequirement": "补入多重链手术乘积Claim"
+              },
+              {
+                "id": "F21",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Lemma52"
+                ],
+                "sourceRefs": [
+                  "PAGE 25"
+                ],
+                "sourceSpan": {
+                  "startLine": 651,
+                  "endLine": 655
+                },
+                "diagnosis": "缺失引理5.2的Claim",
+                "repairRequirement": "补入腔无关性Claim"
+              },
+              {
+                "id": "F22",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Thm53"
+                ],
+                "sourceRefs": [
+                  "PAGE 27"
+                ],
+                "sourceSpan": {
+                  "startLine": 723,
+                  "endLine": 727
+                },
+                "diagnosis": "缺失定理5.3单正结手术公式的Claim",
+                "repairRequirement": "补入限制不变量乘积Claim"
+              },
+              {
+                "id": "F23",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Lemma55"
+                ],
+                "sourceRefs": [
+                  "PAGE 28"
+                ],
+                "sourceSpan": {
+                  "startLine": 746,
+                  "endLine": 750
+                },
+                "diagnosis": "缺失引理5.5的Claim",
+                "repairRequirement": "补入单正结构引理Claim"
+              },
+              {
+                "id": "F24",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Lemma56"
+                ],
+                "sourceRefs": [
+                  "PAGE 28"
+                ],
+                "sourceSpan": {
+                  "startLine": 760,
+                  "endLine": 764
+                },
+                "diagnosis": "缺失引理5.6的Claim",
+                "repairRequirement": "补入大扰动对称性Claim"
+              },
+              {
+                "id": "F25",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor57"
+                ],
+                "sourceRefs": [
+                  "PAGE 28"
+                ],
+                "sourceSpan": {
+                  "startLine": 782,
+                  "endLine": 782
+                },
+                "diagnosis": "缺失推论5.7的Claim",
+                "repairRequirement": "补入单正非首一非辛Claim"
+              },
+              {
+                "id": "F26",
+                "category": "missing-content",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_Cor58"
+                ],
+                "sourceRefs": [
+                  "PAGE 30"
+                ],
+                "sourceSpan": {
+                  "startLine": 832,
+                  "endLine": 832
+                },
+                "diagnosis": "缺失推论5.8的Claim",
+                "repairRequirement": "补入爆破后非辛Claim"
+              },
+              {
+                "id": "F27",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_ThurstonGompf"
+                ],
+                "sourceRefs": [
+                  "PAGE 5"
+                ],
+                "sourceSpan": {
+                  "startLine": 97,
+                  "endLine": 97
+                },
+                "diagnosis": "缺失Thurston-Gompf辛纤维和外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F28",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_TaubesSymp"
+                ],
+                "sourceRefs": [
+                  "PAGE 5"
+                ],
+                "sourceSpan": {
+                  "startLine": 120,
+                  "endLine": 122
+                },
+                "diagnosis": "缺失Taubes辛约束外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F29",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_TuraevUnique"
+                ],
+                "sourceRefs": [
+                  "PAGE 18"
+                ],
+                "sourceSpan": {
+                  "startLine": 456,
+                  "endLine": 460
+                },
+                "diagnosis": "缺失Turaev唯一性外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F30",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_B1Gluing"
+                ],
+                "sourceRefs": [
+                  "PAGE 26"
+                ],
+                "sourceSpan": {
+                  "startLine": 688,
+                  "endLine": 694
+                },
+                "diagnosis": "缺失单正粘合公式外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              },
+              {
+                "id": "F31",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "B_ConeIneq"
+                ],
+                "sourceRefs": [
+                  "PAGE 25"
+                ],
+                "sourceSpan": {
+                  "startLine": 633,
+                  "endLine": 633
+                },
+                "diagnosis": "缺失正锥引理外部Claim及B0登记",
+                "repairRequirement": "补入B0 Claim并登记"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Thm21",
+                "object": {
+                  "id": "C_Thm21",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "余嵌入环面的相对不变量公式",
+                  "statement": "设 $X$ 满足 $b^{+}_{X}>1$ 且环面 $T$ 余嵌入，则相对不变量 $\\mathrm{SW}_{(X;T)}=\\mathrm{SW}_{X}\\cdot(t^{1/2}-t^{-1/2})$，其中 $t=\\exp(2[T])$。"
+                }
+              },
+              {
+                "findingId": "F2",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_FiberGluing",
+                "object": {
+                  "id": "B_FiberGluing",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "一般纤维和粘合公式",
+                  "statement": "沿自交零环面作纤维和时 $\\mathrm{SW}_{X_{1}\\#_{T_{1}=T_{2}}X_{2}}=\\mathrm{SW}_{(X_{1};T_{1})}\\cdot\\mathrm{SW}_{(X_{2};T_{2})}$。"
+                }
+              },
+              {
+                "findingId": "F2",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_FiberGluing"
+              },
+              {
+                "findingId": "F3",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_InternalGluing",
+                "object": {
+                  "id": "B_InternalGluing",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "内部纤维和粘合公式",
+                  "statement": "内部纤维和满足 $\\mathrm{SW}_{X_{T_{1},T_{2}}}=\\mathrm{SW}_{(X;T_{1},T_{2})}|_{\\tau_{1}=\\tau_{2}}$，其中 $\\tau_{i}=\\exp([T_{i}])$。"
+                }
+              },
+              {
+                "findingId": "F3",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_InternalGluing"
+              },
+              {
+                "findingId": "F4",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_LogFormula",
+                "object": {
+                  "id": "B_LogFormula",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "零同调环面对数变换公式",
+                  "statement": "设 $b^{+}\\ge 3$ 含零同调环面 $T$，$\\tau$ 为 $Y(0/1)$ 新生类，则 $\\mathrm{SW}_{Y(p/q)}(\\alpha)=p\\,\\mathrm{SW}_{Y}(\\alpha)+q\\sum_{i=-\\infty}^{\\infty}\\mathrm{SW}_{Y(0/1)}(\\alpha+2i\\tau)$。"
+                }
+              },
+              {
+                "findingId": "F4",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_LogFormula"
+              },
+              {
+                "findingId": "F5",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Lemma25",
+                "object": {
+                  "id": "C_Lemma25",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "对数公式的简化条件",
+                  "statement": "在定理2.4情形若有与 $T$ 不交的自交零环面表类 $\\sigma$ 使 $\\sigma\\cdot\\tau=1$ 且对一切 $\\alpha\\in H_{2}(Y)$ 有 $\\sigma\\cdot\\alpha=0$，则 $\\mathrm{SW}_{Y(p/q)}=p\\,\\mathrm{SW}_{Y}+q\\,\\mathrm{SW}_{Y(0/1)}$。"
+                }
+              },
+              {
+                "findingId": "F6",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_Hoste",
+                "object": {
+                  "id": "B_Hoste",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "缝合外部的手术描述",
+                  "statement": "带和 $C_{1},C_{2}$ 得结 $K$ 时 $s(L;A_{n})$ 由 $K\\cup U_{\\nu}$ 经 $U_{\\nu}$ 上 $0$ 系数及 $K$ 上 $n-2\\ell$ 系数手术得到，其中 $\\ell$ 为分支 linking 数。"
+                }
+              },
+              {
+                "findingId": "F6",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_Hoste"
+              },
+              {
+                "findingId": "F7",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Prop27",
+                "object": {
+                  "id": "C_Prop27",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "缝合流形的乘积公式",
+                  "statement": "设 $T$ 余嵌入，$Z_{0}$ 为对 $\\bar U_{o}$ 作 $0$-手术所得，$K$ 为带和结，则 $\\mathrm{SW}_{X\\#_{T}(Z_{0}\\times S^{1})}=(t^{1/2}-t^{-1/2})^{2}\\cdot\\mathrm{SW}_{X_{K}}$，其中 $t=\\exp(2[T])$。"
+                }
+              },
+              {
+                "findingId": "F8",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_ThetaSkein",
+                "object": {
+                  "id": "C_ThetaSkein",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "不变量的斯凯因关系",
+                  "statement": "对结定义 $\\Theta_{K}=\\mathrm{SW}_{X_{K}}/\\mathrm{SW}_{X}$，对二分支链定义 $\\Theta_{L}=(t^{1/2}-t^{-1/2})^{-1}\\cdot\\mathrm{SW}_{X(s(L;A_{2\\ell}))}/\\mathrm{SW}_{X}$，其中 $t=\\exp(2[T])$，则 $\\Theta_{K_{+}}=\\Theta_{K_{-}}+(t^{1/2}-t^{-1/2})\\cdot\\Theta_{K_{0}}$。"
+                }
+              },
+              {
+                "findingId": "F9",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Thm15",
+                "object": {
+                  "id": "C_Thm15",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "结手术乘积公式",
+                  "statement": "若 $T$ 余嵌入，则 $\\mathrm{SW}_{X_{K}}=\\mathrm{SW}_{X}\\cdot\\Delta_{K}(t)$，其中 $t=\\exp(2[T])$，$\\Delta_{K}$ 为对称亚历山大多项式。"
+                }
+              },
+              {
+                "findingId": "F10",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_SkeinInit",
+                "object": {
+                  "id": "B_SkeinInit",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "斯凯因初值",
+                  "statement": "平凡结满足 $\\Delta_{U}=1$ 且 $\\Theta_{U}=1$，分裂链满足 $\\Delta_{S}=0$ 且 $\\Theta_{L}=0$。"
+                }
+              },
+              {
+                "findingId": "F10",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_SkeinInit"
+              },
+              {
+                "findingId": "F11",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Thm11",
+                "object": {
+                  "id": "C_Thm11",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "A-多项式的实现定理",
+                  "statement": "设 $X$ 单连通 $b^{+}>1$ 含余嵌入环面 $T$ 使 $\\pi_{1}(X\\setminus T)=1$，则对任一 $A$-多项式 $P(t)$ 有同胚于 $X$ 的 $X_{P}$ 使 $\\mathrm{SW}_{X_{P}}=\\mathrm{SW}_{X}\\cdot P(t)$，其中 $t=\\exp(2[T])$。"
+                }
+              },
+              {
+                "findingId": "F12",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_AlexRealize",
+                "object": {
+                  "id": "B_AlexRealize",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "A-多项式的结实现",
+                  "statement": "任一 $A$-多项式为某结的 $\\Delta_{K}$，反之亦然；首一 $A$-多项式可实现为纤维化结，反之纤维化结多项式首一。"
+                }
+              },
+              {
+                "findingId": "F12",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_AlexRealize"
+              },
+              {
+                "findingId": "F13",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor16",
+                "object": {
+                  "id": "C_Cor16",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "相对结手术公式",
+                  "statement": "设 $X$ 含自交零嵌入环面 $T$ 表非零类且 $\\pi_{1}(X\\setminus T)=1$，则 $\\mathrm{SW}_{E(1)\\#_{F=T}X_{K}}=\\mathrm{SW}_{E(1)\\#_{F=T}X}\\cdot\\Delta_{K}(t)$。"
+                }
+              },
+              {
+                "findingId": "F14",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor17",
+                "object": {
+                  "id": "C_Cor17",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "纤维化结手术的辛结构",
+                  "statement": "设 $X$ 辛含辛余嵌入环面 $T$，$K$ 纤维化，则 $X_{K}$ 辛且 $\\mathrm{Gr}_{X_{K}}=\\mathrm{Gr}_{X}\\cdot A_{K}(\\tau)$，其中 $\\tau=\\exp([T])$。"
+                }
+              },
+              {
+                "findingId": "F15",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor18",
+                "object": {
+                  "id": "C_Cor18",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "非首一结手术的非辛性",
+                  "statement": "若 $\\Delta_{K}$ 非首一则 $X_{K}$ 无辛结构；若有与 $T$ 不交的非零曲面 $\\Sigma_{g}$ 使 $g>0$ 时 $[\\Sigma_{g}]^{2}<2-2g$ 或 $g=0$ 时 $[\\Sigma_{g}]^{2}<0$，则反向亦无辛结构。"
+                }
+              },
+              {
+                "findingId": "F16",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor12",
+                "object": {
+                  "id": "C_Cor12",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "首一情形的辛实现",
+                  "statement": "若 $X$ 辛且 $T$ 辛嵌入，$P(t)$ 首一，则 $X_{P}$ 可构造为辛流形。"
+                }
+              },
+              {
+                "findingId": "F17",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor13",
+                "object": {
+                  "id": "C_Cor13",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "非首一情形的非辛性",
+                  "statement": "若 $P(t)$ 非首一则 $X_{P}$ 无辛结构；在曲面 $\\Sigma_{g}$ 条件下反向亦无辛结构。"
+                }
+              },
+              {
+                "findingId": "F18",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor14",
+                "object": {
+                  "id": "C_Cor14",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "同伦K3曲面的实现",
+                  "statement": "任一 $A$-多项式可作为不可约同伦 $K3$ 的 $\\mathrm{SW}$ 出现；非首一时双向无辛结构，首一时可实现为辛同伦 $K3$。"
+                }
+              },
+              {
+                "findingId": "F19",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Thm19",
+                "object": {
+                  "id": "C_Thm19",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "链手术的亚历山大公式",
+                  "statement": "$E(1)_{L}$ 的不变量为 $\\mathrm{SW}_{E(1)_{L}}=\\Delta_{L}(t_{1},\\dots,t_{n})$，其中 $t_{j}=\\exp(2[T_{j}])$。"
+                }
+              },
+              {
+                "findingId": "F20",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor110",
+                "object": {
+                  "id": "C_Cor110",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "多重链手术乘积公式",
+                  "statement": "$\\mathrm{SW}_{X(X_{1},\\dots,X_{n};L)}=\\Delta_{L}(t_{1},\\dots,t_{n})\\cdot\\prod_{j=1}^{n}\\mathrm{SW}_{E(1)\\#_{F=T_{j}}X_{j}}$，其中 $t_{j}=\\exp(2[T_{j}])$。"
+                }
+              },
+              {
+                "findingId": "F21",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Lemma52",
+                "object": {
+                  "id": "C_Lemma52",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "单正限制不变量的腔无关性",
+                  "statement": "设 $b^{+}_{X}=1$ 含自交零环面 $T$，$t=\\exp(2[T])$，则 $(t^{1/2}-t^{-1/2})\\cdot\\mathrm{SW}^{+}_{X,T}=(t^{1/2}-t^{-1/2})\\cdot\\mathrm{SW}^{-}_{X,T}$。"
+                }
+              },
+              {
+                "findingId": "F22",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Thm53",
+                "object": {
+                  "id": "C_Thm53",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "单正情形的结手术公式",
+                  "statement": "设 $b^{+}_{X}=1$ 含余嵌入环面 $T$ 使 $\\pi_{1}(X\\setminus T)=1$，则 $\\mathrm{SW}^{\\pm}_{X_{K},T}=\\mathrm{SW}^{\\pm}_{X,T}\\cdot\\Delta_{K}(t)$，其中 $t=\\exp(2[T])$。"
+                }
+              },
+              {
+                "findingId": "F23",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Lemma55",
+                "object": {
+                  "id": "C_Lemma55",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "单正限制不变量的结构",
+                  "statement": "若 $\\mathrm{SW}_{X\\#_{T=F}E(1)}\\ne 0$，则有洛朗多项式 $S_{X}$ 使 $\\mathrm{SW}^{\\pm}_{X,T}$ 为 $S_{X}$ 乘以上半或下半无穷级数之一。"
+                }
+              },
+              {
+                "findingId": "F24",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Lemma56",
+                "object": {
+                  "id": "C_Lemma56",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "大扰动下的正负类对称性",
+                  "statement": "设 $b^{+}_{X}=1$，则 $|\\mathrm{SW}_{X,g,r\\eta^{+}}(\\alpha)\\pm\\mathrm{SW}_{X,g,r\\eta^{+}}(-\\alpha)|=1$ 当 $|r|$ 充分大时成立。"
+                }
+              },
+              {
+                "findingId": "F25",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor57",
+                "object": {
+                  "id": "C_Cor57",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "单正非首一的非辛性",
+                  "statement": "设 $X$ 辛 $b^{+}=1$ 含辛余嵌入环面 $T$ 且 $\\mathrm{SW}_{X\\#_{T=F}E(1)}\\ne 0$，若 $\\Delta_{K}$ 非首一则 $X_{K}$ 无辛结构。"
+                }
+              },
+              {
+                "findingId": "F26",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_Cor58",
+                "object": {
+                  "id": "C_Cor58",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "爆破后仍无辛结构",
+                  "statement": "若 $\\Delta_{K}$ 非首一，则 $E(1)_{K}$ 经任意多次爆破后双向仍无辛结构。"
+                }
+              },
+              {
+                "findingId": "F27",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_ThurstonGompf",
+                "object": {
+                  "id": "B_ThurstonGompf",
+                  "entryClass": "claim",
+                  "claimKind": "proposition",
+                  "title": "纤维化结的辛纤维和",
+                  "statement": "纤维化结使 $M_{K}\\times S^{1}$ 具辛结构且 $T_{m}$ 为辛截面，辛流形沿辛环面的辛纤维和仍辛。"
+                }
+              },
+              {
+                "findingId": "F27",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_ThurstonGompf"
+              },
+              {
+                "findingId": "F28",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_TaubesSymp",
+                "object": {
+                  "id": "B_TaubesSymp",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "辛流形的陶布斯约束",
+                  "statement": "辛流形典范类满足 $\\mathrm{SW}(\\kappa)=\\pm 1$，其余基本类满足 $|k\\cdot\\omega|<\\kappa\\cdot\\omega$，基本类与自交零环面正交。"
+                }
+              },
+              {
+                "findingId": "F28",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_TaubesSymp"
+              },
+              {
+                "findingId": "F29",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_TuraevUnique",
+                "object": {
+                  "id": "B_TuraevUnique",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "图拉耶夫公理的唯一性",
+                  "statement": "有唯一映射 $\\nabla$ 对有序链满足同痕不变、平凡结值、多项式性、重编号不变、Conway公理与加倍公理。"
+                }
+              },
+              {
+                "findingId": "F29",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_TuraevUnique"
+              },
+              {
+                "findingId": "F30",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_B1Gluing",
+                "object": {
+                  "id": "B_B1Gluing",
+                  "entryClass": "claim",
+                  "claimKind": "theorem",
+                  "title": "单正粘合与对数公式",
+                  "statement": "单正纤维和、内部纤维和与对数变换有相应的限制不变量版本并多出 $(t^{1/2}-t^{-1/2})^{2}$ 因子。"
+                }
+              },
+              {
+                "findingId": "F30",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_B1Gluing"
+              },
+              {
+                "findingId": "F31",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "B_ConeIneq",
+                "object": {
+                  "id": "B_ConeIneq",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "正锥引理",
+                  "statement": "若非零 $\\alpha,\\beta$ 位于 $\\mathcal{C}_{X}$ 同分支闭包，则 $\\alpha\\cdot\\beta\\ge 0$，等号仅当 $\\alpha=\\lambda\\beta$。"
+                }
+              },
+              {
+                "findingId": "F31",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "B_ConeIneq"
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 32,
+            "cleanCount": 32
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 92726
+          },
+          {
+            "operation": "recovery-and-audited-patch",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 166441
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "cf289def0130358150a201140912bf765cfa016caf193ec493fdea55bd985dae",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 294460,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 65,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2284,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4643,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7034,
+        "phase": "progress",
+        "state": "pending"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9417,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 11820,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14189,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16587,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 18974,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21341,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 23731,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26122,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 28506,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 30868,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 33251,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 35268,
+        "phase": "complete",
+        "pageCount": 31
+      },
+      {
+        "stage": "generate",
+        "atMs": 35268,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 127998,
+        "phase": "start",
+        "operation": "recovery-and-audited-patch"
+      },
+      {
+        "stage": "validate",
+        "atMs": 294460,
+        "phase": "complete",
+        "entries": 43,
+        "inferences": 20
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 92371,
+        "usage": {
+          "input_tokens": 39033,
+          "output_tokens": 19281,
+          "total_tokens": 58314
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 166017,
+        "usage": {
+          "input_tokens": 50848,
+          "output_tokens": 48212,
+          "total_tokens": 99060
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

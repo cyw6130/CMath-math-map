@@ -1,0 +1,1122 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "13_Hatcher_Thurston_Incompressible_surfaces_2bridge.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F-def-incomp",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不可压缩曲面的定义",
+          "statement": "对异于球面盘面和射影平面的闭或带边曲面，若其中每个与曲面交于边界的盘的边界都在曲面上围盘，则称其在三维流形中不可压缩，当法丛平凡时等价于基本群单射由环路定理得到，法丛非平凡时等价于其管状邻域边界的不可压缩性，论文指出在二桥结补中二者等价"
+        },
+        {
+          "id": "F-def-bdry-incomp",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "边界不可压缩与边界平行的定义",
+          "statement": "若每个上边界在曲面上而下边界在流形边界上的盘的上弧都在曲面上与边界段围盘，则称曲面是边界不可压缩的，若曲面可经相对边界的同痕推入流形边界则称其为边界平行的环带"
+        },
+        {
+          "id": "F-def-knot",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "二桥结位置的定义",
+          "statement": "对每个满足分母为奇数的有理数对应二桥结，中央网格为斜率为正负该有理数的直线画在方形枕套上，打洞压平后呈现两座桥，分母为奇数保证得到结而非两分支链环，其二重分支覆盖为透镜空间，文中固定图一位置的结"
+        },
+        {
+          "id": "F-def-contfrac",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "连分数与带 plumbing 的定义",
+          "statement": "有理数可表为整数部分加连分数，每一步 plumbing 将相邻两带沿水平 plumbing 方块粘接，每处 plumbing 有互补的内外两种水平方块选择，第几个带带有相应个数的半扭，正为右手负为左手"
+        },
+        {
+          "id": "F-def-sigma",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "分支曲面与承载曲面的定义",
+          "statement": "对给定连分数系数同时 inclusion 互补内外 plumbing 方块得到分支曲面，其承载大量曲面由片数与每处内方块拷贝数决定，单层时即为各带的不同 plumbing 选择，经保层同痕使边界变为固定的二桥结"
+        },
+        {
+          "id": "F-def-diagram",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "图的边路与连分数对应",
+          "statement": "图顶点为有理数加无穷远点，当行列式为正负一时连边，边为以和为第三顶点的三角形长边，从无穷远点到给定有理数的边路唯一对应连分数展开，其部分和为逐顶点，正系数左转相应个三角形负系数右转"
+        },
+        {
+          "id": "F-def-minpath",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "极小边路与计数公式的定义",
+          "statement": "每系数绝对值至少为二恰为边路极小即不立即折返且不连续走同一三角形的两边，极小边路含于由全正交错连分数决定的有限带状子复形中，其个数由递归定义的序列给出，全大于一时为斐波那契数，给定片数的同痕类个数由绝对值大于二的系数个数决定"
+        },
+        {
+          "id": "F-def-surgery",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Dehn 手术流形的定义",
+          "statement": "沿结切除管状邻域再粘回使子午盘杀死在补空间中纵向绕给定次数经向绕给定次数的曲线，所得闭流形记为相应系数的手术流形，边界圆的纵经绕数决定斜率"
+        },
+        {
+          "id": "F-def-slopeset",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "边界斜率集的定义",
+          "statement": "对三维球面中结记其补空间中不可压缩且边界不可压缩曲面的边界曲线斜率之集，该集含零斜率，一般有限且至少有两个元素"
+        },
+        {
+          "id": "F-def-lambda",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "层交构形与本质鞍点的定义",
+          "statement": "取高度为投影到实数轴使层为二球面去掉四个穿点为四穿孔球面，非临界层交为圆与连接穿点的弧，在一点相交固定片数，若无自回弧则至多两种斜率且行列式为正负一，用重心坐标定义层参数，首为无穷远点末为给定有理数，实际改变该参数的鞍点称为本质鞍点，其序列称为参数序列"
+        },
+        {
+          "id": "C-thm1a",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "闭不可压缩曲面为外围环面",
+          "statement": "在二桥结补空间中的闭不可压缩曲面是同痕于结管状邻域边界的环面"
+        },
+        {
+          "id": "C-thm1b",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "非闭曲面的承载分类",
+          "statement": "在二桥结补空间中非闭不可压缩且边界不可压缩曲面同痕于某个系数绝对值皆至少为二的连分数展开所决定的分支曲面承载的曲面之一"
+        },
+        {
+          "id": "C-thm1c",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "承载曲面不可压缩的充要条件",
+          "statement": "分支曲面承载的曲面不可压缩且边界不可压缩当且仅当每个连分数系数的绝对值皆至少为二"
+        },
+        {
+          "id": "C-thm1d",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "不同分支曲面的曲面互不同痕",
+          "statement": "由系数绝对值皆至少为二的不同连分数分支曲面承载的曲面互不同痕"
+        },
+        {
+          "id": "C-thm1e",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "同一分支曲面的同痕生成关系",
+          "statement": "固定系数绝对值皆至少为二的分支曲面上承载曲面间的同痕关系由系数为正负二处的相邻拷贝数同时加一生成，端点处退化为单个拷贝数加一"
+        },
+        {
+          "id": "C-prop1",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "承载曲面的连通性判别",
+          "statement": "固定分支曲面时若系数全为偶数则承载曲面仅在单层时连通，若至少一系数为奇数则每个两层曲面连通，存在多于两层的连通曲面当且仅当至少两系数为奇数此时对一切层数皆存在连通曲面"
+        },
+        {
+          "id": "C-cor-seifert",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "可定向 Seifert 曲面的推论",
+          "statement": "单层承载曲面可定向当且仅当系数全为偶数，全偶展开唯一，故可定向不可压缩 Seifert 曲面皆同亏格，当且仅当该唯一展开中至多一系数不是正负二时彼此同痕，全为正负二时为圆周上纤维化的纤维且唯一"
+        },
+        {
+          "id": "C-prop2",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "边界曲线绕数公式",
+          "statement": "分支曲面承载曲面的每条边界圆纵向绕一次经向绕由系数决定的整数次，该整数为正负系数个数差减去全偶展开相应差的两倍，与拷贝数及层数无关"
+        },
+        {
+          "id": "C-thm2a",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "手术流形的不可约性与例外",
+          "statement": "二桥结的手术流形不可约，除非平凡结零系数得直纹面与球面之积，或环面结特定系数得两透镜空间连通和，此时结为相应同余类且斜率为两倍分母"
+        },
+        {
+          "id": "C-thm2b",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Haken 手术斜率的有限性",
+          "statement": "若二桥结的手术流形为 Haken 流形则手术系数分母为一且分子为有限多个满足系数绝对值至少为二的连分数展开所给绕数之一"
+        },
+        {
+          "id": "C-thm3",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "补空间微分同胚扩张定理",
+          "statement": "二桥结补空间之间的任一微分同胚可经同痕扩张为三维球面的微分同胚，特别补空间微分同胚则二结同痕或互为镜像"
+        },
+        {
+          "id": "C-lem1",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "由斜率集决定子午线的引理",
+          "statement": "若结的边界斜率集含于整数加无穷远点且其中有两个有限斜率之差绝对值大于二，则子午线仅由补空间决定，因无穷远点为图中唯一与所有斜率连边的顶点"
+        },
+        {
+          "id": "C-lem2",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "消除非本质临界点的引理",
+          "statement": "不可压缩且边界不可压缩曲面可经相对结的同痕消除一切非本质鞍点以外的临界点，使参数序列满足相邻三项不在同一三角形的两条不同边上且隔一项不相等"
+        },
+        {
+          "id": "C-lem3a",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "可约手术给出零亏格曲面的引理",
+          "statement": "若沿结的手术流形可约则在结管状邻域外存在不可压缩且边界不可压缩的零亏格曲面其边界斜率为手术斜率"
+        },
+        {
+          "id": "C-lem3b",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Haken 手术给出曲面的引理",
+          "statement": "若沿结的手术流形不可约且含可定向不可压缩曲面则在结补中含可定向不可压缩曲面，其或为闭的非外围曲面或为有界边界不可压缩且边界斜率为手术斜率的曲面"
+        },
+        {
+          "id": "C-question",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "关于引理条件普适性的问题",
+          "statement": "上述决定子午线的两个整数性与大间距条件是否对一切非平凡结成立，来源明确作为未决问题提出，保持为未证陈述"
+        },
+        {
+          "id": "C-b0-lens",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "外部前提透镜空间与二桥结分类",
+          "statement": "二桥结的二重分支覆盖为透镜空间，二桥结同痕当且仅当分母相等且分子互为模分母的逆，归于塞弗特观察与定向透镜空间分类"
+        },
+        {
+          "id": "C-b0-branchcrit",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "外部前提分支曲面不可压缩判据",
+          "statement": "若分支曲面带正权曲面无 Reeb 分支子曲面无接触盘与半接触盘无单角且水平边界在余部中不可压缩则其承载的一切曲面不可压缩且边界不可压缩"
+        },
+        {
+          "id": "C-b0-annulus-dichotomy",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "外部前提可定向曲面的边界二分",
+          "statement": "在边界为环面的不可约可定向三维流形中可定向不可压缩曲面或为边界不可压缩或为边界平行环带"
+        },
+        {
+          "id": "C-b0-irreducible",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "外部前提结补的不可约性",
+          "statement": "三维球面减去二桥结不可约，其中球面围球，可用于沿最内交圆的手术化简同痕"
+        },
+        {
+          "id": "C-b0-hyperbolic",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "外部前提双曲结构与一般手术",
+          "statement": "单的二桥结补除环面结为 Seifert 纤维外具完备有限体积双曲结构，除有限多手术外所得流形为双曲从而非 Seifert 纤维"
+        },
+        {
+          "id": "C-b0-torus-surgery",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "外部前提环面结手术已分析",
+          "statement": "环面结上的 Dehn 手术已完全分析，本文主不可约与 Haken 结论需除外环面结情形"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I-org-sigma",
+          "operationKind": "organization",
+          "premises": [
+            "F-def-contfrac"
+          ],
+          "conclusion": "F-def-sigma",
+          "argument": "将每处 plumbing 的内外互补水平方块同时纳入即形成分支曲面概念，其承载曲面由片数与内外拷贝数组织而成，这是概念形成而非演绎证明"
+        },
+        {
+          "id": "I-org-diagram",
+          "operationKind": "organization",
+          "premises": [
+            "F-def-contfrac",
+            "F-def-knot"
+          ],
+          "conclusion": "F-def-diagram",
+          "argument": "连分数部分和给出从无穷远点出发的顶点序列，左右转过相应个三角形即为图的边路组织关系，说明代数展开与组合边路的对应"
+        },
+        {
+          "id": "I-org-lambda",
+          "operationKind": "organization",
+          "premises": [
+            "F-def-diagram",
+            "F-def-sigma"
+          ],
+          "conclusion": "F-def-lambda",
+          "argument": "层交弧的两种斜率恰为图的一条边，其重心坐标给出层参数，本质鞍点使参数沿边移动一步，这组织了分支曲面鞍点与图边路的联系"
+        },
+        {
+          "id": "I-thm1a-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-incomp",
+            "F-def-knot",
+            "C-b0-irreducible"
+          ],
+          "conclusion": "C-thm1a",
+          "argument": "对闭曲面取高度 Morse 函数定义分离四穿点的层圆斜率，鞍点处三圆投影后不交故斜率不变除非变为未定义，首末斜率不同故必有未定义层，取分离两段弧的盘使其边界与曲面不交，由不可压缩经最内圆球定理手术使曲面与该盘不交，从而曲面含于结的管状邻域中，在实心环中不可压缩故为外围环面"
+        },
+        {
+          "id": "I-lem2-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-incomp",
+            "F-def-bdry-incomp",
+            "F-def-lambda",
+            "F-def-diagram"
+          ],
+          "conclusion": "C-lem2",
+          "argument": "先用已知命题消除平凡层圆，再分析连接弧自身的鞍点与其后减少非平凡圆数的第二鞍点，交换高度后分四种构形分别化为平凡圆边界可压缩或减少圆数，圆与鞍点对经无穷远点消去，故仅剩本质鞍点，若两鞍点在相邻两边则同层时给出边界压缩盘得条件一，若序列隔项相等则两构形分别直接可压缩或经交换高度滑动与归纳得条件二"
+        },
+        {
+          "id": "I-thm1b-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem2",
+            "F-def-sigma",
+            "F-def-diagram",
+            "F-def-minpath"
+          ],
+          "conclusion": "C-thm1b",
+          "argument": "固定片数后满足引理两条件的参数序列一一对应极小边路从而对应系数绝对值至少为二的连分数，分支曲面在相邻 plumbing 方块间具相应斜率的弧，承载曲面恰有相应个本质鞍点实现该序列，反之具该序列且仅有本质鞍点的曲面顶部与底部鞍点位置唯一而中间每批有拷贝数加一种排布故同痕于某承载曲面"
+        },
+        {
+          "id": "I-thm1c-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem2",
+            "F-def-sigma",
+            "C-b0-branchcrit"
+          ],
+          "conclusion": "C-thm1c",
+          "argument": "仅当方向由引理与前述对应直接得到，若方向验证分支曲面的五个条件，带正权曲面存在无 Reeb 子曲面因承载曲面欧拉示性为负，无接触盘因分支轨无圆分支弧在相对同调非平凡，余分支为实心环其子午盘交结与尖点至少为系数绝对值个点故无单角，水平边界为环带在系数绝对值至少为二时不可压缩，故由外部判据承载曲面皆不可压缩"
+        },
+        {
+          "id": "I-thm1d-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem2",
+            "F-def-lambda",
+            "F-def-minpath"
+          ],
+          "conclusion": "C-thm1d",
+          "argument": "同痕的一般高度仅有临界点对的产生消去与两临界点交换高度两种孤立现象，忽略层圆后至多影响参数序列的一项，片数大于一时中间项由前后两项唯一决定，将曲面换为其管状邻域边界使片数加倍，故序列不变，不同展开序列不同从而曲面不同痕"
+        },
+        {
+          "id": "I-thm1e-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem2",
+            "F-def-sigma",
+            "F-def-lambda"
+          ],
+          "conclusion": "C-thm1e",
+          "argument": "鞍点类型反转只能经与另一鞍点交换高度，同层时必附于层弧四不同侧，经坐标变换仅有一种构形，若参数非顶点则两鞍点为互补 plumbing 方块交换后曲面不变且序列不变，若参数为顶点则交换前后拷贝数在某段后同时增减一，此时涉及斜率恰为相应三元组故对应系数为正负二，这生成全部同痕关系"
+        },
+        {
+          "id": "I-prop2-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-sigma",
+            "F-def-contfrac",
+            "F-def-surgery",
+            "F-def-diagram"
+          ],
+          "conclusion": "C-prop2",
+          "argument": "将系数作偶数改变仅在竖直部分加整扭故可模二化为三种斜率，跟踪片数在各层集间的置换得绕结一周回到同片故纵向为一，改变拷贝数在结附近增一正整扭与一负整扭故总经向不变，各边界圆经向相等且与层数无关，对闭边路验证增减边数与经向的关系经两基本闭路直接计算得公式为正负个数差减全偶差的两倍"
+        },
+        {
+          "id": "I-prop1-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-sigma",
+            "F-def-diagram"
+          ],
+          "conclusion": "C-prop1",
+          "argument": "仅模二值 relevant 化为三种斜率的三顶点分析，偶系数时第三斜率同首层无进一步粘合故全偶时有相应分支数，两层以上不连通，奇系数时片循环对折，两层必连通，仅一奇时至多二对一粘合故至多两层连通，至少两奇时两次对折可实现循环转两格，奇数层已连通偶数层结合一次对折亦连通"
+        },
+        {
+          "id": "I-cor-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm1b",
+            "C-thm1c",
+            "C-prop1",
+            "F-def-contfrac"
+          ],
+          "conclusion": "C-cor-seifert",
+          "argument": "单层可定向当且仅当系数全偶，全偶展开唯一故亏格相同，同痕类计数由绝对值大于二的系数决定，当且仅当至多一系数不是正负二时唯一，全为正负二时为纤维化纤维且唯一"
+        },
+        {
+          "id": "I-lem1-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-slopeset",
+            "F-def-diagram"
+          ],
+          "conclusion": "C-lem1",
+          "argument": "整数性保证无穷远点与斜率集中每有限斜率连边，大间距保证无穷远点为唯一具此性质的顶点，故该斜率仅由补空间的斜率集决定即子午线被决定"
+        },
+        {
+          "id": "I-thm3-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem1",
+            "C-prop2",
+            "C-thm1b",
+            "C-thm1c"
+          ],
+          "conclusion": "C-thm3",
+          "argument": "对二桥结由分类与绕数公式斜率皆为整数满足条件一，取带状子复形上下边界两边路一正计数为零一负计数为零得两斜率差绝对值大于二满足条件二，故子午线由补空间决定，微分同胚保持子午线从而扩张到三维球面，结同痕或镜像"
+        },
+        {
+          "id": "I-lem3a-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-surgery",
+            "C-b0-irreducible",
+            "C-b0-annulus-dichotomy"
+          ],
+          "conclusion": "C-lem3a",
+          "argument": "取手术流形中不围球的球面横截使交为若干子午盘，交数非零因结补不可约，若余部交可压缩则沿压缩盘手术得分量交数更少且原球不围球蕴新球亦不围球，取交盘数最小则余部交不可压缩，若边界可压缩则为边界平行环带可推入实心环使球围球矛盾，故得零亏格所需曲面"
+        },
+        {
+          "id": "I-lem3b-proof",
+          "operationKind": "proof",
+          "premises": [
+            "F-def-surgery",
+            "C-b0-irreducible",
+            "C-b0-annulus-dichotomy"
+          ],
+          "conclusion": "C-lem3b",
+          "argument": "取不可压缩可定向曲面横截为若干子午盘，若余部交可压缩则沿盘手术必分裂出球面加另一曲面因原曲面不可压缩，球面在不可约手术流形中围球故原曲面同痕于交数更少的曲面，重复至余部交不可压缩，若边界可压缩则为边界平行环带推出原曲面为球面矛盾，否则得闭非外围或有界所需曲面"
+        },
+        {
+          "id": "I-thm2a-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem3a",
+            "C-prop2",
+            "F-def-sigma"
+          ],
+          "conclusion": "C-thm2a",
+          "argument": "单层曲面彼此微分同胚多层为其覆盖故欧拉示性为层数乘一减带数，封帽后得亏格公式，亏格零仅当带数为零层数为一的平凡结得直纹面乘球面，或带数为一的环面结经绕数公式得特定斜率的透镜空间连通和，其余由引理无零亏格所需曲面故不可约"
+        },
+        {
+          "id": "I-thm2b-proof",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem3b",
+            "C-prop2",
+            "C-thm1a",
+            "C-thm1b"
+          ],
+          "conclusion": "C-thm2b",
+          "argument": "不可约且 Haken 则有可定向不可压缩曲面，由引理在结补中得闭非外围或有界曲面，前者由闭曲面分类排除，后者由承载分类知分母为一且分子为有限多个展开的绕数之一"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C-b0-lens",
+        "C-b0-branchcrit",
+        "C-b0-annulus-dichotomy",
+        "C-b0-irreducible",
+        "C-b0-hyperbolic",
+        "C-b0-torus-surgery"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "13_Hatcher_Thurston_Incompressible_surfaces_2bridge.pdf",
+        "pageCount": 22
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 30566,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-def-incomp",
+                "F-def-bdry-incomp",
+                "F-def-knot",
+                "F-def-contfrac",
+                "F-def-sigma",
+                "F-def-diagram",
+                "F-def-minpath",
+                "F-def-surgery",
+                "F-def-slopeset",
+                "F-def-lambda"
+              ],
+              "b0ClaimEntryIds": [
+                "C-b0-lens",
+                "C-b0-branchcrit",
+                "C-b0-annulus-dichotomy",
+                "C-b0-irreducible",
+                "C-b0-hyperbolic",
+                "C-b0-torus-surgery"
+              ],
+              "closureClaimEntryIds": [
+                "C-thm1a",
+                "C-thm1b",
+                "C-thm1c",
+                "C-thm1d",
+                "C-thm1e",
+                "C-prop1",
+                "C-cor-seifert",
+                "C-prop2",
+                "C-thm2a",
+                "C-thm2b",
+                "C-thm3",
+                "C-lem1",
+                "C-lem2",
+                "C-lem3a",
+                "C-lem3b",
+                "C-b0-lens",
+                "C-b0-branchcrit",
+                "C-b0-annulus-dichotomy",
+                "C-b0-irreducible",
+                "C-b0-hyperbolic",
+                "C-b0-torus-surgery"
+              ],
+              "claimStates": {
+                "C-thm1a": "established",
+                "C-thm1b": "established",
+                "C-thm1c": "established",
+                "C-thm1d": "established",
+                "C-thm1e": "established",
+                "C-prop1": "established",
+                "C-cor-seifert": "established",
+                "C-prop2": "established",
+                "C-thm2a": "established",
+                "C-thm2b": "established",
+                "C-thm3": "established",
+                "C-lem1": "established",
+                "C-lem2": "established",
+                "C-lem3a": "established",
+                "C-lem3b": "established",
+                "C-question": "open",
+                "C-b0-lens": "established",
+                "C-b0-branchcrit": "established",
+                "C-b0-annulus-dichotomy": "established",
+                "C-b0-irreducible": "established",
+                "C-b0-hyperbolic": "established",
+                "C-b0-torus-surgery": "established"
+              },
+              "claimDerivations": {
+                "C-thm1a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1a-proof"
+                  ]
+                },
+                "C-thm1b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1b-proof"
+                  ]
+                },
+                "C-thm1c": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1c-proof"
+                  ]
+                },
+                "C-thm1d": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1d-proof"
+                  ]
+                },
+                "C-thm1e": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1e-proof"
+                  ]
+                },
+                "C-prop1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop1-proof"
+                  ]
+                },
+                "C-cor-seifert": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor-proof"
+                  ]
+                },
+                "C-prop2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop2-proof"
+                  ]
+                },
+                "C-thm2a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2a-proof"
+                  ]
+                },
+                "C-thm2b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2b-proof"
+                  ]
+                },
+                "C-thm3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm3-proof"
+                  ]
+                },
+                "C-lem1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem1-proof"
+                  ]
+                },
+                "C-lem2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem2-proof"
+                  ]
+                },
+                "C-lem3a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem3a-proof"
+                  ]
+                },
+                "C-lem3b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem3b-proof"
+                  ]
+                },
+                "C-question": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-b0-lens": {
+                  "basis": "b0"
+                },
+                "C-b0-branchcrit": {
+                  "basis": "b0"
+                },
+                "C-b0-annulus-dichotomy": {
+                  "basis": "b0"
+                },
+                "C-b0-irreducible": {
+                  "basis": "b0"
+                },
+                "C-b0-hyperbolic": {
+                  "basis": "b0"
+                },
+                "C-b0-torus-surgery": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-def-incomp",
+                "F-def-bdry-incomp",
+                "F-def-knot",
+                "F-def-contfrac",
+                "F-def-sigma",
+                "F-def-diagram",
+                "F-def-minpath",
+                "F-def-surgery",
+                "F-def-slopeset",
+                "F-def-lambda"
+              ],
+              "b0ClaimEntryIds": [
+                "C-b0-lens",
+                "C-b0-branchcrit",
+                "C-b0-annulus-dichotomy",
+                "C-b0-irreducible",
+                "C-b0-hyperbolic",
+                "C-b0-torus-surgery"
+              ],
+              "closureClaimEntryIds": [
+                "C-thm1a",
+                "C-thm1b",
+                "C-thm1c",
+                "C-thm1d",
+                "C-thm1e",
+                "C-prop1",
+                "C-cor-seifert",
+                "C-prop2",
+                "C-thm2a",
+                "C-thm2b",
+                "C-thm3",
+                "C-lem1",
+                "C-lem2",
+                "C-lem3a",
+                "C-lem3b",
+                "C-b0-lens",
+                "C-b0-branchcrit",
+                "C-b0-annulus-dichotomy",
+                "C-b0-irreducible",
+                "C-b0-hyperbolic",
+                "C-b0-torus-surgery"
+              ],
+              "claimStates": {
+                "C-thm1a": "established",
+                "C-thm1b": "established",
+                "C-thm1c": "established",
+                "C-thm1d": "established",
+                "C-thm1e": "established",
+                "C-prop1": "established",
+                "C-cor-seifert": "established",
+                "C-prop2": "established",
+                "C-thm2a": "established",
+                "C-thm2b": "established",
+                "C-thm3": "established",
+                "C-lem1": "established",
+                "C-lem2": "established",
+                "C-lem3a": "established",
+                "C-lem3b": "established",
+                "C-question": "open",
+                "C-b0-lens": "established",
+                "C-b0-branchcrit": "established",
+                "C-b0-annulus-dichotomy": "established",
+                "C-b0-irreducible": "established",
+                "C-b0-hyperbolic": "established",
+                "C-b0-torus-surgery": "established"
+              },
+              "claimDerivations": {
+                "C-thm1a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1a-proof"
+                  ]
+                },
+                "C-thm1b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1b-proof"
+                  ]
+                },
+                "C-thm1c": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1c-proof"
+                  ]
+                },
+                "C-thm1d": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1d-proof"
+                  ]
+                },
+                "C-thm1e": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm1e-proof"
+                  ]
+                },
+                "C-prop1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop1-proof"
+                  ]
+                },
+                "C-cor-seifert": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor-proof"
+                  ]
+                },
+                "C-prop2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop2-proof"
+                  ]
+                },
+                "C-thm2a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2a-proof"
+                  ]
+                },
+                "C-thm2b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2b-proof"
+                  ]
+                },
+                "C-thm3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm3-proof"
+                  ]
+                },
+                "C-lem1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem1-proof"
+                  ]
+                },
+                "C-lem2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem2-proof"
+                  ]
+                },
+                "C-lem3a": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem3a-proof"
+                  ]
+                },
+                "C-lem3b": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem3b-proof"
+                  ]
+                },
+                "C-question": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-b0-lens": {
+                  "basis": "b0"
+                },
+                "C-b0-branchcrit": {
+                  "basis": "b0"
+                },
+                "C-b0-annulus-dichotomy": {
+                  "basis": "b0"
+                },
+                "C-b0-irreducible": {
+                  "basis": "b0"
+                },
+                "C-b0-hyperbolic": {
+                  "basis": "b0"
+                },
+                "C-b0-torus-surgery": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "F-def-incomp"
+                ],
+                "sourceRefs": [
+                  "§1, p.2"
+                ],
+                "sourceSpan": {
+                  "startLine": 28,
+                  "endLine": 28
+                },
+                "diagnosis": "F-def-incomp将法丛非平凡时基本群单射等价的对象误写为管状邻域边界的可压缩性，来源为不可压缩性，方向取反。",
+                "repairRequirement": "必须将法丛非平凡情形改为等价于管状邻域边界的不可压缩性，其余文字保持不变。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-prop2-proof"
+                ],
+                "sourceRefs": [
+                  "§3, p.19"
+                ],
+                "sourceSpan": {
+                  "startLine": 399,
+                  "endLine": 411
+                },
+                "diagnosis": "I-prop2-proof计算绕数公式时直接使用上半图边路、N+与N-及闭边路验证，但premises遗漏F-def-diagram，未覆盖实际使用的直接依赖。",
+                "repairRequirement": "必须在保持原有三个前提的同时增补F-def-diagram为直接前提，不改结论与论证实质。"
+              },
+              {
+                "id": "F3",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-thm2a-proof"
+                ],
+                "sourceRefs": [
+                  "§4, p.20"
+                ],
+                "sourceSpan": {
+                  "startLine": 426,
+                  "endLine": 428
+                },
+                "diagnosis": "I-thm2a-proof将C-b0-torus-surgery列为前提，但来源定理2(a)证明仅用引理3与绕数公式及覆盖欧拉示性得出例外，未调用环面结手术外部分析作为直接依赖，属于虚假依赖。",
+                "repairRequirement": "必须从premises中移除C-b0-torus-surgery，仅保留引理、绕数公式与分支曲面依赖，不改结论与论证实质。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "F-def-incomp",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "对异于球面盘面和射影平面的闭或带边曲面，若其中每个与曲面交于边界的盘的边界都在曲面上围盘，则称其在三维流形中不可压缩，当法丛平凡时等价于基本群单射由环路定理得到，法丛非平凡时等价于其管状邻域边界的可压缩性，论文指出在二桥结补中二者等价",
+                    "after": "对异于球面盘面和射影平面的闭或带边曲面，若其中每个与曲面交于边界的盘的边界都在曲面上围盘，则称其在三维流形中不可压缩，当法丛平凡时等价于基本群单射由环路定理得到，法丛非平凡时等价于其管状邻域边界的不可压缩性，论文指出在二桥结补中二者等价"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-prop2-proof",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "F-def-sigma",
+                      "F-def-contfrac",
+                      "F-def-surgery"
+                    ],
+                    "after": [
+                      "F-def-sigma",
+                      "F-def-contfrac",
+                      "F-def-surgery",
+                      "F-def-diagram"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-thm2a-proof",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-lem3a",
+                      "C-prop2",
+                      "F-def-sigma",
+                      "C-b0-torus-surgery"
+                    ],
+                    "after": [
+                      "C-lem3a",
+                      "C-prop2",
+                      "F-def-sigma"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 50,
+            "cleanCount": 47
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 84989
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 65782
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "d55efc4ae431ba988921b41474f1629aca50d2852e833db0a14c2304dd5fe4f7",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 169247,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 2,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 1065,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 3485,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 5907,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 8294,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 10699,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 13104,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16998,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 18471,
+        "phase": "complete",
+        "pageCount": 22
+      },
+      {
+        "stage": "generate",
+        "atMs": 18471,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 103463,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 169246,
+        "phase": "complete",
+        "entries": 32,
+        "inferences": 18
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 84635,
+        "usage": {
+          "input_tokens": 18791,
+          "output_tokens": 15891,
+          "total_tokens": 34682
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 65388,
+        "usage": {
+          "input_tokens": 28882,
+          "output_tokens": 16623,
+          "total_tokens": 45505
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

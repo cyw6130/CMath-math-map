@@ -1,0 +1,771 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "01_Piccirillo_Conway_knot_not_slice.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F_slice_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "切片与拓扑切片的定义",
+          "statement": "纽结 $K$ 在 $S^{3}$ 中称为切片的，若其在 $B^{4}$ 中界定一个光滑真嵌入圆盘；称为拓扑切片的，若其在 $B^{4}$ 中界定一个局部平坦圆盘。"
+        },
+        {
+          "id": "F_mutation_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "康威球面与正突变的定义",
+          "statement": "设 $K$ 为有向纽结，嵌入球面 $S^{2}$ 与 $K$ 横截交于四点时称为 Conway 球面，它将 $S^{3}$ 分成两个三维球 $B_{1}$ 与 $B_{2}$，将 $K$ 分成两个缠结 $K_{B_{1}}$ 与 $K_{B_{2}}$。经由 Conway 球面的对合重粘 $B_{1}$ 与 $B_{2}$ 所得任一纽结 $K^{*}$ 称为 $K$ 的突变体，若对合保持 $K$ 的定向则称为正突变体。"
+        },
+        {
+          "id": "F_trace_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "纽结迹的定义",
+          "statement": "纽结 $K$ 的迹 $X(K)$ 是指在 $B^{4}$ 上沿贴附球面 $K$ 以 $0$ 标架贴附一个 $2$ 柄得到的四维流形。"
+        },
+        {
+          "id": "F_dualizable_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "对偶链环与相关流形的定义",
+          "statement": "设 $L$ 为三分量链环，分量为蓝色 $B$、绿色 $G$ 与红色 $R$。若子链环 $B\\cup R$ 同痕于 $B\\cup \\mu_{B}$，$G\\cup R$ 同痕于 $G\\cup \\mu_{G}$，其中 $\\mu_{B}$ 与 $\\mu_{G}$ 分别表示子午线，且链环数 $\\mathrm{lk}(B,G)=0$，则称 $L$ 为对偶链环。将其 $R$ 视为点圈记号的 $1$ 柄，$B$ 与 $G$ 视为 $0$ 标架 $2$ 柄贴附球面，得到相关四维流形 $X$ 及相关纽结 $K$ 与 $K^{\\prime}$。"
+        },
+        {
+          "id": "F_s_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "霍万诺夫同调与不变量的定义",
+          "statement": "对链环图 $D_{L}$ 有双分次链复形 $(C^{i,j}(D_{L}),d)$，其同调为 Khovanov 同调 $Kh^{i,j}(L)$，其中 $i$ 为同调分次，$j$ 为量子分次。Lee 变体 $(C^{i,j}(D_{L}),d^{\\prime})$ 给出谱序列 $E_{1}^{i,j}=C^{i,j}(D_{L})$ 与 $E_{2}^{i,j}=Kh^{i,j}(L)$，收敛到 Lee 同调 $KhL^{i,j}(L)$。对纽结 $K$ 有 $KhL(K)=\\mathbb{Q}\\oplus\\mathbb{Q}$ 且生成元均位于 $i=0$，其 $j$ 分次形如 $(0,s(K)\\pm 1)$，此整数 $s(K)$ 称为 Rasmussen 的 $s$ 不变量。"
+        },
+        {
+          "id": "F_Kprime_def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "特定纽结的定义",
+          "statement": "记 $C$ 为 Conway 纽结，$K^{\\prime}$ 为图 $2$ 中所示的纽结。"
+        },
+        {
+          "id": "F_Kh_table",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "特定纽结的同调计算",
+          "statement": "利用 Bar-Natan 的 Fast-Kh 程序计算多项式 $Kh(K^{\\prime})(t,q):=\\sum_{i,j}t^{i}q^{j}\\mathrm{rank}(Kh^{i,j}(K^{\\prime})\\otimes\\mathbb{Q})$，其各分次秩 $\\mathrm{rank}(Kh^{i,j}(K^{\\prime})\\otimes\\mathbb{Q})$ 如表 $1$ 所示，特别地 $Kh^{0,3}(K^{\\prime})$ 非零。"
+        },
+        {
+          "id": "C_lemma13",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "切片性与迹嵌入的等价性",
+          "statement": "纽结 $K$ 切片当且仅当 $X(K)$ 光滑嵌入 $S^{4}$。"
+        },
+        {
+          "id": "C_trace_equiv",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "同痕迹纽结的切片等价性",
+          "statement": "若 $X(K)\\cong X(K^{\\prime})$，则 $K$ 切片当且仅当 $K^{\\prime}$ 切片。"
+        },
+        {
+          "id": "C_thm21",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "对偶链环给出同痕迹纽结",
+          "statement": "若 $L$ 为对偶链环，$X$ 为相关四维流形，$K$ 与 $K^{\\prime}$ 为相关纽结，则 $X\\cong X(K)\\cong X(K^{\\prime})$。"
+        },
+        {
+          "id": "C_prop22",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "解结数为一的纽结的对偶链环构造",
+          "statement": "对任意解结数为 $1$ 的纽结 $C$，存在对偶链环 $L$ 使其相关流形 $X$ 满足 $X\\cong X(C)$。"
+        },
+        {
+          "id": "C_prop14",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "康威纽结与特定纽结同痕迹",
+          "statement": "设 $C$ 为 Conway 纽结，$K^{\\prime}$ 为图 $2$ 纽结，则 $X(C)\\cong X(K^{\\prime})$。"
+        },
+        {
+          "id": "C_conway_unknotting",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "康威纽结的解结数",
+          "statement": "Conway 纽结 $C$ 的解结数为 $1$。"
+        },
+        {
+          "id": "C_ras_thm31",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "不变量的切片阻碍",
+          "statement": "对任意纽结 $K$，Lee 同调的生成元位于分次 $(i,j)=(0,s(K)\\pm 1)$；若 $K$ 切片，则 $s(K)=0$。"
+        },
+        {
+          "id": "C_spectral",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "谱序列微分双次数与支集",
+          "statement": "Khovanov 到 Lee 同调的谱序列满足 $E_{1}^{i,j}=C^{i,j}(D_{L})$、$E_{2}^{i,j}=Kh^{i,j}(L)$，收敛到 $KhL^{i,j}(L)$，微分 $d_{n}$ 的双次数为 $(1,4(n-1))$；对纽结 $K$ 有 $KhL(K)=\\mathbb{Q}\\oplus\\mathbb{Q}$ 且均位于 $i=0$。"
+        },
+        {
+          "id": "C_s_eq_2",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "特定纽结的不变量取值",
+          "statement": "$s(K^{\\prime})=2$。"
+        },
+        {
+          "id": "C_thm15",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "特定纽结的非切片性",
+          "statement": "纽结 $K^{\\prime}$ 非切片。"
+        },
+        {
+          "id": "C_thm11",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "康威纽结的非切片性",
+          "statement": "Conway 纽结 $C$ 非切片。"
+        },
+        {
+          "id": "C_conway_topo",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "康威纽结的拓扑切片性",
+          "statement": "Conway 纽结 $C$ 的 Alexander 多项式为 $1$，由 Freedman 定理其拓扑切片。"
+        },
+        {
+          "id": "C_mutant_slice",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "康威纽结为切片纽结的正突变体",
+          "statement": "Conway 纽结 $C$ 与 Kinoshita-Terasaka 纽结 $KT$ 构成最小的正突变对，且 $KT$ 切片，故 $C$ 为切片纽结的正突变体。"
+        },
+        {
+          "id": "C_first_example",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "首个兼具两性质的非切片例子",
+          "statement": "Conway 纽结 $C$ 是首个既拓扑切片又是切片纽结的正突变体但非切片的纽结。"
+        },
+        {
+          "id": "C_cl_table",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "低交点数切片分类表的状态",
+          "statement": "在 Cha 与 Livingston 的纽结表中，$13$ 交点以下纽结的切片状态除 Conway 纽结 $C$ 外均已知。"
+        },
+        {
+          "id": "C_class_complete",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "低交点数切片分类的完备性",
+          "statement": "$13$ 交点以下切片纽结的分类完备。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I_lemma13",
+          "operationKind": "proof",
+          "premises": [
+            "F_slice_def",
+            "F_trace_def"
+          ],
+          "conclusion": "C_lemma13",
+          "argument": "若 $K$ 切片，取 $S^{4}$ 中分解为两个四维球 $B_{1}$ 与 $B_{2}$ 的光滑 $S^{3}$，$K$ 在其中界定光滑圆盘 $D_{K}$ 于 $B_{1}$ 中，则 $B_{2}\\cup\\overline{\\nu(D_{K})}\\cong X(K)$ 光滑嵌入 $S^{4}$。反之，设分段线性嵌入 $F:S^{2}\\to X(K)$ 为锥与柄核之并，仅在锥点 $p$ 处非光滑，若 $i:X(K)\\to S^{4}$ 光滑嵌入，则 $i\\circ F$ 除 $i(p)$ 外光滑，取 $W:=S^{4}\\setminus\\nu(i(p))\\cong B^{4}$，去掉 $F^{-1}(p)$ 小邻域即得 $W$ 中以 $K$ 为边界的光滑圆盘，故 $K$ 切片。"
+        },
+        {
+          "id": "I_trace_equiv",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma13"
+          ],
+          "conclusion": "C_trace_equiv",
+          "argument": "若 $X(K)\\cong X(K^{\\prime})$，则一者光滑嵌入 $S^{4}$ 当且仅当另一者可，由引理 $K$ 切片等价于 $X(K)$ 可嵌入，故 $K$ 切片当且仅当 $K^{\\prime}$ 切片。"
+        },
+        {
+          "id": "I_prop22",
+          "operationKind": "proof",
+          "premises": [
+            "F_trace_def",
+            "F_dualizable_def"
+          ],
+          "conclusion": "C_prop22",
+          "argument": "设 $C$ 具正解结交叉 $c$，在 $S^{3}\\setminus\\nu(C)$ 中如图 $3$ 定义 $R$ 与 $G$，以 $R$ 为点圈 $1$ 柄、$C$ 与 $G$ 为 $0$ 标架 $2$ 柄得流形 $X$，其中 $G$ 与 $R$ 为相消对故 $X\\cong X(C)$。将 $C$ 沿 $R$ 滑柄得中图，蓝色曲线同痕于 $R$ 的子午线，再滑柄得右图，此时蓝色贴附球 $B$ 满足 $B\\cup R$ 同痕于 $B\\cup\\mu_{B}$ 且 $\\mathrm{lk}(B,G)=0$，得到对偶链环 $L$，负交叉情形类似。"
+        },
+        {
+          "id": "I_prop14",
+          "operationKind": "proof",
+          "premises": [
+            "C_conway_unknotting",
+            "C_prop22",
+            "C_thm21",
+            "F_Kprime_def"
+          ],
+          "conclusion": "C_prop14",
+          "argument": "Conway 纽结解结数为 $1$，由上命题得对偶链环 $L$ 使相关流形 $X$ 满足 $X\\cong X(C)$，由对偶链环定理 $X\\cong X(K)\\cong X(K^{\\prime})$，按图 $4$ 的柄滑与相消及同痕将第二相关纽结等同为图 $2$ 的 $K^{\\prime}$，故 $X(C)\\cong X(K^{\\prime})$。"
+        },
+        {
+          "id": "I_s_eq_2",
+          "operationKind": "proof",
+          "premises": [
+            "F_Kh_table",
+            "C_spectral",
+            "C_ras_thm31",
+            "F_s_def"
+          ],
+          "conclusion": "C_s_eq_2",
+          "argument": "Lee 同调支于 $i=0$，由表 $1$ 得 $s(K^{\\prime})\\in\\{0,2\\}$。考虑 $Kh^{0,3}(K^{\\prime})$ 的生成元 $x$，谱序列微分 $d_{n}$ 双次数为 $(1,4(n-1))$，$n\\geq 2$ 时出射目标 $(1,4(n-1)+3)$ 与入射来源 $(-1,-4(n-1)+3)$ 在表中均无生成元，故 $x$ 不能被杀死也不能为边缘，在 $E_{\\infty}$ 存活，从而 $s(K^{\\prime})=2$。"
+        },
+        {
+          "id": "I_thm15",
+          "operationKind": "proof",
+          "premises": [
+            "C_s_eq_2",
+            "C_ras_thm31"
+          ],
+          "conclusion": "C_thm15",
+          "argument": "已得 $s(K^{\\prime})=2$，而切片蕴含 $s=0$，故 $K^{\\prime}$ 非切片。"
+        },
+        {
+          "id": "I_thm11",
+          "operationKind": "proof",
+          "premises": [
+            "C_prop14",
+            "C_thm15",
+            "C_trace_equiv"
+          ],
+          "conclusion": "C_thm11",
+          "argument": "已知 $X(C)\\cong X(K^{\\prime})$ 且迹微分同胚蕴含切片等价，而 $K^{\\prime}$ 非切片，故 $C$ 非切片。"
+        },
+        {
+          "id": "I_first_example",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm11",
+            "C_conway_topo",
+            "C_mutant_slice"
+          ],
+          "conclusion": "C_first_example",
+          "argument": "Conway 纽结 $C$ 非切片，但其拓扑切片且为切片纽结 $KT$ 的正突变体，故为首个兼具此两性质的非切片纽结。"
+        },
+        {
+          "id": "I_class_complete",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm11",
+            "C_cl_table"
+          ],
+          "conclusion": "C_class_complete",
+          "argument": "除 $C$ 外 $13$ 交点以下切片状态均已知，现 $C$ 非切片，故分类完备。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C_thm21",
+        "C_conway_unknotting",
+        "C_ras_thm31",
+        "C_spectral",
+        "C_conway_topo",
+        "C_mutant_slice",
+        "C_cl_table"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "01_Piccirillo_Conway_knot_not_slice.pdf",
+        "pageCount": 11
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 21245,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "original",
+          "reason": "audit-clean",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_slice_def",
+                "F_mutation_def",
+                "F_trace_def",
+                "F_dualizable_def",
+                "F_s_def",
+                "F_Kprime_def",
+                "F_Kh_table"
+              ],
+              "b0ClaimEntryIds": [
+                "C_thm21",
+                "C_conway_unknotting",
+                "C_ras_thm31",
+                "C_spectral",
+                "C_conway_topo",
+                "C_mutant_slice",
+                "C_cl_table"
+              ],
+              "closureClaimEntryIds": [
+                "C_lemma13",
+                "C_trace_equiv",
+                "C_thm21",
+                "C_prop22",
+                "C_prop14",
+                "C_conway_unknotting",
+                "C_ras_thm31",
+                "C_spectral",
+                "C_s_eq_2",
+                "C_thm15",
+                "C_thm11",
+                "C_conway_topo",
+                "C_mutant_slice",
+                "C_first_example",
+                "C_cl_table",
+                "C_class_complete"
+              ],
+              "claimStates": {
+                "C_lemma13": "established",
+                "C_trace_equiv": "established",
+                "C_thm21": "established",
+                "C_prop22": "established",
+                "C_prop14": "established",
+                "C_conway_unknotting": "established",
+                "C_ras_thm31": "established",
+                "C_spectral": "established",
+                "C_s_eq_2": "established",
+                "C_thm15": "established",
+                "C_thm11": "established",
+                "C_conway_topo": "established",
+                "C_mutant_slice": "established",
+                "C_first_example": "established",
+                "C_cl_table": "established",
+                "C_class_complete": "established"
+              },
+              "claimDerivations": {
+                "C_lemma13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_lemma13"
+                  ]
+                },
+                "C_trace_equiv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_trace_equiv"
+                  ]
+                },
+                "C_thm21": {
+                  "basis": "b0"
+                },
+                "C_prop22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_prop22"
+                  ]
+                },
+                "C_prop14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_prop14"
+                  ]
+                },
+                "C_conway_unknotting": {
+                  "basis": "b0"
+                },
+                "C_ras_thm31": {
+                  "basis": "b0"
+                },
+                "C_spectral": {
+                  "basis": "b0"
+                },
+                "C_s_eq_2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_s_eq_2"
+                  ]
+                },
+                "C_thm15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm15"
+                  ]
+                },
+                "C_thm11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm11"
+                  ]
+                },
+                "C_conway_topo": {
+                  "basis": "b0"
+                },
+                "C_mutant_slice": {
+                  "basis": "b0"
+                },
+                "C_first_example": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_first_example"
+                  ]
+                },
+                "C_cl_table": {
+                  "basis": "b0"
+                },
+                "C_class_complete": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_class_complete"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_slice_def",
+                "F_mutation_def",
+                "F_trace_def",
+                "F_dualizable_def",
+                "F_s_def",
+                "F_Kprime_def",
+                "F_Kh_table"
+              ],
+              "b0ClaimEntryIds": [
+                "C_thm21",
+                "C_conway_unknotting",
+                "C_ras_thm31",
+                "C_spectral",
+                "C_conway_topo",
+                "C_mutant_slice",
+                "C_cl_table"
+              ],
+              "closureClaimEntryIds": [
+                "C_lemma13",
+                "C_trace_equiv",
+                "C_thm21",
+                "C_prop22",
+                "C_prop14",
+                "C_conway_unknotting",
+                "C_ras_thm31",
+                "C_spectral",
+                "C_s_eq_2",
+                "C_thm15",
+                "C_thm11",
+                "C_conway_topo",
+                "C_mutant_slice",
+                "C_first_example",
+                "C_cl_table",
+                "C_class_complete"
+              ],
+              "claimStates": {
+                "C_lemma13": "established",
+                "C_trace_equiv": "established",
+                "C_thm21": "established",
+                "C_prop22": "established",
+                "C_prop14": "established",
+                "C_conway_unknotting": "established",
+                "C_ras_thm31": "established",
+                "C_spectral": "established",
+                "C_s_eq_2": "established",
+                "C_thm15": "established",
+                "C_thm11": "established",
+                "C_conway_topo": "established",
+                "C_mutant_slice": "established",
+                "C_first_example": "established",
+                "C_cl_table": "established",
+                "C_class_complete": "established"
+              },
+              "claimDerivations": {
+                "C_lemma13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_lemma13"
+                  ]
+                },
+                "C_trace_equiv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_trace_equiv"
+                  ]
+                },
+                "C_thm21": {
+                  "basis": "b0"
+                },
+                "C_prop22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_prop22"
+                  ]
+                },
+                "C_prop14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_prop14"
+                  ]
+                },
+                "C_conway_unknotting": {
+                  "basis": "b0"
+                },
+                "C_ras_thm31": {
+                  "basis": "b0"
+                },
+                "C_spectral": {
+                  "basis": "b0"
+                },
+                "C_s_eq_2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_s_eq_2"
+                  ]
+                },
+                "C_thm15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm15"
+                  ]
+                },
+                "C_thm11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm11"
+                  ]
+                },
+                "C_conway_topo": {
+                  "basis": "b0"
+                },
+                "C_mutant_slice": {
+                  "basis": "b0"
+                },
+                "C_first_example": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_first_example"
+                  ]
+                },
+                "C_cl_table": {
+                  "basis": "b0"
+                },
+                "C_class_complete": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_class_complete"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [],
+            "operations": []
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 32,
+            "cleanCount": 32
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 103275
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 43009
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "a2c5b5acb4633724af94fc28ee51ad2144aea512705c1eab2187ad14084d8ce6",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 176131,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 75,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 3249,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 5622,
+        "phase": "progress",
+        "state": "pending"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7996,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 10380,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12764,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 15132,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 17501,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19913,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 22318,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 24694,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 27057,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 29842,
+        "phase": "complete",
+        "pageCount": 11
+      },
+      {
+        "stage": "generate",
+        "atMs": 29842,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 133118,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 176131,
+        "phase": "complete",
+        "entries": 23,
+        "inferences": 9
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 102805,
+        "usage": {
+          "input_tokens": 14160,
+          "output_tokens": 21518,
+          "total_tokens": 35678
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 42939,
+        "usage": {
+          "input_tokens": 20287,
+          "output_tokens": 9567,
+          "total_tokens": 29854
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

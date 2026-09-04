@@ -1,0 +1,2247 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "14_Culler_Shalen_Character_varieties_splittings.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F-R-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "表示簇的定义",
+          "statement": "设 \\(\\Pi\\) 为有限生成群，取生成元 \\(g_{1},\\dots,g_{n}\\)，则 \\(R(\\Pi)\\) 为 \\(\\mathrm{SL}_{2}(\\mathbf{C})^{n}\\) 中由 \\(\\Pi\\) 的关系定义的仿射代数集，其点与 \\(\\Pi\\) 到 \\(\\mathrm{SL}_{2}(\\mathbf{C})\\) 的表示一一对应，在相差典范同构意义下与生成元选取无关。对 \\(g\\in\\Pi\\) 定义正则函数 \\(\\tau_{g}(\\rho)=\\mathrm{tr}(\\rho(g))\\)，并设 \\(T\\) 为它们生成的环。"
+        },
+        {
+          "id": "F-X-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "特征标簇的定义",
+          "statement": "取 \\(\\gamma_{1},\\dots,\\gamma_{m}\\in\\Pi\\) 使 \\(\\tau_{\\gamma_{i}}\\) 生成环 \\(T\\)，定义 \\(t(\\rho)=(\\tau_{\\gamma_{1}}(\\rho),\\dots,\\tau_{\\gamma_{m}}(\\rho))\\)，记 \\(X(\\Pi)=t(R(\\Pi))\\)。点与到 \\(\\mathrm{SL}_{2}(\\mathbf{C})\\) 表示的特征标 \\(\\chi_{\\rho}(g)=\\mathrm{tr}(\\rho(g))\\) 一一对应。对 \\(g\\in\\Pi\\) 定义正则函数 \\(I_{g}\\) 使 \\(I_{g}(\\chi)=\\chi(g)\\)。"
+        },
+        {
+          "id": "F-curve-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "曲线光滑射影模型与典范表示",
+          "statement": "设 \\(C\\) 为 \\(R(\\Pi)\\) 或 \\(X(\\Pi)\\) 中的仿射代数曲线，\\(\\tilde{C}\\) 为其非奇异射影模型，\\(F\\) 为其函数域。\\(\\tilde{C}\\) 的理想点为补全中 \\(\\overline{C}-C\\) 对应的点。\\(C\\subset R(\\Pi)\\) 给出典范表示 \\(P:\\Pi\\to\\mathrm{SL}_{2}(F)\\)，其矩阵元为坐标函数在 \\(\\tilde{C}\\) 上的扩张。理想点 \\(\\tilde{y}\\in\\tilde{D}\\) 给出 \\(F\\) 上的离散赋值，其赋值环为在该点无极点的函数环。"
+        },
+        {
+          "id": "F-graph-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "群图与分裂的定义",
+          "statement": "图指一维复形，树指连通单连通图。群图 \\((G,\\mathcal{G})\\) 为从图范畴到群与单同态范畴的函子，其基本群为相应 \\(K(G,\\mathcal{G})\\) 的基本群。抽象群 \\(\\Pi\\) 与某群图基本群的同构称为 \\(\\Pi\\) 的分裂，顶点群与边群为相应子群在 \\(\\Pi\\) 中的共轭类。分裂非平凡指所有顶点群均为真子群。群无反转地作用在树上指作用不反转任何不变边的定向。"
+        },
+        {
+          "id": "F-surf-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不可压缩曲面的定义",
+          "statement": "曲面指连通二维流形，在三维流形中理解为双领不可压缩曲面。若曲面可与边界分支平行则称为边界平行。紧致可定向三维流形 \\(N\\) 中的非空曲面系 \\(\\Sigma\\) 若每分支不可压缩且非边界平行，并分别控制边群与补分支的顶点群，则称为由分裂产生的曲面系。"
+        },
+        {
+          "id": "F-hyp-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "双曲三维流形的定义",
+          "statement": "完备可定向双曲三维流形为 \\(H^{3}\\) 被 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 中离散无挠子群的商，其典范表示为 \\(\\pi_{1}(M)\\) 到 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的忠实离散表示。外围环面子群共轭于由形如 \\(\\begin{pmatrix}1&\\lambda\\\\0&1\\end{pmatrix}\\) 的矩阵陪集构成的秩二阿贝尔群。体积有限当且仅当紧化边界为环面且无有限指数阿贝尔子群。"
+        },
+        {
+          "id": "F-haken-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "哈肯与虚拟哈肯流形的定义",
+          "statement": "哈肯流形指紧致可定向不可约且充分大的三维流形，即含有不可压缩曲面，有界情形自动成立。虚拟哈肯流形指有有限层覆盖含有不可压缩曲面的紧致可定向不可约三维流形。"
+        },
+        {
+          "id": "F-branch-def",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "正则分支覆盖的定义",
+          "statement": "设 \\(N\\) 为闭可定向 \\(M\\) 关于有限群 \\(\\Gamma\\) 的正则分支覆盖，分支于链环 \\(L\\)，稳定子皆循环。\\(\\tilde{\\Gamma}\\) 为 \\(\\Gamma\\) 到万有覆盖 \\(\\tilde{N}\\) 的全体提升，\\(\\pi_{1}(N)\\subset\\tilde{\\Gamma}\\) 为恒等提升。分支分支 \\(K_{i}\\) 的子午线 \\(\\mu_{i}\\) 与分歧指数 \\(r_{i}\\) 定义稳定子阶数。有 \\(\\tilde{\\Gamma}=\\pi_{1}(M-L)/\\langle\\mu_{1}^{r_{1}},\\dots,\\mu_{s}^{r_{s}}\\rangle\\)。链环 \\(L\\) 素、不可分裂与充分大的意义如来源所定义。"
+        },
+        {
+          "id": "C111",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "表示分支在等价下封闭",
+          "statement": "设 \\(V\\) 为 \\(R(\\Pi)\\) 的不可约分支，则与 \\(V\\) 中表示等价的表示仍属于 \\(V\\)。"
+        },
+        {
+          "id": "C121",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "可约性的迹刻画",
+          "statement": "设 \\(F\\) 为特征零域，\\(\\rho:\\Pi\\to\\mathrm{SL}_{2}(F)\\) 具非阿贝尔像，则下述等价：\\((i)\\) \\(\\rho\\) 可约；\\((ii)\\) 在 \\(F\\) 代数闭包上可约；\\((iii)\\) 对换位子群中每元 \\(c\\) 有 \\(\\chi_{\\rho}(c)=2\\)。"
+        },
+        {
+          "id": "C122",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "代数闭域上可约性推论",
+          "statement": "若 \\(K\\) 为特征零代数闭域，则 \\(\\rho:\\Pi\\to\\mathrm{SL}_{2}(K)\\) 可约当且仅当对换位子群中每元 \\(c\\) 有 \\(\\chi_{\\rho}(c)=2\\)。"
+        },
+        {
+          "id": "C131",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "含不可约表示的曲线典范表示绝对不可约",
+          "statement": "若仿射曲线 \\(C\\subset R(\\Pi)\\) 含不可约表示，则其典范表示 \\(P:\\Pi\\to\\mathrm{SL}_{2}(F)\\) 绝对不可约。"
+        },
+        {
+          "id": "C141",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "迹环有限生成",
+          "statement": "环 \\(T\\) 有限生成。关键恒等式为对 \\(x,y\\in\\mathrm{SL}_{2}(\\mathbf{C})\\) 有 \\(\\mathrm{tr}(x)\\mathrm{tr}(y)=\\mathrm{tr}(xy)+\\mathrm{tr}(xy^{-1})\\)，从而 \\(\\tau_{g}\\tau_{h}=\\tau_{gh}+\\tau_{gh^{-1}}\\)。"
+        },
+        {
+          "id": "C142",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "可约表示集为代数集原像",
+          "statement": "\\(\\Pi\\) 的可约表示集具形式 \\(t^{-1}(V)\\)，其中 \\(V\\subset\\mathbf{C}^{m}\\) 为闭代数集。"
+        },
+        {
+          "id": "C143",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "整性蕴含可共轭入整系数",
+          "statement": "设 \\(A\\) 为主理想整环，\\(F\\) 为其分式域，\\(P:\\Pi\\to\\mathrm{GL}_{n}(F)\\) 绝对不可约且 \\(\\chi_{P}(\\Pi)\\subset A\\)，则 \\(P\\) 等价于像含于 \\(\\mathrm{GL}_{n}(A)\\) 的表示。"
+        },
+        {
+          "id": "C144",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "含不可约表示分支的像为闭簇",
+          "statement": "若 \\(R_{0}\\) 为 \\(R(\\Pi)\\) 含不可约表示的不可约分支，则 \\(t(R_{0})\\subset\\mathbf{C}^{m}\\) 为仿射簇，特别为闭集。"
+        },
+        {
+          "id": "C145",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "特征标空间为闭代数集",
+          "statement": "\\(X(\\Pi)=t(R(\\Pi))\\) 为 \\(\\mathbf{C}^{m}\\) 中的闭代数集。"
+        },
+        {
+          "id": "C151",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "二元不可约限制的存在性",
+          "statement": "若 \\(\\rho\\) 不可约且 \\(\\rho(g)\\neq\\pm 1\\)，则存在 \\(h\\in\\Pi\\) 使 \\(\\rho\\) 在 \\(\\langle g,h\\rangle\\) 上的限制不可约且 \\(\\chi_{\\rho}(h)\\neq\\pm 2\\)。"
+        },
+        {
+          "id": "C152",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "特征标决定不可约表示等价类",
+          "statement": "若 \\(\\rho,\\rho':\\Pi\\to\\mathrm{SL}_{2}(\\mathbf{C})\\) 具相同特征标且 \\(\\rho\\) 不可约，则两者等价。"
+        },
+        {
+          "id": "C153",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "特征标簇维数公式",
+          "statement": "若 \\(R_{0}\\) 含不可约表示且 \\(X_{0}=t(R_{0})\\)，则 \\(\\dim X_{0}=\\dim R_{0}-3\\)。"
+        },
+        {
+          "id": "C154",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "非中心元的扎里斯基邻域保持",
+          "statement": "若 \\(\\rho\\) 不可约且 \\(\\rho(g)\\neq\\pm 1\\)，则 \\(\\chi_{\\rho}\\) 在 \\(X(\\Pi)\\) 有扎里斯基邻域 \\(U\\) 使对一切 \\(\\rho'\\in t^{-1}(U)\\) 有 \\(\\rho'(g)\\neq\\pm 1\\)。"
+        },
+        {
+          "id": "C155",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "二元生成群换位子迹为二则可约",
+          "statement": "若 \\(\\Pi\\) 由 \\(g,h\\) 生成且 \\(\\chi_{\\rho}([g,h])=2\\)，则 \\(\\rho:\\Pi\\to\\mathrm{SL}_{2}(\\mathbf{C})\\) 可约。"
+        },
+        {
+          "id": "C221",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "基本定理",
+          "statement": "设 \\(C\\) 为 \\(X(\\Pi)\\) 中的仿射曲线，则 \\(\\tilde{C}\\) 的每个理想点 \\(\\tilde{x}\\) 对应 \\(\\Pi\\) 的一个分裂，使 \\(g\\in\\Pi\\) 含于顶点群当且仅当 \\(\\tilde{I}_{g}\\) 在 \\(\\tilde{x}\\) 无极点，特别分裂非平凡。"
+        },
+        {
+          "id": "C231",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "分裂产生不可压缩曲面系",
+          "statement": "设 \\(N\\) 紧致可定向，则 \\(\\pi_{1}(N)\\) 的任一非平凡分裂给出非空不可压缩且非边界平行曲面系 \\(\\Sigma\\)，其每分支基本群像含于边群，每补分支基本群像含于顶点群，且可与基本群像已含于顶点群的边界子复形 \\(\\mathcal{K}\\) 不交。"
+        },
+        {
+          "id": "C311",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "双曲表示可提升",
+          "statement": "双曲三维流形 \\(M\\) 的典范表示 \\(\\pi_{1}(M)\\to\\mathrm{PSL}_{2}(\\mathbf{C})\\) 可提升为到 \\(\\mathrm{SL}_{2}(\\mathbf{C})\\) 的表示。"
+        },
+        {
+          "id": "C321",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "特征标簇维数下界",
+          "statement": "设 \\(N\\) 紧致可定向，\\(\\rho_{0}:\\pi_{1}(N)\\to\\mathrm{SL}_{2}(\\mathbf{C})\\) 不可约且在 \\(\\partial N\\) 每环面分支上的限制不含于 \\(\\{\\pm 1\\}\\)，\\(R_{0}\\) 为含 \\(\\rho_{0}\\) 的不可约分支，则 \\(X_{0}=t(R_{0})\\) 的维数至少为 \\(s-3\\chi(N)\\)，其中 \\(s\\) 为边界环面个数。"
+        },
+        {
+          "id": "C413",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "同伦微分同胚提升的边界对应",
+          "statement": "设 \\(M,M'\\) 为闭双曲三维流形，\\(F_{0},F_{1}\\) 同伦的微分同胚且 \\(F_{0}\\) 为等距，则 \\(F_{1}\\) 有唯一提升 \\(\\tilde{F}_{1}:H^{3}\\to H^{3}\\) 可扩张为 \\(\\overline{H}^{3}\\) 的同胚并在无穷球面上诱导与 \\(\\tilde{F}_{0}\\) 相同的单应或反单应。"
+        },
+        {
+          "id": "C414",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "刚性等距唯一性",
+          "statement": "闭双曲三维流形间同伦等距的结论中等距唯一。"
+        },
+        {
+          "id": "C415",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "微分同胚提升扩张为球面单应",
+          "statement": "闭双曲三维流形间的任一微分同胚的任一提升皆可扩张为 \\(\\overline{H}^{3}\\) 的同胚，并在 \\(S_{\\infty}\\) 上限制为单应或反单应。"
+        },
+        {
+          "id": "C421",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "有限双曲覆盖蕴含同伦等价于双曲流形",
+          "statement": "若闭可定向三维流形 \\(M\\) 的某有限层覆盖具双曲度量，则 \\(M\\) 同伦等价于一双曲三维流形。"
+        },
+        {
+          "id": "C422",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "虚拟哈肯流形结构定理",
+          "statement": "设 \\(M\\) 为无边界虚拟哈肯流形，则或 \\(M\\) 塞弗特纤维化，或含不可压缩环面，或同伦等价于双曲三维流形。"
+        },
+        {
+          "id": "C512",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "正则分支覆盖四选一定理",
+          "statement": "若 \\(L\\) 素且不可分裂，则下述之一成立：\\((I)\\) \\(M-L\\) 为塞弗特空间与闭流形的连通和；\\((II)\\) \\(N\\) 含正亏格闭不可压缩曲面；\\((III)\\) \\(M\\) 与 \\(N\\) 皆含非分离二球面；\\((IV)\\) \\(\\tilde{\\Gamma}\\) 到 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 有不可对角化表示，在每稳定子上的限制忠实。"
+        },
+        {
+          "id": "C513",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "循环分支覆盖的表示或环面",
+          "statement": "若 \\(\\Gamma\\) 循环且 \\(L\\) 为非平凡链环，则或 \\(\\pi_{1}(N)\\) 有到 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的非平凡表示，或 \\(N\\) 含不可压缩环面。"
+        },
+        {
+          "id": "C514",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "广义史密斯猜想",
+          "statement": "若 \\(\\Gamma\\) 循环且 \\(L\\) 为非平凡纽结，则 \\(\\pi_{1}(N)\\neq 1\\)。"
+        },
+        {
+          "id": "C521",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "边界恒同对合的商仍塞弗特",
+          "statement": "设 \\(T\\) 为有界可定向塞弗特流形 \\(Q_{0}\\) 的对合且在边界同伦于恒等，则商具塞弗特纤维化且分支集 \\((\\mathrm{Fix}\\,T)/T\\) 为有限纤维并。"
+        },
+        {
+          "id": "C522",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "二幂指数覆盖保持塞弗特和分解",
+          "statement": "设 \\(\\Gamma_{0}\\triangleleft\\Gamma\\) 指数为二的幂，\\(M_{0}=N/\\Gamma_{0}\\) 以 \\(L_{0}\\) 为分支集，若 \\(M_{0}-L_{0}\\) 为塞弗特空间与闭流形的连通和，则 \\(M-L\\) 亦然。"
+        },
+        {
+          "id": "C523",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "单连通二伦蕴含分支链环素性",
+          "statement": "若 \\(\\pi_{2}(N)=0\\)，则 \\(L\\) 素且 \\(\\pi_{2}(M-L)=0\\)。"
+        },
+        {
+          "id": "C524",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "大分歧指数的无限表示定理",
+          "statement": "若 \\(\\pi_{2}(N)=0\\) 且某 \\(r_{i}>5\\)，则或 \\(M-L\\) 为塞弗特空间与闭流形的连通和，或 \\(N\\) 含不可压缩环面，或 \\(\\pi_{1}(N)\\) 有指数为二的幂的子群具到 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的无限像表示。"
+        },
+        {
+          "id": "C525",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "大分歧指数蕴含基本群无限",
+          "statement": "若某 \\(r_{i}>5\\)，则或 \\(N\\) 有无限基本群，或 \\(M-L\\) 为塞弗特空间与闭流形的连通和。"
+        },
+        {
+          "id": "C526",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "戴维斯摩根定理",
+          "statement": "设有限群 \\(\\Gamma\\) 作用于同伦三球面，稳定子皆循环且其一阶数大于五，则作用本质线性。"
+        },
+        {
+          "id": "C527",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "具正规二补时的无限表示加强",
+          "statement": "若 \\(\\pi_{2}(N)=0\\)，某 \\(r_{i}>5\\) 且 \\(\\Gamma\\) 具正规二补，则或 \\(M-L\\) 为塞弗特空间与闭流形的连通和，或 \\(N\\) 含不可压缩环面，或 \\(\\pi_{1}(N)\\) 本身具到 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的无限像表示。"
+        },
+        {
+          "id": "C531",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "中心定理类比",
+          "statement": "若 \\(L\\) 非平凡且某 \\(r_{i}>5\\)，而 \\(\\pi_{1}(N)\\) 有非平凡中心，则 \\(N\\) 为塞弗特空间与同伦三球面的连通和。"
+        },
+        {
+          "id": "C532",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "自由子群二择一定理类比",
+          "statement": "若某 \\(r_{i}>5\\)，则 \\(\\pi_{1}(N)\\) 或多循环或含秩二自由子群。"
+        },
+        {
+          "id": "B211",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "巴斯塞尔组合定理",
+          "statement": "若群 \\(\\Pi\\) 无反转地作用在树 \\(T\\) 上，则 \\(\\Pi\\) 同构于商群图 \\((T/\\Pi,\\mathcal{G})\\) 的基本群，其中顶点与边的稳定子给出群图结构。"
+        },
+        {
+          "id": "B212",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "赋值分裂定理",
+          "statement": "若 \\(\\rho\\) 为群 \\(\\Pi\\) 到 \\(\\mathrm{SL}_{2}(F)\\) 的表示，\\(F\\) 具离散赋值 \\(v\\) 与赋值环 \\(\\mathcal{O}\\)，则 \\(\\Pi\\) 有分裂，其顶点群恰为在 \\(\\rho\\) 下共轭入 \\(\\mathrm{SL}_{2}(\\mathcal{O})\\) 的子群。"
+        },
+        {
+          "id": "B411",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "瑟斯顿一致化定理",
+          "statement": "设 \\(N\\) 为边界分支皆环面的哈肯流形，则或 \\(N\\) 塞弗特纤维化，或含非边界平行不可压缩环面，或同胚于有限体积双曲流形的紧化 \\(\\overline{M}\\)。"
+        },
+        {
+          "id": "B412",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "莫斯托刚性定理",
+          "statement": "闭双曲三维流形间的任一微分同胚同伦于一等距。"
+        },
+        {
+          "id": "B511",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "戈登利瑟兰充分大链环定理",
+          "statement": "若 \\(L\\) 素且充分大，则或 \\(N\\) 含正亏格不可压缩曲面，或 \\(M\\) 与 \\(N\\) 皆含非分离二球面。"
+        },
+        {
+          "id": "Bburn",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "伯恩赛德引理",
+          "statement": "绝对不可约子群 \\(\\Gamma\\subset\\mathrm{GL}_{n}(K)\\) 在矩阵代数 \\(M_{n}(K)\\) 中的线性张成为全空间，且有由 \\(\\Gamma\\) 元的迹为系数表出的基。"
+        },
+        {
+          "id": "Btol34",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "托列夫森纤维保持定理",
+          "statement": "有界可定向塞弗特流形的对合在适当纤维化下保持纤维。"
+        },
+        {
+          "id": "Btol33",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "托列夫森不变球面定理",
+          "statement": "二层覆盖变换下，若 \\(M_{0}-L_{0}\\) 含不围球的二球面，则含满足 \\(\\Sigma=T(\\Sigma)\\) 或 \\(\\Sigma\\cap T(\\Sigma)=\\emptyset\\) 的二球面。"
+        },
+        {
+          "id": "Btorus",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "虚拟哈肯环面定理",
+          "statement": "在虚拟哈肯闭不可约三维流形中环面猜想成立：每本质奇异环面同伦入具不可压缩边界环面的塞弗特子流形中，否则流形塞弗特纤维化或含不可压缩环面。该结论由斯科特、沃尔德豪森与米克斯西蒙丘的工作推出。"
+        },
+        {
+          "id": "Bmeeks",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "有限覆盖不可约性",
+          "statement": "可定向不可约三维流形的有限层覆盖仍不可约。"
+        },
+        {
+          "id": "Btits",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "蒂茨抉择",
+          "statement": "\\(\\mathrm{GL}_{n}(\\mathbf{C})\\) 从而 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的每子群或有有限指数可解子群或含秩二自由子群。"
+        },
+        {
+          "id": "Bmalcev",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "马尔采夫剩余有限性",
+          "statement": "域上有限生成矩阵群剩余有限。"
+        },
+        {
+          "id": "Bschur",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "舒尔无限阶元定理",
+          "statement": "\\(\\mathrm{GL}_{n}(\\mathbf{C})\\) 从而 \\(\\mathrm{PSL}_{2}(\\mathbf{C})\\) 的无限有限生成子群含无限阶元。"
+        },
+        {
+          "id": "Bwald",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "沃尔德豪森中心与环面定理",
+          "statement": "具非平凡中心或具不可压缩环面的哈肯流形若不可约则塞弗特纤维化。"
+        },
+        {
+          "id": "Bscott",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "斯科特塞弗特覆盖定理",
+          "statement": "若闭三维流形的有限层覆盖为具无限基本群的塞弗特空间，则其本身塞弗特纤维化。"
+        },
+        {
+          "id": "Bevans",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "埃文斯雅科二择一定理",
+          "statement": "哈肯流形基本群或多循环或含秩二自由子群。"
+        },
+        {
+          "id": "Bsmith",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "史密斯理论同调结论",
+          "statement": "循环分支覆盖若分支集不为纽结，则 \\(H_{1}(N;\\mathbf{Z})\\neq 0\\)，从而 \\(\\pi_{1}(N)\\) 有非平凡循环表示。"
+        },
+        {
+          "id": "Bkneser",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "克内泽尔素分解定理",
+          "statement": "三维流形有有限素分解且在相差同胚意义下唯一；非平凡自由积对应非平凡连通和，中心非平凡蕴含分解中至多一非单连通不可约因子。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "O-X",
+          "operationKind": "organization",
+          "premises": [
+            "F-R-def"
+          ],
+          "conclusion": "F-X-def",
+          "argument": "特征标簇由表示簇经迹函数环构造：用有限个迹函数生成环并取像集，点对应特征标，正则函数由多项式限制得到。"
+        },
+        {
+          "id": "O-curve",
+          "operationKind": "organization",
+          "premises": [
+            "F-R-def",
+            "F-X-def"
+          ],
+          "conclusion": "F-curve-def",
+          "argument": "光滑射影模型与典范表示由表示簇与特征标簇中的曲线构造：完备化并解奇点得光滑模型，坐标函数给出到函数域上特殊线性群的典范表示，理想点给出赋值。"
+        },
+        {
+          "id": "I111",
+          "operationKind": "proof",
+          "premises": [
+            "F-R-def"
+          ],
+          "conclusion": "C111",
+          "argument": "用 \\(V\\times\\mathrm{SL}_{2}(\\mathbf{C})\\) 经共轭映射的像的闭包为簇，含 \\(V\\) 故等于分支，从而等价表示不离开分支。"
+        },
+        {
+          "id": "I121",
+          "operationKind": "proof",
+          "premises": [
+            "F-R-def",
+            "F-X-def"
+          ],
+          "conclusion": "C121",
+          "argument": "上三角化给出换位子迹为二；若所有换位子迹为二而像非阿贝尔，取迹二非恒等元的唯一不变直线，用不同不变直线的显式矩阵算得乘积迹不为二得矛盾，故有公共不变直线。"
+        },
+        {
+          "id": "I122",
+          "operationKind": "proof",
+          "premises": [
+            "C121"
+          ],
+          "conclusion": "C122",
+          "argument": "代数闭时阿贝尔像自动可约，非阿贝尔时直接应用前一引理。"
+        },
+        {
+          "id": "I131",
+          "operationKind": "proof",
+          "premises": [
+            "F-curve-def",
+            "C122"
+          ],
+          "conclusion": "C131",
+          "argument": "若典范表示在代数闭包上可约，则每换位子迹函数恒为二，从而曲线上每表示在每换位子处迹为二，由推论皆可约，逆否即得结论。"
+        },
+        {
+          "id": "I141",
+          "operationKind": "proof",
+          "premises": [
+            "F-X-def"
+          ],
+          "conclusion": "C141",
+          "argument": "由凯莱哈密顿得迹恒等式，对生成元字长的两种归纳分别消去负幂、高幂与重复指标，证每迹函数属于不同指标单项式生成的环。"
+        },
+        {
+          "id": "I142",
+          "operationKind": "proof",
+          "premises": [
+            "C122",
+            "C141"
+          ],
+          "conclusion": "C142",
+          "argument": "可约等价于换位子迹皆为二，而每换位子迹为生成迹的多项式复合，故可约集为某闭集在映射下的原像。"
+        },
+        {
+          "id": "I143",
+          "operationKind": "proof",
+          "premises": [
+            "Bburn"
+          ],
+          "conclusion": "C143",
+          "argument": "由伯恩赛德引理，张成矩阵代数的有限基系数皆为迹，故群代数含于有限生成模从而有限生成，张成全空间后取非零向量得不变格，由主理想整环上有限生成模自由得基变换入整系数。"
+        },
+        {
+          "id": "I144",
+          "operationKind": "proof",
+          "premises": [
+            "F-curve-def",
+            "C142",
+            "C143",
+            "C141"
+          ],
+          "conclusion": "C144",
+          "argument": "像的闭包减去真闭子集含于像中，取过给定点的曲线并提升为表示曲线，若提升点为理想点则迹函数在该点有限故特征标值含于赋值环，由整性引理共轭入整系数后在该点求值得表示，其特征标恰为给定点。"
+        },
+        {
+          "id": "I145",
+          "operationKind": "proof",
+          "premises": [
+            "C144",
+            "C142"
+          ],
+          "conclusion": "C145",
+          "argument": "把表示簇分为含不可约表示的分支并与可约集两部分，前者像闭由前命题，后者化为对角表示而投影为正常映射故像闭，并得点与特征标一一对应及正则函数。"
+        },
+        {
+          "id": "I151",
+          "operationKind": "proof",
+          "premises": [
+            "F-R-def"
+          ],
+          "conclusion": "C151",
+          "argument": "先取与给定元无公共特征向量的元，若其迹为正负二则化为若尔当形并用幂平移使乘积迹避开正负二，所得元仍无公共特征向量。"
+        },
+        {
+          "id": "I152",
+          "operationKind": "proof",
+          "premises": [
+            "C151",
+            "C121"
+          ],
+          "conclusion": "C152",
+          "argument": "取二元不可约限制且一元对角化为相异特征值，用对角共轭规范化另一元使非对角元为一，再由特征标在该元与乘积上的相等逐项解出矩阵元相等。"
+        },
+        {
+          "id": "I153",
+          "operationKind": "proof",
+          "premises": [
+            "C152",
+            "C142"
+          ],
+          "conclusion": "C153",
+          "argument": "在避开可约轨迹的开集上纤维为单等价类，而不可约表示中心化子为正负单位阵故共轭映射为二叶覆盖，纤维维数为三。"
+        },
+        {
+          "id": "I154",
+          "operationKind": "proof",
+          "premises": [
+            "C151",
+            "C121"
+          ],
+          "conclusion": "C154",
+          "argument": "取二元不可约子群并在其换位子群中取迹不为二的元，以该迹函数不为二定义开集，则原像中限制仍不可约从而原元不为正负单位阵。"
+        },
+        {
+          "id": "I155",
+          "operationKind": "proof",
+          "premises": [
+            "C141",
+            "C122"
+          ],
+          "conclusion": "C155",
+          "argument": "化为自由二元情形，字符由三点值决定，与循环表示具相同三点值故限制可约，得换位子与两生成元各有公共向量，而迹二非恒等元唯一不变直线迫使两生成元共线。"
+        },
+        {
+          "id": "I221",
+          "operationKind": "proof",
+          "premises": [
+            "F-curve-def",
+            "B212"
+          ],
+          "conclusion": "C221",
+          "argument": "取到表示曲线的非常值提升，理想点的原像仍为理想点，典范表示与赋值给出分裂；矩阵共轭入整系数等价于迹无极点，用显式矩阵 \\(\\begin{pmatrix}0&-1\\\\1&\\tilde{\\tau}_{g}\\end{pmatrix}\\) 证反向，理想点处必有某迹取极点故分裂非平凡。"
+        },
+        {
+          "id": "I231",
+          "operationKind": "proof",
+          "premises": [
+            "F-graph-def",
+            "F-surf-def"
+          ],
+          "conclusion": "C231",
+          "argument": "用映射到群图空间并横截于边中点，压缩去掉可压缩分支与边界平行分支，若为空则基本群落入顶点群与非平凡矛盾，边界子复形可先送入顶点空间而保持不交。"
+        },
+        {
+          "id": "I311",
+          "operationKind": "proof",
+          "premises": [
+            "F-hyp-def"
+          ],
+          "conclusion": "C311",
+          "argument": "单位切标架丛辨识为正交标架丛的覆盖，基本群为提升群，由可平行化得分裂为直积，无挠迫使提升给出截面。"
+        },
+        {
+          "id": "I321",
+          "operationKind": "proof",
+          "premises": [
+            "C151",
+            "C155",
+            "C153",
+            "C142"
+          ],
+          "conclusion": "C321",
+          "argument": "对边界环面个数归纳，无环面时由关系映射的纤维维数计数得下界；加二柄时用迹映射到二维空间的纤维并以可约轨迹与迹为正负二的闭集排除，由二元引理知纤维含于分支交中，从而维数降至多二，结合维数公式得特征标维数下界。"
+        },
+        {
+          "id": "I413",
+          "operationKind": "proof",
+          "premises": [
+            "F-hyp-def",
+            "B412"
+          ],
+          "conclusion": "C413",
+          "argument": "同伦提升的长度一致有界故双曲距离有界，有界距离的两序列在闭球中收敛到同—边界点，由等距提升的边界值推出终时刻提升具相同边界映射，覆盖变换差给出唯一性。"
+        },
+        {
+          "id": "I414",
+          "operationKind": "proof",
+          "premises": [
+            "C413"
+          ],
+          "conclusion": "C414",
+          "argument": "两等距若同伦则具相同边界单应，而双曲等距由边界单应唯一决定。"
+        },
+        {
+          "id": "I415",
+          "operationKind": "proof",
+          "premises": [
+            "B412",
+            "C413"
+          ],
+          "conclusion": "C415",
+          "argument": "由刚性微分同胚同伦于等距，再用同伦提升的边界保持性质得原提升具所需扩张与单应。"
+        },
+        {
+          "id": "I421",
+          "operationKind": "proof",
+          "premises": [
+            "C415"
+          ],
+          "conclusion": "C421",
+          "argument": "取正规有限覆盖为双曲，将万有覆盖等同于双曲空间，每覆盖变换由边界扩张定义在无穷远的表示，限制在有限指数子群单故整体单且离散无挠，给出同伦等价的双曲流形。"
+        },
+        {
+          "id": "I422",
+          "operationKind": "proof",
+          "premises": [
+            "B411",
+            "C421",
+            "Btorus"
+          ],
+          "conclusion": "C422",
+          "argument": "若有本质奇异环面则由环面定理得塞弗特或不可压缩环面；否则有限哈肯覆盖无本质奇异环面从而非塞弗特且无不可压缩环面，由一致化得双曲，再由前命题得原流形同伦等价于双曲。"
+        },
+        {
+          "id": "I521",
+          "operationKind": "proof",
+          "premises": [
+            "Btol34"
+          ],
+          "conclusion": "C521",
+          "argument": "边界同伦恒等蕴含保定向，固定集为一维流形，由纤维保持定理取不变纤维，迹群固定迫使不反转定向，固定点处二阶保定向映射恒同，故固定集为纤维并使商纤维化。"
+        },
+        {
+          "id": "I522",
+          "operationKind": "proof",
+          "premises": [
+            "C521",
+            "Btol33",
+            "Bkneser"
+          ],
+          "conclusion": "C522",
+          "argument": "化为指数二情形，不变球面系切割封口后由素分解唯一性得唯一非闭分支为原塞弗特分支，对合诱导其上而商仍塞弗特且分支集为纤维并，故底空间亦为塞弗特与闭流形之和。"
+        },
+        {
+          "id": "I523",
+          "operationKind": "proof",
+          "premises": [
+            "C513",
+            "Bkneser"
+          ],
+          "conclusion": "C523",
+          "argument": "若链环非素则交链环两点的分离球面提升后必有单边分支给出循环分支覆盖的非平凡连通和子，与单连通性矛盾；球面提升的单边分支不含奇异集且单连通故下投影可缩，得余集二伦为零。"
+        },
+        {
+          "id": "I512",
+          "operationKind": "proof",
+          "premises": [
+            "B511",
+            "B411",
+            "C221",
+            "C231",
+            "C321",
+            "C311"
+          ],
+          "conclusion": "C512",
+          "argument": "不可分裂时归为连通和中唯一非闭因子，若含非分离球面或充分大则前三者之一成立，否则余为具有限体积双曲度量的不可约非塞弗特流形；取忠实离散提升与分支，在子午线迹映射下若非满则拉回直线得曲线，其理想点处子午线迹有限，由基本定理与曲面构造得边界皆子午线的不可压缩曲面，与非充分大矛盾，故满而取到阶为二倍分歧指数的特征标，非对角化提升给出稳定子忠实的不可对角化表示。"
+        },
+        {
+          "id": "I513",
+          "operationKind": "proof",
+          "premises": [
+            "C512",
+            "Bsmith",
+            "Bkneser",
+            "B411"
+          ],
+          "conclusion": "C513",
+          "argument": "化为素链环，多分支时由史密斯理论一阶同调非零得循环表示；纽结时四选一中塞弗特和分支由不变量非三球面得富克斯商，双曲或哈肯分支得表示或环面，非分离球面得循环商，不可对角化分支限制到循环商核上非平凡。"
+        },
+        {
+          "id": "I514",
+          "operationKind": "proof",
+          "premises": [
+            "C513"
+          ],
+          "conclusion": "C514",
+          "argument": "非平凡纽结循环分支覆盖若单连通则既无非平凡表示又无不可压缩环面，与前推论矛盾。"
+        },
+        {
+          "id": "I524",
+          "operationKind": "proof",
+          "premises": [
+            "C512",
+            "C522",
+            "C523",
+            "C422",
+            "Bmeeks"
+          ],
+          "conclusion": "C524",
+          "argument": "化为有理同调球面并取二阶子午线生成的二补覆盖使分歧指数皆大于二且其一大于五，分支集素且余集二伦为零故适用四选一；塞弗特和情形由二幂下降得结论，具正亏格曲面时连通和分解为虚拟哈肯与同伦球面之和再用虚拟哈肯定理得环面或无限表示，非分离球面不可能，剩余表示若无限即得结论，若有限则阶大于五迫使像为二面体，取指数二子群得无分支二层覆盖并提升同特征标的不可对角化可约表示，由核的上三角结构得无限阿贝尔化从而虚拟哈肯，复用前二分得结论。"
+        },
+        {
+          "id": "I525",
+          "operationKind": "proof",
+          "premises": [
+            "C524"
+          ],
+          "conclusion": "C525",
+          "argument": "若基本群有限则不可能有无限像表示，故只剩塞弗特和分解。"
+        },
+        {
+          "id": "I526",
+          "operationKind": "proof",
+          "premises": [
+            "C525"
+          ],
+          "conclusion": "C526",
+          "argument": "商为塞弗特与闭流形之和，闭因子必为同伦球面给出不变同伦胞腔族，球面上保纤维作用共轭于线性作用，细节如戴维斯摩根原文。"
+        },
+        {
+          "id": "I527",
+          "operationKind": "proof",
+          "premises": [
+            "C524"
+          ],
+          "conclusion": "C527",
+          "argument": "改取到正规二补的原像为二幂指数正规子群，其中无二阶稳定子，复用大指数定理证明即得基本群本身的无限表示。"
+        },
+        {
+          "id": "I531",
+          "operationKind": "proof",
+          "premises": [
+            "C524",
+            "Bwald",
+            "Bscott",
+            "Bmalcev",
+            "Bschur",
+            "Bkneser",
+            "Btorus"
+          ],
+          "conclusion": "C531",
+          "argument": "中心非平凡迫使连通和至多一非单连通不可约因子，化为不可约情形；塞弗特和与具环面情形由已知定理得塞弗特，无限表示情形中若中心像非平凡则像阿贝尔得上同调满到整数从而覆盖含曲面，再由不可约与沃尔德豪森及斯科特定理得塞弗特，若中心像平凡则取无限阶元与中心元生成秩二阿贝尔子群得本质奇异环面，由半剩余有限环面定理与沃尔德豪森得塞弗特。"
+        },
+        {
+          "id": "I532",
+          "operationKind": "proof",
+          "premises": [
+            "C524",
+            "C422",
+            "Btits",
+            "Bevans",
+            "Bmeeks",
+            "C523"
+          ],
+          "conclusion": "C532",
+          "argument": "二球面非零时基本群为整数或非平凡自由积直接检验；否则用大指数定理，具环面时同伦于哈肯而用埃文斯雅科，有限指数无限表示时用蒂茨抉择，自由情形即得，可解情形得满到整数的有限指数子群从而虚拟哈肯，再按哈肯双曲塞弗特三分分别用已知定理与富克斯群二择一完成，塞弗特和情形化为有限或无限基本群分别用线性表示与多循环判定。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "B211",
+        "B212",
+        "B411",
+        "B412",
+        "B511",
+        "Bburn",
+        "Btol34",
+        "Btol33",
+        "Btorus",
+        "Bmeeks",
+        "Btits",
+        "Bmalcev",
+        "Bschur",
+        "Bwald",
+        "Bscott",
+        "Bevans",
+        "Bsmith",
+        "Bkneser"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "14_Culler_Shalen_Character_varieties_splittings.pdf",
+        "pageCount": 39
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 64657,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-R-def",
+                "F-X-def",
+                "F-curve-def",
+                "F-graph-def",
+                "F-surf-def",
+                "F-hyp-def",
+                "F-haken-def",
+                "F-branch-def"
+              ],
+              "b0ClaimEntryIds": [
+                "B211",
+                "B212",
+                "B411",
+                "B412",
+                "B511",
+                "Bburn",
+                "Btol34",
+                "Btol33",
+                "Btorus",
+                "Bmeeks",
+                "Btits",
+                "Bmalcev",
+                "Bschur",
+                "Bwald",
+                "Bscott",
+                "Bevans",
+                "Bsmith",
+                "Bkneser"
+              ],
+              "closureClaimEntryIds": [
+                "C111",
+                "C121",
+                "C122",
+                "C131",
+                "C141",
+                "C142",
+                "C143",
+                "C144",
+                "C145",
+                "C151",
+                "C152",
+                "C153",
+                "C154",
+                "C155",
+                "C221",
+                "C231",
+                "C311",
+                "C321",
+                "C413",
+                "C414",
+                "C415",
+                "C421",
+                "C422",
+                "C512",
+                "C513",
+                "C514",
+                "C521",
+                "C522",
+                "C523",
+                "C524",
+                "C525",
+                "C526",
+                "C527",
+                "C531",
+                "C532",
+                "B211",
+                "B212",
+                "B411",
+                "B412",
+                "B511",
+                "Bburn",
+                "Btol34",
+                "Btol33",
+                "Btorus",
+                "Bmeeks",
+                "Btits",
+                "Bmalcev",
+                "Bschur",
+                "Bwald",
+                "Bscott",
+                "Bevans",
+                "Bsmith",
+                "Bkneser"
+              ],
+              "claimStates": {
+                "C111": "established",
+                "C121": "established",
+                "C122": "established",
+                "C131": "established",
+                "C141": "established",
+                "C142": "established",
+                "C143": "established",
+                "C144": "established",
+                "C145": "established",
+                "C151": "established",
+                "C152": "established",
+                "C153": "established",
+                "C154": "established",
+                "C155": "established",
+                "C221": "established",
+                "C231": "established",
+                "C311": "established",
+                "C321": "established",
+                "C413": "established",
+                "C414": "established",
+                "C415": "established",
+                "C421": "established",
+                "C422": "established",
+                "C512": "established",
+                "C513": "established",
+                "C514": "established",
+                "C521": "established",
+                "C522": "established",
+                "C523": "established",
+                "C524": "established",
+                "C525": "established",
+                "C526": "established",
+                "C527": "established",
+                "C531": "established",
+                "C532": "established",
+                "B211": "established",
+                "B212": "established",
+                "B411": "established",
+                "B412": "established",
+                "B511": "established",
+                "Bburn": "established",
+                "Btol34": "established",
+                "Btol33": "established",
+                "Btorus": "established",
+                "Bmeeks": "established",
+                "Btits": "established",
+                "Bmalcev": "established",
+                "Bschur": "established",
+                "Bwald": "established",
+                "Bscott": "established",
+                "Bevans": "established",
+                "Bsmith": "established",
+                "Bkneser": "established"
+              },
+              "claimDerivations": {
+                "C111": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I111"
+                  ]
+                },
+                "C121": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I121"
+                  ]
+                },
+                "C122": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I122"
+                  ]
+                },
+                "C131": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I131"
+                  ]
+                },
+                "C141": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I141"
+                  ]
+                },
+                "C142": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I142"
+                  ]
+                },
+                "C143": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I143"
+                  ]
+                },
+                "C144": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I144"
+                  ]
+                },
+                "C145": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I145"
+                  ]
+                },
+                "C151": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I151"
+                  ]
+                },
+                "C152": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I152"
+                  ]
+                },
+                "C153": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I153"
+                  ]
+                },
+                "C154": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I154"
+                  ]
+                },
+                "C155": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I155"
+                  ]
+                },
+                "C221": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I221"
+                  ]
+                },
+                "C231": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I231"
+                  ]
+                },
+                "C311": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I311"
+                  ]
+                },
+                "C321": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I321"
+                  ]
+                },
+                "C413": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I413"
+                  ]
+                },
+                "C414": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I414"
+                  ]
+                },
+                "C415": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I415"
+                  ]
+                },
+                "C421": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I421"
+                  ]
+                },
+                "C422": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I422"
+                  ]
+                },
+                "C512": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I512"
+                  ]
+                },
+                "C513": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I513"
+                  ]
+                },
+                "C514": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I514"
+                  ]
+                },
+                "C521": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I521"
+                  ]
+                },
+                "C522": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I522"
+                  ]
+                },
+                "C523": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I523"
+                  ]
+                },
+                "C524": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I524"
+                  ]
+                },
+                "C525": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I525"
+                  ]
+                },
+                "C526": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I526"
+                  ]
+                },
+                "C527": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I527"
+                  ]
+                },
+                "C531": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I531"
+                  ]
+                },
+                "C532": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I532"
+                  ]
+                },
+                "B211": {
+                  "basis": "b0"
+                },
+                "B212": {
+                  "basis": "b0"
+                },
+                "B411": {
+                  "basis": "b0"
+                },
+                "B412": {
+                  "basis": "b0"
+                },
+                "B511": {
+                  "basis": "b0"
+                },
+                "Bburn": {
+                  "basis": "b0"
+                },
+                "Btol34": {
+                  "basis": "b0"
+                },
+                "Btol33": {
+                  "basis": "b0"
+                },
+                "Btorus": {
+                  "basis": "b0"
+                },
+                "Bmeeks": {
+                  "basis": "b0"
+                },
+                "Btits": {
+                  "basis": "b0"
+                },
+                "Bmalcev": {
+                  "basis": "b0"
+                },
+                "Bschur": {
+                  "basis": "b0"
+                },
+                "Bwald": {
+                  "basis": "b0"
+                },
+                "Bscott": {
+                  "basis": "b0"
+                },
+                "Bevans": {
+                  "basis": "b0"
+                },
+                "Bsmith": {
+                  "basis": "b0"
+                },
+                "Bkneser": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-R-def",
+                "F-X-def",
+                "F-curve-def",
+                "F-graph-def",
+                "F-surf-def",
+                "F-hyp-def",
+                "F-haken-def",
+                "F-branch-def"
+              ],
+              "b0ClaimEntryIds": [
+                "B211",
+                "B212",
+                "B411",
+                "B412",
+                "B511",
+                "Bburn",
+                "Btol34",
+                "Btol33",
+                "Btorus",
+                "Bmeeks",
+                "Btits",
+                "Bmalcev",
+                "Bschur",
+                "Bwald",
+                "Bscott",
+                "Bevans",
+                "Bsmith",
+                "Bkneser"
+              ],
+              "closureClaimEntryIds": [
+                "C111",
+                "C121",
+                "C122",
+                "C131",
+                "C141",
+                "C142",
+                "C143",
+                "C144",
+                "C145",
+                "C151",
+                "C152",
+                "C153",
+                "C154",
+                "C155",
+                "C221",
+                "C231",
+                "C311",
+                "C321",
+                "C413",
+                "C414",
+                "C415",
+                "C421",
+                "C422",
+                "C512",
+                "C513",
+                "C514",
+                "C521",
+                "C522",
+                "C523",
+                "C524",
+                "C525",
+                "C526",
+                "C527",
+                "C531",
+                "C532",
+                "B211",
+                "B212",
+                "B411",
+                "B412",
+                "B511",
+                "Bburn",
+                "Btol34",
+                "Btol33",
+                "Btorus",
+                "Bmeeks",
+                "Btits",
+                "Bmalcev",
+                "Bschur",
+                "Bwald",
+                "Bscott",
+                "Bevans",
+                "Bsmith",
+                "Bkneser"
+              ],
+              "claimStates": {
+                "C111": "established",
+                "C121": "established",
+                "C122": "established",
+                "C131": "established",
+                "C141": "established",
+                "C142": "established",
+                "C143": "established",
+                "C144": "established",
+                "C145": "established",
+                "C151": "established",
+                "C152": "established",
+                "C153": "established",
+                "C154": "established",
+                "C155": "established",
+                "C221": "established",
+                "C231": "established",
+                "C311": "established",
+                "C321": "established",
+                "C413": "established",
+                "C414": "established",
+                "C415": "established",
+                "C421": "established",
+                "C422": "established",
+                "C512": "established",
+                "C513": "established",
+                "C514": "established",
+                "C521": "established",
+                "C522": "established",
+                "C523": "established",
+                "C524": "established",
+                "C525": "established",
+                "C526": "established",
+                "C527": "established",
+                "C531": "established",
+                "C532": "established",
+                "B211": "established",
+                "B212": "established",
+                "B411": "established",
+                "B412": "established",
+                "B511": "established",
+                "Bburn": "established",
+                "Btol34": "established",
+                "Btol33": "established",
+                "Btorus": "established",
+                "Bmeeks": "established",
+                "Btits": "established",
+                "Bmalcev": "established",
+                "Bschur": "established",
+                "Bwald": "established",
+                "Bscott": "established",
+                "Bevans": "established",
+                "Bsmith": "established",
+                "Bkneser": "established"
+              },
+              "claimDerivations": {
+                "C111": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I111"
+                  ]
+                },
+                "C121": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I121"
+                  ]
+                },
+                "C122": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I122"
+                  ]
+                },
+                "C131": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I131"
+                  ]
+                },
+                "C141": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I141"
+                  ]
+                },
+                "C142": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I142"
+                  ]
+                },
+                "C143": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I143"
+                  ]
+                },
+                "C144": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I144"
+                  ]
+                },
+                "C145": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I145"
+                  ]
+                },
+                "C151": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I151"
+                  ]
+                },
+                "C152": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I152"
+                  ]
+                },
+                "C153": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I153"
+                  ]
+                },
+                "C154": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I154"
+                  ]
+                },
+                "C155": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I155"
+                  ]
+                },
+                "C221": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I221"
+                  ]
+                },
+                "C231": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I231"
+                  ]
+                },
+                "C311": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I311"
+                  ]
+                },
+                "C321": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I321"
+                  ]
+                },
+                "C413": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I413"
+                  ]
+                },
+                "C414": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I414"
+                  ]
+                },
+                "C415": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I415"
+                  ]
+                },
+                "C421": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I421"
+                  ]
+                },
+                "C422": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I422"
+                  ]
+                },
+                "C512": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I512"
+                  ]
+                },
+                "C513": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I513"
+                  ]
+                },
+                "C514": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I514"
+                  ]
+                },
+                "C521": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I521"
+                  ]
+                },
+                "C522": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I522"
+                  ]
+                },
+                "C523": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I523"
+                  ]
+                },
+                "C524": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I524"
+                  ]
+                },
+                "C525": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I525"
+                  ]
+                },
+                "C526": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I526"
+                  ]
+                },
+                "C527": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I527"
+                  ]
+                },
+                "C531": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I531"
+                  ]
+                },
+                "C532": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I532"
+                  ]
+                },
+                "B211": {
+                  "basis": "b0"
+                },
+                "B212": {
+                  "basis": "b0"
+                },
+                "B411": {
+                  "basis": "b0"
+                },
+                "B412": {
+                  "basis": "b0"
+                },
+                "B511": {
+                  "basis": "b0"
+                },
+                "Bburn": {
+                  "basis": "b0"
+                },
+                "Btol34": {
+                  "basis": "b0"
+                },
+                "Btol33": {
+                  "basis": "b0"
+                },
+                "Btorus": {
+                  "basis": "b0"
+                },
+                "Bmeeks": {
+                  "basis": "b0"
+                },
+                "Btits": {
+                  "basis": "b0"
+                },
+                "Bmalcev": {
+                  "basis": "b0"
+                },
+                "Bschur": {
+                  "basis": "b0"
+                },
+                "Bwald": {
+                  "basis": "b0"
+                },
+                "Bscott": {
+                  "basis": "b0"
+                },
+                "Bevans": {
+                  "basis": "b0"
+                },
+                "Bsmith": {
+                  "basis": "b0"
+                },
+                "Bkneser": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I144"
+                ],
+                "sourceRefs": [
+                  "§1.4 pp.11-12"
+                ],
+                "sourceSpan": {
+                  "startLine": 163,
+                  "endLine": 176
+                },
+                "diagnosis": "I144 的 premises 缺少直接依赖 C141：1.4.4 证明中验证迹函数在赋值环有限时明确使用迹环由生成元生成，对任意元的断言依赖该生成事实。",
+                "repairRequirement": "premises 必须在保留原有依赖的同时增补 C141，以覆盖来源明确使用的生成环论证。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I321"
+                ],
+                "sourceRefs": [
+                  "§3.2 p.22"
+                ],
+                "sourceSpan": {
+                  "startLine": 341,
+                  "endLine": 362
+                },
+                "diagnosis": "I321 的 premises 缺少直接依赖 C142：3.2.1 证明中以 1.4.2 说明可约限制集 Y 为闭代数集并用于排除纤维，当前 premises 未收录。",
+                "repairRequirement": "premises 必须在保留原有依赖的同时增补 C142，以覆盖来源明确引用的可约轨迹闭性。"
+              },
+              {
+                "id": "F3",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I522"
+                ],
+                "sourceRefs": [
+                  "§5.2 p.31"
+                ],
+                "sourceSpan": {
+                  "startLine": 513,
+                  "endLine": 517
+                },
+                "diagnosis": "I522 的 premises 缺少直接依赖 Bkneser：5.2.2 证明中由 Tollefson 不变球面结合 Kneser 定理得到不变不交球面系与素分解唯一性，当前 premises 未收录。",
+                "repairRequirement": "premises 必须在保留 C521 与 Btol33 的同时增补 Bkneser，以覆盖来源明确结合使用的素分解定理。"
+              },
+              {
+                "id": "F4",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I513"
+                ],
+                "sourceRefs": [
+                  "§5.1 p.30"
+                ],
+                "sourceSpan": {
+                  "startLine": 492,
+                  "endLine": 500
+                },
+                "diagnosis": "I513 的 premises 缺少直接依赖 B411：5.1.3 证明在情形 (II) 中明确按 4.1.1 对连通和分支作双曲或塞弗特或含环面的三分，当前 premises 未收录。",
+                "repairRequirement": "premises 必须在保留原有依赖的同时增补 B411，以覆盖来源明确引用的 4.1.1。"
+              },
+              {
+                "id": "F5",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I531"
+                ],
+                "sourceRefs": [
+                  "§5.3 p.36"
+                ],
+                "sourceSpan": {
+                  "startLine": 577,
+                  "endLine": 584
+                },
+                "diagnosis": "I531 的 premises 缺少直接依赖 Btorus：5.3.1 证明在中心像平凡情形明确应用 [27] 定理 3.1 的环面定理得到塞弗特子流形，当前 premises 未收录。",
+                "repairRequirement": "premises 必须在保留原有依赖的同时增补 Btorus，以覆盖来源明确应用的环面定理。"
+              },
+              {
+                "id": "F6",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I532"
+                ],
+                "sourceRefs": [
+                  "§5.3 pp.36-37"
+                ],
+                "sourceSpan": {
+                  "startLine": 586,
+                  "endLine": 603
+                },
+                "diagnosis": "I532 的 premises 缺少直接依赖 C523：5.3.2 证明在塞弗特和情形明确按引理 5.2.3 得闭因子为同伦三球面，当前 premises 未收录。",
+                "repairRequirement": "premises 必须在保留原有依赖的同时增补 C523，以覆盖来源明确引用的引理 5.2.3。"
+              },
+              {
+                "id": "F7",
+                "category": "b0-boundary",
+                "objectKind": "entry",
+                "targetIds": [
+                  "Btol34"
+                ],
+                "sourceRefs": [
+                  "§5.2 p.31"
+                ],
+                "sourceSpan": {
+                  "startLine": 508,
+                  "endLine": 511
+                },
+                "diagnosis": "Btol34 把范围内已证明的后半断言并入外部前提：来源外部调用的 Tollefson 定理仅为在适当纤维化下保持纤维，边界同伦恒等后的定向与固定集为纤维并是引理 5.2.1 范围内证明的内容。",
+                "repairRequirement": "statement 必须仅保留来源明确归于 Tollefson 的纤维保持部分，删除范围内证明的不变纤维定向与固定集结论。"
+              },
+              {
+                "id": "F8",
+                "category": "b0-boundary",
+                "objectKind": "entry",
+                "targetIds": [
+                  "Btol33"
+                ],
+                "sourceRefs": [
+                  "§5.2 p.31"
+                ],
+                "sourceSpan": {
+                  "startLine": 513,
+                  "endLine": 517
+                },
+                "diagnosis": "Btol33 把结合 Kneser 定理的范围内推论并入外部前提：来源归于 Tollefson 的仅为存在满足不变或不交的二球面，不变球面系与不可约素分解是范围内结合 Kneser 的进一步推导。",
+                "repairRequirement": "statement 必须仅保留存在满足条件的二球面的外部断言，删除由不变球面系给出素分解的范围内推论。"
+              },
+              {
+                "id": "F9",
+                "category": "b0-boundary",
+                "objectKind": "entry",
+                "targetIds": [
+                  "Bmalcev"
+                ],
+                "sourceRefs": [
+                  "§5.3 p.36"
+                ],
+                "sourceSpan": {
+                  "startLine": 581,
+                  "endLine": 584
+                },
+                "diagnosis": "Bmalcev 把范围内推论与环面定理适用性并入外部前提：来源归于 Malcev 的仅为有限生成矩阵群剩余有限，半剩余有限与应用奇异环面定理是 5.3.1 范围内的推导。",
+                "repairRequirement": "statement 必须仅保留有限生成矩阵群剩余有限的外部断言，删除半剩余有限与可应用环面定理的范围内结论。"
+              },
+              {
+                "id": "F10",
+                "category": "b0-boundary",
+                "objectKind": "entry",
+                "targetIds": [
+                  "Bwald"
+                ],
+                "sourceRefs": [
+                  "§5.1-§5.3 pp.30-36"
+                ],
+                "sourceSpan": {
+                  "startLine": 494,
+                  "endLine": 584
+                },
+                "diagnosis": "Bwald 把另一 well-known 结论并入 Waldhausen 定理：来源归于 Waldhausen 的为具中心或具环面的哈肯流形塞弗特纤维化，无限富克斯商是来源另行以 well-known 给出的塞弗特空间性质，非 Waldhausen 内容。",
+                "repairRequirement": "statement 必须仅保留具中心或具环面的哈肯流形塞弗特纤维化的 Waldhausen 断言，删除无限富克斯商的附加断言。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I144",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "F-curve-def",
+                      "C142",
+                      "C143"
+                    ],
+                    "after": [
+                      "F-curve-def",
+                      "C142",
+                      "C143",
+                      "C141"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I321",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C151",
+                      "C155",
+                      "C153"
+                    ],
+                    "after": [
+                      "C151",
+                      "C155",
+                      "C153",
+                      "C142"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I522",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C521",
+                      "Btol33"
+                    ],
+                    "after": [
+                      "C521",
+                      "Btol33",
+                      "Bkneser"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F4",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I513",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C512",
+                      "Bsmith",
+                      "Bkneser"
+                    ],
+                    "after": [
+                      "C512",
+                      "Bsmith",
+                      "Bkneser",
+                      "B411"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F5",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I531",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C524",
+                      "Bwald",
+                      "Bscott",
+                      "Bmalcev",
+                      "Bschur",
+                      "Bkneser"
+                    ],
+                    "after": [
+                      "C524",
+                      "Bwald",
+                      "Bscott",
+                      "Bmalcev",
+                      "Bschur",
+                      "Bkneser",
+                      "Btorus"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F6",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I532",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C524",
+                      "C422",
+                      "Btits",
+                      "Bevans",
+                      "Bmeeks"
+                    ],
+                    "after": [
+                      "C524",
+                      "C422",
+                      "Btits",
+                      "Bevans",
+                      "Bmeeks",
+                      "C523"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F7",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "Btol34",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "有界可定向塞弗特流形的对合在适当纤维化下保持纤维。若其在边界同伦于恒等，则不变纤维定向不反转，固定点集为纤维并。",
+                    "after": "有界可定向塞弗特流形的对合在适当纤维化下保持纤维。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F8",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "Btol33",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "二层覆盖变换下，若 \\(M_{0}-L_{0}\\) 含不围球的二球面，则含满足 \\(\\Sigma=T(\\Sigma)\\) 或 \\(\\Sigma\\cap T(\\Sigma)=\\emptyset\\) 的二球面，从而有不变的不交球面系给出不可约素分解。",
+                    "after": "二层覆盖变换下，若 \\(M_{0}-L_{0}\\) 含不围球的二球面，则含满足 \\(\\Sigma=T(\\Sigma)\\) 或 \\(\\Sigma\\cap T(\\Sigma)=\\emptyset\\) 的二球面。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F9",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "Bmalcev",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "域上有限生成矩阵群剩余有限，从而其无限像蕴含原群半剩余有限并可应用奇异环面定理。",
+                    "after": "域上有限生成矩阵群剩余有限。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F10",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "Bwald",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "具非平凡中心或具不可压缩环面的哈肯流形若不可约则塞弗特纤维化；具无限基本群的塞弗特空间有无限富克斯商。",
+                    "after": "具非平凡中心或具不可压缩环面的哈肯流形若不可约则塞弗特纤维化。"
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 98,
+            "cleanCount": 88
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 92276
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 82291
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "e2ee425f2bd758d3e66f0695d8122431b8a938629f2ced4ff4167430aee79a6b",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 203001,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 10,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2234,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4695,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7086,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9501,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 11903,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14315,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16706,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19120,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21498,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 23940,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26336,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 28420,
+        "phase": "complete",
+        "pageCount": 39
+      },
+      {
+        "stage": "generate",
+        "atMs": 28420,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 120700,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 203001,
+        "phase": "complete",
+        "entries": 61,
+        "inferences": 37
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 91919,
+        "usage": {
+          "input_tokens": 36986,
+          "output_tokens": 18864,
+          "total_tokens": 55850
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 82034,
+        "usage": {
+          "input_tokens": 54473,
+          "output_tokens": 21839,
+          "total_tokens": 76312
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

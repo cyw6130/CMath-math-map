@@ -1,0 +1,1701 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "07_Garoufalidis_Le_Colored_Jones_q_holonomic.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F1",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "外尔代数的定义",
+          "statement": "对 $r$ 元离散函数，乘法算子 $(Q_{i}f)$ 与移位算子 $(E_{i}f)$ 满足 $Q_{i}Q_{j}=Q_{j}Q_{i}$ 与 $E_{i}E_{j}=E_{j}E_{i}$ ，当 $i\\neq j$ 时 $Q_{i}E_{j}=E_{j}Q_{i}$ 且 $E_{i}Q_{i}=qQ_{i}E_{i}$ ，以此关系为准交换多项式环的商即为 $A_{r}$ ，系数取自 $\\mathbb{Z}[q^{\\pm 1}]$ 。"
+        },
+        {
+          "id": "F2",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "递归理想与维数的定义",
+          "statement": "对定义域为 $\\mathbb{N}^{r}$ 的离散函数 $f$ ，零化左理想为 $T_{f}$ ，其中 $T_{f}$ 由满足 $Pf=0$ 的 $P$ 组成，商模为 $M_{f}$ ，其中 $M_{f}$ 同构于 $A_{r}/T_{f}$ ，滤过 $F_{m}$ 取 $Q_{i}$ 与 $E_{i}$ 总次数不超过 $m$ 的多项式张成，维数函数在 $m$ 充分大时为多项式，其次数记为 $d(M)$ 。"
+        },
+        {
+          "id": "F3",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "全纯性定义",
+          "statement": "若 $M_{f}$ 无单项挠，即任一非零元不被 $Q_{i}$ 与 $E_{i}$ 的单项式零化，且 $d(M_{f})\\leq r$ ，则称 $f$ 为 $q$ 全纯，这里 $q$ 理解为量子参数，零函数对应 $M_{f}=0$ 的退化情形。"
+        },
+        {
+          "id": "F4",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "超几何性定义",
+          "statement": "离散函数 $f$ 在 $\\mathbb{Z}^{r}$ 上取值于 $\\mathbb{Q}(q)$ ，若对一切 $i$ 有比值 $E_{i}f/f$ 属于 $\\mathbb{Q}(q,q^{n_{1}},\\dots,q^{n_{r}})$ ，则称 $f$ 为 $q$ 超几何，此时存在多项式 $R_{i}$ 与 $S_{i}$ 使 $S_{i}E_{i}-R_{i}$ 零化 $f$ 。"
+        },
+        {
+          "id": "F5",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "真超几何性定义",
+          "statement": "真 $q$ 超几何函数形如 $F(n,k)$ 等于分子的 $(A_{s};q)$ 阶乘连乘除以分母的 $(B_{t};q)$ 阶乘连乘再乘以 $q^{A(n,k)}$ 与 $\\xi^{k}$ ，其中 $(A;q)_{n}$ 定义为连乘 $1-Aq^{i}$ ，指标 $a_{s}n+b_{s}k+c_{s}$ 与 $u_{t}n+v_{t}k+w_{t}$ 为整线性型，$A(n,k)$ 为二次型。"
+        },
+        {
+          "id": "F6",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "基本记号定义",
+          "statement": "记 $v^{2}=q$ ，定义 $\\{n\\}=v^{n}-v^{-n}$ 与 $[n]$ 为 $\\{n\\}$ 除以 $\\{1\\}$ ，$[n]!$ 与 $\\{n\\}!$ 为相应连乘，$\\{n\\}_{k}$ 与分式 $\\left[n,k\\right]$ 按 $k\\geq 0$ 时取连乘商、$k<0$ 时取零延拓，$\\delta_{n,k}$ 为克罗内克函数。"
+        },
+        {
+          "id": "F7",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "构件函数定义",
+          "statement": "构件函数 $f_{+}(n_{1},n_{2},a,b,k)$ 与 $f_{-}(n_{1},n_{2},a,b,k)$ 分别由符号 $(-1)^{k}$ 、$v$ 的二次指数幂、量子二项式 $\\left[b+k,k\\right]$ 或 $\\left[a+k,k\\right]$ 与剩余阶乘 $\\{n_{1}-1+k-a\\}_{k}$ 或 $\\{n_{2}-1+k-b\\}_{k}$ 的乘积给出，取值在 $\\mathbb{Z}[v^{\\pm 1/2}]$ 中。"
+        },
+        {
+          "id": "F8",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "编织矩阵定义",
+          "statement": "编织矩阵元 $(B_{+})_{a,b}^{c,d}$ 定义为 $f_{+}$ 在 $k=c-b$ 处的取值乘以 $\\delta_{c-b,a-d}$ ，$(B_{-})_{a,b}^{c,d}$ 定义为 $f_{-}$ 在相应变量处的取值乘以 $\\delta_{c-b,a-d}$ ，坐标允许延拓到全体非负整数。"
+        },
+        {
+          "id": "F9",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "辫表示与量子迹定义",
+          "statement": "对辫 $\\beta$ 在 $B_{m}$ 中，$\\tau(\\beta)$ 由 $\\tau(\\sigma_{i}^{\\pm 1})$ 在第 $i$ 与 $i+1$ 股上放 $B_{\\pm}$ 其余放恒等张成，复合按辫乘法定义，对角算子 $K$ 以 $v$ 幂为本征值，量子迹 $\\mathrm{tr}_{q}(\\beta)$ 为 $\\tilde{\\tau}(\\beta)$ 的对角求和，其中 $\\tilde{\\tau}(\\beta)$ 为 $\\tau(\\beta)$ 乘以 $K^{-1}$ ，闭辫给出链不变量 $J_{L}$ ，断链迹 $\\mathrm{tr}_{q}^{\\prime}$ 固定 $a_{1}=0$ 并只对余下指标求和。"
+        },
+        {
+          "id": "F10",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "着色与求和核定义",
+          "statement": "长结着色由角变量 $k$ 在交叉处满足一致关系决定，左下入弧颜色固定为 $0$ ，顶弧标号 $b_{i}(k)$ 与交叉入弧标号 $x_{j}(k)$ 、$y_{j}(k)$ 皆为 $k$ 的线性型，求和核 $F_{w}(n,k)$ 为 $v$ 幂与诸 $f$ 在 $(n,n,x_{j},y_{j})$ 处取值的乘积。"
+        },
+        {
+          "id": "F11",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "圈变换核定义",
+          "statement": "记 $S(n,k)$ 为 $\\{n+k-1\\}_{2k-1}$ 除以 $v-v^{-1}$ ，$R(n,k)$ 为 $(-1)^{n-k}$ 乘 $\\{2k\\}$ 除以 $\\{2n-1\\}!$ 与 $[2n]$ 再乘量子二项式 $\\left[2n,n-k\\right]$ ，$P^{\\prime\\prime}(n)$ 为 $V(2)$ 平移元的连乘除以 $\\{2n-1\\}_{2n-2}$ ，满足 $P^{\\prime\\prime}(n)=\\sum_{k}R(n,k)V(k)$ 与 $C_{K}(n)=\\sum_{k}R(n,k)J_{K}(k)$ 的形式关系。"
+        },
+        {
+          "id": "F12",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "量子群与基定义",
+          "statement": "量子群 $U$ 由 $E_{\\alpha}$ 、$F_{\\alpha}$ 与 $K_{\\alpha}$ 生成并具 $Y$ 分次，$K_{\\gamma}x=v^{(\\gamma,|x|)}xK_{\\gamma}$ ，泛模 $M(\\lambda)$ 以 $\\eta$ 为最高权向量，$T_{\\alpha}$ 为代数自同构，约化字 $w$ 给出正根序 $\\gamma_{r}$ 与根向量 $e_{r}$ 、$f_{r}$ ，单项式 $f^{n}K^{j}e^{m}$ 构成 $x_{\\sigma}$ 基，指标集为 $S$ 。"
+        },
+        {
+          "id": "F13",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "拟矩阵与对角部分定义",
+          "statement": "拟矩阵分量为 $\\Theta_{r}=\\sum_{k}c_{k}f_{r}^{k}\\otimes e_{r}^{k}$ ，系数 $c_{k}$ 由 $(-1)^{k}$ 与 $v_{\\gamma_{r}}$ 幂及 $[k]_{\\gamma_{r}}!$ 给出，整体 $\\Theta=\\Theta_{t}\\cdots\\Theta_{1}$ ，对角部分 $D$ 以 $v^{-(|x|,|y|)}$ 作用，$R=\\Theta D$ ，编织为 $B=R\\sigma$ 。"
+        },
+        {
+          "id": "F14",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "断结不变量与量子维数定义",
+          "statement": "断结不变量 $J_{K^{\\prime}}(\\lambda)$ 定义为固定 $n_{1}=0$ 后对 $n_{2},\\dots,n_{m}$ 的 $(K_{-2\\rho}\\tau(\\beta)(\\lambda))$ 对角元求和，闭结满足 $J_{K}(\\lambda)=J_{K^{\\prime}}(\\lambda)\\dim_{q}(L(\\lambda))$ ，量子维数 $\\dim_{q}(L(\\lambda))$ 为诸正根 $\\alpha>0$ 上 $(v^{(\\lambda+\\rho,\\alpha)}-v^{-(\\lambda+\\rho,\\alpha)})$ 除以 $(v^{(\\rho,\\alpha)}-v^{-(\\rho,\\alpha)})$ 的连乘。"
+        },
+        {
+          "id": "F15",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "单和实例计算",
+          "statement": "扭结圈函数 $c(p,n)$ 具有单和表达式 $(-1)^{n+1}q^{n(n+3)/2}$ 乘以关于 $k$ 的求和，被求和项含 $(-1)^{k}q^{k(k+1)p+k(k-1)/2}$ 与 $(q^{2k+1}-1)$ 及 $(q;q)_{n}$ 除以 $(q;q)_{n+k+1}(q;q)_{n-k}$ ，八字结有色琼斯函数为 $J(n)=\\sum_{k}q^{nk}(q^{-n-1};q^{-1})_{k}(q^{-n+1};q)_{k}$ ，其中 $(A;q)_{k}$ 为 $q$ 阶乘。"
+        },
+        {
+          "id": "F16",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "证书算法描述",
+          "statement": "证书形如 $P(E,Q)+\\sum_{i}(E_{i}-1)R_{i}$ 零化 $F(n,k)$ ，其中 $P$ 不含求和变量 $k$ ，求 $k$ 自由关系 $A(E,Q,E_{1},\\dots,E_{r})$ 使 $AF=0$ ，在 $E_{i}=1$ 处取值即得证书，对 $F/G$ 通分比较 $Q_{i}$ 单项式系数化为关于 $\\sigma_{i,j}(Q)$ 的线性方程组，未知数多于方程时必有非零解，求和后得 $G$ 的非齐次递推，迭代降元得齐次递推。"
+        },
+        {
+          "id": "C1",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "维数下界不等式",
+          "statement": "若 $M=A_{r}/I$ 非零且无单项挠，则同调维数满足 $d(M)\\geq r$ ，特别 $M_{f}$ 无单项挠，故 $d(M_{f})\\leq r$ 时必有 $M_{f}=0$ 或 $d(M_{f})=r$ ，零函数对应前者。"
+        },
+        {
+          "id": "C2",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "封闭性质",
+          "statement": "若 $f$ 为 $q$ 全纯，则其和、积、特化、扩张、对角、线性代换仍为 $q$ 全纯，有限和 $g(a,b)=\\sum_{n_{1}=a}^{b}f$ 与在逐点有限条件下无穷和 $h(a)=\\sum_{n_{1}=a}^{\\infty}f$ 仍为 $q$ 全纯。"
+        },
+        {
+          "id": "C3",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "基本例子全纯性",
+          "statement": "函数 $\\{n\\}$ 、$[n]$ 、$[n]!$ 与 $\\{n\\}!$ 关于 $n$ 为 $q$ 全纯，$\\{n\\}_{k}$ 、$\\left[n,k\\right]$ 与 $\\delta_{n,k}$ 关于 $n,k$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C4",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "真蕴含全纯性",
+          "statement": "每一真 $q$ 超几何函数皆为 $q$ 全纯。"
+        },
+        {
+          "id": "C5",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "链的全纯性定理",
+          "statement": "对 $p$ 分量定向标架链 $L$ ，其有色琼斯函数 $J_{L}$ 作为 $p$ 元离散函数为 $q$ 全纯。"
+        },
+        {
+          "id": "C6",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "编织元全纯性引理",
+          "statement": "矩阵元 $B_{\\pm}(n_{1},n_{2})_{a,b}^{c,d}$ 关于 $n_{1},n_{2},a,b,c,d$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C7",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "辫表示全纯性引理",
+          "statement": "对固定辫 $\\beta$ ，其表示矩阵元 $\\tau(\\beta)(n_{1},\\dots,n_{m})$ 关于颜色变量与全部矩阵坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C8",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "修正表示全纯性引理",
+          "statement": "修正表示 $\\tilde{\\tau}(\\beta)=\\tau(\\beta)K^{-1}$ 关于颜色变量与全部矩阵坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C9",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "着色延拓引理",
+          "statement": "长结的每一着色 $k$ 唯一延拓到交叉与弧段着色，使每交叉一致关系成立且左下入弧为 $0$ ，所得弧标号为 $k$ 的线性型。"
+        },
+        {
+          "id": "C10",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "多重和公式命题",
+          "statement": "长结不变量满足 $J_{K^{\\prime}}(n)=\\sum_{k\\geq 0}F_{w}(n,k)$ ，其中 $F_{w}(n,k)$ 为 $q$ 真超几何，一般平面图 $D$ 亦有 $J_{K^{\\prime}}(n)=\\sum_{k\\geq 0}F_{D}(n,k)$ 。"
+        },
+        {
+          "id": "C11",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "结的全纯性定理",
+          "statement": "每一结 $K$ 的有色琼斯函数 $J_{K}$ 关于颜色 $n$ 为 $q$ 全纯，即存在非零递推算子零化 $J_{K}$ 。"
+        },
+        {
+          "id": "C12",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "圈函数全纯性定理",
+          "statement": "每一结 $K$ 的圈函数 $C_{K}$ 关于 $n$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C13",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "圈展开存在性定理",
+          "statement": "对零标架结 $K$ 存在 $C_{K}$ 取值于 $\\mathbb{Z}[q^{\\pm 1}]$ 使 $J_{K}(n)=\\sum_{k}C_{K}(k)S(n,k)$ ，其中 $S(n,k)$ 与 $K$ 无关，$J$ 与 $C$ 由上三角矩阵互定。"
+        },
+        {
+          "id": "C14",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "变换核全纯性引理",
+          "statement": "核 $R(n,k)=(-1)^{n-k}\\{2k\\}(\\{2n-1\\}![2n])^{-1}\\left[2n,n-k\\right]$ 为 $q$ 真超几何从而 $q$ 全纯，且 $C_{K}(n)=\\sum_{k}R(n,k)J_{K}(k)$ 。"
+        },
+        {
+          "id": "C15",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "多重和递推界定理",
+          "statement": "若 $F(n,k)$ 为 $q$ 真超几何，记 $G(n)=\\sum_{k\\geq 0}F(n,k)$ ，则 $F$ 满足 $k$ 自由递推，其阶不超过 $J^{\\star}=(4STB^{2})^{r}/r!$ ，$G$ 满足同阶的非齐次递推，迭代后得齐次递推，其中 $B$ 由线性型系数与二次型系数界定。"
+        },
+        {
+          "id": "C16",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "初值个数界定理",
+          "statement": "若 $G$ 满足阶为 $J^{\\star}$ 的递推且主象征为 $\\sigma(q,Q)$ ，则 $n>\\deg_{q}(\\sigma)$ 时 $\\sigma(q,q^{n})\\neq 0$ ，故 $G$ 由 $J^{\\star\\star}=J^{\\star}+\\deg_{q}(\\sigma)$ 个初值唯一决定，该次数可由求和项先验界定。"
+        },
+        {
+          "id": "C17",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "复杂度界定理",
+          "statement": "有色琼斯函数的 $E$ 阶被交叉数的指数函数从上界定，存在 $n(K)$ 使 $n(K)$ 个初值决定 $J_{K}$ ，且 $n(K)$ 被交叉数的指数函数从上界定，递推理想可经消元计算。"
+        },
+        {
+          "id": "C18",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "一般李代数全纯性定理",
+          "statement": "除 $G_{2}$ 型外，对固定基本权，每一单李代数 $g$ 的有色琼斯函数 $J_{K}$ 作为 $\\ell$ 元函数取值于 $\\mathbb{Z}[q^{\\pm 1/2D}]$ 为 $q$ 全纯，因而满足递推并由有限初值决定。"
+        },
+        {
+          "id": "C19",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "转移矩阵全纯性命题",
+          "statement": "除 $G_{2}$ 外，两组 $w,w^{\\prime}$ 对应的 $U$ 基间转移矩阵元 $M_{\\sigma}^{\\sigma^{\\prime}}$ 关于全部坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C20",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "结构常数全纯性定理",
+          "statement": "结构常数 $c(\\sigma,\\sigma^{\\prime},\\sigma^{\\prime\\prime})$ 由 $x_{\\sigma}x_{\\sigma^{\\prime}}=\\sum_{\\sigma^{\\prime\\prime}}c(\\sigma,\\sigma^{\\prime},\\sigma^{\\prime\\prime})x_{\\sigma^{\\prime\\prime}}$ 定义，关于全部变量为 $q$ 全纯。"
+        },
+        {
+          "id": "C21",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "泛模作用全纯性命题",
+          "statement": "对 $1\\leq r\\leq t$ ，$e_{r}^{k}$ 与 $f_{r}^{k}$ 在泛模 $M(\\lambda)$ 基下的矩阵元关于 $k,\\lambda$ 及矩阵坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C22",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "拟矩阵全纯性命题",
+          "statement": "拟矩阵 $\\Theta$ 在 $M(\\lambda)$ 基下的矩阵关于全部矩阵坐标与 $\\lambda$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C23",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "编织全纯性定理",
+          "statement": "编织 $B$ 在 $M(\\lambda)$ 上的矩阵元关于全部坐标与 $\\lambda$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C24",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "部分迹有限性引理",
+          "statement": "固定 $n_{1}=0$ 时，使 $\\tau(\\beta)(\\lambda)_{n_{1},\\dots,n_{m}}^{n_{1},\\dots,n_{m}}\\neq 0$ 的组 $(n_{2},\\dots,n_{m})$ 仅有有限多。"
+        },
+        {
+          "id": "C25",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "导子幂全纯性引理",
+          "statement": "对固定单根 $\\alpha$ ，$(r_{\\alpha})^{k}$ 与 $(r_{\\alpha}^{\\prime})^{k}$ 在 $U^{-}$ 或 $U^{+}$ 基下的矩阵元关于 $k$ 及矩阵坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C26",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "秩一结构常数引理",
+          "statement": "当 $g$ 为 $\\mathfrak{sl}_{2}$ 时 $U$ 的结构常数关于全部变量为 $q$ 全纯，$E^{m}F^{n}$ 展开系数 $a$ 的 $K^{r}$ 系数显然全纯。"
+        },
+        {
+          "id": "C27",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "乘法算子全纯性命题",
+          "statement": "对固定单根 $\\alpha$ ，左乘 $E_{\\alpha}^{k}$ 、$F_{\\alpha}^{k}$ 与右乘 $E_{\\alpha}^{k}$ 、$F_{\\alpha}^{k}$ 作为 $U$ 上算子关于 $k$ 及矩阵坐标为 $q$ 全纯。"
+        },
+        {
+          "id": "C28",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "辫算子全纯性命题",
+          "statement": "对固定单根 $\\alpha$ ，辫算子 $T_{\\alpha}$ 及其逆 $T_{\\alpha}^{-1}$ 作为 $U$ 上算子为 $q$ 全纯。"
+        },
+        {
+          "id": "C29",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "甲型秩二结构引理",
+          "statement": "$A_{2}$ 型在 $w$ 基下 $U^{-}$ 的结构常数为 $q$ 全纯。"
+        },
+        {
+          "id": "C30",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "乙型秩二结构引理",
+          "statement": "$B_{2}$ 型在 $w$ 基下 $U^{-}$ 的结构常数为 $q$ 全纯。"
+        },
+        {
+          "id": "C31",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "甲型显式幂公式",
+          "statement": "$A_{2}$ 型有 $f_{2^{\\prime}}^{n}=(-v)^{-n}\\sum_{k}v^{-k(k-3)/2}(v-v^{-1})^{k}\\left[n,k\\right]f_{3}^{k}f_{2}^{n-k}f_{1}^{k}$ ，右端关于 $n$ 及各指数为 $q$ 全纯。"
+        },
+        {
+          "id": "C32",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "乙型显式幂公式",
+          "statement": "$B_{2}$ 型有 $f_{2^{\\prime}}^{n}$ 与 $f_{3^{\\prime}}^{n}$ 分别表为 $F_{\\beta}^{i}F_{\\alpha}^{n}F_{\\beta}^{n-i}$ 与 $F_{\\alpha}^{2n-i}F_{\\beta}^{n}F_{\\alpha}^{i}$ 的 $q$ 全纯线性组合，系数含 $v$ 幂与阶乘倒数。"
+        },
+        {
+          "id": "C33",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "交换排序定理",
+          "statement": "分次满足 $K_{\\gamma}x=v^{(\\alpha,|x|)}xK_{\\gamma}$ ，$i<j$ 时 $[f_{i},f_{j}]_{q}$ 落入 $U^{-}[j-1,i+1]$ 且 $[e_{i},e_{j}]_{q}$ 落入 $U^{+}[i+1,j-1]$ ，相邻变量 $q$ 交换，$U^{-}[j,i]$ 与 $U^{+}[i,j]$ 为子代数，可算法化排序。"
+        },
+        {
+          "id": "C34",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "辫关系与根向量定理",
+          "statement": "$T_{\\alpha}$ 满足辫关系，约化字给出良定的 $T_{w}$ ，最长元长度为 $t$ ，正根凸序与 $w$ 一一对应，$T_{\\alpha}(F_{\\alpha})=-K_{\\alpha}^{-1}E_{\\alpha}$ 与 $T_{\\alpha}(E_{\\alpha})=-F_{\\alpha}K_{\\alpha}$ 及 $T_{\\alpha}(f_{r})=f_{r+1}^{\\prime}$ 成立，$c_{k}$ 为 $q$ 全纯且 $e_{r}$ 局部幂零。"
+        },
+        {
+          "id": "C35",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "量子维数全纯性引理",
+          "statement": "量子维数 $\\dim_{q}(L(\\lambda))$ 关于 $\\lambda$ 为 $q$ 全纯。"
+        },
+        {
+          "id": "C36",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "扭结递推计算引理",
+          "statement": "扭结圈函数满足 $c(-1,n)=1$ ，$c(1,n)=-q^{n+1}c(1,n-1)$ 且 $c(1,n)=(-1)^{n}q^{n(n+3)/2}$ ，$c(2,n)$ 无一阶递推但满足二阶递推，实验阶为 $|p|$ ，关于 $(p,n)$ 亦全纯。"
+        },
+        {
+          "id": "C37",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "八字结递推计算命题",
+          "statement": "八字结有色琼斯函数满足二阶非齐次递推，不满足更低阶非齐次递推，齐次化得三阶齐次递推，与 $J^{\\star}=2$ 的理论界一致。"
+        },
+        {
+          "id": "C38",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "零化理想生成元问题",
+          "statement": "未知是否能由 $F(n,k)$ 的零化理想生成元在理论与实践上求出多重和 $G(n)$ 的零化理想生成元，该问题尚未解决。"
+        },
+        {
+          "id": "C39",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "例外型猜想",
+          "statement": "$G_{2}$ 型有色琼斯函数亦为 $q$ 全纯的猜想尚未证明。"
+        },
+        {
+          "id": "C40",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "构件函数全纯性引理",
+          "statement": "构件函数 $f_{+}$ 与 $f_{-}$ 为 $q$ 真超几何，从而关于全部变量为 $q$ 全纯。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I1",
+          "operationKind": "proof",
+          "premises": [
+            "C5"
+          ],
+          "conclusion": "C11",
+          "argument": "单分量链即结，链定理直接给出 $J_{K}$ 的非零递推。"
+        },
+        {
+          "id": "I2",
+          "operationKind": "proof",
+          "premises": [
+            "F10"
+          ],
+          "conclusion": "C9",
+          "argument": "沿长结区间依次行走，入弧与角变量决定出弧，归纳得存在唯一延拓且标号为线性型。"
+        },
+        {
+          "id": "I3",
+          "operationKind": "proof",
+          "premises": [
+            "F7",
+            "C4"
+          ],
+          "conclusion": "C40",
+          "argument": "对照 $F(n,k)$ 的真形式可知 $f_{\\pm}$ 具所需阶乘商与二次指数形状，故为真超几何，由真蕴含全纯得全纯性。"
+        },
+        {
+          "id": "I4",
+          "operationKind": "proof",
+          "premises": [
+            "C40",
+            "C2",
+            "F8"
+          ],
+          "conclusion": "C6",
+          "argument": "$B_{\\pm}$ 为 $f_{\\pm}$ 经 $k=c-b$ 特化与乘以 $\\delta$ 再线性代换得到，和积特化对角代换保持全纯，故全纯。"
+        },
+        {
+          "id": "I5",
+          "operationKind": "proof",
+          "premises": [
+            "C6",
+            "C2",
+            "F9"
+          ],
+          "conclusion": "C7",
+          "argument": "$\\tau(\\beta)$ 由 $B_{\\pm}$ 经张量积与矩阵乘法复合得到，有限次乘积与和保持全纯，故全纯。"
+        },
+        {
+          "id": "I6",
+          "operationKind": "proof",
+          "premises": [
+            "C7",
+            "C2",
+            "F9"
+          ],
+          "conclusion": "C8",
+          "argument": "$K^{-1}$ 的矩阵元为 $v$ 的线性指数幂故全纯，乘积保持全纯，故 $\\tilde{\\tau}$ 全纯。"
+        },
+        {
+          "id": "I7",
+          "operationKind": "proof",
+          "premises": [
+            "C8",
+            "C2",
+            "F9"
+          ],
+          "conclusion": "C5",
+          "argument": "$\\mathrm{tr}_{q}$ 为 $\\tilde{\\tau}$ 的有限多重求和，特化与对角限制 $n_{i}=n_{\\bar{\\beta}i}$ 保持全纯，闭辫即得 $J_{L}$ 。"
+        },
+        {
+          "id": "I8",
+          "operationKind": "proof",
+          "premises": [
+            "C9",
+            "C40",
+            "C2",
+            "F10"
+          ],
+          "conclusion": "C10",
+          "argument": "$F_{w}$ 为 $v$ 幂与诸 $f$ 经线性代换的乘积故真超几何，对 $k\\geq 0$ 求和即得 $J_{K^{\\prime}}$ ，多重求和保持全纯。"
+        },
+        {
+          "id": "I9",
+          "operationKind": "proof",
+          "premises": [
+            "F11",
+            "C4",
+            "C2"
+          ],
+          "conclusion": "C14",
+          "argument": "对照真定义可知 $R$ 具阶乘商与二次指数形状故真超几何，从而全纯。"
+        },
+        {
+          "id": "I10",
+          "operationKind": "proof",
+          "premises": [
+            "C11",
+            "C14",
+            "C13",
+            "C2",
+            "F11"
+          ],
+          "conclusion": "C12",
+          "argument": "由 $P^{\\prime\\prime}$ 展开与圈展开相乘得 $C_{K}(n)=\\sum_{k}R(n,k)J_{K}(k)$ ，右端为全纯函数的多重和故全纯。"
+        },
+        {
+          "id": "I11",
+          "operationKind": "proof",
+          "premises": [
+            "C10",
+            "C15",
+            "C16",
+            "F16"
+          ],
+          "conclusion": "C17",
+          "argument": "多重和表示给出 $J^{\\star}$ 界与证书，非齐次经迭代化为齐次，主象征给出 $J^{\\star\\star}$ 界，有限初值决定函数，消元可计算基。"
+        },
+        {
+          "id": "I14",
+          "operationKind": "proof",
+          "premises": [
+            "C29",
+            "C30",
+            "C31",
+            "C32",
+            "C34",
+            "C2"
+          ],
+          "conclusion": "C19",
+          "argument": "任两约化字由考克斯特移动连接，每步只涉两单根化为秩二情形，代数同构保持全纯，结合秩二结构常数与显式幂公式得转移矩阵全纯。"
+        },
+        {
+          "id": "I15",
+          "operationKind": "proof",
+          "premises": [
+            "F12",
+            "C3",
+            "C2"
+          ],
+          "conclusion": "C26",
+          "argument": "$E^{m}F^{n}$ 显式换位公式中 $a$ 的 $K^{r}$ 系数为量子二项式与 $b$ 因子的乘积，基本例子全纯，经和积保持全纯。"
+        },
+        {
+          "id": "I16",
+          "operationKind": "proof",
+          "premises": [
+            "F12",
+            "C3",
+            "C2"
+          ],
+          "conclusion": "C25",
+          "argument": "取首根为 $\\alpha$ 的约化字使 $f_{t}=F_{\\alpha}$ ，用 $(r_{\\alpha})^{k}(f_{t}^{n_{t}}x)$ 的乘积公式，右端为全纯函数的乘积故全纯。"
+        },
+        {
+          "id": "I17",
+          "operationKind": "proof",
+          "premises": [
+            "C25",
+            "C26",
+            "C33",
+            "C2"
+          ],
+          "conclusion": "C27",
+          "argument": "$E_{\\alpha}$ 过 $x$ 的移动产生 $(r_{\\alpha})^{i}$ 与 $K_{\\alpha}$ 因子，再用秩一换位过 $F_{\\alpha}$ ，过 $K_{\\beta}$ 只差 $v$ 幂，每步全纯，右乘情形类似。"
+        },
+        {
+          "id": "I18",
+          "operationKind": "proof",
+          "premises": [
+            "C27",
+            "C19",
+            "C2",
+            "F12"
+          ],
+          "conclusion": "C28",
+          "argument": "$T_{\\alpha}(x_{\\sigma})$ 表为 $K_{\\alpha}$ 幂左乘右乘与 $E_{\\alpha}$ 左乘、$F_{\\alpha}$ 右乘的组合，系数 $d_{\\alpha}$ 为符号与 $v_{\\alpha}$ 幂故全纯，转移基不改变全纯性。"
+        },
+        {
+          "id": "I19",
+          "operationKind": "proof",
+          "premises": [
+            "C27",
+            "C28",
+            "C2"
+          ],
+          "conclusion": "C20",
+          "argument": "固定 $w$ ，左乘 $K^{j}$ 显然全纯，每 $e_{r}$ 与 $f_{r}$ 可由 $E_{\\alpha}$ 与 $F_{\\alpha}$ 经 $T$ 作用得到，结合辫算子全纯得乘法全纯。"
+        },
+        {
+          "id": "I20",
+          "operationKind": "proof",
+          "premises": [
+            "C20",
+            "C2"
+          ],
+          "conclusion": "C21",
+          "argument": "$u$ 在 $M(\\lambda)$ 的作用矩阵由结构常数经有限和积得到，故全纯。"
+        },
+        {
+          "id": "I21",
+          "operationKind": "proof",
+          "premises": [
+            "C21",
+            "C3",
+            "F13",
+            "C2"
+          ],
+          "conclusion": "C22",
+          "argument": "$c_{k}$ 为基本全纯函数，$e_{r}^{k}$ 与 $f_{r}^{k}$ 作用全纯，$e_{r}$ 局部幂零使和有限，多重求和保持全纯，故 $\\Theta_{r}$ 与 $\\Theta$ 全纯。"
+        },
+        {
+          "id": "I22",
+          "operationKind": "proof",
+          "premises": [
+            "C22",
+            "C2",
+            "F13"
+          ],
+          "conclusion": "C23",
+          "argument": "$D$ 以 $v$ 指数为矩阵元故全纯，$R=\\Theta D$ 与 $B=R\\sigma$ 经乘积与置换得到，故全纯。"
+        },
+        {
+          "id": "I23",
+          "operationKind": "proof",
+          "premises": [
+            "F14"
+          ],
+          "conclusion": "C24",
+          "argument": "$M(\\lambda)$ 模去极大真子模得有限维 $L(\\lambda)$ 仅有限多权，沿辫向上移动基向量可由 $U$ 作用得到，固定 $n_{1}=0$ 时非零对角元必在有限集中。"
+        },
+        {
+          "id": "I24",
+          "operationKind": "proof",
+          "premises": [
+            "F14",
+            "C3",
+            "C2"
+          ],
+          "conclusion": "C35",
+          "argument": "$\\dim_{q}$ 公式为 $v$ 指数差商的有限乘积，基本例子全纯，经乘积保持全纯。"
+        },
+        {
+          "id": "I25",
+          "operationKind": "proof",
+          "premises": [
+            "C23",
+            "C24",
+            "C35",
+            "C2",
+            "F14"
+          ],
+          "conclusion": "C18",
+          "argument": "$\\tau(\\beta)(\\lambda)$ 全纯，部分迹为有限多重和故全纯，乘以全纯的 $\\dim_{q}$ 得 $J_{K}$ 全纯。"
+        },
+        {
+          "id": "I26",
+          "operationKind": "proof",
+          "premises": [
+            "F15",
+            "C15",
+            "F16"
+          ],
+          "conclusion": "C36",
+          "argument": "将单和输入 $q$ 算法，$p=-1$ 得 $SUM[n]=SUM[n-1]$ 即 $c=1$ ，$p=1$ 得一阶递推，$p=2$ 无一阶而有二阶，阶数实验为 $|p|$ 。"
+        },
+        {
+          "id": "I27",
+          "operationKind": "proof",
+          "premises": [
+            "F15",
+            "C15",
+            "F16"
+          ],
+          "conclusion": "C37",
+          "argument": "将双变量求和核输入 $q$ 多重求和算法得二阶非齐次递推，程序确认无更低阶，齐次化得三阶齐次递推，阶数与理论界相符。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C13",
+        "C15",
+        "C16",
+        "C31",
+        "C32",
+        "C33",
+        "C34",
+        "C29",
+        "C30"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "07_Garoufalidis_Le_Colored_Jones_q_holonomic.pdf",
+        "pageCount": 41
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 57554,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F1",
+                "F2",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F9",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F14",
+                "F15",
+                "F16"
+              ],
+              "b0ClaimEntryIds": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C13",
+                "C15",
+                "C16",
+                "C31",
+                "C32",
+                "C33",
+                "C34"
+              ],
+              "closureClaimEntryIds": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C5",
+                "C6",
+                "C7",
+                "C8",
+                "C9",
+                "C10",
+                "C11",
+                "C12",
+                "C13",
+                "C14",
+                "C15",
+                "C16",
+                "C17",
+                "C18",
+                "C19",
+                "C20",
+                "C21",
+                "C22",
+                "C23",
+                "C24",
+                "C25",
+                "C26",
+                "C27",
+                "C28",
+                "C29",
+                "C30",
+                "C31",
+                "C32",
+                "C33",
+                "C34",
+                "C35",
+                "C36",
+                "C37",
+                "C40"
+              ],
+              "claimStates": {
+                "C1": "established",
+                "C2": "established",
+                "C3": "established",
+                "C4": "established",
+                "C5": "established",
+                "C6": "established",
+                "C7": "established",
+                "C8": "established",
+                "C9": "established",
+                "C10": "established",
+                "C11": "established",
+                "C12": "established",
+                "C13": "established",
+                "C14": "established",
+                "C15": "established",
+                "C16": "established",
+                "C17": "established",
+                "C18": "established",
+                "C19": "established",
+                "C20": "established",
+                "C21": "established",
+                "C22": "established",
+                "C23": "established",
+                "C24": "established",
+                "C25": "established",
+                "C26": "established",
+                "C27": "established",
+                "C28": "established",
+                "C29": "established",
+                "C30": "established",
+                "C31": "established",
+                "C32": "established",
+                "C33": "established",
+                "C34": "established",
+                "C35": "established",
+                "C36": "established",
+                "C37": "established",
+                "C38": "open",
+                "C39": "open",
+                "C40": "established"
+              },
+              "claimDerivations": {
+                "C1": {
+                  "basis": "b0"
+                },
+                "C2": {
+                  "basis": "b0"
+                },
+                "C3": {
+                  "basis": "b0"
+                },
+                "C4": {
+                  "basis": "b0"
+                },
+                "C5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I7"
+                  ]
+                },
+                "C6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I4"
+                  ]
+                },
+                "C7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I5"
+                  ]
+                },
+                "C8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I6"
+                  ]
+                },
+                "C9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I2"
+                  ]
+                },
+                "C10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I8"
+                  ]
+                },
+                "C11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I1"
+                  ]
+                },
+                "C12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I10"
+                  ]
+                },
+                "C13": {
+                  "basis": "b0"
+                },
+                "C14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I9"
+                  ]
+                },
+                "C15": {
+                  "basis": "b0"
+                },
+                "C16": {
+                  "basis": "b0"
+                },
+                "C17": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I11"
+                  ]
+                },
+                "C18": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I25"
+                  ]
+                },
+                "C19": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I14"
+                  ]
+                },
+                "C20": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I19"
+                  ]
+                },
+                "C21": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I20"
+                  ]
+                },
+                "C22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I21"
+                  ]
+                },
+                "C23": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I22"
+                  ]
+                },
+                "C24": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I23"
+                  ]
+                },
+                "C25": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I16"
+                  ]
+                },
+                "C26": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I15"
+                  ]
+                },
+                "C27": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I17"
+                  ]
+                },
+                "C28": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I18"
+                  ]
+                },
+                "C29": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I12"
+                  ]
+                },
+                "C30": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I13"
+                  ]
+                },
+                "C31": {
+                  "basis": "b0"
+                },
+                "C32": {
+                  "basis": "b0"
+                },
+                "C33": {
+                  "basis": "b0"
+                },
+                "C34": {
+                  "basis": "b0"
+                },
+                "C35": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I24"
+                  ]
+                },
+                "C36": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I26"
+                  ]
+                },
+                "C37": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I27"
+                  ]
+                },
+                "C38": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C39": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C40": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I3"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F1",
+                "F2",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F9",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F14",
+                "F15",
+                "F16"
+              ],
+              "b0ClaimEntryIds": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C13",
+                "C15",
+                "C16",
+                "C31",
+                "C32",
+                "C33",
+                "C34",
+                "C29",
+                "C30"
+              ],
+              "closureClaimEntryIds": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C5",
+                "C6",
+                "C7",
+                "C8",
+                "C9",
+                "C10",
+                "C11",
+                "C12",
+                "C13",
+                "C14",
+                "C15",
+                "C16",
+                "C17",
+                "C18",
+                "C19",
+                "C20",
+                "C21",
+                "C22",
+                "C23",
+                "C24",
+                "C25",
+                "C26",
+                "C27",
+                "C28",
+                "C29",
+                "C30",
+                "C31",
+                "C32",
+                "C33",
+                "C34",
+                "C35",
+                "C36",
+                "C37",
+                "C40"
+              ],
+              "claimStates": {
+                "C1": "established",
+                "C2": "established",
+                "C3": "established",
+                "C4": "established",
+                "C5": "established",
+                "C6": "established",
+                "C7": "established",
+                "C8": "established",
+                "C9": "established",
+                "C10": "established",
+                "C11": "established",
+                "C12": "established",
+                "C13": "established",
+                "C14": "established",
+                "C15": "established",
+                "C16": "established",
+                "C17": "established",
+                "C18": "established",
+                "C19": "established",
+                "C20": "established",
+                "C21": "established",
+                "C22": "established",
+                "C23": "established",
+                "C24": "established",
+                "C25": "established",
+                "C26": "established",
+                "C27": "established",
+                "C28": "established",
+                "C29": "established",
+                "C30": "established",
+                "C31": "established",
+                "C32": "established",
+                "C33": "established",
+                "C34": "established",
+                "C35": "established",
+                "C36": "established",
+                "C37": "established",
+                "C38": "open",
+                "C39": "open",
+                "C40": "established"
+              },
+              "claimDerivations": {
+                "C1": {
+                  "basis": "b0"
+                },
+                "C2": {
+                  "basis": "b0"
+                },
+                "C3": {
+                  "basis": "b0"
+                },
+                "C4": {
+                  "basis": "b0"
+                },
+                "C5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I7"
+                  ]
+                },
+                "C6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I4"
+                  ]
+                },
+                "C7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I5"
+                  ]
+                },
+                "C8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I6"
+                  ]
+                },
+                "C9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I2"
+                  ]
+                },
+                "C10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I8"
+                  ]
+                },
+                "C11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I1"
+                  ]
+                },
+                "C12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I10"
+                  ]
+                },
+                "C13": {
+                  "basis": "b0"
+                },
+                "C14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I9"
+                  ]
+                },
+                "C15": {
+                  "basis": "b0"
+                },
+                "C16": {
+                  "basis": "b0"
+                },
+                "C17": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I11"
+                  ]
+                },
+                "C18": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I25"
+                  ]
+                },
+                "C19": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I14"
+                  ]
+                },
+                "C20": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I19"
+                  ]
+                },
+                "C21": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I20"
+                  ]
+                },
+                "C22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I21"
+                  ]
+                },
+                "C23": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I22"
+                  ]
+                },
+                "C24": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I23"
+                  ]
+                },
+                "C25": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I16"
+                  ]
+                },
+                "C26": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I15"
+                  ]
+                },
+                "C27": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I17"
+                  ]
+                },
+                "C28": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I18"
+                  ]
+                },
+                "C29": {
+                  "basis": "b0"
+                },
+                "C30": {
+                  "basis": "b0"
+                },
+                "C31": {
+                  "basis": "b0"
+                },
+                "C32": {
+                  "basis": "b0"
+                },
+                "C33": {
+                  "basis": "b0"
+                },
+                "C34": {
+                  "basis": "b0"
+                },
+                "C35": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I24"
+                  ]
+                },
+                "C36": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I26"
+                  ]
+                },
+                "C37": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I27"
+                  ]
+                },
+                "C38": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C39": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C40": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I3"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I7"
+                ],
+                "sourceRefs": [
+                  "第3.1节"
+                ],
+                "sourceSpan": {
+                  "startLine": 351,
+                  "endLine": 379
+                },
+                "diagnosis": "I7将维数下界C1列为链全纯性C5的直接前提，且论证末句称维数下界保证非退化；来源3.1节证明仅用Fact0、引理3.1、迹的多重求和与对角特化得到J，未直接调用C1。",
+                "repairRequirement": "I7前提仅保留来源直接使用的C8、C2、F9，删除C1；论证删除维数下界语句，仅保留来源明确给出的迹求和、特化与对角限制及闭辫得J步骤。"
+              },
+              {
+                "id": "F2",
+                "category": "b0-boundary",
+                "objectKind": "map",
+                "targetIds": [
+                  "I12",
+                  "I13",
+                  "I14",
+                  "C29",
+                  "C30"
+                ],
+                "sourceRefs": [
+                  "附录A"
+                ],
+                "sourceSpan": {
+                  "startLine": 1263,
+                  "endLine": 1353
+                },
+                "diagnosis": "附录明确引[23]得到引理A.1/A.2即C29/C30，属范围内未证明的外部调用；显式幂公式C31/C32是证明命题7.3即C19秩二情形的直接依赖。初稿用C31/C32证明C29/C30即I12/I13，颠倒直接论证，且I14遗漏C31/C32。",
+                "repairRequirement": "删除无来源桥梁的I12、I13；C29、C30作为外部调用纳入B0；I14前提补足C31、C32并在论证中点明结合结构常数与显式幂公式，保持闭包不变。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I7",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C8",
+                      "C2",
+                      "F9",
+                      "C1"
+                    ],
+                    "after": [
+                      "C8",
+                      "C2",
+                      "F9"
+                    ]
+                  },
+                  {
+                    "field": "argument",
+                    "before": "$\\mathrm{tr}_{q}$ 为 $\\tilde{\\tau}$ 的有限多重求和，特化与对角限制 $n_{i}=n_{\\bar{\\beta}i}$ 保持全纯，闭辫即得 $J_{L}$ ，维数下界保证全纯概念非退化。",
+                    "after": "$\\mathrm{tr}_{q}$ 为 $\\tilde{\\tau}$ 的有限多重求和，特化与对角限制 $n_{i}=n_{\\bar{\\beta}i}$ 保持全纯，闭辫即得 $J_{L}$ 。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "remove",
+                "objectKind": "inference",
+                "targetId": "I12"
+              },
+              {
+                "findingId": "F2",
+                "op": "remove",
+                "objectKind": "inference",
+                "targetId": "I13"
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I14",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C29",
+                      "C30",
+                      "C34",
+                      "C2"
+                    ],
+                    "after": [
+                      "C29",
+                      "C30",
+                      "C31",
+                      "C32",
+                      "C34",
+                      "C2"
+                    ]
+                  },
+                  {
+                    "field": "argument",
+                    "before": "任两约化字由考克斯特移动连接，每步只涉两单根化为秩二情形，代数同构保持全纯，结合秩二结果得转移矩阵全纯。",
+                    "after": "任两约化字由考克斯特移动连接，每步只涉两单根化为秩二情形，代数同构保持全纯，结合秩二结构常数与显式幂公式得转移矩阵全纯。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "C29"
+              },
+              {
+                "findingId": "F2",
+                "op": "add",
+                "objectKind": "b0",
+                "targetId": "C30"
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 83,
+            "cleanCount": 77
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 132965
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 128220
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "44ea247dd3e178436c89f2d96b46b2b3a5053d0b5637d905f0132c7179861238",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 297502,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 63,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2683,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 5136,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7529,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9953,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12331,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14714,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 17105,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19512,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21878,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 24277,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26656,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 29044,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 31414,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 33795,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 36300,
+        "phase": "complete",
+        "pageCount": 41
+      },
+      {
+        "stage": "generate",
+        "atMs": 36300,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 169273,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 297502,
+        "phase": "complete",
+        "entries": 56,
+        "inferences": 25
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 132487,
+        "usage": {
+          "input_tokens": 37803,
+          "output_tokens": 34683,
+          "total_tokens": 72486
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 128131,
+        "usage": {
+          "input_tokens": 56467,
+          "output_tokens": 27016,
+          "total_tokens": 83483
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

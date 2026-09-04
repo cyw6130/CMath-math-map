@@ -1,0 +1,1978 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "09_Akhmedov_Park_Exotic_small_4manifolds.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "f-fibersum",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "广义纤维和的定义",
+          "statement": "设\\(X\\)与\\(Y\\)为闭定向光滑四维流形，各含有一条光滑嵌入曲面\\(\\Sigma\\)，其亏格满足\\(g\\geq 1\\)，同调阶无限且自交数为零，从而有积管状邻域\\(\\nu\\Sigma\\cong\\Sigma\\times D^{2}\\)。用反定向保纤维微分同胚\\(\\psi\\)沿边界\\(\\Sigma\\times S^{1}\\)粘合\\(X\\setminus\\nu\\Sigma\\)与\\(Y\\setminus\\nu\\Sigma\\)，所得闭定向光滑四维流形记为\\(X\\#_{\\psi}Y\\)，称为沿\\(\\Sigma\\)的广义纤维和。"
+        },
+        {
+          "id": "f-invdef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "陈数平方与全纯欧拉示性数的定义",
+          "statement": "对闭定向光滑四维流形\\(X\\)，记欧拉示性数为\\(e(X)\\)，符号差为\\(\\sigma(X)\\)，定义\\(c_{1}^{2}(X):=2e(X)+3\\sigma(X)\\)与\\(\\chi_{h}(X):=(e(X)+\\sigma(X))/4\\)。若\\(X\\)为复曲面，则二者分别为第一陈类平方与全纯欧拉示性数，可作地理问题的坐标。"
+        },
+        {
+          "id": "f-stdcalc",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "标准连通和的不变量计算",
+          "statement": "对单连通四维流形\\(m\\mathbb{CP}^{2}\\#n\\overline{\\mathbb{CP}}^{2}\\)，有\\(e=2+m+n\\)与\\(\\sigma=m-n\\)，从而\\(c_{1}^{2}(m\\mathbb{CP}^{2}\\#n\\overline{\\mathbb{CP}}^{2})=5m-n+4\\)且\\(\\chi_{h}(m\\mathbb{CP}^{2}\\#n\\overline{\\mathbb{CP}}^{2})=(m+1)/2\\)。"
+        },
+        {
+          "id": "f-esigadd",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "纤维和的欧拉示性数与符号差公式",
+          "statement": "对沿自交零嵌入曲面\\(\\Sigma\\)的广义纤维和，有\\(e(X\\#_{\\psi}Y)=e(X)+e(Y)-2e(\\Sigma)\\)与\\(\\sigma(X\\#_{\\psi}Y)=\\sigma(X)+\\sigma(Y)\\)。"
+        },
+        {
+          "id": "f-mkbundle",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "三叶结手术流形的丛结构定义",
+          "statement": "设\\(K\\)为\\(S^{3}\\)中三叶结，\\(\\nu K\\)为管状邻域，\\(M_{K}\\)为对\\(K\\)作零手术所得。则\\(M_{K}\\times S^{1}\\)为以二维环面为纤维、底面亦为二维环面的丛，截面记为\\(S=b\\times S^{1}\\)，纤维记为\\(F\\)，到第二因子的投影记为\\(pr\\)，且满足\\(\\pi_{2}(M_{K}\\times S^{1})=0\\)。"
+        },
+        {
+          "id": "f-cscf",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "截面余集与纤维余集的定义",
+          "statement": "记\\(C_{S}=(M_{K}\\times S^{1})\\setminus\\nu S\\)为截面管状邻域的余集，记\\(C_{F}=(M_{K}\\times S^{1})\\setminus\\nu F\\)为纤维管状邻域的余集，其中\\(\\nu S\\)与\\(\\nu F\\)为相应管状邻域。"
+        },
+        {
+          "id": "f-yksig",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "流形与亏格二曲面的定义",
+          "statement": "设\\(Y_{K}\\)为两份\\(M_{K}\\times S^{1}\\)沿一截面\\(S\\)与一纤维\\(F\\)的辛和，粘合满足\\(\\psi_{*}(x)=\\gamma_{1}^{\\prime}\\)与\\(\\psi_{*}(b)=\\gamma_{2}^{\\prime}\\)。在\\(Y_{K}\\)内取亏格二辛子流形\\(\\Sigma_{2}\\)为\\(C_{S}\\)中去洞纤维\\(F_{0}\\)与\\(C_{F}\\)中去洞截面\\(S_{0}\\)的内部和，其自交数为零。"
+        },
+        {
+          "id": "f-xkdef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "流形的双倍构造定义",
+          "statement": "取两份\\(Y_{K}\\)，第二份生成元记为\\(e,f,z,s,t\\)。设\\(X_{K}\\)为沿\\(\\Sigma_{2}\\)的辛和，粘合映射满足\\(\\psi_{*}(a^{-1}b)=s\\)与\\(\\psi_{*}(b^{-1}aba^{-1})=t\\)与\\(\\psi_{*}(d)=e^{-1}f\\)与\\(\\psi_{*}(y)=f^{-1}efe^{-1}\\)。"
+        },
+        {
+          "id": "f-ysigprime",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "环面爆破与亏格二曲面的定义",
+          "statement": "记\\(T_{i,j}\\)为\\(T^{4}\\)中第\\(i,j\\)圆周因子非平凡的二维环面，取积辛形式\\(\\omega\\)。将一个水平环面\\(T_{1,2}\\)与一个竖直环面\\(T_{3,4}\\)作辛消解得自交数为二的辛曲面，再爆破两次得\\(Y=T^{4}\\#2\\overline{\\mathbb{CP}}^{2}\\)中自交零辛亏格二曲面\\(\\Sigma_{2}^{\\prime}\\)，其同调类为\\([\\Sigma_{2}^{\\prime}]=[T_{1,2}]+[T_{3,4}]-[E_{1}]-[E_{2}]\\)，其中\\(E_{1},E_{2}\\)为例外球面。"
+        },
+        {
+          "id": "f-xdef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "流形的粘合定义",
+          "statement": "设\\(\\alpha_{1},\\alpha_{2},\\alpha_{3},\\alpha_{4}\\)为\\(\\pi_{1}(Y)\\)的生成元，\\(\\mu\\)与\\(\\mu^{\\prime}\\)分别为两侧法圆。取微分同胚\\(\\psi\\)满足\\(\\psi_{*}(a^{-1}b)=\\alpha_{1}\\)与\\(\\psi_{*}(b^{-1}aba^{-1})=\\alpha_{2}\\)与\\(\\psi_{*}(d)=\\alpha_{3}\\)与\\(\\psi_{*}(y)=\\alpha_{4}\\)与\\(\\psi_{*}(\\mu)=\\mu^{\\prime}\\)，定义\\(X:=X_{K}\\#_{\\psi}(T^{4}\\#2\\overline{\\mathbb{CP}}^{2})\\)。"
+        },
+        {
+          "id": "f-qsigpp",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "带爆破的积流形与亏格二曲面的定义",
+          "statement": "设\\(Q=(M_{K}\\times S^{1})\\#2\\overline{\\mathbb{CP}}^{2}\\)，将纤维\\(F\\)与截面\\(S\\)作辛消解再爆破两次得自交零辛亏格二曲面\\(\\Sigma_{2}^{\\prime\\prime}\\)，其同调类为\\([\\Sigma_{2}^{\\prime\\prime}]=[F]+[S]-[E_{1}]-[E_{2}]\\)，其中\\(E_{1},E_{2}\\)为例外球面。记\\(g,h,z\\)为\\(\\pi_{1}(M_{K}\\times S^{1})\\)的相应生成元，\\(F\\)的生成元映为\\(g^{-1}h\\)与\\(h^{-1}ghg^{-1}\\)，\\(S\\)的生成元映为\\(h\\)与\\(z\\)。"
+        },
+        {
+          "id": "f-udef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "流形的粘合定义",
+          "statement": "取微分同胚\\(\\varphi\\)满足\\(\\varphi_{*}(a^{-1}b)=h\\)与\\(\\varphi_{*}(b^{-1}aba^{-1})=z\\)与\\(\\varphi_{*}(d)=g^{-1}h\\)与\\(\\varphi_{*}(y)=h^{-1}ghg^{-1}\\)与\\(\\varphi_{*}(\\mu)=\\mu^{\\prime\\prime}\\)，其中\\(\\mu,\\mu^{\\prime\\prime}\\)为法圆，定义\\(U:=Y_{K}\\#_{\\varphi}((M_{K}\\times S^{1})\\#2\\overline{\\mathbb{CP}}^{2})\\)。"
+        },
+        {
+          "id": "f-yqcalc",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "爆破流形的不变量计算",
+          "statement": "对\\(Y=T^{4}\\#2\\overline{\\mathbb{CP}}^{2}\\)与\\(Q=(M_{K}\\times S^{1})\\#2\\overline{\\mathbb{CP}}^{2}\\)，均有\\(e=2\\)与\\(\\sigma=-2\\)与\\(c_{1}^{2}=-2\\)与\\(\\chi_{h}=0\\)。"
+        },
+        {
+          "id": "c-trefoil",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "三叶结余集的基本群",
+          "statement": "三叶结余集满足\\(\\pi_{1}(S^{3}\\setminus\\nu K)=\\langle a,b\\mid aba=bab\\rangle\\)，其中\\(b\\)代表经圈，\\(ab^{2}ab^{-4}\\)代表纬圈，\\(\\gamma_{1}=a^{-1}b\\)与\\(\\gamma_{2}=b^{-1}aba^{-1}\\)生成亏格一塞弗特曲面的基本群在包含映射下的像。"
+        },
+        {
+          "id": "c-thurston",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "积流形上的辛结构存在性",
+          "statement": "\\(M_{K}\\times S^{1}\\)上存在辛形式，使截面\\(S\\)与环面纤维\\(F\\)均为辛子流形。"
+        },
+        {
+          "id": "c-invxkyk",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "双倍构造的不变量取值",
+          "statement": "\\(e(X_{K})=4\\)与\\(\\sigma(X_{K})=0\\)与\\(c_{1}^{2}(X_{K})=8\\)与\\(\\chi_{h}(X_{K})=1\\)，且\\(e(Y_{K})=0\\)与\\(\\sigma(Y_{K})=0\\)与\\(c_{1}^{2}(Y_{K})=0\\)与\\(\\chi_{h}(Y_{K})=0\\)。"
+        },
+        {
+          "id": "c-gompf",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "辛和的辛结构定理",
+          "statement": "若\\(X,Y\\)为辛四维流形且\\(\\Sigma\\)在两侧均为辛子流形，则辛和\\(X\\#_{\\psi}Y\\)容许辛结构。"
+        },
+        {
+          "id": "c-freedman",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "单连通拓扑四维流形的分类定理",
+          "statement": "单连通闭拓扑四维流形由其交形式决定，若单连通闭光滑四维流形与\\(m\\mathbb{CP}^{2}\\#n\\overline{\\mathbb{CP}}^{2}\\)有相同的欧拉示性数与符号差，则二者同胚。"
+        },
+        {
+          "id": "c-taubes",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "辛流形的规范类不变量",
+          "statement": "对闭辛四维流形\\(X\\)，其典则类\\(K_{X}\\)的塞伯格威滕不变量满足\\(SW_{X}(K_{X})=\\pm 1\\)，特别为非平凡。"
+        },
+        {
+          "id": "c-witten",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "连通和的塞伯格威滕消失定理",
+          "statement": "标准连通和\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)的塞伯格威滕不变量是平凡的，塞伯格威滕不变量为微分同胚不变量。"
+        },
+        {
+          "id": "c-usher",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "辛和的极小性定理",
+          "statement": "若辛和的 summands 为极小辛流形，则辛和为极小；若例外球面横截交和曲面一次，则相应的辛和仍为极小辛四维流形。由此\\(Y_{K}\\)与\\(X_{K}\\)为极小，且在例外球面交一次的条件下\\(X\\)与\\(U\\)为极小。"
+        },
+        {
+          "id": "c-minbig",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "大正部极小蕴含不可约",
+          "statement": "对满足\\(b_{2}^{+}>1\\)的单连通辛四维流形，辛极小性蕴含光滑不可约性。"
+        },
+        {
+          "id": "c-minone",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "正部为一时极小蕴含不可约",
+          "statement": "对满足\\(b_{2}^{+}=1\\)的单连通辛四维流形，辛极小性蕴含光滑不可约性。"
+        },
+        {
+          "id": "c-lemma4",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "纤维和的示性数公式",
+          "statement": "对沿亏格\\(g\\)自交零曲面\\(\\Sigma\\)的广义纤维和，有\\(c_{1}^{2}(X\\#_{\\psi}Y)=c_{1}^{2}(X)+c_{1}^{2}(Y)+8(g-1)\\)与\\(\\chi_{h}(X\\#_{\\psi}Y)=\\chi_{h}(X)+\\chi_{h}(Y)+(g-1)\\)。"
+        },
+        {
+          "id": "c-mkpres",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "手术积流形的基本群表示",
+          "statement": "\\(\\pi_{1}(M_{K}\\times S^{1})=\\pi_{1}(M_{K})\\oplus\\mathbb{Z}\\)满足\\(\\langle a,b,x\\mid aba=bab,ab^{2}ab^{-4}=1,[x,a]=[x,b]=1\\rangle\\)。"
+        },
+        {
+          "id": "c-lemma5",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "截面余集的基本群",
+          "statement": "\\(C_{S}=(M_{K}\\times S^{1})\\setminus\\nu S\\)满足\\(\\pi_{1}(C_{S})=\\langle a,b,x\\mid aba=bab,[x,a]=[x,b]=1\\rangle\\)。"
+        },
+        {
+          "id": "c-lemma6",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "纤维余集的基本群",
+          "statement": "\\(C_{F}=(M_{K}\\times S^{1})\\setminus\\nu F\\)满足\\(\\pi_{1}(C_{F})=\\langle\\gamma_{1}^{\\prime},\\gamma_{2}^{\\prime},d,y\\mid[\\gamma_{1}^{\\prime},\\gamma_{2}^{\\prime}]=[y,\\gamma_{1}^{\\prime}]=[y,\\gamma_{2}^{\\prime}]=1,d\\gamma_{1}^{\\prime}d^{-1}=\\gamma_{1}^{\\prime}\\gamma_{2}^{\\prime},d\\gamma_{2}^{\\prime}d^{-1}=(\\gamma_{1}^{\\prime})^{-1}\\rangle\\)。"
+        },
+        {
+          "id": "c-lemma7",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "一次辛和的基本群",
+          "statement": "在给定粘合\\(x=\\gamma_{1}^{\\prime}\\)与\\(b=\\gamma_{2}^{\\prime}\\)下，\\(\\pi_{1}(Y_{K})\\)由\\(a,b,x,d,y\\)生成，满足\\(aba=bab\\)与\\([x,a]=[x,b]=1\\)与\\([y,x]=[y,b]=1\\)与\\(dxd^{-1}=xb\\)与\\(dbd^{-1}=x^{-1}\\)与\\(ab^{2}ab^{-4}=[d,y]\\)。"
+        },
+        {
+          "id": "c-sigimage",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "亏格二曲面的包含像",
+          "statement": "\\(Y_{K}\\)中亏格二辛子流形\\(\\Sigma_{2}\\)为去洞纤维与去洞截面的内部和，包含诱导映射把\\(\\pi_{1}(\\Sigma_{2})\\)的标准生成元映为\\(\\pi_{1}(Y_{K})\\)中的\\(a^{-1}b\\)与\\(b^{-1}aba^{-1}\\)与\\(d\\)与\\(y\\)。"
+        },
+        {
+          "id": "c-lemma8",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "一次辛和去管状邻域的基本群",
+          "statement": "存在非负整数\\(m,n\\)使\\(\\pi_{1}(Y_{K}\\setminus\\nu\\Sigma_{2})\\)由\\(a,b,x,d,y\\)及\\(g_{1},\\dots,g_{m}\\)生成，保留\\(Y_{K}\\)中除\\([x,a]=[x,b]=1\\)外的关系，附加关系\\(r_{1}=\\dots=r_{n}=r_{n+1}=1\\)，其中\\(g_{i},r_{j}\\)位于由\\([x,b]\\)生成的正规子群\\(N\\)中，\\(r_{n+1}\\)为关于\\(x,a\\)及\\(N\\)中元的字；若再加\\([x,b]=1\\)则回到\\(\\pi_{1}(Y_{K})\\)且\\(r_{n+1}=1\\)化为\\([x,a]=1\\)。其中\\([x,b]\\)为\\(\\Sigma_{2}\\)在\\(Y_{K}\\)中的经圈。"
+        },
+        {
+          "id": "c-lemma9",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "二次辛和的基本群",
+          "statement": "存在非负整数\\(m,n\\)使\\(\\pi_{1}(X_{K})\\)由\\(a,b,x,d,y\\)与\\(e,f,z,s,t\\)及两组额外生成元生成，保留两侧对应关系与\\(r_{j}=r_{j}^{\\prime}=1\\)及\\(r_{n+1}=r_{n+1}^{\\prime}=1\\)，并附加粘合关系\\(d=e^{-1}f\\)与\\(y=f^{-1}efe^{-1}\\)与\\(a^{-1}b=s\\)与\\(b^{-1}aba^{-1}=t\\)与\\([x,b]=[z,f]\\)，其中额外生成元与关系位于由\\([x,b]=[z,f]\\)生成的正规子群中，\\(r_{n+1}\\)为关于\\(x,a\\)的字，\\(r_{n+1}^{\\prime}\\)为关于\\(z,e\\)的字。"
+        },
+        {
+          "id": "c-lemma10",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "二次辛和去管状邻域的基本群",
+          "statement": "存在非负整数\\(m,n,p,q\\)使\\(\\pi_{1}(X_{K}\\setminus\\nu\\Sigma_{2})\\)保留\\(\\pi_{1}(X_{K})\\)的上述生成元与关系，并附加位于由\\([x,b][z,f]^{-1}\\)生成的正规子群\\(N^{\\prime\\prime}\\)中的生成元\\(k_{1},\\dots,k_{p}\\)与关系\\(r_{1}^{\\prime\\prime}=\\dots=r_{q}^{\\prime\\prime}=1\\)；\\([x,b][z,f]^{-1}\\)为\\(\\Sigma_{2}\\)在\\(X_{K}\\)中的经圈，令其为一即回到\\(\\pi_{1}(X_{K})\\)。"
+        },
+        {
+          "id": "c-piy",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "爆破环面的余集基本群",
+          "statement": "\\(\\pi_{1}(Y)\\)同构于\\(\\mathbb{Z}^{4}\\)，由\\(\\alpha_{i}\\)生成；\\(\\pi_{1}(Y\\setminus\\nu\\Sigma_{2}^{\\prime})\\)亦同构于\\(\\mathbb{Z}^{4}\\)并由相同生成元生成，法圆\\(\\mu^{\\prime}\\)可形变为例外球面故在余集中平凡。"
+        },
+        {
+          "id": "c-piq",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "带爆破积流形的余集基本群",
+          "statement": "\\(\\pi_{1}(Q\\setminus\\nu\\Sigma_{2}^{\\prime\\prime})\\)同构于\\(\\pi_{1}(Q)\\)并同构于\\(\\pi_{1}(M_{K}\\times S^{1})\\)，法圆\\(\\mu^{\\prime\\prime}\\)在余集中零伦。"
+        },
+        {
+          "id": "c-xsymp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的辛结构",
+          "statement": "\\(X=X_{K}\\#_{\\psi}(T^{4}\\#2\\overline{\\mathbb{CP}}^{2})\\)容许辛结构，为辛和。"
+        },
+        {
+          "id": "c-idx4",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式一",
+          "statement": "在\\(\\pi_{1}(X)\\)中成立\\(dbd=bd^{2}b\\)。"
+        },
+        {
+          "id": "c-idx5",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式二",
+          "statement": "在\\(\\pi_{1}(X)\\)中成立\\(bsb=sb^{2}s\\)。"
+        },
+        {
+          "id": "c-idx6",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式三",
+          "statement": "在\\(\\pi_{1}(X)\\)中成立\\(sfs=fs^{2}f\\)。"
+        },
+        {
+          "id": "c-idx7",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式四",
+          "statement": "在\\(\\pi_{1}(X)\\)中成立\\(fdf=df^{2}d\\)。"
+        },
+        {
+          "id": "c-idx8",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式五",
+          "statement": "在\\(\\pi_{1}(X)\\)中成立\\((bdb^{-1})s=s(bdb^{-1})\\)。"
+        },
+        {
+          "id": "c-lemma11",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的单连通性",
+          "statement": "\\(X\\)是单连通的，即\\(\\pi_{1}(X)=1\\)。"
+        },
+        {
+          "id": "c-lemma12",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的不变量计算",
+          "statement": "\\(e(X)=10\\)与\\(\\sigma(X)=-2\\)与\\(c_{1}^{2}(X)=14\\)与\\(\\chi_{h}(X)=2\\)。"
+        },
+        {
+          "id": "c-xhomeo",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形的同胚分类",
+          "statement": "\\(X\\)同胚于\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)。"
+        },
+        {
+          "id": "c-xnondiff",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形的非微分同胚性",
+          "statement": "\\(X\\)不微分同胚于\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)，其塞伯格威滕不变量非平凡而标准流形的塞伯格威滕不变量平凡。"
+        },
+        {
+          "id": "c-xminirr",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形的极小与不可约性",
+          "statement": "\\(X\\)为极小辛四维流形，从而为光滑不可约的。"
+        },
+        {
+          "id": "c-usymp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的辛结构",
+          "statement": "\\(U=Y_{K}\\#_{\\varphi}((M_{K}\\times S^{1})\\#2\\overline{\\mathbb{CP}}^{2})\\)容许辛结构，为辛和。"
+        },
+        {
+          "id": "c-idu10",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式一",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(bhb=hb^{2}h\\)。"
+        },
+        {
+          "id": "c-idu11",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式二",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(d(hbh^{-1})=(hbh^{-1})d\\)。"
+        },
+        {
+          "id": "c-idu12",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式三",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(h(bdb^{-1})=(bdb^{-1})h\\)。"
+        },
+        {
+          "id": "c-idu13",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式四",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(d^{2}=b^{-1}dbdb^{-1}\\)。"
+        },
+        {
+          "id": "c-idu14",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式五",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(b^{2}=hbh^{-1}bh\\)。"
+        },
+        {
+          "id": "c-idu15",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形基本群恒等式六",
+          "statement": "在\\(\\pi_{1}(U)\\)中成立\\(h^{2}=dhd^{-1}hd\\)。"
+        },
+        {
+          "id": "c-lemma13",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的单连通性",
+          "statement": "\\(U\\)是单连通的，即\\(\\pi_{1}(U)=1\\)。"
+        },
+        {
+          "id": "c-lemma14",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形的不变量计算",
+          "statement": "\\(e(U)=6\\)与\\(\\sigma(U)=-2\\)与\\(c_{1}^{2}(U)=6\\)与\\(\\chi_{h}(U)=1\\)。"
+        },
+        {
+          "id": "c-uhomeo",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形的同胚分类",
+          "statement": "\\(U\\)同胚于\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)。"
+        },
+        {
+          "id": "c-uminirr",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形的极小不可约与奇异性",
+          "statement": "\\(U\\)为极小辛四维流形，从而光滑不可约，故不微分同胚于\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)。"
+        },
+        {
+          "id": "c-thm1",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "小四维流形上的奇异辛结构主定理",
+          "statement": "设\\(M\\)为\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)或\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)，则存在闭单连通不可约辛四维流形，它同胚但不微分同胚于\\(M\\)。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "i-lemma4",
+          "operationKind": "proof",
+          "premises": [
+            "f-invdef",
+            "f-esigadd"
+          ],
+          "conclusion": "c-lemma4",
+          "argument": "由\\(e\\)与\\(\\sigma\\)的纤维和公式与\\(e(\\Sigma)=2-2g\\)，代入\\(c_{1}^{2}:=2e+3\\sigma\\)与\\(\\chi_{h}:=(e+\\sigma)/4\\)的定义，直接计算得\\(c_{1}^{2}\\)增加\\(8(g-1)\\)而\\(\\chi_{h}\\)增加\\(g-1\\)。"
+        },
+        {
+          "id": "i-mkpres",
+          "operationKind": "proof",
+          "premises": [
+            "c-trefoil",
+            "f-mkbundle"
+          ],
+          "conclusion": "c-mkpres",
+          "argument": "由三叶结余集表示加上零手术的纬圈关系\\(ab^{2}ab^{-4}=1\\)得\\(\\pi_{1}(M_{K})\\)，再与\\(S^{1}\\)因子作直积，新增中心生成元\\(x\\)满足\\([x,a]=[x,b]=1\\)，即得\\(M_{K}\\times S^{1}\\)的表示。"
+        },
+        {
+          "id": "i-lemma5",
+          "operationKind": "proof",
+          "premises": [
+            "c-trefoil",
+            "f-cscf"
+          ],
+          "conclusion": "c-lemma5",
+          "argument": "注意\\(C_{S}=(S^{3}\\setminus\\nu K)\\times S^{1}\\)，故其基本群为结余集基本群与\\(\\mathbb{Z}\\)的直积，纬圈关系不再出现，仅保留\\(aba=bab\\)与\\([x,a]=[x,b]=1\\)。"
+        },
+        {
+          "id": "i-lemma6",
+          "operationKind": "proof",
+          "premises": [
+            "f-mkbundle",
+            "f-cscf"
+          ],
+          "conclusion": "c-lemma6",
+          "argument": "\\(C_{F}\\)同伦等价于以去洞环面为纤维、楔圆为底的丛，沿\\(y\\)单值平凡，沿\\(d\\)单值与\\(M_{K}\\)相同，由\\(cdc=dcd\\)蕴含\\(cdc^{-1}=d^{-1}cd\\)计算得\\(d\\gamma_{1}^{\\prime}d^{-1}=\\gamma_{1}^{\\prime}\\gamma_{2}^{\\prime}\\)与\\(d\\gamma_{2}^{\\prime}d^{-1}=(\\gamma_{1}^{\\prime})^{-1}\\)及交换关系。"
+        },
+        {
+          "id": "i-lemma7",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma5",
+            "c-lemma6",
+            "f-yksig"
+          ],
+          "conclusion": "c-lemma7",
+          "argument": "对\\(C_{S}\\)与\\(C_{F}\\)用塞弗特范坎彭定理，以\\(T^{3}\\)商去，一侧圆周因子把结纬圈\\(ab^{2}ab^{-4}\\)等同于另一侧纤维经圈\\([d,y]\\)，并按\\(x=\\gamma_{1}^{\\prime}\\)与\\(b=\\gamma_{2}^{\\prime}\\)消去纤维侧生成元，得到以\\(a,b,x,d,y\\)表示的\\(\\pi_{1}(Y_{K})\\)。"
+        },
+        {
+          "id": "i-sigimage",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma7",
+            "f-yksig"
+          ],
+          "conclusion": "c-sigimage",
+          "argument": "\\(\\Sigma_{2}\\)为去洞纤维\\(F_{0}\\)与去洞截面\\(S_{0}\\)的内部和，其标准生成元在包含映射下分别映为一侧的塞弗特生成元\\(a^{-1}b\\)与\\(b^{-1}aba^{-1}\\)及另一侧的底圆\\(d\\)与\\(y\\)。"
+        },
+        {
+          "id": "i-lemma8",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma7",
+            "c-sigimage",
+            "f-yksig"
+          ],
+          "conclusion": "c-lemma8",
+          "argument": "对\\(Y_{K}\\setminus\\nu\\Sigma_{2}\\)用塞弗特范坎彭定理，经圈为\\([x,b]\\)。除\\([x,a]=[x,b]=1\\)外，\\(aba=bab\\)因可嵌入远离投影的结余集而保留，\\(ab^{2}ab^{-4}=[d,y]\\)因平行拷贝而保留，四条单值关系描述去洞环面丛的单值故保留；新增生成元与关系位于由\\([x,b]\\)生成的正规子群中，置\\([x,b]=1\\)即回到\\(\\pi_{1}(Y_{K})\\)且余关系化为\\([x,a]=1\\)。"
+        },
+        {
+          "id": "i-lemma9",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "f-xkdef"
+          ],
+          "conclusion": "c-lemma9",
+          "argument": "对两份\\(Y_{K}\\setminus\\nu\\Sigma_{2}\\)沿\\(\\Sigma_{2}\\times S^{1}\\)用塞弗特范坎彭定理，按给定的\\(d=e^{-1}f\\)等四个等同与经圈等同\\([x,b]=[z,f]\\)作商，直接合并两侧的表示与额外正规子群关系即得\\(\\pi_{1}(X_{K})\\)。"
+        },
+        {
+          "id": "i-lemma10",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma9",
+            "f-xkdef"
+          ],
+          "conclusion": "c-lemma10",
+          "argument": "\\(\\Sigma_{2}\\)在\\(X_{K}\\)中的经圈为\\([x,b][z,f]^{-1}\\)，对\\(X_{K}\\setminus\\nu\\Sigma_{2}\\)用塞弗特范坎彭定理，新增生成元与关系位于其生成的正规子群中，置该经圈为一即回到\\(\\pi_{1}(X_{K})\\)。"
+        },
+        {
+          "id": "i-piy",
+          "operationKind": "proof",
+          "premises": [
+            "f-ysigprime"
+          ],
+          "conclusion": "c-piy",
+          "argument": "\\(Y\\)的基本群为\\(\\mathbb{Z}^{4}\\)，法圆\\(\\mu^{\\prime}\\)可形变为爆破例外球面故在余集中平凡，因此\\(Y\\setminus\\nu\\Sigma_{2}^{\\prime}\\)的基本群仍为由\\(\\alpha_{i}\\)生成的\\(\\mathbb{Z}^{4}\\)。"
+        },
+        {
+          "id": "i-piq",
+          "operationKind": "proof",
+          "premises": [
+            "f-qsigpp",
+            "c-mkpres"
+          ],
+          "conclusion": "c-piq",
+          "argument": "爆破不改变基本群，故\\(\\pi_{1}(Q)\\)同构于\\(\\pi_{1}(M_{K}\\times S^{1})\\)；法圆\\(\\mu^{\\prime\\prime}\\)类似地在余集中零伦，故\\(Q\\setminus\\nu\\Sigma_{2}^{\\prime\\prime}\\)有相同基本群。"
+        },
+        {
+          "id": "i-xsymp",
+          "operationKind": "proof",
+          "premises": [
+            "c-gompf",
+            "f-xdef",
+            "f-ysigprime",
+            "f-yksig"
+          ],
+          "conclusion": "c-xsymp",
+          "argument": "\\(\\Sigma_{2}\\)与\\(\\Sigma_{2}^{\\prime}\\)在两侧均为自交零辛曲面，由辛和定理，沿给定微分同胚的粘合\\(X\\)容许辛结构。"
+        },
+        {
+          "id": "i-idx4",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef"
+          ],
+          "conclusion": "c-idx4",
+          "argument": "在\\(X\\)的表示中由\\(dbd^{-1}=x^{-1}\\)得\\(x=db^{-1}d^{-1}\\)，代入\\(dxd^{-1}=xb\\)得\\(d^{2}b^{-1}d^{-2}=db^{-1}d^{-1}b\\)，整理取逆即得\\(dbd=bd^{2}b\\)。"
+        },
+        {
+          "id": "i-idx5",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef"
+          ],
+          "conclusion": "c-idx5",
+          "argument": "由\\(a=bs^{-1}\\)代入\\(aba=bab\\)得\\(bs^{-1}b^{2}s^{-1}=b^{2}s^{-1}b\\)，结合\\(t=s^{-1}bsb^{-1}\\)与交换\\(st=ts\\)化简得\\(b^{2}sb^{-1}=s^{-1}bs\\)，即\\(bsb=sb^{2}s\\)。"
+        },
+        {
+          "id": "i-idx6",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef"
+          ],
+          "conclusion": "c-idx6",
+          "argument": "由\\(z=sf^{-1}s^{-1}\\)代入\\(szs^{-1}=zf\\)得\\(s^{2}f^{-1}s^{-2}=sf^{-1}s^{-1}f\\)，整理取逆即得\\(sfs=fs^{2}f\\)。"
+        },
+        {
+          "id": "i-idx7",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef"
+          ],
+          "conclusion": "c-idx7",
+          "argument": "由\\(e=fd^{-1}\\)代入\\(efe=fef\\)得\\(fd^{-1}f^{2}d^{-1}=f^{2}d^{-1}f\\)，结合\\(y=d^{-1}fdf^{-1}\\)与交换\\(dy=yd\\)化简得\\(f^{2}df^{-1}=d^{-1}fd\\)，即\\(fdf=df^{2}d\\)。"
+        },
+        {
+          "id": "i-idx8",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef"
+          ],
+          "conclusion": "c-idx8",
+          "argument": "由交换\\(dt=td\\)与\\(t=s^{-1}bsb^{-1}\\)及\\(d\\)与\\(s\\)交换，得\\(d\\)与\\(bsb^{-1}\\)交换；又\\(d\\)与乘积\\((bsb^{-1})(b^{-1}sb)\\)交换，故\\(d\\)与\\(b^{-1}sb\\)交换，整理即得\\((bdb^{-1})s=s(bdb^{-1})\\)。"
+        },
+        {
+          "id": "i-lemma11",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma10",
+            "c-piy",
+            "f-xdef",
+            "c-idx4",
+            "c-idx5",
+            "c-idx6",
+            "c-idx7",
+            "c-idx8"
+          ],
+          "conclusion": "c-lemma11",
+          "argument": "用塞弗特范坎彭定理，\\(\\mu\\)因\\(\\mu^{\\prime}=1\\)而平凡，故额外生成元平凡而多余关系冗余；\\(\\alpha_{i}\\)交换给出\\(s,t,d,y\\)之间的六个交换子关系，得表示。由恒等式及\\(s\\)与\\(d\\)和\\(bdb^{-1}\\)交换推出\\(s\\)与\\(b\\)交换，再依次得\\(s=1\\)与\\(f=1\\)与\\(d=b=1\\)，从而所有生成元平凡，故\\(\\pi_{1}(X)=1\\)。"
+        },
+        {
+          "id": "i-lemma12",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma4",
+            "c-invxkyk",
+            "f-yqcalc",
+            "f-xdef"
+          ],
+          "conclusion": "c-lemma12",
+          "argument": "沿亏格二曲面的辛和使\\(e\\)增加\\(4\\)、\\(c_{1}^{2}\\)增加\\(8\\)、\\(\\chi_{h}\\)增加\\(1\\)而\\(\\sigma\\)相加。代入\\(e(X_{K})=4\\)与\\(\\sigma(X_{K})=0\\)与\\(e(Y)=2\\)与\\(\\sigma(Y)=-2\\)，计算得\\(e(X)=10\\)与\\(\\sigma(X)=-2\\)与\\(c_{1}^{2}(X)=14\\)与\\(\\chi_{h}(X)=2\\)。"
+        },
+        {
+          "id": "i-xhomeo",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma11",
+            "c-lemma12",
+            "c-freedman",
+            "f-stdcalc"
+          ],
+          "conclusion": "c-xhomeo",
+          "argument": "\\(X\\)单连通且\\(e=10\\)与\\(\\sigma=-2\\)，与\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)的\\(e=2+3+5\\)与\\(\\sigma=3-5\\)相同，故由拓扑分类二者同胚。"
+        },
+        {
+          "id": "i-xnondiff",
+          "operationKind": "proof",
+          "premises": [
+            "c-taubes",
+            "c-witten",
+            "c-xsymp",
+            "c-xhomeo"
+          ],
+          "conclusion": "c-xnondiff",
+          "argument": "辛流形\\(X\\)的典则类满足\\(SW_{X}(K_{X})=\\pm 1\\)非平凡，而标准连通和的塞伯格威滕不变量平凡；塞伯格威滕不变量为微分同胚不变量，故\\(X\\)不微分同胚于标准流形。"
+        },
+        {
+          "id": "i-xminirr",
+          "operationKind": "proof",
+          "premises": [
+            "c-usher",
+            "c-minbig",
+            "f-ysigprime",
+            "c-xsymp",
+            "f-mkbundle"
+          ],
+          "conclusion": "c-xminirr",
+          "argument": "因\\(\\pi_{2}(M_{K}\\times S^{1})=0\\)知底流形极小，由辛和极小性得\\(Y_{K},X_{K}\\)极小；又\\([\\Sigma_{2}^{\\prime}]\\)含\\(-[E_{1}]-[E_{2}]\\)使两例外球面各横截交一次，再由辛和极小性得\\(X\\)极小；\\(b_{2}^{+}>1\\)时极小蕴含不可约，故\\(X\\)光滑不可约。"
+        },
+        {
+          "id": "i-usymp",
+          "operationKind": "proof",
+          "premises": [
+            "c-gompf",
+            "f-udef",
+            "f-qsigpp",
+            "f-yksig"
+          ],
+          "conclusion": "c-usymp",
+          "argument": "\\(\\Sigma_{2}\\)与\\(\\Sigma_{2}^{\\prime\\prime}\\)在两侧均为自交零辛曲面，由辛和定理，沿给定微分同胚的粘合\\(U\\)容许辛结构。"
+        },
+        {
+          "id": "i-idu10",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef",
+            "c-idu14"
+          ],
+          "conclusion": "c-idu10",
+          "argument": "由\\(a=bh^{-1}\\)代入\\(aba=bab\\)并结合\\(z=h^{-1}bhb^{-1}\\)与\\([z,h]=1\\)的计算，再利用\\(b^{2}=hbh^{-1}bh\\)整理，化简得\\(bhb=hb^{2}h\\)。"
+        },
+        {
+          "id": "i-idu11",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef",
+            "c-idu15"
+          ],
+          "conclusion": "c-idu11",
+          "argument": "由\\(y=d^{-1}hdh^{-1}\\)与交换\\([y,b]=1\\)及\\(h^{2}=dhd^{-1}hd\\)的代入，化简得\\(d\\)与\\(hbh^{-1}\\)交换。"
+        },
+        {
+          "id": "i-idu12",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef",
+            "c-idu14"
+          ],
+          "conclusion": "c-idu12",
+          "argument": "由\\(z=h^{-1}bhb^{-1}\\)与\\(d=g^{-1}h\\)交换及\\(h^{-1}bh=b^{-1}h^{-1}b^{2}\\)的代入，化简得\\(h\\)与\\(bdb^{-1}\\)交换。"
+        },
+        {
+          "id": "i-idu13",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef"
+          ],
+          "conclusion": "c-idu13",
+          "argument": "由\\(x=db^{-1}d^{-1}\\)代入\\(dxd^{-1}=xb\\)，整理得\\(d^{2}=b^{-1}dbdb^{-1}\\)。"
+        },
+        {
+          "id": "i-idu14",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef"
+          ],
+          "conclusion": "c-idu14",
+          "argument": "由\\(a=bh^{-1}\\)代入\\(aba=bab\\)，化简得\\(b^{2}=hbh^{-1}bh\\)。"
+        },
+        {
+          "id": "i-idu15",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef"
+          ],
+          "conclusion": "c-idu15",
+          "argument": "由\\(g=hd^{-1}\\)代入\\(ghg=hgh\\)，化简得\\(h^{2}=dhd^{-1}hd\\)。"
+        },
+        {
+          "id": "i-lemma13",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma8",
+            "c-piq",
+            "f-udef",
+            "c-idu10",
+            "c-idu11",
+            "c-idu12",
+            "c-idu13",
+            "c-idu14",
+            "c-idu15"
+          ],
+          "conclusion": "c-lemma13",
+          "argument": "用塞弗特范坎彭定理，\\(\\mu=[x,b]\\)因\\(\\mu^{\\prime\\prime}\\)零伦而平凡，故额外生成元平凡而余关系化为\\([x,a]=1\\)，得生成元与关系。由恒等式推出\\(hbh^{-1}\\)与\\(d\\)交换进而\\(db=bd\\)，再得\\(b=h=d=1\\)，由此所有生成元平凡，故\\(\\pi_{1}(U)=1\\)。"
+        },
+        {
+          "id": "i-lemma14",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma4",
+            "c-invxkyk",
+            "f-yqcalc",
+            "f-udef"
+          ],
+          "conclusion": "c-lemma14",
+          "argument": "沿亏格二曲面的辛和公式同样适用。代入\\(e(Y_{K})=0\\)与\\(\\sigma(Y_{K})=0\\)与\\(e(Q)=2\\)与\\(\\sigma(Q)=-2\\)，计算得\\(e(U)=6\\)与\\(\\sigma(U)=-2\\)与\\(c_{1}^{2}(U)=6\\)与\\(\\chi_{h}(U)=1\\)。"
+        },
+        {
+          "id": "i-uhomeo",
+          "operationKind": "proof",
+          "premises": [
+            "c-lemma13",
+            "c-lemma14",
+            "c-freedman",
+            "f-stdcalc"
+          ],
+          "conclusion": "c-uhomeo",
+          "argument": "\\(U\\)单连通且\\(e=6\\)与\\(\\sigma=-2\\)，与\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)的\\(e=2+1+3\\)与\\(\\sigma=1-3\\)相同，故由拓扑分类二者同胚。"
+        },
+        {
+          "id": "i-uminirr",
+          "operationKind": "proof",
+          "premises": [
+            "c-usher",
+            "c-minone",
+            "f-qsigpp",
+            "c-usymp"
+          ],
+          "conclusion": "c-uminirr",
+          "argument": "\\(Q\\)非极小但\\([\\Sigma_{2}^{\\prime\\prime}]=[F]+[S]-[E_{1}]-[E_{2}]\\)使两例外球面各横截交一次，由辛和极小性得\\(U\\)为极小辛流形；\\(b_{2}^{+}=1\\)时极小蕴含不可约，故\\(U\\)光滑不可约，不同胚微分同胚于可约非极小的标准流形。"
+        },
+        {
+          "id": "i-thm1",
+          "operationKind": "proof",
+          "premises": [
+            "c-xhomeo",
+            "c-xnondiff",
+            "c-xminirr",
+            "c-uhomeo",
+            "c-uminirr",
+            "c-xsymp",
+            "c-usymp",
+            "c-lemma11",
+            "c-lemma13"
+          ],
+          "conclusion": "c-thm1",
+          "argument": "\\(X\\)单连通辛极小不可约，同胚但不微分同胚于\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)；\\(U\\)单连通辛极小不可约，同胚但不微分同胚于\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)。二者即为所求的奇异光滑结构。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "c-trefoil",
+        "c-thurston",
+        "c-invxkyk",
+        "c-gompf",
+        "c-freedman",
+        "c-taubes",
+        "c-witten",
+        "c-usher",
+        "c-minbig",
+        "c-minone"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "09_Akhmedov_Park_Exotic_small_4manifolds.pdf",
+        "pageCount": 12
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 29318,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "f-fibersum",
+                "f-invdef",
+                "f-stdcalc",
+                "f-esigadd",
+                "f-mkbundle",
+                "f-cscf",
+                "f-yksig",
+                "f-xkdef",
+                "f-ysigprime",
+                "f-xdef",
+                "f-qsigpp",
+                "f-udef",
+                "f-yqcalc"
+              ],
+              "b0ClaimEntryIds": [
+                "c-trefoil",
+                "c-thurston",
+                "c-invxkyk",
+                "c-gompf",
+                "c-freedman",
+                "c-taubes",
+                "c-witten",
+                "c-usher",
+                "c-minbig",
+                "c-minone"
+              ],
+              "closureClaimEntryIds": [
+                "c-trefoil",
+                "c-thurston",
+                "c-invxkyk",
+                "c-gompf",
+                "c-freedman",
+                "c-taubes",
+                "c-witten",
+                "c-usher",
+                "c-minbig",
+                "c-minone",
+                "c-lemma4",
+                "c-mkpres",
+                "c-lemma5",
+                "c-lemma6",
+                "c-lemma7",
+                "c-sigimage",
+                "c-lemma8",
+                "c-lemma9",
+                "c-lemma10",
+                "c-piy",
+                "c-piq",
+                "c-xsymp",
+                "c-idx4",
+                "c-idx5",
+                "c-idx6",
+                "c-idx7",
+                "c-idx8",
+                "c-lemma11",
+                "c-lemma12",
+                "c-xhomeo",
+                "c-xnondiff",
+                "c-xminirr",
+                "c-usymp",
+                "c-idu10",
+                "c-idu11",
+                "c-idu12",
+                "c-idu13",
+                "c-idu14",
+                "c-idu15",
+                "c-lemma13",
+                "c-lemma14",
+                "c-uhomeo",
+                "c-uminirr",
+                "c-thm1"
+              ],
+              "claimStates": {
+                "c-trefoil": "established",
+                "c-thurston": "established",
+                "c-invxkyk": "established",
+                "c-gompf": "established",
+                "c-freedman": "established",
+                "c-taubes": "established",
+                "c-witten": "established",
+                "c-usher": "established",
+                "c-minbig": "established",
+                "c-minone": "established",
+                "c-lemma4": "established",
+                "c-mkpres": "established",
+                "c-lemma5": "established",
+                "c-lemma6": "established",
+                "c-lemma7": "established",
+                "c-sigimage": "established",
+                "c-lemma8": "established",
+                "c-lemma9": "established",
+                "c-lemma10": "established",
+                "c-piy": "established",
+                "c-piq": "established",
+                "c-xsymp": "established",
+                "c-idx4": "established",
+                "c-idx5": "established",
+                "c-idx6": "established",
+                "c-idx7": "established",
+                "c-idx8": "established",
+                "c-lemma11": "established",
+                "c-lemma12": "established",
+                "c-xhomeo": "established",
+                "c-xnondiff": "established",
+                "c-xminirr": "established",
+                "c-usymp": "established",
+                "c-idu10": "established",
+                "c-idu11": "established",
+                "c-idu12": "established",
+                "c-idu13": "established",
+                "c-idu14": "established",
+                "c-idu15": "established",
+                "c-lemma13": "established",
+                "c-lemma14": "established",
+                "c-uhomeo": "established",
+                "c-uminirr": "established",
+                "c-thm1": "established"
+              },
+              "claimDerivations": {
+                "c-trefoil": {
+                  "basis": "b0"
+                },
+                "c-thurston": {
+                  "basis": "b0"
+                },
+                "c-invxkyk": {
+                  "basis": "b0"
+                },
+                "c-gompf": {
+                  "basis": "b0"
+                },
+                "c-freedman": {
+                  "basis": "b0"
+                },
+                "c-taubes": {
+                  "basis": "b0"
+                },
+                "c-witten": {
+                  "basis": "b0"
+                },
+                "c-usher": {
+                  "basis": "b0"
+                },
+                "c-minbig": {
+                  "basis": "b0"
+                },
+                "c-minone": {
+                  "basis": "b0"
+                },
+                "c-lemma4": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma4"
+                  ]
+                },
+                "c-mkpres": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-mkpres"
+                  ]
+                },
+                "c-lemma5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma5"
+                  ]
+                },
+                "c-lemma6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma6"
+                  ]
+                },
+                "c-lemma7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma7"
+                  ]
+                },
+                "c-sigimage": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-sigimage"
+                  ]
+                },
+                "c-lemma8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma8"
+                  ]
+                },
+                "c-lemma9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma9"
+                  ]
+                },
+                "c-lemma10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma10"
+                  ]
+                },
+                "c-piy": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-piy"
+                  ]
+                },
+                "c-piq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-piq"
+                  ]
+                },
+                "c-xsymp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xsymp"
+                  ]
+                },
+                "c-idx4": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx4"
+                  ]
+                },
+                "c-idx5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx5"
+                  ]
+                },
+                "c-idx6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx6"
+                  ]
+                },
+                "c-idx7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx7"
+                  ]
+                },
+                "c-idx8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx8"
+                  ]
+                },
+                "c-lemma11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma11"
+                  ]
+                },
+                "c-lemma12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma12"
+                  ]
+                },
+                "c-xhomeo": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xhomeo"
+                  ]
+                },
+                "c-xnondiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xnondiff"
+                  ]
+                },
+                "c-xminirr": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xminirr"
+                  ]
+                },
+                "c-usymp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-usymp"
+                  ]
+                },
+                "c-idu10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu10"
+                  ]
+                },
+                "c-idu11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu11"
+                  ]
+                },
+                "c-idu12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu12"
+                  ]
+                },
+                "c-idu13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu13"
+                  ]
+                },
+                "c-idu14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu14"
+                  ]
+                },
+                "c-idu15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu15"
+                  ]
+                },
+                "c-lemma13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma13"
+                  ]
+                },
+                "c-lemma14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma14"
+                  ]
+                },
+                "c-uhomeo": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-uhomeo"
+                  ]
+                },
+                "c-uminirr": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-uminirr"
+                  ]
+                },
+                "c-thm1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-thm1"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "f-fibersum",
+                "f-invdef",
+                "f-stdcalc",
+                "f-esigadd",
+                "f-mkbundle",
+                "f-cscf",
+                "f-yksig",
+                "f-xkdef",
+                "f-ysigprime",
+                "f-xdef",
+                "f-qsigpp",
+                "f-udef",
+                "f-yqcalc"
+              ],
+              "b0ClaimEntryIds": [
+                "c-trefoil",
+                "c-thurston",
+                "c-invxkyk",
+                "c-gompf",
+                "c-freedman",
+                "c-taubes",
+                "c-witten",
+                "c-usher",
+                "c-minbig",
+                "c-minone"
+              ],
+              "closureClaimEntryIds": [
+                "c-trefoil",
+                "c-thurston",
+                "c-invxkyk",
+                "c-gompf",
+                "c-freedman",
+                "c-taubes",
+                "c-witten",
+                "c-usher",
+                "c-minbig",
+                "c-minone",
+                "c-lemma4",
+                "c-mkpres",
+                "c-lemma5",
+                "c-lemma6",
+                "c-lemma7",
+                "c-sigimage",
+                "c-lemma8",
+                "c-lemma9",
+                "c-lemma10",
+                "c-piy",
+                "c-piq",
+                "c-xsymp",
+                "c-idx4",
+                "c-idx5",
+                "c-idx6",
+                "c-idx7",
+                "c-idx8",
+                "c-lemma11",
+                "c-lemma12",
+                "c-xhomeo",
+                "c-xnondiff",
+                "c-xminirr",
+                "c-usymp",
+                "c-idu10",
+                "c-idu11",
+                "c-idu12",
+                "c-idu13",
+                "c-idu14",
+                "c-idu15",
+                "c-lemma13",
+                "c-lemma14",
+                "c-uhomeo",
+                "c-uminirr",
+                "c-thm1"
+              ],
+              "claimStates": {
+                "c-trefoil": "established",
+                "c-thurston": "established",
+                "c-invxkyk": "established",
+                "c-gompf": "established",
+                "c-freedman": "established",
+                "c-taubes": "established",
+                "c-witten": "established",
+                "c-usher": "established",
+                "c-minbig": "established",
+                "c-minone": "established",
+                "c-lemma4": "established",
+                "c-mkpres": "established",
+                "c-lemma5": "established",
+                "c-lemma6": "established",
+                "c-lemma7": "established",
+                "c-sigimage": "established",
+                "c-lemma8": "established",
+                "c-lemma9": "established",
+                "c-lemma10": "established",
+                "c-piy": "established",
+                "c-piq": "established",
+                "c-xsymp": "established",
+                "c-idx4": "established",
+                "c-idx5": "established",
+                "c-idx6": "established",
+                "c-idx7": "established",
+                "c-idx8": "established",
+                "c-lemma11": "established",
+                "c-lemma12": "established",
+                "c-xhomeo": "established",
+                "c-xnondiff": "established",
+                "c-xminirr": "established",
+                "c-usymp": "established",
+                "c-idu10": "established",
+                "c-idu11": "established",
+                "c-idu12": "established",
+                "c-idu13": "established",
+                "c-idu14": "established",
+                "c-idu15": "established",
+                "c-lemma13": "established",
+                "c-lemma14": "established",
+                "c-uhomeo": "established",
+                "c-uminirr": "established",
+                "c-thm1": "established"
+              },
+              "claimDerivations": {
+                "c-trefoil": {
+                  "basis": "b0"
+                },
+                "c-thurston": {
+                  "basis": "b0"
+                },
+                "c-invxkyk": {
+                  "basis": "b0"
+                },
+                "c-gompf": {
+                  "basis": "b0"
+                },
+                "c-freedman": {
+                  "basis": "b0"
+                },
+                "c-taubes": {
+                  "basis": "b0"
+                },
+                "c-witten": {
+                  "basis": "b0"
+                },
+                "c-usher": {
+                  "basis": "b0"
+                },
+                "c-minbig": {
+                  "basis": "b0"
+                },
+                "c-minone": {
+                  "basis": "b0"
+                },
+                "c-lemma4": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma4"
+                  ]
+                },
+                "c-mkpres": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-mkpres"
+                  ]
+                },
+                "c-lemma5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma5"
+                  ]
+                },
+                "c-lemma6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma6"
+                  ]
+                },
+                "c-lemma7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma7"
+                  ]
+                },
+                "c-sigimage": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-sigimage"
+                  ]
+                },
+                "c-lemma8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma8"
+                  ]
+                },
+                "c-lemma9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma9"
+                  ]
+                },
+                "c-lemma10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma10"
+                  ]
+                },
+                "c-piy": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-piy"
+                  ]
+                },
+                "c-piq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-piq"
+                  ]
+                },
+                "c-xsymp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xsymp"
+                  ]
+                },
+                "c-idx4": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx4"
+                  ]
+                },
+                "c-idx5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx5"
+                  ]
+                },
+                "c-idx6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx6"
+                  ]
+                },
+                "c-idx7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx7"
+                  ]
+                },
+                "c-idx8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idx8"
+                  ]
+                },
+                "c-lemma11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma11"
+                  ]
+                },
+                "c-lemma12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma12"
+                  ]
+                },
+                "c-xhomeo": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xhomeo"
+                  ]
+                },
+                "c-xnondiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xnondiff"
+                  ]
+                },
+                "c-xminirr": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-xminirr"
+                  ]
+                },
+                "c-usymp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-usymp"
+                  ]
+                },
+                "c-idu10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu10"
+                  ]
+                },
+                "c-idu11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu11"
+                  ]
+                },
+                "c-idu12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu12"
+                  ]
+                },
+                "c-idu13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu13"
+                  ]
+                },
+                "c-idu14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu14"
+                  ]
+                },
+                "c-idu15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-idu15"
+                  ]
+                },
+                "c-lemma13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma13"
+                  ]
+                },
+                "c-lemma14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-lemma14"
+                  ]
+                },
+                "c-uhomeo": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-uhomeo"
+                  ]
+                },
+                "c-uminirr": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-uminirr"
+                  ]
+                },
+                "c-thm1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "i-thm1"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "c-xnondiff"
+                ],
+                "sourceRefs": [
+                  "第4节 p.7-8"
+                ],
+                "sourceSpan": {
+                  "startLine": 220,
+                  "endLine": 224
+                },
+                "diagnosis": "c-xnondiff陈述含“不同胚微分同胚于”，多一“同胚”二字，来源仅声称不微分同胚，同时另有同胚结论，二者并存而非否定同胚。",
+                "repairRequirement": "将该多余“同胚”删除，改为“不微分同胚于”，保留非平凡与平凡塞伯格威滕不变量的区分依据。"
+              },
+              {
+                "id": "F2",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "c-uminirr"
+                ],
+                "sourceRefs": [
+                  "第5节 p.9"
+                ],
+                "sourceSpan": {
+                  "startLine": 306,
+                  "endLine": 310
+                },
+                "diagnosis": "c-uminirr陈述含“不同胚微分同胚于”，多一“同胚”二字，来源结论为不能微分同胚于标准流形，同时已另有同胚结论。",
+                "repairRequirement": "将该多余“同胚”删除，改为“不微分同胚于”，保留极小不可约的因果表述。"
+              },
+              {
+                "id": "F3",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "i-idu11"
+                ],
+                "sourceRefs": [
+                  "附录 p.10"
+                ],
+                "sourceSpan": {
+                  "startLine": 363,
+                  "endLine": 369
+                },
+                "diagnosis": "i-idu11论证已使用h^2=dhd^{-1}hd代入，即c-idu15结论，但premises仅含c-lemma8、c-piq、f-udef，缺少直接依赖c-idu15。",
+                "repairRequirement": "premises必须增补c-idu15以覆盖论证实际使用的直接依赖，不改变其他依赖与结论。"
+              },
+              {
+                "id": "F4",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "i-idu12"
+                ],
+                "sourceRefs": [
+                  "附录 p.10"
+                ],
+                "sourceSpan": {
+                  "startLine": 371,
+                  "endLine": 377
+                },
+                "diagnosis": "i-idu12论证使用了由b^2=hbh^{-1}bh得到的h^{-1}bh=b^{-1}h^{-1}b^2代入，即c-idu14结论，但premises缺少c-idu14。",
+                "repairRequirement": "premises必须增补c-idu14以覆盖论证实际使用的直接依赖，不改变其他依赖与结论。"
+              },
+              {
+                "id": "F5",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "i-idu10"
+                ],
+                "sourceRefs": [
+                  "附录 p.10"
+                ],
+                "sourceSpan": {
+                  "startLine": 355,
+                  "endLine": 361
+                },
+                "diagnosis": "来源由(14)b^2=hbh^{-1}bh变形并结合(19)得到(10)bhb=hb^2h，但i-idu10 premises缺少c-idu14且argument未提及该直接依赖。",
+                "repairRequirement": "premises必须增补c-idu14，且argument必须忠实表达利用b^2公式整理的同一步直接论证。"
+              },
+              {
+                "id": "F6",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "i-xminirr"
+                ],
+                "sourceRefs": [
+                  "第4节 p.8"
+                ],
+                "sourceSpan": {
+                  "startLine": 224,
+                  "endLine": 227
+                },
+                "diagnosis": "i-xminirr论证以pi_2(M_K×S^1)=0推出底流形极小，该事实仅收录于f-mkbundle，但premises缺少f-mkbundle。",
+                "repairRequirement": "premises必须增补f-mkbundle以覆盖论证实际使用的直接依赖，不改变其他依赖、结论与论证文字。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "c-xnondiff",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "\\(X\\)不同胚微分同胚于\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)，其塞伯格威滕不变量非平凡而标准流形的塞伯格威滕不变量平凡。",
+                    "after": "\\(X\\)不微分同胚于\\(3\\mathbb{CP}^{2}\\#5\\overline{\\mathbb{CP}}^{2}\\)，其塞伯格威滕不变量非平凡而标准流形的塞伯格威滕不变量平凡。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "c-uminirr",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "\\(U\\)为极小辛四维流形，从而光滑不可约，故不同胚微分同胚于\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)。",
+                    "after": "\\(U\\)为极小辛四维流形，从而光滑不可约，故不微分同胚于\\(\\mathbb{CP}^{2}\\#3\\overline{\\mathbb{CP}}^{2}\\)。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "i-idu11",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef"
+                    ],
+                    "after": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef",
+                      "c-idu15"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F4",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "i-idu12",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef"
+                    ],
+                    "after": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef",
+                      "c-idu14"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F5",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "i-idu10",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef"
+                    ],
+                    "after": [
+                      "c-lemma8",
+                      "c-piq",
+                      "f-udef",
+                      "c-idu14"
+                    ]
+                  },
+                  {
+                    "field": "argument",
+                    "before": "由\\(a=bh^{-1}\\)代入\\(aba=bab\\)并结合\\(z=h^{-1}bhb^{-1}\\)与\\([z,h]=1\\)的计算，化简得\\(bhb=hb^{2}h\\)。",
+                    "after": "由\\(a=bh^{-1}\\)代入\\(aba=bab\\)并结合\\(z=h^{-1}bhb^{-1}\\)与\\([z,h]=1\\)的计算，再利用\\(b^{2}=hbh^{-1}bh\\)整理，化简得\\(bhb=hb^{2}h\\)。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F6",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "i-xminirr",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "c-usher",
+                      "c-minbig",
+                      "f-ysigprime",
+                      "c-xsymp"
+                    ],
+                    "after": [
+                      "c-usher",
+                      "c-minbig",
+                      "f-ysigprime",
+                      "c-xsymp",
+                      "f-mkbundle"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 91,
+            "cleanCount": 85
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 107634
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 97718
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "76140d4ed125c2e4ee590e70143c2ff9c9b877e18022929f51363516ba30c595",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 230360,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 63,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2683,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 5079,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7492,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9858,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12234,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14638,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 17023,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19391,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21783,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 24170,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 24992,
+        "phase": "complete",
+        "pageCount": 12
+      },
+      {
+        "stage": "generate",
+        "atMs": 24992,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 132637,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 230360,
+        "phase": "complete",
+        "entries": 57,
+        "inferences": 34
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 107059,
+        "usage": {
+          "input_tokens": 20908,
+          "output_tokens": 27377,
+          "total_tokens": 48285
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 97513,
+        "usage": {
+          "input_tokens": 38968,
+          "output_tokens": 25263,
+          "total_tokens": 64231
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

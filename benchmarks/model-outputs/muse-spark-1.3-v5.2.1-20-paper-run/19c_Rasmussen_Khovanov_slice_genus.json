@@ -1,0 +1,1451 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "19c_Rasmussen_Khovanov_slice_genus.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F-CKh",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Khovanov 复形的定义",
+          "statement": "对链环图 $L$，考虑分辨立方体，顶点群为 $V^{\\otimes n}$，其中 $V$ 由 $\\mathbf{v}_{+}$ 和 $\\mathbf{v}_{-}$ 张成，边映射由 $m$ 和 $\\Delta$ 给出，微分 $d$ 满足 $d^{2}=0$，同调分次为 $gr$，量子分次为 $q$，同调记为 $Kh(L)$。"
+        },
+        {
+          "id": "F-Lee",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Lee 复形与过滤",
+          "statement": "在相同群上用 $m'$ 和 $\\Delta'$ 代替 $m$ 和 $\\Delta$ 得到复形 $CKh'(L)$，其同调为 $Kh'(L)$；$q$ 分次给出过滤，$d'$ 不降低 $q$；基变换 $\\mathbf{a}=\\mathbf{v}_{-}+\\mathbf{v}_{+}$ 与 $\\mathbf{b}=\\mathbf{v}_{-}-\\mathbf{v}_{+}$ 下有 $m'(\\mathbf{a}\\otimes\\mathbf{a})=2\\mathbf{a}$ 等公式，$0$ 柄和 $2$ 柄映射为 $\\iota'$ 和 $\\epsilon'$。"
+        },
+        {
+          "id": "F-canon",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "典范生成元的构造",
+          "statement": "对链环 $L$ 的定向 $o$，取定向消解 $D_{o}$，按到无穷远的模 $2$ 环绕数加定向修正标记每个圆为 $\\mathbf{a}$ 或 $\\mathbf{b}$，得到状态 $\\mathfrak{s}_{o}$，称为典范生成元。"
+        },
+        {
+          "id": "F-filt",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "过滤术语",
+          "statement": "有限长过滤为 $0=C_{n}\\subset C_{n-1}\\subset\\cdots\\subset C_{m}=C$；$x$ 的分次为 $i$ 若 $x\\in C_{i}$ 但 $x\\notin C_{i-1}$；$f(C_{i})\\subset C'_{i+k}$ 时称过滤映射度为 $k$；同调上诱导过滤为 $S_{i}$，谱序列收敛到分次伴随 $S_{i}/S_{i+1}$。"
+        },
+        {
+          "id": "F-sminmax",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不变量 $s_{\\min}$ 与 $s_{\\max}$ 的定义",
+          "statement": "记 $s$ 为 $q$ 在 $CKh'(K)$ 上诱导到 $Kh'(K)$ 的过滤分次，定义 $s_{\\min}(K)=\\min\\{s(x)\\mid x\\in Kh'(K),x\\neq 0\\}$ 与 $s_{\\max}(K)=\\max\\{s(x)\\mid x\\in Kh'(K),x\\neq 0\\}$，均为奇整数且为结不变量。"
+        },
+        {
+          "id": "F-sdef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不变量 $s$ 的定义",
+          "statement": "定义 $s(K)=s_{\\max}(K)-1=s_{\\min}(K)+1$，则 $s(K)$ 为偶整数且为结不变量。"
+        },
+        {
+          "id": "F-conc",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "切片亏格与协边群",
+          "statement": "结 $K$ 在 $B^{4}$ 中定向曲面的最小亏格为切片亏格 $g_{*}(K)$；连通和记为 $K_{1}\\# K_{2}$，镜像记为 $\\overline{K}$，不交并记为 $K_{1}\\amalg K_{2}$，协边类构成群 $Conc(S^{3})$。"
+        },
+        {
+          "id": "F-poswidth",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "正结交错结与宽度",
+          "statement": "若结有全正交叉图则称为正结；记号 $\\sigma(K)$ 为经典符号差；宽度 $W(K)$ 由 $P_{Kh}(K)$ 中单项式 $q^{a}t^{b}$ 的 $a-2b$ 的极差加一定义；$P_{Kh}(K)$ 为分次 Poincaré 多项式。"
+        },
+        {
+          "id": "F-phi",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "协边诱导映射的算法",
+          "statement": "将定向协边 $S$ 从 $L_{0}$ 到 $L_{1}$ 分解为 Reidemeister 移动与 $0$、$1$、$2$ 柄 Morse 移动的复合；Reidemeister 移动用 $\\rho'_{i*}$ 及其逆，$0$、$2$ 柄用 $\\iota'$、$\\epsilon'$，$1$ 柄用 $m'$ 或 $\\Delta'$；所得 $\\phi_{S}:Kh'(L_{0})\\to Kh'(L_{1})$ 为过滤映射，总度为 $\\chi(S)$。"
+        },
+        {
+          "id": "F-seifert",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "正图的量子分次计算",
+          "statement": "设正图有 $n$ 个交叉，定向消解有 $k$ 个圆，则典范状态满足 $gr(\\mathfrak{s}_{o})=0$，最小 $q$ 项为全 $\\mathbf{v}_{-}$ 标记，得 $q(\\mathfrak{s}_{o})=-k+n$，故 $s_{\\min}(K)=-k+n$ 且 $s(K)=-k+n+1$；Seifert 算法给出 Euler 示性数为 $k-n$ 的曲面。"
+        },
+        {
+          "id": "F-unknot",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "平凡结的 $s$ 值计算",
+          "statement": "平凡结 $U$ 的 $Kh'(U)$ 秩为 $2$，支撑在 $q$ 分次 $1$ 与 $-1$，故 $s_{\\max}(U)=1$ 且 $s_{\\min}(U)=-1$。"
+        },
+        {
+          "id": "F-lowtable",
+          "entryClass": "fact",
+          "factKind": "calculation",
+          "title": "小交叉结的计算验证",
+          "statement": "若 $W(K)\\leq 3$ 则谱序列在 $E_{2}$ 后塌缩；不超过 $13$ 交点的结中至多四个宽度大于 $3$ 但直接检验仍塌缩，故 $s(K)$ 与 Bar-Natan 表一致；论文列出 $11$ 交点以内 $22$ 个满足 $s(K)\\neq\\sigma(K)$ 的结的具体取值。"
+        },
+        {
+          "id": "C-KhInv",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Khovanov 同调的不变性",
+          "statement": "双分次群 $Kh(L)$ 为链环 $L$ 的不变量。"
+        },
+        {
+          "id": "C-LeeRank",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Lee 同调的秩",
+          "statement": "$Kh'(L)$ 的秩为 $2^{n}$，其中 $n$ 为 $L$ 的分支数。"
+        },
+        {
+          "id": "C-LeeRhoIso",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Lee 的 Reidemeister 映射为同构",
+          "statement": "Lee 对 Reidemeister 移动定义的链映射 $\\rho'_{i}:CKh'(L)\\to CKh'(\\tilde{L})$ 诱导同调同构。"
+        },
+        {
+          "id": "C-McCleary",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "过滤复形映射引理",
+          "statement": "若过滤复形映射 $F:C_{1}\\to C_{2}$ 保持过滤且诱导的谱序列映射 $F_{n}:E^{1}_{n}\\to E^{2}_{n}$ 为同构，则对一切 $m\\geq n$ 有 $F_{m}$ 为同构。"
+        },
+        {
+          "id": "C-dual",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "对偶过滤复形的谱序列",
+          "statement": "若 $C_{1}$ 与 $C_{2}$ 为域上对偶过滤复形，则其谱序列对偶，即 $E^{1}_{n}\\cong (E^{2}_{n})^{*}$。"
+        },
+        {
+          "id": "C-altSupp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "交错结的宽度与符号差",
+          "statement": "若 $K$ 交错，则 $W(K)=2$ 且 Bar-Natan 的 $s$ 等于 $\\sigma(K)$。"
+        },
+        {
+          "id": "C-Liv",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Livingston 的 skein 判据",
+          "statement": "满足定理 $1$ 与定理 $2$ 性质的任意结不变量必满足交叉变换不等式 $s(K_{-})\\leq s(K_{+})\\leq s(K_{-})+1$。"
+        },
+        {
+          "id": "C-torusCl",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "环面结的经典亏格",
+          "statement": "$(p,q)$ 环面结为正结，其普通亏格为 $(p-1)(q-1)/2$。"
+        },
+        {
+          "id": "C-gle",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "切片亏格不超过普通亏格",
+          "statement": "对任意结 $K$ 有 $g_{*}(K)\\leq g(K)$。"
+        },
+        {
+          "id": "C-spec",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Lee 谱序列及其不变性",
+          "statement": "存在以 $Kh(L)$ 为 $E_{2}$ 项收敛到 $Kh'(L)$ 的谱序列，且 $E_{2}$ 及以后各项为链环 $L$ 的不变量。"
+        },
+        {
+          "id": "C-Rmaps",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Reidemeister 映射保持过滤",
+          "statement": "三类 Reidemeister 移动的映射 $\\rho'_{1}$、$\\rho'_{2}$、$\\rho'_{3}$ 皆不降低 $q$ 过滤，其在 $E_{1}$ 上诱导的映射分别等于 $Kh$ 的 $\\rho_{1}$、$\\rho_{2}$、$\\rho_{3}$，从而在 $E_{2}$ 上为同构。"
+        },
+        {
+          "id": "C-canonInv",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "典范生成元在 Reidemeister 移动下的不变性",
+          "statement": "若 $L$ 与 $\\tilde{L}$ 差一个 Reidemeister 移动，$o$ 在 $L$ 上的定向诱导 $\\tilde{o}$ 在 $\\tilde{L}$ 上，则 $\\rho'_{i*}([\\mathfrak{s}_{o}])$ 为 $[\\mathfrak{s}_{\\tilde{o}}]$ 的非零倍数。"
+        },
+        {
+          "id": "C-cohere",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "相容定向引理",
+          "statement": "在 $\\mathfrak{s}_{o}$ 的状态图中若一区域恰含两段，则两段定向相同而标记不同，或定向不同而标记相同。"
+        },
+        {
+          "id": "C-difflabel",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "共享交叉的圆标记不同",
+          "statement": "若 $\\mathfrak{s}_{o}$ 中两圆共享一个交叉，则二者标记不同。"
+        },
+        {
+          "id": "C-rhoFilt",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Reidemeister 映射保持 $s$ 过滤",
+          "statement": "$\\rho'_{i*}$ 与其逆 $(\\rho'_{i*})^{-1}$ 皆保持 $Kh'$ 上诱导过滤 $s$。"
+        },
+        {
+          "id": "C-invInv",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "谱序列同构的逆保持过滤",
+          "statement": "若过滤链映射 $f:C_{1}\\to C_{2}$ 在 $E_{2}$ 上诱导同构，则 $f_{*}$ 可逆且 $f_{*}^{-1}$ 关于 $H_{*}(C_{1})$ 与 $H_{*}(C_{2})$ 的诱导过滤为过滤映射。"
+        },
+        {
+          "id": "C-decomp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Lee 同调的奇偶分解",
+          "statement": "设 $L$ 有 $n$ 个分支，则 $Kh'(L)\\cong Kh'_{o}(L)\\oplus Kh'_{e}(L)$，其中 $Kh'_{o}(L)$ 由 $q$ 同余于 $2+n$ 模 $4$ 的状态生成，$Kh'_{e}(L)$ 由 $q$ 同余于 $n$ 模 $4$ 的状态生成；且 $\\mathfrak{s}_{o}+\\mathfrak{s}_{\\overline{o}}$ 含于其一，$\\mathfrak{s}_{o}-\\mathfrak{s}_{\\overline{o}}$ 含于另一。"
+        },
+        {
+          "id": "C-canonMin",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "典范类的过滤最小",
+          "statement": "对结 $K$ 有 $s(\\mathfrak{s}_{o})=s(\\mathfrak{s}_{\\overline{o}})=s_{\\min}(K)$。"
+        },
+        {
+          "id": "C-smaxgt",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "最大值严格大于最小值",
+          "statement": "对结 $K$ 有 $s_{\\max}(K)>s_{\\min}(K)$。"
+        },
+        {
+          "id": "C-SES",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "连通和的短正合列",
+          "statement": "对结 $K_{1}$、$K_{2}$ 有短正合列 $0\\to Kh'(K_{1}\\# K_{2})\\xrightarrow{p_{*}}Kh'(K_{1})\\otimes Kh'(K_{2})\\xrightarrow{\\partial}Kh'(K_{1}\\# K_{2})\\to 0$，其中 $p_{*}$ 与 $\\partial$ 为度 $-1$ 的过滤映射。"
+        },
+        {
+          "id": "C-sdiff",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "最大值与最小值相差 $2$",
+          "statement": "对结 $K$ 有 $s_{\\max}(K)=s_{\\min}(K)+2$。"
+        },
+        {
+          "id": "C-mirror",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "镜像公式",
+          "statement": "设 $\\overline{K}$ 为 $K$ 的镜像，则 $s_{\\max}(\\overline{K})=-s_{\\min}(K)$，$s_{\\min}(\\overline{K})=-s_{\\max}(K)$，且 $s(\\overline{K})=-s(K)$。"
+        },
+        {
+          "id": "C-add",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "连通和的可加性",
+          "statement": "对结 $K_{1}$、$K_{2}$ 有 $s(K_{1}\\# K_{2})=s(K_{1})+s(K_{2})$。"
+        },
+        {
+          "id": "C-cobCanon",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "弱连通协边的典范像",
+          "statement": "若定向协边 $S$ 从 $L_{0}$ 到 $L_{1}$ 弱连通，即每分支在 $L_{0}$ 有边界，则 $\\phi_{S}([\\mathfrak{s}_{o_{0}}])$ 为 $[\\mathfrak{s}_{o_{1}}]$ 的非零倍数；更一般中间截面满足 $\\phi_{S_{i}}([\\mathfrak{s}_{o_{0}}])=\\sum_{I} a_{I}[\\mathfrak{s}_{o_{I}}]$，其中 $o_{I}$ 取遍容许定向且 $a_{I}\\neq 0$。"
+        },
+        {
+          "id": "C-cobIso",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "连通协边诱导同构",
+          "statement": "若 $S$ 为结 $K_{0}$ 到 $K_{1}$ 的连通协边，则 $\\phi_{S}:Kh'(K_{0})\\to Kh'(K_{1})$ 为同构。"
+        },
+        {
+          "id": "C-slice",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "切片亏格界",
+          "statement": "对任意结 $K$ 有 $|s(K)|\\leq 2g_{*}(K)$，其中 $g_{*}(K)$ 为切片亏格。"
+        },
+        {
+          "id": "C-conchom",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "协边群同态",
+          "statement": "$s$ 诱导同态 $Conc(S^{3})\\to\\mathbf{Z}$。"
+        },
+        {
+          "id": "C-cross",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "交叉变换不等式",
+          "statement": "若 $K_{+}$ 与 $K_{-}$ 仅差一个交叉由正变负，则 $s(K_{-})\\leq s(K_{+})\\leq s(K_{-})+1$。"
+        },
+        {
+          "id": "C-width",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "宽度至多 $3$ 时塌缩",
+          "statement": "若 $W(K)\\leq 3$，则 $Kh'$ 的谱序列在 $E_{2}$ 后塌缩，且此 $s(K)$ 与 Bar-Natan 猜想中的指数一致。"
+        },
+        {
+          "id": "C-altern",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "交错结的 $s$ 等于符号差",
+          "statement": "若 $K$ 交错，则 $s(K)=\\sigma(K)$。"
+        },
+        {
+          "id": "C-posit",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "正结的 $s$ 取等",
+          "statement": "若 $K$ 正，则 $s(K)=2g_{*}(K)=2g(K)$，其中 $g(K)$ 为普通亏格。"
+        },
+        {
+          "id": "C-milnor",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Milnor 猜想",
+          "statement": "$(p,q)$ 环面结的切片亏格为 $(p-1)(q-1)/2$。"
+        },
+        {
+          "id": "C-BarConj",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Bar-Natan 的多项式猜想",
+          "statement": "$Kh$ 的分次 Poincaré 多项式形为 $P_{Kh}(K)=q^{s(K)}(q+q^{-1})+(1+tq^{4})Q_{Kh}(K)$，其中 $Q_{Kh}(K)$ 系数全正。"
+        },
+        {
+          "id": "C-sTauConj",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "与 $2\\tau$ 相等的猜想",
+          "statement": "对 $S^{3}$ 中任意结 $K$ 有 $s(K)=2\\tau(K)$。"
+        },
+        {
+          "id": "C-thinQ",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "薄结的提问",
+          "statement": "若 $K$ 的同调宽度为 $2$，即 $H$-thin，是否必有 $s(K)=\\sigma(K)$。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I-cohere",
+          "operationKind": "proof",
+          "premises": [
+            "F-canon"
+          ],
+          "conclusion": "C-cohere",
+          "argument": "按来源对局部两段分三种情形检验：同属一圆、一圆包含另一圆、两圆互不包含，均得到定向相同则标记不同或定向不同则标记相同。"
+        },
+        {
+          "id": "I-difflabel",
+          "operationKind": "proof",
+          "premises": [
+            "C-cohere"
+          ],
+          "conclusion": "C-difflabel",
+          "argument": "共享交叉的两圆必落入相容定向引理的局部构形，由该引理直接得到二者标记不同。"
+        },
+        {
+          "id": "I-decomp",
+          "operationKind": "proof",
+          "premises": [
+            "F-Lee"
+          ],
+          "conclusion": "C-decomp",
+          "argument": "将 $m'$ 写成 $m+\\Phi_{m}$、$\\Delta'$ 写成 $\\Delta+\\Phi_{\\Delta}$，其中 $m$ 与 $\\Delta$ 保持 $q$ 而 $\\Phi$ 提高 $q$ 的值为 $4$，故按模 $4$ 分解为直和；用 $\\mathbf{v}_{+}$ 与 $\\mathbf{v}_{-}$ 上的对合 $i$ 证明 $\\iota(\\mathfrak{s}_{o})$ 为 $\\mathfrak{s}_{\\overline{o}}$ 的符号倍，从而和与差落入不同直和项。"
+        },
+        {
+          "id": "I-smaxgt",
+          "operationKind": "proof",
+          "premises": [
+            "C-decomp",
+            "F-sminmax"
+          ],
+          "conclusion": "C-smaxgt",
+          "argument": "直和分解使谱序列分解，每一直和项的同调为 $\\mathbf{Q}$，各贡献一个存活项，而两项支撑在不同 $q$ 分次，故存活的 $s_{\\max}$ 与 $s_{\\min}$ 不相等。"
+        },
+        {
+          "id": "I-canonMin",
+          "operationKind": "proof",
+          "premises": [
+            "C-decomp",
+            "F-sminmax"
+          ],
+          "conclusion": "C-canonMin",
+          "argument": "由奇偶分解，$\\mathfrak{s}_{o}+\\mathfrak{s}_{\\overline{o}}$ 与 $\\mathfrak{s}_{o}-\\mathfrak{s}_{\\overline{o}}$ 分居不同直和项，二者在同调中代表两个存活类中的最低过滤部分，故其过滤分次均为 $s_{\\min}$。"
+        },
+        {
+          "id": "I-SES",
+          "operationKind": "proof",
+          "premises": [
+            "C-LeeRank",
+            "F-conc"
+          ],
+          "conclusion": "C-SES",
+          "argument": "对 $K_{1}\\# K_{2}$ 的特定图解得到链复形的短正合列，第三项为 $K_{1}\\amalg K_{2}$ 的复形；由秩为 $2$ 与 $4$ 的计算，长正合列分裂为短正合列；在平凡结情形算出 $p_{*}$ 与 $\\partial$ 的过滤度为 $-1$。"
+        },
+        {
+          "id": "I-sdiff",
+          "operationKind": "proof",
+          "premises": [
+            "C-SES",
+            "C-smaxgt",
+            "F-unknot"
+          ],
+          "conclusion": "C-sdiff",
+          "argument": "取 $K_{1}=K$ 与 $K_{2}=U$ 的短正合列，设 $s(\\mathfrak{s}_{a}-\\mathfrak{s}_{b})=s_{\\max}(K)$，由图得 $\\partial((\\mathfrak{s}_{a}-\\mathfrak{s}_{b})\\otimes\\mathbf{a})=\\mathfrak{s}_{a}$；$\\partial$ 过滤度为 $-1$ 给出 $s_{\\max}(K)-1\\leq s_{\\min}(K)+1$，结合已证 $s_{\\max}\\neq s_{\\min}$ 得到差为 $2$。"
+        },
+        {
+          "id": "I-org-s",
+          "operationKind": "organization",
+          "premises": [
+            "C-sdiff"
+          ],
+          "conclusion": "F-sdef",
+          "argument": "已证 $s_{\\max}$ 与 $s_{\\min}$ 相差 $2$，故以减一加一定义的 $s$ 为良定义的偶整数不变量，组织了数值不变量的形成。"
+        },
+        {
+          "id": "I-mirror",
+          "operationKind": "proof",
+          "premises": [
+            "C-dual",
+            "F-Lee"
+          ],
+          "conclusion": "C-mirror",
+          "argument": "用 $r$ 将 $\\mathbf{v}_{\\pm}$ 送到 $\\mathbf{v}_{\\mp}^{*}$ 构造 $CKh'(\\overline{K})$ 与 $CKh'(K)$ 对偶复形的同构 $R$；对偶过滤复形的谱序列对偶，故存活分次由 $s_{\\min}$ 与 $s_{\\max}$ 变为 $-s_{\\max}$ 与 $-s_{\\min}$，相减得 $s$ 变号。"
+        },
+        {
+          "id": "I-add",
+          "operationKind": "proof",
+          "premises": [
+            "C-SES",
+            "C-mirror",
+            "C-sdiff"
+          ],
+          "conclusion": "C-add",
+          "argument": "连通和的典范生成元经 $p_{*}$ 映到 $\\mathfrak{s}^{1}_{a}\\otimes\\mathfrak{s}^{2}_{b}$，由 $p_{*}$ 度为 $-1$ 得 $s_{\\min}$ 的一侧不等式；对镜像应用同样论证并用镜像公式得到另一侧不等式，结合差为 $2$ 的关系推出 $s_{\\min}$ 与 $s_{\\max}$ 的等式，相减得可加性。"
+        },
+        {
+          "id": "I-invInv",
+          "operationKind": "proof",
+          "premises": [
+            "C-McCleary"
+          ],
+          "conclusion": "C-invInv",
+          "argument": "若 $f_{2}$ 为同构则诱导的分次映射 $f_{\\infty}$ 为同构，故 $f_{*}$ 为同构；若 $f_{*}^{-1}$ 不保持过滤则某类的过滤被 $f_{*}$ 严格提高，与 $f_{\\infty}$ 为同构矛盾。"
+        },
+        {
+          "id": "I-Rmaps",
+          "operationKind": "proof",
+          "premises": [
+            "C-KhInv",
+            "C-LeeRhoIso",
+            "C-McCleary",
+            "F-Lee"
+          ],
+          "conclusion": "C-Rmaps",
+          "argument": "对第一类移动直接写出 $\\rho'_{1}$ 公式并比较 $Kh$ 的 $\\rho_{1}$，得不降过滤且 $E_{1}$ 映射相同；第二类用 $\\rho'_{2}(z)=(-1)^{gr(z)}(z+\\iota(d'_{01\\to 11}(z)))$ 并用 $d-d'$ 严格增过滤比较；第三类用 $\\beta'$ 描述 $X_{1}$ 与 $\\tilde{X}_{1}$ 并用 $q(\\beta'(x))\\geq q(x)$ 比较，再用过滤引理提升 $E_{1}$ 同构到 $E_{2}$ 同构。"
+        },
+        {
+          "id": "I-spec",
+          "operationKind": "proof",
+          "premises": [
+            "F-Lee",
+            "C-Rmaps"
+          ],
+          "conclusion": "C-spec",
+          "argument": "$q$ 过滤给出谱序列，其 $E_{1}$ 微分为 $d'$ 中保持 $q$ 的部分即为 $CKh$，故 $E_{2}$ 为 $Kh$ 且收敛到 $Kh'$；Reidemeister 映射保持过滤且在 $E_{2}$ 为同构，故 $E_{2}$ 及以后为不变量。"
+        },
+        {
+          "id": "I-canonInv",
+          "operationKind": "proof",
+          "premises": [
+            "C-Rmaps",
+            "F-canon",
+            "C-cohere"
+          ],
+          "conclusion": "C-canonInv",
+          "argument": "逐个 Reidemeister 移动直接验算：第一类直接映典范到典范；第二类同向时 $d'$ 为零得典范，异向时用 $\\mathbf{a}$ 与 $\\mathbf{b}$ 标记的直接计算差一个边缘项；第三类按三种定向分别找到同调的 $\\mathfrak{t}\\in X_{1}$ 使像差边缘项，系数为非零或一半两倍等非零倍数。"
+        },
+        {
+          "id": "I-rhoFilt",
+          "operationKind": "proof",
+          "premises": [
+            "C-Rmaps",
+            "C-invInv"
+          ],
+          "conclusion": "C-rhoFilt",
+          "argument": "$\\rho'_{1}$ 与 $\\rho'_{2}$ 由过滤链映射诱导故保持过滤；$\\rho'_{3}$ 分解为诱导 $E_{2}$ 同构的包含与同构之复合，其逆由谱序列同构逆保持过滤的引理也保持过滤。"
+        },
+        {
+          "id": "I-cobCanon",
+          "operationKind": "proof",
+          "premises": [
+            "F-phi",
+            "F-canon",
+            "C-canonInv",
+            "C-difflabel"
+          ],
+          "conclusion": "C-cobCanon",
+          "argument": "对正则截面按容许定向归纳：Reidemeister 移动用典范不变性；$0$ 柄产生 $\\mathbf{a}$ 与 $\\mathbf{b}$ 两种容许定向；$1$ 柄当两股反向则标记相同经 $m'$ 或 $\\Delta'$ 得非零倍数典范，同向则标记不同得零，分合分支时容许定向集按第一类第二类分支的合并规则变化；$2$ 柄用 $\\epsilon'$ 为 $1$ 且弱连通排除闭分支重合；终截面唯一容许定向即得结论。"
+        },
+        {
+          "id": "I-cobIso",
+          "operationKind": "proof",
+          "premises": [
+            "C-cobCanon"
+          ],
+          "conclusion": "C-cobIso",
+          "argument": "固定 $S$ 的定向，$\\{\\mathfrak{s}_{o_{0}},\\mathfrak{s}_{\\overline{o}_{0}}\\}$ 为基，经 $\\phi_{S}$ 映到 $\\{k_{1}\\mathfrak{s}_{o_{1}},k_{2}\\mathfrak{s}_{\\overline{o}_{1}}\\}$ 且 $k_{1},k_{2}\\neq 0$，故为基到基的同构。"
+        },
+        {
+          "id": "I-slice",
+          "operationKind": "proof",
+          "premises": [
+            "C-cobCanon",
+            "F-phi",
+            "F-unknot",
+            "C-mirror",
+            "F-conc",
+            "C-cobIso"
+          ],
+          "conclusion": "C-slice",
+          "argument": "若 $K$ 以亏格 $g$ 为界，则有 Euler 示性数 $-2g$ 的连通协边到平凡结 $U$；取 $s$ 最大的非零类 $x$，其像 $\\phi_{S}(x)$ 非零，过滤度为 $-2g$ 给出 $s(\\phi_{S}(x))\\geq s(x)-2g$，而 $s_{\\max}(U)=1$ 给出上界，得 $s(K)\\leq 2g$；对镜像用变号公式得下界。"
+        },
+        {
+          "id": "I-conchom",
+          "operationKind": "proof",
+          "premises": [
+            "C-slice",
+            "C-add",
+            "F-conc",
+            "C-mirror"
+          ],
+          "conclusion": "C-conchom",
+          "argument": "若 $K_{1}$ 与 $K_{2}$ 协边，则 $K_{1}\\#\\overline{K}_{2}$ 为切片，由切片界得其 $s$ 为零，再由可加性与镜像公式得 $s(K_{1})=s(K_{2})$，故诱导良定义映射；可加性即为同态性质。"
+        },
+        {
+          "id": "I-cross",
+          "operationKind": "proof",
+          "premises": [
+            "C-slice",
+            "C-conchom",
+            "C-Liv"
+          ],
+          "conclusion": "C-cross",
+          "argument": "已证 $s$ 满足切片界与协边同态性质，Livingston 的一般判据表明此类不变量必满足所述单交叉不等式。"
+        },
+        {
+          "id": "I-width",
+          "operationKind": "proof",
+          "premises": [
+            "F-poswidth",
+            "C-spec"
+          ],
+          "conclusion": "C-width",
+          "argument": "$E_{n}$ 微分降低同调分次 $1$ 并将 $q$ 降低 $4(n-1)$；若宽度至多 $3$，则同调分次差 $1$ 的最小 $q$ 差已达 $6$，故 $n\\geq 3$ 时微分必零，谱序列在 $E_{2}$ 后塌缩，此时 $s$ 即为 Bar-Natan 多项式中的指数。"
+        },
+        {
+          "id": "I-altern",
+          "operationKind": "proof",
+          "premises": [
+            "C-width",
+            "C-altSupp"
+          ],
+          "conclusion": "C-altern",
+          "argument": "交错结宽度为 $2$ 故满足塌缩条件，其 $s$ 与 Bar-Natan 的 $s$ 一致，而后者等于符号差 $\\sigma$。"
+        },
+        {
+          "id": "I-posit",
+          "operationKind": "proof",
+          "premises": [
+            "C-slice",
+            "F-seifert",
+            "F-poswidth",
+            "C-gle"
+          ],
+          "conclusion": "C-posit",
+          "argument": "正图的定向消解为 $0$ 消解，典范状态处同调分次 $0$ 且无 $-1$ 次项，故其同调类唯一，$s_{\\min}$ 等于 $q(\\mathfrak{s}_{o})=-k+n$，得 $s=-k+n+1$；Seifert 曲面亏格为 $(n-k+1)/2$ 给出 $2g\\leq s\\leq 2g_{*}$，结合 $g_{*}\\leq g$ 得全取等。"
+        },
+        {
+          "id": "I-milnor",
+          "operationKind": "proof",
+          "premises": [
+            "C-posit",
+            "C-torusCl"
+          ],
+          "conclusion": "C-milnor",
+          "argument": "$(p,q)$ 环面结为正结且普通亏格为 $(p-1)(q-1)/2$，由正结取等公式其切片亏格等于普通亏格，即得 Milnor 猜想的组合证明。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C-KhInv",
+        "C-LeeRank",
+        "C-LeeRhoIso",
+        "C-McCleary",
+        "C-dual",
+        "C-altSupp",
+        "C-Liv",
+        "C-torusCl",
+        "C-gle"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "19c_Rasmussen_Khovanov_slice_genus.pdf",
+        "pageCount": 20
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 39164,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-CKh",
+                "F-Lee",
+                "F-canon",
+                "F-filt",
+                "F-sminmax",
+                "F-sdef",
+                "F-conc",
+                "F-poswidth",
+                "F-phi",
+                "F-seifert",
+                "F-unknot",
+                "F-lowtable"
+              ],
+              "b0ClaimEntryIds": [
+                "C-KhInv",
+                "C-LeeRank",
+                "C-LeeRhoIso",
+                "C-McCleary",
+                "C-dual",
+                "C-altSupp",
+                "C-Liv",
+                "C-torusCl",
+                "C-gle"
+              ],
+              "closureClaimEntryIds": [
+                "C-KhInv",
+                "C-LeeRank",
+                "C-LeeRhoIso",
+                "C-McCleary",
+                "C-dual",
+                "C-altSupp",
+                "C-Liv",
+                "C-torusCl",
+                "C-gle",
+                "C-spec",
+                "C-Rmaps",
+                "C-canonInv",
+                "C-cohere",
+                "C-difflabel",
+                "C-rhoFilt",
+                "C-invInv",
+                "C-decomp",
+                "C-canonMin",
+                "C-smaxgt",
+                "C-SES",
+                "C-sdiff",
+                "C-mirror",
+                "C-add",
+                "C-cobCanon",
+                "C-cobIso",
+                "C-slice",
+                "C-conchom",
+                "C-cross",
+                "C-width",
+                "C-altern",
+                "C-posit",
+                "C-milnor"
+              ],
+              "claimStates": {
+                "C-KhInv": "established",
+                "C-LeeRank": "established",
+                "C-LeeRhoIso": "established",
+                "C-McCleary": "established",
+                "C-dual": "established",
+                "C-altSupp": "established",
+                "C-Liv": "established",
+                "C-torusCl": "established",
+                "C-gle": "established",
+                "C-spec": "established",
+                "C-Rmaps": "established",
+                "C-canonInv": "established",
+                "C-cohere": "established",
+                "C-difflabel": "established",
+                "C-rhoFilt": "established",
+                "C-invInv": "established",
+                "C-decomp": "established",
+                "C-canonMin": "established",
+                "C-smaxgt": "established",
+                "C-SES": "established",
+                "C-sdiff": "established",
+                "C-mirror": "established",
+                "C-add": "established",
+                "C-cobCanon": "established",
+                "C-cobIso": "established",
+                "C-slice": "established",
+                "C-conchom": "established",
+                "C-cross": "established",
+                "C-width": "established",
+                "C-altern": "established",
+                "C-posit": "established",
+                "C-milnor": "established",
+                "C-BarConj": "open",
+                "C-sTauConj": "open",
+                "C-thinQ": "open"
+              },
+              "claimDerivations": {
+                "C-KhInv": {
+                  "basis": "b0"
+                },
+                "C-LeeRank": {
+                  "basis": "b0"
+                },
+                "C-LeeRhoIso": {
+                  "basis": "b0"
+                },
+                "C-McCleary": {
+                  "basis": "b0"
+                },
+                "C-dual": {
+                  "basis": "b0"
+                },
+                "C-altSupp": {
+                  "basis": "b0"
+                },
+                "C-Liv": {
+                  "basis": "b0"
+                },
+                "C-torusCl": {
+                  "basis": "b0"
+                },
+                "C-gle": {
+                  "basis": "b0"
+                },
+                "C-spec": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-spec"
+                  ]
+                },
+                "C-Rmaps": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-Rmaps"
+                  ]
+                },
+                "C-canonInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-canonInv"
+                  ]
+                },
+                "C-cohere": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cohere"
+                  ]
+                },
+                "C-difflabel": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-difflabel"
+                  ]
+                },
+                "C-rhoFilt": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-rhoFilt"
+                  ]
+                },
+                "C-invInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-invInv"
+                  ]
+                },
+                "C-decomp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-decomp"
+                  ]
+                },
+                "C-canonMin": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-canonMin"
+                  ]
+                },
+                "C-smaxgt": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-smaxgt"
+                  ]
+                },
+                "C-SES": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-SES"
+                  ]
+                },
+                "C-sdiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-sdiff"
+                  ]
+                },
+                "C-mirror": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-mirror"
+                  ]
+                },
+                "C-add": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-add"
+                  ]
+                },
+                "C-cobCanon": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cobCanon"
+                  ]
+                },
+                "C-cobIso": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cobIso"
+                  ]
+                },
+                "C-slice": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-slice"
+                  ]
+                },
+                "C-conchom": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-conchom"
+                  ]
+                },
+                "C-cross": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cross"
+                  ]
+                },
+                "C-width": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-width"
+                  ]
+                },
+                "C-altern": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-altern"
+                  ]
+                },
+                "C-posit": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-posit"
+                  ]
+                },
+                "C-milnor": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-milnor"
+                  ]
+                },
+                "C-BarConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-sTauConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-thinQ": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-CKh",
+                "F-Lee",
+                "F-canon",
+                "F-filt",
+                "F-sminmax",
+                "F-sdef",
+                "F-conc",
+                "F-poswidth",
+                "F-phi",
+                "F-seifert",
+                "F-unknot",
+                "F-lowtable"
+              ],
+              "b0ClaimEntryIds": [
+                "C-KhInv",
+                "C-LeeRank",
+                "C-LeeRhoIso",
+                "C-McCleary",
+                "C-dual",
+                "C-altSupp",
+                "C-Liv",
+                "C-torusCl",
+                "C-gle"
+              ],
+              "closureClaimEntryIds": [
+                "C-KhInv",
+                "C-LeeRank",
+                "C-LeeRhoIso",
+                "C-McCleary",
+                "C-dual",
+                "C-altSupp",
+                "C-Liv",
+                "C-torusCl",
+                "C-gle",
+                "C-spec",
+                "C-Rmaps",
+                "C-canonInv",
+                "C-cohere",
+                "C-difflabel",
+                "C-rhoFilt",
+                "C-invInv",
+                "C-decomp",
+                "C-canonMin",
+                "C-smaxgt",
+                "C-SES",
+                "C-sdiff",
+                "C-mirror",
+                "C-add",
+                "C-cobCanon",
+                "C-cobIso",
+                "C-slice",
+                "C-conchom",
+                "C-cross",
+                "C-width",
+                "C-altern",
+                "C-posit",
+                "C-milnor"
+              ],
+              "claimStates": {
+                "C-KhInv": "established",
+                "C-LeeRank": "established",
+                "C-LeeRhoIso": "established",
+                "C-McCleary": "established",
+                "C-dual": "established",
+                "C-altSupp": "established",
+                "C-Liv": "established",
+                "C-torusCl": "established",
+                "C-gle": "established",
+                "C-spec": "established",
+                "C-Rmaps": "established",
+                "C-canonInv": "established",
+                "C-cohere": "established",
+                "C-difflabel": "established",
+                "C-rhoFilt": "established",
+                "C-invInv": "established",
+                "C-decomp": "established",
+                "C-canonMin": "established",
+                "C-smaxgt": "established",
+                "C-SES": "established",
+                "C-sdiff": "established",
+                "C-mirror": "established",
+                "C-add": "established",
+                "C-cobCanon": "established",
+                "C-cobIso": "established",
+                "C-slice": "established",
+                "C-conchom": "established",
+                "C-cross": "established",
+                "C-width": "established",
+                "C-altern": "established",
+                "C-posit": "established",
+                "C-milnor": "established",
+                "C-BarConj": "open",
+                "C-sTauConj": "open",
+                "C-thinQ": "open"
+              },
+              "claimDerivations": {
+                "C-KhInv": {
+                  "basis": "b0"
+                },
+                "C-LeeRank": {
+                  "basis": "b0"
+                },
+                "C-LeeRhoIso": {
+                  "basis": "b0"
+                },
+                "C-McCleary": {
+                  "basis": "b0"
+                },
+                "C-dual": {
+                  "basis": "b0"
+                },
+                "C-altSupp": {
+                  "basis": "b0"
+                },
+                "C-Liv": {
+                  "basis": "b0"
+                },
+                "C-torusCl": {
+                  "basis": "b0"
+                },
+                "C-gle": {
+                  "basis": "b0"
+                },
+                "C-spec": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-spec"
+                  ]
+                },
+                "C-Rmaps": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-Rmaps"
+                  ]
+                },
+                "C-canonInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-canonInv"
+                  ]
+                },
+                "C-cohere": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cohere"
+                  ]
+                },
+                "C-difflabel": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-difflabel"
+                  ]
+                },
+                "C-rhoFilt": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-rhoFilt"
+                  ]
+                },
+                "C-invInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-invInv"
+                  ]
+                },
+                "C-decomp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-decomp"
+                  ]
+                },
+                "C-canonMin": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-canonMin"
+                  ]
+                },
+                "C-smaxgt": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-smaxgt"
+                  ]
+                },
+                "C-SES": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-SES"
+                  ]
+                },
+                "C-sdiff": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-sdiff"
+                  ]
+                },
+                "C-mirror": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-mirror"
+                  ]
+                },
+                "C-add": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-add"
+                  ]
+                },
+                "C-cobCanon": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cobCanon"
+                  ]
+                },
+                "C-cobIso": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cobIso"
+                  ]
+                },
+                "C-slice": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-slice"
+                  ]
+                },
+                "C-conchom": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-conchom"
+                  ]
+                },
+                "C-cross": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cross"
+                  ]
+                },
+                "C-width": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-width"
+                  ]
+                },
+                "C-altern": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-altern"
+                  ]
+                },
+                "C-posit": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-posit"
+                  ]
+                },
+                "C-milnor": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-milnor"
+                  ]
+                },
+                "C-BarConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-sTauConj": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-thinQ": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-add"
+                ],
+                "sourceRefs": [
+                  "PAGE 9"
+                ],
+                "sourceSpan": {
+                  "startLine": 302,
+                  "endLine": 327
+                },
+                "diagnosis": "I-add 的 argument 明确使用差为2的关系推出等式，但 premises 仅含 C-SES 与 C-mirror，未覆盖来源 Proposition 3.11 证明中直接使用的 s_max 与 s_min 差2的直接依赖。",
+                "repairRequirement": "在保留现有 premises 的基础上增补 C-sdiff，使 premises 覆盖来源同一步直接论证实际使用的直接依赖；不得删除已有依赖，不得修改 conclusion 与 argument。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-conchom"
+                ],
+                "sourceRefs": [
+                  "PAGE 12"
+                ],
+                "sourceSpan": {
+                  "startLine": 419,
+                  "endLine": 425
+                },
+                "diagnosis": "I-conchom 的 argument 明确使用可加性与镜像公式，但 premises 仅含 C-slice、C-add 与 F-conc，未覆盖来源 Theorem 2 证明中直接使用的 Proposition 3.9 镜像公式的直接依赖。",
+                "repairRequirement": "在保留现有 premises 的基础上增补 C-mirror，使 premises 覆盖来源同一步直接论证实际使用的直接依赖；不得删除已有依赖，不得修改 conclusion 与 argument。"
+              },
+              {
+                "id": "F3",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I-slice"
+                ],
+                "sourceRefs": [
+                  "PAGE 12"
+                ],
+                "sourceSpan": {
+                  "startLine": 399,
+                  "endLine": 417
+                },
+                "diagnosis": "I-slice 对任意取 s 最大值的非零类 x 断言其像 phi_S(x) 非零，该非零性在来源中依赖连通协边诱导同构的直接推论，但 premises 仅含 C-cobCanon，未覆盖该直接依赖 C-cobIso。",
+                "repairRequirement": "在保留现有 premises 的基础上增补 C-cobIso，使 premises 覆盖来源同一步直接论证实际使用的直接依赖；不得删除已有依赖，不得修改 conclusion 与 argument。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-add",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-SES",
+                      "C-mirror"
+                    ],
+                    "after": [
+                      "C-SES",
+                      "C-mirror",
+                      "C-sdiff"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-conchom",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-slice",
+                      "C-add",
+                      "F-conc"
+                    ],
+                    "after": [
+                      "C-slice",
+                      "C-add",
+                      "F-conc",
+                      "C-mirror"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I-slice",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C-cobCanon",
+                      "F-phi",
+                      "F-unknot",
+                      "C-mirror",
+                      "F-conc"
+                    ],
+                    "after": [
+                      "C-cobCanon",
+                      "F-phi",
+                      "F-unknot",
+                      "C-mirror",
+                      "F-conc",
+                      "C-cobIso"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 71,
+            "cleanCount": 68
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 108288
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 68342
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "da5f17e5d649f48e39f8e58f1f7131e37fc57f45443a08456980ed4e23e040df",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 183384,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 9,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2256,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4645,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 6729,
+        "phase": "complete",
+        "pageCount": 20
+      },
+      {
+        "stage": "generate",
+        "atMs": 6729,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 115029,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 183384,
+        "phase": "complete",
+        "entries": 47,
+        "inferences": 24
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 107829,
+        "usage": {
+          "input_tokens": 24432,
+          "output_tokens": 25669,
+          "total_tokens": 50101
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 68285,
+        "usage": {
+          "input_tokens": 38198,
+          "output_tokens": 15838,
+          "total_tokens": 54036
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

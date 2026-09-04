@@ -1,0 +1,1180 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "15_Witten_QFT_Jones_polynomial.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "E1",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "陈 Simons 作用量定义",
+          "statement": "在定向三维流形 $M$ 上取紧单规范群 $G$ 与联络 $A$ ，陈 Simons 作用量定义为 $\\mathcal{L}=\\frac{k}{4\\pi}\\int_{M}\\mathrm{Tr}(A\\wedge dA+\\frac{2}{3}A\\wedge A\\wedge A)$ ，其中 $k$ 为能级参数，$\\mathrm{Tr}$ 为规范化迹，作用量不依赖度规 $g$ 。"
+        },
+        {
+          "id": "E2",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Wilson 线定义",
+          "statement": "对定向闭曲线 $C$ 与不可约表示 $R$ ，Wilson 线定义为 $W_{R}(C)=\\mathrm{Tr}_{R}P\\exp\\int_{C}A$ ，即沿 $C$ 的和乐在 $R$ 中的迹，定义不需度规，$C$ 反向同时把 $R$ 换为共轭 $\\bar{R}$ 则不变。"
+        },
+        {
+          "id": "E3",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "配分函数与链期望值定义",
+          "statement": "对含不交纽结 $C_{i}$ 及表示 $R_{i}$ 的链 $L$ ，定义路径积分 $Z(M;L)=\\int D\\mathcal{A}\\exp(i\\mathcal{L})\\prod_{i}W_{R_{i}}(C_{i})$ ，其中 $D\\mathcal{A}$ 表对联络模规范变换积分，无结时记为 $Z(M)$ ，在 $S^{3}$ 中归一化期望值定义为 $\\langle L\\rangle=Z(S^{3};L)/Z(S^{3})$ 。"
+        },
+        {
+          "id": "E4",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "平联络临界点与模空间定义",
+          "statement": "陈 Simons 作用的稳相点为平联络 $F_{ij}=0$ ，其规范等价类对应同态 $\\phi:\\pi_{1}(M)\\to G$ 模共轭，$I(A^{(\\alpha)})=\\frac{1}{4\\pi}\\int_{M}\\mathrm{Tr}(A^{(\\alpha)}\\wedge dA^{(\\alpha)}+\\frac{2}{3}A^{(\\alpha)3})$ 为其陈 Simons 不变量，大 $k$ 极限归结为围绕 $A^{(\\alpha)}$ 的稳相求和。"
+        },
+        {
+          "id": "E5",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "纽结标架定义",
+          "statement": "纽结 $C$ 的标架是沿 $C$ 的法向量场拓扑类，推移得 $C^{\\prime}$ ，自环绕数定义为 $\\Phi(C,C^{\\prime})$ ，即把 $C$ 加厚为缎带，两种标架相差整数扭转 $t$ ，点分裂正规化中 $x$ 在 $C$ 上而 $y$ 在 $C^{\\prime}$ 上积分。"
+        },
+        {
+          "id": "E6",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "三维流形标架与引力陈 Simons 定义",
+          "statement": "标架三维流形指赋予切丛平凡化同伦类的定向 $M$ ，引力陈 Simons 项为 $I(g)=\\frac{1}{4\\pi}\\int_{M}\\mathrm{Tr}(\\omega\\wedge d\\omega+\\frac{2}{3}\\omega^{3})$ ，其中 $\\omega$ 为 Levi-Civita 联络，标架扭 $s$ 单位则 $I(g)\\to I(g)+2\\pi s$ 。"
+        },
+        {
+          "id": "E7",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "典则量子化辛结构与 Gauss 约束定义",
+          "statement": "在 $\\Sigma\\times R^{1}$ 上取规范 $A_{0}=0$ ，则 $\\mathcal{L}=\\frac{k}{8\\pi}\\int dt\\int_{\\Sigma}\\epsilon^{ij}\\mathrm{Tr}A_{i}\\frac{d}{dt}A_{j}$ ，泊松括号为 $\\{A_{i}^{a}(x),A_{j}^{b}(y)\\}=\\frac{4\\pi}{k}\\epsilon_{ij}\\delta^{ab}\\delta^{2}(x-y)$ ，约束为 $\\epsilon^{ij}F_{ij}^{a}=0$ ，有点电荷时为 $\\frac{k}{8\\pi}\\epsilon^{ij}F_{ij}^{a}(x)=\\sum_{s}\\delta^{2}(x-P_{s})T_{(s)}^{a}$ 。"
+        },
+        {
+          "id": "E8",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "物理 Hilbert 空间定义",
+          "statement": "对定向曲面 $\\Sigma$ 及标点 $P_{i}$ 与表示 $R_{i}$ ，约束约化得平联络模空间 $M$ 及其带 $T$ 约化的版本 $M_{P_{i},R_{i}}$ ，取 $\\Sigma$ 复结构 $J$ 得 $M_{J}$ 为稳定全纯丛模空间，量子 Hilbert 空间 $\\mathcal{H}_{\\Sigma}$ 定义为行列式线丛 $k$ 次幂 $L^{\\otimes k}$ 的整体全纯截面空间，反转 $\\Sigma$ 定向并共轭表示则取对偶。"
+        },
+        {
+          "id": "E9",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "链 surgery 定义",
+          "statement": "对三维流形 $M$ 中圆圈 $C$ 取管状邻域实心环 $M_{R}$ ，余下记为 $M_{L}$ ，边界为环面 $\\Sigma$ ，在 $\\partial M_{R}$ 作微分同胚 $K$ 后再粘合得新流形 $\\tilde{M}$ ，$C$ 起初仅为 surgery 轨迹， surgery 后可理解为在其上插入物理 Wilson 线。"
+        },
+        {
+          "id": "E10",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "属一 Verlinde 基定义",
+          "statement": "设环面 $\\Sigma$ 为实心环 $U$ 边界，其中 $a$ 圈在 $U$ 中可缩，在 $U$ 内沿 $b$ 方向放 $R_{i}$ 表示 Wilson 线作路径积分得 $v_{i}\\in\\mathcal{H}_{\\Sigma}$ ，$v_{0}=\\chi$ 为无 Wilson 线向量，微分同胚作用为 $K\\cdot v_{i}=\\sum_{j}K_{i}^{j}v_{j}$ ，内积 $g_{ij}$ 在 $R_{i}$ 与 $R_{j}$ 互为对偶时为 $1$ 否则为 $0$ 。"
+        },
+        {
+          "id": "E11",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "映射柱与辫迹定义",
+          "statement": "对曲面 $X$ 与微分同胚 $K$ 定义映射柱 $X\\times_{K}S^{1}$ ，把 $S^{3}$ 中 $n$ 股辫 $B$ 提升到 $S^{2}\\times S^{1}$ 并固定第 $n+1$ 条 surgery 股，定义辫迹为 $\\tau_{i}(B)=Z(S^{2}\\times S^{1};R_{i},B)$ ，即 $B$ 在具 $n+1$ 个电荷的 $S^{2}$ 的 $\\mathcal{H}$ 中表示的迹。"
+        },
+        {
+          "id": "E12",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Skein 局域三元组定义",
+          "statement": "三个链在圆盘外投影全同，盘内分别为上交叉 $L_{+}$ 、零交叉 $L_{0}$ 与下交叉 $L_{-}$ ，对应的右块三向量记为 $\\psi$ 、$\\psi_{1}=B\\psi$ 、$\\psi_{2}=B^{2}\\psi$ ，其中 $B$ 为交换两 $R$ 点的半单值微分同胚。"
+        },
+        {
+          "id": "C1",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "能级量子化",
+          "statement": "在 $\\mathrm{Tr}$ 规范化使 $SU(N)$ 矢量迹给出整数条件时，$\\exp(i\\mathcal{L})$ 单值当且仅当 $k\\in\\mathbf{Z}$ ，因绕数 $m$ 的规范变换使 $\\mathcal{L}\\to\\mathcal{L}+\\mathrm{const}\\cdot m$ ，而量子理论只要求 $\\exp(i\\mathcal{L})$ 单值，故常数须为 $2\\pi$ 整数倍。"
+        },
+        {
+          "id": "C2",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "大耦合弱极限求和与单圈行列式",
+          "statement": "设 $M$ 仅有有限多孤立平联络类 $A^{(\\alpha)}$ 且 $H^{*}(M,E)=0$ ，则大 $k$ 有 $Z=\\sum_{\\alpha}\\mu(A^{(\\alpha)})$ ，其中 $\\mu(A^{(\\alpha)})=\\exp(ikI(A^{(\\alpha)}))\\cdot\\det(\\Delta)/\\sqrt{\\det(L_{-})}$ ，$L_{-}=*D+D*$ 为奇次型上自伴算子，$\\Delta$ 为鬼场拉普拉斯，$B=A-A^{(\\alpha)}$ 的高斯积分无线性项。"
+        },
+        {
+          "id": "C3",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "行列式相位与能级移动",
+          "statement": "鬼行列式为正实数，$1/\\sqrt{\\det L_{-}}=1/|\\sqrt{\\det L_{-}}|\\cdot\\exp(i\\pi\\eta/2)$ ，其中 $\\eta=\\frac{1}{2}\\lim_{s\\to0}\\sum_{i}\\mathrm{sign}\\lambda_{i}|\\lambda_{i}|^{-s}$ ，且 $\\frac{1}{2}(\\eta(A^{(\\alpha)})-\\eta(0))=\\frac{c_{2}(G)}{2\\pi}I(A^{(\\alpha)})$ ，故 $Z=e^{i\\pi\\eta(0)/2}\\sum_{\\alpha}e^{i(k+c_{2}(G)/2)I(A^{(\\alpha)})}T_{\\alpha}$ ，$T_{\\alpha}$ 为挠率绝对值，$c_{2}(SU(N))=2N$ 。"
+        },
+        {
+          "id": "C4",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "标架流形拓扑不变性与标架变换",
+          "statement": "加引力度规抵消项后 $Z=\\exp(i\\pi d(\\eta_{\\mathrm{grav}}/2+\\frac{1}{12}I(g)/2\\pi))\\sum_{\\alpha}e^{i(k+c_{2}(G)/2)I(A^{(\\alpha)})}T_{\\alpha}$ 为定向标架三维流形拓扑不变量，标架移动 $s$ 单位则大 $k$ 有 $Z\\to Z\\cdot\\exp(2\\pi isd/24)$ ，有限 $k$ 一般为 $Z\\to Z\\cdot\\exp(2\\pi isc/24)$ ，其中 $d=\\dim G$ ，$c$ 为 $G$ 在能级 $k$ 的流代数中心荷，大 $k$ 时 $c\\to d$ 。"
+        },
+        {
+          "id": "C5",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Abel 期望给出 Gauss 环绕数",
+          "statement": "对 $S^{3}$ 中 $U(1)$ 规范群、电荷 $n_{a}$ 与不交圆 $C_{a}$ ，高斯测度给出 $\\langle W\\rangle=\\exp(\\frac{i}{2k}\\sum_{a,b}n_{a}n_{b}\\int_{C_{a}}\\int_{C_{b}}\\epsilon_{ijk}(x-y)^{k}/|x-y|^{3})$ ，当 $a\\neq b$ 时内积分为 $4\\pi\\Phi(C_{a},C_{b})$ ，$\\Phi$ 为整数 Gauss 环绕数，故略去 $a=b$ 自环绕则 $\\langle W\\rangle=\\exp(\\frac{2i\\pi}{k}\\sum n_{a}n_{b}\\Phi)$ 。"
+        },
+        {
+          "id": "C6",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "纽结标架变换律",
+          "statement": "把 $C_{a}$ 标架移动 $t$ 单位则 Abel 理论 $\\langle W\\rangle\\to\\exp(2\\pi itn_{a}^{2}/k)\\langle W\\rangle$ ，非 Abel 理论 $\\langle W\\rangle\\to\\exp(2\\pi ith)\\langle W\\rangle$ ，其中 $h=h_{R}$ 为 $R$ 表示主场的共形权重，$t$ 重绕 $P$ 的 Dehn 扭在 $\\mathcal{H}_{R}$ 上作用为乘以 $e^{2\\pi ith_{R}}$ ，分数统计相为 $\\delta=n_{a}^{2}/2k$ 或 $\\delta=h$ 。"
+        },
+        {
+          "id": "C7",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Hilbert 空间即共形块",
+          "statement": "典则量子化所得 $\\mathcal{H}_{\\Sigma}$ 与带标点版本 $\\mathcal{H}_{\\Sigma;P_{i},R_{i}}$ 恰为 $G$ 在能级 $k$ 的流代数在 $\\Sigma$ 上的共形块空间 $\\hat{H}_{\\Sigma}$ ，$\\mathcal{H}_{\\Sigma}^{(J)}$ 随 $J$ 全纯变化构成模空间上投射平坦向量丛，其单值即映射类群作用，形式性质类比 $H^{1}(\\Sigma,R)$ 。"
+        },
+        {
+          "id": "C8",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "属零大耦合 Hilbert 空间",
+          "statement": "在 $S^{2}$ 上大 $k$ 有 $\\mathcal{H}=\\mathrm{Inv}(\\otimes_{i}R_{i})$ ，有限 $k$ 时 $\\mathcal{H}$ 为其子空间且仅当各 $R_{i}$ 可积时非零；无标点维数为 $1$ ，一点在平凡表示时为 $1$ 否则为 $0$ ，两点在互为对偶时为 $1$ 否则为 $0$ ，三点维数为 $N_{ijk}$ ，$R,R,\\bar{R},\\bar{R}$ 四点在大 $k$ 维数为 $R\\otimes R=\\oplus_{i=1}^{s}E_{i}$ 中的 $s$ ，$SU(N)$ 矢量情形 $s=2$ 而 $k=1$ 时为 $1$ 。"
+        },
+        {
+          "id": "C9",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "连通和乘法性",
+          "statement": "若 $M$ 为 $M_{1}$ 与 $M_{2}$ 沿 $S^{2}$ 的连通和且结不穿过 $S^{2}$ ，则 $Z(M)Z(S^{3})=Z(M_{1})Z(M_{2})$ ，即 $Z(M)/Z(S^{3})=Z(M_{1})/Z(S^{3})\\cdot Z(M_{2})/Z(S^{3})$ ，因无荷 $S^{2}$ 的 $\\mathcal{H}$ 一维而 $(\\chi,\\psi)(v,v^{\\prime})=(\\chi,v^{\\prime})(v,\\psi)$ 。"
+        },
+        {
+          "id": "C10",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "无链平凡结因子化",
+          "statement": "对 $S^{3}$ 中 $s$ 个无链非纽结圆 $C_{k}$ 有 $Z(S^{3};C_{1},\\dots,C_{s})/Z(S^{3})=\\prod_{k}Z(S^{3};C_{k})/Z(S^{3})$ ，即归一化满足 $\\langle C_{1}\\dots C_{s}\\rangle=\\prod_{k}\\langle C_{k}\\rangle$ ，由反复沿 $S^{2}$ 切割并用连通和公式得到。"
+        },
+        {
+          "id": "C11",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Skein 关系与纽结多项式",
+          "statement": "存在不全零 $\\alpha,\\beta,\\gamma$ 使 $\\alpha Z(L)+\\beta Z(L_{1})+\\gamma Z(L_{2})=0$ ，对 $SU(N)$ 矢量 $R$ 右块二维故 $z\\psi-y\\psi_{1}+\\psi_{2}=0$ ，其中 $y=\\mathrm{Tr}B$ ，$z=\\det B$ ，经 $S^{3}$ 标准标架修正 $\\beta\\to\\beta e^{-2\\pi ih_{R}}$ ，$\\gamma\\to\\gamma e^{-4\\pi ih_{R}}$ 后得 $-q^{N/2}L_{+}+(q^{1/2}-q^{-1/2})L_{0}+q^{-N/2}L_{-}=0$ ，$q=\\exp(2\\pi i/(N+k))$ ，平凡结 $\\langle C\\rangle=(q^{N/2}-q^{-N/2})/(q^{1/2}-q^{-1/2})$ ，归纳由交叉数确定全部 $S^{3}$ 链期望。"
+        },
+        {
+          "id": "C12",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Surgery 公式",
+          "statement": "沿 $C$ 以 $K$ 作 surgery 得 $\\tilde{M}$ ，则 $Z(\\tilde{M})=\\sum_{j}K_{0}^{j}Z(M;R_{j})$ ，若 $C$ 上原有 $R_{i}$ 线则 $Z(\\tilde{M};R_{i})=\\sum_{j}K_{i}^{j}Z(M;R_{j})$ ，其中 $Z(M;R_{j})$ 表在 $C$ 上增 $R_{j}$ 线，因 $\\chi=v_{0}$ 而 $Kv_{0}=\\sum K_{0}^{j}v_{j}$ 且 $v_{j}$ 恰由中心 $R_{j}$ 线产生；卫星结向量可展开为 $\\psi=\\sum_{i}\\alpha_{i}v_{i}$ ，系数与环境流形无关。"
+        },
+        {
+          "id": "C13",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "乘积流形迹即维数",
+          "statement": "Chern-Simons 哈密顿量为零，故 $Z(X\\times S^{1})=\\mathrm{Tr}_{\\mathcal{H}_{X}}(1)=\\dim\\mathcal{H}_{X}$ ，$Z(X\\times_{K}S^{1})=\\mathrm{Tr}_{\\mathcal{H}_{X}}(K)$ ，特别 $Z(S^{2}\\times S^{1})=1$ ，带 $R_{a}$ 单电荷为 $\\delta_{a,0}$ ，双电荷为 $g_{ab}$ ，三电荷为 $N_{abc}$ ，即相应 $S^{2}$ 共形块维数。"
+        },
+        {
+          "id": "C14",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "由 surgery 得球配分与平凡结",
+          "statement": "以 $S:\\tau\\to-1/\\tau$ 沿图示 $C$ 对 $S^{2}\\times S^{1}$ 作 surgery 得 $S^{3}$ ，故 $Z(S^{3})=S_{0,0}$ ，$Z(S^{3};R_{j})=S_{0,j}$ ，$Z(S^{3};R_{j},R_{k})=\\sum_{i}S_{0}^{i}Z(S^{2}\\times S^{1};R_{i},R_{j},R_{k})$ ，对 $SU(2)$ 有 $S_{mn}=\\sqrt{2/(k+2)}\\sin((m+1)(n+1)\\pi/(k+2))$ ，$Z(S^{3})=\\sqrt{2/(k+2)}\\sin(\\pi/(k+2))$ ，$\\langle C\\rangle=S_{0,1}/S_{0,0}$ 与 Skein 值一致，大 $k$ 趋于 $N$ 且恒正。"
+        },
+        {
+          "id": "C15",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Verlinde 对角化融合规则",
+          "statement": "有 $S_{0,j}S_{0,k}/S_{0,0}=\\sum_{i}S_{0}^{i}N_{ijk}$ 及 $S_{ij}S_{ik}/S_{0,i}=\\sum_{m}S_{i}^{m}N_{mjk}$ ，其中 $Z(S^{3};L(R_{i};R_{j}))=S_{ij}$ ，$Z(S^{3};L(R_{i};R_{j},R_{k}))=\\sum_{m}S_{i}^{m}N_{mjk}=S_{ij}S_{ik}/S_{0,i}$ ，令 $N_{ij}^{k}=\\sum_{r}N_{ijr}g^{rk}$ 及 $w_{i}=S_{0,i}\\sum_{m}S_{i}^{m}v_{m}$ ，则 $v_{i}v_{j}=\\sum_{k}N_{ij}^{k}v_{k}$ 对角化为 $w_{i}w_{j}=\\delta_{ij}w_{j}$ ，即 $S$ 对角化融合代数。"
+        },
+        {
+          "id": "C16",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "链连通和乘法性",
+          "statement": "若 $L_{1}+L_{2}$ 为链连通和且被切股表示相容，则 $Z(S^{3};L_{1}+L_{2})Z(S^{3};C)=Z(S^{3};L_{1})Z(S^{3};L_{2})$ ，一般 $Z(M_{1}+M_{2};L_{1}+L_{2})Z(S^{3};C)=Z(M_{1};L_{1})Z(M_{2};L_{2})$ ，其中 $C$ 为被切股表示的平凡结，因具对偶对 $R_{i},R_{\\bar{i}}$ 的 $S^{2}$ 的 $\\mathcal{H}$ 一维而有一维线性代数因子化。"
+        },
+        {
+          "id": "C17",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "链不变量为辫迹线性组合",
+          "statement": "任意 $S^{3}$ 链 $L$ 写成辫 $B$ 并在平行圈上作 surgery 回到 $S^{3}$ ，则 $Z(S^{3};L)=\\sum_{j}S_{0}^{j}Z(S^{2}\\times S^{1};R_{j},B)=\\sum_{j}S_{0}^{j}\\tau_{j}(B)$ ，且 $\\tau_{i}(B_{1}B_{2})=\\tau_{i}(B_{2}B_{1})$ ，因两辫在 $S^{2}\\times S^{1}$ 中首尾相接的路径积分相同，$\\tau_{i}(B)$ 即 $B$ 在具 $n+1$ 电荷的 Hilbert 空间中表示的迹，给出 Jones 辫迹。"
+        },
+        {
+          "id": "B1",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Schwarz 挠率外部前提",
+          "statement": "Abel 理论中已证绝对值比 $|\\det(\\Delta)|/|\\sqrt{\\det(L_{-})}|$ 等于平联络的 Ray-Singer 解析挠率从而等于拓扑 Reidemeister 挠率，为拓扑不变量，该性质推广到本节非 Abel 单圈情形的绝对值部分。"
+        },
+        {
+          "id": "B2",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "APSeta 变分外部前提",
+          "statement": "Atiyah-Patodi-Singer 定理给出 $\\frac{1}{2}(\\eta(A^{(\\alpha)})-\\eta(0))=\\frac{c_{2}(G)}{2\\pi}I(A^{(\\alpha)})$ 及引力组合 $\\frac{1}{2}\\eta_{\\mathrm{grav}}+\\frac{1}{12}I(g)/2\\pi$ 为标架定向三维流形的拓扑不变量，与度规无关，仅依赖标架选择。"
+        },
+        {
+          "id": "B3",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Segal 模函子平坦性外部前提",
+          "statement": "对 $\\Sigma$ 的复结构 $J$ 族 $\\mathcal{H}_{\\Sigma}^{(J)}$ 全纯变化构成模空间上全纯向量丛，具有典则投射平坦联络，单值给出映射类群作用，其代数几何描述恰为流代数共形块的模函子，Ward 恒等式障碍归结为丛模空间上线丛截面选择。"
+        },
+        {
+          "id": "B4",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Moore-Seiberg 半单值数据外部前提",
+          "statement": "交换两 $R$ 点的半单值 $B$ 在 $R,R,\\bar{R},\\bar{R}$ 四点二维空间中本征值为 $\\lambda_{i}=\\pm\\exp(i\\pi(2h_{R}-h_{E_{i}}))$ ，符号依 $E_{i}$ 在 $R\\otimes R$ 中对称或反对称而定，对 $SU(N)$ 矢量得 $\\lambda_{1}=\\exp(i\\pi(-N+1)/N(N+k))$ 与 $\\lambda_{2}=-\\exp(i\\pi(N+1)/N(N+k))$ ，且 $B^{2}-yB+z=0$ ，$y=\\mathrm{Tr}B$ ，$z=\\det B$ 。"
+        },
+        {
+          "id": "B5",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Borel-Weil-Bott 与行列式线丛外部前提",
+          "statement": "旗流形 $G/T$ 配辛形式 $\\omega_{R}$ 量子化得表示 $R$ ，$\\bar{\\partial}$ 行列式线丛 $L$ 配 Dirac 行列式度规，其第一陈类即典则辛形式在 $k=1$ 时的曲率，$k$ 一般时为 $L^{\\otimes k}$ 的陈类，带 $T$ 约化的经典约束约化后量子化得 Segal 共形块，非可积表示上线丛无非零全纯截面。"
+        },
+        {
+          "id": "B6",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "仿射 Lie 代数可积表示与模矩阵外部前提",
+          "statement": "圈群在能级 $k$ 仅有有限 $t$ 个可积最高权表示，对应 $G$ 的 distinguished 表示 $R_{0},\\dots,R_{t-1}$ ，$R_{0}$ 平凡，环面 $\\mathcal{H}$ 维数为 $t$ ，$S$ 与 $T$ 在特征标上的矩阵已知，$T\\cdot v_{i}=e^{2\\pi i(h_{i}-c/24)}v_{i}$ ，$S$ 酉，$h_{i}$ 为共形权重，$c$ 为中心荷。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "I1",
+          "operationKind": "proof",
+          "premises": [
+            "E1"
+          ],
+          "conclusion": "C1",
+          "argument": "规范群分支 $\\hat{G}$ 不连通而 $\\pi_{3}(G)=\\mathbf{Z}$ ，绕数 $m$ 变换使作用量平移常数倍 $m$ ，量子要求 $\\exp(i\\mathcal{L})$ 单值，故常数须为 $2\\pi$ 整数倍，固定 $\\mathrm{Tr}$ 归一化即得 $k$ 整数，$1+1$ 维类比给出中心荷量子化。"
+        },
+        {
+          "id": "I2",
+          "operationKind": "proof",
+          "premises": [
+            "E1",
+            "E4",
+            "B1"
+          ],
+          "conclusion": "C2",
+          "argument": "大 $k$ 被积函数剧烈振荡，稳相点恰为平联络，设孤立有限则化为离散和，作 $A=A^{(\\alpha)}+B$ 展开得 $kI+\\frac{k}{4\\pi}\\int\\mathrm{Tr}B\\wedge DB$ ，取 $D_{i}B^{i}=0$ 规范与 Faddeev-Popov 鬼场得玻色算子 $L_{-}$ 与 $\\Delta$ ，高斯积分给出相因子与行列式比，绝对值由外部挠率结果为拓扑不变量。"
+        },
+        {
+          "id": "I3",
+          "operationKind": "proof",
+          "premises": [
+            "C2",
+            "B2"
+          ],
+          "conclusion": "C3",
+          "argument": "鬼行列式正实，$L_{-}$ 可视扭 Dirac 算子，对角化为一维积分 $\\int dx e^{i\\lambda x^{2}}/\\sqrt{\\pi}=|\\sqrt{\\lambda}|^{-1}\\exp(i\\pi\\mathrm{sign}\\lambda/4)$ ，相位正比于 $\\eta$ 不变量，用 APS 公式把 $\\eta(A^{(\\alpha)})-\\eta(0)$ 表为 $I(A^{(\\alpha)})$ 倍数，吸收后 $k$ 变为 $k+c_{2}(G)/2$ 并分离挠率绝对值。"
+        },
+        {
+          "id": "I4",
+          "operationKind": "proof",
+          "premises": [
+            "C3",
+            "E6",
+            "B2",
+            "E10",
+            "B6"
+          ],
+          "conclusion": "C4",
+          "argument": "剩余 $\\eta(0)=d\\eta_{\\mathrm{grav}}$ 依赖度规，加仅依赖度规的引力陈 Simons 抵消项 $d$ 倍的 APS 组合得与度规无关的标架不变量，标架扭 $s$ 使 $I(g)$ 平移 $2\\pi s$ 而得大 $k$ 相位 $d/24$ 律；用 $T^{n}ST^{m}$ surgery 歧义与 $T$ 本征值 $e^{2\\pi i(h_{i}-c/24)}$ 得有限 $k$ 相位 $c/24$ 律。"
+        },
+        {
+          "id": "I5",
+          "operationKind": "proof",
+          "premises": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "conclusion": "C5",
+          "argument": "Abel 拉氏量二次型，对 $W=\\prod_{a}\\exp(in_{a}\\int_{C_{a}}A)$ 作高斯积分得双重线积分核 $\\epsilon_{ijk}(x-y)^{k}/|x-y|^{3}$ ，$a\\neq b$ 时恰为 $4\\pi$ 倍 Gauss 环绕整数，证 Chern-Simons 给出拓扑不变量，自环绕 $a=b$ 需标架正规化而暂置不论。"
+        },
+        {
+          "id": "I6",
+          "operationKind": "proof",
+          "premises": [
+            "E7",
+            "E8",
+            "B3",
+            "B5"
+          ],
+          "conclusion": "C7",
+          "argument": "先 impose 约束得平联络模空间有限维辛约化，取 $J$ 得 $M_{J}$ 为稳定全纯丛 Kähler 流形，辛形式为 $L^{\\otimes k}$ 陈类，量子 Hilbert 空间为其全纯截面；$J$ 无需先验选取而 $\\mathcal{H}^{(J)}$ 构成模空间上投射平坦丛，与 Segal 流代数共形块的代数几何描述一致，带电荷情形经 $G/T$ 经典化 $T_{(s)}^{a}$ 并约化得到。"
+        },
+        {
+          "id": "I7",
+          "operationKind": "proof",
+          "premises": [
+            "C7",
+            "E8"
+          ],
+          "conclusion": "C8",
+          "argument": "极弱耦合 $k$ 很大时物理态近似 $\\otimes_{i}R_{i}$ 但闭宇宙总电荷须为单态，故取 $G$ 不变子空间，有限 $k$ 为其子空间且非可积表示解耦为零，由 Verlinde 维数得零至三点情形，四点 $R,R,\\bar{R},\\bar{R}$ 由 $R\\otimes R$ 分解定 $s$ 维，$SU(N)$ 矢量 $s=2$ 。"
+        },
+        {
+          "id": "I8",
+          "operationKind": "proof",
+          "premises": [
+            "E5",
+            "C7",
+            "C5"
+          ],
+          "conclusion": "C6",
+          "argument": "沿交 $\\Sigma$ 于 $P$ 的 $C$ 作边界 $t$ 重 Dehn 扭再粘合，拓扑相同而 $C$ 标架移动 $t$ 单位，共形场论中该扭在 $H_{R}$ 上乘以 $e^{2\\pi ith_{R}}$ ，故配分函数获得相应相位，Abel 情形由显式双积分得 $n_{a}^{2}/k$ 律，对应 $2+1$ 维分数统计。"
+        },
+        {
+          "id": "I9",
+          "operationKind": "proof",
+          "premises": [
+            "E8",
+            "E3",
+            "C8"
+          ],
+          "conclusion": "C9",
+          "argument": "沿 $S^{2}$ 切 $M$ 为 $M_{L},M_{R}$ 得对偶一维空间中向量 $\\chi,\\psi$ 使 $Z(M)=(\\chi,\\psi)$ ，同样 $S^{3}$ 切为 $B_{L},B_{R}$ 得 $v,v^{\\prime}$ 使 $Z(S^{3})=(v,v^{\\prime})$ ，一维线性代数恒等式 $(\\chi,\\psi)(v,v^{\\prime})=(\\chi,v^{\\prime})(v,\\psi)$ 右端恰为 $Z(M_{1})Z(M_{2})$ ，得连通和公式。"
+        },
+        {
+          "id": "I10",
+          "operationKind": "proof",
+          "premises": [
+            "C9",
+            "E3"
+          ],
+          "conclusion": "C10",
+          "argument": "把含 $s$ 个无链平凡圆的 $S^{3}$ 反复沿分离圆的 $S^{2}$ 切割，每次用连通和公式分离一个圆，归一化后乘积因子化为各单圆期望之积。"
+        },
+        {
+          "id": "I11",
+          "operationKind": "proof",
+          "premises": [
+            "C8",
+            "C7",
+            "B4",
+            "E12",
+            "C6",
+            "C10"
+          ],
+          "conclusion": "C11",
+          "argument": "沿包围一交叉的小球切 $M$ 为 $M_{L},M_{R}$ ，$SU(N)$ 矢量四点空间二维，故 $\\psi,\\psi_{1},\\psi_{2}$ 线性相关得 $\\alpha(\\chi,\\psi)+\\beta(\\chi,\\psi_{1})+\\gamma(\\chi,\\psi_{2})=0$ 即链关系；由 $B$ 本征值定 $y,z$ 得 $z,-y,1$ 系数，再把右块同标架换算为 $S^{3}$ 标准标架而修正 $\\beta,\\gamma$ 相位，引入 $q$ 写成优雅形式，特殊图得平凡结值，交叉数归纳确定全部 $S^{3}$ 期望且 $\\beta\\neq0$ 时降交叉。"
+        },
+        {
+          "id": "I12",
+          "operationKind": "proof",
+          "premises": [
+            "E9",
+            "E10",
+            "C7"
+          ],
+          "conclusion": "C12",
+          "argument": "切管状邻域得对偶空间向量 $\\psi,\\chi=v_{0}$ 使 $Z(M)=(\\psi,v_{0})$ ，作 $K$ 后 $Z(\\tilde{M})=(\\psi,Kv_{0})=\\sum K_{0}^{j}(\\psi,v_{j})$ ，而 $(\\psi,v_{j})$ 恰为在 $C$ 上增 $R_{j}$ 线的 $M$ 配分，原有 $R_{i}$ 线时 $v_{i}$ 变为 $\\sum K_{i}^{j}v_{j}$ 得广义公式，实心环内任意卫星链向量按 Verlinde 基展开系数普适。"
+        },
+        {
+          "id": "I13",
+          "operationKind": "proof",
+          "premises": [
+            "E8",
+            "E3",
+            "C8"
+          ],
+          "conclusion": "C13",
+          "argument": "把 $X\\times S^{1}$ 看成 $X\\times I$ 首尾粘合，Chern-Simons 哈密顿量为零故传播平凡，粘合取迹得维数，插入映射 $K$ 则取 $K$ 的迹，$S^{2}$ 无荷空间一维得 $1$ ，一至三电荷情形维数分别为 $\\delta,g,N$ 即得所列配分。"
+        },
+        {
+          "id": "I14",
+          "operationKind": "proof",
+          "premises": [
+            "C12",
+            "C13",
+            "B6"
+          ],
+          "conclusion": "C14",
+          "argument": "用 $S$ surgery 把 $S^{2}\\times S^{1}$ 变为 $S^{3}$ ，surgery 公式中 $Z(S^{2}\\times S^{1};R_{j})$ 仅 $j=0$ 非零得 $S_{00}$ ，平行加 $R_{j}$ 线用 $g_{ij}$ 得 $S_{0j}$ ，两平行线用 $N_{ijk}$ 得求和式，代入 $SU(2)$ 显式 $S_{mn}$ 得 $S^{3}$ 体积与 $S_{01}/S_{00}$ ，与 Skein 平凡结一致且满足反射正性与弱耦合趋 $N$ 。"
+        },
+        {
+          "id": "I15",
+          "operationKind": "proof",
+          "premises": [
+            "C12",
+            "C13",
+            "C9",
+            "B6",
+            "C8"
+          ],
+          "conclusion": "C15",
+          "argument": "在 surgery 圈 $C$ 上先放 $R_{i}$ 线再作标准 $S$ surgery ，广义公式与 $S^{2}\\times S^{1}$ 双电荷及三电荷值给出 $S_{ij}$ 与 $\\sum S_{i}^{m}N_{mjk}$ 作为链环 $L(R_{i};R_{j})$ 与 $L(R_{i};R_{j},R_{k})$ 配分；另一方面具对偶对的 $S^{2}$ 空间一维，一维因子化给出 $Z(L(R_{i};R_{j},R_{k}))=S_{ij}S_{ik}/S_{0,i}$ ，联立得 Verlinde 公式，用 $S$ 酉性验证 $w_{i}$ 幂等而对角化融合代数。"
+        },
+        {
+          "id": "I16",
+          "operationKind": "proof",
+          "premises": [
+            "E8",
+            "C9",
+            "C8"
+          ],
+          "conclusion": "C16",
+          "argument": "具对偶表示对的 $S^{2}$ 物理空间同样一维，重复连通和证明把 $L(R_{i};R_{j},R_{k})$ 切为两链环分别去掉一段的构形，一维配对恒等式给出链连通和乘法性，$M_{1}+M_{2}$ 一般情形同理，被切股表示决定平凡结 $C$ 的表示。"
+        },
+        {
+          "id": "I17",
+          "operationKind": "proof",
+          "premises": [
+            "C12",
+            "E11",
+            "C13"
+          ],
+          "conclusion": "C17",
+          "argument": "把 $S^{3}$ 中任意链排成辫 $B$ 提至 $S^{2}\\times S^{1}$ ，沿平行圈作 $S$ surgery 回到 $S^{3}$ ，surgery 公式给出 $S_{0}^{j}$ 加权求和，$Z(S^{2}\\times S^{1};R_{j},B)$ 即辫迹 $\\tau_{j}(B)$ ，两辫首尾相接在 $S^{2}\\times S^{1}$ 中次序不可辨故具迹性质，且为固定第 $n+1$ 股时前 $n$ 股辫群表示的迹。"
+        },
+        {
+          "id": "I18",
+          "operationKind": "organization",
+          "premises": [
+            "E1",
+            "E2"
+          ],
+          "conclusion": "E3",
+          "argument": "规范不变且无需度规的 Chern-Simons 拉氏量与 Wilson 线可观测量共同组织形成路径积分可观测量定义，即以 $\\exp(i\\mathcal{L})$ 为测度对 Wilson 线乘积求 Feynman 积分的配分函数概念。"
+        },
+        {
+          "id": "I19",
+          "operationKind": "organization",
+          "premises": [
+            "E4",
+            "E7"
+          ],
+          "conclusion": "E8",
+          "argument": "平联络模空间作为经典约束约化相空间与典则辛结构共同组织形成待量子化的有限维相空间概念，选取复结构后以行列式线丛全纯截面为量子 Hilbert 空间的定义形式。"
+        },
+        {
+          "id": "I20",
+          "operationKind": "organization",
+          "premises": [
+            "E8",
+            "E9"
+          ],
+          "conclusion": "E10",
+          "argument": "属一曲面 Hilbert 空间概念与实心环 surgery 分解共同组织形成 Verlinde 基概念，即以不同 $R_{i}$ 中心 Wilson 线在实心环中路径积分标定基向量及其模变换矩阵的定义形式。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "15_Witten_QFT_Jones_polynomial.pdf",
+        "pageCount": 49
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 77748,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": false,
+            "derivedState": null,
+            "formatIssues": [],
+            "error": "Entry C7.title must be a non-empty string without surrounding whitespace"
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "E1",
+                "E2",
+                "E3",
+                "E4",
+                "E5",
+                "E6",
+                "E7",
+                "E8",
+                "E9",
+                "E10",
+                "E11",
+                "E12"
+              ],
+              "b0ClaimEntryIds": [
+                "B1",
+                "B2",
+                "B3",
+                "B4",
+                "B5",
+                "B6"
+              ],
+              "closureClaimEntryIds": [
+                "C1",
+                "C2",
+                "C3",
+                "C4",
+                "C5",
+                "C6",
+                "C7",
+                "C8",
+                "C9",
+                "C10",
+                "C11",
+                "C12",
+                "C13",
+                "C14",
+                "C15",
+                "C16",
+                "C17",
+                "B1",
+                "B2",
+                "B3",
+                "B4",
+                "B5",
+                "B6"
+              ],
+              "claimStates": {
+                "C1": "established",
+                "C2": "established",
+                "C3": "established",
+                "C4": "established",
+                "C5": "established",
+                "C6": "established",
+                "C7": "established",
+                "C8": "established",
+                "C9": "established",
+                "C10": "established",
+                "C11": "established",
+                "C12": "established",
+                "C13": "established",
+                "C14": "established",
+                "C15": "established",
+                "C16": "established",
+                "C17": "established",
+                "B1": "established",
+                "B2": "established",
+                "B3": "established",
+                "B4": "established",
+                "B5": "established",
+                "B6": "established"
+              },
+              "claimDerivations": {
+                "C1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I1"
+                  ]
+                },
+                "C2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I2"
+                  ]
+                },
+                "C3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I3"
+                  ]
+                },
+                "C4": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I4"
+                  ]
+                },
+                "C5": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I5"
+                  ]
+                },
+                "C6": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I8"
+                  ]
+                },
+                "C7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I6"
+                  ]
+                },
+                "C8": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I7"
+                  ]
+                },
+                "C9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I9"
+                  ]
+                },
+                "C10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I10"
+                  ]
+                },
+                "C11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I11"
+                  ]
+                },
+                "C12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I12"
+                  ]
+                },
+                "C13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I13"
+                  ]
+                },
+                "C14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I14"
+                  ]
+                },
+                "C15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I15"
+                  ]
+                },
+                "C16": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I16"
+                  ]
+                },
+                "C17": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I17"
+                  ]
+                },
+                "B1": {
+                  "basis": "b0"
+                },
+                "B2": {
+                  "basis": "b0"
+                },
+                "B3": {
+                  "basis": "b0"
+                },
+                "B4": {
+                  "basis": "b0"
+                },
+                "B5": {
+                  "basis": "b0"
+                },
+                "B6": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "contract",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C7"
+                ],
+                "sourceRefs": [],
+                "diagnosis": "C7.title带首部空格，违反Entry字符串不得带首尾空白的确定性合同，导致初稿校验INVALID_ENTRY。",
+                "repairRequirement": "去除首尾空白，保留原意与内部空格，不改变其他字段。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I8"
+                ],
+                "sourceRefs": [
+                  "PAGE 13-15"
+                ],
+                "sourceSpan": {
+                  "startLine": 301,
+                  "endLine": 339
+                },
+                "diagnosis": "I8论证同时声称Abel情形由显式双积分得n_a^2/k律与非Abel Dehn扭相位，但premises仅含E5与C7，遗漏Abel双积分直接依赖C5。",
+                "repairRequirement": "premises必须增补C5以覆盖Abel显式积分依赖，保留已有E5与C7，不改变结论与论证。"
+              },
+              {
+                "id": "F3",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I9"
+                ],
+                "sourceRefs": [
+                  "PAGE 23-25"
+                ],
+                "sourceSpan": {
+                  "startLine": 456,
+                  "endLine": 519
+                },
+                "diagnosis": "I9论证使用无荷S2的H一维对偶配对恒等式，但premises仅含E8与E3，遗漏提供该一维性的直接依赖C8。",
+                "repairRequirement": "premises必须增补C8以覆盖一维空间前提，保留已有E8与E3。"
+              },
+              {
+                "id": "F4",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I11"
+                ],
+                "sourceRefs": [
+                  "PAGE 26-29"
+                ],
+                "sourceSpan": {
+                  "startLine": 529,
+                  "endLine": 606
+                },
+                "diagnosis": "I11论证包含由特殊图得平凡结值，该步骤来源明确与(4.7)联用，但premises未含提供(4.7)的C10。",
+                "repairRequirement": "premises必须增补C10以覆盖平凡结值步骤，保留已有C8、C7、B4、E12、C6。"
+              },
+              {
+                "id": "F5",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I13"
+                ],
+                "sourceRefs": [
+                  "PAGE 37-38"
+                ],
+                "sourceSpan": {
+                  "startLine": 768,
+                  "endLine": 813
+                },
+                "diagnosis": "I13论证使用S2无荷一维得1及一至三电荷维数δ、g、N，但premises仅含E8与E3，遗漏提供这些维数的直接依赖C8。",
+                "repairRequirement": "premises必须增补C8以覆盖维数前提，保留已有E8与E3。"
+              },
+              {
+                "id": "F6",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I15"
+                ],
+                "sourceRefs": [
+                  "PAGE 42-43"
+                ],
+                "sourceSpan": {
+                  "startLine": 900,
+                  "endLine": 931
+                },
+                "diagnosis": "I15论证使用具对偶对的S2空间一维作一维因子化得S_ijS_ik/S_0,i，但premises含C9而未含提供该对偶对一维性的C8。",
+                "repairRequirement": "premises必须增补C8以覆盖对偶对一维前提，保留已有C12、C13、C9、B6。"
+              },
+              {
+                "id": "F7",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I16"
+                ],
+                "sourceRefs": [
+                  "PAGE 42-44"
+                ],
+                "sourceSpan": {
+                  "startLine": 912,
+                  "endLine": 966
+                },
+                "diagnosis": "I16论证使用具对偶表示对的S2物理空间一维并重复连通和证明，但premises仅含E8与C9，遗漏提供该一维性的直接依赖C8。",
+                "repairRequirement": "premises必须增补C8以覆盖对偶对一维前提，保留已有E8与C9。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "C7",
+                "changes": [
+                  {
+                    "field": "title",
+                    "before": " Hilbert 空间即共形块",
+                    "after": "Hilbert 空间即共形块"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I8",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "E5",
+                      "C7"
+                    ],
+                    "after": [
+                      "E5",
+                      "C7",
+                      "C5"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I9",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "E8",
+                      "E3"
+                    ],
+                    "after": [
+                      "E8",
+                      "E3",
+                      "C8"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F4",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I11",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C8",
+                      "C7",
+                      "B4",
+                      "E12",
+                      "C6"
+                    ],
+                    "after": [
+                      "C8",
+                      "C7",
+                      "B4",
+                      "E12",
+                      "C6",
+                      "C10"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F5",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I13",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "E8",
+                      "E3"
+                    ],
+                    "after": [
+                      "E8",
+                      "E3",
+                      "C8"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F6",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I15",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C12",
+                      "C13",
+                      "C9",
+                      "B6"
+                    ],
+                    "after": [
+                      "C12",
+                      "C13",
+                      "C9",
+                      "B6",
+                      "C8"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F7",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I16",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "E8",
+                      "C9"
+                    ],
+                    "after": [
+                      "E8",
+                      "C9",
+                      "C8"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 55,
+            "cleanCount": 48
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 84509
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 79647
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "3e33b0ca5c5c04c0d1ecd842c5cc8b5f074c9956c5da33f39b31a8e17071540d",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 197900,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 16,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2453,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4847,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7239,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9615,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12085,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14474,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16862,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 19260,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21666,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 24043,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26436,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 28848,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 31255,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 33730,
+        "phase": "complete",
+        "pageCount": 49
+      },
+      {
+        "stage": "generate",
+        "atMs": 33730,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 118246,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 197899,
+        "phase": "complete",
+        "entries": 35,
+        "inferences": 20
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 84150,
+        "usage": {
+          "input_tokens": 40722,
+          "output_tokens": 18796,
+          "total_tokens": 59518
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 79095,
+        "usage": {
+          "input_tokens": 56326,
+          "output_tokens": 19551,
+          "total_tokens": 75877
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

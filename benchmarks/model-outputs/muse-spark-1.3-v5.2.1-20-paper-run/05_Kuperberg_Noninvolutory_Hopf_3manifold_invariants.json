@@ -1,0 +1,1941 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "05_Kuperberg_Noninvolutory_Hopf_3manifold_invariants.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F_comb_frame",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "梳理与标架的定义",
+          "statement": "设 $M$ 为闭定向 $3$-流形。$M$ 的梳理是处处非零切向量场，即单位切丛的截面；$M$ 的标架是三个线性无关且与定向相容的切向量场。在固定平凡化下梳理对应 $[M,\\mathbb{S}^{2}]$ 的元素，标架对应 $[M,\\mathrm{SO}(3)]$ 的元素，但该对应依赖平凡化选择；另有分数梳理与分数标架及 $\\mathbb{S}^{3}$ 上的左右不变与双手梳理标架的约定。"
+        },
+        {
+          "id": "F_heegaard",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "希戈图与柄体图的定义",
+          "statement": "曲面 $R$ 上的柄体图是一组不交嵌入圆周，其补分支经贴盘与贴球得到以 $R$ 为边界的柄体；一对横截的上下柄体图称为希戈图，决定以 $R$ 为希戈曲面的 $3$-流形。约定上圆周来自多边形面周界，下圆周来自棱的链环，并按右手规则定向；极小图指补连通且圆周数为亏格 $g$ 的图。"
+        },
+        {
+          "id": "F_moves",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "希戈图基本移动的定义",
+          "statement": "希戈图的初等移动包括圆圈滑动、稳定化、同痕移动与圆周定向反转。圆圈滑动是沿另一圆周的柄滑动，稳定化是增加亏格一的平凡对，同痕是上下图相对位置的横截同痕，定向反转改变圆周方向。"
+        },
+        {
+          "id": "F_sing_comb",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "图解梳理与扭转锋的定义",
+          "statement": "极小希戈图 $D$ 的图解梳理指 $R$ 上带 $2g$ 个指标 $-1$ 奇点与一个指标 $2$ 奇点的奇异梳理，其中每个 $-1$ 奇点是所在圆周的基点且外出向量与圆周相切，$2$ 奇点与圆周不交。$b_{1}$ 经圆盘扇形与插值延拓到 $M$；正交第二梳理 $b_{2}$ 由扭转锋记录，并对上圆周 $c$ 定义 $\\theta(c)$ 与 $\\phi(c)$，对下圆周同样定义，对交点 $p$ 定义 $\\theta_{l}(p)$、$\\theta_{u}(p)$、$\\phi_{l}(p)$、$\\phi_{u}(p)$ 及可延拓条件。"
+        },
+        {
+          "id": "F_signorder",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "符号排序的定义",
+          "statement": "有限集的符号排序指交错群作用下全排序集合的轨道。对定向极小希戈圆周族，符号排序给出外直和 $L_{l}\\oplus L_{u}$ 的定向，其中 $L_{l}$ 与 $L_{u}$ 为由交形式定义的拉格朗日子空间的基。"
+        },
+        {
+          "id": "F_hopf",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "霍普夫对象的定义",
+          "statement": "有限维 $H$ 配备乘法 $M$、余乘法 $\\Delta$、单位 $i$、余单位 $\\epsilon$ 与对极 $S$，满足结合余结合律、单位余单位律、双代数公理与对极公理。另约定反乘法 $M^{\\mathrm{op}}$、反余乘法 $\\Delta^{\\mathrm{op}}$、对象 $H^{\\mathrm{op}}$、$H^{\\mathrm{cop}}$、$H^{\\mathrm{op},\\mathrm{cop}}$ 及对偶 $H^{*}$ 为交换 $M$ 与 $\\Delta$ 并反转箭头得到。"
+        },
+        {
+          "id": "F_arrow",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "箭头演算与张量范畴的定义",
+          "statement": "箭头记号以进出箭头表示 $V$ 与 $V^{*}$ 因子，并列表示张量积，首尾相接表示缩并，圆圈表示维数。该演算在 pivotal 对称张量范畴中成立，即具结合张量积、对称交换与典范 $V^{**}\\cong V$ 的范畴；分级情形按偶奇性带符号规则，无环图在非 pivotal 范畴中仍有意义。"
+        },
+        {
+          "id": "F_integral",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "积分与余积分的定义",
+          "statement": "右积分 $\\mu_{R}$、左积分 $\\mu_{L}$、右余积分 $e_{R}$ 与左余积分 $e_{L}$ 由余乘与乘法的吸收方程定义。张量 $P_{R}$ 与 $P_{L}$ 由 $M$、$\\Delta$ 与 $S$ 构成，$\\sigma=\\mathrm{Tr}(P_{R}^{2})$ 为符号标量；一般可形式因子化 $P_{R}=e_{R}\\otimes\\mu_{R}$ 并引入符号排序，归一化为 $e_{R}\\to\\mu_{R}=1$；另定义 $\\mu_{n-1/2}$ 与 $e_{n-1/2}$ 为经 $a^{n}$ 与 $\\alpha^{n}$ 平移的族。"
+        },
+        {
+          "id": "F_phase",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "相位元与平衡倾斜的定义",
+          "statement": "相位向量 $a$ 与对偶相位 $\\alpha$ 分别由 $e_{R}$、$\\mu_{R}$ 经 $\\Delta$ 与 $M$ 构造，标量为 $q=a\\to\\alpha$，满足 $\\alpha^{n}(a^{k})=q^{nk}$。$H$ 称为平衡的若 $\\mathrm{Ad}_{a}=S^{2}$，此时 $H^{*}$ 亦平衡；倾斜 $T$ 度量不平衡程度。$\\mathrm{Ad}_{a}$ 与 $\\mathrm{Ad}_{\\alpha}^{*}$ 为由伴随作用定义的自同构。"
+        },
+        {
+          "id": "F_uq",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "截断量子玻雷尔代数的定义",
+          "statement": "设 $\\mathfrak{g}$ 为单李代数，$q$ 为单位根，$r$ 为其阶。$u_{q}(\\mathfrak{g}^{+})$ 由生成元 $E_{i}$ 与 $K_{i}$ 经交换关系、量子伴随表示的量子塞雷关系、$K_{i}^{2r}=1$ 与 $E_{i}^{r}=0$ 定义，余乘为 $\\Delta(K_{i})=K_{i}\\otimes K_{i}$ 与 $\\Delta(E_{i})=E_{i}\\otimes 1+K_{i}\\otimes E_{i}$，对极与余单位由 $S(K_{i})=K_{i}^{-1}$、$S(E_{i})=-K_{i}^{-1}E_{i}$、$\\epsilon(E_{i})=0$、$\\epsilon(K_{i})=1$ 生成。"
+        },
+        {
+          "id": "F_invariant",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "图解不变量的构造定义",
+          "statement": "设 $D$ 为带定向与典范符号排序及标架 $f=(b_{1},b_{2})$ 的极小希戈图。每个上圆周 $c$ 替换为带积分 $\\mu_{-\\theta(c)}$ 的多重 $M$ 张量，每个下圆周 $c$ 替换为带余积分 $e_{\\theta(c)}$ 的多重 $\\Delta$ 张量，积分族按圆周符号排序；每个交点 $p$ 替换为 $S^{n}T^{k}$，其中 $n=2(\\theta_{l}(p)-\\theta_{u}(p))-1/2$ 且 $k=\\phi_{l}(p)-\\phi_{u}(p)$，按关联缩并所得基域元记为 $\\#(D,H)$。"
+        },
+        {
+          "id": "B_tangent",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "三维流形切丛平凡",
+          "statement": "每个 $3$-流形 $M$ 的切丛 $TM$ 平凡；固定一平凡化后梳理等同于到 $\\mathbb{S}^{2}$ 的映射，标架等同于到 $\\mathrm{SO}(3)$ 的映射。"
+        },
+        {
+          "id": "B_larson",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "半单性外部判据",
+          "statement": "在特征零域上，有限维余半单霍普夫代数半单；特别地，对合且维数可逆的有限维霍普夫对象其代数结构半单，可用表示范畴的图式构造。"
+        },
+        {
+          "id": "B_grouplike",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "群似元线性无关",
+          "statement": "霍普夫代数中互不相同的群似元线性无关；由此相位元 $a$ 与 $\\alpha$ 具有限阶。"
+        },
+        {
+          "id": "C_prop21",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "到球面映射的同伦分类",
+          "statement": "映射 $M\\to\\mathbb{S}^{2}$ 的同伦类由示性类 $c\\in H^{2}(M,\\mathbb{Z})$ 与在 $\\mathbb{Z}/n$ 仿射空间中的霍普夫度 $d$ 描述，其中 $n$ 为 $c$ 自由部分 $c_{\\mathrm{free}}$ 的最大因子；固定 $c$ 的纤维是 $H^{3}(M,\\mathbb{Z})$ 在杯积 $d\\mapsto d\\cup c$ 像下商的轨道。"
+        },
+        {
+          "id": "C_prop22",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "标架同伦集与对梳理的作用",
+          "statement": "同伦集 $[M,\\mathrm{SO}(3)]$ 是 $H^{3}(M,\\mathbb{Z})$ 对 $H^{1}(M,\\mathbb{Z}/2)$ 的中心扩张；其在 $[M,\\mathbb{S}^{2}]$ 上的作用在示性类上为 $c\\mapsto c+f^{\\prime}$，其中 $f^{\\prime}$ 为 $H^{2}(M,\\mathbb{Z})*\\mathbb{Z}/2$ 分量，在 $H^{3}(M,\\mathbb{Z})$ 子群上为霍普夫度平移 $d\\mapsto d+f$。"
+        },
+        {
+          "id": "C_thm23",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "极小柄体图的滑动等价",
+          "statement": "曲面 $R$ 上同一柄体的任意两个极小柄体图经一列圆圈滑动等价。"
+        },
+        {
+          "id": "C_thm24",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "希戈曲面的稳定化等价",
+          "statement": "流形 $M$ 的任意两个希戈曲面经一列稳定化移动等价。"
+        },
+        {
+          "id": "C_prop25",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "希戈圆周的典范符号排序",
+          "statement": "定向极小希戈图的上下圆周族具典范符号排序；圆圈滑动保持该排序，单个圆周定向反转则反转该排序。"
+        },
+        {
+          "id": "C_lemma26",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "图解实现所有梳理与标架",
+          "statement": "设 $M$ 具亏格至少一的极小希戈图 $D$，则 $M$ 的每个梳理均由 $D$ 的某图解梳理实现，每个标架均由 $D$ 的某图解标架实现。"
+        },
+        {
+          "id": "C_lemma27",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "带标记点的柄体图等价",
+          "statement": "设 $R$ 具标记点 $p$，则以 $R$ 为边界的柄体的任意两个极小柄体图经避开 $p$ 的同痕与柄滑动等价。"
+        },
+        {
+          "id": "C_lemma28",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "图解梳理标架的移动完备性",
+          "statement": "希戈图 $D$ 上延拓到相同 $3$-流形梳理至多差霍普夫度的任意两个图解梳理，经基点同痕与基点螺旋移动等价；诱导相同自旋结构至多差度的任意两个图解标架亦经同样移动等价。"
+        },
+        {
+          "id": "C_lemma31",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "梯子与对极的基本恒等式",
+          "statement": "在任意霍普夫对象中，四种梯子互逆；余单位是乘法同态而单位是余乘法同态；对极是乘法与余乘法的反自同态并固定单位与余单位。"
+        },
+        {
+          "id": "C_lemma32",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "单位余单位缩并",
+          "statement": "缩并 $\\epsilon(i)$ 等于 $1$，即在具箭头的图中与 $\\epsilon(i)$ 作张量积不改变图值；抽象地 $\\epsilon(i)$ 为幂等标量，限制到其生成理想子范畴后为 $1$。"
+        },
+        {
+          "id": "C_lemma33",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "积分的存在性",
+          "statement": "张量 $P_{R}$ 既是右积分又是右余积分且迹为 $1$；对称地 $P_{L}$ 给出左积分与左余积分。"
+        },
+        {
+          "id": "C_lemma34",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "积分余积分经对极的缩并",
+          "statement": "对右积分 $\\mu_{R}$ 与右余积分 $e_{R}$，有 $e_{R}\\to\\Delta\\to M\\to\\mu_{R}$ 经 $S$ 插入等于 $e_{R}\\to\\mu_{R}$ 标量乘以相应恒等结构。"
+        },
+        {
+          "id": "C_lemma35",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "积分的唯一性",
+          "statement": "对右积分 $\\mu_{R}$ 与右余积分 $e_{R}$，有 $\\to\\mu_{R}e_{R}\\to$ 等于 $e_{R}\\to\\mu_{R}$ 乘以 $\\to P_{R}\\to$；由此任意右积分与余积分分别与固定 $\\mu_{R}$、$e_{R}$ 差一标量因子，且 $\\mathrm{Tr}(P_{R}^{2})=\\mathrm{Tr}(P_{L}^{2})=\\sigma$ 满足 $\\sigma^{2}=1$。"
+        },
+        {
+          "id": "C_lemma36",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "相位元与左右积分",
+          "statement": "向量 $a$ 与对偶向量 $\\alpha$ 群似；由 $\\to\\mu_{L}=a\\to M\\to\\mu_{R}$ 与 $e_{L}\\to=e_{R}\\to\\Delta\\to\\alpha$ 定义的 $e_{L}$、$\\mu_{L}$ 分别为左余积分与左积分，且 $e_{L}\\to\\mu_{L}=q^{-1}$、$e_{R}\\to\\mu_{L}=1=e_{L}\\to\\mu_{R}$。"
+        },
+        {
+          "id": "C_lemma37",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "对极可逆",
+          "statement": "对极 $S$ 可逆；其逆 $S^{\\prime}$ 由 $e_{L}$、$\\mu_{R}$ 或 $e_{R}$、$\\mu_{L}$ 经 $\\Delta$ 与 $M$ 构成的公式给出，且为 $H^{\\mathrm{op}}$ 与 $H^{\\mathrm{cop}}$ 的对极。"
+        },
+        {
+          "id": "C_lemma38",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "对极在积分上的作用",
+          "statement": "对极在积分余积分上的作用为 $\\to S\\to\\mu_{L}=\\to\\mu_{R}\\sigma$、$\\to S\\to\\mu_{R}=\\to\\mu_{L}q\\sigma$、$e_{L}\\to S\\to=\\sigma e_{R}\\to$、$e_{R}\\to S\\to=q\\sigma e_{L}\\to$；特别所有积分余积分均为 $S^{2}$ 的特征向量，特征值为 $q$。"
+        },
+        {
+          "id": "C_lemma39",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "积分的迹性质",
+          "statement": "右积分满足 $\\to M\\to\\mu_{R}$ 等于经 $S^{-2}$ 与反乘法 $M^{\\mathrm{op}}$ 扭转的版本；右余积分满足 $e_{R}\\to\\Delta$ 等于经 $a$ 与 $\\Delta^{\\mathrm{op}}$ 及 $S^{-2}$ 扭转的版本。"
+        },
+        {
+          "id": "C_thm310",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "拉德福德四次幂公式",
+          "statement": "对极四次幂满足 $S^{4}=\\mathrm{Ad}_{a}\\circ\\mathrm{Ad}_{\\alpha}^{*}$，其中 $\\mathrm{Ad}_{a}$ 为 $a$ 的伴随作用，$\\mathrm{Ad}_{\\alpha}^{*}$ 为 $\\alpha$ 的对偶伴随作用；由此 $S$ 具有限阶。"
+        },
+        {
+          "id": "C_lemma311",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "倾斜是自同构",
+          "statement": "倾斜映射 $T$ 是 $H$ 的自同构，保持全部霍普夫内在结构并固定积分与余积分。"
+        },
+        {
+          "id": "C_lemma312",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "截断量子群平衡",
+          "statement": "霍普夫代数 $u_{q}(\\mathfrak{g}^{+})$ 平衡，即 $\\mathrm{Ad}_{\\alpha}^{*}=S^{2}$；在生成元上有 $\\mathrm{Ad}_{\\alpha}^{*}(K_{i})=K_{i}$ 且 $\\mathrm{Ad}_{\\alpha}^{*}(E_{i})=q^{-(\\alpha_{i},\\alpha_{i})}E_{i}=S^{2}(E_{i})$。"
+        },
+        {
+          "id": "C_inv_orient",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "定向反转不变性",
+          "statement": "反转一下圆周的定向时，$\\theta$ 角度重标、交点次序反转与符号排序反转的综合效应经 $S$ 在积分上的作用抵消，$\\#(D,H)$ 不变。"
+        },
+        {
+          "id": "C_inv_two",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "两点移动不变性",
+          "statement": "适当定向后两点同痕的双边形对应张量 $\\to\\Delta\\to S^{2n+1},S^{2n}\\to M\\to$ 化为 $\\to\\epsilon i\\to$，故 $\\#(D,H)$ 在两点同痕下不变。"
+        },
+        {
+          "id": "C_inv_base",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "基点同痕协变性",
+          "statement": "下圆周基点旋过交点时，$\\phi_{l}(p)$、$\\theta_{l}(p)$、$\\theta_{u}(p)$ 与圆周总角的变化恰由迹性质引理给出的 $a$ 因子与 $S$ 幂次补偿，$\\#(D,H)$ 按构造协变且保持。"
+        },
+        {
+          "id": "C_inv_slide",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "圆圈滑动不变性",
+          "statement": "圆圈滑动前后相关张量经双代数与积分性质化为滑动后构形，错位因子 $a^{n}$ 经由 $a^{n}$ 共轭产生 $S^{2n}T^{-n}$，恰补偿滑动后各点 $\\theta(p)$ 减小与 $\\phi(p)$ 增加，$\\#(D,H)$ 不变。"
+        },
+        {
+          "id": "C_inv_stab",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "稳定化因子为一",
+          "statement": "稳定化移动在 $\\#(D,H)$ 中产生标量因子 $e_{R}\\to\\mu_{R}=1$，故稳定化不改变不变量。"
+        },
+        {
+          "id": "C_inv_spiral",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "基点螺旋的度数改变",
+          "statement": "下圆周上顺时针基点螺旋使每交点 $\\theta_{l}(p)$ 增加一，引入 $S^{2}$ 因子并使 $\\#(D,H)$ 乘以 $q$；一般标架度数改变 $n$ 使 $\\#(D,H)$ 乘以 $q^{n}$。"
+        },
+        {
+          "id": "C_thm41",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "标架不变量的主定理",
+          "statement": "量 $\\#(D,H)$ 仅依赖闭 $3$-流形 $M$ 及其标架；对每种图解移动协变或不变，且相差霍普夫度的两种实现差 $q^{n}$ 因子。"
+        },
+        {
+          "id": "C_prop_combed",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "平衡情形的梳理不变量",
+          "statement": "若 $H$ 平衡则 $T$ 为恒等，第二梳理 $b_{2}$ 无关；此时 $\\#(M,H)$ 对具非零欧拉类的梳理仍有定义，仅依赖 $M$ 的梳理。"
+        },
+        {
+          "id": "C_prop_RP3",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "射影空间的迹公式",
+          "statement": "对 $\\mathbb{R}P^{3}$ 的两种自然梳理标架之一有 $\\#(\\mathbb{R}P^{3},H)=\\mathrm{Tr}(S)$，另一有 $\\#(\\mathbb{R}P^{3},H)=\\mathrm{Tr}(S^{-1})$；对 $H=u_{q}(\\mathrm{sl}(2)^{+})$ 其值由 $q$ 的显式分式给出。"
+        },
+        {
+          "id": "C_prop_S2S1",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "二球面乘圆周的公式",
+          "statement": "一般有 $\\#(\\mathbb{S}^{2}\\times\\mathbb{S}^{1},H)=\\mu_{R}(a^{n})e_{R}(\\alpha^{k})$；当 $n=k=0$ 时化为 $\\mathrm{Tr}(S^{2})$，它非零当且仅当 $H$ 半单余半单；若 $q\\neq 1$ 则该表达式为零。"
+        },
+        {
+          "id": "C_prop_sumsum",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "连通和的乘性",
+          "statement": "在相容梳理标架下 $\\#(M_{1}\\# M_{2},H)=\\#(M_{1},H)\\#(M_{2},H)$；归一化 $\\#(\\mathbb{S}^{3},H)=1$ 且对霍普夫代数张量积亦乘性。"
+        },
+        {
+          "id": "C_prop_sym",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "定向与对偶对称性",
+          "statement": "成立 $\\#(M,H)=\\#(-M,H^{\\mathrm{op}})=\\#(-M,H^{\\mathrm{cop}})$ 且 $\\#(M,H^{*})=\\#(M,H)$，其中 $-M$ 为反定向流形。"
+        },
+        {
+          "id": "C_prop_divisor",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "除子阻碍消失",
+          "statement": "若 $M$ 的梳理除子为 $d$ 而 $q^{d}\\neq 1$，其中 $q=\\alpha(a)$，则 $\\#(M,H)=0$。"
+        },
+        {
+          "id": "C_prop_ext",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "外代数的同调公式",
+          "statement": "对分级交换余交换的 $\\Lambda^{*}(\\mathbb{C})$ 有 $\\#(M,\\Lambda^{*}(\\mathbb{C}))$ 为上下交矩阵的行列式绝对值；当 $H_{1}(M,\\mathbb{Z})$ 有限时等于 $|H_{1}(M,\\mathbb{Z})|$，否则为零。"
+        },
+        {
+          "id": "C_prop_group",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "群代数的同态计数",
+          "statement": "若 $H=\\mathbb{C}[G]$ 为群代数，则 $\\#(M,H)$ 为 $|\\mathrm{Hom}(\\pi_{1}(M),G)|$，即未约上同调计数经 $|G|^{v+f-1}$ 归一化后得到；多边形复形的张量缩并 $M_{a_{1}\\dots a_{n}}$ 与 $\\Delta^{a_{1}\\dots a_{n}}$ 恰编码上闭链条件。"
+        },
+        {
+          "id": "C_prop_TQFT",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "对合情形为拓扑量子场论",
+          "statement": "若 $H$ 对合且 $\\dim H\\neq 0$，则 $\\#(M,H)$ 为拓扑量子场论；此时 $H$ 半单，可等价地经表示范畴的图拉耶夫维罗式或量子偶的表示论定义，而非半单余半单时 $\\#(\\mathbb{S}^{2}\\times\\mathbb{S}^{1},H)=0$ 违背场论公理。"
+        },
+        {
+          "id": "C_open_general",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "未决的推广方向",
+          "statement": "是否存在纳入 $0$-胞腔与 $3$-胞腔、求和非既约上同调或完整雷德迈斯特挠率的推广，以及霍普夫对象公理作为装饰流形移动的拓扑解释，本文未证明而作为开放方向提出。"
+        },
+        {
+          "id": "C_inv_rot",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "旋转锋螺旋不变性",
+          "statement": "旋转锋螺旋使上圆周或下圆周上所有交点的 $\\phi_{l}(p)$ 或 $\\phi_{u}(p)$ 改变一，此时交点张量中 $T$ 幂次的改变经 $T$ 为霍普夫内在结构的自同构抵消，故 $\\#(D,H)$ 不变。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "O_comb",
+          "operationKind": "organization",
+          "premises": [
+            "B_tangent"
+          ],
+          "conclusion": "F_comb_frame",
+          "argument": "切丛平凡组织梳理与标架为到 $\\mathbb{S}^{2}$ 与 $\\mathrm{SO}(3)$ 的映射 homotopy 集，这是后续分类的组织基础。"
+        },
+        {
+          "id": "O_moves",
+          "operationKind": "organization",
+          "premises": [
+            "F_heegaard"
+          ],
+          "conclusion": "F_moves",
+          "argument": "在希戈图概念上组织出滑动、稳定化与同痕等初等移动，作为等价关系的组合基础。"
+        },
+        {
+          "id": "O_sing",
+          "operationKind": "organization",
+          "premises": [
+            "F_heegaard",
+            "F_comb_frame"
+          ],
+          "conclusion": "F_sing_comb",
+          "argument": "将流形梳理投影到希戈曲面并规定奇点位置与扭转锋，组织出图解梳理与角度量，这是构造不变量的拓扑输入。"
+        },
+        {
+          "id": "O_sign",
+          "operationKind": "organization",
+          "premises": [
+            "F_heegaard"
+          ],
+          "conclusion": "F_signorder",
+          "argument": "由上下柄体的同调基组织出圆周族的符号排序概念，为积分符号排序提供组织前提。"
+        },
+        {
+          "id": "O_integral",
+          "operationKind": "organization",
+          "premises": [
+            "F_hopf",
+            "F_arrow"
+          ],
+          "conclusion": "F_integral",
+          "argument": "在箭头演算与 pivotal 范畴中组织积分余积分与 $P_{R}$、$P_{L}$、$\\sigma$ 及形式因子化的概念形成。"
+        },
+        {
+          "id": "O_phase",
+          "operationKind": "organization",
+          "premises": [
+            "F_integral",
+            "F_hopf"
+          ],
+          "conclusion": "F_phase",
+          "argument": "由积分余积分经对偶组织出相位元 $a$、$\\alpha$、$q$ 及平衡与倾斜概念。"
+        },
+        {
+          "id": "O_uq",
+          "operationKind": "organization",
+          "premises": [
+            "F_hopf",
+            "F_phase"
+          ],
+          "conclusion": "F_uq",
+          "argument": "在霍普夫语言与相位归一化约定下组织截断量子玻雷尔代数的生成元与关系定义。"
+        },
+        {
+          "id": "O_invariant",
+          "operationKind": "organization",
+          "premises": [
+            "F_heegaard",
+            "F_sing_comb",
+            "F_signorder",
+            "F_integral",
+            "F_phase"
+          ],
+          "conclusion": "F_invariant",
+          "argument": "将希戈圆周、图解角度、符号排序、积分余积分与 $S^{n}T^{k}$ 交点张量按关联缩并，组织成 $\\#(D,H)$ 的定义，依赖代数、范畴、图形演算与组合构造条件。"
+        },
+        {
+          "id": "I_p21",
+          "operationKind": "proof",
+          "premises": [
+            "F_comb_frame",
+            "B_tangent"
+          ],
+          "conclusion": "C_prop21",
+          "argument": "经霍普夫纤维化延长的纤维序列与阻碍论，$H^{1}(M,\\mathbb{Z})$ 经杯积 $\\cup c$ 作用于 $H^{3}(M,\\mathbb{Z})$，稳定子为 $n[M]$ 生成，故得 $c$ 与 $d$ 分类。"
+        },
+        {
+          "id": "I_p22",
+          "operationKind": "proof",
+          "premises": [
+            "F_comb_frame",
+            "C_prop21"
+          ],
+          "conclusion": "C_prop22",
+          "argument": "因 $\\pi_{1}$ 与 $\\pi_{3}$ 不相邻得中心扩张；经序列比较与陈类为 $2$ 的映射，得示性类平移与度数平移公式及系数序列解释。"
+        },
+        {
+          "id": "I_t23",
+          "operationKind": "proof",
+          "premises": [
+            "F_heegaard",
+            "F_moves"
+          ],
+          "conclusion": "C_thm23",
+          "argument": "先以内弧归纳经滑动与同痕消去两盘系交线，再在切除余圆周所得穿孔环面上经跨穿孔同痕使圆周重合，归纳得完全平行。"
+        },
+        {
+          "id": "I_t24",
+          "operationKind": "proof",
+          "premises": [
+            "F_heegaard",
+            "F_moves"
+          ],
+          "conclusion": "C_thm24",
+          "argument": "每希戈曲面实现为某莫尔斯函数的零一柄与二三柄分界面， generic 路径上莫尔斯函数转变仅为稳定化，故任意两曲面经稳定化等价。"
+        },
+        {
+          "id": "I_p25",
+          "operationKind": "proof",
+          "premises": [
+            "F_heegaard",
+            "F_signorder"
+          ],
+          "conclusion": "C_prop25",
+          "argument": "由交形式辛结构与拉格朗日子空间正合列诱导 $L_{l}\\oplus L_{u}$ 定向，滑动为行列式一基变换保持排序，反转定向则反转排序。"
+        },
+        {
+          "id": "I_l26",
+          "operationKind": "proof",
+          "premises": [
+            "F_sing_comb",
+            "C_prop21"
+          ],
+          "conclusion": "C_lemma26",
+          "argument": "固定一图解梳理 $b$，他者与 $b$ 的反平行交在 $R$ 给出 $H_{1}(R,\\mathbb{Z})$ 任意元，经包含满射到 $H_{1}(M,\\mathbb{Z})$ 实现任意相对示性类，再经螺旋移动任意调节霍普夫度，第二梳理无阻碍故标架亦实现。"
+        },
+        {
+          "id": "I_l27",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm23",
+            "F_heegaard"
+          ],
+          "conclusion": "C_lemma27",
+          "argument": "沿余圆周切除得穿孔环面，跨标记点 $p$ 的同痕化为跨穿孔的滑动，故避开 $p$ 的移动已足。"
+        },
+        {
+          "id": "I_l28",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma26",
+            "F_sing_comb",
+            "F_heegaard"
+          ],
+          "conclusion": "C_lemma28",
+          "argument": "相对类为零时交类 $c$ 属于由希戈圆周生成的核，绕圆周的基点同痕改变 $c$；取 $L_{u}\\oplus L_{l}$ 中 $(c_{u},c_{l})$ 使 $c_{u}+c_{l}$ 与 $c_{u}-c_{l}$ 分别调节第一与第二梳理差，取 $c_{u}=-c_{l}$ 在交中消去 $c^{\\prime}$ 而不改变 $c$，余下同伦可经螺旋实现。"
+        },
+        {
+          "id": "I_l31",
+          "operationKind": "proof",
+          "premises": [
+            "F_hopf",
+            "F_arrow"
+          ],
+          "conclusion": "C_lemma31",
+          "argument": "在箭头演算中直接验证梯子复合为恒等，单位余单位的同态性与对极的反自同态性由双代数与对极公理推出。"
+        },
+        {
+          "id": "I_l32",
+          "operationKind": "proof",
+          "premises": [
+            "F_hopf"
+          ],
+          "conclusion": "C_lemma32",
+          "argument": "经 $M$ 与 $\\Delta$ 的单位律与双代数律计算恒等张量与 $i\\to\\epsilon$ 的关系，得 $\\epsilon(i)$ 幂等且在有箭头图中不起作用。"
+        },
+        {
+          "id": "I_l33",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma31",
+            "F_integral"
+          ],
+          "conclusion": "C_lemma33",
+          "argument": "对所给图应用梯子及其逆，分别在 $M$ 与 $\\Delta$ 侧得到右积分与右余积分方程，迹为 $1$ 由直接计算留作验证。"
+        },
+        {
+          "id": "I_l34",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma31",
+            "F_integral"
+          ],
+          "conclusion": "C_lemma34",
+          "argument": "对含 $e_{R}$ 与 $\\mu_{R}$ 的梯形图应用梯子化简，经 $\\epsilon$ 与 $i$ 得到带 $S$ 的缩并恒等式。"
+        },
+        {
+          "id": "I_l35",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma34",
+            "C_lemma33"
+          ],
+          "conclusion": "C_lemma35",
+          "argument": "在引理恒等式中以逆梯子替换梯子得因子化公式；两次应用得转置关系与 $\\sigma^{2}=1$，故积分唯一至多差标量。"
+        },
+        {
+          "id": "I_l36",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma35",
+            "F_phase",
+            "F_integral"
+          ],
+          "conclusion": "C_lemma36",
+          "argument": "由唯一性 $\\to\\Delta\\to\\mu_{R}$ 差 $e_{R}\\to\\Delta\\to\\mu_{R}$ 因子得 $a$ 群似，对偶得 $\\alpha$ 群似；经 $a$ 平移的 $\\mu_{L}$ 与经 $\\alpha$ 平移的 $e_{L}$ 由可逆性为左右积分，并算得配对值。"
+        },
+        {
+          "id": "I_l37",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma34",
+            "F_phase",
+            "F_integral"
+          ],
+          "conclusion": "C_lemma37",
+          "argument": "以 $e_{L}$ 与 $\\mu_{R}$ 定义的 $S^{\\prime}$ 经与引理相同的梯子论证为 $H^{\\mathrm{op}}$ 与 $H^{\\mathrm{cop}}$ 的对极，故 $S^{\\prime}=S^{-1}$ 且 $S$ 可逆。"
+        },
+        {
+          "id": "I_l38",
+          "operationKind": "proof",
+          "premises": [
+            "F_phase",
+            "F_integral",
+            "C_lemma35"
+          ],
+          "conclusion": "C_lemma38",
+          "argument": "将 $e_{L}$ 展开为 $e_{R}\\to\\Delta\\to\\alpha$ 并用唯一性标量与转置符号 $\\sigma$ 计算 $S$ 作用，其余三式对称，特征值断言随之成立。"
+        },
+        {
+          "id": "I_l39",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma37",
+            "C_lemma38",
+            "F_integral"
+          ],
+          "conclusion": "C_lemma39",
+          "argument": "用 $S$ 与 $S^{-1}$ 的积分公式及 $e_{L}$ 表达式比较 $M$ 与 $M^{\\mathrm{op}}$ 侧，去掉可逆张量 $e_{R}\\to\\Delta$ 并对内向箭头施 $S^{-2}$，利用 $\\mu_{R}$ 为特征向量得迹性质。"
+        },
+        {
+          "id": "I_t310",
+          "operationKind": "proof",
+          "premises": [
+            "C_lemma37",
+            "C_lemma39",
+            "F_phase",
+            "B_grouplike"
+          ],
+          "conclusion": "C_thm310",
+          "argument": "将 $S^{2}$ 写成两套 $S$ 公式复合，代入 $S^{-1}$ 并依次施 $\\mathrm{Ad}_{\\alpha^{-1}}^{*}$ 与 $\\mathrm{Ad}_{a^{-1}}$，利用与 $S^{2}$ 可交换化简得 $S^{-2}$ 侧，从而 $S^{4}$ 为两伴随复合；结合群似线性无关得 $S$ 有限阶。"
+        },
+        {
+          "id": "I_l311",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm310",
+            "F_phase"
+          ],
+          "conclusion": "C_lemma311",
+          "argument": "由 $S^{4}$ 公式与伴随作用定义直接检验 $T$ 保持乘法余乘法与对极结构，并由构造固定积分余积分。"
+        },
+        {
+          "id": "I_l312",
+          "operationKind": "proof",
+          "premises": [
+            "F_uq",
+            "F_phase",
+            "C_thm310"
+          ],
+          "conclusion": "C_lemma312",
+          "argument": "由极大单项式 $E_{\\max}$ 构造左右余积分并算得 $\\alpha(E_{i})=0$ 与 $\\alpha(K_{i})$ 值，再在生成元上比较 $\\mathrm{Ad}_{\\alpha}^{*}$ 与 $S^{2}$，二者为代数自同构故整体相等。"
+        },
+        {
+          "id": "I_orient",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "C_lemma38"
+          ],
+          "conclusion": "C_inv_orient",
+          "argument": "反转下圆周定向使 $n=\\theta(c)$ 变号且交点次序反转，符号排序亦反转；引理给出的 $S$ 在积分上作用使两张量相等。"
+        },
+        {
+          "id": "I_two",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "F_hopf"
+          ],
+          "conclusion": "C_inv_two",
+          "argument": "双边形对应 $\\Delta$ 经 $S^{2n+1}$、$S^{2n}$ 到 $M$ 的缩并，由对极公理化为 $\\epsilon$ 与 $i$ 对，恰为移动后张量。"
+        },
+        {
+          "id": "I_base",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "C_lemma39"
+          ],
+          "conclusion": "C_inv_base",
+          "argument": "基点旋过交点前后角度与 $\\phi$ 变化由迹性质计算补偿，$a$ 因子位置与 $\\theta$、$\\phi$ 增减一致，故构造协变。"
+        },
+        {
+          "id": "I_slide",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "C_lemma36",
+            "F_phase"
+          ],
+          "conclusion": "C_inv_slide",
+          "argument": "滑动处张量经双代数与积分化简，错位 $a^{n}$ 共轭产生 $S^{2n}T^{-n}$，恰为滑动后 $\\theta(p)$ 减小与 $\\phi(p)$ 增加所需的交点张量修正。"
+        },
+        {
+          "id": "I_stab",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "F_integral"
+          ],
+          "conclusion": "C_inv_stab",
+          "argument": "稳定化新增一对上下圆周仅交于一点，其缩并为归一化标量 $e_{R}\\to\\mu_{R}=1$。"
+        },
+        {
+          "id": "I_spiral",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "C_lemma38",
+            "F_phase"
+          ],
+          "conclusion": "C_inv_spiral",
+          "argument": "螺旋使每交点 $\\theta_{l}$ 加一而引入 $S^{2}$，由 $S$ 在积分上作用得整体因子 $q$，度数 $n$ 改变得 $q^{n}$。"
+        },
+        {
+          "id": "I_thm41",
+          "operationKind": "proof",
+          "premises": [
+            "C_inv_orient",
+            "C_inv_two",
+            "C_inv_base",
+            "C_inv_slide",
+            "C_inv_stab",
+            "C_inv_spiral",
+            "C_inv_rot",
+            "C_lemma27",
+            "C_lemma28"
+          ],
+          "conclusion": "C_thm41",
+          "argument": "七个分支分别覆盖定向、旋转锋螺旋、两点同痕、基点同痕、滑动、稳定化与螺旋的协变；标记点引理与图解等价引理保证任意两图解实现经允许移动连通至多差度，综合得仅依赖 $M$ 与标架。"
+        },
+        {
+          "id": "I_combed",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "C_lemma311",
+            "F_phase"
+          ],
+          "conclusion": "C_prop_combed",
+          "argument": "平衡时 $T$ 为恒等故交点张量不含 $k=\\phi_{l}-\\phi_{u}$ 依赖，第二梳理无关，同样证明对非零欧拉类梳理成立。"
+        },
+        {
+          "id": "I_RP3",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "F_invariant"
+          ],
+          "conclusion": "C_prop_RP3",
+          "argument": "在 $\\mathbb{R}P^{3}$ 的亏格一希戈图上直接缩并得 $\\mathrm{Tr}(S)$ 与 $\\mathrm{Tr}(S^{-1})$，$u_{q}$ 情形经置换基计算得显式分式。"
+        },
+        {
+          "id": "I_S2S1",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "F_invariant",
+            "F_phase"
+          ],
+          "conclusion": "C_prop_S2S1",
+          "argument": "由定义缩并得 $\\mu_{R}(a^{n})e_{R}(\\alpha^{k})$，零参数时为 $\\mathrm{Tr}(S^{2})$；半单余半单等价非零及 $q\\neq 1$ 时为零由积分特征值与已知判据得到。"
+        },
+        {
+          "id": "I_sumsum",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "F_invariant"
+          ],
+          "conclusion": "C_prop_sumsum",
+          "argument": "连通和的希戈图为连通和，上下圆周不交，缩并分解为两部分乘积；$\\mathbb{S}^{3}$ 归一化与张量积乘性同理。"
+        },
+        {
+          "id": "I_sym",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "F_hopf"
+          ],
+          "conclusion": "C_prop_sym",
+          "argument": "定义中交换 $M$ 与 $\\Delta$ 并反转箭头即对偶对称，反转流形定向对应取 $M^{\\mathrm{op}}$ 或 $\\Delta^{\\mathrm{op}}$，直接比较构造得等式。"
+        },
+        {
+          "id": "I_divisor",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "C_inv_spiral",
+            "F_phase"
+          ],
+          "conclusion": "C_prop_divisor",
+          "argument": "除子 $d$ 的度数改变不改变梳理但按螺旋分支使不变量乘 $q^{d}$，若 $q^{d}\\neq 1$ 则必为零。"
+        },
+        {
+          "id": "I_ext",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "F_invariant"
+          ],
+          "conclusion": "C_prop_ext",
+          "argument": "分级交换余交换使交点次序无关，不变量仅依赖上下交矩阵，其缩并为行列式绝对值，符号排序保证非负，故得同调公式。"
+        },
+        {
+          "id": "I_group",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "F_hopf",
+            "C_thm41"
+          ],
+          "conclusion": "C_prop_group",
+          "argument": "群代数中 $M$ 张量编码面周积为一的上闭链条件，$\\Delta$ 张量编码边上相等条件，缩并求和得 $|G|^{f}$ 乘以上闭链数，归一化后为 $|\\mathrm{Hom}(\\pi_{1}(M),G)|$。"
+        },
+        {
+          "id": "I_TQFT",
+          "operationKind": "proof",
+          "premises": [
+            "C_thm41",
+            "B_larson"
+          ],
+          "conclusion": "C_prop_TQFT",
+          "argument": "对合且维数非零时外部半单判据给出半单性，可用表示范畴等价构造，故为场论；非半单时 $\\mathbb{S}^{2}\\times\\mathbb{S}^{1}$ 值为零违背场论公理且与量子群例子一致。"
+        },
+        {
+          "id": "I_rot",
+          "operationKind": "proof",
+          "premises": [
+            "F_invariant",
+            "C_lemma311"
+          ],
+          "conclusion": "C_inv_rot",
+          "argument": "上下圆周上旋转锋螺旋使相关交点的 $k=\\phi_{l}-\\phi_{u}$ 改变一，$T$ 为自同构保持乘法余乘法与对极结构，故含 $T$ 的交点张量与圆周张量缩并后相等。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "B_tangent",
+        "B_larson",
+        "B_grouplike"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "05_Kuperberg_Noninvolutory_Hopf_3manifold_invariants.pdf",
+        "pageCount": 36
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 65451,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_comb_frame",
+                "F_heegaard",
+                "F_moves",
+                "F_sing_comb",
+                "F_signorder",
+                "F_hopf",
+                "F_arrow",
+                "F_integral",
+                "F_phase",
+                "F_uq",
+                "F_invariant"
+              ],
+              "b0ClaimEntryIds": [
+                "B_tangent",
+                "B_larson",
+                "B_grouplike"
+              ],
+              "closureClaimEntryIds": [
+                "B_tangent",
+                "B_larson",
+                "B_grouplike",
+                "C_prop21",
+                "C_prop22",
+                "C_thm23",
+                "C_thm24",
+                "C_prop25",
+                "C_lemma26",
+                "C_lemma27",
+                "C_lemma28",
+                "C_lemma31",
+                "C_lemma32",
+                "C_lemma33",
+                "C_lemma34",
+                "C_lemma35",
+                "C_lemma36",
+                "C_lemma37",
+                "C_lemma38",
+                "C_lemma39",
+                "C_thm310",
+                "C_lemma311",
+                "C_lemma312",
+                "C_inv_orient",
+                "C_inv_two",
+                "C_inv_base",
+                "C_inv_slide",
+                "C_inv_stab",
+                "C_inv_spiral",
+                "C_thm41",
+                "C_prop_combed",
+                "C_prop_RP3",
+                "C_prop_S2S1",
+                "C_prop_sumsum",
+                "C_prop_sym",
+                "C_prop_divisor",
+                "C_prop_ext",
+                "C_prop_group",
+                "C_prop_TQFT"
+              ],
+              "claimStates": {
+                "B_tangent": "established",
+                "B_larson": "established",
+                "B_grouplike": "established",
+                "C_prop21": "established",
+                "C_prop22": "established",
+                "C_thm23": "established",
+                "C_thm24": "established",
+                "C_prop25": "established",
+                "C_lemma26": "established",
+                "C_lemma27": "established",
+                "C_lemma28": "established",
+                "C_lemma31": "established",
+                "C_lemma32": "established",
+                "C_lemma33": "established",
+                "C_lemma34": "established",
+                "C_lemma35": "established",
+                "C_lemma36": "established",
+                "C_lemma37": "established",
+                "C_lemma38": "established",
+                "C_lemma39": "established",
+                "C_thm310": "established",
+                "C_lemma311": "established",
+                "C_lemma312": "established",
+                "C_inv_orient": "established",
+                "C_inv_two": "established",
+                "C_inv_base": "established",
+                "C_inv_slide": "established",
+                "C_inv_stab": "established",
+                "C_inv_spiral": "established",
+                "C_thm41": "established",
+                "C_prop_combed": "established",
+                "C_prop_RP3": "established",
+                "C_prop_S2S1": "established",
+                "C_prop_sumsum": "established",
+                "C_prop_sym": "established",
+                "C_prop_divisor": "established",
+                "C_prop_ext": "established",
+                "C_prop_group": "established",
+                "C_prop_TQFT": "established",
+                "C_open_general": "open"
+              },
+              "claimDerivations": {
+                "B_tangent": {
+                  "basis": "b0"
+                },
+                "B_larson": {
+                  "basis": "b0"
+                },
+                "B_grouplike": {
+                  "basis": "b0"
+                },
+                "C_prop21": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p21"
+                  ]
+                },
+                "C_prop22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p22"
+                  ]
+                },
+                "C_thm23": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t23"
+                  ]
+                },
+                "C_thm24": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t24"
+                  ]
+                },
+                "C_prop25": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p25"
+                  ]
+                },
+                "C_lemma26": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l26"
+                  ]
+                },
+                "C_lemma27": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l27"
+                  ]
+                },
+                "C_lemma28": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l28"
+                  ]
+                },
+                "C_lemma31": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l31"
+                  ]
+                },
+                "C_lemma32": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l32"
+                  ]
+                },
+                "C_lemma33": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l33"
+                  ]
+                },
+                "C_lemma34": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l34"
+                  ]
+                },
+                "C_lemma35": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l35"
+                  ]
+                },
+                "C_lemma36": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l36"
+                  ]
+                },
+                "C_lemma37": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l37"
+                  ]
+                },
+                "C_lemma38": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l38"
+                  ]
+                },
+                "C_lemma39": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l39"
+                  ]
+                },
+                "C_thm310": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t310"
+                  ]
+                },
+                "C_lemma311": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l311"
+                  ]
+                },
+                "C_lemma312": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l312"
+                  ]
+                },
+                "C_inv_orient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_orient"
+                  ]
+                },
+                "C_inv_two": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_two"
+                  ]
+                },
+                "C_inv_base": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_base"
+                  ]
+                },
+                "C_inv_slide": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_slide"
+                  ]
+                },
+                "C_inv_stab": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_stab"
+                  ]
+                },
+                "C_inv_spiral": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_spiral"
+                  ]
+                },
+                "C_thm41": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm41"
+                  ]
+                },
+                "C_prop_combed": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_combed"
+                  ]
+                },
+                "C_prop_RP3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_RP3"
+                  ]
+                },
+                "C_prop_S2S1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_S2S1"
+                  ]
+                },
+                "C_prop_sumsum": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_sumsum"
+                  ]
+                },
+                "C_prop_sym": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_sym"
+                  ]
+                },
+                "C_prop_divisor": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_divisor"
+                  ]
+                },
+                "C_prop_ext": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ext"
+                  ]
+                },
+                "C_prop_group": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_group"
+                  ]
+                },
+                "C_prop_TQFT": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_TQFT"
+                  ]
+                },
+                "C_open_general": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_comb_frame",
+                "F_heegaard",
+                "F_moves",
+                "F_sing_comb",
+                "F_signorder",
+                "F_hopf",
+                "F_arrow",
+                "F_integral",
+                "F_phase",
+                "F_uq",
+                "F_invariant"
+              ],
+              "b0ClaimEntryIds": [
+                "B_tangent",
+                "B_larson",
+                "B_grouplike"
+              ],
+              "closureClaimEntryIds": [
+                "B_tangent",
+                "B_larson",
+                "B_grouplike",
+                "C_prop21",
+                "C_prop22",
+                "C_thm23",
+                "C_thm24",
+                "C_prop25",
+                "C_lemma26",
+                "C_lemma27",
+                "C_lemma28",
+                "C_lemma31",
+                "C_lemma32",
+                "C_lemma33",
+                "C_lemma34",
+                "C_lemma35",
+                "C_lemma36",
+                "C_lemma37",
+                "C_lemma38",
+                "C_lemma39",
+                "C_thm310",
+                "C_lemma311",
+                "C_lemma312",
+                "C_inv_orient",
+                "C_inv_two",
+                "C_inv_base",
+                "C_inv_slide",
+                "C_inv_stab",
+                "C_inv_spiral",
+                "C_thm41",
+                "C_prop_combed",
+                "C_prop_RP3",
+                "C_prop_S2S1",
+                "C_prop_sumsum",
+                "C_prop_sym",
+                "C_prop_divisor",
+                "C_prop_ext",
+                "C_prop_group",
+                "C_prop_TQFT",
+                "C_inv_rot"
+              ],
+              "claimStates": {
+                "B_tangent": "established",
+                "B_larson": "established",
+                "B_grouplike": "established",
+                "C_prop21": "established",
+                "C_prop22": "established",
+                "C_thm23": "established",
+                "C_thm24": "established",
+                "C_prop25": "established",
+                "C_lemma26": "established",
+                "C_lemma27": "established",
+                "C_lemma28": "established",
+                "C_lemma31": "established",
+                "C_lemma32": "established",
+                "C_lemma33": "established",
+                "C_lemma34": "established",
+                "C_lemma35": "established",
+                "C_lemma36": "established",
+                "C_lemma37": "established",
+                "C_lemma38": "established",
+                "C_lemma39": "established",
+                "C_thm310": "established",
+                "C_lemma311": "established",
+                "C_lemma312": "established",
+                "C_inv_orient": "established",
+                "C_inv_two": "established",
+                "C_inv_base": "established",
+                "C_inv_slide": "established",
+                "C_inv_stab": "established",
+                "C_inv_spiral": "established",
+                "C_thm41": "established",
+                "C_prop_combed": "established",
+                "C_prop_RP3": "established",
+                "C_prop_S2S1": "established",
+                "C_prop_sumsum": "established",
+                "C_prop_sym": "established",
+                "C_prop_divisor": "established",
+                "C_prop_ext": "established",
+                "C_prop_group": "established",
+                "C_prop_TQFT": "established",
+                "C_open_general": "open",
+                "C_inv_rot": "established"
+              },
+              "claimDerivations": {
+                "B_tangent": {
+                  "basis": "b0"
+                },
+                "B_larson": {
+                  "basis": "b0"
+                },
+                "B_grouplike": {
+                  "basis": "b0"
+                },
+                "C_prop21": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p21"
+                  ]
+                },
+                "C_prop22": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p22"
+                  ]
+                },
+                "C_thm23": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t23"
+                  ]
+                },
+                "C_thm24": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t24"
+                  ]
+                },
+                "C_prop25": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_p25"
+                  ]
+                },
+                "C_lemma26": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l26"
+                  ]
+                },
+                "C_lemma27": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l27"
+                  ]
+                },
+                "C_lemma28": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l28"
+                  ]
+                },
+                "C_lemma31": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l31"
+                  ]
+                },
+                "C_lemma32": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l32"
+                  ]
+                },
+                "C_lemma33": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l33"
+                  ]
+                },
+                "C_lemma34": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l34"
+                  ]
+                },
+                "C_lemma35": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l35"
+                  ]
+                },
+                "C_lemma36": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l36"
+                  ]
+                },
+                "C_lemma37": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l37"
+                  ]
+                },
+                "C_lemma38": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l38"
+                  ]
+                },
+                "C_lemma39": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l39"
+                  ]
+                },
+                "C_thm310": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_t310"
+                  ]
+                },
+                "C_lemma311": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l311"
+                  ]
+                },
+                "C_lemma312": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_l312"
+                  ]
+                },
+                "C_inv_orient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_orient"
+                  ]
+                },
+                "C_inv_two": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_two"
+                  ]
+                },
+                "C_inv_base": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_base"
+                  ]
+                },
+                "C_inv_slide": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_slide"
+                  ]
+                },
+                "C_inv_stab": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_stab"
+                  ]
+                },
+                "C_inv_spiral": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_spiral"
+                  ]
+                },
+                "C_thm41": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_thm41"
+                  ]
+                },
+                "C_prop_combed": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_combed"
+                  ]
+                },
+                "C_prop_RP3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_RP3"
+                  ]
+                },
+                "C_prop_S2S1": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_S2S1"
+                  ]
+                },
+                "C_prop_sumsum": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_sumsum"
+                  ]
+                },
+                "C_prop_sym": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_sym"
+                  ]
+                },
+                "C_prop_divisor": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_divisor"
+                  ]
+                },
+                "C_prop_ext": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ext"
+                  ]
+                },
+                "C_prop_group": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_group"
+                  ]
+                },
+                "C_prop_TQFT": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_TQFT"
+                  ]
+                },
+                "C_open_general": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C_inv_rot": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_rot"
+                  ]
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C_lemma38"
+                ],
+                "sourceRefs": [
+                  "PAGE 26"
+                ],
+                "sourceSpan": {
+                  "startLine": 795,
+                  "endLine": 802
+                },
+                "diagnosis": "C_lemma38 将特征值写为 $q$ 或 $q^{-1}$，来源 Lemma 3.8 明确写为所有积分余积分均为 $S^{2}$ 的特征向量且特征值为 $q$。",
+                "repairRequirement": "将结论强度改回来源原意：特征值为 $q$，删除来源未陈述的 $q^{-1}$ 选项。"
+              },
+              {
+                "id": "F2",
+                "category": "inference-semantics",
+                "objectKind": "inference",
+                "targetIds": [
+                  "I_t310"
+                ],
+                "sourceRefs": [
+                  "PAGE 27-28"
+                ],
+                "sourceSpan": {
+                  "startLine": 846,
+                  "endLine": 876
+                },
+                "diagnosis": "C_thm310 结论含 $S$ 有限阶且 I_t310 论证明确写结合群似线性无关，但 premises 缺少直接依赖 B_grouplike，未覆盖该步实际使用的外部前提。",
+                "repairRequirement": "在不改结论的前提下将 B_grouplike 加入 I_t310 的直接 premises，使有限阶部分有来源明确的直接依赖。"
+              },
+              {
+                "id": "F3",
+                "category": "main-proof-chain",
+                "objectKind": "map",
+                "targetIds": [
+                  "C_inv_rot",
+                  "I_rot",
+                  "I_thm41"
+                ],
+                "sourceRefs": [
+                  "PAGE 30-31"
+                ],
+                "sourceSpan": {
+                  "startLine": 1013,
+                  "endLine": 1036
+                },
+                "diagnosis": "Theorem 4.1 来源明确列出 Rotation front spiral 分支并以 $T$ 为自同构证明不变，当前地图缺少该分支对象且 I_thm41 仅写六个分支，未覆盖主证明链的该直接环节。",
+                "repairRequirement": "按来源最小步骤新增旋转锋螺旋不变性 Claim 及其以 F_invariant 与 C_lemma311 为直接 premises 的 proof，并将该 Claim 加入 I_thm41 的 premises，同时将论证由六个分支改为七个分支并加入旋转锋螺旋。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "C_lemma38",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "对极在积分余积分上的作用为 $\\to S\\to\\mu_{L}=\\to\\mu_{R}\\sigma$、$\\to S\\to\\mu_{R}=\\to\\mu_{L}q\\sigma$、$e_{L}\\to S\\to=\\sigma e_{R}\\to$、$e_{R}\\to S\\to=q\\sigma e_{L}\\to$；特别所有积分余积分均为 $S^{2}$ 的特征向量，特征值为 $q$ 或 $q^{-1}$。",
+                    "after": "对极在积分余积分上的作用为 $\\to S\\to\\mu_{L}=\\to\\mu_{R}\\sigma$、$\\to S\\to\\mu_{R}=\\to\\mu_{L}q\\sigma$、$e_{L}\\to S\\to=\\sigma e_{R}\\to$、$e_{R}\\to S\\to=q\\sigma e_{L}\\to$；特别所有积分余积分均为 $S^{2}$ 的特征向量，特征值为 $q$。"
+                  }
+                ]
+              },
+              {
+                "findingId": "F2",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I_t310",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C_lemma37",
+                      "C_lemma39",
+                      "F_phase"
+                    ],
+                    "after": [
+                      "C_lemma37",
+                      "C_lemma39",
+                      "F_phase",
+                      "B_grouplike"
+                    ]
+                  }
+                ]
+              },
+              {
+                "findingId": "F3",
+                "op": "add",
+                "objectKind": "entry",
+                "targetId": "C_inv_rot",
+                "object": {
+                  "id": "C_inv_rot",
+                  "entryClass": "claim",
+                  "claimKind": "lemma",
+                  "title": "旋转锋螺旋不变性",
+                  "statement": "旋转锋螺旋使上圆周或下圆周上所有交点的 $\\phi_{l}(p)$ 或 $\\phi_{u}(p)$ 改变一，此时交点张量中 $T$ 幂次的改变经 $T$ 为霍普夫内在结构的自同构抵消，故 $\\#(D,H)$ 不变。"
+                }
+              },
+              {
+                "findingId": "F3",
+                "op": "add",
+                "objectKind": "inference",
+                "targetId": "I_rot",
+                "object": {
+                  "id": "I_rot",
+                  "operationKind": "proof",
+                  "premises": [
+                    "F_invariant",
+                    "C_lemma311"
+                  ],
+                  "conclusion": "C_inv_rot",
+                  "argument": "上下圆周上旋转锋螺旋使相关交点的 $k=\\phi_{l}-\\phi_{u}$ 改变一，$T$ 为自同构保持乘法余乘法与对极结构，故含 $T$ 的交点张量与圆周张量缩并后相等。"
+                }
+              },
+              {
+                "findingId": "F3",
+                "op": "replaceFields",
+                "objectKind": "inference",
+                "targetId": "I_thm41",
+                "changes": [
+                  {
+                    "field": "premises",
+                    "before": [
+                      "C_inv_orient",
+                      "C_inv_two",
+                      "C_inv_base",
+                      "C_inv_slide",
+                      "C_inv_stab",
+                      "C_inv_spiral",
+                      "C_lemma27",
+                      "C_lemma28"
+                    ],
+                    "after": [
+                      "C_inv_orient",
+                      "C_inv_two",
+                      "C_inv_base",
+                      "C_inv_slide",
+                      "C_inv_stab",
+                      "C_inv_spiral",
+                      "C_inv_rot",
+                      "C_lemma27",
+                      "C_lemma28"
+                    ]
+                  },
+                  {
+                    "field": "argument",
+                    "before": "六个分支分别覆盖定向、两点同痕、基点同痕、滑动、稳定化与螺旋的协变；标记点引理与图解等价引理保证任意两图解实现经允许移动连通至多差度，综合得仅依赖 $M$ 与标架。",
+                    "after": "七个分支分别覆盖定向、旋转锋螺旋、两点同痕、基点同痕、滑动、稳定化与螺旋的协变；标记点引理与图解等价引理保证任意两图解实现经允许移动连通至多差度，综合得仅依赖 $M$ 与标架。"
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 95,
+            "cleanCount": 92
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 111115
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 101826
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "db98c421a6aafe486f68dd43dd16905aff6e724c0857be445fcd81e9fb42e120",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 252081,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 64,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2195,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4625,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7024,
+        "phase": "progress",
+        "state": "pending"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9406,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 11809,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14204,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16575,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 18971,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 21354,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 23723,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 26100,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 28471,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 30868,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 33271,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 35671,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 38074,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 39123,
+        "phase": "complete",
+        "pageCount": 36
+      },
+      {
+        "stage": "generate",
+        "atMs": 39123,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 150249,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 252081,
+        "phase": "complete",
+        "entries": 52,
+        "inferences": 45
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 110759,
+        "usage": {
+          "input_tokens": 37848,
+          "output_tokens": 22817,
+          "total_tokens": 60665
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 101315,
+        "usage": {
+          "input_tokens": 57566,
+          "output_tokens": 24966,
+          "total_tokens": 82532
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

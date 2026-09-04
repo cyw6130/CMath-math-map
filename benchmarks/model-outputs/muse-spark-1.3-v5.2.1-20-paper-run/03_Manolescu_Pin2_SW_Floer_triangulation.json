@@ -1,0 +1,1515 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "03_Manolescu_Pin2_SW_Floer_triangulation.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F_PIN",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Pin(2)群与基本表示的定义",
+          "statement": "设 $\\mathbb{H}=\\mathbb{C}\\oplus\\mathbb{C}j$ 为四元数，$G:=\\mathrm{Pin}(2)=S^{1}\\cup S^{1}j\\subset SU(2)=S(\\mathbb{H})$，有短正合列 $1\\to S^{1}\\to G\\to\\mathbb{Z}/2\\to 1$ 与纤维化 $G\\to SU(2)\\to\\mathbb{RP}^{2}$；记平凡表示为 $\\mathbb{R}$，符号表示为 $\\tilde{\\mathbb{R}}$（其中 $S^{1}$ 平凡作用而 $j$ 作用为 $-1$），四元数左乘表示为 $\\mathbb{H}$。"
+        },
+        {
+          "id": "F_BG",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "分类空间上同调环的定义",
+          "statement": "设 $BG=EG/G$，由纤维化 $\\mathbb{RP}^{2}\\to BG\\to\\mathbb{HP}^{\\infty}$ 与 $\\mathbb{F}_{2}$ 系数Leray-Serre谱序列得 $\\mathcal{R}:=H^{*}(BG;\\mathbb{F}_{2})\\cong\\mathbb{F}_{2}[q,v]/(q^{3})$，其中 $|q|=1$，$|v|=4$。"
+        },
+        {
+          "id": "F_Borel",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Borel同调与上同调的定义",
+          "statement": "对带基点有限 $G$-CW复形 $X$，定义 $\\tilde{H}_{*}^{G}(X;\\mathbb{F}_{2})=\\tilde{H}_{*}(EG_{+}\\wedge_{G}X;\\mathbb{F}_{2})$ 与 $\\tilde{H}_{G}^{*}(X;\\mathbb{F}_{2})=\\tilde{H}^{*}(EG_{+}\\wedge_{G}X;\\mathbb{F}_{2})$，二者皆为 $\\mathcal{R}$-模，在每分次上互为对偶；$S^{0}$ 的Borel同调由 $\\mathcal{R}$ 的结构与箭头给出。"
+        },
+        {
+          "id": "F_VDualDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "等变V对偶的定义",
+          "statement": "设 $V$ 为 $G$ 有限维表示，$X,X'$ 为带基点有限 $G$-CW复形，若有 $G$-映射 $\\varepsilon:X\\wedge X'\\to V^{+}$ 使对任意子群 $H\\subset G$ 其不动点映射 $\\varepsilon^{H}:X^{H}\\wedge (X')^{H}\\to (V^{H})^{+}$ 给出非等变对偶，则称 $X,X'$ 为等变 $V$-对偶。"
+        },
+        {
+          "id": "F_SWFType",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "SWF型空间的定义",
+          "statement": "设 $s\\ge 0$，带基点有限 $G$-CW复形 $X$ 称为水平 $s$ 的SWF型空间，若 $X^{S^{1}}$ 与球面 $(\\tilde{\\mathbb{R}}^{s})^{+}$ 为 $G$-同伦等价，且 $G$ 在余集 $X-X^{S^{1}}$ 上自由作用。"
+        },
+        {
+          "id": "F_abcDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不变量a、b、c的定义",
+          "statement": "对水平 $s$ 的SWF型 $X$，有 $v^{-1}\\tilde{H}_{G}^{*}(X;\\mathbb{F}_{2})\\cong (v^{-1}\\mathcal{R})_{[s]}$，其中 $[s]$ 表分次平移 $s$；定义 $a(X)$ 为同余 $s\\pmod{4}$ 中 $v^{l}x\\ne 0$ 对一切 $l\\ge 0$ 的最小 $r$，$b(X)$ 为同余 $s+1\\pmod{4}$ 的最小 $r$ 减 $1$，$c(X)$ 为同余 $s+2\\pmod{4}$ 的最小 $r$ 减 $2$；等价地由无穷部 $^{\\infty}\\tilde{H}_{G}^{*}$ 与 $^{\\infty}\\tilde{H}_{*}^{G}=\\cap_{l\\ge 0}\\mathrm{image}(v^{l})$ 的非零元最小分次刻画，且 $a,b,c\\equiv s\\pmod{4}$。"
+        },
+        {
+          "id": "F_dpDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "不变量dp的定义",
+          "statement": "对SWF型 $X$，用 $S^{1}$-等变上同调 $\\tilde{H}_{S^{1}}^{*}(X;\\mathbb{F})$（$\\mathbb{F}$ 为特征 $p$ 的域，$p=0$ 或素数），它是 $\\mathbb{F}[U]$ 模且 $|U|=2$；有 $U^{-1}\\tilde{H}_{S^{1}}^{*}(X;\\mathbb{F})\\cong\\mathbb{F}[U,U^{-1}]_{[s]}$，令 $^{\\infty}\\tilde{H}_{S^{1}}^{*}$ 为自然映射的像，$d_{p}(X)$ 为其中非零元的最小分次。"
+        },
+        {
+          "id": "F_CSD",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Seiberg-Witten泛函与库仑流的定义",
+          "statement": "对有理同调球 $Y$ 配度量 $g$ 与自旋结构 $\\mathfrak{s}$，组态空间为 $\\mathcal{C}(Y,\\mathfrak{s})=i\\Omega^{1}(Y)\\oplus\\Gamma(\\mathbb{S})$，全局库仑切片为 $V=i\\ker d^{*}\\oplus\\Gamma(\\mathbb{S})$；Chern-Simons-Dirac泛函为 $CSD(a,\\phi)=\\frac{1}{2}(\\int_{Y}\\langle\\phi,\\not\\partial\\phi+\\rho(a)\\phi\\rangle-\\int_{Y}a\\wedge da)$，在 $V$ 上的梯度流写为 $\\partial_{t}x=-(\\ell+c)(x)$，其中 $\\ell(a,\\phi)=(*da,\\not\\partial\\phi)$ 为线性Fredholm算子，$c$ 紧，二者皆 $G$-等变；$x:\\mathbb{R}\\to V$ 称为有限型若 $CSD(x(t))$ 与 $\\|\\phi(t)\\|_{C^{0}}$ 关于 $t$ 有界；$(0,0)$ 为唯一可约解。"
+        },
+        {
+          "id": "F_ConleyDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "孤立不变集与Conley指标的定义",
+          "statement": "对流 $\\varphi=\\{\\varphi_{t}\\}$ 与紧集 $A$，定义 $\\mathrm{Inv}(A,\\varphi)=\\{x\\in A\\mid\\varphi_{t}(x)\\in A,\\forall t\\in\\mathbb{R}\\}$；紧集 $S$ 称为孤立不变集若有隔离邻域 $A$ 使 $S=\\mathrm{Inv}(A,\\varphi)\\subset\\mathrm{int}(A)$；指标对 $(N,L)$ 满足 $\\mathrm{Inv}(N-L,\\varphi)=S\\subset\\mathrm{int}(N-L)$、$L$ 为 $N$ 的退出集且在 $N$ 中正不变；Conley指标为 $I(S)=N/L$，等变情形记 $I_{G}(S)$。"
+        },
+        {
+          "id": "F_FDApprox",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "有限维逼近与有限维Conley指标的定义",
+          "statement": "设 $V_{\\tau}^{\\nu}$ 为 $\\ell$ 特征值在区间 $(\\tau,\\nu]$ 的特征向量张成的有限维子空间，$p_{\\tau}^{\\nu}$ 为其光滑化正交投影，逼近流方程为 $(\\ell+p_{\\tau}^{\\nu}c)(x)=-\\partial_{t}x$；取截断函数得全局流 $\\varphi_{\\tau}^{\\nu}$ 于 $V_{\\tau}^{\\nu}$ 上，$S_{\\tau}^{\\nu}$ 为位于 $\\overline{B(2R)}$ 中轨迹的点集，$I_{\\tau}^{\\nu}=I_{G}(S_{\\tau}^{\\nu})$。"
+        },
+        {
+          "id": "F_nDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "修正项n的定义",
+          "statement": "取以 $(Y,\\mathfrak{s})$ 为边界的紧自旋 $4$-流形 $(W,\\mathfrak{t})$，边界附近度量为柱形，$\\not{D}$ 为带谱边界条件的Dirac算子，定义 $n(Y,\\mathfrak{s},g)=\\mathrm{ind}_{\\mathbb{C}}(\\not{D})+\\sigma(W)/8\\in\\frac{1}{8}\\mathbb{Z}$；度量形变 $\\{g_{t}\\}$ 中 $\\not\\partial$ 的谱流为 $\\mathrm{S.F.}(\\not\\partial)=n(Y,\\mathfrak{s},g_{0})-n(Y,\\mathfrak{s},g_{1})$。"
+        },
+        {
+          "id": "F_SWFHDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "等变Floer同调与alpha、beta、gamma的定义",
+          "statement": "定义度量相关同调 $SWFH_{*}^{G}(Y,\\mathfrak{s},g)=\\tilde{H}_{*+\\dim V_{\\tau}^{0}}^{G}(I_{\\tau}^{\\nu};\\mathbb{F}_{2})$ 与度量无关同调 $SWFH_{*}^{G}(Y,\\mathfrak{s})=\\tilde{H}_{*+\\dim V_{\\tau}^{0}+2n(Y,\\mathfrak{s},g)}^{G}(I_{\\tau}^{\\nu};\\mathbb{F}_{2})$，为 $\\mathcal{R}$-模；令 $^{\\infty}SWH_{*}^{G}$ 为 $v^{l}$ 像之交；定义 $\\alpha(Y,\\mathfrak{s})=(a(I_{\\tau}^{\\nu})-\\dim V_{\\tau}^{0})/2-n(Y,\\mathfrak{s},g)$，$\\beta$ 与 $\\gamma$ 对 $b,c$ 同样定义，皆在 $\\frac{1}{8}\\mathbb{Z}$ 中，并有无穷部最小分次的对应刻画。"
+        },
+        {
+          "id": "F_S1FloerDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "S1等变Floer同调与deltap的定义",
+          "statement": "定义 $SWH_{*}^{S^{1}}(Y,\\mathfrak{s};\\mathbb{F})=\\tilde{H}_{*+\\dim V_{\\tau}^{0}+2n(Y,\\mathfrak{s},g)}^{S^{1}}(I_{\\tau}^{\\nu};\\mathbb{F})$，令 $^{\\infty}SWH_{*}^{S^{1}}$ 为 $U^{l}$ 像之交；定义 $\\delta_{p}(Y,\\mathfrak{s})=(d_{p}(I_{\\tau}^{\\nu})-\\dim V_{\\tau}^{0})/2-n(Y,\\mathfrak{s},g)\\in\\frac{1}{8}\\mathbb{Z}$，亦等于 $\\frac{1}{2}\\min\\{r\\mid 0\\ne x\\in {}^{\\infty}SWH_{r}^{S^{1}}$ 的相应最小值；$p=0$ 时记 $\\delta=\\delta_{0}$。"
+        },
+        {
+          "id": "F_RokhlinDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Rokhlin不变量的定义",
+          "statement": "对自旋 $3$-流形 $(Y,\\mathfrak{s})$ 取自旋 $4$-流形 $(W,\\mathfrak{t})$ 以之为界，定义广义Rokhlin不变量 $\\mu(Y,\\mathfrak{s})=\\sigma(W)/8\\pmod{2\\mathbb{Z}}$；整同调球有唯一自旋结构，此时 $\\sigma(W)$ 被 $8$ 整除，$\\mu(Y)\\in\\mathbb{Z}/2$ 给出同态 $\\bar{\\mu}:\\theta_{3}^{H}\\to\\mathbb{Z}/2$。"
+        },
+        {
+          "id": "F_HomCobDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "同调配边群的定义",
+          "statement": "$\\theta_{3}^{H}$ 由整同调 $3$-球的等价类生成，$Y_{0}\\sim Y_{1}$ 若有紧定向光滑 $4$-维配边 $W:Y_{0}\\to Y_{1}$ 使 $H_{*}(W,Y_{0};\\mathbb{Z})=H_{*}(W,Y_{1};\\mathbb{Z})=0$，加法为连通和 $\\#$。"
+        },
+        {
+          "id": "F_TriangDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "三角剖分障碍记号的定义",
+          "statement": "组合三角剖分指分片线性结构，单纯三角剖分指到局部有限单纯复形的同胚；$n\\ge 5$ 流形 $M$ 的组合障碍为 $\\Delta(M)\\in H^{4}(M;\\mathbb{Z}/2)$，单纯剖分障碍为 $Sq^{1}\\Delta(M)\\in H^{5}(M;\\mathbb{Z}/2)$，其中 $Sq^{1}$ 为第一Steenrod平方。"
+        },
+        {
+          "id": "F_SpecDef",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "Floer谱的定义",
+          "statement": "设 $\\mathcal{U}=V_{-\\infty}^{0}\\oplus\\mathbb{R}^{\\infty}$ 为 $G$-universe，$G$-prespectrum 为带结构映射 $\\sigma^{U'-U}:\\Sigma^{U'-U}X(U)\\to X(U')$ 的系统，谱化得 $G$-spectrum；固定 $\\nu,\\tau$ 定义 $\\mathrm{swf}(Y,\\mathfrak{s},g,\\nu,\\tau)$ 为 $I_{\\tau}^{\\nu}$ 关于 $V_{\\tau}^{0}$ 的形式去悬垂，即 $X(U)=\\Sigma^{U-V_{\\tau}^{0}}I_{\\tau}^{\\nu}$（当 $V_{\\tau}^{0}\\subset U$），谱化得 $SWF(Y,\\mathfrak{s},g)$，其等变Borel同调即 $SWH_{*}^{G}$。"
+        },
+        {
+          "id": "C_Loc",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "局部化定理",
+          "statement": "若 $A\\subset X$ 为 $G$-子复形且 $G$ 在 $X-A$ 上自由，则包含映射诱导 $v^{-1}\\tilde{H}_{G}^{*}(A;\\mathbb{F}_{2})\\cong v^{-1}\\tilde{H}_{G}^{*}(X;\\mathbb{F}_{2})$，为 $\\mathbb{F}_{2}[q,v,v^{-1}]/(q^{3})$-模同构。"
+        },
+        {
+          "id": "C_DualCrit",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "流形对偶判据",
+          "statement": "若光滑 $G$-流形 $N$ 带边嵌入表示 $V$ 使 $\\dim N=\\dim V$，且 $\\partial N=L\\cup L'$ 满足 $L\\cap L'=\\partial L=\\partial L'$ 为光滑 $G$-流形，则 $N/L$ 与 $N/L'$ 为等变 $V$-对偶。"
+        },
+        {
+          "id": "C_TateFacts",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Tate同调的计算性质",
+          "statement": "$t\\tilde{H}_{*}^{G}$ 为等变广义同调，满足 $t\\tilde{H}_{*}^{G}(\\Sigma^{V}X;\\mathbb{F}_{2})\\cong t\\tilde{H}_{*-\\dim V}^{G}(X;\\mathbb{F}_{2})$；若 $X$ 除基点外 $G$-自由则 $t\\tilde{H}_{*}^{G}(X;\\mathbb{F}_{2})=0$；$4$-周期 $t\\tilde{H}_{*}^{G}\\cong t\\tilde{H}_{*-4}^{G}$；$t\\tilde{H}_{*-2}^{G}(S^{0};\\mathbb{F}_{2})\\cong v^{-1}\\mathcal{R}$；若 $X,X'$ 为 $V$-对偶 $m=\\dim V$ 则有长正合列 $\\cdots\\to\\tilde{H}_{G}^{m-*}(X';\\mathbb{F}_{2})\\to t\\tilde{H}_{*}^{G}(X;\\mathbb{F}_{2})\\to\\tilde{H}_{*-2}^{G}(X;\\mathbb{F}_{2})\\to\\cdots$。"
+        },
+        {
+          "id": "C_ConleyInv",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Conley指标的存在与不变性",
+          "statement": "任意孤立不变集有指标对，$I(S)$ 的点同伦型在流形变下不变；若 $G$ 光滑保流与 $S$ 则有 $G$-等变指标对，$I_{G}(S)$ 在 $G$-同伦下良定并可取为有限 $G$-CW复形。"
+        },
+        {
+          "id": "C_Compact",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "逼近轨迹的紧性",
+          "statement": "固定 $k\\ge 4$ 有 $R>0$ 使一切有限型Seiberg-Witten轨迹含于 $V_{(k+1)}$ 中半径 $R$ 球 $B(R)$ 内；若 $\\nu,-\\tau$ 充分大且 $x:\\mathbb{R}\\to V_{\\tau}^{\\nu}$ 为逼近梯度流轨迹并恒在 $\\overline{B(2R)}$ 中，则实含于 $B(R)$ 内，故相应点集为孤立不变集。"
+        },
+        {
+          "id": "C_SWStability",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Conley指标随截断与度量的稳定性",
+          "statement": "增大上截断 $\\nu$ 时 $I_{\\tau}^{\\nu}$ 经 $G$-等价不变；下截断降至 $\\tau'$ 时相差 $G$-表示 $V_{\\tau'}^{\\tau}$ 的悬垂；小度量形变中若 $\\nu,\\tau$ 恒避开 $\\ell$ 谱则 $\\dim V_{\\tau}^{\\nu}$ 不变且 $I_{\\tau}^{\\nu}$ 经 $G$-等价不变，其 $\\dim V_{\\tau}^{0}$ 的变化仅来自Dirac算子的谱流。"
+        },
+        {
+          "id": "C_nWellDefined",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "n的良定与谱流公式",
+          "statement": "$n(Y,\\mathfrak{s},g)$ 与所选 $(W,\\mathfrak{t})$ 无关；度量形变 $\\{g_{t}\\}_{t\\in[0,1]}$ 中 $\\not\\partial$ 的谱流等于 $n(Y,\\mathfrak{s},g_{0})-n(Y,\\mathfrak{s},g_{1})$，而 $*d$ 的谱流平凡。"
+        },
+        {
+          "id": "C_OrientDuality",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "反向流的对偶与指标求和公式",
+          "statement": "稳定平行化流形上流与其逆的Conley指标互为Spanier-Whitehead对偶，其等变推广给出 $(I_{0})_{-\\nu}^{\\nu}$ 与 $(\\bar{I}_{0})_{-\\nu}^{\\nu}$ 为 $(V_{0})_{-\\nu}^{\\nu}$-对偶；且 $n(Y,\\mathfrak{s},g)+n(-Y,\\mathfrak{s},g)=\\dim_{\\mathbb{C}}(\\ker\\not\\partial)$，$\\dim V_{\\tau}^{0}+\\dim\\bar{V}_{-\\nu}^{0}+2\\dim_{\\mathbb{C}}(\\ker\\not\\partial)=\\dim V_{\\tau}^{\\nu}$。"
+        },
+        {
+          "id": "C_CobMap",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "配边有限维映射的表示论数据",
+          "statement": "对 $b_{1}(W)=0$ 自旋配边有 $G$-映射 $(U')^{+}\\to U^{+}\\wedge I_{\\tau}^{\\nu}$ 及双端情形 $(U')^{+}\\to U^{+}\\wedge (I_{1})_{\\tau}^{\\nu}\\wedge(\\bar{I}_{0})_{-\\nu}^{\\nu}$，其中 $U'\\cong\\tilde{\\mathbb{R}}^{m'}\\oplus\\mathbb{H}^{p'}$，$U\\cong\\tilde{\\mathbb{R}}^{m}\\oplus\\mathbb{H}^{p}$，$m'-m=\\dim_{\\mathbb{R}}V_{\\tau}^{0}(\\tilde{\\mathbb{R}})-b_{2}^{+}(W)$，$p'-p$ 由 $\\dim_{\\mathbb{H}}V_{\\tau}^{0}(\\mathbb{H})+\\mathrm{ind}_{\\mathbb{H}}(D)$ 给出（含 $2n-\\sigma/4$ 项），其 $S^{1}$-不动点映射由线性单射 $\\tilde{\\mathbb{R}}^{m'}\\to\\tilde{\\mathbb{R}}^{m}\\oplus\\tilde{\\mathbb{R}}^{s}$ 诱导，余核维数为 $b_{2}^{+}(W)$。"
+        },
+        {
+          "id": "C_SurgeryReduce",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "配边的圈手术化简",
+          "statement": "对自旋定向配边 $W:Y_{0}\\to Y_{1}$ 可做圈手术设 $b_{1}(W)=0$ 而保持定向、自旋结构、边界、负定性与 $b_{2}(W)$ 不变。"
+        },
+        {
+          "id": "C_GSM",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Galewski-Stern-Matumoto约化",
+          "statement": "$n\\ge 5$ 三角剖分猜想成立当且仅当存在Rokhlin不变量为一且在 $\\theta_{3}^{H}$ 中二阶的同调 $3$-球 $Y$；若已证无此 $Y$，则 $Sq^{1}\\Delta(M)$ 为障碍可给出 $5$ 维不可单纯剖分闭流形 $M^{5}$，经与环面 $T^{n-5}$ 乘积及 $S^{1}$-丛与环面乘积得到一切 $n>5$ 的不可剖分例子（含可定向与不可定向）。"
+        },
+        {
+          "id": "C_RokhlinWell",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Rokhlin不变量的良定性",
+          "statement": "$\\sigma(W)/8\\pmod{2\\mathbb{Z}}$ 与所选自旋 $4$-流形 $(W,\\mathfrak{t})$ 无关；当 $Y$ 为整同调球时 $\\sigma(W)$ 被 $8$ 整除。"
+        },
+        {
+          "id": "C_MOY",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Brieskorn球的解描述",
+          "statement": "对取负定plumbing定向的 $\\Sigma(2,3,12k\\pm1)$ 与 $\\Sigma(2,3,12k\\pm5)$ 配特定度量，有唯一可约解与成对由 $j$ 交换的不可约解，其分次分别为 $0$ 与 $\\pm1$ 及 $-2$ 与 $-1$ 的情形，吸引子-排斥子序列给出Borel同调长正合列 $\\cdots\\to H_{*}(BG;\\mathbb{F}_{2})\\to SWFH_{*}^{G}\\to(\\mathbb{F}_{2}^{k})_{[d]}\\to\\cdots$。"
+        },
+        {
+          "id": "C_Elliptic",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "正数量曲率情形的Floer同调",
+          "statement": "若有理同调球 $Y$ 具正数量曲率度量，则 $I_{\\tau}^{\\nu}$ 为表示球，$SWFH_{*}^{G}(Y,\\mathfrak{s})$ 同构于 $\\mathbb{F}_{2}[q,v]/(q^{3})$ 平移 $-2n(Y,\\mathfrak{s},g)$，$S^{1}$-等变情形类似。"
+        },
+        {
+          "id": "C_QuatIndex",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Dirac指标的偶性",
+          "statement": "$4$-流形上Dirac算子 $\\not{D}$ 在四元数向量空间之间，故其复指标 $\\mathrm{ind}_{\\mathbb{C}}(\\not{D})$ 被 $2$ 整除。"
+        },
+        {
+          "id": "C_Susp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "悬垂不变性",
+          "statement": "对 $G$ 有限维表示 $V$，有 $\\mathcal{R}$-模同构 $\\tilde{H}_{G}^{*}(\\Sigma^{V}X;\\mathbb{F}_{2})\\cong\\tilde{H}_{G}^{*-\\dim V}(X;\\mathbb{F}_{2})$，Borel同调有类似同构。"
+        },
+        {
+          "id": "C_VDualLemma",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "流形分解给出V对偶",
+          "statement": "设光滑 $G$-流形 $N$ 带边嵌入表示 $V$ 使 $\\dim N=\\dim V=m$，且 $\\partial N=L\\cup L'$ 满足 $L\\cap L'=\\partial L=\\partial L'$，则 $N/L$ 与 $N/L'$ 为等变 $V$-对偶。"
+        },
+        {
+          "id": "C_Ideal",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "多项式环分次理想的分类",
+          "statement": "设 $\\mathcal{J}$ 为 $\\mathcal{R}=\\mathbb{F}_{2}[q,v]/(q^{3})$ 的分次理想且 $v^{-1}\\mathcal{J}=v^{-1}\\mathcal{R}$，则 $\\mathcal{J}=(v^{i},qv^{j},q^{2}v^{k})$，其中 $i\\ge j\\ge k\\ge 0$。"
+        },
+        {
+          "id": "C_Ineq",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "a、b、c的不等式与同余",
+          "statement": "对SWF型 $X$ 有 $a(X)\\ge b(X)\\ge c(X)$，且 $a(X),b(X),c(X)\\ge 0$ 并皆同余于水平 $s$ 模 $4$。"
+        },
+        {
+          "id": "C_SuspABC",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "a、b、c在悬垂下的平移",
+          "statement": "若 $X$ 为SWF型而 $V=\\tilde{\\mathbb{R}}^{n}\\oplus\\mathbb{H}^{p}$，则 $a(\\Sigma^{V}X)=a(X)+\\dim V$，$b,c$ 同样平移 $\\dim V$。"
+        },
+        {
+          "id": "C_ExG",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "未约悬垂tildeG的abc值",
+          "statement": "设 $Z=G$ 左乘，$\\tilde{G}$ 为其未约悬垂，则 $\\tilde{H}_{G}^{*}(\\tilde{G};\\mathbb{F}_{2})$ 同构于 $H^{*}(BG;\\mathbb{F}_{2})$ 中分次 $\\ge 1$ 的子模，故 $a(\\tilde{G})=4$，$b(\\tilde{G})=c(\\tilde{G})=0$。"
+        },
+        {
+          "id": "C_ExZn",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "空间tildeZn的abc值",
+          "statement": "对 $Z_{n}=(S(\\mathbb{C}^{n})\\times\\{0\\})\\cup(\\{0\\}\\times S(j\\mathbb{C}^{n}))\\subset\\mathbb{H}^{n}$ 的未约悬垂 $\\tilde{Z}_{n}$，有 $a(\\tilde{Z}_{n})=4\\lceil n/2\\rceil$，$b(\\tilde{Z}_{n})=c(\\tilde{Z}_{n})=0$。"
+        },
+        {
+          "id": "C_ExZnp",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "空间tildeZnp的abc值",
+          "statement": "对 $Z_{n}'=S(\\mathbb{C}^{n})\\times S(j\\mathbb{C}^{n})$ 的未约悬垂 $\\tilde{Z}_{n}'$，有 $a(\\tilde{Z}_{n}')=b(\\tilde{Z}_{n}')=4n$，$c(\\tilde{Z}_{n}')=4n-4\\lceil n/2\\rceil$。"
+        },
+        {
+          "id": "C_DualABC",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "对偶下a、b、c的变换公式",
+          "statement": "若SWF型 $X,X'$ 为 $V$-对偶，其中 $V\\cong\\tilde{\\mathbb{R}}^{n}\\oplus\\mathbb{H}^{p}$，则 $a(X')=\\dim V-c(X)$，$b(X')=\\dim V-b(X)$，$c(X')=\\dim V-a(X)$。"
+        },
+        {
+          "id": "C_MonoABC",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "等变映射下a、b、c的单调性",
+          "statement": "若 $X,X'$ 为同水平 $m$ 的SWF型且 $f:X\\to X'$ 为 $G$-等变映射，其 $S^{1}$-不动点映射为 $G$-同伦等价，则 $a(X)\\le a(X')$，$b(X)\\le b(X')$，$c(X)\\le c(X')$。"
+        },
+        {
+          "id": "C_dpDual",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "dp的对偶与单调性质",
+          "statement": "对SWF型 $X$ 的 $d_{p}$ 有悬垂平移公式；若 $X,X'$ 为 $V$-对偶则 $d_{p}(X')=\\dim V-d_{p}(X)$；同水平下满足不动点等价的 $G$-映射使 $d_{p}$ 单调不减。"
+        },
+        {
+          "id": "C_SWFHInv",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "等变Floer同调的不变性",
+          "statement": "对有理同调球 $Y$ 配自旋 $\\mathfrak{s}$，$SWFH_{*}^{G}(Y,\\mathfrak{s})$ 作为 $\\mathcal{R}\\cong\\mathbb{F}_{2}[q,v]/(q^{3})$-模的同构类为 $(Y,\\mathfrak{s})$ 的不变量。"
+        },
+        {
+          "id": "C_SpecInv",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "Floer谱的不变性",
+          "statement": "$G$-谱 $SWF(Y,\\mathfrak{s},g)=\\mathrm{SWF}(Y,\\mathfrak{s},g,\\nu,\\tau)$ 在稳定 $G$-同伦下为三元组 $(Y,\\mathfrak{s},g)$ 的不变量，其Borel同调经 $2n$ 平移即 $SWFH_{*}^{G}(Y,\\mathfrak{s})$。"
+        },
+        {
+          "id": "C_SWFTypeLemma",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Conley指标为SWF型空间",
+          "statement": "对一切 $\\nu,-\\tau$ 充分大可选取指标对使 $I_{\\tau}^{\\nu}=N/L$ 为某水平 $s$ 的SWF型空间，且 $s\\equiv\\dim V_{\\tau}^{0}\\pmod{4}$。"
+        },
+        {
+          "id": "C_ABGInvRokhlin",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "alpha、beta、gamma的不变性与Rokhlin同余",
+          "statement": "对有理同调球配自旋 $(Y,\\mathfrak{s})$，$\\alpha(Y,\\mathfrak{s}),\\beta(Y,\\mathfrak{s}),\\gamma(Y,\\mathfrak{s})\\in\\frac{1}{8}\\mathbb{Z}$ 为不变量，且 $\\alpha\\equiv\\beta\\equiv\\gamma\\equiv-\\mu(Y,\\mathfrak{s})\\pmod{2\\mathbb{Z}}$，其中 $\\mu$ 为广义Rokhlin不变量。"
+        },
+        {
+          "id": "C_Orient",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "反向下alpha、beta、gamma的变换",
+          "statement": "对定向有理同调球配自旋 $(Y,\\mathfrak{s})$，记 $-Y$ 为反向，则 $\\alpha(-Y,\\mathfrak{s})=-\\gamma(Y,\\mathfrak{s})$，$\\beta(-Y,\\mathfrak{s})=-\\beta(Y,\\mathfrak{s})$，$\\gamma(-Y,\\mathfrak{s})=-\\alpha(Y,\\mathfrak{s})$。"
+        },
+        {
+          "id": "C_CobMono",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "负定自旋配边的单调性",
+          "statement": "若 $W$ 为光滑定向负定配边 $Y_{0}\\to Y_{1}$ 且具自旋 $\\mathfrak{t}$，则 $\\alpha(Y_{1},\\mathfrak{t}|_{Y_{1}})\\ge\\alpha(Y_{0},\\mathfrak{t}|_{Y_{0}})+\\frac{1}{8}b_{2}(W)$，$\\beta,\\gamma$ 有同样不等式，其中 $b_{2}(W)$ 为第二Betti数。"
+        },
+        {
+          "id": "C_HomCobInv",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "零b2配边下的不变性",
+          "statement": "若光滑定向配边 $W:Y_{0}\\to Y_{1}$ 在有理同调球之间满足 $b_{2}(W)=0$ 且具自旋 $\\mathfrak{t}$，则 $\\alpha,\\beta,\\gamma$ 在两端限制下分别相等。"
+        },
+        {
+          "id": "C_ThmBeta",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "beta不变量的存在与性质",
+          "statement": "对每有理同调 $3$-球 $Y$ 配自旋 $\\mathfrak{s}$ 有不变量 $\\beta(Y,\\mathfrak{s})\\in\\frac{1}{8}\\mathbb{Z}$（整同调球时 $\\beta(Y)\\in\\mathbb{Z}$），满足 $\\beta(-Y,\\mathfrak{s})=-\\beta(Y,\\mathfrak{s})$，其模 $2$ 约化为广义Rokhlin不变量（整情形 $\\beta(Y)\\equiv\\mu(Y)\\pmod{2}$），且对负定自旋配边 $W:Y_{0}\\to Y_{1}$ 有 $\\beta(Y_{1},\\mathfrak{t}|_{Y_{1}})\\ge\\beta(Y_{0},\\mathfrak{t}|_{Y_{0}})+\\frac{1}{8}b_{2}(W)$。"
+        },
+        {
+          "id": "C_Cor12",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "Rokhlin一的球其二重连通和非零调",
+          "statement": "若 $Y$ 为Rokhlin不变量为一的整同调球，则 $Y\\# Y$ 不与 $S^{3}$ 同调配边。"
+        },
+        {
+          "id": "C_Cor13",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "高维不可三角剖分流形的存在",
+          "statement": "对一切 $n\\ge 5$ 存在闭 $n$-维拓扑流形不容许单纯三角剖分。"
+        },
+        {
+          "id": "C_S3Vals",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "椭圆情形与三维球面的值",
+          "statement": "若 $Y$ 椭圆具正数量曲率度量则 $\\alpha(Y,\\mathfrak{s})=\\beta(Y,\\mathfrak{s})=\\gamma(Y,\\mathfrak{s})=\\delta(Y,\\mathfrak{s})=-n(Y,\\mathfrak{s},g)$；特别 $\\alpha(S^{3})=\\beta(S^{3})=\\gamma(S^{3})=0$。"
+        },
+        {
+          "id": "C_BrieskornVals",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "Brieskorn球的alpha、beta、gamma值",
+          "statement": "取负定plumbing定向，$\\alpha(\\Sigma(2,3,12k-1))=2$，$\\beta=\\gamma=0$；$\\alpha(\\Sigma(2,3,12k-5))=1$，$\\beta=\\gamma=-1$；$\\alpha=\\beta=\\gamma=0$ 于 $\\Sigma(2,3,12k+1)$；$\\alpha=\\beta=\\gamma=1$ 于 $\\Sigma(2,3,12k+5)$；特别 $SWH_{*}^{G}(\\Sigma(2,3,11))$ 与 $\\tilde{G}$ 的Borel同调一致。"
+        },
+        {
+          "id": "C_Conj41",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "beta与Neumann-Siebenmann不变量关系的猜想",
+          "statement": "若 $(Y,\\mathfrak{s})$ 为Seifert纤维有理同调 $3$-球配自旋结构，则 $\\beta(Y,\\mathfrak{s})=-\\bar{\\mu}(Y,\\mathfrak{s})$，其中 $\\bar{\\mu}\\in\\frac{1}{8}\\mathbb{Z}$ 为Neumann-Siebenmann不变量；该式对 $\\Sigma(2,3,6m\\pm1)$ 成立。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "O_abc",
+          "operationKind": "organization",
+          "premises": [
+            "F_BG",
+            "F_Borel",
+            "F_SWFType",
+            "C_Loc"
+          ],
+          "conclusion": "F_abcDef",
+          "argument": "由上同调环结构与Borel构造及局部化同构 $v^{-1}\\tilde{H}_{G}^{*}(X)\\cong(v^{-1}\\mathcal{R})_{[s]}$ 可知高次Borel上同调如 $S^{0}$ 经平移，遗忘 $q$ 后为三个 $\\mathbb{F}_{2}[v]$-自由尾加有界挠部，由此组织出三个最小分次 $a,b,c$ 的概念形成。"
+        },
+        {
+          "id": "O_SWFH",
+          "operationKind": "organization",
+          "premises": [
+            "F_FDApprox",
+            "F_nDef",
+            "F_abcDef",
+            "C_SWFTypeLemma"
+          ],
+          "conclusion": "F_SWFHDef",
+          "argument": "因有限维Conley指标为SWF型空间，故 $a,b,c$ 可用于 $I_{\\tau}^{\\nu}$；经 $\\dim V_{\\tau}^{0}$ 与 $2n$ 归一化组织出度量无关Borel同调 $SWH_{*}^{G}$ 及其数值提取 $\\alpha,\\beta,\\gamma$ 的定义。"
+        },
+        {
+          "id": "I_Susp",
+          "operationKind": "proof",
+          "premises": [
+            "F_Borel"
+          ],
+          "conclusion": "C_Susp",
+          "argument": "对 $V$-丛 $p:EG\\times_{G}(V\\times X)\\to EG\\times_{G}X$ 在对 $(EG\\times_{G}X,EG\\times\\mathrm{pt})$ 上用 $\\mathbb{F}_{2}$ 系数相对Thom同构，得Borel上同调相差 $\\dim V$ 平移的 $\\mathcal{R}$-模同构，同调类似。"
+        },
+        {
+          "id": "I_VDual",
+          "operationKind": "proof",
+          "premises": [
+            "F_VDualDef",
+            "C_DualCrit"
+          ],
+          "conclusion": "C_VDualLemma",
+          "argument": "取 $(X,A)=(N,L)$ 使 $(V-L)/(V-N)$ 与 $N/L'$ 为 $G$-等价，由引用的对偶定理得 $X/A$ 与 $(V-A)/(V-X)$ 关于 $V$ 对偶，即得 $N/L$ 与 $N/L'$ 为等变 $V$-对偶。"
+        },
+        {
+          "id": "I_Ideal",
+          "operationKind": "proof",
+          "premises": [
+            "F_BG"
+          ],
+          "conclusion": "C_Ideal",
+          "argument": "忘掉 $q$ 将 $\\mathcal{R}$ 看作分次 $\\mathbb{F}_{2}[v]$-模，分解 $\\mathcal{J}=\\mathcal{J}_{0}\\oplus\\mathcal{J}_{1}\\oplus\\mathcal{J}_{2}$ 按模 $4$ 分次，$v^{-1}\\mathcal{J}=v^{-1}\\mathcal{R}$ 蕴于每分支非零故各为 $(v^{i}),(qv^{j}),(q^{2}v^{k})$，$q$ 不变性给出 $i\\ge j\\ge k$。"
+        },
+        {
+          "id": "I_Ineq",
+          "operationKind": "proof",
+          "premises": [
+            "F_abcDef",
+            "C_Ideal"
+          ],
+          "conclusion": "C_Ineq",
+          "argument": "无穷部平移 $n$ 后为满足局部化条件的分次理想，故写为 $(v^{i},qv^{j},q^{2}v^{k})$ 得 $a=4i+n$ 等，从而 $a\\ge b\\ge c$ 且同余 $s$ 模 $4$。"
+        },
+        {
+          "id": "I_SuspABC",
+          "operationKind": "proof",
+          "premises": [
+            "F_abcDef",
+            "C_Susp"
+          ],
+          "conclusion": "C_SuspABC",
+          "argument": "由Borel上同调在表示悬垂下平移 $\\dim V$ 的同构直接得无穷部最小分次平移同样维数。"
+        },
+        {
+          "id": "I_ExG",
+          "operationKind": "proof",
+          "premises": [
+            "F_Borel",
+            "F_SWFType",
+            "F_abcDef"
+          ],
+          "conclusion": "C_ExG",
+          "argument": "$Z=G$ 自由故商为点，正合列中 $\\kappa^{*}$ 在 $0$ 次为同构，得 $\\tilde{H}_{G}^{*}(\\tilde{G})$ 为 $H^{*}(BG)$ 中分次 $\\ge 1$ 子模，对照 $a,b,c$ 定义得值。"
+        },
+        {
+          "id": "I_ExZn",
+          "operationKind": "proof",
+          "premises": [
+            "F_BG",
+            "F_Borel",
+            "F_abcDef"
+          ],
+          "conclusion": "C_ExZn",
+          "argument": "$Z_{n}\\to\\mathbb{CP}^{n-1}$ 由 $S^{1}\\to G$ 诱导，$\\eta^{*}:H^{*}(BG)\\to H^{*}(\\mathbb{CP}^{\\infty})$ 在 $4$ 倍次为同构余为零，故 $\\kappa^{*}$ 在 $4$ 倍次满余为零，由正合列得 $a=4\\lceil n/2\\rceil$ 而 $b=c=0$。"
+        },
+        {
+          "id": "I_DualABC",
+          "operationKind": "proof",
+          "premises": [
+            "F_abcDef",
+            "F_VDualDef",
+            "C_TateFacts",
+            "C_Ineq"
+          ],
+          "conclusion": "C_DualABC",
+          "argument": "$V$-对偶给出 $\\tilde{H}_{G}^{m-*}(X')$ 经Tate到 $\\tilde{H}_{*-2}^{G}(X)$ 的长正合列；$X-X^{S^{1}}$ 自由故Tate化为 $(v^{-1}\\mathcal{R})_{[s+2]}$，修剪为无穷部正合列，对照 $a,b,c$ 模 $4$ 位置与不等式分析得对偶公式，$X'$ 水平为 $n-s$。"
+        },
+        {
+          "id": "I_ExZnp",
+          "operationKind": "proof",
+          "premises": [
+            "C_ExZn",
+            "C_DualABC",
+            "C_DualCrit"
+          ],
+          "conclusion": "C_ExZnp",
+          "argument": "$\\tilde{Z}_{n}$ 视为 $(\\mathbb{H}^{n})^{+}$ 中子集，其商形变收缩到 $\\tilde{Z}_{n}'$，由对偶判据 $\\tilde{Z}_{n}'$ 与 $\\tilde{Z}_{n}$ 为 $\\mathbb{H}^{n}$-对偶，结合已算值与对偶公式得 $a,b,c$ 值。"
+        },
+        {
+          "id": "I_MonoABC",
+          "operationKind": "proof",
+          "premises": [
+            "F_abcDef",
+            "C_Loc",
+            "F_SWFType"
+          ],
+          "conclusion": "C_MonoABC",
+          "argument": "$S^{1}$-不动点为 $G$-同伦等价故 $f$ 在反转 $v$ 后为Borel上同调同构，从而高次为同构，对偶得Borel同调高次同构；$f_{*}$ 保 $v$ 故保无穷部，给定 $X'$ 中无穷元提升到高次原像再降 $v^{l}$ 得 $X$ 中同次无穷元，由同调刻画得不等式。"
+        },
+        {
+          "id": "I_SWFHInv",
+          "operationKind": "proof",
+          "premises": [
+            "F_FDApprox",
+            "F_SWFHDef",
+            "C_SWStability",
+            "C_Susp"
+          ],
+          "conclusion": "C_SWFHInv",
+          "argument": "增大 $\\nu$ 不变而降 $\\tau$ 差悬垂 $V_{\\tau'}^{\\tau}$，Borel同调悬垂平移恰被 $\\dim V_{\\tau}^{0}$ 归一化抵消；小度量形变指标不变而谱流被 $2n$ 修正抵消，故 $\\mathcal{R}$-模同构类不变。"
+        },
+        {
+          "id": "I_SpecInv",
+          "operationKind": "proof",
+          "premises": [
+            "F_SpecDef",
+            "C_SWStability"
+          ],
+          "conclusion": "C_SpecInv",
+          "argument": "形式去悬垂的定义使 $\\tau$ 变化对应同构而 $\\nu$ 变化对应等价，度量小形变保持谱的稳定 $G$-同伦类，其同调即度量相关Floer同调。"
+        },
+        {
+          "id": "I_SWFType",
+          "operationKind": "proof",
+          "premises": [
+            "F_CSD",
+            "F_FDApprox",
+            "F_ConleyDef",
+            "C_Compact",
+            "C_ConleyInv"
+          ],
+          "conclusion": "C_SWFTypeLemma",
+          "argument": "用小扰动 $CSD_{\\omega}$ 使可约非退化且无低正值不可约临界点，$T,T_{\\le0},T^{\\mathrm{irr}}$ 等的吸引子-排斥子余正合列与 $I(\\Theta)\\cong(V_{\\tau}^{0})^{+}$ 给出 $I(T)^{S^{1}}\\simeq(\\tilde{\\mathbb{R}}^{s})^{+}$ 且余集自由；原指标与扰动指标 $G$-等价，更大截断仅差 $\\tilde{\\mathbb{R}},\\mathbb{H}$ 悬垂故保持SWF型，水平同余 $\\dim V_{\\tau}^{0}$ 模 $4$。"
+        },
+        {
+          "id": "I_ABG",
+          "operationKind": "proof",
+          "premises": [
+            "C_SWFHInv",
+            "F_SWFHDef",
+            "F_nDef",
+            "C_QuatIndex",
+            "F_RokhlinDef"
+          ],
+          "conclusion": "C_ABGInvRokhlin",
+          "argument": "无穷部刻画与同调不变性给出 $\\alpha,\\beta,\\gamma$ 不变；$a,b,c$ 同余水平故三者同余 $-n$ 模 $2$，复指标被 $2$ 整除故同余 $-\\sigma(W)/8$，即 $-\\mu$ 模 $2$。"
+        },
+        {
+          "id": "I_Orient",
+          "operationKind": "proof",
+          "premises": [
+            "C_DualABC",
+            "F_SWFHDef",
+            "C_OrientDuality",
+            "F_nDef"
+          ],
+          "conclusion": "C_Orient",
+          "argument": "$-Y$ 流为逆流且 $V_{\\tau}^{\\nu}\\cong\\bar{V}_{-\\nu}^{-\\tau}$，Conley指标互为 $(V_{\\tau}^{\\nu})$-对偶，结合对偶公式与 $n$ 求和及维数恒等式代入 $\\alpha,\\beta,\\gamma$ 定义得符号交换公式，中间 $\\beta$ 自反。"
+        },
+        {
+          "id": "I_CobMono",
+          "operationKind": "proof",
+          "premises": [
+            "C_MonoABC",
+            "F_SWFHDef",
+            "C_CobMap",
+            "C_SurgeryReduce",
+            "C_SWFTypeLemma"
+          ],
+          "conclusion": "C_CobMono",
+          "argument": "化简到 $b_{1}(W)=0$ 后配边映射与对偶映射复合得 $G$-映射 $f$ 于悬垂SWF型之间；$b_{2}^{+}=0$ 时 $S^{1}$-不动点为线性单射满余核零故为 $G$-同伦等价，适用单调命题并代入归一化公式得三不等式，$b_{2}=b_{2}^{-}$ 时增量为 $b_{2}/8$。"
+        },
+        {
+          "id": "I_HomCobInv",
+          "operationKind": "proof",
+          "premises": [
+            "C_CobMono"
+          ],
+          "conclusion": "C_HomCobInv",
+          "argument": "对 $b_{2}=0$ 的 $W$ 分别正反向应用负定单调不等式得双向不等式，故三不变量相等。"
+        },
+        {
+          "id": "I_ThmBeta",
+          "operationKind": "proof",
+          "premises": [
+            "C_ABGInvRokhlin",
+            "C_Orient",
+            "C_CobMono"
+          ],
+          "conclusion": "C_ThmBeta",
+          "argument": "$\\beta$ 的存在与 $1/8\\mathbb{Z}$ 取值及同调配边不变性由不变命题得，反向反对称由定向命题的中间公式得，模 $2$ 为Rokhlin由同余得，负定配边增量由单调命题得，三者合即定理。"
+        },
+        {
+          "id": "I_Cor12",
+          "operationKind": "proof",
+          "premises": [
+            "C_ThmBeta",
+            "F_HomCobDef",
+            "F_RokhlinDef"
+          ],
+          "conclusion": "C_Cor12",
+          "argument": "$Y\\# Y$ 零调等价于 $Y$ 与 $-Y$ 同调配边，此时 $\\beta(Y)=\\beta(-Y)=-\\beta(Y)$ 故 $\\beta(Y)=0$，模 $2$ 约化得 $\\mu(Y)=0$，与Rokhlin一矛盾。"
+        },
+        {
+          "id": "I_Cor13",
+          "operationKind": "proof",
+          "premises": [
+            "C_Cor12",
+            "C_GSM"
+          ],
+          "conclusion": "C_Cor13",
+          "argument": "由约化，三角剖分猜想等价于二阶Rokhlin一球的存在，已证无此球故 $Sq^{1}\\Delta$ 障碍非零给出 $M^{5}$ 不可剖分，经乘积与 $S^{1}$-丛提升到一切 $n>5$。"
+        },
+        {
+          "id": "I_S3",
+          "operationKind": "proof",
+          "premises": [
+            "C_Elliptic",
+            "F_SWFHDef"
+          ],
+          "conclusion": "C_S3Vals",
+          "argument": "正数量曲率时Conley为表示球，同调为多项式环平移 $-2n$，故 $a,b,c$ 最小值皆给出 $-n$，$S^{3}$ 时 $n=0$ 得零。"
+        },
+        {
+          "id": "I_Bries",
+          "operationKind": "proof",
+          "premises": [
+            "C_MOY",
+            "F_SWFHDef",
+            "F_ConleyDef"
+          ],
+          "conclusion": "C_BrieskornVals",
+          "argument": "由可约一次与 $k$ 对不可约的分次分布得Borel同调长正合列，连接映射非平凡或分次理由迫使模结构为截断尾加挠部，对照无穷部最小分次得四族 $\\alpha,\\beta,\\gamma$ 值，反向由对偶移位得另两族。"
+        },
+        {
+          "id": "I_dpDual",
+          "operationKind": "proof",
+          "premises": [
+            "F_dpDef"
+          ],
+          "conclusion": "C_dpDual",
+          "argument": "$\\tilde{\\mathbb{R}}$ 与 $\\mathbb{H}$ 悬垂保持 $S^{1}$-等变上同调差平移，局部化像的最小分次同样平移；对偶与单调的证明与 $G$ 情形用同样方法由 $U$ 代替 $v$ 得到。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C_Loc",
+        "C_DualCrit",
+        "C_TateFacts",
+        "C_ConleyInv",
+        "C_Compact",
+        "C_SWStability",
+        "C_nWellDefined",
+        "C_OrientDuality",
+        "C_CobMap",
+        "C_SurgeryReduce",
+        "C_GSM",
+        "C_RokhlinWell",
+        "C_MOY",
+        "C_Elliptic",
+        "C_QuatIndex"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "03_Manolescu_Pin2_SW_Floer_triangulation.pdf",
+        "pageCount": 29
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 62003,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_PIN",
+                "F_BG",
+                "F_Borel",
+                "F_VDualDef",
+                "F_SWFType",
+                "F_abcDef",
+                "F_dpDef",
+                "F_CSD",
+                "F_ConleyDef",
+                "F_FDApprox",
+                "F_nDef",
+                "F_SWFHDef",
+                "F_S1FloerDef",
+                "F_RokhlinDef",
+                "F_HomCobDef",
+                "F_TriangDef",
+                "F_SpecDef"
+              ],
+              "b0ClaimEntryIds": [
+                "C_Loc",
+                "C_DualCrit",
+                "C_TateFacts",
+                "C_ConleyInv",
+                "C_Compact",
+                "C_SWStability",
+                "C_nWellDefined",
+                "C_OrientDuality",
+                "C_CobMap",
+                "C_SurgeryReduce",
+                "C_GSM",
+                "C_RokhlinWell",
+                "C_MOY",
+                "C_Elliptic",
+                "C_QuatIndex"
+              ],
+              "closureClaimEntryIds": [
+                "C_Loc",
+                "C_DualCrit",
+                "C_TateFacts",
+                "C_ConleyInv",
+                "C_Compact",
+                "C_SWStability",
+                "C_nWellDefined",
+                "C_OrientDuality",
+                "C_CobMap",
+                "C_SurgeryReduce",
+                "C_GSM",
+                "C_RokhlinWell",
+                "C_MOY",
+                "C_Elliptic",
+                "C_QuatIndex",
+                "C_Susp",
+                "C_VDualLemma",
+                "C_Ideal",
+                "C_Ineq",
+                "C_SuspABC",
+                "C_ExG",
+                "C_ExZn",
+                "C_ExZnp",
+                "C_DualABC",
+                "C_MonoABC",
+                "C_dpDual",
+                "C_SWFHInv",
+                "C_SpecInv",
+                "C_SWFTypeLemma",
+                "C_ABGInvRokhlin",
+                "C_Orient",
+                "C_CobMono",
+                "C_HomCobInv",
+                "C_ThmBeta",
+                "C_Cor12",
+                "C_Cor13",
+                "C_S3Vals",
+                "C_BrieskornVals"
+              ],
+              "claimStates": {
+                "C_Loc": "established",
+                "C_DualCrit": "established",
+                "C_TateFacts": "established",
+                "C_ConleyInv": "established",
+                "C_Compact": "established",
+                "C_SWStability": "established",
+                "C_nWellDefined": "established",
+                "C_OrientDuality": "established",
+                "C_CobMap": "established",
+                "C_SurgeryReduce": "established",
+                "C_GSM": "established",
+                "C_RokhlinWell": "established",
+                "C_MOY": "established",
+                "C_Elliptic": "established",
+                "C_QuatIndex": "established",
+                "C_Susp": "established",
+                "C_VDualLemma": "established",
+                "C_Ideal": "established",
+                "C_Ineq": "established",
+                "C_SuspABC": "established",
+                "C_ExG": "established",
+                "C_ExZn": "established",
+                "C_ExZnp": "established",
+                "C_DualABC": "established",
+                "C_MonoABC": "established",
+                "C_dpDual": "established",
+                "C_SWFHInv": "established",
+                "C_SpecInv": "established",
+                "C_SWFTypeLemma": "established",
+                "C_ABGInvRokhlin": "established",
+                "C_Orient": "established",
+                "C_CobMono": "established",
+                "C_HomCobInv": "established",
+                "C_ThmBeta": "established",
+                "C_Cor12": "established",
+                "C_Cor13": "established",
+                "C_S3Vals": "established",
+                "C_BrieskornVals": "established",
+                "C_Conj41": "open"
+              },
+              "claimDerivations": {
+                "C_Loc": {
+                  "basis": "b0"
+                },
+                "C_DualCrit": {
+                  "basis": "b0"
+                },
+                "C_TateFacts": {
+                  "basis": "b0"
+                },
+                "C_ConleyInv": {
+                  "basis": "b0"
+                },
+                "C_Compact": {
+                  "basis": "b0"
+                },
+                "C_SWStability": {
+                  "basis": "b0"
+                },
+                "C_nWellDefined": {
+                  "basis": "b0"
+                },
+                "C_OrientDuality": {
+                  "basis": "b0"
+                },
+                "C_CobMap": {
+                  "basis": "b0"
+                },
+                "C_SurgeryReduce": {
+                  "basis": "b0"
+                },
+                "C_GSM": {
+                  "basis": "b0"
+                },
+                "C_RokhlinWell": {
+                  "basis": "b0"
+                },
+                "C_MOY": {
+                  "basis": "b0"
+                },
+                "C_Elliptic": {
+                  "basis": "b0"
+                },
+                "C_QuatIndex": {
+                  "basis": "b0"
+                },
+                "C_Susp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Susp"
+                  ]
+                },
+                "C_VDualLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_VDual"
+                  ]
+                },
+                "C_Ideal": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Ideal"
+                  ]
+                },
+                "C_Ineq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Ineq"
+                  ]
+                },
+                "C_SuspABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SuspABC"
+                  ]
+                },
+                "C_ExG": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExG"
+                  ]
+                },
+                "C_ExZn": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExZn"
+                  ]
+                },
+                "C_ExZnp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExZnp"
+                  ]
+                },
+                "C_DualABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_DualABC"
+                  ]
+                },
+                "C_MonoABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_MonoABC"
+                  ]
+                },
+                "C_dpDual": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_dpDual"
+                  ]
+                },
+                "C_SWFHInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SWFHInv"
+                  ]
+                },
+                "C_SpecInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SpecInv"
+                  ]
+                },
+                "C_SWFTypeLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SWFType"
+                  ]
+                },
+                "C_ABGInvRokhlin": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ABG"
+                  ]
+                },
+                "C_Orient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Orient"
+                  ]
+                },
+                "C_CobMono": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_CobMono"
+                  ]
+                },
+                "C_HomCobInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_HomCobInv"
+                  ]
+                },
+                "C_ThmBeta": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ThmBeta"
+                  ]
+                },
+                "C_Cor12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor12"
+                  ]
+                },
+                "C_Cor13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor13"
+                  ]
+                },
+                "C_S3Vals": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_S3"
+                  ]
+                },
+                "C_BrieskornVals": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Bries"
+                  ]
+                },
+                "C_Conj41": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F_PIN",
+                "F_BG",
+                "F_Borel",
+                "F_VDualDef",
+                "F_SWFType",
+                "F_abcDef",
+                "F_dpDef",
+                "F_CSD",
+                "F_ConleyDef",
+                "F_FDApprox",
+                "F_nDef",
+                "F_SWFHDef",
+                "F_S1FloerDef",
+                "F_RokhlinDef",
+                "F_HomCobDef",
+                "F_TriangDef",
+                "F_SpecDef"
+              ],
+              "b0ClaimEntryIds": [
+                "C_Loc",
+                "C_DualCrit",
+                "C_TateFacts",
+                "C_ConleyInv",
+                "C_Compact",
+                "C_SWStability",
+                "C_nWellDefined",
+                "C_OrientDuality",
+                "C_CobMap",
+                "C_SurgeryReduce",
+                "C_GSM",
+                "C_RokhlinWell",
+                "C_MOY",
+                "C_Elliptic",
+                "C_QuatIndex"
+              ],
+              "closureClaimEntryIds": [
+                "C_Loc",
+                "C_DualCrit",
+                "C_TateFacts",
+                "C_ConleyInv",
+                "C_Compact",
+                "C_SWStability",
+                "C_nWellDefined",
+                "C_OrientDuality",
+                "C_CobMap",
+                "C_SurgeryReduce",
+                "C_GSM",
+                "C_RokhlinWell",
+                "C_MOY",
+                "C_Elliptic",
+                "C_QuatIndex",
+                "C_Susp",
+                "C_VDualLemma",
+                "C_Ideal",
+                "C_Ineq",
+                "C_SuspABC",
+                "C_ExG",
+                "C_ExZn",
+                "C_ExZnp",
+                "C_DualABC",
+                "C_MonoABC",
+                "C_dpDual",
+                "C_SWFHInv",
+                "C_SpecInv",
+                "C_SWFTypeLemma",
+                "C_ABGInvRokhlin",
+                "C_Orient",
+                "C_CobMono",
+                "C_HomCobInv",
+                "C_ThmBeta",
+                "C_Cor12",
+                "C_Cor13",
+                "C_S3Vals",
+                "C_BrieskornVals"
+              ],
+              "claimStates": {
+                "C_Loc": "established",
+                "C_DualCrit": "established",
+                "C_TateFacts": "established",
+                "C_ConleyInv": "established",
+                "C_Compact": "established",
+                "C_SWStability": "established",
+                "C_nWellDefined": "established",
+                "C_OrientDuality": "established",
+                "C_CobMap": "established",
+                "C_SurgeryReduce": "established",
+                "C_GSM": "established",
+                "C_RokhlinWell": "established",
+                "C_MOY": "established",
+                "C_Elliptic": "established",
+                "C_QuatIndex": "established",
+                "C_Susp": "established",
+                "C_VDualLemma": "established",
+                "C_Ideal": "established",
+                "C_Ineq": "established",
+                "C_SuspABC": "established",
+                "C_ExG": "established",
+                "C_ExZn": "established",
+                "C_ExZnp": "established",
+                "C_DualABC": "established",
+                "C_MonoABC": "established",
+                "C_dpDual": "established",
+                "C_SWFHInv": "established",
+                "C_SpecInv": "established",
+                "C_SWFTypeLemma": "established",
+                "C_ABGInvRokhlin": "established",
+                "C_Orient": "established",
+                "C_CobMono": "established",
+                "C_HomCobInv": "established",
+                "C_ThmBeta": "established",
+                "C_Cor12": "established",
+                "C_Cor13": "established",
+                "C_S3Vals": "established",
+                "C_BrieskornVals": "established",
+                "C_Conj41": "open"
+              },
+              "claimDerivations": {
+                "C_Loc": {
+                  "basis": "b0"
+                },
+                "C_DualCrit": {
+                  "basis": "b0"
+                },
+                "C_TateFacts": {
+                  "basis": "b0"
+                },
+                "C_ConleyInv": {
+                  "basis": "b0"
+                },
+                "C_Compact": {
+                  "basis": "b0"
+                },
+                "C_SWStability": {
+                  "basis": "b0"
+                },
+                "C_nWellDefined": {
+                  "basis": "b0"
+                },
+                "C_OrientDuality": {
+                  "basis": "b0"
+                },
+                "C_CobMap": {
+                  "basis": "b0"
+                },
+                "C_SurgeryReduce": {
+                  "basis": "b0"
+                },
+                "C_GSM": {
+                  "basis": "b0"
+                },
+                "C_RokhlinWell": {
+                  "basis": "b0"
+                },
+                "C_MOY": {
+                  "basis": "b0"
+                },
+                "C_Elliptic": {
+                  "basis": "b0"
+                },
+                "C_QuatIndex": {
+                  "basis": "b0"
+                },
+                "C_Susp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Susp"
+                  ]
+                },
+                "C_VDualLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_VDual"
+                  ]
+                },
+                "C_Ideal": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Ideal"
+                  ]
+                },
+                "C_Ineq": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Ineq"
+                  ]
+                },
+                "C_SuspABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SuspABC"
+                  ]
+                },
+                "C_ExG": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExG"
+                  ]
+                },
+                "C_ExZn": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExZn"
+                  ]
+                },
+                "C_ExZnp": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ExZnp"
+                  ]
+                },
+                "C_DualABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_DualABC"
+                  ]
+                },
+                "C_MonoABC": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_MonoABC"
+                  ]
+                },
+                "C_dpDual": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_dpDual"
+                  ]
+                },
+                "C_SWFHInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SWFHInv"
+                  ]
+                },
+                "C_SpecInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SpecInv"
+                  ]
+                },
+                "C_SWFTypeLemma": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_SWFType"
+                  ]
+                },
+                "C_ABGInvRokhlin": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ABG"
+                  ]
+                },
+                "C_Orient": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Orient"
+                  ]
+                },
+                "C_CobMono": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_CobMono"
+                  ]
+                },
+                "C_HomCobInv": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_HomCobInv"
+                  ]
+                },
+                "C_ThmBeta": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_ThmBeta"
+                  ]
+                },
+                "C_Cor12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor12"
+                  ]
+                },
+                "C_Cor13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Cor13"
+                  ]
+                },
+                "C_S3Vals": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_S3"
+                  ]
+                },
+                "C_BrieskornVals": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I_Bries"
+                  ]
+                },
+                "C_Conj41": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "fabrication",
+                "objectKind": "entry",
+                "targetIds": [
+                  "F_S1FloerDef"
+                ],
+                "sourceRefs": [
+                  "§3.7, PAGE 23-24"
+                ],
+                "sourceSpan": {
+                  "startLine": 1020,
+                  "endLine": 1046
+                },
+                "diagnosis": "F_S1FloerDef 的 statement 在 delta_p 的无穷部最小分次公式中含有来源没有的多余记号“\\ Login”，即“$\\frac{1}{2}\\min\\{r\\mid 0\\ne x\\in {}^{\\infty}SWH_{r}^{S^{1}}\\ Login$”，来源的对应公式只含分次与无穷同调元的存在，不含该英文单词。",
+                "repairRequirement": "删除来源不能确认的多余记号“\\ Login”，保留来源给出的 S1 等变 Floer 同调定义、dp 归一化公式与 p=0 记号，数学定界符保持成对且公式含义不变。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "F_S1FloerDef",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "定义 $SWH_{*}^{S^{1}}(Y,\\mathfrak{s};\\mathbb{F})=\\tilde{H}_{*+\\dim V_{\\tau}^{0}+2n(Y,\\mathfrak{s},g)}^{S^{1}}(I_{\\tau}^{\\nu};\\mathbb{F})$，令 $^{\\infty}SWH_{*}^{S^{1}}$ 为 $U^{l}$ 像之交；定义 $\\delta_{p}(Y,\\mathfrak{s})=(d_{p}(I_{\\tau}^{\\nu})-\\dim V_{\\tau}^{0})/2-n(Y,\\mathfrak{s},g)\\in\\frac{1}{8}\\mathbb{Z}$，亦等于 $\\frac{1}{2}\\min\\{r\\mid 0\\ne x\\in {}^{\\infty}SWH_{r}^{S^{1}}\\ Login$ 的相应最小值；$p=0$ 时记 $\\delta=\\delta_{0}$。",
+                    "after": "定义 $SWH_{*}^{S^{1}}(Y,\\mathfrak{s};\\mathbb{F})=\\tilde{H}_{*+\\dim V_{\\tau}^{0}+2n(Y,\\mathfrak{s},g)}^{S^{1}}(I_{\\tau}^{\\nu};\\mathbb{F})$，令 $^{\\infty}SWH_{*}^{S^{1}}$ 为 $U^{l}$ 像之交；定义 $\\delta_{p}(Y,\\mathfrak{s})=(d_{p}(I_{\\tau}^{\\nu})-\\dim V_{\\tau}^{0})/2-n(Y,\\mathfrak{s},g)\\in\\frac{1}{8}\\mathbb{Z}$，亦等于 $\\frac{1}{2}\\min\\{r\\mid 0\\ne x\\in {}^{\\infty}SWH_{r}^{S^{1}}$ 的相应最小值；$p=0$ 时记 $\\delta=\\delta_{0}$。"
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 81,
+            "cleanCount": 80
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 112676
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 63075
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "cad3ace3ae1ac22a748182b283ba61242539dc33574d544cd6195cd8bc55ee8e",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 182726,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 9,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2531,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4956,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 6958,
+        "phase": "complete",
+        "pageCount": 29
+      },
+      {
+        "stage": "generate",
+        "atMs": 6958,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 119642,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 182725,
+        "phase": "complete",
+        "entries": 56,
+        "inferences": 25
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 112178,
+        "usage": {
+          "input_tokens": 39690,
+          "output_tokens": 28519,
+          "total_tokens": 68209
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 62999,
+        "usage": {
+          "input_tokens": 61055,
+          "output_tokens": 15058,
+          "total_tokens": 76113
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}

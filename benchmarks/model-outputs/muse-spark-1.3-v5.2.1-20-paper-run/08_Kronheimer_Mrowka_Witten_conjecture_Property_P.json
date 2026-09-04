@@ -1,0 +1,1012 @@
+{
+  "schema": "cmath.v521-paper-batch-result/v1",
+  "status": "complete",
+  "pdf": {
+    "fileName": "08_Kronheimer_Mrowka_Witten_conjecture_Property_P.pdf"
+  },
+  "model": {
+    "provider": "opencode-go",
+    "model": "muse-spark-1.3-contributor",
+    "endpoint": "https://opencode.ai/zen/go/v1"
+  },
+  "result": {
+    "schema": "cmath.paper-to-map-result/v1",
+    "status": "complete",
+    "map": {
+      "entries": [
+        {
+          "id": "F-donaldson",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "唐纳森不变量与分级定义",
+          "statement": "设 $X$ 为光滑闭定向 $4$ 流形，满足 $b^{+}(X)$ 为大于 $1$ 的奇数且 $b_{1}(X)=0$，并固定同调定向。对每个 $w\\in H^{2}(X;\\mathbb{Z})$，唐纳森不变量是线性映射 $D_{X}^{w}:\\mathbb{A}(X)\\to\\mathbb{Z}$，其中 $\\mathbb{A}(X)$ 为 $H_{2}(X;\\mathbb{Z})\\oplus H_{0}(X;\\mathbb{Z})$ 上的对称代数，$x$ 表 $H_{0}(X;\\mathbb{Z})$ 的正生成元，$H_{2}$ 生成元次数为 $2$，$x$ 次数为 $4$，且 $D_{X}^{w}$ 在 $\\mathbb{A}_{2d}(X)$ 上的限制仅当 $d\\equiv -w^{2}-\\frac{3}{2}(b^{+}(X)+1)\\pmod{4}$ 时可非零。"
+        },
+        {
+          "id": "F-Dsimple",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "单型与唐纳森级数定义",
+          "statement": "若对一切 $z\\in\\mathbb{A}(X)$ 有 $D_{X}^{w}(x^{2}z)=4D_{X}^{w}(z)$，则称 $X$ 具 $D$ 单型。此时定义 $\\bar{D}_{X}^{w}(z)=D_{X}^{w}(z)+D_{X}^{w}(zx/2)$，当 $z$ 齐次次数为 $2d$ 时两项至多一项非零，且非零仅当 $d\\equiv -w^{2}-\\frac{3}{2}(b^{+}(X)+1)\\pmod{2}$。唐纳森级数定义为 $\\mathcal{D}_{X}^{w}(h)=\\bar{D}_{X}^{w}(e^{h})$，即 $\\sum D_{X}^{w}(h^{d})/d!+\\frac{1}{2}\\sum D_{X}^{w}(xh^{d})/d!$，视为 $h\\in H_{2}(X;\\mathbb{R})$ 上的形式幂级数。"
+        },
+        {
+          "id": "F-sw",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "塞伯格威滕不变量与单型定义",
+          "statement": "设 $X$ 满足 $b^{+}$ 为大于 $1$ 的奇数且 $b_{1}(X)=0$。其塞伯格威滕不变量是对 $\\mathrm{Spin}^{c}$ 结构 $\\mathfrak{s}$ 的整数函数 $SW(\\mathfrak{s})\\in\\mathbb{Z}$。在 $H^{2}(X;\\mathbb{Z})$ 无 $2$ 挠时，$\\mathfrak{s}$ 由半旋量丛 $S^{+}$ 的第一陈类 $K$ 决定，可视为 $SW:H^{2}(X;\\mathbb{Z})\\to\\mathbb{Z}$。若 $K^{2}\\neq 2\\chi+3\\sigma$ 蕴含 $SW(K)=0$，则称 $X$ 具 $SW$ 单型，使 $SW(K)\\neq 0$ 的 $K$ 称为 $SW$ 基本类。"
+        },
+        {
+          "id": "F-tight",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "紧曲面定义",
+          "statement": "光滑嵌入定向曲面 $\\Sigma$ 若亏格 $g$ 满足 $2g-2=[\\Sigma]\\cdot[\\Sigma]>0$，则称为紧曲面。其中 $[\\Sigma]$ 表其同调类，$\\cdot$ 表交型，条件要求自交数为正且由亏格决定。"
+        },
+        {
+          "id": "F-surgery",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "手术流形定义",
+          "statement": "设 $K$ 表 $S^{3}$ 中纽结，$Y_{1}$ 表对 $K$ 作系数 $+1$ 手术所得定向闭 $3$ 流形，$Y_{0}$ 表系数 $0$ 手术所得流形且 $H_{1}(Y_{0})=\\mathbb{Z}$。$K$ 非平凡指 $K$ 不是平凡纽结。"
+        },
+        {
+          "id": "F-contact",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "接触结构与弱相容定义",
+          "statement": "设 $Y$ 为闭定向 $3$ 流形，$\\xi$ 为定向接触结构指 $\\xi$ 为 $1$ 形式 $\\alpha$ 的核且 $\\alpha\\wedge d\\alpha$ 为正 $3$ 形式。若 $Y$ 为定向 $4$ 流形 $W$ 的定向边界，$W$ 上辛形式 $\\omega$ 称为与 $\\xi$ 弱相容，若 $\\omega|_{Y}$ 在 $\\xi$ 上为正，等价于 $\\alpha\\wedge\\omega|_{Y}>0$。"
+        },
+        {
+          "id": "F-floer",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "瞬子弗洛尔同调定义",
+          "statement": "对 $Y_{1}$ 用通常 $SO(3)$ 丛构造瞬子弗洛尔同调 $HF(Y_{1})$，对 $Y_{0}$ 用 $w_{2}$ 非零的 $SO(3)$ 丛 $P\\to Y_{0}$ 构造 $HF(Y_{0})$。相对不变量取值于 $HFF(Y_{0},\\delta)$ 及其对偶，其中 $\\delta$ 为 $Y_{0}$ 中 $1$ 维链。$\\Delta_{K}^{\\prime\\prime}(1)$ 等于 $HF(Y_{0})$ 的欧拉示性数。"
+        },
+        {
+          "id": "F-flux",
+          "entryClass": "fact",
+          "factKind": "definition",
+          "title": "通量与全纯定义",
+          "statement": "设 $\\Sigma$ 为面积为 $1$ 的闭辛曲面，$p:V\\to D^{2}$ 为辛勒弗谢茨纤维化，$\\partial V$ 纤维化为 $S^{1}\\times\\Sigma$。对 $\\gamma$ 表 $H_{1}(\\Sigma)$ 类，通量定义为同态 $f:H_{1}(\\Sigma)\\to\\mathbb{R}$，$[\\gamma]\\mapsto\\int_{S^{1}\\times\\gamma}\\omega|_{\\partial V}$，对应 $H^{1}(\\Sigma;\\mathbb{R})$ 元。非退化为 $2$ 形式开条件，小通量形变保持辛勒弗谢茨性质，$N$ 份沿纤维邻域粘合可实现通量相加。"
+        },
+        {
+          "id": "F-so2",
+          "entryClass": "fact",
+          "factKind": "algorithm",
+          "title": "挠提升给出平坦丛的初等构造",
+          "statement": "若 $v\\in H^{2}(Y;\\mathbb{Z}/2)$ 在 $\\mathrm{Hom}(H_{2}(Y;\\mathbb{Z}),\\mathbb{Z}/2)$ 中的像为零，则 $v$ 有整数提升为 $H^{2}(Y;\\mathbb{Z})$ 中挠元，由此可构造 $Y$ 上平坦 $SO(2)$ 丛使其 $w_{2}$ 等于 $v$。此为初等构造，无需弗洛尔理论。"
+        },
+        {
+          "id": "C-propP",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "性质猜想的同伦球面表述",
+          "statement": "若 $K$ 为 $S^{3}$ 中非平凡纽结，$Y_{1}$ 为其 $+1$ 手术所得流形，则 $Y_{1}$ 不是同伦 $3$ 球面。"
+        },
+        {
+          "id": "C-thm2",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "加一手术的基本群表示主定理",
+          "statement": "设 $Y_{1}$ 由 $S^{3}$ 中非平凡纽结 $K$ 经 $+1$ 手术得到，则存在非平凡同态 $\\rho:\\pi_{1}(Y_{1})\\to SO(3)$。特别 $\\pi_{1}(Y_{1})$ 非平凡。"
+        },
+        {
+          "id": "C-thm3",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "一般三维流形的表示存在定理",
+          "statement": "设 $Y$ 为不可约闭定向 $3$ 流形且 $Y$ 不是 $S^{1}\\times S^{2}$，$v\\in H^{2}(Y;\\mathbb{Z}/2)$ 为任意类，则存在同态 $\\rho:\\pi_{1}(Y)\\to SO(3)$ 使 $w_{2}(\\rho)=v$，其中 $w_{2}(\\rho)$ 表对应 $SO(3)$ 丛的第二示性类。"
+        },
+        {
+          "id": "C-thm4",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "唐纳森结构定理",
+          "statement": "设 $X$ 具 $D$ 单型且 $b_{1}=0$，则唐纳森级数对一切 $w$ 收敛，存在有限多个上同调类 $K_{1},\\dots,K_{s}\\in H^{2}(X;\\mathbb{Z})$ 及非零有理数 $\\beta_{1},\\dots,\\beta_{s}$，均与 $w$ 无关，使 $\\mathcal{D}_{X}^{w}=\\exp(Q/2)\\sum_{r=1}^{s}(-1)^{(w^{2}+K_{r}\\cdot w)/2}\\beta_{r}e^{K_{r}}$ 作为 $H_{2}(X;\\mathbb{R})$ 上解析函数成立，其中 $Q$ 为交型，每个 $K_{r}$ 为 $w_{2}(X)$ 的整数提升。若不变量恒零则 $s=0$，非零基本类成对差符号。含紧曲面蕴含 $D$ 单型。"
+        },
+        {
+          "id": "C-witten",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "威滕猜想的精简形式",
+          "statement": "设 $X$ 满足 $b^{+}$ 为大于 $1$ 的奇数，$b_{1}(X)=0$，$H^{2}(X;\\mathbb{Z})$ 无 $2$ 挠且具 $SW$ 单型，则 $X$ 具 $D$ 单型，$D$ 基本类即 $SW$ 基本类，且对每基本类 $K_{r}$ 有 $\\beta_{r}=c(X)SW(K_{r})$，其中 $c(X)$ 为仅依赖 $X$ 的非零有理数。完整猜想还预言 $c(X)=2^{2+\\frac{1}{4}(7\\chi+11\\sigma)}$，但本文仅需非零性。该陈述全文未被证明，仅作为猜想保留。"
+        },
+        {
+          "id": "C-feehan",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "费恩莱内斯弱威滕定理",
+          "statement": "设 $X$ 满足 $b_{1}=0$，$b^{+}$ 为大于 $1$ 的奇数，$H^{2}$ 无 $2$ 挠且具 $SW$ 单型，并含自交为正的紧曲面。取辅助类 $\\Lambda\\in H^{2}(X;\\mathbb{Z})$ 为紧曲面对偶类的大偶数倍，$w$ 为 $w_{2}(X)$ 的整数提升，记 $N=\\Lambda^{2}$ 可任意大。则对满足 $0\\leq d<N-\\frac{1}{4}(\\chi+\\sigma)-2$ 且满足同余 $d\\equiv -w^{2}-\\frac{3}{2}(b^{+}(X)+1)\\pmod{2}$ 的整数 $d$，及满足 $\\Lambda\\cdot h=0$ 的 $h\\in H_{2}(X;\\mathbb{R})$，有 $\\bar{D}_{X}^{w}(h^{d})=\\sum_{K}(-1)^{(w^{2}+K\\cdot w)/2}SW(K)p_{d}(K\\cdot h,Q(h))$，其中 $p_{d}(s,t)=\\sum_{a+2b=d}C_{a,b}s^{a}t^{b}$ 系数为关于 $\\chi(X),\\sigma(X),N$ 的通用有理函数。"
+        },
+        {
+          "id": "C-cor7",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "附加条件下的条件性威滕猜想",
+          "statement": "设 $X$ 满足 $b_{1}=0$，$b^{+}$ 为大于 $1$ 的奇数，无 $2$ 挠且具 $SW$ 单型，并满足三个附加条件：含自交为正的紧曲面 $\\Sigma$，欧拉数与符号差同于 $\\mathbb{CP}^{3}$ 中偶数次至少 $6$ 的光滑超曲面 $X_{*}$，含自交 $-1$ 球面，则威滕猜想的形式 $\\mathcal{D}_{X}^{w}=c(X)\\exp(Q/2)\\sum_{K}(-1)^{(w^{2}+K\\cdot w)/2}SW(K)e^{K}$ 成立，其中 $c(X)$ 为非零有理数。"
+        },
+        {
+          "id": "C-fill",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "伊利亚什伯格凹填充定理",
+          "statement": "设 $Y$ 为 $4$ 流形 $W$ 的定向边界，$\\omega$ 为 $W$ 上辛形式，$Y$ 上有与定向相容且与 $\\omega$ 弱相容的接触结构 $\\xi$，则可将 $W$ 嵌入闭辛 $4$ 流形 $(X,\\Omega)$ 使 $\\Omega|_{W}=\\omega$。构造为沿开书分解绑 $B_{i}$ 作 $0$ 框架 $2$ 柄得到 $W^{\\prime}$，边界 $Y_{i}^{\\prime}$ 纤维化，再粘辛勒弗谢茨纤维化 $p_{i}:Z_{i}\\to B_{i}$ 使 $\\partial Z_{i}=-Y_{i}^{\\prime}$。"
+        },
+        {
+          "id": "C-lem9",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "填充底可取为圆盘",
+          "statement": "在凹填充构造中可选取勒弗谢茨纤维化 $p_{i}:Z_{i}\\to B_{i}$ 使底 $B_{i}$ 为圆盘 $D^{2}$。即经纤维保持微分同胚 $\\psi$ 调整使 $\\mathrm{Hol}(\\eta^{\\prime})=\\mathrm{Hol}(\\eta^{\\prime\\prime})$ 后，可用 $D^{2}$ 底粘合。"
+        },
+        {
+          "id": "C-lem10",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "给定全纯的圆盘上辛纤维化实现",
+          "statement": "设 $\\Sigma$ 为面积 $1$ 且亏格至少 $2$ 的闭辛曲面，$\\phi:\\Sigma\\to\\Sigma$ 为保面积且经微分同胚同痕于恒同的映射，则存在辛勒弗谢茨纤维化 $p:(V,\\omega)\\to D^{2}$ 使 $p^{-1}(1)=\\Sigma$ 且边界全纯 $\\mathrm{Hol}(\\omega|_{\\partial V})=\\phi$。等价于可实现任意给定满足纤维面积 $1$ 的 $H^{2}(S^{1}\\times\\Sigma;\\mathbb{R})$ 上同调类为边界限制。"
+        },
+        {
+          "id": "C-lem11",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "填充全空间单连通化选择",
+          "statement": "若 $H_{1}(Y;\\mathbb{Z})\\to H_{1}(W;\\mathbb{Z})$ 满，则凹填充中的 $X$ 可选取使 $H_{1}(X;\\mathbb{Z})=0$。做法为取 $Z_{i}$ 使 $H_{1}(Z_{i};\\mathbb{Z})=0$，即 $H_{1}(Z_{i})$ 生成元取为纤维上消失圈，再用 $Mayer$-$Vietoris$ 序列。"
+        },
+        {
+          "id": "C-lem12",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "填充上同调满射选择",
+          "statement": "凹填充中的 $X$ 可选取使限制映射 $H^{2}(X;\\mathbb{Z})\\to H^{2}(W;\\mathbb{Z})$ 满。归约到 $W^{\\prime}$，取 $H_{1}(Z_{i})=0$ 使 $H^{2}(Z_{i})\\to H^{2}(Y_{i}^{\\prime})$ 满，再用上同调 $Mayer$-$Vietoris$ 序列。"
+        },
+        {
+          "id": "C-lem13",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "欧拉示性数符号差与负一球面选择",
+          "statement": "凹填充中的 $X$ 可选取使其欧拉数与符号差同于 $\\mathbb{CP}^{3}$ 中偶数次至少 $6$ 的光滑超曲面 $X_{*}$，同时 $X$ 含自交 $-1$ 球面。策略为用 $Gompf$ 纤维和增加 $b^{+}$ 使 $b^{+}$ 取遍充分大整数，再爆破增加 $b^{-}$ 以匹配目标，要求纤维和用 $V$ 满足 $n^{-}(V)/n^{+}(V)<2$，其中 $n^{\\pm}(V)=b^{\\pm}(V)+2g-1$，$g$ 为纤维亏格。"
+        },
+        {
+          "id": "C-lem14",
+          "entryClass": "claim",
+          "claimKind": "lemma",
+          "title": "含正自交紧曲面的填充选择",
+          "statement": "凹填充中的 $X$ 可选取使其含自交为正的紧曲面。做法为取含与纤维不交紧曲面的勒弗谢茨纤维化 $V\\to\\mathbb{CP}^{1}$，对某个 $Z_{i}$ 作 $Gompf$ 纤维和。"
+        },
+        {
+          "id": "C-prop15",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "叶状三维流形的辛嵌入命题",
+          "statement": "设 $Y$ 为闭定向 $3$ 流形，容许定向紧叶状结构且 $Y$ 不是 $S^{1}\\times S^{2}$，则 $Y$ 可作为分离超曲面嵌入闭辛 $4$ 流形 $(X,\\Omega)$，且 $X$ 可同时满足 $H_{1}(X;\\mathbb{Z})=0$，欧拉数符号差同于 $\\mathbb{CP}^{3}$ 中偶数次至少 $6$ 的超曲面，$H^{2}(X;\\mathbb{Z})\\to H^{2}(Y;\\mathbb{Z})$ 满，含自交为正紧曲面及自交 $-1$ 球面，切开 $Y$ 所得两块 $X_{1},X_{2}$ 均有 $b^{+}>0$。"
+        },
+        {
+          "id": "C-prop16",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "反例假设下的唐纳森消失命题",
+          "statement": "设 $K$ 为主定理的反例，$X$ 为光滑闭 $4$ 流形含 $Y_{0}$ 为分离超曲面，切开所得 $X_{1},X_{2}$ 均有 $b^{+}$ 非零，则对任何在 $Y_{0}$ 上 $\\bmod 2$ 限制非零的 $w\\in H^{2}(X;\\mathbb{Z})$，唐纳森多项式不变量 $D_{X}^{w}$ 恒为零。即 $D_{X}^{w}(x^{m}h^{n})=\\langle\\psi_{X_{1}},\\psi_{X_{2}}\\rangle$ 配对中 $HFF(Y_{0},\\delta)$ 因 $HF(Y_{0})=0$ 而消失。"
+        },
+        {
+          "id": "C-taubes",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "陶布斯辛流形非零定理",
+          "statement": "闭辛 $4$ 流形 $X$ 具 $SW$ 单型且塞伯格威滕不变量非平凡。特别辛形式下基本类非空，满足 $K^{2}=2\\chi+3\\sigma$ 的类上有非零 $SW$ 值。"
+        },
+        {
+          "id": "C-gabai0",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "加拜零手术叶状结构定理",
+          "statement": "若 $K$ 为 $S^{3}$ 中非平凡纽结，$Y_{0}$ 为其 $0$ 手术流形，则 $Y_{0}$ 容许定向紧叶状结构且 $Y_{0}$ 不是乘积流形 $S^{1}\\times S^{2}$。"
+        },
+        {
+          "id": "C-gabaigen",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "加拜一般叶状结构定理",
+          "statement": "不可约闭定向 $3$ 流形 $Y$ 在非 $S^{1}\\times S^{2}$ 的情形下容许紧叶状结构，可用于构造辛填充。特别主定理中的 $Y$ 可赋予紧叶状结构。"
+        },
+        {
+          "id": "C-et",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "伊利亚什伯格瑟斯顿叶状辛化构造",
+          "statement": "若 $Y$ 容许定向紧叶状结构，则乘积流形 $W=[-1,1]\\times Y$ 载有辛形式 $\\omega$，与边界分支 $\\{1\\}\\times Y$ 及 $\\{-1\\}\\times Y$ 上的接触结构 $\\xi_{+},\\xi_{-}$ 弱相容。"
+        },
+        {
+          "id": "C-floertri",
+          "entryClass": "claim",
+          "claimKind": "theorem",
+          "title": "弗洛尔正合三角",
+          "statement": "设 $Y_{1}$ 为 $+1$ 手术，$Y_{0}$ 为 $0$ 手术并取 $w_{2}$ 非零的 $SO(3)$ 丛，则瞬子弗洛尔同调有正合三角联系 $HF(Y_{1})$ 与 $HF(Y_{0})$。特别 $HF(Y_{1})=0$ 蕴含 $HF(Y_{0})=0$。若 $\\pi_{1}(Y_{1})$ 无非平凡 $SO(3)$ 表示则 $HF(Y_{1})=0$。"
+        },
+        {
+          "id": "C-glue",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "唐纳森粘合与弗洛尔消失公式",
+          "statement": "设 $X$ 沿 $Y_{0}$ 分解为 $X_{1},X_{2}$ 且两块 $b^{+}$ 非零，则 $D_{X}^{w}(x^{m}h^{n})$ 可表为相对不变量 $\\psi_{X_{1}},\\psi_{X_{2}}$ 在 $HFF(Y_{0},\\delta)$ 及其对偶中的配对 $\\langle\\psi_{X_{1}},\\psi_{X_{2}}\\rangle$。若 $HF(Y_{0})=0$ 则 $HFF(Y_{0},\\delta)=0$，故相应 $w$ 的 $\\bar{D}_{X}^{w}$ 恒零。类似对一般 $Y$ 及 $w_{2}=v$ 有 $HF^{v}(Y)=0$ 蕴含消失。"
+        },
+        {
+          "id": "C-hyp",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "超曲面标准例子性质",
+          "statement": "设 $X_{*}$ 为 $\\mathbb{CP}^{3}$ 中偶数次超曲面，其 $SW$ 基本类为 $\\pm K_{*}$ 且 $SW(\\pm K_{*})=1$，唐纳森不变量非恒零，$K_{*}$ 与 $Q$ 在 $\\Lambda_{*}$ 正交补上代数独立，$b^{-}(X_{*})/b^{+}(X_{*})$ 当次数充分大趋于 $2$，$X$ 与 $X_{*}$ 具相同欧拉数符号差时同余 $d$ 为偶且 $SW(K)=SW(-K)$。$\\Lambda_{*}$ 可取为与典则类正交的紧曲面对偶类。"
+        },
+        {
+          "id": "C-adj",
+          "entryClass": "claim",
+          "claimKind": "proposition",
+          "title": "伴随不等式与基本类约束",
+          "statement": "伴随不等式蕴含一切 $SW$ 基本类及 $D$ 基本类与紧曲面对偶类 $\\Lambda$ 正交。若 $X$ 含自交 $-1$ 球面则 $SW$ 基本类本原且 $D$ 基本类皆非零，$D$ 基本类形如 $\\pm\\lambda_{r}K_{*}$ 时 $\\lambda_{r}\\leq 1$ 且分母受整性约束，$\\lambda_{r}=0$ 不可能，非整数 $\\lambda_{r}$ 与结构定理形式矛盾，故只能 $\\lambda_{r}=\\pm 1$。含紧曲面蕴含 $D$ 单型。"
+        }
+      ],
+      "inferences": [
+        {
+          "id": "O-org1",
+          "operationKind": "organization",
+          "premises": [
+            "F-donaldson"
+          ],
+          "conclusion": "F-Dsimple",
+          "argument": "概念 $\\bar{D}_{X}^{w}$ 与 $\\mathcal{D}_{X}^{w}$ 由 $D_{X}^{w}$ 直接组织形成，$D$ 单型条件与级数定义是对不变量代数与分级的概念整理，不参与闭包推理。"
+        },
+        {
+          "id": "O-org2",
+          "operationKind": "organization",
+          "premises": [
+            "F-surgery"
+          ],
+          "conclusion": "F-floer",
+          "argument": "弗洛尔群 $HF(Y_{1})$ 与 $HF(Y_{0})$ 是对手术流形 $Y_{1}$ 与 $Y_{0}$ 附带 $SO(3)$ 丛数据的概念形成，其定义依赖于手术构造，不参与闭包推理。"
+        },
+        {
+          "id": "I-lem10",
+          "operationKind": "proof",
+          "premises": [
+            "F-flux"
+          ],
+          "conclusion": "C-lem10",
+          "argument": "由通量刻画，只需实现给定通量 $f$。先取去掉纤维邻域的闭纤维化 $V_{0}$ 使通量为零且 $H_{2}(\\partial V_{0})\\to H_{2}(V_{0})$ 单，特别 $H_{1}(\\bar{V}_{0})=0$。非退化为开条件，故存在 $0$ 在 $H^{1}(\\Sigma;\\mathbb{R})$ 中的邻域 $U$ 使 $f\\in U$ 可由形变 $\\omega_{f}$ 实现。对一般 $f$ 取整数 $N$ 使 $f/N\\in U$，将 $N$ 份 $(V_{0},\\omega_{f/N})$ 沿纤维邻域粘合得到 $(V,\\omega)$，其全纯为 $\\phi$。要求 $\\Sigma$ 亏格至少 $2$ 以保证微分同胚分支可缩从而 $\\partial V$ 等同于 $S^{1}\\times\\Sigma$。"
+        },
+        {
+          "id": "I-lem9",
+          "operationKind": "proof",
+          "premises": [
+            "C-lem10"
+          ],
+          "conclusion": "C-lem9",
+          "argument": "$Y_{i}^{\\prime}$ 上 $2$ 形式 $\\eta^{\\prime}$ 来自 $W^{\\prime}$ 的辛限制，在纤维上为正。用正 $Dehn$ 扭转生成映射类群构造 $D^{2}$ 底辛纤维化 $Z_{i}^{0}$ 使边界拓扑为 $-Y_{i}^{\\prime}$ 且纤维面积积分相同。此时全纯差 $\\phi=\\mathrm{Hol}(\\eta^{\\prime})\\circ\\mathrm{Hol}(\\eta^{\\prime\\prime})^{-1}$ 同痕于恒同。由引理 $10$ 构造 $V$ 实现 $\\phi$，将 $Z_{i}^{0}$ 与 $V$ 沿纤维邻域粘合得 $Z_{i}$，再经纤维保持微分同胚 $\\psi$ 使 $\\psi^{-1}(\\eta^{\\prime})=\\eta^{\\prime\\prime}$ 后粘到 $W^{\\prime}$ 上，底仍为 $D^{2}$。"
+        },
+        {
+          "id": "I-lem11",
+          "operationKind": "proof",
+          "premises": [
+            "C-fill",
+            "C-lem9"
+          ],
+          "conclusion": "C-lem11",
+          "argument": "假设 $H_{1}(Y;\\mathbb{Z})\\to H_{1}(W;\\mathbb{Z})$ 满则 $H_{1}(Y^{\\prime};\\mathbb{Z})\\to H_{1}(W^{\\prime};\\mathbb{Z})$ 亦满。将 $Z_{i}$ 取为底 $D^{2}$ 且 $H_{1}(Z_{i};\\mathbb{Z})=0$，做法是将纤维上生成 $H_{1}$ 的圈安排为消失圈。$X$ 为 $W^{\\prime}$ 与 $Z_{i}$ 沿 $Y_{i}^{\\prime}$ 之并，由 $Mayer$-$Vietoris$ 序列得 $H_{1}(X;\\mathbb{Z})=0$。"
+        },
+        {
+          "id": "I-lem12",
+          "operationKind": "proof",
+          "premises": [
+            "C-fill",
+            "C-lem9"
+          ],
+          "conclusion": "C-lem12",
+          "argument": "$H^{2}(W^{\\prime};\\mathbb{Z})\\to H^{2}(W;\\mathbb{Z})$ 满，故可代 $W$ 以 $W^{\\prime}$。取 $H_{1}(Z_{i};\\mathbb{Z})=0$ 则 $H^{2}(Z_{i};\\mathbb{Z})\\to H^{2}(Y_{i}^{\\prime};\\mathbb{Z})$ 满。对 $X=W^{\\prime}\\cup Z_{i}$ 用上同调 $Mayer$-$Vietoris$ 序列得 $H^{2}(X;\\mathbb{Z})\\to H^{2}(W^{\\prime};\\mathbb{Z})$ 满，从而到 $W$ 满。"
+        },
+        {
+          "id": "I-lem13",
+          "operationKind": "proof",
+          "premises": [
+            "C-fill",
+            "C-lem9",
+            "C-hyp"
+          ],
+          "conclusion": "C-lem13",
+          "argument": "将 $Z_{i}$ 替换为与 $V\\to\\mathbb{CP}^{1}$ 的 $Gompf$ 纤维和 $\\tilde{Z}_{i}$，$b^{+}(X)$ 增加 $n^{+}(V)=b^{+}(V)+2g-1$，$b^{-}(X)$ 增加 $n^{-}(V)=b^{-}(V)+2g-1$。取两个 $n^{+}$ 互素的 $V$ 可实现一切充分大整数为 $b^{+}$。超曲面 $X_{*}$ 当次数大时 $b^{-}/b^{+}$ 趋于 $2$，若 $n^{-}(V)/n^{+}(V)<2$ 则经多份纤维和可使 $b^{+}$ 等于目标而 $b^{-}$ 偏小，爆破补足 $b^{-}$ 即匹配欧拉数与符号差，同时产生自交 $-1$ 球面。所需 $V$ 可由线性系 $|dH|$ 铅笔取 $d$ 大得到，纤维亏格可通过调整开书分解任意增大以匹配 $Z_{i}$。取 $X_{*}$ 次数为偶数至少 $6$。"
+        },
+        {
+          "id": "I-lem14",
+          "operationKind": "proof",
+          "premises": [
+            "C-fill",
+            "C-lem9"
+          ],
+          "conclusion": "C-lem14",
+          "argument": "取 $V\\to\\mathbb{CP}^{1}$ 为含与纤维不交紧曲面的辛勒弗谢茨纤维化，将某个 $Z_{i}$ 替换为与 $V$ 的 $Gompf$ 纤维和，紧曲面保留在和中且自交为正，故 $X$ 含有所需紧曲面。该选择与底为 $D^{2}$ 及其他选择相容。"
+        },
+        {
+          "id": "I-prop15",
+          "operationKind": "proof",
+          "premises": [
+            "C-et",
+            "C-fill",
+            "C-lem11",
+            "C-lem12",
+            "C-lem13",
+            "C-lem14"
+          ],
+          "conclusion": "C-prop15",
+          "argument": "由叶状结构经构造得 $W=[-1,1]\\times Y$ 上辛形式 $\\omega$ 弱相容于边界接触结构 $\\xi_{+},\\xi_{-}$。由凹填充将 $(W,\\omega)$ 嵌入闭辛 $(X,\\Omega)$。$Y$ 分离故切开得 $X_{1},X_{2}$。利用四个引理的自由度同时实现 $H_{1}(X)=0$、上同调满射、欧拉数符号差匹配超曲面、含正自交紧曲面与 $-1$ 球面。两块 $b^{+}>0$ 由构造直接保证。要求 $Y$ 不是 $S^{1}\\times S^{2}$ 以保证叶状辛化适用。"
+        },
+        {
+          "id": "I-cor7",
+          "operationKind": "proof",
+          "premises": [
+            "C-feehan",
+            "C-thm4",
+            "C-hyp",
+            "C-adj"
+          ],
+          "conclusion": "C-cor7",
+          "argument": "设 $X$ 含紧曲面故具 $D$ 单型。只需对 $w_{2}(X)$ 的整数提升 $w$ 验证等式 $\\mathcal{D}_{X}^{w}=c(X)\\exp(Q/2)\\sum_{K}(-1)^{(w^{2}+K\\cdot w)/2}SW(K)e^{K}$。取 $\\Lambda$ 为紧对偶类大偶数倍，一切基本类与 $\\Lambda$ 正交，写 $h=h_{1}+h_{2}$ 分解得 $\\mathcal{D}_{X}^{w}(h_{1}+h_{2})=\\mathcal{D}_{X}^{w}(h_{1})\\exp(Q(h_{2})/2)$，故只需在 $\\Lambda$ 核上验证。对具相同欧拉数符号差的超曲面 $X_{*}$ 取 $w=0$ 应用弱定理，已知基本类 $\\pm K_{*}$ 且 $SW=1$，得 $\\bar{D}_{X_{*}}^{0}(h^{d})=2\\sum C_{a,b}(K_{*}\\cdot h)^{a}Q(h)^{b}$，由 $K_{*}$ 与 $Q$ 代数独立决定 $C_{a,b}$ 且与 $N$ 无关。求和得 $\\exp(Q/2)f(K_{*}\\cdot h)$，其中 $f(t)=\\sum\\alpha_{r}\\cosh(\\lambda_{r}t)$，$D$ 基本类为 $\\pm\\lambda_{r}K_{*}$ 且 $\\lambda_{r}\\leq 1$。将此 $C_{a,b}$ 用于 $X$ 得 $\\mathcal{D}_{X}^{w}=\\exp(Q/2)\\sum SW(K)f(K)$。含 $-1$ 球面迫使 $K$ 本原且基本类非零，故 $\\lambda_{r}$ 非零整数只能为 $\\pm 1$，$f$ 为 $\\cosh$ 倍数，结论成立。"
+        },
+        {
+          "id": "I-prop16",
+          "operationKind": "proof",
+          "premises": [
+            "C-floertri",
+            "C-glue"
+          ],
+          "conclusion": "C-prop16",
+          "argument": "若 $K$ 违背主定理则 $HF(Y_{1})=0$，由正合三角得 $HF(Y_{0})=0$，其中 $HF(Y_{0})$ 指 $w_{2}$ 非零 $SO(3)$ 丛的群。沿 $Y_{0}$ 分解时 $D_{X}^{w}(x^{m}h^{n})=\\langle\\psi_{X_{1}},\\psi_{X_{2}}\\rangle$ 取值于 $HFF(Y_{0},\\delta)$ 及其对偶。$HF(Y_{0})=0$ 蕴含 $HFF(Y_{0},\\delta)=0$，故当 $w$ 在 $Y_{0}$ 上 $\\bmod 2$ 非零时配对恒零，不变量恒零。等价可用全纯型扰动使 $Chern$-$Simons$ 泛函无临界点再退化得到，无需完整三角。"
+        },
+        {
+          "id": "I-thm2",
+          "operationKind": "proof",
+          "premises": [
+            "C-gabai0",
+            "C-prop15",
+            "C-taubes",
+            "C-cor7",
+            "C-prop16",
+            "F-surgery"
+          ],
+          "conclusion": "C-thm2",
+          "argument": "反设 $K$ 非平凡但 $\\pi_{1}(Y_{1})$ 无非平凡 $SO(3)$ 表示。$Y_{0}$ 由 $0$ 手术定义且 $H_{1}(Y_{0})=\\mathbb{Z}$，由叶状定理具紧叶状且非 $S^{1}\\times S^{2}$。由辛嵌入命题将 $Y_{0}$ 嵌入满足全部附加条件的闭辛 $(X,\\Omega)$，两块 $b^{+}>0$ 且 $H^{2}(X)\\to H^{2}(Y_{0})$ 满。辛流形具 $SW$ 单型且不变量非零，条件性威滕猜想适用，故一切 $w$ 的 $D_{X}^{w}$ 非平凡。取 $w\\in H^{2}(X;\\mathbb{Z})$ 使其在 $Y_{0}$ 上为生成元 $\\bmod 2$，反例命题断言此 $w$ 的 $D_{X}^{w}$ 为零，矛盾。故表示存在。"
+        },
+        {
+          "id": "I-thm3",
+          "operationKind": "proof",
+          "premises": [
+            "C-gabaigen",
+            "C-prop15",
+            "C-taubes",
+            "C-cor7",
+            "C-glue",
+            "F-so2"
+          ],
+          "conclusion": "C-thm3",
+          "argument": "设 $Y$ 不可约且非 $S^{1}\\times S^{2}$，$v\\in H^{2}(Y;\\mathbb{Z}/2)$。若 $v$ 与一切 $H_{2}$ 配对为零，则由挠提升的初等 $SO(2)$ 构造得平坦丛实现 $w_{2}=v$。否则 $v$ 与某整数类配对非零，有良定 $HF^{v}(Y)$。由叶状定理与辛嵌入得 $X$ 满足附加条件并有 $w\\in H^{2}(X;\\mathbb{Z})$ 提升 $v$。辛非零与条件性威滕猜想给出 $\\bar{D}_{X}^{w}$ 非零。若无 $w_{2}=v$ 平坦联络则 $HF^{v}(Y)=0$ 蕴含 $\\bar{D}_{X}^{w}$ 恒零，如反例命题之论证，矛盾。故平坦联络存在，给出 $\\rho:\\pi_{1}(Y)\\to SO(3)$ 使 $w_{2}(\\rho)=v$。"
+        },
+        {
+          "id": "I-propP",
+          "operationKind": "proof",
+          "premises": [
+            "C-thm2"
+          ],
+          "conclusion": "C-propP",
+          "argument": "主定理给出非平凡 $\\rho:\\pi_{1}(Y_{1})\\to SO(3)$，故 $\\pi_{1}(Y_{1})$ 非平凡。同伦 $3$ 球面单连通，因此 $Y_{1}$ 不是同伦球面。结合手术永不给出 $S^{3}$ 的已知结果，这等价于原 $Property$ $P$ 定义中系数 $\\pm 1$ 之外的剩余情形。"
+        }
+      ],
+      "negationPairs": [],
+      "b0ClaimEntryIds": [
+        "C-thm4",
+        "C-feehan",
+        "C-fill",
+        "C-taubes",
+        "C-gabai0",
+        "C-gabaigen",
+        "C-et",
+        "C-floertri",
+        "C-glue",
+        "C-hyp",
+        "C-adj"
+      ]
+    },
+    "sourceAnnotations": {
+      "source": {
+        "fileName": "08_Kronheimer_Mrowka_Witten_conjecture_Property_P.pdf",
+        "pageCount": 16
+      },
+      "items": []
+    },
+    "unresolvedItems": [],
+    "diagnostics": {
+      "mainTargetIdentified": false,
+      "openClaimCount": 0,
+      "mainProofChainComplete": null,
+      "missingStages": [],
+      "runReport": {
+        "status": "completed",
+        "inputTokens": 25041,
+        "generationAttempts": 1,
+        "repairAttempts": 1,
+        "repair": {
+          "selection": "patched",
+          "reason": "patch-contract-valid",
+          "initialValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-donaldson",
+                "F-Dsimple",
+                "F-sw",
+                "F-tight",
+                "F-surgery",
+                "F-contact",
+                "F-floer",
+                "F-flux",
+                "F-so2"
+              ],
+              "b0ClaimEntryIds": [
+                "C-thm4",
+                "C-feehan",
+                "C-fill",
+                "C-taubes",
+                "C-gabai0",
+                "C-gabaigen",
+                "C-et",
+                "C-floertri",
+                "C-glue",
+                "C-hyp",
+                "C-adj"
+              ],
+              "closureClaimEntryIds": [
+                "C-propP",
+                "C-thm2",
+                "C-thm3",
+                "C-thm4",
+                "C-feehan",
+                "C-cor7",
+                "C-fill",
+                "C-lem9",
+                "C-lem10",
+                "C-lem11",
+                "C-lem12",
+                "C-lem13",
+                "C-lem14",
+                "C-prop15",
+                "C-prop16",
+                "C-taubes",
+                "C-gabai0",
+                "C-gabaigen",
+                "C-et",
+                "C-floertri",
+                "C-glue",
+                "C-hyp",
+                "C-adj"
+              ],
+              "claimStates": {
+                "C-propP": "established",
+                "C-thm2": "established",
+                "C-thm3": "established",
+                "C-thm4": "established",
+                "C-witten": "open",
+                "C-feehan": "established",
+                "C-cor7": "established",
+                "C-fill": "established",
+                "C-lem9": "established",
+                "C-lem10": "established",
+                "C-lem11": "established",
+                "C-lem12": "established",
+                "C-lem13": "established",
+                "C-lem14": "established",
+                "C-prop15": "established",
+                "C-prop16": "established",
+                "C-taubes": "established",
+                "C-gabai0": "established",
+                "C-gabaigen": "established",
+                "C-et": "established",
+                "C-floertri": "established",
+                "C-glue": "established",
+                "C-hyp": "established",
+                "C-adj": "established"
+              },
+              "claimDerivations": {
+                "C-propP": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-propP"
+                  ]
+                },
+                "C-thm2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2"
+                  ]
+                },
+                "C-thm3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm3"
+                  ]
+                },
+                "C-thm4": {
+                  "basis": "b0"
+                },
+                "C-witten": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-feehan": {
+                  "basis": "b0"
+                },
+                "C-cor7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor7"
+                  ]
+                },
+                "C-fill": {
+                  "basis": "b0"
+                },
+                "C-lem9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem9"
+                  ]
+                },
+                "C-lem10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem10"
+                  ]
+                },
+                "C-lem11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem11"
+                  ]
+                },
+                "C-lem12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem12"
+                  ]
+                },
+                "C-lem13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem13"
+                  ]
+                },
+                "C-lem14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem14"
+                  ]
+                },
+                "C-prop15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop15"
+                  ]
+                },
+                "C-prop16": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop16"
+                  ]
+                },
+                "C-taubes": {
+                  "basis": "b0"
+                },
+                "C-gabai0": {
+                  "basis": "b0"
+                },
+                "C-gabaigen": {
+                  "basis": "b0"
+                },
+                "C-et": {
+                  "basis": "b0"
+                },
+                "C-floertri": {
+                  "basis": "b0"
+                },
+                "C-glue": {
+                  "basis": "b0"
+                },
+                "C-hyp": {
+                  "basis": "b0"
+                },
+                "C-adj": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "finalValidation": {
+            "valid": true,
+            "derivedState": {
+              "availableFactIds": [
+                "F-donaldson",
+                "F-Dsimple",
+                "F-sw",
+                "F-tight",
+                "F-surgery",
+                "F-contact",
+                "F-floer",
+                "F-flux",
+                "F-so2"
+              ],
+              "b0ClaimEntryIds": [
+                "C-thm4",
+                "C-feehan",
+                "C-fill",
+                "C-taubes",
+                "C-gabai0",
+                "C-gabaigen",
+                "C-et",
+                "C-floertri",
+                "C-glue",
+                "C-hyp",
+                "C-adj"
+              ],
+              "closureClaimEntryIds": [
+                "C-propP",
+                "C-thm2",
+                "C-thm3",
+                "C-thm4",
+                "C-feehan",
+                "C-cor7",
+                "C-fill",
+                "C-lem9",
+                "C-lem10",
+                "C-lem11",
+                "C-lem12",
+                "C-lem13",
+                "C-lem14",
+                "C-prop15",
+                "C-prop16",
+                "C-taubes",
+                "C-gabai0",
+                "C-gabaigen",
+                "C-et",
+                "C-floertri",
+                "C-glue",
+                "C-hyp",
+                "C-adj"
+              ],
+              "claimStates": {
+                "C-propP": "established",
+                "C-thm2": "established",
+                "C-thm3": "established",
+                "C-thm4": "established",
+                "C-witten": "open",
+                "C-feehan": "established",
+                "C-cor7": "established",
+                "C-fill": "established",
+                "C-lem9": "established",
+                "C-lem10": "established",
+                "C-lem11": "established",
+                "C-lem12": "established",
+                "C-lem13": "established",
+                "C-lem14": "established",
+                "C-prop15": "established",
+                "C-prop16": "established",
+                "C-taubes": "established",
+                "C-gabai0": "established",
+                "C-gabaigen": "established",
+                "C-et": "established",
+                "C-floertri": "established",
+                "C-glue": "established",
+                "C-hyp": "established",
+                "C-adj": "established"
+              },
+              "claimDerivations": {
+                "C-propP": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-propP"
+                  ]
+                },
+                "C-thm2": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm2"
+                  ]
+                },
+                "C-thm3": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-thm3"
+                  ]
+                },
+                "C-thm4": {
+                  "basis": "b0"
+                },
+                "C-witten": {
+                  "basis": "open",
+                  "reason": "no_proof"
+                },
+                "C-feehan": {
+                  "basis": "b0"
+                },
+                "C-cor7": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-cor7"
+                  ]
+                },
+                "C-fill": {
+                  "basis": "b0"
+                },
+                "C-lem9": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem9"
+                  ]
+                },
+                "C-lem10": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem10"
+                  ]
+                },
+                "C-lem11": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem11"
+                  ]
+                },
+                "C-lem12": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem12"
+                  ]
+                },
+                "C-lem13": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem13"
+                  ]
+                },
+                "C-lem14": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-lem14"
+                  ]
+                },
+                "C-prop15": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop15"
+                  ]
+                },
+                "C-prop16": {
+                  "basis": "proof",
+                  "establishingProofIds": [
+                    "I-prop16"
+                  ]
+                },
+                "C-taubes": {
+                  "basis": "b0"
+                },
+                "C-gabai0": {
+                  "basis": "b0"
+                },
+                "C-gabaigen": {
+                  "basis": "b0"
+                },
+                "C-et": {
+                  "basis": "b0"
+                },
+                "C-floertri": {
+                  "basis": "b0"
+                },
+                "C-glue": {
+                  "basis": "b0"
+                },
+                "C-hyp": {
+                  "basis": "b0"
+                },
+                "C-adj": {
+                  "basis": "b0"
+                }
+              }
+            },
+            "formatIssues": [],
+            "error": null
+          },
+          "bundle": {
+            "schema": "cmath.audited-patch-repair/v0.3",
+            "findings": [
+              {
+                "id": "F1",
+                "category": "distortion",
+                "objectKind": "entry",
+                "targetIds": [
+                  "C-propP"
+                ],
+                "sourceRefs": [
+                  "页2 §1"
+                ],
+                "sourceSpan": {
+                  "startLine": 33,
+                  "endLine": 43
+                },
+                "diagnosis": "C-propP在来源Conjecture 1之外附加了“特别π1(Y1)非平凡”。来源Conjecture 1仅断言Y1不是同伦3球面，未断言基本群非平凡；非同伦球面不蕴含基本群非平凡，属于加强结论强度。",
+                "repairRequirement": "删除附加的π1非平凡断言，仅保留来源Conjecture 1的同伦球面表述，不改变其余条件与量词。"
+              }
+            ],
+            "operations": [
+              {
+                "findingId": "F1",
+                "op": "replaceFields",
+                "objectKind": "entry",
+                "targetId": "C-propP",
+                "changes": [
+                  {
+                    "field": "statement",
+                    "before": "若 $K$ 为 $S^{3}$ 中非平凡纽结，$Y_{1}$ 为其 $+1$ 手术所得流形，则 $Y_{1}$ 不是同伦 $3$ 球面。特别 $\\pi_{1}(Y_{1})$ 非平凡。",
+                    "after": "若 $K$ 为 $S^{3}$ 中非平凡纽结，$Y_{1}$ 为其 $+1$ 手术所得流形，则 $Y_{1}$ 不是同伦 $3$ 球面。"
+                  }
+                ]
+              }
+            ]
+          },
+          "rejectedGroups": [],
+          "receipt": {
+            "objectCount": 47,
+            "cleanCount": 46
+          }
+        },
+        "calls": [
+          {
+            "operation": "generate",
+            "publicStage": "generate",
+            "transportStage": "assemble",
+            "durationMs": 152792
+          },
+          {
+            "operation": "audited-patch-repair",
+            "publicStage": "repair",
+            "transportStage": "repair",
+            "durationMs": 64623
+          }
+        ]
+      }
+    },
+    "stages": {
+      "mineru": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "generate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "validate": {
+        "status": "complete",
+        "attempt": 1
+      },
+      "repair": {
+        "status": "complete",
+        "attempt": 1
+      }
+    },
+    "identity": {
+      "contentFingerprint": "b0376a6661b3f936020be6fef7a29ea68e33ce0e2fd532f0ba7fda8025a40fa7",
+      "frozenWorkflow": {
+        "label": "canonical-paper-to-map-v5.2.1-stage-contract-repair",
+        "displayVersion": "V5.2.1",
+        "productionContractVersion": "production-canonical-paper-import/v1.1",
+        "resultContractVersion": "cmath.paper-to-map-result/v1",
+        "mineruInputVersion": "cmath.paper-import.mineru/v1",
+        "promptVersion": "canonical-map-v5.2-zh-default-atomic-repair-v28-disposition-receipt",
+        "semanticRuntimeVersion": "cmath-gamma.math-map-semantics/v3",
+        "capabilityAuthority": "../CMath-capabilities/exports/canonical.json",
+        "capabilitySyncIdentity": "sha256:3ad779db70b37cdfb7be9e9435e6de54d727482b273fc3e38c5295895a6d3198",
+        "outputSchema": "cmath.math-map-state/v3"
+      }
+    }
+  },
+  "diagnostics": {
+    "durationMs": 233996,
+    "stages": [
+      {
+        "stage": "mineru",
+        "atMs": 10,
+        "phase": "start"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 2408,
+        "phase": "progress",
+        "state": "waiting-file"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 4847,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 7262,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 9665,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 12050,
+        "phase": "progress",
+        "state": "running"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 14443,
+        "phase": "progress",
+        "state": "done"
+      },
+      {
+        "stage": "mineru",
+        "atMs": 16575,
+        "phase": "complete",
+        "pageCount": 16
+      },
+      {
+        "stage": "generate",
+        "atMs": 16575,
+        "phase": "start"
+      },
+      {
+        "stage": "repair",
+        "atMs": 169371,
+        "phase": "start",
+        "operation": "audited-patch-repair"
+      },
+      {
+        "stage": "validate",
+        "atMs": 233996,
+        "phase": "complete",
+        "entries": 33,
+        "inferences": 14
+      }
+    ],
+    "modelCalls": [
+      {
+        "stage": "generate",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 151993,
+        "usage": {
+          "input_tokens": 14649,
+          "output_tokens": 32096,
+          "total_tokens": 46745
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      },
+      {
+        "stage": "repair",
+        "model": "muse-spark-1.3-contributor",
+        "status": 200,
+        "durationMs": 64104,
+        "usage": {
+          "input_tokens": 28137,
+          "output_tokens": 15182,
+          "total_tokens": 43319
+        },
+        "requestedModel": "muse-spark-1.3-contributor"
+      }
+    ]
+  }
+}
