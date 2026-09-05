@@ -12,38 +12,38 @@ function freezeScript(src, { versioned = true } = {}) {
   return Object.freeze({ src, versioned });
 }
 
-const PRODUCTION_RELEASE_ID = "20260905-public-content-cleanup-v1";
+const PRODUCTION_RELEASE_ID = "20260905-folder-layout-v1";
 const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
-  freezeScript("portable-maps-data.js"),
-  freezeScript("vendor/force-graph/force-graph.min.js", { versioned: false }),
-  freezeScript("vendor/katex/katex.min.js", { versioned: false }),
-  freezeScript("vendor/fflate/fflate.min.js", { versioned: false }),
-  freezeScript("math-text.js"),
-  freezeScript("math-rendering-consumer.js"),
-  freezeScript("graph-contract.js"),
-  freezeScript("graph-canvas.js"),
+  freezeScript("generated-math-content/portable-maps-data.js"),
+  freezeScript("capabilities/browser/vendor/force-graph/force-graph.min.js", { versioned: false }),
+  freezeScript("capabilities/browser/vendor/katex/katex.min.js", { versioned: false }),
+  freezeScript("capabilities/browser/vendor/fflate/fflate.min.js", { versioned: false }),
+  freezeScript("capabilities/browser/math-text.js"),
+  freezeScript("src/math-map/math-rendering-consumer.js"),
+  freezeScript("capabilities/browser/graph-contract.js"),
+  freezeScript("capabilities/browser/graph-canvas.js"),
   freezeScript("src/map-presentation/product-focus.js"),
   freezeScript("capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"),
-  freezeScript("math-map-semantics-v3-bridge.js"),
-  freezeScript("math-map-semantics.js"),
-  freezeScript("math-map-naming.js"),
-  freezeScript("research-loop-progress.js"),
-  freezeScript("math-map-visual-semantics.js"),
-  freezeScript("math-map-content-loader.js"),
-  freezeScript("generic-math-map-preview-loader.js"),
-  freezeScript("math-map-project-adapter.js"),
-  freezeScript("canonical-math-map-adapter.js"),
+  freezeScript("src/math-map/math-map-semantics-v3-bridge.js"),
+  freezeScript("capabilities/browser/math-map-semantics.js"),
+  freezeScript("capabilities/browser/math-map-naming.js"),
+  freezeScript("capabilities/browser/research-loop-progress.js"),
+  freezeScript("capabilities/browser/math-map-visual-semantics.js"),
+  freezeScript("capabilities/browser/math-map-content-loader.js"),
+  freezeScript("capabilities/browser/generic-math-map-preview-loader.js"),
+  freezeScript("capabilities/browser/math-map-project-adapter.js"),
+  freezeScript("src/math-map/canonical-math-map-adapter.js"),
   freezeScript("generated-math-content/registry.js"),
-  freezeScript("paper-import-v3-capability.js"),
-  freezeScript("guide-lead-contract-v1.js"),
-  freezeScript("lead-guided-extraction-v1.js"),
-  freezeScript("dual-lane-extraction-aggregation-v1.js"),
+  freezeScript("src/paper-import/paper-import-v3-capability.js"),
+  freezeScript("src/paper-import/guide-lead-contract-v1.js"),
+  freezeScript("src/paper-import/lead-guided-extraction-v1.js"),
+  freezeScript("src/paper-import/dual-lane-extraction-aggregation-v1.js"),
   freezeScript("src/paper-import/core/validation.js"),
   freezeScript("src/paper-import/core/project-view.js"),
   freezeScript("src/paper-import/core/model-transport.js"),
-  freezeScript("paper-raw-entry-pool-v1.js"),
+  freezeScript("src/paper-import/paper-raw-entry-pool-v1.js"),
   freezeScript("src/paper-import/entry/artifact.js"),
-  freezeScript("paper-entry-artifact-v1.js"),
+  freezeScript("src/paper-import/paper-entry-artifact-v1.js"),
   freezeScript("src/paper-import/entry/lifecycle.js"),
   freezeScript("src/paper-import/entry/consolidation.js"),
   freezeScript("src/paper-import/entry/verification.js"),
@@ -64,10 +64,10 @@ const PRODUCTION_RUNTIME_SCRIPTS = Object.freeze([
   freezeScript("src/paper-import/workflow/index.js"),
   freezeScript("src/paper-import/canonical/v5.js"),
   freezeScript("src/paper-import/production/index.js"),
-  freezeScript("paper-import-client.js"),
+  freezeScript("src/paper-import/paper-import-client.js"),
   freezeScript("src/runtime/capabilities.js"),
   freezeScript("src/workbench/paper-import.js"),
-  freezeScript("app-v5.js"),
+  freezeScript("src/workbench/app-v5.js"),
 ]);
 
 export const PRODUCTION_RELEASE = Object.freeze({
@@ -102,8 +102,8 @@ function withReleaseMeta(html) {
 }
 
 function withReleaseStylesheet(html) {
-  const source = `styles.css?v=${PRODUCTION_RELEASE.id}`;
-  const stylesheet = /(<link\s+rel=["']stylesheet["']\s+href=["'])styles\.css(?:\?[^"']*)?(["'][^>]*>)/u;
+  const source = `assets/styles/styles.css?v=${PRODUCTION_RELEASE.id}`;
+  const stylesheet = /(<link\s+rel=["']stylesheet["']\s+href=["'])assets\/styles\/styles\.css(?:\?[^"']*)?(["'][^>]*>)/u;
   if (!stylesheet.test(html)) throw new Error("生产入口缺少 styles.css，无法写入发布身份");
   return html.replace(stylesheet, `$1${source}$2`);
 }
@@ -139,7 +139,7 @@ export function inspectProductionEntries({ canonicalHtml, mirrorHtml }) {
   if (releaseId !== PRODUCTION_RELEASE.id) {
     throw new Error(`生产入口发布身份不匹配：期望 ${PRODUCTION_RELEASE.id}，实际 ${releaseId ?? "缺失"}`);
   }
-  if (!canonical.includes(`href="styles.css?v=${PRODUCTION_RELEASE.id}"`)) {
+  if (!canonical.includes(`href="assets/styles/styles.css?v=${PRODUCTION_RELEASE.id}"`)) {
     throw new Error("生产入口 styles.css 与发布身份不一致，请运行 npm run sync:production-entry");
   }
   const actualSources = scriptSourcesOf(canonical);

@@ -5,11 +5,11 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 
 const authority = require("../src/paper-import/core/validation.js");
-const pool = require("../paper-raw-entry-pool-v1.js");
-const artifact = require("../paper-entry-artifact-v1.js");
-const consolidationV11 = require("../paper-entry-consolidation-v1.1-model.js");
+const pool = require("../src/paper-import/paper-raw-entry-pool-v1.js");
+const artifact = require("../src/paper-import/paper-entry-artifact-v1.js");
+const consolidationV11 = require("../src/paper-import/paper-entry-consolidation-v1.1-model.js");
 const consolidation = require("../src/paper-import/entry/consolidation.js");
-const client = require("../paper-import-client.js");
+const client = require("../src/paper-import/paper-import-client.js");
 
 test("authority tracks all four math delimiter states", () => {
   const balanced = [

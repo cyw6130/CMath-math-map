@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 
-import paperImportClient from "../paper-import-client.js";
+import paperImportClient from "../src/paper-import/paper-import-client.js";
 
 const [pdfPath, model = "deepseek-v4-flash", maxCharsRaw, reasoningEffort = "none"] = process.argv.slice(2);
 if (!pdfPath) throw new Error("usage: node test-paper-import.mjs <pdf> [model] [maxChars] [reasoningEffort]");

@@ -34,7 +34,7 @@
     return JSON.parse(JSON.stringify(val));
   }
 
-  const { hasBalancedMathDelimiters, validateMathDelimiters } = require("./src/paper-import/core/validation.js");
+  const { hasBalancedMathDelimiters, validateMathDelimiters } = require("./core/validation.js");
 
   function normalizeEntryType(rawType) {
     if (typeof rawType !== "string") return null;

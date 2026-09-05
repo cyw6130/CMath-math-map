@@ -79,8 +79,8 @@ function loadMathRenderingHarness() {
       },
     },
   };
-  vm.runInNewContext(read("math-text.js"), { window: browserWindow, document: {} });
-  vm.runInNewContext(read("math-rendering-consumer.js"), { window: browserWindow, document: {} });
+  vm.runInNewContext(read("capabilities/browser/math-text.js"), { window: browserWindow, document: {} });
+  vm.runInNewContext(read("src/math-map/math-rendering-consumer.js"), { window: browserWindow, document: {} });
   return { api: browserWindow.GammaMath, calls };
 }
 
@@ -94,7 +94,7 @@ test("production entry and v5 mirror expose the same reduced interaction shell",
   assert.match(production, /<span id="map-active-title"/u);
   assert.match(production, /class="legacy-map-capability-hooks" hidden aria-hidden="true"/u);
   assert.match(production, /id="math-map-context"[^>]* hidden aria-hidden="true"/u);
-  assert.ok(production.indexOf('src="math-text.js"') < production.indexOf('src="math-rendering-consumer.js'));
+  assert.ok(production.indexOf('src="capabilities/browser/math-text.js"') < production.indexOf('src="src/math-map/math-rendering-consumer.js'));
   assert.match(production, /math-rendering-consumer\.js\?v=[^"\s]+/u);
   assert.match(production, />\s*生成数学地图/u);
   assert.match(production, /自动保存到<strong>「我的地图 \/ 未分类」<\/strong>/u);
@@ -145,7 +145,7 @@ test("long formulas become scrollable display math while short symbols stay inli
   assert.equal(formula?.options.displayMode, true);
   assert.equal(symbol?.options.displayMode, false);
 
-  const styles = read("app-v5.css");
+  const styles = read("assets/styles/app-v5.css");
   assert.match(styles, /\.math-map-inspector \.katex-display[\s\S]*overflow-x:\s*auto/u);
 });
 
@@ -165,21 +165,21 @@ test("the default test suite includes frontend regressions", () => {
 
 test("production rendering check rejects release drift and accepts the current entry", () => {
   assert.throws(
-    () => inspectRenderingDeployment('<script src="math-text.js"></script>', ""),
+    () => inspectRenderingDeployment('<script src="capabilities/browser/math-text.js"></script>', ""),
     /尚未加载带版本指纹/u,
   );
   assert.throws(
     () => inspectRenderingDeployment(
-      '<script src="math-rendering-consumer.js?v=stale"></script>',
+      '<script src="src/math-map/math-rendering-consumer.js?v=stale"></script>',
       'consumerAdapterId: "cmath-math-map.math-rendering-consumer/v1"',
     ),
     /发布身份/u,
   );
-  const assetPath = productionAssetSource("math-rendering-consumer.js");
+  const assetPath = productionAssetSource("src/math-map/math-rendering-consumer.js");
   assert.deepEqual(
     inspectRenderingDeployment(
       read("index.html"),
-      read("math-rendering-consumer.js"),
+      read("src/math-map/math-rendering-consumer.js"),
     ),
     {
       assetPath,
@@ -189,8 +189,8 @@ test("production rendering check rejects release drift and accepts the current e
 });
 
 test("product shell keeps explicit focus exit and conditionally exposes evidence", () => {
-  const app = read("app-v5.js");
-  const styles = read("app-v5.css");
+  const app = read("src/workbench/app-v5.js");
+  const styles = read("assets/styles/app-v5.css");
 
   assert.match(app, /function installInspectorEnhancements\(\)/u);
   assert.match(app, /evidenceButton\.hidden = !hasEvidence/u);
@@ -199,7 +199,7 @@ test("product shell keeps explicit focus exit and conditionally exposes evidence
 });
 
 test("folder drag movement and within-folder ordering remain available", () => {
-  const app = read("app-v5.js");
+  const app = read("src/workbench/app-v5.js");
 
   assert.match(app, /function moveMapToFolder\(/u);
   assert.match(app, /function insertMapAtPosition\(/u);
@@ -208,8 +208,8 @@ test("folder drag movement and within-folder ordering remain available", () => {
 
 test("map library keeps imports available and gives every user map a complete action path", () => {
   const html = read("index.html");
-  const app = read("app-v5.js");
-  const styles = read("app-v5.css");
+  const app = read("src/workbench/app-v5.js");
+  const styles = read("assets/styles/app-v5.css");
 
   assert.match(html, /id="btn-library-import-json"/u);
   assert.match(app, /YOUR LIBRARY[\s\S]*我的地图/u);
@@ -224,7 +224,7 @@ test("map library keeps imports available and gives every user map a complete ac
 
 test("settings separate CMath-provided access from explicitly saved BYOK configuration", () => {
   const html = read("index.html");
-  const app = read("app-v5.js");
+  const app = read("src/workbench/app-v5.js");
 
   assert.match(html, /name="model-access-mode" value="cmath" checked/u);
   assert.match(html, /name="model-access-mode" value="own"/u);

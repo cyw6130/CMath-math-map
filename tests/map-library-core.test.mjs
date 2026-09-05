@@ -29,7 +29,7 @@ function loadBrowserCore() {
   const window = {
     CMathPaperImportCheckpointStore: require("../src/paper-import/workflow/checkpoint-store.js"),
     GammaMathMapSemanticsV3: require("../capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js"),
-    GammaCanonicalMathMapAdapter: require("../canonical-math-map-adapter.js"),
+    GammaCanonicalMathMapAdapter: require("../src/math-map/canonical-math-map-adapter.js"),
   };
   const context = vm.createContext({ window, globalThis: window, structuredClone });
   const source = fs.readFileSync(path.join(root, "src/map-library/core.js"), "utf8");
@@ -148,16 +148,16 @@ test("Map Library 拒绝无效地图与损坏的 Generated Map 封装", () => {
 test("生产页面在应用启动前加载 Map Library 核心", () => {
   for (const entry of ["index.html", "index-v5.html"]) {
     const html = fs.readFileSync(path.join(root, entry), "utf8");
-    const adapterIndex = html.indexOf('src="canonical-math-map-adapter.js');
+    const adapterIndex = html.indexOf('src="src/math-map/canonical-math-map-adapter.js');
     const checkpointIndex = html.indexOf('src="src/paper-import/workflow/checkpoint-store.js');
     const coreIndex = html.indexOf('src="src/map-library/core.js');
-    const appIndex = html.indexOf('src="app-v5.js');
+    const appIndex = html.indexOf('src="src/workbench/app-v5.js');
     assert.ok(adapterIndex >= 0 && adapterIndex < coreIndex, `${entry} 应先加载 Canonical 地图适配器`);
     assert.ok(checkpointIndex >= 0 && checkpointIndex < coreIndex, `${entry} 应先加载 Generated Map 规整依赖`);
     assert.ok(coreIndex < appIndex, `${entry} 应在应用启动前加载 Map Library 核心`);
   }
 
-  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "src/workbench/app-v5.js"), "utf8");
   const runtime = fs.readFileSync(path.join(root, "src/runtime/capabilities.js"), "utf8");
   assert.match(runtime, /root\.CMathMapLibraryCore/u);
   assert.match(app, /createCapabilityRuntime\(\{ root: window \}\)/u);

@@ -7,7 +7,7 @@
   "use strict";
 
   const productionFacade = root?.CMathPaperImportProductionFacade
-    ?? (typeof require === "function" ? require("./src/paper-import/production/index.js") : null);
+    ?? (typeof require === "function" ? require("./production/index.js") : null);
   if (!productionFacade
     || typeof productionFacade.endpointUrl !== "function"
     || typeof productionFacade.requestPaperProjectView !== "function"
@@ -27,7 +27,7 @@
   const FROZEN_WORKFLOW = productionFacade.FROZEN_WORKFLOW;
   const MAX_PAPER_TEXT_CHARS = 80_000;
   const inferenceModule = root?.CMathPaperInferenceModule
-    ?? (typeof require === "function" ? require("./src/paper-import/inference/index.js") : null);
+    ?? (typeof require === "function" ? require("./inference/index.js") : null);
   if (!inferenceModule
     || typeof inferenceModule.assemblyPrompt !== "function"
     || typeof inferenceModule.paperProjectView !== "function"
@@ -40,7 +40,7 @@
   const findOpenClaims = inferenceModule.findOpenClaims;
   const requestPaperInferenceFromEntryArtifact = inferenceModule.requestPaperInferenceFromEntryArtifact;
   const coreValidation = root?.CMathPaperCoreValidation
-    ?? (typeof require === "function" ? require("./src/paper-import/core/validation.js") : null);
+    ?? (typeof require === "function" ? require("./core/validation.js") : null);
   if (!coreValidation || typeof coreValidation.hasBalancedMathDelimiters !== "function" || typeof coreValidation.validateMathDelimiters !== "function") {
     throw new Error("CMath 核心校验能力没有加载（src/paper-import/core/validation.js）");
   }
@@ -49,7 +49,7 @@
 
   const projectViewCore = root?.CMathPaperProjectView
     ?? (typeof require === "function" ? (() => {
-      try { return require("./src/paper-import/core/project-view.js"); } catch { return null; }
+      try { return require("./core/project-view.js"); } catch { return null; }
     })() : null);
   if (!projectViewCore
     || typeof projectViewCore.normalizeRawProjectView !== "function"
@@ -67,7 +67,7 @@
 
   const entryModule = root?.CMathPaperEntryModule
     ?? (typeof require === "function" ? (() => {
-      try { return require("./src/paper-import/entry/index.js"); } catch { return null; }
+      try { return require("./entry/index.js"); } catch { return null; }
     })() : null);
   if (!entryModule
     || typeof entryModule.entryReviewPrompt !== "function"

@@ -10,14 +10,14 @@
   font-style: normal;
   font-weight: 400 1000;
   font-display: swap;
-  src: url("vendor/fonts/nunito-normal.woff2") format("woff2");
+  src: url("../../capabilities/browser/vendor/fonts/nunito-normal.woff2") format("woff2");
 }
 @font-face {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 400 1000;
   font-display: swap;
-  src: url("vendor/fonts/nunito-italic.woff2") format("woff2");
+  src: url("../../capabilities/browser/vendor/fonts/nunito-italic.woff2") format("woff2");
 }
 
 :root {

@@ -5,17 +5,17 @@ import type { JsonValue } from '@deepseek-ai/dsh-session/types'
 import { TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
 // The existing browser workflow is intentionally JavaScript; this seam is covered by its Node tests.
 // @ts-expect-error no declaration is shipped by the static Math Map application
-import paperImportClient from '../../../paper-import-client.js'
+import paperImportClient from '../../../src/paper-import/paper-import-client.js'
 // Synchronized canonical capability asset; DSH only injects it into the
 // workflow and does not own its prompts or schemas.
 // @ts-expect-error no declaration is shipped by the synchronized browser asset
-import paperImportV3Capability from '../../../paper-import-v3-capability.js'
+import paperImportV3Capability from '../../../src/paper-import/paper-import-v3-capability.js'
 // @ts-expect-error synchronized browser assets do not ship declarations
-import guideLeadContract from '../../../guide-lead-contract-v1.js'
+import guideLeadContract from '../../../src/paper-import/guide-lead-contract-v1.js'
 // @ts-expect-error synchronized browser assets do not ship declarations
-import leadGuidedExtraction from '../../../lead-guided-extraction-v1.js'
+import leadGuidedExtraction from '../../../src/paper-import/lead-guided-extraction-v1.js'
 // @ts-expect-error synchronized browser assets do not ship declarations
-import dualLaneAggregation from '../../../dual-lane-extraction-aggregation-v1.js'
+import dualLaneAggregation from '../../../src/paper-import/dual-lane-extraction-aggregation-v1.js'
 import type { ImportStage } from './router.js'
 
 export interface PaperImportConfig { chunkCharacters: number; overlapCharacters: number; concurrency: number; experimentId?: string; condition?: string; workflowVersion?: 'v1' | 'v2' | 'v3' | 'v3.1' | 'v3.2' | 'v3.3' | 'v3.4' | 'v3.5' | 'v3.6' | 'v3.7' | 'v3.8' | 'v3.9' | 'v3.9.1' | 'v3.9.2' | 'v3.9.3' | 'v3.9.4' | 'v3.9.5' | 'v3.9.6' | 'v3.9.7' | 'v3.9.8' | 'v3.9.9' | 'v3.10' | 'v3.10.1' | 'v3.11' | 'v3.12' | 'v3.13' | 'v3.14' | 'v3.15' | 'v3.16' | 'v3.17' | 'v3.18' | 'v3.19' | 'v3.20' | 'v3.21' | 'v3.22' | 'v3.23' | 'v3.24' | 'v3.25' | 'v3.26' | 'v3.26-inference-v2' | 'v3.26-inference-v3' | 'v3.26-inference-v4-assembly' | 'v3.26-inference-v5-repair-coverage' | 'v3.26-inference-v6-repair-chain' | 'v3.26-inference-v7-repair-queue' | 'v3.27' | 'v3.28' | 'v3.29' | 'v3.30' | 'v3.31' | 'v3.32' | 'v3.33' | 'v3.34' | 'v3.35' | 'v3.36' | 'v3.37' | 'v3.38' | 'v3.39' | 'v3.40' | 'v3.41'; tokenBudget?: { integrate?: number; aggregate?: number; normal: number; retry: number } }

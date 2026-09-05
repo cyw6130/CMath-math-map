@@ -8,7 +8,7 @@ const {
   validateCanonicalMathMap,
   validateProjectView,
   validateSupportedMap,
-} = require("./src/map-library/core.js");
+} = require("./core.js");
 
 function safeMapFileName(id) {
   const value = String(id || "").trim();

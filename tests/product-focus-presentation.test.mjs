@@ -236,14 +236,14 @@ test("浏览器普通 script 暴露产品聚焦呈现接口", () => {
 
 test("生产入口在界面前加载呈现模块，界面只调用公开接口", () => {
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-  const app = fs.readFileSync(new URL("../app-v5.js", import.meta.url), "utf8");
+  const app = fs.readFileSync(new URL("../src/workbench/app-v5.js", import.meta.url), "utf8");
   const runtime = fs.readFileSync(
     new URL("../src/runtime/capabilities.js", import.meta.url),
     "utf8",
   );
-  const canvasIndex = html.indexOf('src="graph-canvas.js');
+  const canvasIndex = html.indexOf('src="capabilities/browser/graph-canvas.js');
   const presentationIndex = html.indexOf('src="src/map-presentation/product-focus.js');
-  const appIndex = html.indexOf('src="app-v5.js');
+  const appIndex = html.indexOf('src="src/workbench/app-v5.js');
 
   assert.ok(canvasIndex >= 0 && canvasIndex < presentationIndex);
   assert.ok(presentationIndex < appIndex);

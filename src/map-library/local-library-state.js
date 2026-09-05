@@ -10,7 +10,7 @@ const {
   normalizeLibraryState,
   normalizeOrders,
   validateBackupPayload,
-} = require("./src/map-library/core.js");
+} = require("./core.js");
 
 function createLocalLibraryStateStore(filePath) {
   function ensureDirectory() {

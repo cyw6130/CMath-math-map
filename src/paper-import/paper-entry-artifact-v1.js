@@ -7,7 +7,7 @@
 
   const isCommonJs = typeof module === "object" && module.exports;
   const api = isCommonJs
-    ? require("./src/paper-import/entry/artifact.js")
+    ? require("./entry/artifact.js")
     : (root && root.CMathPaperEntryArtifact);
 
   if (!api) {

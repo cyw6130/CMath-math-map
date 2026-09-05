@@ -32,7 +32,7 @@ test("production entries are generated from one release manifest", () => {
   assert.equal(inspection.releaseId, PRODUCTION_RELEASE.id);
   assert.equal(inspection.scriptCount, PRODUCTION_RELEASE.scriptCount);
   assert.equal(inspection.scriptCount, 54);
-  assert.match(canonicalHtml, new RegExp(`href="styles\\.css\\?v=${PRODUCTION_RELEASE.id}"`, "u"));
+  assert.match(canonicalHtml, new RegExp(`href="assets/styles/styles\\.css\\?v=${PRODUCTION_RELEASE.id}"`, "u"));
 });
 
 test("the default test command covers every test module", () => {
@@ -48,8 +48,8 @@ test("production entry synchronization and drift checks are public project comma
 
 test("first-party assets share the release identity while vendored assets remain stable", () => {
   assert.equal(
-    productionAssetSource("math-rendering-consumer.js"),
-    `math-rendering-consumer.js?v=${PRODUCTION_RELEASE.id}`,
+    productionAssetSource("src/math-map/math-rendering-consumer.js"),
+    `src/math-map/math-rendering-consumer.js?v=${PRODUCTION_RELEASE.id}`,
   );
   assert.equal(
     productionAssetSource("src/runtime/capabilities.js"),
@@ -59,5 +59,5 @@ test("first-party assets share the release identity while vendored assets remain
     productionAssetSource("src/workbench/paper-import.js"),
     `src/workbench/paper-import.js?v=${PRODUCTION_RELEASE.id}`,
   );
-  assert.equal(productionAssetSource("vendor/katex/katex.min.js"), "vendor/katex/katex.min.js");
+  assert.equal(productionAssetSource("capabilities/browser/vendor/katex/katex.min.js"), "capabilities/browser/vendor/katex/katex.min.js");
 });

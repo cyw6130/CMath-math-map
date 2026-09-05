@@ -9,18 +9,18 @@ const read = (path) => readFileSync(resolve(root, path), "utf8");
 const scriptIndex = (html, src) => html.indexOf(`<script src="${src}`);
 
 const mapPages = [
-  { page: "index.html", loader: "app-v5.js" },
-  { page: "index-v5.html", loader: "app-v5.js" },
-  { page: "generic-math-map-lab.html", loader: "generic-math-map-bootstrap.js" },
-  { page: "generic-math-map-lab-redesign.html", loader: "generic-math-map-bootstrap.js" },
+  { page: "index.html", loader: "src/workbench/app-v5.js" },
+  { page: "index-v5.html", loader: "src/workbench/app-v5.js" },
+  { page: "pages/generic-math-map-lab.html", loader: "src/legacy/generic-math-map-bootstrap.js" },
+  { page: "pages/generic-math-map-lab-redesign.html", loader: "src/legacy/generic-math-map-bootstrap.js" },
 ];
 
 test("Math Map loads the graph contract before the shared canvas", () => {
   for (const { page } of mapPages) {
     assert.ok(existsSync(resolve(root, page)), `${page} exists`);
     const html = read(page);
-    const contractAt = scriptIndex(html, "graph-contract.js");
-    const canvasAt = scriptIndex(html, "graph-canvas.js");
+    const contractAt = scriptIndex(html, "capabilities/browser/graph-contract.js");
+    const canvasAt = scriptIndex(html, "capabilities/browser/graph-canvas.js");
     assert.ok(contractAt >= 0, `${page} loads graph-contract.js`);
     assert.ok(canvasAt >= 0, `${page} loads graph-canvas.js`);
     assert.ok(contractAt < canvasAt, `${page} loads the contract first`);
@@ -28,19 +28,19 @@ test("Math Map loads the graph contract before the shared canvas", () => {
 });
 
 test("the adopted graph canvas uses GammaGraphContract.assertLayout", () => {
-  const source = read("graph-canvas.js");
+  const source = read("capabilities/browser/graph-canvas.js");
   assert.match(source, /const graphContract = window\.GammaGraphContract/);
   assert.match(source, /GammaGraphContract must load before GammaGraphCanvas/);
   assert.match(source, /graphContract\.assertLayout/);
 });
 
 test("Math Map loads visual semantics before the workspace controller and injects it", () => {
-  const workspace = read("math-map-lab.js");
+  const workspace = read("capabilities/browser/math-map-lab.js");
   assert.match(workspace, /visualSemantics:\s*window\.GammaMathMapVisualSemantics/);
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const visualAt = scriptIndex(html, "math-map-visual-semantics.js");
+    const visualAt = scriptIndex(html, "capabilities/browser/math-map-visual-semantics.js");
     const loaderAt = scriptIndex(html, loader);
     assert.ok(visualAt >= 0, `${page} loads math-map-visual-semantics.js`);
     assert.ok(loaderAt >= 0, `${page} loads ${loader}`);
@@ -52,14 +52,14 @@ test("Math Map loads visual semantics before the workspace controller and inject
 });
 
 test("Math Map loads the adopted content channel before each current map controller", () => {
-  const contentLoader = read("math-map-content-loader.js");
+  const contentLoader = read("capabilities/browser/math-map-content-loader.js");
   assert.match(contentLoader, /root\.GammaMathMapContentLoader = api/);
   assert.match(contentLoader, /function validateProjectView/);
   assert.match(contentLoader, /function load\(mapId, options = \{\}\)/);
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const channelAt = scriptIndex(html, "math-map-content-loader.js");
+    const channelAt = scriptIndex(html, "capabilities/browser/math-map-content-loader.js");
     const controllerAt = scriptIndex(html, loader);
     assert.ok(channelAt >= 0, `${page} loads math-map-content-loader.js`);
     assert.ok(controllerAt >= 0, `${page} loads ${loader}`);
@@ -68,14 +68,14 @@ test("Math Map loads the adopted content channel before each current map control
 });
 
 test("Math Map loads the adopted preview loader after validation and before controllers", () => {
-  const previewLoader = read("generic-math-map-preview-loader.js");
+  const previewLoader = read("capabilities/browser/generic-math-map-preview-loader.js");
   assert.match(previewLoader, /root\.GammaGenericMathMapPreviewLoader = api/);
   assert.match(previewLoader, /return Object\.freeze\(\{ loadFile, parse, prepare, previewDefinition \}\)/);
 
   for (const { page, loader } of mapPages) {
     const html = read(page);
-    const contentAt = scriptIndex(html, "math-map-content-loader.js");
-    const previewAt = scriptIndex(html, "generic-math-map-preview-loader.js");
+    const contentAt = scriptIndex(html, "capabilities/browser/math-map-content-loader.js");
+    const previewAt = scriptIndex(html, "capabilities/browser/generic-math-map-preview-loader.js");
     const controllerAt = scriptIndex(html, loader);
     assert.ok(previewAt >= 0, `${page} loads generic-math-map-preview-loader.js`);
     assert.ok(contentAt < previewAt, `${page} loads validation before preview`);
@@ -83,7 +83,7 @@ test("Math Map loads the adopted preview loader after validation and before cont
     const source = read(loader);
     assert.match(
       source,
-      loader === "app-v5.js"
+      loader === "src/workbench/app-v5.js"
         ? /mapRuntime\.genericPreviewLoader/
         : /GammaGenericMathMapPreviewLoader/,
     );
@@ -96,7 +96,7 @@ test("current Math Map pages do not expose a synthetic Route switcher", () => {
     assert.doesNotMatch(html, /route-switcher|route-options|data-route/);
   }
 
-  const workspace = read("math-map-lab.js");
+  const workspace = read("capabilities/browser/math-map-lab.js");
   assert.match(workspace, /@package math-map-workspace-v3/);
   assert.match(workspace, /model\.focusView/);
   assert.doesNotMatch(workspace, /activeRouteId|routeView|switchRoute|data-route/);

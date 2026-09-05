@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import canonicalArtifact from "../src/paper-import/entry/artifact.js";
-import legacyArtifact from "../paper-entry-artifact-v1.js";
+import legacyArtifact from "../src/paper-import/paper-entry-artifact-v1.js";
 
 function makeArtifact(entry) {
   const sourceText = "Canonical Entry source.";

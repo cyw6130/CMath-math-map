@@ -11,7 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import paperRawEntryPool from "../paper-raw-entry-pool-v1.js";
+import paperRawEntryPool from "../src/paper-import/paper-raw-entry-pool-v1.js";
 
 const {
   extractParallelRawEntryPool,

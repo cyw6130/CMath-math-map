@@ -7,11 +7,11 @@ import {
 
 export const DEFAULT_PRODUCTION_URL = "https://cyw6130.github.io/CMath-math-map/";
 export const EXPECTED_ADAPTER_ID = "cmath-math-map.math-rendering-consumer/v1";
-const RENDERING_ASSET_PATH = productionAssetSource("math-rendering-consumer.js");
+const RENDERING_ASSET_PATH = productionAssetSource("src/math-map/math-rendering-consumer.js");
 
 export function inspectRenderingDeployment(html, assetSource) {
   const sourceHtml = String(html);
-  const scriptMatch = sourceHtml.match(/<script\s+[^>]*src=["'](math-rendering-consumer\.js\?v=[^"']+)["'][^>]*><\/script>/u);
+  const scriptMatch = sourceHtml.match(/<script\s+[^>]*src=["'](src\/math-map\/math-rendering-consumer\.js\?v=[^"']+)["'][^>]*><\/script>/u);
   if (!scriptMatch) {
     throw new Error("线上入口尚未加载带版本指纹的 math-rendering-consumer.js");
   }

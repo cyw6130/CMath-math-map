@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const require = (await import("node:module")).createRequire(import.meta.url);
-const client = require("../paper-import-client.js");
+const client = require("../src/paper-import/paper-import-client.js");
 
 const FROZEN_ENTRY = "paper-entry-parallel-extraction-v1.31";
 const FROZEN_INFERENCE_RUNTIME = "v3.45";
@@ -119,7 +119,7 @@ test("frozen web inference runs without the Node.js process global", () => {
       nodeProcess.exitCode = 1;
     });
   `;
-  const result = spawnSync(process.execPath, ["-e", script, path.join(root, "paper-import-client.js")], {
+  const result = spawnSync(process.execPath, ["-e", script, path.join(root, "src/paper-import/paper-import-client.js")], {
     encoding: "utf8",
   });
 
@@ -173,12 +173,12 @@ test("pipeline failure surfaces loudly instead of falling back to legacy path", 
 
 test("both public HTML entries load the complete production pipeline before the client", () => {
   const modules = [
-    "vendor/fflate/fflate.min.js",
+    "capabilities/browser/vendor/fflate/fflate.min.js",
     "src/paper-import/core/project-view.js",
     "src/paper-import/core/model-transport.js",
-    "paper-raw-entry-pool-v1.js",
+    "src/paper-import/paper-raw-entry-pool-v1.js",
     "src/paper-import/entry/artifact.js",
-    "paper-entry-artifact-v1.js",
+    "src/paper-import/paper-entry-artifact-v1.js",
     "src/paper-import/entry/lifecycle.js",
     "src/paper-import/entry/consolidation.js",
     "src/paper-import/entry/verification.js",
@@ -206,10 +206,10 @@ test("both public HTML entries load the complete production pipeline before the 
       `${fileName} must use the deployed MinerU Gateway`,
     );
     const idxOf = (name) => html.indexOf(`src="${name}`);
-    const clientIdx = idxOf("paper-import-client.js");
+    const clientIdx = idxOf("src/paper-import/paper-import-client.js");
     assert.ok(idxOf("capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js") >= 0);
-    assert.ok(idxOf("math-map-semantics-v3-bridge.js") >= 0);
-    assert.ok(idxOf("canonical-math-map-adapter.js") >= 0);
+    assert.ok(idxOf("src/math-map/math-map-semantics-v3-bridge.js") >= 0);
+    assert.ok(idxOf("src/math-map/canonical-math-map-adapter.js") >= 0);
     let previous = -1;
     for (const mod of modules) {
       const index = idxOf(mod);
@@ -236,7 +236,7 @@ test("public UI calls only the single Production Paper Import entry", () => {
 });
 
 test("paper workflow saves its Project View to the library instead of downloading automatically", () => {
-  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "src/workbench/app-v5.js"), "utf8");
   const workbench = fs.readFileSync(path.join(root, "src/workbench/paper-import.js"), "utf8");
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
   assert.match(workbench, /await runtime\.mapLibrary\.saveMap\(record\)/u);
@@ -252,7 +252,7 @@ test("paper workflow saves its Project View to the library instead of downloadin
 });
 
 test("imported library cards distinguish generated and JSON maps without redundant action controls", () => {
-  const app = fs.readFileSync(path.join(root, "app-v5.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "src/workbench/app-v5.js"), "utf8");
   assert.match(app, /mapDef\.generatedResult \? "论文生成" : "JSON 导入"/u);
   assert.doesNotMatch(app, /<div class="map-card-actions">/u);
   assert.doesNotMatch(app, /<span class="demo-case-btn"/u);

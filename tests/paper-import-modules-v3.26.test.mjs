@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import modules from "../paper-import-modules-v3.26.js";
+import modules from "../src/paper-import/paper-import-modules-v3.26.js";
 
 function entryArtifact() {
   const sourceText = "sample paper text here";

@@ -13,8 +13,8 @@
     return require(localPath);
   };
   const semantics = root?.GammaMathMapSemanticsV3
-    ?? loadDependency("GammaMathMapSemantics", "./capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js");
-  const naming = loadDependency("GammaMathMapNaming", "./math-map-naming.js");
+    ?? loadDependency("GammaMathMapSemantics", "../../capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js");
+  const naming = loadDependency("GammaMathMapNaming", "../../capabilities/browser/math-map-naming.js");
   const LEADING_SOURCE_ORDINAL = /^[（(]\s*\d+(?:\s*\.\s*\d+)*\s*[)）](?:\s*\.\s*\d+)*\s*(?:[:：·-]\s*)?/u;
 
   function mathematicalShortTitle(value) {

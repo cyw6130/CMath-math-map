@@ -3,7 +3,7 @@ import fs from "node:fs";
 import test from "node:test";
 import vm from "node:vm";
 
-import client from "../paper-import-client.js";
+import client from "../src/paper-import/paper-import-client.js";
 import inference from "../src/paper-import/inference/index.js";
 
 const lifecycleSource = fs.readFileSync(
@@ -11,7 +11,7 @@ const lifecycleSource = fs.readFileSync(
   "utf8",
 );
 const clientSource = fs.readFileSync(
-  new URL("../paper-import-client.js", import.meta.url),
+  new URL("../src/paper-import/paper-import-client.js", import.meta.url),
   "utf8",
 );
 

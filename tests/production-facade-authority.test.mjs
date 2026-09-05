@@ -6,7 +6,7 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const facade = require("../src/paper-import/production/index.js");
-const client = require("../paper-import-client.js");
+const client = require("../src/paper-import/paper-import-client.js");
 const workflow = require("../src/paper-import/workflow/index.js");
 const facadeSource = fs.readFileSync(
   new URL("../src/paper-import/production/index.js", import.meta.url),

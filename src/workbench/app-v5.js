@@ -2907,7 +2907,7 @@
     // 4. Activate the unchanged map controller only after the selected model exists.
     try {
       productFocusPresentation.installProductFocusPresentation();
-      await loadScript("math-map-lab.js");
+      await loadScript("capabilities/browser/math-map-lab.js");
       mapRuntimeMounted = true;
       installInspectorEnhancements();
     } catch (error) {

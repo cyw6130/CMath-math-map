@@ -9,10 +9,10 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 test("GammaMath.toPlainText keeps unmapped script characters in formulas", () => {
   const browserWindow = {};
-  vm.runInNewContext(readFileSync(resolve(root, "math-text.js"), "utf8"), {
+  vm.runInNewContext(readFileSync(resolve(root, "capabilities/browser/math-text.js"), "utf8"), {
     window: browserWindow,
   });
-  vm.runInNewContext(readFileSync(resolve(root, "math-rendering-consumer.js"), "utf8"), {
+  vm.runInNewContext(readFileSync(resolve(root, "src/math-map/math-rendering-consumer.js"), "utf8"), {
     window: browserWindow,
   });
 

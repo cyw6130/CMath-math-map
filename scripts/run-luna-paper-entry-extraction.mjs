@@ -2,9 +2,9 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-import paperRawEntryPool from "../paper-raw-entry-pool-v1.js";
-import paperEntryConsolidation from "../paper-entry-consolidation-v1.js";
-import paperEntryArtifact from "../paper-entry-artifact-v1.js";
+import paperRawEntryPool from "../src/paper-import/paper-raw-entry-pool-v1.js";
+import paperEntryConsolidation from "../src/paper-import/paper-entry-consolidation-v1.js";
+import paperEntryArtifact from "../src/paper-import/paper-entry-artifact-v1.js";
 
 const {
   extractParallelRawEntryPool,

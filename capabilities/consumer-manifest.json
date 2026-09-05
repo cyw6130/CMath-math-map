@@ -241,7 +241,7 @@
       "packageId": "math-graph-semantics-v2",
       "version": "v2",
       "canonicalSource": "packages/math-map/state/math-graph-semantics-v2/src/index.js",
-      "target": "math-map-semantics.js",
+      "target": "capabilities/browser/math-map-semantics.js",
       "contentHash": "sha256:1110d85785303473ab0803b1c1d5ed232bd7798904d7a25af57f181a799db023",
       "distributedHash": "sha256:ef83b7aa40692362c259adccf27fd589d374eb3fc6aa9a28c9d8d9530cd4edce"
     },
@@ -249,7 +249,7 @@
       "packageId": "math-map-naming-v2",
       "version": "v2",
       "canonicalSource": "packages/math-map/presentation/math-map-naming-v2/src/index.js",
-      "target": "math-map-naming.js",
+      "target": "capabilities/browser/math-map-naming.js",
       "contentHash": "sha256:55fbb6a7cfe141f63ef1269ca5deced2024c0895bfa2b3c2d906abf56685661a",
       "distributedHash": "sha256:695e1c9e4ee2412e69a8f0cd10d4ff857ec0eaa33013ae3d5624d51b7e6db11d"
     },
@@ -257,7 +257,7 @@
       "packageId": "research-loop-progress-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/presentation/research-loop-progress-v1/src/index.js",
-      "target": "research-loop-progress.js",
+      "target": "capabilities/browser/research-loop-progress.js",
       "contentHash": "sha256:4a853d445f563571452d702f5a282a20d5518f56d70fc2fd40b0cb3911f4a2f0",
       "distributedHash": "sha256:47b774213b98b1795985d0f0a6759fd6fd9a6210c21961a906cfde9efa4e3814"
     },
@@ -265,7 +265,7 @@
       "packageId": "math-map-visual-semantics-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/presentation/math-map-visual-semantics-v1/src/index.js",
-      "target": "math-map-visual-semantics.js",
+      "target": "capabilities/browser/math-map-visual-semantics.js",
       "contentHash": "sha256:ad805038e9aab4e0d83ea731b16edbd0cea150b19f52ad264621a014a846c20d",
       "distributedHash": "sha256:3ae68a28659ed9f1d2fa20744bab577f88a1dc891b29e752bf1cfd227f4daa10"
     },
@@ -273,7 +273,7 @@
       "packageId": "graph-core-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/graph-contract.js",
-      "target": "graph-contract.js",
+      "target": "capabilities/browser/graph-contract.js",
       "contentHash": "sha256:df474b48e44e3ec0e2fc73582929d6272a9a306a7f1e094e8e326eae8b3e07a7",
       "distributedHash": "sha256:313beaf2cadc2932a918b695cdb2469b33af0b4034fba0a81c232a4f77ec6de7"
     },
@@ -281,7 +281,7 @@
       "packageId": "graph-core-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/presentation/graph-core-v1/src/index.js",
-      "target": "graph-canvas.js",
+      "target": "capabilities/browser/graph-canvas.js",
       "contentHash": "sha256:29973f25267a0e8ec46f7ccfac5fbe633e25cd78a0a7cbf961e2b63d841b1854",
       "distributedHash": "sha256:fd8c98e325fc3d143ca47783ce5ceaa44790473baa486f19279e7f13720f7916"
     },
@@ -289,7 +289,7 @@
       "packageId": "math-map-workspace-v3",
       "version": "v3",
       "canonicalSource": "packages/math-map/presentation/math-map-workspace-v3/src/math-map-model.js",
-      "target": "math-map-model.js",
+      "target": "capabilities/browser/math-map-model.js",
       "contentHash": "sha256:660eb6a1af7ef7caab27a722ee6553143b79c60524c17853164cb04c158a826a",
       "distributedHash": "sha256:452cefe01a50710a6c86da81b4529e5e5c761ac723a3db23e3a3cbd270f48fdf"
     },
@@ -297,7 +297,7 @@
       "packageId": "math-map-workspace-v3",
       "version": "v3",
       "canonicalSource": "packages/math-map/presentation/math-map-workspace-v3/src/math-map-lab.js",
-      "target": "math-map-lab.js",
+      "target": "capabilities/browser/math-map-lab.js",
       "contentHash": "sha256:8281dfe1d17fdec0e557d35c12c0215ef97c75878fdd662f19122c5fbc12077e",
       "distributedHash": "sha256:c3344bb02793963ac597be9ecd7a0ee7fc6c65e7e05b1c9175162c8960cc3ecf"
     },
@@ -305,7 +305,7 @@
       "packageId": "math-rendering-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-text.js",
-      "target": "math-text.js",
+      "target": "capabilities/browser/math-text.js",
       "contentHash": "sha256:cb0a77ed4ad56c57ce029541334fc67063c0cd8356371bb369140b0d4b07de04",
       "distributedHash": "sha256:7cc3e9ffae7c1b942c00ca80d7a0bb324be5e52d0dab994abbea5cdf5e2cf0bc"
     },
@@ -313,7 +313,7 @@
       "packageId": "math-rendering-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/rendering/math-rendering-v1/browser-assets/math-rendering-loader.js",
-      "target": "math-rendering-loader.js",
+      "target": "capabilities/browser/math-rendering-loader.js",
       "contentHash": "sha256:efe17847852974e4722b1af571d7f1aaa4a3ba9dd56a77760b53a8b0ada47f15",
       "distributedHash": "sha256:586a6c0696ac53e17a5a6d46b03ea866cf8995580b37123ba83a46ed6fc83a59"
     },
@@ -321,7 +321,7 @@
       "packageId": "alpha-project-adapter-v0.2",
       "version": "v0.2",
       "canonicalSource": "packages/math-map/synchronization/alpha-project-adapter-v0.2/src/index.js",
-      "target": "math-map-project-adapter.js",
+      "target": "capabilities/browser/math-map-project-adapter.js",
       "contentHash": "sha256:0b67c990fc70b98085d31c7e84e513ab3b05f73c606cef863e4a64b9826b5db1",
       "distributedHash": "sha256:346c4363996e5e4f45872a7c9dfee228eec5bb115de886c1878c05411d24ce1b"
     },
@@ -329,7 +329,7 @@
       "packageId": "mathematical-content-admission-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/admission/mathematical-content-admission-v1/src/index.js",
-      "target": "math-content-admission.js",
+      "target": "capabilities/browser/math-content-admission.js",
       "contentHash": "sha256:5b85acb0e9aa19225cb695bdb8eba65a2d7fd356e93643818d4fcd72950cfe93",
       "distributedHash": "sha256:66e42e21515e12407f4ec7bee04c3e70dfc8ab856b83f782c0a375fa756bf735"
     },
@@ -337,7 +337,7 @@
       "packageId": "generic-math-content-channel-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/import/generic-math-content-channel-v1/src/index.js",
-      "target": "math-map-content-loader.js",
+      "target": "capabilities/browser/math-map-content-loader.js",
       "contentHash": "sha256:8f6994abc94b1c2d0b9eb86bf692a2b2cf651b9795d6d5669086d526d7c5cd08",
       "distributedHash": "sha256:4040eb166368911ffb3320b7a41e33d50cd2e5002ff91fafd5d22661754503ef"
     },
@@ -345,7 +345,7 @@
       "packageId": "generic-math-map-preview-loader-v1",
       "version": "v1",
       "canonicalSource": "packages/math-map/import/generic-math-map-preview-loader-v1/src/index.js",
-      "target": "generic-math-map-preview-loader.js",
+      "target": "capabilities/browser/generic-math-map-preview-loader.js",
       "contentHash": "sha256:b5b678aa616fcae8570fd4a720bb23e1afde9c7de5ec49316c5edf2987a0735b",
       "distributedHash": "sha256:3faab25f0afa3b0a77860fc76c5173fd59353021bcdb5dc5e97a11797aeb57c9"
     }

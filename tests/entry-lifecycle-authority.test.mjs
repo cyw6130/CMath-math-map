@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import client from "../paper-import-client.js";
+import client from "../src/paper-import/paper-import-client.js";
 import entryModule from "../src/paper-import/entry/index.js";
 import canonicalArtifact from "../src/paper-import/entry/artifact.js";
-import legacyArtifact from "../paper-entry-artifact-v1.js";
+import legacyArtifact from "../src/paper-import/paper-entry-artifact-v1.js";
 
 test("Entry Module owns extraction, review patches, and artifact creation", () => {
   for (const name of [
@@ -25,12 +25,12 @@ test("Entry Module owns extraction, review patches, and artifact creation", () =
 test("browser pages load the complete Entry Module before the client", () => {
   const orderedScripts = [
     "src/paper-import/entry/artifact.js",
-    "paper-entry-artifact-v1.js",
+    "src/paper-import/paper-entry-artifact-v1.js",
     "src/paper-import/entry/lifecycle.js",
     "src/paper-import/entry/consolidation.js",
     "src/paper-import/entry/verification.js",
     "src/paper-import/entry/index.js",
-    "paper-import-client.js",
+    "src/paper-import/paper-import-client.js",
   ];
   for (const page of ["index.html", "index-v5.html"]) {
     const html = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");

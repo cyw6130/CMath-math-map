@@ -3,7 +3,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const pool = require("../paper-raw-entry-pool-v1.js");
+const pool = require("../src/paper-import/paper-raw-entry-pool-v1.js");
 
 // ADR-0002 seam: v1.25 violates the 6-type contract (Claim only
 // lemma|proposition|theorem) and must not be selectable anywhere.

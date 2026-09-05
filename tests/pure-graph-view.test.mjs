@@ -46,7 +46,7 @@ test("AI graph viewer command serves and rereads one explicit JSON file", async 
   });
 
   const viewerUrl = await waitForViewerUrl(child);
-  assert.match(viewerUrl, /^http:\/\/127\.0\.0\.1:\d+\/pure-graph-view\.html$/u);
+  assert.match(viewerUrl, /^http:\/\/127\.0\.0\.1:\d+\/pages\/pure-graph-view\.html$/u);
 
   const inputUrl = new URL("/api/pure-graph-input", viewerUrl);
   assert.deepEqual(await (await fetch(inputUrl)).json(), first);
@@ -63,8 +63,8 @@ test("AI graph viewer command serves and rereads one explicit JSON file", async 
 });
 
 test("pure graph page exposes only the reader controls around the existing graph canvas", () => {
-  const html = read("pure-graph-view.html");
-  const css = read("pure-graph-view.css");
+  const html = read("pages/pure-graph-view.html");
+  const css = read("assets/styles/pure-graph-view.css");
 
   assert.match(html, /id="pure-graph-canvas"[^>]*tabindex="0"/u);
   assert.match(html, /id="pure-graph-legend"/u);
@@ -73,17 +73,17 @@ test("pure graph page exposes only the reader controls around the existing graph
   assert.match(html, /id="pure-graph-file"[^>]*type="file"[^>]*hidden/u);
   assert.doesNotMatch(html, /id="[^"]*(?:workbench|math-understanding|map-library|search)/iu);
   assert.match(html, /<body class="math-map-lab-body">/u);
-  assert.match(html, /href="math-map-lab\.css"/u);
+  assert.match(html, /href="assets\/styles\/math-map-lab\.css"/u);
   assert.match(css, /--board:\s*#181818;/u);
   assert.match(css, /background:\s*var\(--board\);/u);
   assert.match(css, /#pure-graph-canvas\s*\{[^}]*background:\s*var\(--board\)/u);
-  assert.doesNotMatch(read("pure-graph-view.js"), /background:\s*"#000000"|claimOpenFill/u);
-  assert.match(read("pure-graph-view.js"), /canvas\?\.restoreOverview\(\)/u);
-  assert.match(read("pure-graph-view.js"), /cmath\.v521-paper-batch-result\/v1/u);
-  assert.match(read("pure-graph-view.js"), /generatedMapView\(result\)/u);
+  assert.doesNotMatch(read("src/workbench/pure-graph-view.js"), /background:\s*"#000000"|claimOpenFill/u);
+  assert.match(read("src/workbench/pure-graph-view.js"), /canvas\?\.restoreOverview\(\)/u);
+  assert.match(read("src/workbench/pure-graph-view.js"), /cmath\.v521-paper-batch-result\/v1/u);
+  assert.match(read("src/workbench/pure-graph-view.js"), /generatedMapView\(result\)/u);
 
-  const graphContract = html.indexOf('src="graph-contract.js"');
-  const graphCanvas = html.indexOf('src="graph-canvas.js"');
-  const reader = html.indexOf('src="pure-graph-view.js"');
+  const graphContract = html.indexOf('src="capabilities/browser/graph-contract.js"');
+  const graphCanvas = html.indexOf('src="capabilities/browser/graph-canvas.js"');
+  const reader = html.indexOf('src="src/workbench/pure-graph-view.js"');
   assert.ok(graphContract >= 0 && graphContract < graphCanvas && graphCanvas < reader);
 });

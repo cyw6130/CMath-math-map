@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import modules from "../paper-import-modules-v3.26.js";
+import modules from "../src/paper-import/paper-import-modules-v3.26.js";
 
 const [inputPath, outputPath, caseId = null] = process.argv.slice(2);
 if (!inputPath || !outputPath) throw new Error("usage: node scripts/run-paper-format-check.mjs <projectViewOrRun.json> <format-report.json> [caseId]");

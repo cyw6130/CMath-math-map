@@ -10,8 +10,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import paperEntryConsolidationModel from "../paper-entry-consolidation-v1.1-model.js";
-import paperEntryArtifact from "../paper-entry-artifact-v1.js";
+import paperEntryConsolidationModel from "../src/paper-import/paper-entry-consolidation-v1.1-model.js";
+import paperEntryArtifact from "../src/paper-import/paper-entry-artifact-v1.js";
 
 const {
   consolidatePaperEntryPoolWithModel,

@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import paperImportClient from "../paper-import-client.js";
-import previewLoader from "../generic-math-map-preview-loader.js";
-import contentLoader from "../math-map-content-loader.js";
-import projectAdapter from "../math-map-project-adapter.js";
-import visualSemantics from "../math-map-visual-semantics.js";
+import paperImportClient from "../src/paper-import/paper-import-client.js";
+import previewLoader from "../capabilities/browser/generic-math-map-preview-loader.js";
+import contentLoader from "../capabilities/browser/math-map-content-loader.js";
+import projectAdapter from "../capabilities/browser/math-map-project-adapter.js";
+import visualSemantics from "../capabilities/browser/math-map-visual-semantics.js";
 
 const rawMap = {
   projectTitle: "A Paper",
@@ -684,7 +684,7 @@ test("keeps an unproved formal Claim open without requesting a proof-completion 
   assert.ok(stageLog.includes("repair"));
   assert.ok(!stageLog.includes("autofix"));
   assert.equal(view.inferences.length, 1);
-  const closure = (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {});
+  const closure = (await import("../capabilities/browser/math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {});
   assert.equal(closure.claimStates["paper:lemma:l"], "open");
   assert.equal(closure.claimStates["paper:theorem:t"], "open");
 });
@@ -717,7 +717,7 @@ test("places directly adopted sourced Claims in B0 and establishes downstream pr
   });
   assert.equal(callCount, 1); // B0 分类与闭包一致，无需修复轮
   assert.deepEqual(view.derivedResearchState.mathematicalState.b0ClaimEntryIds, ["paper:lemma:given"]);
-  const closure = (await import("../math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {
+  const closure = (await import("../capabilities/browser/math-map-semantics.js")).default.computeClaimClosure(view.entries, view.inferences, {
     b0ClaimEntryIds: view.derivedResearchState.mathematicalState.b0ClaimEntryIds,
   });
   assert.equal(closure.claimStates["paper:lemma:given"], "established");

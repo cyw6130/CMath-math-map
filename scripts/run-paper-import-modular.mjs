@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import modules from "../paper-import-modules-v3.26.js";
+import modules from "../src/paper-import/paper-import-modules-v3.26.js";
 
 const [entryPath, outputDir, model = "gpt-5.6-luna", mode = "off-compact", workflowVersion = "v3.26"] = process.argv.slice(2);
 if (!entryPath || !outputDir) throw new Error("usage: node scripts/run-paper-import-modular.mjs <entry-artifact.json> <output-dir> [model] [mode] [workflowVersion]");

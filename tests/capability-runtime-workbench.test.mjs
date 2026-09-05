@@ -484,6 +484,6 @@ test("production entry loads Runtime and Workbench before the application shell"
   const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const runtimeAt = html.indexOf('src="src/runtime/capabilities.js');
   const workbenchAt = html.indexOf('src="src/workbench/paper-import.js');
-  const appAt = html.indexOf('src="app-v5.js');
+  const appAt = html.indexOf('src="src/workbench/app-v5.js');
   assert.ok(runtimeAt >= 0 && runtimeAt < workbenchAt && workbenchAt < appAt);
 });

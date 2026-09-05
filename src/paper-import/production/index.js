@@ -17,7 +17,7 @@
   const entryModule = load("CMathPaperEntryModule", "../entry/index.js");
   const inferenceModule = load("CMathPaperInferenceModule", "../inference/index.js");
   const workflowModule = load("CMathPaperImportWorkflow", "../workflow/index.js");
-  const rawPoolModule = load("CMathPaperRawEntryPoolV1", "../../../paper-raw-entry-pool-v1.js");
+  const rawPoolModule = load("CMathPaperRawEntryPoolV1", "../paper-raw-entry-pool-v1.js");
   const modelTransport = load("CMathPaperModelTransport", "../core/model-transport.js");
   const mineruModule = load("CMathPaperImportMineru", "../mineru/index.js");
   const canonicalV5 = load("CMathCanonicalPaperImportV5", "../canonical/v5.js");

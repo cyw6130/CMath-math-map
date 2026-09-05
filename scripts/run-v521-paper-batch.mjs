@@ -7,8 +7,8 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
-const paperImportClient = require("../paper-import-client.js");
-const { unzipSync } = require("../vendor/fflate/fflate.min.js");
+const paperImportClient = require("../src/paper-import/paper-import-client.js");
+const { unzipSync } = require("../capabilities/browser/vendor/fflate/fflate.min.js");
 
 export const DEFAULT_CONCURRENCY = 6;
 export const DEFAULT_MODEL = "muse-spark-1.3-contributor";

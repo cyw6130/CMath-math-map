@@ -8,7 +8,7 @@ const v5 = require("../src/paper-import/canonical/v5.js");
 const gateway = require("../workers/model-gateway/index.js");
 const semantics = require("../capabilities/runtime/packages/math-map/state/math-graph-semantics-v3/src/index.js");
 globalThis.GammaMathMapSemanticsV3 = semantics;
-const adapter = require("../canonical-math-map-adapter.js");
+const adapter = require("../src/math-map/canonical-math-map-adapter.js");
 
 function validMap() {
   return {

@@ -8,7 +8,7 @@
 (function publishCMathPaperProjectView(root, factory) {
   "use strict";
   const semantics = root?.GammaMathMapSemantics
-    ?? (typeof require === "function" ? require("../../../math-map-semantics.js") : null);
+    ?? (typeof require === "function" ? require("../../../capabilities/browser/math-map-semantics.js") : null);
   const validation = root?.CMathPaperCoreValidation
     ?? (typeof require === "function" ? require("./validation.js") : null);
   const api = factory(root, semantics, validation);

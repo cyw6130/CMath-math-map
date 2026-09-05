@@ -37,7 +37,7 @@
   }
 
   function canonicalAdapter() {
-    return loadDependency("GammaCanonicalMathMapAdapter", "../../canonical-math-map-adapter.js");
+    return loadDependency("GammaCanonicalMathMapAdapter", "../math-map/canonical-math-map-adapter.js");
   }
 
   function checkpointStore() {

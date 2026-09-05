@@ -10,7 +10,7 @@ const {
   computePdfFingerprint,
   runProductionPaperImport,
 } = Workflow;
-const client = require("../paper-import-client.js");
+const client = require("../src/paper-import/paper-import-client.js");
 
 const WORKFLOW = {
   label: "V4.1",

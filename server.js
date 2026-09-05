@@ -7,8 +7,8 @@ const http = require("http");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { createLocalMapStore } = require("./local-map-store");
-const { createLocalLibraryStateStore } = require("./local-library-state");
+const { createLocalMapStore } = require("./src/map-library/local-map-store");
+const { createLocalLibraryStateStore } = require("./src/map-library/local-library-state");
 
 const args = process.argv.slice(2);
 function argValue(name, fallback) {
@@ -387,7 +387,7 @@ http
   })
   .listen(port, host, function () {
     const boundPort = this.address()?.port ?? port;
-    if (graphInputPath) console.log(`Pure Graph View → http://${host}:${boundPort}/pure-graph-view.html`);
+    if (graphInputPath) console.log(`Pure Graph View → http://${host}:${boundPort}/pages/pure-graph-view.html`);
     console.log(`Gamma Math Map (local) → http://${host}:${boundPort}/`);
     console.log(`API Key store: ${KEY_STORE_PATH}`);
     console.log(`Local map store: ${MAP_STORE_PATH}`);

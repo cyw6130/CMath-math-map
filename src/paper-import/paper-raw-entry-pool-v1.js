@@ -102,7 +102,7 @@
   }
 
   const coreValidation = (typeof require === "function")
-    ? require("./src/paper-import/core/validation.js")
+    ? require("./core/validation.js")
     : ((typeof root !== "undefined" && root && root.CMathPaperCoreValidation) || null);
   if (!coreValidation || typeof coreValidation.hasBalancedMathDelimiters !== "function") {
     throw new Error("CMathPaperCoreValidation not loaded");
@@ -111,7 +111,7 @@
 
   const modelTransport = (typeof require === "function")
     ? (() => {
-      try { return require("./src/paper-import/core/model-transport.js"); } catch { return null; }
+      try { return require("./core/model-transport.js"); } catch { return null; }
     })()
     : ((typeof root !== "undefined" && root && root.CMathPaperModelTransport) || null);
   if (!modelTransport?.createModelTransport) {

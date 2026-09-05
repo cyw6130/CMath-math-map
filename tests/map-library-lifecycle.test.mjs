@@ -18,7 +18,7 @@ const {
   createMapLibrary,
   createMemoryMapLibraryAdapter,
 } = require("../src/map-library/lifecycle.js");
-const { createLocalMapStore } = require("../local-map-store.js");
+const { createLocalMapStore } = require("../src/map-library/local-map-store.js");
 
 function projectView(id, title = id) {
   return {
@@ -168,10 +168,10 @@ test("浏览器普通 script 加载暴露生命周期接口", () => {
 
 test("生产加载图在界面前装配生命周期，界面不再直接编排底层存储", () => {
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-  const app = fs.readFileSync(new URL("../app-v5.js", import.meta.url), "utf8");
+  const app = fs.readFileSync(new URL("../src/workbench/app-v5.js", import.meta.url), "utf8");
   const coreIndex = html.indexOf('src="src/map-library/core.js');
   const lifecycleIndex = html.indexOf('src="src/map-library/lifecycle.js');
-  const appIndex = html.indexOf('src="app-v5.js');
+  const appIndex = html.indexOf('src="src/workbench/app-v5.js');
 
   assert.ok(coreIndex >= 0 && coreIndex < lifecycleIndex);
   assert.ok(lifecycleIndex < appIndex);

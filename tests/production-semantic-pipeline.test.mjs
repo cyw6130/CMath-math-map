@@ -3,7 +3,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const client = require("../paper-import-client.js");
+const client = require("../src/paper-import/paper-import-client.js");
 
 function modelResponse(payload) {
   return {

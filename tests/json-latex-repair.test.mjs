@@ -3,7 +3,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { repairJsonStringEscapes, parseModelJson } = require("../paper-raw-entry-pool-v1.js");
+const { repairJsonStringEscapes, parseModelJson } = require("../src/paper-import/paper-raw-entry-pool-v1.js");
 
 test("repairJsonStringEscapes preserves LaTeX macros like \\bigoplus, \\bar, \\to, \\frac", () => {
   const jsonWithUnescapedLatex = `{"statement": "F = \\bigoplus_P \\mathcal{S}(\\bar{X}) \\to \\frac{A}{B} \\neq 0 \\times \\rho"}`;

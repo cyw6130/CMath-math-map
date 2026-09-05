@@ -6,7 +6,7 @@
  */
 "use strict";
 let rootAdapter = null;
-try { rootAdapter = require("../../math-map-project-adapter.js"); } catch {}
+try { rootAdapter = require("../../capabilities/browser/math-map-project-adapter.js"); } catch {}
 const ADAPTER_ID = rootAdapter?.CAPABILITY_ID ?? "cmath.math-map.adapter/v0.1";
 const SCHEMA_ID = "cmath.project-view-model/v0.1";
 module.exports = Object.freeze({ ADAPTER_ID, SCHEMA_ID, rootAdapter });

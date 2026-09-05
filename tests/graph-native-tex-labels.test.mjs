@@ -179,8 +179,8 @@ function createRuntime() {
     cancelAnimationFrame: browserWindow.cancelAnimationFrame,
     performance: { now: () => 0 },
   };
-  vm.runInNewContext(readFileSync(resolve(root, "graph-contract.js"), "utf8"), runtime);
-  vm.runInNewContext(readFileSync(resolve(root, "graph-canvas.js"), "utf8"), runtime);
+  vm.runInNewContext(readFileSync(resolve(root, "capabilities/browser/graph-contract.js"), "utf8"), runtime);
+  vm.runInNewContext(readFileSync(resolve(root, "capabilities/browser/graph-canvas.js"), "utf8"), runtime);
   return { accessors, browserWindow, document, graph, renderCalls };
 }
 

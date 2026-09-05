@@ -61,9 +61,9 @@
   }
 
   function loadRuntimeScripts({ includeAdapter = true } = {}) {
-    const scripts = ["math-map-model.js"];
-    if (includeAdapter) scripts.push("math-map-project-adapter.js");
-    scripts.push("math-map-project-bridge.js", "math-map-lab.js", "lab-experiments.js");
+    const scripts = ["capabilities/browser/math-map-model.js"];
+    if (includeAdapter) scripts.push("capabilities/browser/math-map-project-adapter.js");
+    scripts.push("src/math-map/math-map-project-bridge.js", "capabilities/browser/math-map-lab.js", "src/legacy/lab-experiments.js");
     return scripts.reduce((promise, src) => promise.then(() => loadScript(src)), Promise.resolve());
   }
 
@@ -89,7 +89,7 @@
       selected: true,
     }));
     picker.disabled = true;
-    loadScript("math-map-project-adapter.js")
+    loadScript("capabilities/browser/math-map-project-adapter.js")
       .then(() => previewLoader.prepare(session.data, {
         loader,
         adapter: window.GammaMathMapProjectAdapter,
@@ -125,7 +125,7 @@
       previewInput.disabled = true;
       previewStatus.textContent = "正在校验数学内容…";
       try {
-        adapterReady ??= loadScript("math-map-project-adapter.js");
+        adapterReady ??= loadScript("capabilities/browser/math-map-project-adapter.js");
         await adapterReady;
         const result = await previewLoader.loadFile(file, {
           loader,

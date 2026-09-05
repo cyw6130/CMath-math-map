@@ -6,7 +6,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { createLocalMapStore, normalizeMapRecord } = require("../local-map-store.js");
+const { createLocalMapStore, normalizeMapRecord } = require("../src/map-library/local-map-store.js");
 
 function projectView(id = "paper:test") {
   return {

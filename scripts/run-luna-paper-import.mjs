@@ -2,11 +2,11 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-import paperImportClient from "../paper-import-client.js";
-import paperImportV3Capability from "../paper-import-v3-capability.js";
-import guideLeadContract from "../guide-lead-contract-v1.js";
-import leadGuidedExtraction from "../lead-guided-extraction-v1.js";
-import dualLaneAggregation from "../dual-lane-extraction-aggregation-v1.js";
+import paperImportClient from "../src/paper-import/paper-import-client.js";
+import paperImportV3Capability from "../src/paper-import/paper-import-v3-capability.js";
+import guideLeadContract from "../src/paper-import/guide-lead-contract-v1.js";
+import leadGuidedExtraction from "../src/paper-import/lead-guided-extraction-v1.js";
+import dualLaneAggregation from "../src/paper-import/dual-lane-extraction-aggregation-v1.js";
 
 const [pdfPath, outputPath, model = "gpt-5.6-luna", mode = "high-generous", workflowVersion = "v1", provider = "luna-gateway"] = process.argv.slice(2);
 if (!pdfPath || !outputPath) {

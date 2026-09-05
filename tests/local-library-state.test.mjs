@@ -13,7 +13,7 @@ const {
   BACKUP_SCHEMA,
   validateBackupPayload,
   mergeLibraryBackup,
-} = require("../local-library-state.js");
+} = require("../src/map-library/local-library-state.js");
 
 function createSampleProjectView(title = "测试项目", id = "test-proj") {
   return {

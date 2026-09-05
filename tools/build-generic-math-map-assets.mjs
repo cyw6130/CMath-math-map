@@ -7,11 +7,11 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
-const loader = require(path.join(root, "math-map-content-loader.js"));
-const admission = require(path.join(root, "math-content-admission.js"));
-const adapter = require(path.join(root, "math-map-project-adapter.js"));
-const graphContract = require(path.join(root, "graph-contract.js"));
-const katex = require(path.join(root, "vendor/katex/katex.min.js"));
+const loader = require(path.join(root, "capabilities/browser/math-map-content-loader.js"));
+const admission = require(path.join(root, "capabilities/browser/math-content-admission.js"));
+const adapter = require(path.join(root, "capabilities/browser/math-map-project-adapter.js"));
+const graphContract = require(path.join(root, "capabilities/browser/graph-contract.js"));
+const katex = require(path.join(root, "capabilities/browser/vendor/katex/katex.min.js"));
 const manifestPath = path.join(root, "examples/generic-math-content/manifest.json");
 const outputDirectory = path.join(root, "generated-math-content");
 const checkOnly = process.argv.slice(2).includes("--check");

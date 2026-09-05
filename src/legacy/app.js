@@ -164,8 +164,8 @@
     startExtractButton.textContent = "正在读取 PDF…";
     try {
       if (!window.GammaPaperImportClient) throw new Error("论文导入组件没有加载，请刷新后重试");
-      const pdfjsLib = await import("./vendor/pdfjs/pdf.min.mjs");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("./vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
+      const pdfjsLib = await import("../../capabilities/browser/vendor/pdfjs/pdf.min.mjs");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("capabilities/browser/vendor/pdfjs/pdf.worker.min.mjs", document.baseURI).href;
       const paper = await window.GammaPaperImportClient.extractPdfText(selectedPaperPdf, { pdfjsLib });
       startExtractButton.textContent = "正在生成数学地图…";
       const projectView = await window.GammaPaperImportClient.requestPaperProjectView({
@@ -330,7 +330,7 @@
 
     // 4. Activate the unchanged map controller only after the selected model exists.
     try {
-      await loadScript("math-map-lab.js");
+      await loadScript("capabilities/browser/math-map-lab.js");
       mapRuntimeMounted = true;
     } catch (error) {
       console.error(error);

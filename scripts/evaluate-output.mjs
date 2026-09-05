@@ -1,10 +1,10 @@
 // 质量评估：读取 test-paper-import.mjs 保存的 output-*.json，检查地图质量指标
 import fs from "node:fs";
 
-import semantics from "../math-map-semantics.js";
-import previewLoader from "../generic-math-map-preview-loader.js";
-import contentLoader from "../math-map-content-loader.js";
-import projectAdapter from "../math-map-project-adapter.js";
+import semantics from "../capabilities/browser/math-map-semantics.js";
+import previewLoader from "../capabilities/browser/generic-math-map-preview-loader.js";
+import contentLoader from "../capabilities/browser/math-map-content-loader.js";
+import projectAdapter from "../capabilities/browser/math-map-project-adapter.js";
 
 const [outPath] = process.argv.slice(2);
 if (!outPath) throw new Error("usage: node evaluate-output.mjs <output.json>");

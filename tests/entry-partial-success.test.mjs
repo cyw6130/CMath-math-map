@@ -3,7 +3,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const rawPoolModule = require("../paper-raw-entry-pool-v1.js");
+const rawPoolModule = require("../src/paper-import/paper-raw-entry-pool-v1.js");
 const entryModule = require("../src/paper-import/entry/index.js");
 const entryArtifactModule = require("../src/paper-import/entry/artifact.js");
 const checkpointStore = require("../src/paper-import/workflow/checkpoint-store.js");

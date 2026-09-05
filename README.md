@@ -9,13 +9,13 @@ CMath 数学地图是一个纯静态的数学命题与推演关系地图可视�
 | 要做什么 | 位置 |
 | --- | --- |
 | 本地运行 | `npm run dev` |
-| 修改工作台页面 | `index.html`、`app-v5.js`、`app-v5.css` |
+| 修改工作台页面 | `index.html`、`src/workbench/app-v5.js`、`assets/styles/app-v5.css` |
 | 修改论文导入、地图库等业务功能 | `src/` |
 | 查看能力依赖与同步信息 | `capabilities/` |
 | 修改内置示例 | `examples/`；`generated-math-content/` 是生成结果 |
 | 查设计决定、运行测试、使用开发工具 | `docs/`、`tests/`、`scripts/`、`tools/` |
 
-根目录的 HTML、JS、CSS 与在用 Logo 共用现有静态发布路径；移动前需同步网页、桌面入口和能力分发配置。旧实验、备用图片、施工票据与临时备份保存在仓库外，不作为当前源码入口。
+根目录保留网站入口、本地服务入口与项目配置。界面和业务代码按功能放入 `src/`，样式与图片放入 `assets/`，辅助页面放入 `pages/`。旧实验、施工票据与临时备份保存在仓库外。
 
 ---
 
@@ -45,30 +45,34 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 
 ## 部署架构与根目录设计
 
-本仓库同时作为 **GitHub Pages 静态托管根目录（Static Deployment Root）**。
+本仓库仍作为 GitHub Pages 的静态托管根目录。首页 `index.html` 和兼容镜像 `index-v5.html` 保留原网址，其他资源按职责放入子目录，无需打包工具。
 
-为了确保 GitHub Pages 在纯静态环境下实现零构建、零重定向的直接服务，本仓库采取**生产入口与运行时资源驻留根目录**的设计原则：
-- 生产入口 HTML（`index.html`、`index-v5.html`）、核心交互脚本（`app-v5.js`）、样式表（`app-v5.css`、`styles.css`、`math-map-lab.css`）、底层通用渲染模块以及 `vendor/` 静态依赖均直接位于仓库根目录。
-- 保持这种扁平的静态运行时布局，使得本地静态服务、桌面封装应用（`CMath Math Map.app`）与线上 GitHub Pages 共享完全一致的相对路径解析体系。
+- `src/`：工作台、论文导入、地图与地图库代码；`src/legacy/` 保存兼容和实验页面使用的脚本。
+- `assets/styles/`、`assets/images/`：样式、字体引用和品牌图片。
+- `pages/`：通用地图实验室、只读地图阅读器和系统案例页面；通过 `<base href="../">` 从项目根路径加载资源。
+- `capabilities/browser/`：上游分发的浏览器能力。其 `vendor/` 保存第三方渲染依赖，保持数学渲染加载器的相对路径关系。
+- `scripts/production-release.mjs`：生产入口脚本顺序与缓存身份的唯一清单。修改资源路径后运行 `npm run sync:production-entry`，再运行 `npm run check:production-entry`。
+
+本地服务入口仍为 `server.js`，`npm run dev` 和桌面启动方式不变。只读地图入口为 `pages/pure-graph-view.html`。
 
 ---
 
 ## 当前入口与文件生命周期划分
 
-项目内的代码与页面按当前用途划分（部分边界尚存歧义的实验性资产有意保留在根目录）：
+项目内的代码与页面按当前用途划分：
 
 ### 1. 当前生产主线（Current Production）
 - `index.html`：Paper Grotesque Edition 工作台与全屏数学地图的唯一可编辑生产入口。
 - `index-v5.html`：由生产发布清单生成的兼容镜像，保留既有网址，不得手工编辑。
-- `app-v5.js` / `app-v5.css`：当前主线交互逻辑与界面样式，支持论文解析抽屉、模型端点配置、本地 JSON 载入及地图画布交互。
-- `paper-import-client.js`：浏览器端多阶段论文文本提取与结构化解析客户端。
+- `src/workbench/app-v5.js` / `assets/styles/app-v5.css`：当前主线交互逻辑与界面样式，支持论文解析抽屉、模型端点配置、本地 JSON 载入及地图画布交互。
+- `src/paper-import/paper-import-client.js`：浏览器端多阶段论文文本提取与结构化解析客户端。
 - `server.js`：本地桌面/开发环回服务（支持本地 API Key 安全存储）。
-- `local-map-store.js`：本地数学地图库持久化；地图保存在 `~/.cmath-math-map/maps/`，供不同浏览器会话共同读取。
+- `src/map-library/local-map-store.js`：本地数学地图库持久化；地图保存在 `~/.cmath-math-map/maps/`，供不同浏览器会话共同读取。
 
 ### 2. 实验与通用辅助页面（Experimental & Generic Pages）
-- `generic-math-map-lab.html` / `generic-math-map-lab-redesign.html`：通用数学地图实验室页面与重构预览。
-- `math-map-system-case.html`：系统集成案例展示页。
-- `app.js` / `app.css` / `lab-experiments.js`：通用实验脚手架与探索性交互脚本（暂予原位保留）。
+- `pages/generic-math-map-lab.html` / `pages/generic-math-map-lab-redesign.html`：通用数学地图实验室页面与重构预览。
+- `pages/math-map-system-case.html`：系统集成案例展示页。
+- `src/legacy/app.js` / `assets/styles/app.css` / `src/legacy/lab-experiments.js`：通用实验脚手架与探索性交互脚本（集中于 `src/legacy/`）。
 
 ### 3. 已归档历史版本（Archived Historical Snapshots）
 - 旧版页面、实验原型和 Agent 施工记录已移到仓库外保存，不随网站发布。历史代码仍可通过 Git 历史查阅。
@@ -77,41 +81,35 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 
 ## 仓库目录导航
 
-```
+```text
 CMath-math-map/
-├── index.html                   # 生产主入口（Paper Grotesque v5.0）
-├── index-v5.html                # v5.0 版本入口镜像
-├── app-v5.js / app-v5.css       # v5.0 主交互逻辑与设计系统样式
-├── paper-import-client.js       # 论文解析客户端（分段提取/整合/装配/修复）
-├── server.js                    # 本地开发与桌面端环回服务
-├── styles.css / math-map-lab.css# 基础布局与数学地图工作区样式
-│
-├── capabilities/                # 能力消费元数据
-│   └── consumer-manifest.json   # 从 CMath-capabilities 同步的消费清单
-│
-├── generated-math-content/      # 内置预置数学地图数据包
-│   ├── registry.js              # 案例注册表
-│   ├── spectral-theorem-*.js    # 谱定理案例
-│   ├── intermediate-value-*.js  # 介值定理案例
-│   └── fundamental-theorem-*.js # 微积分基本定理案例等
-│
-├── tests/                       # 自动化测试套件
-│   ├── capabilities-consumer.test.mjs # 能力消费完整性与哈希一致性测试
-│   ├── paper-import-client.test.mjs   # 论文解析客户端单元测试
-│   └── fixtures/                # 测试基准 Golden 参考与规范
-│
-├── scripts/                     # 运维脚本
-│   ├── evaluate-output.mjs      # 模型输出质量单体体检脚本
-│   ├── bench-models.mjs         # 多模型基准批量跑分脚本
-│   └── local-launch.sh          # 本地启动辅助脚本
-│
-├── vendor/                      # 纯静态第三方依赖库
-│   ├── katex/                   # 数学公式排版引擎与字体
-│   ├── force-graph/             # 力导向图渲染引擎
-│   ├── pdfjs/                   # PDF 文本解析引擎 (pdfjs-dist)
-│   └── fonts/                   # 界面字体文件
-│
-└── _config.yml                 # GitHub Pages 发布排除项
+├── index.html / index-v5.html   # 首页与生成的兼容镜像
+├── server.js                   # 本地与桌面服务入口
+├── package.json / _config.yml  # 项目命令与网站发布配置
+├── src/
+│   ├── workbench/              # 首页交互、论文导入界面、只读阅读器
+│   ├── paper-import/           # 论文导入与阶段编排
+│   ├── math-map/               # 地图适配与数学渲染接入
+│   ├── map-library/            # 地图库生命周期与本地存储
+│   ├── graph/                 # 图模块入口
+│   ├── map-presentation/      # 地图展示逻辑
+│   ├── runtime/               # 能力装配
+│   └── legacy/                # 兼容与实验页面脚本
+├── assets/
+│   ├── styles/                # CSS 样式
+│   └── images/                # Logo 与图片
+├── pages/                     # 辅助页面
+├── capabilities/
+│   ├── browser/               # 同步的浏览器能力与 vendor 渲染依赖
+│   ├── runtime/               # 按包分发的能力
+│   └── consumer-manifest.json # 分发身份与目标路径
+├── examples/                  # 示例内容源文件
+├── generated-math-content/    # 浏览器使用的示例数据
+├── docs/                      # 架构、规范与设计决定
+├── tests/                     # 自动化测试
+├── scripts/ / tools/          # 开发、验证与内容构建工具
+├── integrations/              # 外部集成
+└── workers/                   # MinerU 与模型网关
 ```
 
 ---
@@ -131,19 +129,19 @@ CMath-math-map/
 - `math-rendering-v1`：KaTeX 公式渲染与降级保护。
 - `alpha-project-adapter-v0.2`：只读项目数据适配器。
 
-### 2. 根目录能力副本与同步规则（DO NOT EDIT DIRECTLY）
-根目录下的下列能力分发运行时文件均为**自动同步生成的消费者副本（Consumer Copies）**：
-- `math-map-semantics.js`
-- `math-map-naming.js`
-- `research-loop-progress.js`
-- `math-map-visual-semantics.js`
-- `graph-contract.js`
-- `graph-canvas.js`
-- `math-map-model.js`
-- `math-map-lab.js`
-- `math-text.js`
-- `math-rendering-loader.js`
-- `math-map-project-adapter.js`
+### 2. 浏览器能力副本与同步规则（DO NOT EDIT DIRECTLY）
+`capabilities/browser/` 下的能力分发运行时文件均为**自动同步生成的消费者副本（Consumer Copies）**：
+- `capabilities/browser/math-map-semantics.js`
+- `capabilities/browser/math-map-naming.js`
+- `capabilities/browser/research-loop-progress.js`
+- `capabilities/browser/math-map-visual-semantics.js`
+- `capabilities/browser/graph-contract.js`
+- `capabilities/browser/graph-canvas.js`
+- `capabilities/browser/math-map-model.js`
+- `capabilities/browser/math-map-lab.js`
+- `capabilities/browser/math-text.js`
+- `capabilities/browser/math-rendering-loader.js`
+- `capabilities/browser/math-map-project-adapter.js`
 
 > [!WARNING]
 > 这些文件头部均带有 `@cmath-provenance` 溯源注释与内容校验哈希。**严禁在本项目中直接就地编辑修改这些运行时文件**。任何能力改进必须在 `CMath-capabilities` 对应 package 中完成，然后通过 `npm run sync-capabilities` 同步至本项目。

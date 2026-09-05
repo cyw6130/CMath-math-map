@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-CN" data-theme="dark" data-experiment-family="portable-three-math-maps" data-content-view="global-progress">
 <head>
+  <base href="../">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
@@ -2115,11 +2116,11 @@ button:focus-visible,select:focus-visible,input:focus-visible { outline:2px soli
 <body class="math-map-lab-body" data-lens-state="global" data-content-view="global-progress" data-portable-view="index">
   <main class="portable-index">
     <header class="portable-index-header">
-      <a class="portable-brand" href="?" aria-label="Gamma Math Map 首页">
-        <img src="logo.png" alt="CMath Logo">
+      <a class="portable-brand" href="pages/math-map-system-case.html?" aria-label="Gamma Math Map 首页">
+        <img src="assets/images/logo.png" alt="CMath Logo">
         <span><strong>Gamma Math Map</strong><small>数学地图示例集</small></span>
       </a>
-      <a class="portable-back" href="generic-math-map-lab.html?preview=1">← 返回工具</a>
+      <a class="portable-back" href="pages/generic-math-map-lab.html?preview=1">← 返回工具</a>
     </header>
     <section class="portable-index-intro" aria-labelledby="portable-index-title">
       <p class="eyebrow">VISUAL EXAMPLES</p>
@@ -2127,17 +2128,17 @@ button:focus-visible,select:focus-visible,input:focus-visible { outline:2px soli
       <p>从熟悉的数学结果出发，沿着定义、命题与推导关系，浏览一张可交互的数学地图。</p>
     </section>
     <nav class="portable-examples" aria-label="数学地图例子">
-      <a class="portable-example" href="?map=spectral-theorem">
+      <a class="portable-example" href="pages/math-map-system-case.html?map=spectral-theorem">
         <span class="domain">高等代数</span>
         <h2>从特征值到谱定理</h2>
         <span class="open">打开例子 →</span>
       </a>
-      <a class="portable-example" href="?map=intermediate-value-theorem">
+      <a class="portable-example" href="pages/math-map-system-case.html?map=intermediate-value-theorem">
         <span class="domain">数学分析</span>
         <h2>从闭区间套到介值定理</h2>
         <span class="open">打开例子 →</span>
       </a>
-      <a class="portable-example" href="?map=fundamental-theorem-calculus">
+      <a class="portable-example" href="pages/math-map-system-case.html?map=fundamental-theorem-calculus">
         <span class="domain">微积分</span>
         <h2>从积分累积函数到微积分基本定理</h2>
         <span class="open">打开例子 →</span>
@@ -2146,9 +2147,9 @@ button:focus-visible,select:focus-visible,input:focus-visible { outline:2px soli
   </main>
 
   <div class="portable-map-shell" hidden>
-    <a class="skip-link" href="#math-map-canvas">跳到数学图</a>
+    <a class="skip-link" href="pages/math-map-system-case.html#math-map-canvas">跳到数学图</a>
     <header class="topbar math-map-topbar">
-      <a class="brand" href="./index.html"><span class="brand-mark">Γ</span><span class="brand-text">三个数学地图例子<small>返回 Gamma Math Map</small></span></a>
+      <a class="brand" href="index.html"><span class="brand-mark">Γ</span><span class="brand-text">三个数学地图例子<small>返回 Gamma Math Map</small></span></a>
       <span class="math-map-boundary">数学地图与 Loop 进展</span>
     </header>
     <main class="math-map-main">
@@ -3793,11 +3794,11 @@ qr.readability=function(t,n){var e=qr(t),r=qr(n);return(Math.max(e.getLuminance(
 
   const RECENT_LOOP_LIMIT = 3;
   const semantics = root?.GammaMathMapSemantics
-    ?? (typeof require === "function" ? require("./math-map-semantics.js") : null);
+    ?? (typeof require === "function" ? require("../capabilities/browser/math-map-semantics.js") : null);
   const naming = root?.GammaMathMapNaming
-    ?? (typeof require === "function" ? require("./math-map-naming.js") : null);
+    ?? (typeof require === "function" ? require("../capabilities/browser/math-map-naming.js") : null);
   const loopProgress = root?.GammaResearchLoopProgress
-    ?? (typeof require === "function" ? require("./research-loop-progress.js") : null);
+    ?? (typeof require === "function" ? require("../capabilities/browser/research-loop-progress.js") : null);
   const CAPABILITY_ID = "cmath-gamma.alpha-project-adapter/v0.2";
   const SEMANTIC_CONTRACT = Object.freeze({
     id: semantics?.SEMANTIC_MODEL_ID ?? "cmath.fact-claim-operation/v0.1",
@@ -4924,7 +4925,7 @@ qr.readability=function(t,n){var e=qr(t),r=qr(n);return(Math.max(e.getLuminance(
     if (typeof URL !== "function" || !document.scripts || !document.head) {
       return Promise.resolve(null);
     }
-    const src = new URL("math-rendering-loader.js", controllerUrl).href;
+    const src = new URL("capabilities/browser/math-rendering-loader.js", controllerUrl).href;
     const existing = [...document.scripts].find((script) => script.src === src);
     return new Promise((resolve) => {
       const script = existing || document.createElement("script");

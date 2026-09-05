@@ -8,7 +8,7 @@
 (function publishCMathPaperInferenceLifecycle(root, factory) {
   "use strict";
   const semantics = root?.GammaMathMapSemantics
-    ?? (typeof require === "function" ? require("../../../math-map-semantics.js") : null);
+    ?? (typeof require === "function" ? require("../../../capabilities/browser/math-map-semantics.js") : null);
   const validation = root?.CMathPaperCoreValidation
     ?? (typeof require === "function" ? require("../core/validation.js") : null);
   const projectViewCore = root?.CMathPaperProjectView

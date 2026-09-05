@@ -3,7 +3,7 @@ import test from "node:test";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const pool = require("../paper-raw-entry-pool-v1.js");
+const pool = require("../src/paper-import/paper-raw-entry-pool-v1.js");
 
 const options = {
   fileName: "generic-paper.pdf",

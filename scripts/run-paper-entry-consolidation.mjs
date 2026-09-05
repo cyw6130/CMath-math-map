@@ -9,8 +9,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import paperEntryConsolidation from "../paper-entry-consolidation-v1.js";
-import paperEntryArtifact from "../paper-entry-artifact-v1.js";
+import paperEntryConsolidation from "../src/paper-import/paper-entry-consolidation-v1.js";
+import paperEntryArtifact from "../src/paper-import/paper-entry-artifact-v1.js";
 
 const {
   consolidateRawEntryPool,
