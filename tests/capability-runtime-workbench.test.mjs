@@ -319,10 +319,10 @@ test("Paper Import Workbench mounts once, saves before handoff, and disposes cle
       endpointUrl: (value) => value,
       fetch: globalThis.fetch,
       V5_PROGRESS_STAGES: [
-        { id: "mineru", label: "MinerU 精准解析" },
-        { id: "generate", label: "V5.2.1 生成中文标准数学地图" },
-        { id: "repair", label: "统一审查与原子修复（1 次）" },
-        { id: "validate", label: "最终能力合同校验" },
+        { id: "mineru", label: "解析论文" },
+        { id: "generate", label: "生成数学地图" },
+        { id: "repair", label: "检查并修正地图" },
+        { id: "validate", label: "检查地图格式" },
       ],
       async requestPaperProductionImport() { events.push("import"); return result; },
     },
@@ -392,7 +392,7 @@ test("Paper Import Workbench turns the active action into a stop control", async
       endpointUrl: (value) => value,
       fetch: globalThis.fetch,
       V5_PROGRESS_STAGES: [
-        { id: "mineru", label: "MinerU 精准解析" },
+        { id: "mineru", label: "解析论文" },
         { id: "generate", label: "生成" },
         { id: "repair", label: "修复" },
         { id: "validate", label: "校验" },
@@ -444,7 +444,7 @@ test("Paper Import Workbench treats MinerU cancellation as a stopped import", as
     paperImport: {
       endpointUrl: (value) => value,
       fetch: globalThis.fetch,
-      V5_PROGRESS_STAGES: [{ id: "mineru", label: "MinerU 精准解析" }],
+      V5_PROGRESS_STAGES: [{ id: "mineru", label: "解析论文" }],
       requestPaperProductionImport({ signal }) {
         return new Promise((resolve, reject) => {
           signal.addEventListener("abort", () => {

@@ -65,10 +65,10 @@
   });
   const V5_FROZEN_WORKFLOW = canonicalV5?.FROZEN_WORKFLOW ?? null;
   const V5_PROGRESS_STAGES = Object.freeze([
-    Object.freeze({ id: "mineru", label: "MinerU 精准解析" }),
-    Object.freeze({ id: "generate", label: `${V5_FROZEN_WORKFLOW?.displayVersion ?? "V5.2.1"} 生成中文标准数学地图` }),
-    Object.freeze({ id: "repair", label: "统一审查与原子修复（1 次）" }),
-    Object.freeze({ id: "validate", label: "最终能力合同校验" }),
+    Object.freeze({ id: "mineru", label: "解析论文" }),
+    Object.freeze({ id: "generate", label: "生成数学地图" }),
+    Object.freeze({ id: "repair", label: "检查并修正地图" }),
+    Object.freeze({ id: "validate", label: "检查地图格式" }),
   ]);
 
   if (!entryModule

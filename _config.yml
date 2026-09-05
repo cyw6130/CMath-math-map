@@ -1,0 +1,23 @@
+# GitHub Pages publishes the product, not engineering and experiment files.
+exclude:
+  - benchmarks
+  - prototypes
+  - archive
+  - .agent-os
+  - docs
+  - tests
+  - scripts
+  - tools
+  - integrations
+  - workers
+  - README.md
+  - AGENTS.md
+  - CONTEXT.md
+  - autoresearch.md
+  - autoresearch.sh
+  - package.json
+  - server.js
+  - wrangler.jsonc
+  - wrangler.model-gateway.jsonc
+  - skills-lock.json
+  - scratch_step74.js

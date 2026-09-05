@@ -58,7 +58,7 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 - `app.js` / `app.css` / `lab-experiments.js`：通用实验脚手架与探索性交互脚本（暂予原位保留）。
 
 ### 3. 已归档历史版本（Archived Historical Snapshots）
-- `archive/legacy-editions/`：收录已确认不再使用的历史版本（`index-v2.html`、`app-v2.js`、`app-v2.css`、`index-v4.html`、`app-v4.css`）。详见 [历史版本归档](#历史版本归档)。
+- 旧版页面、实验原型和 Agent 施工记录已移到仓库外保存，不随网站发布。历史代码仍可通过 Git 历史查阅。
 
 ---
 
@@ -90,7 +90,6 @@ CMath-math-map/
 ├── scripts/                     # 运维脚本
 │   ├── evaluate-output.mjs      # 模型输出质量单体体检脚本
 │   ├── bench-models.mjs         # 多模型基准批量跑分脚本
-│   ├── audit-paper-benchmarks.mjs # 论文 benchmark 结构与来源完整性审计脚本
 │   └── local-launch.sh          # 本地启动辅助脚本
 │
 ├── vendor/                      # 纯静态第三方依赖库
@@ -99,10 +98,7 @@ CMath-math-map/
 │   ├── pdfjs/                   # PDF 文本解析引擎 (pdfjs-dist)
 │   └── fonts/                   # 界面字体文件
 │
-├── archive/                     # 历史版本归档
-│   └── legacy-editions/         # v2、v4 历史快照及说明
-│
-└── .agent-os/                   # 智能体上下文与规范
+└── _config.yml                 # GitHub Pages 发布排除项
 ```
 
 ---
@@ -217,8 +213,6 @@ npm run audit:paper-import
 
 ## 历史版本归档
 
-历史演进版本已移至 `archive/legacy-editions/` 进行存档：
-- `index-v2.html` / `app-v2.js` / `app-v2.css`（V2 历史工作台）
-- `index-v4.html` / `app-v4.css`（V4 Proof Edition）
+旧版页面、未合并实验原型与 Agent 施工票据已迁出公开仓库，并在本机仓库外归档。Git 历史保留此前提交；当前功能以根目录 `index.html` 为准。
 
-*注：归档文件为历史快照，内部相对路径依赖原根目录布局，不能脱离原项目环境独立运行。当前功能请以根目录 `index.html` 为准。*
+GitHub Pages 通过 `_config.yml` 排除工程文档、测试、脚本与实验资料，仅发布产品页面及运行所需资源。排除网站发布不会隐藏公开仓库里的文件或历史提交。

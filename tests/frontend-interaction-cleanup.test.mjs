@@ -123,7 +123,7 @@ test("paper import records an incompatible workflow stage instead of ignoring it
 test("paper import presents recovery as the same bounded repair stage", () => {
   const { handleImportStage, stepEls } = importProgressHarness();
   handleImportStage("repair", { phase: "start", operation: "recovery-and-audited-patch" });
-  assert.equal(stepEls.get("repair").querySelector(".step-detail").textContent, "正在恢复格式并统一审修");
+  assert.equal(stepEls.get("repair").querySelector(".step-detail").textContent, "正在检查并修正地图");
 });
 
 test("math rendering capability keeps an undelimited spaced formula intact", () => {

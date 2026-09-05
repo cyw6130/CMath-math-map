@@ -42,7 +42,7 @@
     }
     const extractSteps = Object.freeze([
       ...runtime.paperImport.V5_PROGRESS_STAGES,
-      Object.freeze({ id: "save", label: "保存标准 JSON" }),
+      Object.freeze({ id: "save", label: "保存到地图库" }),
     ]);
 
     const view = root.defaultView ?? globalThis;
@@ -188,15 +188,15 @@
       }
       if (info.phase === "resume") {
         completePriorSteps(stage);
-        setStep(stage, "done", "已从本地 checkpoint 恢复");
+        setStep(stage, "done", "已从上次进度恢复");
       } else if (info.phase === "start") {
         completePriorSteps(stage);
         activeStage = stage;
         const detail = stage === "mineru"
           ? "正在提交并解析 PDF"
           : (info.operation === "recovery-and-audited-patch"
-            ? "正在恢复格式并统一审修"
-            : (stage === "repair" ? "正在统一审查与原子修复" : "运行中…"));
+            ? "正在检查并修正地图"
+            : (stage === "repair" ? "正在检查并修正地图" : "运行中…"));
         setStep(stage, "active", detail);
       } else if (info.phase === "progress") {
         activeStage = stage;
@@ -204,14 +204,14 @@
           "waiting-file": "等待 PDF 上传",
           pending: "等待 MinerU 调度",
           running: "MinerU 正在解析",
-          converting: "正在生成 Markdown",
+          converting: "正在整理论文内容",
           done: "解析完成",
         };
         setStep(stage, "active", states[info.state] ?? "处理中…");
       } else if (info.phase === "complete") {
         completePriorSteps(stage);
         setStep(stage, "done", stage === "mineru"
-          ? `${info.pageCount ?? "?"} 页 marked Markdown`
+          ? `已解析 ${info.pageCount ?? "?"} 页`
           : (Number.isInteger(info.entries) ? `${info.entries} 个对象` : "完成"));
       } else if (info.phase === "degraded") {
         completePriorSteps(stage);
@@ -229,15 +229,15 @@
         setStep("generate", "done", `${map.entries.length} 个对象 · ${map.inferences.length} 条推理`);
         const repair = result?.diagnostics?.runReport?.repair;
         const patched = String(repair?.selection ?? "").includes("patched");
-        setStep("repair", "done", patched ? "已完成 1 次原子修复" : "已审查，无需修改");
-        setStep("validate", "done", "标准 JSON 合法");
+        setStep("repair", "done", patched ? "已检查并修正地图" : "已检查地图，无需修改");
+        setStep("validate", "done", "地图格式检查通过");
         return;
       }
       const entries = map?.entries?.length ?? 0;
       const inferences = map?.inferences?.length ?? 0;
       setStep("generate", "done", `${entries} 个对象 · ${inferences} 条推理 · 部分完成`);
       setStep("repair", "done", "未猜测缺失语义");
-      setStep("validate", "done", "合法部分结果");
+      setStep("validate", "done", "部分结果可用");
     }
 
     function mapRecord(result, fileName) {
@@ -299,7 +299,7 @@
       const stepsHtml = status.querySelector(".extract-steps")?.outerHTML ?? "";
       status.innerHTML = `${stepsHtml}
         <p class="extract-success-title">✓ 解析完成</p>
-        <p class="extract-success-sub">已自动保存到「我的 JSON 地图」${missingCount || unresolvedCount ? ` · ${missingCount} 个阶段待完善 · ${unresolvedCount} 个未解决项` : ""}</p>
+        <p class="extract-success-sub">已自动保存到「我的地图」${missingCount || unresolvedCount ? ` · ${missingCount} 个阶段待完善 · ${unresolvedCount} 个未解决项` : ""}</p>
         <div class="extract-success-actions">
           <button type="button" class="extract-open-map">立即在地图中打开</button>
           <button type="button" class="extract-open-library">打开地图库</button>
@@ -469,7 +469,7 @@
         startButton.textContent = "正在保存…";
         startButton.classList.remove("is-stop-action");
         const savedRecord = await runtime.mapLibrary.saveMap(record) ?? record;
-        setStep("save", "done", "已保存到我的 JSON 地图");
+        setStep("save", "done", "已保存到我的地图");
         finishSteps(result);
         const ready = Object.freeze({
           fileName: selectedPdf.name,

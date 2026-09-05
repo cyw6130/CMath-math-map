@@ -6,3 +6,9 @@ scripts/output-*.json
 .tmp-backup/
 .entry-*.ticket.json
 .score-cache/
+
+# Internal work is archived outside the public repository.
+/.agent-os/
+/prototypes/
+/archive/
+/benchmarks/

@@ -10,6 +10,18 @@ import {
 
 const read = (name) => readFileSync(new URL(`../${name}`, import.meta.url), "utf8");
 
+test("Pages excludes internal material without excluding production assets", () => {
+  const config = read("_config.yml");
+  for (const name of ["benchmarks", "prototypes", "archive", ".agent-os", "docs", "tests"]) {
+    assert.ok(config.split("\n").includes(`  - ${name}`));
+  }
+  const excluded = config.split("\n").filter((line) => line.startsWith("  - ")).map((line) => line.slice(4));
+  const html = read("index.html");
+  for (const [, asset] of html.matchAll(/(?:src|href)="([^"?#]+)(?:\?[^"#]*)?"/gu)) {
+    assert.ok(!excluded.some((name) => asset === name || asset.startsWith(`${name}/`)), asset);
+  }
+});
+
 test("production entries are generated from one release manifest", () => {
   const canonicalHtml = read("index.html");
   const mirrorHtml = read("index-v5.html");

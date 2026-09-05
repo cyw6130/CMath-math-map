@@ -231,8 +231,8 @@ test("public UI calls only the single Production Paper Import entry", () => {
     assert.match(facade, new RegExp(`id: ["']${stage}["']`, "u"));
   }
   assert.ok(facade.indexOf('id: "repair"') < facade.indexOf('id: "validate"'));
-  assert.match(facade, /V5_FROZEN_WORKFLOW\?\.displayVersion/u);
-  assert.match(facade, /统一审查与原子修复（1 次）/u);
+  assert.match(facade, /生成数学地图/u);
+  assert.match(facade, /检查并修正地图/u);
 });
 
 test("paper workflow saves its Project View to the library instead of downloading automatically", () => {

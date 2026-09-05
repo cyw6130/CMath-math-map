@@ -94,10 +94,10 @@ test("Production Paper Import facade exposes the small public authority surface"
   assert.equal(facade.V5_FROZEN_WORKFLOW.productionContractVersion, "production-canonical-paper-import/v1.1");
   assert.equal(Object.isFrozen(facade.V5_FROZEN_WORKFLOW), true);
   assert.deepEqual(facade.V5_PROGRESS_STAGES.map(({ id, label }) => [id, label]), [
-    ["mineru", "MinerU 精准解析"],
-    ["generate", "V5.2.1 生成中文标准数学地图"],
-    ["repair", "统一审查与原子修复（1 次）"],
-    ["validate", "最终能力合同校验"],
+    ["mineru", "解析论文"],
+    ["generate", "生成数学地图"],
+    ["repair", "检查并修正地图"],
+    ["validate", "检查地图格式"],
   ]);
   assert.equal(Object.isFrozen(facade.V5_PROGRESS_STAGES), true);
   const manifest = JSON.parse(fs.readFileSync(
