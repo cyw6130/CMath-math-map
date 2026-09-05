@@ -45,7 +45,7 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 
 ## 部署架构与根目录设计
 
-本仓库仍作为 GitHub Pages 的静态托管根目录。首页 `index.html` 和兼容镜像 `index-v5.html` 保留原网址，其他资源按职责放入子目录，无需打包工具。
+本仓库仍作为 GitHub Pages 的静态托管根目录。首页只保留 `index.html`，其他资源按职责放入子目录，无需打包工具。
 
 - `src/`：工作台、论文导入、地图与地图库代码；`src/legacy/` 保存兼容和实验页面使用的脚本。
 - `assets/styles/`、`assets/images/`：样式、字体引用和品牌图片。
@@ -63,7 +63,6 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 
 ### 1. 当前生产主线（Current Production）
 - `index.html`：Paper Grotesque Edition 工作台与全屏数学地图的唯一可编辑生产入口。
-- `index-v5.html`：由生产发布清单生成的兼容镜像，保留既有网址，不得手工编辑。
 - `src/workbench/app-v5.js` / `assets/styles/app-v5.css`：当前主线交互逻辑与界面样式，支持论文解析抽屉、模型端点配置、本地 JSON 载入及地图画布交互。
 - `src/paper-import/paper-import-client.js`：浏览器端多阶段论文文本提取与结构化解析客户端。
 - `server.js`：本地桌面/开发环回服务（支持本地 API Key 安全存储）。
@@ -83,7 +82,7 @@ CMath 数学地图专注于为数学研究与论文研读提供结构化的知�
 
 ```text
 CMath-math-map/
-├── index.html / index-v5.html   # 首页与生成的兼容镜像
+├── index.html                   # 唯一首页入口
 ├── server.js                   # 本地与桌面服务入口
 ├── package.json / _config.yml  # 项目命令与网站发布配置
 ├── src/
@@ -178,7 +177,7 @@ Paper Guide、双通道提取的 prompt/schema 由 `CMath-capabilities/packages/
   - 在线版（GitHub Pages）：API Key 仅存于当前会话内存中发起推理请求，用完即清，不落盘、不存入 LocalStorage。
   - 本地桌面版（`node server.js`）：提供本地环回配置（`~/.gamma-math-map/keys.json`，权限 `0600`，仅限本机读写）。
 
-模型网关使用独立配置 `wrangler.model-gateway.jsonc`。部署前必须先确认 OpenCode Go 条款允许公开网站的第三方转发使用，再通过 Wrangler Secret 配置 `OPENCODE_GO_API_KEY`；部署成功后把 `index.html` 与 `index-v5.html` 的 `data-model-gateway-url` 指向 `/api/model` 公共地址。真实 Key 不得写入配置文件或仓库。
+模型网关使用独立配置 `wrangler.model-gateway.jsonc`。部署前必须先确认 OpenCode Go 条款允许公开网站的第三方转发使用，再通过 Wrangler Secret 配置 `OPENCODE_GO_API_KEY`；部署成功后把 `index.html` 的 `data-model-gateway-url` 指向 `/api/model` 公共地址。真实 Key 不得写入配置文件或仓库。
 
 ---
 

@@ -1,7 +1,7 @@
 import { pathToFileURL } from "node:url";
 
 import {
-  inspectProductionEntries,
+  inspectProductionEntry,
   productionAssetSource,
 } from "./production-release.mjs";
 
@@ -15,7 +15,7 @@ export function inspectRenderingDeployment(html, assetSource) {
   if (!scriptMatch) {
     throw new Error("线上入口尚未加载带版本指纹的 math-rendering-consumer.js");
   }
-  inspectProductionEntries({ canonicalHtml: sourceHtml, mirrorHtml: sourceHtml });
+  inspectProductionEntry({ canonicalHtml: sourceHtml });
   if (!String(assetSource).includes(EXPECTED_ADAPTER_ID)) {
     throw new Error(`线上数学渲染适配器身份不匹配：期望 ${EXPECTED_ADAPTER_ID}`);
   }
@@ -29,7 +29,7 @@ export async function checkProductionRendering(baseUrl = DEFAULT_PRODUCTION_URL,
   const htmlResponse = await fetchImpl(rootUrl, { cache: "no-store" });
   if (!htmlResponse.ok) throw new Error(`无法读取线上入口：HTTP ${htmlResponse.status}`);
   const html = await htmlResponse.text();
-  inspectProductionEntries({ canonicalHtml: html, mirrorHtml: html });
+  inspectProductionEntry({ canonicalHtml: html });
 
   const assetUrl = new URL(RENDERING_ASSET_PATH, rootUrl);
   assetUrl.searchParams.set("_", cacheBust);

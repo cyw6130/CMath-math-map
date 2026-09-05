@@ -84,11 +84,9 @@ function loadMathRenderingHarness() {
   return { api: browserWindow.GammaMath, calls };
 }
 
-test("production entry and v5 mirror expose the same reduced interaction shell", () => {
+test("production entry exposes the reduced interaction shell", () => {
   const production = read("index.html");
-  const mirror = read("index-v5.html");
 
-  assert.equal(mirror, production);
   assert.doesNotMatch(production, /id="btn-map-chat"/u);
   assert.doesNotMatch(production, /id="btn-export-library-backup"|id="btn-import-library-backup"/u);
   assert.match(production, /<span id="map-active-title"/u);

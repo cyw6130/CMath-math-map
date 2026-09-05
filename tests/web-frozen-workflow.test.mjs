@@ -198,7 +198,7 @@ test("both public HTML entries load the complete production pipeline before the 
     "src/paper-import/canonical/v5.js",
     "src/paper-import/production/index.js",
   ];
-  for (const fileName of ["index.html", "index-v5.html"]) {
+  for (const fileName of ["index.html"]) {
     const html = fs.readFileSync(path.join(root, fileName), "utf8");
     assert.match(
       html,

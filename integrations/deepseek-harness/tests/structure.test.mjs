@@ -36,7 +36,7 @@ test('Harness workspace embeds the existing Math Map v5 application', async () =
   const host = await readFile(new URL('src/ui.ts', root), 'utf8')
   assert.match(workspace, /<iframe/u)
   assert.match(workspace, /\/plugins\/cmath-math-map\//u)
-  assert.match(host, /index-v5\.html/u)
+  assert.match(host, /index\.html/u)
   assert.match(host, /ctx\.webServer\.register/u)
 })
 

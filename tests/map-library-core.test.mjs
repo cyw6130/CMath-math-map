@@ -146,7 +146,7 @@ test("Map Library 拒绝无效地图与损坏的 Generated Map 封装", () => {
 });
 
 test("生产页面在应用启动前加载 Map Library 核心", () => {
-  for (const entry of ["index.html", "index-v5.html"]) {
+  for (const entry of ["index.html"]) {
     const html = fs.readFileSync(path.join(root, entry), "utf8");
     const adapterIndex = html.indexOf('src="src/math-map/canonical-math-map-adapter.js');
     const checkpointIndex = html.indexOf('src="src/paper-import/workflow/checkpoint-store.js');

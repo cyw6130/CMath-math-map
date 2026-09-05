@@ -22,7 +22,7 @@ test("Project View normalization, diagnostics, sanitizer, and integration use th
 });
 
 test("browser pages load Project View core before the client", () => {
-  for (const page of ["index.html", "index-v5.html"]) {
+  for (const page of ["index.html"]) {
     const html = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");
     const coreAt = html.indexOf('<script src="src/paper-import/core/project-view.js');
     const clientAt = html.indexOf('<script src="src/paper-import/paper-import-client.js');

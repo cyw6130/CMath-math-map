@@ -131,10 +131,8 @@ function scriptSourcesOf(html) {
     .map((match) => match[1]);
 }
 
-export function inspectProductionEntries({ canonicalHtml, mirrorHtml }) {
+export function inspectProductionEntry({ canonicalHtml }) {
   const canonical = String(canonicalHtml);
-  const mirror = String(mirrorHtml);
-  if (mirror !== canonical) throw new Error("index-v5.html 不是 index.html 的当前生成镜像");
   const releaseId = releaseIdOf(canonical);
   if (releaseId !== PRODUCTION_RELEASE.id) {
     throw new Error(`生产入口发布身份不匹配：期望 ${PRODUCTION_RELEASE.id}，实际 ${releaseId ?? "缺失"}`);
@@ -157,28 +155,24 @@ async function atomicWrite(target, content) {
   await rename(temporary, target);
 }
 
-export async function syncProductionEntries({ root = repositoryRoot, check = false } = {}) {
+export async function syncProductionEntry({ root = repositoryRoot, check = false } = {}) {
   const canonicalPath = resolve(root, "index.html");
-  const mirrorPath = resolve(root, "index-v5.html");
   const canonicalSource = await readFile(canonicalPath, "utf8");
   const canonicalHtml = renderProductionEntryHtml(canonicalSource);
-  const mirrorHtml = canonicalHtml;
 
   if (check) {
-    const committedMirror = await readFile(mirrorPath, "utf8");
-    inspectProductionEntries({ canonicalHtml: canonicalSource, mirrorHtml: committedMirror });
+    inspectProductionEntry({ canonicalHtml: canonicalSource });
     return Object.freeze({ releaseId: PRODUCTION_RELEASE.id, changed: false });
   }
 
   await atomicWrite(canonicalPath, canonicalHtml);
-  await atomicWrite(mirrorPath, mirrorHtml);
   return Object.freeze({ releaseId: PRODUCTION_RELEASE.id, changed: canonicalSource !== canonicalHtml });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes("--check");
   try {
-    const result = await syncProductionEntries({ check });
+    const result = await syncProductionEntry({ check });
     console.log(check
       ? `生产入口校验通过：${result.releaseId}`
       : `生产入口已同步：${result.releaseId}`);

@@ -32,7 +32,7 @@ test("browser pages load the complete Entry Module before the client", () => {
     "src/paper-import/entry/index.js",
     "src/paper-import/paper-import-client.js",
   ];
-  for (const page of ["index.html", "index-v5.html"]) {
+  for (const page of ["index.html"]) {
     const html = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");
     let previous = -1;
     for (const script of orderedScripts) {

@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
   PRODUCTION_RELEASE,
-  inspectProductionEntries,
+  inspectProductionEntry,
+  syncProductionEntry,
   productionAssetSource,
 } from "../scripts/production-release.mjs";
 
@@ -22,13 +25,11 @@ test("Pages excludes internal material without excluding production assets", () 
   }
 });
 
-test("production entries are generated from one release manifest", () => {
+test("production entry is generated from one release manifest", () => {
   const canonicalHtml = read("index.html");
-  const mirrorHtml = read("index-v5.html");
 
-  const inspection = inspectProductionEntries({ canonicalHtml, mirrorHtml });
+  const inspection = inspectProductionEntry({ canonicalHtml });
 
-  assert.equal(mirrorHtml, canonicalHtml);
   assert.equal(inspection.releaseId, PRODUCTION_RELEASE.id);
   assert.equal(inspection.scriptCount, PRODUCTION_RELEASE.scriptCount);
   assert.equal(inspection.scriptCount, 54);
@@ -60,4 +61,17 @@ test("first-party assets share the release identity while vendored assets remain
     `src/workbench/paper-import.js?v=${PRODUCTION_RELEASE.id}`,
   );
   assert.equal(productionAssetSource("capabilities/browser/vendor/katex/katex.min.js"), "capabilities/browser/vendor/katex/katex.min.js");
+});
+
+
+test("release sync maintains only index.html", async () => {
+  const root = mkdtempSync(join(tmpdir(), "cmath-single-entry-"));
+  try {
+    writeFileSync(join(root, "index.html"), read("index.html"));
+    await syncProductionEntry({ root });
+    await syncProductionEntry({ root, check: true });
+    assert.deepEqual(readdirSync(root), ["index.html"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

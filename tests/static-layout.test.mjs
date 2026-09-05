@@ -6,7 +6,7 @@ const root = new URL("../", import.meta.url);
 
 test("page assets and navigation stay inside the published project after relocation", () => {
   const project = new URL("https://example.test/CMath-math-map/");
-  for (const page of ["index.html", "index-v5.html", ...readdirSync(new URL("pages/", root)).filter(name => name.endsWith(".html")).map(name => `pages/${name}`)]) {
+  for (const page of ["index.html", ...readdirSync(new URL("pages/", root)).filter(name => name.endsWith(".html")).map(name => `pages/${name}`)]) {
     const html = readFileSync(new URL(page, root), "utf8");
     const base = new URL(html.match(/<base\s+href="([^"]+)"/u)?.[1] || page, new URL(page, project));
     for (const match of html.replace(/(<script\b[^>]*>)[\s\S]*?<\/script>/gu, "$1</script>").matchAll(/<(script|img|link|a)\b[^>]*?\b(?:src|href)="([^"]+)"/gu)) {

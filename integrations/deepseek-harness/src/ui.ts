@@ -21,7 +21,7 @@ const MIME: Record<string, string> = {
 
 function assetPath(pathname: string): string | undefined {
   const suffix = pathname.slice(ROUTE.length).replace(/^\/+/, '')
-  const candidate = resolve(REPOSITORY_ROOT, suffix || 'index-v5.html')
+  const candidate = resolve(REPOSITORY_ROOT, suffix || 'index.html')
   if (candidate !== REPOSITORY_ROOT && !candidate.startsWith(`${REPOSITORY_ROOT}${sep}`)) return
   if (!existsSync(candidate) || !statSync(candidate).isFile()) return
   return candidate

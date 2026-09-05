@@ -10,7 +10,6 @@ const scriptIndex = (html, src) => html.indexOf(`<script src="${src}`);
 
 const mapPages = [
   { page: "index.html", loader: "src/workbench/app-v5.js" },
-  { page: "index-v5.html", loader: "src/workbench/app-v5.js" },
   { page: "pages/generic-math-map-lab.html", loader: "src/legacy/generic-math-map-bootstrap.js" },
   { page: "pages/generic-math-map-lab-redesign.html", loader: "src/legacy/generic-math-map-bootstrap.js" },
 ];
