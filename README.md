@@ -4,6 +4,19 @@ CMath 数学地图是一个纯静态的数学命题与推演关系地图可视�
 
 在线访问：<https://cyw6130.github.io/CMath-math-map/>
 
+## 从哪里开始
+
+| 要做什么 | 位置 |
+| --- | --- |
+| 本地运行 | `npm run dev` |
+| 修改工作台页面 | `index.html`、`app-v5.js`、`app-v5.css` |
+| 修改论文导入、地图库等业务功能 | `src/` |
+| 查看能力依赖与同步信息 | `capabilities/` |
+| 修改内置示例 | `examples/`；`generated-math-content/` 是生成结果 |
+| 查设计决定、运行测试、使用开发工具 | `docs/`、`tests/`、`scripts/`、`tools/` |
+
+根目录的 HTML、JS、CSS 与在用 Logo 共用现有静态发布路径；移动前需同步网页、桌面入口和能力分发配置。旧实验、备用图片、施工票据与临时备份保存在仓库外，不作为当前源码入口。
+
 ---
 
 ## 目录
